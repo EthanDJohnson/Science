@@ -215,3 +215,63 @@ Blank "not computed" cells are gaps (section 6); the compiler added no numbers.
   - Abstract or title only: RT-09, RQ-10, RQ-13, RC-22, and the Everett half of RC-19. That is 5 of 57 (9%), plus the Vahlbruch title in RQ-14.
   - Preprints: RC-06 (Celmaster–Rubin), RC-22 (Baird), RC-23 (Le), and RQ-14 as labelled.
 - **Coverage bias.** The positive-energy claims were read mostly through their critics (Santiago et al.). Lentz's own paper was seen only as an abstract.
+
+## User-supplied
+Added at the dossier checkpoint with the user's approval. Each item condenses claims from an earlier single-researcher run in this repository, `runs/2026-09-29-warp-bubble-shapes/research/shapes.md` (IDs RS-xx). Read that file for the verbatim quotes. That run had **no separate source check**, so treat these items like the unchecked claims above. Status and ACCESS labels are that researcher's, and "(ours)" marks arithmetic added here, not in any source.
+
+- [U-01] [user] **White's thick-wall variant.**
+  - Sources: "Warp Field Mechanics 101", an NTRS 20110015936 conference paper (2011). A JBIS version exists (66, 242–247, 2013), confirmed by search summary only; its text was not read.
+  - Claim: for the Alcubierre tanh metric at fixed v and R, a thicker wall "drastically" cuts the peak energy density, and the integrated energy is "orders of magnitude" lower. The cost is a smaller flat interior.
+  - Missing: no closed-form scaling, no SI total, and no quantum-inequality discussion. The plotted case is v = 10c with a 10 m diameter.
+  - This agrees with |E| ∝ v²R²/Δ; the thick-wall floor is D-19.
+  - No published rebuttal aimed at White was found.
+  - (RS-01, RS-02, RS-03, RS-06; full-text NTRS)
+- [U-02] [user] [speculative] **White's oscillating variant.**
+  - Source: "Warp Field Mechanics 102: Energy Optimization", NTRS 20130011213 (2013), an unrefereed slide deck.
+  - Slide 16 plots "exotic mass" for a 10 m diameter bubble at v = 10c against shell-thickness fraction, with one curve per "bulk velocity" dU/dt.
+  - Read by eye: the thin-shell curve with no oscillation sits near 1e28 kg (Jupiter class). The thickest-shell curve with the fastest oscillation sits near 1e3 kg (Voyager class).
+  - The dU/dt dependence comes from a Chung–Freese brane-world relation ("we need to engage higher dimensional models"), not from GR. The part of the reduction beyond the thick-wall effect is therefore outside the brief's established physics.
+  - (RS-04, RS-05; fringe status; values read by eye from a scanned plot)
+- [U-03] [user] **Loup, Waite & Halerewicz 2001: a lapse function A** (arXiv:gr-qc/0107097, preprint, not refereed).
+  - Claim: the ship-frame energy density falls as 1/A⁴, reducing the requirement "arbitrarily". Their QI analysis gives Δ ≤ 10² v L_P A₀, and they divide Pfenning's "−0.068 solar mass" figure by A₀⁴.
+  - They concede the WEC is still violated in other frames. No published critique was found.
+  - (RS-12)
+- [U-04] [user] **Bobrick–Martire's optimizations of the Alcubierre drive** (CQG 38, 105009, 2021). These fill the D-27 parameter gap.
+  - Flattening the bubble along the direction of travel by a factor α_X gives E → E/α_X. Choosing α_X = 1 + v² removes the asymptotic v-dependence.
+  - The energy-optimal radial profile, f = min(r₀/r_s, 1), lowers |E| by about 3× relative to tanh.
+  - The abstract's "two orders of magnitude" probably corresponds to α_X ~ 100. That is the researcher's inference, not verified.
+  - Extreme flattening pushes the along-track wall to near the Planck scale. Per the paper, this meets the QIs but not the averaged null energy condition.
+  - (RS-13, RS-14)
+- [U-05] [user] **Bobrick–Martire on Van Den Broeck** (disputed; a derivation in their appendix). This bears on D-20 to D-25.
+  - They argue Van Den Broeck's solution "is equivalent to the Alcubierre solution" in the inner observer's coordinates.
+  - They say the small region-II energy comes from an expression missing the expected B(0)² v² dependence.
+  - They note the outer wall is still about 100 v Planck lengths thick.
+  - No reply from Van Den Broeck was found. His own follow-up preprint (gr-qc/9906050) says superluminal bubbles "seem an unlikey [sic] possibility", while subluminal ones "may still be possible".
+  - (RS-10, RS-11)
+- [U-06] [user] **Lentz's energy scaling** (CQG 38, 075015, 2021; full-text). This fills the D-40 energy gap.
+  - E_tot ~ C v² R²/w, with C of order 1. For R = 100 m and w = 1 m he gives E_tot ~ (few)×10⁻¹ M_sun (printed with a factor v_s), "of the same magnitude" as Pfenning–Ford's estimate for an Alcubierre bubble of the same size.
+  - So the claim is positive energy density, not a smaller budget. With the v² law, the reference case (v = 10c) needs of order tens of M_sun of positive energy (ours), comparable to D-17.
+  - Lentz argues the QI wall limit does not apply to a plasma source. He suggests Van Den Broeck-, White- and Loup-type optimizations "may provide significant savings", but has not applied them.
+  - (RS-17)
+- [U-07] [user] **More on Fell–Heisenberg** (CQG 38, 155020, 2021). This adds to D-26 and D-41.
+  - The exterior is Schwarzschild-like, not Minkowski, so the ADM mass is nonzero.
+  - Horizons and the transition from sub- to superluminal speed are not analysed.
+  - The length unit of the example (parameters Π, r, V, σ = 1/4, 6, 10, 1) was not identified, so it cannot be compared like for like with R = 100 m.
+  - (RS-19)
+- [U-08] [user] **Fuchs et al. 2024** (CQG 41, 095013). A constant-velocity **subluminal** warp shell that satisfies all the energy conditions.
+  - It is a stable matter shell with R₁ = 10 m, R₂ = 20 m and M = 4.49e27 kg (2.365 M_J), moving at v = 0.04c.
+  - No acceleration phase is solved, and it has no superluminal capability. It trades negative energy for a Jupiter-scale positive mass.
+  - (RS-20)
+- [U-09] [user] **How far the QI wall bound reaches.** Pfenning–Ford applied a free massless scalar QI to a spacetime not produced by such a field, so the ~1e62 kg figure is a free-field semiclassical estimate, not a theorem about all matter.
+  - Krasnikov 2003 (PRD 67, 104013; abstract only) argues the relevant QI "does not (always) imply large energy densities", and that large E_tot "does not necessarily exclude shortcuts".
+  - (RS-08; bears on D-54, D-55)
+- [U-10] [user] **Natário's drive is not lower-energy.** This adds to D-04, D-28 and D-64.
+  - No energy-reduction claim was found for it.
+  - Rodal (2024, IJTP 63, 168) finds its curvature invariants are 35× larger than Alcubierre's for identical bubble parameters.
+  - Rodal's 2026 irrotational drive reports a slice-integrated net proper energy consistent with zero (|E₊ − E₋|/(E₊ + E₋) = 0.04%). Its reported reductions are local peak measures, not totals.
+  - (RS-15, RS-16)
+- [U-11] [user] [speculative] **Other routes.** These partly fill D-71.
+  - Obousy–Cleaver 2008 (JBIS 61, 364): tune the radius of a compact extra dimension to drive the bubble. Only the abstract was read, so there are no energy numbers.
+  - DeBenedictis–Ilijic 2018 (CQG 35, 215001): in Einstein–Cartan gravity, torsion from spin allows warp drives that respect the energy conditions. This changes the gravity theory.
+  - Rodal 2025 (preprint, arXiv:2507.09724): argues that "low-energy" routes via an engineered, spatially varying gravitational coupling either conflict with the contracted Bianchi identity or are excluded by the |γ − 1| ≲ 1e-5 solar-system bound.
+  - (RS-21, RS-22, RS-23)
