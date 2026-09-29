@@ -16,7 +16,7 @@ The design, and the review of the Gemini proposal it started from, are in [`docs
 
 1. **Requirements**
    - Claude Code with dynamic workflows. They're available on paid plans; on Pro, turn them on under Dynamic workflows in `/config`.
-   - Python 3.10+ with `pip install sympy numpy`. Optionally add `pypdf`, so agents can quote open-access PDFs verbatim.
+   - Python 3.10+ with `pip install sympy numpy pypdf cffi`. `pypdf` lets agents quote PDFs verbatim. `cffi` is there because some system Python packages (a broken `cryptography`) otherwise make `pypdf` crash on import; the preflight reports this.
 2. **Start a new Claude Code session in this repo.** Claude Code loads the skill, agents and workflows at session start.
 3. **Run the skill:**
    ```
@@ -138,7 +138,7 @@ It is tested against Schwarzschild, FRW, Morris–Thorne, Painlevé–Gullstrand
 - INSPIRE-HEP and arXiv, the default for physics;
 - Crossref and Semantic Scholar (`--source general`) for engineering, materials, chemistry, statistics and other fields.
 
-Semantic Scholar also lists open-access PDF links. Two optional environment variables speed these up; nothing identifying is sent unless you set them:
+Semantic Scholar also lists open-access PDF links. `fetch_text.py` prints a source's own words from a PDF or web page, around a phrase given with `--grep`, so agents quote the text itself: WebFetch passes pages through a model, whose answer can paraphrase. Two optional environment variables speed these up; nothing identifying is sent unless you set them:
 - `SEMANTIC_SCHOLAR_API_KEY` raises Semantic Scholar's shared rate limit;
 - `CROSSREF_MAILTO` gives Crossref an email address for its faster pool.
 
@@ -151,7 +151,7 @@ Semantic Scholar also lists open-access PDF links. Two optional environment vari
 1. Click the cloud button showing the environment name (e.g. **Default**) above the message box.
 2. Hover over the environment and click its gear icon.
 3. Set **Network access** to **Custom**, paste the list below, and tick **Also include default list of common package managers** (PyPI).
-4. Add `pip install sympy numpy pypdf` to **Setup script**; it is cached for later sessions.
+4. Add `pip install sympy numpy pypdf cffi` to **Setup script**; new sessions run it.
 
 ```
 arxiv.org
@@ -213,7 +213,7 @@ python3 .claude/skills/conundrum/scripts/stats_tools.py selftest          # stat
   skills/conundrum/
     SKILL.md
     references/          lenses.md  schemas.md  rubric.md
-    scripts/             gr_tensors.py  stats_tools.py  lit_search.py  check_env.py  tests/
+    scripts/             gr_tensors.py  stats_tools.py  lit_search.py  fetch_text.py  check_env.py  tests/
   agents/                17 role definitions (model, effort, tools, method)
   workflows/             conundrum-research.js  conundrum-analyze.js
   hooks/                 turn_budget.py (counts each agent's turns and tool calls)

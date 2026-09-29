@@ -13,7 +13,8 @@ import sys
 import urllib.error
 import urllib.request
 
-PACKAGES = [("sympy", True), ("numpy", True), ("scipy", False)]
+PACKAGES = [("sympy", True), ("numpy", True), ("pypdf", False), ("scipy", False)]
+HINTS = {"pypdf": "lets fetch_text.py quote PDFs verbatim: pip install pypdf cffi"}
 SOURCES = [
     ("arXiv API", "https://export.arxiv.org/api/query?search_query=all:test&max_results=1"),
     ("INSPIRE-HEP API", "https://inspirehep.net/api/literature?q=t%20test&size=1&fields=titles.title"),
@@ -33,6 +34,11 @@ def check_packages():
                         "required": required})
         except ImportError:
             out.append({"package": name, "ok": False, "version": None, "required": required})
+        except (KeyboardInterrupt, SystemExit):
+            raise
+        except BaseException as exc:  # e.g. pypdf over a broken cryptography package: a pyo3 PanicException
+            out.append({"package": name, "ok": False, "version": None, "required": required,
+                        "broken": f"installed but fails to import ({type(exc).__name__}); pip install cffi"})
     return out
 
 
@@ -79,6 +85,10 @@ def main() -> int:
     print(f"cpus    {cpus} (workflows run up to {parallel} agent{'s' if parallel != 1 else ''} at once)")
     for p in packages:
         tag = "ok" if p["ok"] else ("MISSING (required)" if p["required"] else "missing (optional)")
+        if p.get("broken"):
+            tag = f"BROKEN: {p['broken']}"
+        elif not p["ok"] and p["package"] in HINTS:
+            tag += f": {HINTS[p['package']]}"
         print(f"package {p['package']:<6} {tag}{' ' + p['version'] if p['version'] else ''}")
     for s in sources:
         print(f"source  {s['source']:<20} {'reachable' if s['ok'] else 'BLOCKED'} ({s['detail']})")
