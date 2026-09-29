@@ -1,0 +1,17 @@
+# math_run log
+command:  python3 runs/2026-09-29-problem-of-time-quantum-gravity/math/decomposer/M-DECOMPOSER-01.py
+started:  2026-09-29T23:40:55Z
+duration: 0.6 s
+exit:     0
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   4 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+PASS g0 * 1 mm / c^2 has the dimension of dimensionless: dimensional analysis
+PASS g0 * 1 mm / c^2 == 1.09e-19: within 0.005; 1.09114e-19 vs 1.09e-19 (SI)
+PASS lim h->0 of (-1 + sqrt(-2*G*M/(c**2*(R + h)) + 1)/sqrt(-2*G*M/(R*c**2) + 1))/h == G*M/(R**2*c**2*(-2*G*M/(R*c**2) + 1)): symbolic limit G*M*R*c**2*sqrt(-2*G*M + R*c**2)/(-2*G*M*R**2*c**2*sqrt(-2*G*M + R*c**2) + R**3*c**4*sqrt(-2*G*M + R*c**2))
+PASS G * 5.9722e24 kg / (6.371e6 m)^2 * 1 mm / c^2 == 1.09e-19: within 0.01; 1.09266e-19 vs 1.09e-19 (SI)
+SUMMARY: 4 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

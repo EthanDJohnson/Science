@@ -1,0 +1,22 @@
+# math_run log
+command:  python3 runs/2026-09-29-problem-of-time-quantum-gravity/math/decomposer/M-DECOMPOSER-10.py
+started:  2026-09-29T23:41:14Z
+duration: 0.3 s
+exit:     1
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   3 PASS, 2 FAIL, 0 UNDECIDED
+
+--- stdout ---
+QGEM linear 9.2e-39: log10(res/shift) = 17.92
+QGEM exact max 2.06e-38: log10(res/shift) = 17.57
+QGEM exact min 5.9e-39: log10(res/shift) = 18.11
+1 g at 1 mm 7.4e-31: log10(res/shift) = 10.01
+PASS 17.917025764935236 == 17.9: within 0.01; 17.917 vs 17.9 (SI)
+PASS 10.011581872549815 == 10.0: within 0.01; 10.0116 vs 10 (SI)
+FAIL 17.917025764935236 >= 20: numeric, constant; counterexample value = -2.082974235; value -2.082974235
+FAIL 10.011581872549815 >= 20: numeric, constant; counterexample value = -9.988418127; value -9.988418127
+PASS 39.50974573000906 == 39.5: within 0.01; 39.5097 vs 39.5 (SI)
+SUMMARY: 3 pass, 2 fail, 0 undecided
+
+--- stderr ---
+

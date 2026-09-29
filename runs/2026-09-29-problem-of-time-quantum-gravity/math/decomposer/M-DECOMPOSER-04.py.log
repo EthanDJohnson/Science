@@ -1,0 +1,38 @@
+# math_run log
+command:  python3 runs/2026-09-29-problem-of-time-quantum-gravity/math/decomposer/M-DECOMPOSER-04.py
+started:  2026-09-29T23:43:05Z
+duration: 0.7 s
+exit:     0
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   13 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+g = 0.3: physical subspace dimension 6
+  rel. B: max ||phi(t) - e^(-iH_AS t) phi(0)|| = 9.59e-16; norm spread 1.39e-16
+  rel. A: norm ratio 0.9811-1.0000; non-Hermiticity 0.240-0.312 rad/s; generator variation 1.157 rad/s
+g = 0.1: physical subspace dimension 6
+  rel. B: max ||phi(t) - e^(-iH_AS t) phi(0)|| = 7.87e-16; norm spread 1.39e-16
+  rel. A: norm ratio 1.0000-1.0119; non-Hermiticity 0.110-0.132 rad/s; generator variation 0.518 rad/s
+g = 0.01: physical subspace dimension 6
+  rel. B: max ||phi(t) - e^(-iH_AS t) phi(0)|| = 9.11e-16; norm spread 1.39e-16
+  rel. A: norm ratio 1.0000-1.0000; non-Hermiticity 0.012-0.014 rad/s; generator variation 0.055 rad/s
+g = 0.0: physical subspace dimension 6
+  rel. B: max ||phi(t) - e^(-iH_AS t) phi(0)|| = 6.67e-17; norm spread 1.39e-16
+  rel. A: norm ratio 1.0000-1.0000; non-Hermiticity 0.000-0.000 rad/s; generator variation 0.000 rad/s
+PASS 9.593005137478197E-16 < 1.00000000000000E-10: symbolic, constant
+PASS 1.3877787807814457E-16 < 1.00000000000000E-12: symbolic, constant
+PASS 7.867635562172384E-16 < 1.00000000000000E-10: symbolic, constant
+PASS 1.3877787807814457E-16 < 1.00000000000000E-12: symbolic, constant
+PASS 9.107744309705531E-16 < 1.00000000000000E-10: symbolic, constant
+PASS 1.3877787807814457E-16 < 1.00000000000000E-12: symbolic, constant
+PASS 6.666847230723956E-17 < 1.00000000000000E-10: symbolic, constant
+PASS 1.3877787807814457E-16 < 1.00000000000000E-12: symbolic, constant
+PASS 0.0189498399431840 > 0.00100000000000000: symbolic, constant
+PASS 0.31168931777069664 > 0.0100000000000000: symbolic, constant
+PASS 2.220446049250313E-16 < 1.00000000000000E-10: symbolic, constant
+PASS 9.820227964141282E-12 < 0.00000100000000000000: symbolic, constant
+PASS 0.013854951619551205 < 0.1316098079280633: symbolic, constant
+SUMMARY: 13 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

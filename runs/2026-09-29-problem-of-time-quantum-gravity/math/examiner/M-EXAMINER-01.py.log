@@ -1,0 +1,26 @@
+# math_run log
+command:  python3 runs/2026-09-29-problem-of-time-quantum-gravity/math/examiner/M-EXAMINER-01.py
+started:  2026-09-29T23:46:48Z
+duration: 0.6 s
+exit:     0
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   12 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+PASS series of -GM/(R + h) + GM/R about h = 0 to order 3 == GM*h/R**2 - GM*h**2/R**3: symbolic: GM*h/R**2 - GM*h**2/R**3
+PASS h/R == h/R: symbolic
+PASS GM*h**2/R**3 == GM*h**2/R**3: symbolic
+PASS lim GM->0 of GM*h/(R**2*c**2) == 0: symbolic limit 0
+PASS 9.82 m/s^2 * 1 mm / c^2 == 1.093e-19: within 0.001; 1.09262e-19 vs 1.093e-19 (SI)
+PASS 9.82 m/s^2 * (1 mm)^2 / (6.371e6 m * c^2) == 1.715e-29: within 0.001; 1.71499e-29 vs 1.715e-29 (SI)
+PASS (1 mm) / (6.371e6 m) == 1.57e-10: within 0.003; 1.56961e-10 vs 1.57e-10 (SI)
+PASS (6.371e6 m) / (1 mm) == 6.4e9: within 0.01; 6.371e+09 vs 6.4e+09 (SI)
+PASS G * Mearth / (6.371e6 m)^2 == 9.82 m/s^2: within 0.002; 9.82025 vs 9.82 (SI)
+PASS 9.82 m/s^2 * 1 mm / c^2 has the dimension of dimensionless: dimensional analysis
+Rindler nonzero Riemann components: []
+PASS 0 == 0: symbolic
+PASS a*dh + 1 == a*dh + 1: symbolic
+SUMMARY: 12 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

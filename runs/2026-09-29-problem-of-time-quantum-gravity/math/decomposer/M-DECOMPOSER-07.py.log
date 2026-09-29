@@ -1,0 +1,17 @@
+# math_run log
+command:  python3 runs/2026-09-29-problem-of-time-quantum-gravity/math/decomposer/M-DECOMPOSER-07.py
+started:  2026-09-29T23:40:56Z
+duration: 0.3 s
+exit:     0
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   4 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+PASS G/(c^4 * 1 mm) * hbar * 2*pi*429 THz has the dimension of dimensionless: dimensional analysis
+PASS G/(c^4 * 1 mm) * hbar * 2*pi*429 THz == 2.35e-60: within 0.005; 2.34875e-60 vs 2.35e-60 (SI)
+PASS G/(c^4 * 1 m) * hbar * 2*pi*429 THz == 2.35e-63: within 0.005; 2.34875e-63 vs 2.35e-63 (SI)
+PASS 2*pi*429 THz * t_P * l_P / (1 mm) == 2.35e-60: within 0.005; 2.34875e-60 vs 2.35e-60 (SI)
+SUMMARY: 4 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

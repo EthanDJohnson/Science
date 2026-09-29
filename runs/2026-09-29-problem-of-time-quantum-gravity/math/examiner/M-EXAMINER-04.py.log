@@ -1,0 +1,20 @@
+# math_run log
+command:  python3 runs/2026-09-29-problem-of-time-quantum-gravity/math/examiner/M-EXAMINER-04.py
+started:  2026-09-29T23:46:49Z
+duration: 0.6 s
+exit:     0
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   7 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+PASS cos(dtau*omega)/2 + 1/2 == cos(dtau*omega/2)**2: symbolic
+PASS lim dtau->0 of cos(dtau*omega/2)**2 == 1: symbolic limit 1
+PASS 0 == 0: symbolic
+PASS pi * c^2 / (2*pi*429 THz * 9.82 m/s^2) == 10.7 m*s: within 0.005; 10.667 vs 10.7 (SI)
+PASS c^2 / (2 * 429 THz * 9.82 m/s^2) == 10.7 m*s: within 0.005; 10.667 vs 10.7 (SI)
+PASS pi * c^2 / (2*pi*9.192631770 GHz * 9.82 m/s^2) == 4.98e5 m*s: within 0.002; 497806 vs 498000 (SI)
+PASS c^2 / (429 THz * 9.82 m/s^2) has the dimension of m*s: dimensional analysis
+SUMMARY: 7 pass, 0 fail, 0 undecided
+
+--- stderr ---
+
