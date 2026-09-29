@@ -28,13 +28,13 @@ The design, and the review of the Gemini proposal it started from, are in [`docs
 
 ### Depth and cost
 
-| Depth | What runs | Agent runs | Rough cost at API list prices |
-|---|---|---|---|
-| `quick` | 3 researchers, 3 lenses, 1 refuter per candidate, Opus judge | ~16 | ~$10–25 |
-| `standard` | 4 researchers with source checks, 5 lenses, 1 refuter per candidate, Fable judge | ~23 | ~$20–40 |
-| `deep` | 5 researchers with checks, 6–7 lenses, 3 refuters per candidate with different angles, rebuttal round, Fable judge at max effort | ~40–50 | ~$50–100 |
+| Depth | What runs | Agent runs | Rough time | Rough cost at API list prices |
+|---|---|---|---|---|
+| `quick` | 3 researchers, 3 lenses, 1 refuter per candidate, Opus judge | ~16 | 1–2 hours | ~$20–50 |
+| `standard` | 4 researchers with source checks, 5 lenses, 1 refuter per candidate, Fable judge | ~23 | 1.5–3 hours | ~$30–70 |
+| `deep` | 5 researchers with checks, 6–7 lenses, 3 refuters per candidate with different angles, rebuttal round, Fable judge at max effort | ~40–50 | 3–5 hours | ~$80–200 |
 
-These costs are estimates, not measurements. On a subscription a run draws on your usage limits instead. `/workflows` shows live token counts, and you can stop a run there.
+Times exclude the two checkpoints where the pipeline waits for you. Both columns are extrapolated from one measured agent, not from a full run. The constraints lens took 409k tokens, 75 tool calls and 73 minutes in its smoke test (see [`examples/`](examples/smoke-test-constraints-lens/)), before its budget was tightened. On a subscription a run draws on your usage limits instead, and a deep run can use a large share of them. `/workflows` shows live token counts, and you can stop a run there.
 
 ### What you get
 
@@ -43,7 +43,7 @@ Everything lands in `runs/<slug>/`:
 | File | What it is |
 |---|---|
 | `brief.md` | The question made precise: definitions, admissible physics, premises to test |
-| `research/*.md` | Sourced claims per facet, each with a verbatim quote and access level; `*.check.md` holds the source-check verdicts |
+| `research/*.md` | Sourced claims per facet, each with a verbatim quote, or a labelled search summary when the source couldn't be opened; `*.check.md` holds the source-check verdicts |
 | `dossier.md` | The checked evidence base: established results, key numbers, contested points, constraints |
 | `analyses/*.md` | One file per lens |
 | `candidates.md` | The competing answers, each with its decisive test |
@@ -76,12 +76,20 @@ Everything lands in `runs/<slug>/`:
 
 The philosopher labels in the agent files are mnemonics; the methods are the content.
 
-**Physics tooling.** `gr_tensors.py` computes the stress-energy a metric requires, what observers measure, energy-condition scans and total energy on a slice. It is tested against Schwarzschild, FRW, Morris–Thorne and Alcubierre closed forms. `lit_search.py` queries INSPIRE-HEP and arXiv.
+**Physics tooling.** `gr_tensors.py` computes the stress-energy a metric requires and what every observer measures. It also covers:
+- energy-condition scans with Hawking–Ellis classification;
+- total, negative and positive energy on a slice;
+- curvature radii;
+- Ford–Roman quantum-inequality bounds and Lorentzian averaging;
+- horizon finding and Hawking temperatures;
+- high-precision rechecks of surprising signs.
+
+It is tested against Schwarzschild, FRW, Morris–Thorne, Painlevé–Gullstrand and Alcubierre closed forms. `lit_search.py` queries INSPIRE-HEP and arXiv and prints abstracts the agents can quote.
 
 ### Network access
 
 - **Local runs** have full web access.
-- **Claude Code on the web** may block literature sites under the environment's network policy. The preflight reports which sources are reachable. Blocked research falls back to search snippets, which the pipeline marks and weighs down.
+- **Claude Code on the web** may block literature sites under the environment's network policy. The preflight reports which sources are reachable. Blocked research falls back to INSPIRE abstracts and WebSearch summaries. Summaries are written by a model, not the source, so the pipeline labels them `search-summary` and weighs them down.
 
 **To open it up.** The Android app can't edit environments, so use claude.ai/code in a browser or the Desktop app.
 1. Click the cloud button showing the environment name (e.g. **Default**) above the message box.
@@ -149,14 +157,21 @@ python3 .claude/skills/conundrum/scripts/gr_tensors.py selftest           # GR t
   workflows/             conundrum-research.js  conundrum-analyze.js
   settings.json          permission allow-list
 docs/conundrum-skill-plan.md
+examples/                smoke-test output of one lens, with provenance notes
 runs/                    one directory per investigation
 ```
 
 ### Known limitations of v1
 
-- **Never run end to end yet.** It is tested offline: the tools, a mock-runtime run of both workflows, definition consistency, and one lens smoke-tested live. Your first real run is the real test, so start with `standard`.
+- **Never run end to end yet.** It is tested offline: the tools, a mock-runtime run of both workflows, and definition consistency. One lens was also smoke-tested live. Your first real run is the real test, so start with `standard`.
+- **What the smoke test fixed.** The constraints lens produced a sound, calculation-backed analysis (see [`examples/`](examples/smoke-test-constraints-lens/)). It also exposed problems, now fixed:
+  - a toolkit bug that passed the weak energy condition where it fails;
+  - quoting search summaries as if they were source text;
+  - an agent that could run out of turns before writing its file;
+  - an agent that killed its own shell with `pkill -f`.
+- **Cost and time are extrapolated** from that one agent until a full run is measured.
+- **Search summaries are weak evidence.** Where WebFetch can't reach papers, claims rest on INSPIRE abstracts and search summaries. The auditor flags report claims that rest only on summaries.
 - **Not yet in v1:**
   - pairwise judging in deep mode;
   - the persona-vs-neutral evaluation from plan §5.8;
   - a non-Claude critic such as GPT-6 Astra.
-- **Cost figures are estimates** until measured.

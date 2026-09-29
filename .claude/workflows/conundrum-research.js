@@ -22,6 +22,19 @@ const DEFAULT_FACETS = {
   deep: ['theory', 'quantitative', 'critiques', 'engineering', 'frontier'],
 }
 
+// Every file-writing agent reports back in this shape. An agent cut off by its turn
+// limit can't produce it, so a missing file shows up as a failure, not a silent gap.
+const WROTE = {
+  type: 'object',
+  required: ['ok', 'path', 'summary'],
+  properties: {
+    ok: { type: 'boolean' },
+    path: { type: 'string' },
+    summary: { type: 'string' },
+  },
+}
+const wrote = r => (r && r.ok ? r : null)
+
 if (!args || !args.slug) throw new Error('conundrum-research needs args.slug (the run directory under runs/)')
 const dir = `runs/${args.slug}`
 const depth = DEFAULT_FACETS[args.depth] ? args.depth : 'standard'
@@ -38,13 +51,13 @@ const results = await pipeline(facets,
   f => agent(
     `Run directory: ${dir}. Your facet: ${f}. Mandate: ${FACETS[f]}. ` +
     `Read ${dir}/brief.md, then write ${dir}/research/${f}.md.`,
-    { agentType: 'researcher', label: `research:${f}`, phase: 'Research' })
-    .then(text => (text == null ? null : { facet: f, research: text, check: null })),
+    { agentType: 'researcher', label: `research:${f}`, phase: 'Research', schema: WROTE })
+    .then(r => (wrote(r) ? { facet: f, research: r.summary, check: null } : null)),
   (prev, f) => (prev == null || !checking) ? prev : agent(
     `Run directory: ${dir}. Check the load-bearing claims in ${dir}/research/${f}.md ` +
     `and write ${dir}/research/${f}.check.md.`,
-    { agentType: 'source-checker', label: `check:${f}`, phase: 'Check' })
-    .then(text => ({ ...prev, check: text })))
+    { agentType: 'source-checker', label: `check:${f}`, phase: 'Check', schema: WROTE })
+    .then(r => ({ ...prev, check: wrote(r) ? r.summary : null })))
 
 const done = results.filter(Boolean)
 const missing = facets.filter(f => !done.some(r => r.facet === f))
@@ -57,11 +70,12 @@ if (missing.length) log(`facets with no research notes: ${missing.join(', ')}`)
 if (checking && unchecked.length) log(`facets whose source check failed: ${unchecked.join(', ')}`)
 
 phase('Dossier')
-const dossierSummary = await agent(
+const dossier = wrote(await agent(
   `Run directory: ${dir}. Compile ${dir}/research/ into ${dir}/dossier.md.` +
   (missing.length ? ` These facets failed and have no notes: ${missing.join(', ')}.` : '') +
   (unchecked.length ? ` These facets have no source check: ${unchecked.join(', ')}.` : ''),
-  { agentType: 'dossier-compiler', label: 'dossier' })
+  { agentType: 'dossier-compiler', label: 'dossier', schema: WROTE }))
+const dossierSummary = dossier ? dossier.summary : null
 
 return {
   ok: dossierSummary != null,

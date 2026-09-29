@@ -50,6 +50,19 @@ const VERDICT = {
   },
 }
 
+// Every file-writing agent reports back in this shape. An agent cut off by its turn
+// limit can't produce it, so a missing file shows up as a failure, not a silent gap.
+const WROTE = {
+  type: 'object',
+  required: ['ok', 'path', 'summary'],
+  properties: {
+    ok: { type: 'boolean' },
+    path: { type: 'string' },
+    summary: { type: 'string' },
+  },
+}
+const wrote = r => (r && r.ok ? r : null)
+
 if (!args || !args.slug) throw new Error('conundrum-analyze needs args.slug (the run directory under runs/)')
 const dir = `runs/${args.slug}`
 const depth = ['quick', 'standard', 'deep'].includes(args.depth) ? args.depth : 'standard'
@@ -67,7 +80,7 @@ phase('Lenses')
 const analyses = await parallel(lenses.map(l => () => agent(
   `Run directory: ${dir}. Read ${dir}/brief.md and ${dir}/dossier.md, then write ${dir}/analyses/${l}.md. ` +
   `Put any calculation scripts in ${dir}/calc/.`,
-  { agentType: `lens-${l}`, label: l, phase: 'Lenses' })))
+  { agentType: `lens-${l}`, label: l, phase: 'Lenses', schema: WROTE }).then(wrote)))
 const lensesDone = lenses.filter((_, i) => analyses[i] != null)
 const lensesFailed = lenses.filter((_, i) => analyses[i] == null)
 if (lensesFailed.length) log(`lenses that failed: ${lensesFailed.join(', ')}`)
@@ -130,31 +143,33 @@ if (depth === 'deep' && alive.length >= 2) {
   const answers = await parallel(alive.map(id => () => agent(
     `Run directory: ${dir}. Your candidate: ${id}. Rivals: ${alive.filter(x => x !== id).join(', ')}. ` +
     `Answer the verdicts in ${dir}/verdicts/${id}-*.md and write ${dir}/cruxes/${id}.md.`,
-    { agentType: 'crux-advocate', label: `crux:${id}`, phase: 'Crux' })))
+    { agentType: 'crux-advocate', label: `crux:${id}`, phase: 'Crux', schema: WROTE }).then(wrote)))
   alive.forEach((id, i) => { if (answers[i] != null) cruxed.push(id) })
 }
 
 // ----- Judge: Fable at high by default; quick runs use Opus, deep runs raise effort to max.
 phase('Judge')
-const judgeOpts = { agentType: 'adjudicator', label: 'judge', phase: 'Judge' }
+const judgeOpts = { agentType: 'adjudicator', label: 'judge', phase: 'Judge', schema: WROTE }
 if (depth === 'quick') Object.assign(judgeOpts, { model: 'opus', effort: 'high' })
 if (depth === 'deep') judgeOpts.effort = 'max'
-const bottomLine = await agent(
+const judged = wrote(await agent(
   `Run directory: ${dir}. Adjudicate from ${dir}/brief.md, ${dir}/dossier.md, ${dir}/candidates.md and ${dir}/verdicts/` +
   (cruxed.length ? ` and ${dir}/cruxes/` : '') + `. Refuter votes: ${tally}.` +
   (unexamined.length ? ` Unexamined (refuters failed): ${unexamined.join(', ')}.` : '') +
   (trimmed.length ? ` Not falsified (over the slate cap): ${trimmed.join(', ')}.` : '') +
   ` Write ${dir}/report.md.`,
-  judgeOpts)
+  judgeOpts))
+const bottomLine = judged ? judged.summary : null
 if (bottomLine == null) {
   return { ok: false, reason: 'adjudicator failed', dir, candidates, alive, eliminated, unexamined }
 }
 
 // ----- Audit
 phase('Audit')
-const auditSummary = await agent(
+const audited = wrote(await agent(
   `Run directory: ${dir}. Audit ${dir}/report.md against the run's evidence and write ${dir}/audit.md.`,
-  { agentType: 'report-auditor', label: 'audit', phase: 'Audit' })
+  { agentType: 'report-auditor', label: 'audit', phase: 'Audit', schema: WROTE }))
+const auditSummary = audited ? audited.summary : null
 
 return {
   ok: true,

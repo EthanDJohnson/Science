@@ -4,7 +4,7 @@
 Queries INSPIRE-HEP (citation counts, journal refs; best for gr-qc/hep-th) and the
 arXiv API, and prints compact records a researcher can cite. When a source is
 unreachable (for example under a restrictive network policy) it says so plainly,
-so the researcher can fall back to WebSearch and mark evidence as snippet-level.
+so the researcher can fall back to WebSearch and mark evidence as ACCESS: search-summary.
 
 Usage (from the project root):
     python3 .claude/skills/conundrum/scripts/lit_search.py "alcubierre negative energy"
@@ -191,7 +191,7 @@ def main(argv=None) -> int:
         try:
             records = run()
         except SourceUnavailable as exc:
-            print(f"UNAVAILABLE: {name} ({exc}). Fall back to WebSearch and mark ACCESS=snippet.")
+            print(f"UNAVAILABLE: {name} ({exc}). Fall back to WebSearch and mark ACCESS: search-summary.")
             continue
         except (ValueError, ET.ParseError) as exc:
             print(f"UNAVAILABLE: {name} returned an unreadable response ({exc}).")

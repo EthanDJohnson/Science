@@ -76,8 +76,8 @@ def main() -> int:
     if missing:
         print(f"ACTION: install required packages: pip install {' '.join(missing)}")
     if len(blocked) == len(sources):
-        print("NOTE: no literature source is reachable. Research will rely on WebSearch snippets; "
-              "every claim will be marked ACCESS=snippet and weighted down.")
+        print("NOTE: no literature source is reachable. Research will rely on search summaries; "
+              "such claims are marked ACCESS: search-summary and weighted down.")
     elif blocked:
         print(f"NOTE: blocked: {', '.join(blocked)}. Researchers will use the reachable sources and WebSearch.")
     if not missing and not blocked:

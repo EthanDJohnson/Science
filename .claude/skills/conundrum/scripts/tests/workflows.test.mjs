@@ -1,6 +1,6 @@
 // Offline tests for the two conundrum workflows. A mock runtime stands in for the
 // Workflow tool: agent() calls are recorded and answered by a per-test handler.
-// Run from the project root:  node --test .claude/skills/conundrum/scripts/tests/
+// Run from the project root:  node --test .claude/skills/conundrum/scripts/tests/workflows.test.mjs
 import { test } from 'node:test'
 import assert from 'node:assert/strict'
 import { readFileSync } from 'node:fs'
@@ -47,10 +47,13 @@ async function run(name, args, handler) {
 
 const byType = (calls, type) => calls.filter(c => c.opts.agentType === type)
 const typeOf = c => c.opts.agentType
+// What a file-writing agent returns once its file is written (the WROTE schema).
+const wroteOk = c => ({ ok: true, path: `runs/s/${c.opts.label}.md`, summary: `${c.opts.label} done` })
+const WROTE_FIELDS = ['ok', 'path', 'summary']
 
 // ---------------------------------------------------------------- research workflow
 test('research, quick: three facets, no source checks, one compiler', async () => {
-  const { result, calls } = await run('conundrum-research', { slug: 's', depth: 'quick' }, () => 'ok')
+  const { result, calls } = await run('conundrum-research', { slug: 's', depth: 'quick' }, wroteOk)
   assert.deepEqual(byType(calls, 'researcher').map(c => c.opts.label),
     ['research:theory', 'research:quantitative', 'research:critiques'])
   assert.equal(byType(calls, 'source-checker').length, 0)
@@ -61,7 +64,7 @@ test('research, quick: three facets, no source checks, one compiler', async () =
 })
 
 test('research, standard: a failed researcher skips its checker and is reported missing', async () => {
-  const handler = c => (c.opts.label === 'research:engineering' ? null : 'ok')
+  const handler = c => (c.opts.label === 'research:engineering' ? null : wroteOk(c))
   const { result, calls, logs } = await run('conundrum-research', { slug: 's', depth: 'standard' }, handler)
   assert.equal(byType(calls, 'researcher').length, 4)
   assert.deepEqual(byType(calls, 'source-checker').map(c => c.opts.label).sort(),
@@ -73,7 +76,7 @@ test('research, standard: a failed researcher skips its checker and is reported 
 })
 
 test('research, deep: five facets and phases match meta', async () => {
-  const { result, calls, meta } = await run('conundrum-research', { slug: 's', depth: 'deep' }, () => 'ok')
+  const { result, calls, meta } = await run('conundrum-research', { slug: 's', depth: 'deep' }, wroteOk)
   assert.equal(byType(calls, 'researcher').length, 5)
   assert.equal(byType(calls, 'source-checker').length, 5)
   assert.equal(result.ok, true)
@@ -83,16 +86,48 @@ test('research, deep: five facets and phases match meta', async () => {
 
 test('research: every researcher failing returns ok:false without compiling', async () => {
   const { result, calls } = await run('conundrum-research', { slug: 's' }, c =>
-    (typeOf(c) === 'researcher' ? null : 'ok'))
+    (typeOf(c) === 'researcher' ? null : wroteOk(c)))
   assert.equal(result.ok, false)
   assert.equal(byType(calls, 'dossier-compiler').length, 0)
 })
 
+test('research: ok:false and unstructured returns count as failures, not silent gaps', async () => {
+  const handler = c => {
+    if (c.opts.label === 'research:theory') return { ok: false, path: '', summary: 'could not write' }
+    if (c.opts.label === 'research:quantitative') return 'I ran out of turns'
+    if (c.opts.label === 'check:critiques') return { ok: false, path: '', summary: 'no file' }
+    return wroteOk(c)
+  }
+  const { result, calls } = await run('conundrum-research', { slug: 's', depth: 'standard' }, handler)
+  assert.deepEqual(result.missing, ['theory', 'quantitative'])
+  assert.deepEqual(result.unchecked, ['critiques'])
+  assert.deepEqual(byType(calls, 'source-checker').map(c => c.opts.label).sort(), ['check:critiques', 'check:engineering'])
+  const compile = byType(calls, 'dossier-compiler')[0].prompt
+  assert.match(compile, /failed and have no notes: theory, quantitative/)
+  assert.match(compile, /no source check: critiques/)
+  assert.equal(result.ok, true)
+})
+
+test('research: summaries flow into the result; a failed compiler returns ok:false', async () => {
+  const { result } = await run('conundrum-research', { slug: 's', depth: 'quick' }, wroteOk)
+  assert.equal(result.researchSummaries.theory, 'research:theory done')
+  assert.equal(result.dossierSummary, 'dossier done')
+  const failed = await run('conundrum-research', { slug: 's', depth: 'quick' }, c =>
+    (typeOf(c) === 'dossier-compiler' ? { ok: false, path: '', summary: '' } : wroteOk(c)))
+  assert.equal(failed.result.ok, false)
+  assert.equal(failed.result.reason, 'dossier compiler failed')
+})
+
+test('research: every agent is asked for the {ok, path, summary} shape', async () => {
+  const { calls } = await run('conundrum-research', { slug: 's', depth: 'deep' }, wroteOk)
+  for (const c of calls) assert.deepEqual(c.opts.schema?.required, WROTE_FIELDS, c.opts.label)
+})
+
 test('research: unknown facets are ignored loudly; missing slug throws', async () => {
-  const { calls, logs } = await run('conundrum-research', { slug: 's', facets: ['theory', 'astrology'] }, () => 'ok')
+  const { calls, logs } = await run('conundrum-research', { slug: 's', facets: ['theory', 'astrology'] }, wroteOk)
   assert.equal(byType(calls, 'researcher').length, 1)
   assert.ok(logs.some(l => l.includes('astrology')))
-  await assert.rejects(run('conundrum-research', {}, () => 'ok'), /args.slug/)
+  await assert.rejects(run('conundrum-research', {}, wroteOk), /args.slug/)
 })
 
 // ---------------------------------------------------------------- analyze workflow
@@ -112,7 +147,7 @@ function analyzeHandler({ slate = SLATE5, verdict = () => ({ verdict: 'survives'
     switch (typeOf(c)) {
       case 'candidate-builder': return slate
       case 'falsifier': return verdict(c)
-      default: return 'ok'
+      default: return wroteOk(c)
     }
   }
 }
@@ -223,6 +258,48 @@ test('analyze: unknown lenses are ignored loudly; phases match meta', async () =
   assert.ok(logs.some(l => l.includes('numerology')))
   const titles = new Set(meta.phases.map(p => p.title))
   for (const c of calls) assert.ok(titles.has(c.phase), `phase ${c.phase} missing from meta`)
+})
+
+test('analyze: a lens returning ok:false is reported failed and left out of the slate prompt', async () => {
+  const handler = analyzeHandler()
+  const { result, calls } = await run('conundrum-analyze', { slug: 's', type: 'feasibility' }, c =>
+    (typeOf(c) === 'lens-engineer' ? { ok: false, path: '', summary: 'cut off' } : handler(c)))
+  assert.deepEqual(result.lensesFailed, ['engineer'])
+  assert.match(byType(calls, 'candidate-builder')[0].prompt, /completed lenses: decomposer, constraints, examiner, mechanist\)/)
+  assert.equal(result.ok, true)
+})
+
+test('analyze: a failed judge returns ok:false and skips the audit', async () => {
+  const fail = c => typeOf(c) === 'adjudicator'
+  const { result, calls } = await run('conundrum-analyze', { slug: 's' }, analyzeHandler({ fail }))
+  assert.equal(result.ok, false)
+  assert.equal(result.reason, 'adjudicator failed')
+  assert.equal(byType(calls, 'report-auditor').length, 0)
+})
+
+test('analyze: a failed audit still returns the report, with audit: null', async () => {
+  const fail = c => typeOf(c) === 'report-auditor'
+  const { result } = await run('conundrum-analyze', { slug: 's' }, analyzeHandler({ fail }))
+  assert.equal(result.ok, true)
+  assert.equal(result.audit, null)
+  assert.equal(result.bottomLine, 'judge done')
+})
+
+test('analyze, deep: a crux advocate that fails is left out of cruxed', async () => {
+  const handler = analyzeHandler()
+  const { result } = await run('conundrum-analyze', { slug: 's', depth: 'deep' }, c =>
+    (c.opts.label === 'crux:C2' ? { ok: false, path: '', summary: '' } : handler(c)))
+  assert.deepEqual(result.cruxed, ['C1', 'C3', 'C4', 'C5'])
+})
+
+test('analyze: file-writing agents get the {ok, path, summary} shape; slate and verdicts keep theirs', async () => {
+  const { calls } = await run('conundrum-analyze', { slug: 's', depth: 'deep' }, analyzeHandler())
+  for (const c of calls) {
+    const required = c.opts.schema?.required
+    if (typeOf(c) === 'candidate-builder') assert.deepEqual(required, ['candidates'])
+    else if (typeOf(c) === 'falsifier') assert.deepEqual(required, ['verdict', 'basis'])
+    else assert.deepEqual(required, WROTE_FIELDS, c.opts.label)
+  }
 })
 
 test('workflow scripts avoid APIs the runtime forbids', () => {

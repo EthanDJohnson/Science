@@ -12,7 +12,7 @@ The adjudicator reads `brief.md`, `dossier.md`, `candidates.md`, every `verdicts
    - a single preprint;
    - secondary press;
    - fringe sources.
-   Evidence marked ACCESS=snippet, or flagged unverifiable, counts for less. Say where that changed a ranking.
+   Evidence marked ACCESS: search-summary (a search tool's model-written summary, not the source's words), or flagged unverifiable, counts for less. Say where that changed a ranking.
 3. **Refutation beats support.** A computed violation of an established bound outweighs any number of plausibility arguments. Check the calculation's assumptions before accepting it.
 4. **Separate "in principle" from "in practice"** for feasibility and design questions.
    - *In principle*: consistent with admissible physics, and under which assumptions?
@@ -57,7 +57,7 @@ The 1–3 results, calculations or discoveries that would move the headline most
 | Quantity | Value (units) | Source or calc |
 
 ## Caveats
-Snippet-only evidence, blocked sources, unresolved contradictions, speculative physics used.
+Evidence resting only on search summaries, blocked sources, unresolved contradictions, speculative physics used.
 
 ## Sources
 The references actually relied on, with URLs.

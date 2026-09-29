@@ -1,6 +1,6 @@
 ---
 name: conundrum
-description: Multi-agent investigation of a hard physics or engineering question (feasibility, design, mechanism or anomaly). Partitioned literature research, a source-checked dossier, independent method lenses, competing candidate answers, calculation-grounded falsification, and a neutral adjudicated report. Expensive (roughly 10 to 45 agent runs); runs only when invoked as /conundrum.
+description: Multi-agent investigation of a hard physics or engineering question (feasibility, design, mechanism or anomaly). Partitioned literature research, a source-checked dossier, independent method lenses, competing candidate answers, calculation-grounded falsification, and a neutral adjudicated report. Expensive (roughly 15 to 50 agent runs over 1 to 5 hours); runs only when invoked as /conundrum.
 argument-hint: "[quick|standard|deep] <question>"
 disable-model-invocation: true
 ---
@@ -22,10 +22,10 @@ Reference files, all in `.claude/skills/conundrum/references/`:
 
 Run `python3 .claude/skills/conundrum/scripts/check_env.py`.
 - **Required package missing:** ask whether to install it (`pip install sympy numpy`) before continuing. The physics calculations depend on it.
-- **Literature sources blocked:** tell the user in one line that research will lean on search snippets, which the pipeline marks and weighs down. Continue unless they want to fix network access first.
+- **Literature sources blocked:** tell the user in one line that research will lean on search summaries and INSPIRE abstracts, which the pipeline marks and weighs down. Continue unless they want to fix network access first.
 
 Then check that WebFetch itself can read papers: WebFetch `https://arxiv.org/abs/gr-qc/0009013` and ask for the title.
-- **WebFetch fails with EGRESS_BLOCKED while `check_env.py` shows arxiv.org reachable:** the environment's network settings changed after this session started. WebFetch picks them up only in a new session. Tell the user so. They can continue, with research leaning on `lit_search` abstracts and search snippets, or start a new session first.
+- **WebFetch fails with EGRESS_BLOCKED while `check_env.py` shows arxiv.org reachable:** the environment's network settings changed after this session started. WebFetch picks them up only in a new session. Tell the user so. They can continue, with research leaning on `lit_search` abstracts and search summaries, or start a new session first.
 
 ## 1. Frame the question with the user
 
@@ -39,13 +39,13 @@ Then check that WebFetch itself can read papers: WebFetch `https://arxiv.org/abs
    - **Say what a useful answer looks like.**
 4. **Get the brief confirmed.** Show the user the question made precise, the premises to test, what counts as an answer, and the depth with its expected size. Ask them to confirm or correct it, and apply any corrections to `brief.md`.
 
-   | depth | what runs | agent runs | rough cost at API list prices |
-   |---|---|---|---|
-   | quick | 3 researchers, no source checks, 3 lenses, 1 refuter per candidate, Opus judge | ~16 | ~$10–25 |
-   | standard | 4 researchers + checks, 5 lenses, 1 refuter per candidate, Fable judge | ~23 | ~$20–40 |
-   | deep | 5 researchers + checks, 6–7 lenses, 3 refuters per candidate, crux round, Fable judge at max | ~40–50 | ~$50–100 |
+   | depth | what runs | agent runs | rough time | rough cost at API list prices |
+   |---|---|---|---|---|
+   | quick | 3 researchers, no source checks, 3 lenses, 1 refuter per candidate, Opus judge | ~16 | 1–2 hours | ~$20–50 |
+   | standard | 4 researchers + checks, 5 lenses, 1 refuter per candidate, Fable judge | ~23 | 1.5–3 hours | ~$30–70 |
+   | deep | 5 researchers + checks, 6–7 lenses, 3 refuters per candidate, crux round, Fable judge at max | ~40–50 | 3–5 hours | ~$80–200 |
 
-   These are estimates. On a subscription the run draws on usage limits instead, and `/workflows` shows real token counts as it runs.
+   Say that these are extrapolated from one measured agent, not a full run, and that times exclude the checkpoints. On a subscription the run draws on usage limits instead, and `/workflows` shows real token counts as it runs.
 
 ## 2. Research
 
@@ -58,7 +58,7 @@ Read `runs/<slug>/dossier.md` and summarize it in 12 lines or fewer:
 - the key numbers;
 - contested points;
 - binding constraints;
-- the snippet-only share;
+- the share of claims resting only on search summaries;
 - anything the source checks dropped or corrected.
 
 Then:

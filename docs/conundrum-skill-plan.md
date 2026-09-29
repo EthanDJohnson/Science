@@ -12,6 +12,21 @@
 > - **Deep mode's pairwise judging is deferred to v2.**
 > - **Agent counts in §5.7 are corrected:** about 16, 23 and 40–50.
 > - **Tested physics tooling is included:** `gr_tensors.py`, `lit_search.py` and `check_env.py`.
+>
+> **What the constraints-lens smoke test changed** (output in [`examples/`](../examples/smoke-test-constraints-lens/)):
+>
+> - **The `snippet` access level became `search-summary`.** WebSearch returns text a model wrote, not the source's words, so such claims carry a `SUMMARY:` line and never a `QUOTE:`.
+> - **Every file-writing agent returns `{ok, path, summary}`.** An agent cut off by its turn limit then shows up as a failure, not a silent gap.
+> - **Agents write a first version early and improve it with Edit.** They also get call budgets, and turn limits with headroom above them.
+> - **Calculation agents get rules for long runs:** the 10-minute Bash limit, background runs with marker files, and no `pkill -f`.
+> - **The GR toolkit gained:**
+>   - Hawking–Ellis classification, which fixes a false weak-energy-condition pass;
+>   - a closed-form 3+1 inverse metric;
+>   - Riemann and curvature radii;
+>   - quantum-inequality helpers;
+>   - horizon finding;
+>   - high-precision rechecks.
+> - **Costs in §5.7 are re-estimated** from the smoke test's measured usage.
 
 A second opinion on a Gemini conversation about (1) Harb et al.'s "philosophy agents" chemistry paper, (2) whether philosophy-style system prompts help frontier models, and (3) how to build a multi-agent "scientific conundrum" skill in Claude Code. Sections 1–4 check Gemini's claims; section 5 is my plan.
 
@@ -522,13 +537,13 @@ return { report: `${dir}/report.md`, alive }
 
 ### 5.7 Depth tiers and cost
 
-| Depth | What changes | Agents per run | Rough cost at API list prices |
-|---|---|---|---|
-| quick | 3 facets, no source check, 3 lenses, 1 refuter per candidate, no crux, Opus judge at `high` | ~16 | ~$10–25 |
-| standard | 4 facets with checks, 5 lenses, 1 refuter per candidate, no crux, Fable judge at `high` | ~23 | ~$20–40 |
-| deep | 5 facets with checks, 6–7 lenses, 3 refuters per candidate, crux round, Fable judge at `max` (pairwise judging: v2) | ~40–50 | ~$50–100 |
+| Depth | What changes | Agents per run | Rough time | Rough cost at API list prices |
+|---|---|---|---|---|
+| quick | 3 facets, no source check, 3 lenses, 1 refuter per candidate, no crux, Opus judge at `high` | ~16 | 1–2 hours | ~$20–50 |
+| standard | 4 facets with checks, 5 lenses, 1 refuter per candidate, no crux, Fable judge at `high` | ~23 | 1.5–3 hours | ~$30–70 |
+| deep | 5 facets with checks, 6–7 lenses, 3 refuters per candidate, crux round, Fable judge at `max` (pairwise judging: v2) | ~40–50 | 3–5 hours | ~$80–200 |
 
-The costs are my estimates, not measurements, and could easily be off by 2×. Run one standard pilot and read the per-agent token counts in `/workflows` before trusting them.
+My first estimates ($10–25, $20–40 and $50–100) were about half of these. The smoke test measured one calculation-heavy lens at 409k tokens, 75 tool calls and 73 minutes, before its call budget was added. These figures scale that up, and they're still not from a full run. Run one standard pilot and read the per-agent token counts in `/workflows` before trusting them.
 
 - **On a subscription**, runs draw down your usage window instead. Workflows pause at a usage limit and resume after the reset.
 - **A deep analyze run can cross the 25-agent "Large workflow" warning.** If you run deep often, set the Dynamic workflow size to `large` in `/config`, which raises the warning threshold to 50.
@@ -570,7 +585,7 @@ The costs are my estimates, not measurements, and could easily be off by 2×. Ru
 - **Which judge:** Fable 5.1 at `high`, or Opus 5.5 at `max`.
 - **Where you run it.**
   - The local CLI has full web access.
-  - This Claude Code on the web environment blocks doi.org, osti.gov and iopscience.iop.org. Research there falls back to search snippets unless you widen network access.
+  - Claude Code on the web blocks most literature sites under its default network policy. Research there falls back to INSPIRE abstracts and search summaries unless you allow those sites (the README lists the domains).
 
 ---
 

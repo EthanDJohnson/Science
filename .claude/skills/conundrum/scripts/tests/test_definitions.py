@@ -68,6 +68,37 @@ class AgentDefinitions(unittest.TestCase):
         for stem in ("candidate-builder", "falsifier", "dossier-compiler"):
             self.assertEqual(agents[stem][0]["model"], "opus", stem)
 
+    def test_every_agent_writes_early_and_reports_back(self):
+        # Smoke-test fixes: a turn-capped agent that never wrote its file lost all its work,
+        # and a WROTE agent that ends without {ok, path, summary} counts as failed.
+        for stem, (fm, body) in pipeline_agents().items():
+            with self.subTest(agent=stem):
+                rules = body.partition("## Ground rules")[2]
+                self.assertTrue(rules, "no Ground rules section")
+                budget = re.search(r"aim for about (\d+)–(\d+) tool calls.*?by about call (\d+)", rules)
+                self.assertIsNotNone(budget, "no write-early budget line")
+                lo, hi, first = map(int, budget.groups())
+                self.assertLess(first, hi)
+                self.assertLess(hi, int(fm["maxTurns"]), "maxTurns leaves no headroom over the budget")
+                self.assertIn("Edit", fm["tools"], "told to improve with Edit but lacks the tool")
+                self.assertIn("Finish by returning", rules)
+                if stem not in ("candidate-builder", "falsifier"):
+                    self.assertIn("`ok`", rules)
+                    self.assertIn("`summary`", rules)
+
+    def test_calculation_and_citation_safety_rules(self):
+        for stem, (fm, body) in pipeline_agents().items():
+            tools = {t.strip() for t in fm["tools"].split(",")}
+            with self.subTest(agent=stem):
+                if "calc/" in body:
+                    self.assertIn("10 minutes", body)
+                    self.assertIn("pkill -f", body)
+                if "WebSearch" in tools:
+                    self.assertIn("summar", body.partition("## Ground rules")[2],
+                              "WebSearch agents must be told results are summaries, not quotes")
+                if "gr_tensors.py" in body and "calc/" in body:
+                    self.assertIn("run_in_background", body)
+
     def test_referenced_repo_files_exist(self):
         pattern = re.compile(r"\.claude/skills/conundrum/[\w./-]+\.(?:md|py)")
         sources = [p for p in AGENTS.glob("*.md")] + [SKILL / "SKILL.md"] + list((SKILL / "references").glob("*.md"))
