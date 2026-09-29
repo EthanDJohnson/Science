@@ -166,7 +166,8 @@ def ground_rules(name: str, tools: set[str]) -> str:
         lines.append(f"- **First draft:** write a complete first draft of `{s['target']}` by about call {s['by']}, "
                      "then improve it with Edit. Never finish without it written.")
     lines.append("- **Resuming:** " + RESUME)
-    lines.append("- **Paths:** work from the project root with relative paths and never `cd`.")
+    lines.append("- **Paths:** work from the project root with relative paths and never `cd`. Read only your own "
+                 "run's folder and the toolkit, never another run's folder.")
     if "Bash" in tools:
         lines.append(SHELL)
     many = "Bash" in tools and name not in ("researcher", "source-checker", "toolsmith")

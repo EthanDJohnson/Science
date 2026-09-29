@@ -13,6 +13,7 @@ The adjudicator reads `brief.md`, `dossier.md`, `candidates.md`, every `verdicts
    - secondary press;
    - fringe sources.
    Evidence marked ACCESS: search-summary (a search tool's model-written summary, not the source's words), or flagged unverifiable, counts for less. Say where that changed a ranking.
+   Evidence carried from an earlier run has a `PRIOR` line. A re-verified claim counts like any other; one marked `not re-verified` counts as a search summary. Where newer evidence supersedes a carried claim, the newer one wins; say so.
 3. **Refutation beats support.** A computed violation of an established bound outweighs any number of plausibility arguments. Check the calculation's assumptions before accepting it.
 4. **Separate "in principle" from "in practice"** for feasibility and design questions.
    - *In principle*: consistent with admissible physics, and under which assumptions?

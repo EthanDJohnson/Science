@@ -20,6 +20,7 @@ Every calculator has a `selftest()` against independent reference values. The te
 | `lit_search.py` | INSPIRE-HEP, arXiv, Crossref and Semantic Scholar search, printing abstracts that can be quoted |
 | `fetch_text.py` | A source's own words from a PDF or web page, around a phrase, for verbatim quotes |
 | `check_env.py` | Preflight: packages, reachable sources, and how many agents run at once |
+| `prior_runs.py` | Earlier runs related to a question; importing their evidence (never their conclusions) into a new run; each run's record of status, trust and notes |
 
 ## Adding a calculator
 

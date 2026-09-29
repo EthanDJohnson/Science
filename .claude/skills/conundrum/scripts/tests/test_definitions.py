@@ -197,6 +197,21 @@ class SkillAndSettings(unittest.TestCase):
         self.assertTrue((CLAUDE / "hooks" / "guard_pipeline.py").exists())
         self.assertIn("git status --short -- .claude", (SKILL / "SKILL.md").read_text())
 
+    def test_earlier_runs_are_wired_through(self):
+        skill = (SKILL / "SKILL.md").read_text()
+        for step in ("prior_runs.py list", "prior_runs.py import", "prior_runs.py record", "prior_runs.py mark",
+                     "## Prior runs", "What changed since", "prior}"):
+            self.assertIn(step, skill)
+        self.assertIn("prior?", re.search(r"whenToUse: '([^']*)'", workflow_source("conundrum-research")).group(1))
+        self.assertIn("PROVENANCE.md", (AGENTS / "researcher.md").read_text())
+        self.assertIn("PRIOR", (AGENTS / "dossier-compiler.md").read_text())
+        schemas = (SKILL / "references" / "schemas.md").read_text()
+        for part in ("## Prior runs", "PRIOR: <run>", "## run.json", "Read only this run"):
+            self.assertIn(part, schemas)
+        self.assertIn("PRIOR", (SKILL / "references" / "rubric.md").read_text())
+        for path in AGENTS.glob("*.md"):
+            self.assertIn("never another run's folder", path.read_text(), path.stem)
+
     def test_settings_allow_what_the_agents_need(self):
         allow = json.loads((CLAUDE / "settings.json").read_text())["permissions"]["allow"]
         for rule in ("WebSearch", "WebFetch", "Bash(python3 runs/*)",

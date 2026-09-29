@@ -139,6 +139,28 @@ Everything lands in `runs/<slug>/`:
 | `report.md` | The ranked answers with credences: in principle vs. in practice, orders-of-magnitude gaps, what would change the verdict |
 | `audit.md` | Every claim in the report traced to the evidence |
 | `calc/*.py` | Every calculation the agents ran, so you can rerun them |
+| `prior/<run>/` | Evidence copied from earlier runs you approved, with a `PROVENANCE.md` saying how it may be used |
+| `run.json` | The run's record for later runs: date, question, status, bottom line, and your notes on how far to trust it |
+
+### Building on earlier runs
+
+At framing, Claude looks for earlier runs related to your question and proposes how to treat each one:
+
+| Mode | What the new run gets | Default for |
+|---|---|---|
+| **ignore** | Nothing; agents never see it | Runs you marked distrusted, and independent re-checks |
+| **leads** | Its research notes and dossier, as pointers to sources. Nothing counts until a researcher finds and quotes it again | Runs that never finished or were never source-checked, and older runs in fast-moving fields |
+| **update** | Also its calculation scripts. Claims that re-verify carry over, labelled with the run and its date, and researchers look for newer work | Complete, source-checked runs |
+
+Overrule it in plain words: "I don't trust that research, get it fresh", or "that's six months old in a fast-moving field, discount it".
+
+**Conclusions never carry over.** An earlier run's analyses, candidates, verdicts, report and audit stay behind, so the lenses and the judge reason from the new evidence alone. After the new report is written, Claude compares the two and adds a "What changed since <run>" section.
+
+**The pipeline remembers what you decide:**
+- Each finished run gets a `run.json` record.
+- Say you don't trust a run, and it is marked distrusted; later runs ignore it without asking. By hand: `python3 .claude/skills/conundrum/scripts/prior_runs.py mark <run> --trust distrusted --note "<why>"`, and `--trust ok` undoes it.
+- Caveats about a run, such as "the plot values were read by eye", are kept as notes and shown to the researchers who use it.
+- A newer run of the same question marks the older one superseded, so framing offers the latest.
 
 ### How it works
 
@@ -278,7 +300,7 @@ python3 .claude/skills/conundrum/scripts/rocket_tools.py selftest         # rock
     SKILL.md
     references/          lenses.md  schemas.md  rubric.md  tools.md (calculator catalog)
     scripts/             gr_tensors.py  stats_tools.py  unit_tools.py  rocket_tools.py
-                         lit_search.py  fetch_text.py  check_env.py  tests/
+                         lit_search.py  fetch_text.py  check_env.py  prior_runs.py  tests/
   agents/                18 role definitions (model, effort, tools, method)
   workflows/             conundrum-research.js  conundrum-analyze.js
   hooks/                 turn_budget.py (counts each agent's turns and tool calls)
@@ -301,6 +323,7 @@ runs/                    one directory per investigation
   - an agent that killed its own shell with `pkill -f`.
 - **Cost and time are extrapolated** from two measured agents until a full run is measured with `dev/run_costs.py`.
 - **A turn-capped workflow agent's return value is undocumented.** The scripts treat a missing or `ok: false` result as a failure. Check `/workflows` on the first real run, and read the run's `journal.jsonl` if a result looks empty.
+- **Agents are told, not forced, to stay in their own run's folder.** Material from earlier runs reaches them through `prior/`, but no hook stops an agent from opening another run's files. The dossier's source notes count the claims carried from earlier runs, and the auditor traces every report claim to this run's evidence.
 - **Search summaries are weak evidence.** Where WebFetch can't reach papers, claims rest on INSPIRE abstracts and search summaries. The auditor flags report claims that rest only on summaries.
 - **Not yet in v1:**
   - pairwise judging in deep mode;

@@ -1,7 +1,7 @@
 export const meta = {
   name: 'conundrum-research',
   description: 'Conundrum stage 1: partitioned literature research, source checks, and a compiled dossier',
-  whenToUse: 'Run by the /conundrum skill after the user confirms the brief; args {slug, depth, facets?, tools?}',
+  whenToUse: 'Run by the /conundrum skill after the user confirms the brief; args {slug, depth, facets?, tools?, prior?}',
   phases: [
     { title: 'Tools', detail: 'toolsmiths build requested calculators alongside the research' },
     { title: 'Research', detail: 'one researcher per facet' },
@@ -61,11 +61,26 @@ const toolRuns = parallel(tools.map(t => () => agent(
   { agentType: 'toolsmith', label: `tool:${t.name}`, phase: 'Tools', schema: WROTE })
   .then(r => ({ name: t.name, ...(wrote(r) || { ok: false, path: `${dir}/tools/${t.name}.py`, summary: 'toolsmith failed' }) }))))
 
+// Earlier runs the user approved at framing (SKILL.md step 1), as [{slug, mode}]. The main session
+// has copied each into ${dir}/prior/<slug>/, whose PROVENANCE.md says how its notes may be used.
+// Conclusions never come across, so only researchers are told about them.
+const RUN_NAME = /^[A-Za-z0-9][A-Za-z0-9._-]*$/
+const requestedPrior = Array.isArray(args.prior) ? args.prior : []
+const prior = requestedPrior.filter(p => p && RUN_NAME.test(p.slug || '') && ['leads', 'update'].includes(p.mode))
+if (prior.length < requestedPrior.length) {
+  log(`ignoring ${requestedPrior.length - prior.length} earlier-run entries without a run name and a mode of leads or update`)
+}
+if (prior.length) log(`building on earlier runs: ${prior.map(p => `${p.slug} (${p.mode})`).join(', ')}`)
+const priorNote = prior.length
+  ? ` Earlier runs to build on: ${prior.map(p => `${dir}/prior/${p.slug}/ (${p.mode})`).join(', ')}. ` +
+    `Read each one's PROVENANCE.md before searching; it says how its notes may be used.`
+  : ''
+
 // Each facet's check starts as soon as its own research finishes (no barrier).
 const results = await pipeline(facets,
   f => agent(
     `Run directory: ${dir}. Your facet: ${f}. Mandate: ${FACETS[f]}. ` +
-    `Read ${dir}/brief.md, then write ${dir}/research/${f}.md.`,
+    `Read ${dir}/brief.md, then write ${dir}/research/${f}.md.` + priorNote,
     { agentType: 'researcher', label: `research:${f}`, phase: 'Research', schema: WROTE })
     .then(r => (wrote(r) ? { facet: f, research: r.summary, check: null } : null)),
   (prev, f) => (prev == null || !checking) ? prev : agent(
@@ -88,7 +103,8 @@ phase('Dossier')
 const dossier = wrote(await agent(
   `Run directory: ${dir}. Compile ${dir}/research/ into ${dir}/dossier.md.` +
   (missing.length ? ` These facets failed and have no notes: ${missing.join(', ')}.` : '') +
-  (unchecked.length ? ` These facets have no source check: ${unchecked.join(', ')}.` : ''),
+  (unchecked.length ? ` These facets have no source check: ${unchecked.join(', ')}.` : '') +
+  (prior.length ? ' Claims with a PRIOR line were carried from earlier runs: keep the line, and count them in your summary.' : ''),
   { agentType: 'dossier-compiler', label: 'dossier', schema: WROTE }))
 const dossierSummary = dossier ? dossier.summary : null
 const builtTools = (await toolRuns).filter(Boolean)
@@ -101,6 +117,7 @@ return {
   dir,
   dossier: `${dir}/dossier.md`,
   facets: done.map(r => r.facet),
+  prior: prior.map(p => p.slug),
   missing,
   unchecked,
   researchSummaries: Object.fromEntries(done.map(r => [r.facet, r.research])),

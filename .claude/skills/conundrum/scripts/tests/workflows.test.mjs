@@ -148,6 +148,27 @@ test('research: bad calculator requests are ignored loudly; tools still report w
   assert.deepEqual(failed.result.tools.map(t => t.name), ['units_ext'])
 })
 
+test('research: approved earlier runs reach the researchers, and only them', async () => {
+  const prior = [{ slug: '2026-03-01-alcubierre-energy', mode: 'update' }, { slug: '2026-09-29-warp-bubble-shapes', mode: 'leads' }]
+  const { result, calls, logs } = await run('conundrum-research', { slug: 's', depth: 'standard', prior }, wroteOk)
+  for (const c of byType(calls, 'researcher')) {
+    assert.match(c.prompt, /runs\/s\/prior\/2026-03-01-alcubierre-energy\/ \(update\), runs\/s\/prior\/2026-09-29-warp-bubble-shapes\/ \(leads\)/)
+    assert.match(c.prompt, /PROVENANCE\.md/)
+  }
+  for (const c of byType(calls, 'source-checker')) assert.doesNotMatch(c.prompt, /prior/)
+  assert.match(byType(calls, 'dossier-compiler')[0].prompt, /PRIOR line/)
+  assert.deepEqual(result.prior, prior.map(p => p.slug))
+  assert.ok(logs.some(l => l.includes('building on earlier runs')))
+})
+
+test('research: bad earlier-run entries are ignored loudly; without any, prompts are unchanged', async () => {
+  const prior = [{ slug: '../../etc', mode: 'update' }, { slug: '2026-01-01-x', mode: 'ignore' }, { slug: '2026-01-02-y' }]
+  const { result, calls, logs } = await run('conundrum-research', { slug: 's', depth: 'quick', prior }, wroteOk)
+  assert.ok(logs.some(l => l.includes('ignoring 3 earlier-run entries')))
+  assert.deepEqual(result.prior, [])
+  for (const c of calls) assert.doesNotMatch(c.prompt, /prior|PRIOR/, c.opts.label)
+})
+
 test('research: unknown facets are ignored loudly; missing slug throws', async () => {
   const { calls, logs } = await run('conundrum-research', { slug: 's', facets: ['theory', 'astrology'] }, wroteOk)
   assert.equal(byType(calls, 'researcher').length, 1)
