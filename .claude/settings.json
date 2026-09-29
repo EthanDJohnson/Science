@@ -11,6 +11,18 @@
     ]
   },
   "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Write|Edit|MultiEdit|NotebookEdit|Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"${CLAUDE_PROJECT_DIR}/.claude/hooks/guard_pipeline.py\"",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
     "PostToolBatch": [
       {
         "hooks": [

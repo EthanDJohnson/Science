@@ -177,6 +177,14 @@ class SkillAndSettings(unittest.TestCase):
             self.assertTrue(any(".claude/hooks/turn_budget.py" in c for c in commands), event)
         self.assertTrue((CLAUDE / "hooks" / "turn_budget.py").exists())
 
+    def test_pipeline_guard_is_registered(self):
+        groups = json.loads((CLAUDE / "settings.json").read_text())["hooks"]["PreToolUse"]
+        guard = [g for g in groups if any(".claude/hooks/guard_pipeline.py" in h["command"] for h in g["hooks"])]
+        self.assertEqual(len(guard), 1)
+        self.assertTrue({"Write", "Edit", "NotebookEdit", "Bash"} <= set(guard[0]["matcher"].split("|")))
+        self.assertTrue((CLAUDE / "hooks" / "guard_pipeline.py").exists())
+        self.assertIn("git status --short -- .claude", (SKILL / "SKILL.md").read_text())
+
     def test_settings_allow_what_the_agents_need(self):
         allow = json.loads((CLAUDE / "settings.json").read_text())["permissions"]["allow"]
         for rule in ("WebSearch", "WebFetch", "Bash(python3 runs/*)",

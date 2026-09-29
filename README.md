@@ -209,7 +209,16 @@ www.semanticscholar.org
 - running Python scripts under the skill's `scripts/` and under `runs/`;
 - creating and writing files under `runs/`.
 
-It also registers the turn-budget hook above. Everything else prompts as usual. Each workflow launch also asks for approval; choose "don't ask again" for a workflow to skip it next time.
+It also registers two hooks: the turn-budget hook above, and the pipeline guard.
+
+**The pipeline guard.** Agents read arbitrary web pages and PDFs, so a hostile page could try to talk one into editing the toolkit, the agent definitions or the hooks. `.claude/hooks/guard_pipeline.py` stops the pipeline's own agents from changing the pipeline:
+- They may write only under `runs/` and temp files.
+- Their shell commands can't write into `.claude/`, `.git/`, `CLAUDE.md` or `~/.claude/`.
+- They can run git only read-only.
+
+The main conversation isn't affected; that's how calculators get promoted. The shell checks are best-effort, since code that builds a path at run time can slip past them. So each checkpoint also runs `git status` on those paths, and stops if anything changed that the main session didn't change.
+
+Everything else prompts as usual. Each workflow launch also asks for approval; choose "don't ask again" for a workflow to skip it next time.
 
 ### Tests
 
@@ -234,6 +243,7 @@ python3 .claude/skills/conundrum/scripts/rocket_tools.py selftest         # rock
   agents/                18 role definitions (model, effort, tools, method)
   workflows/             conundrum-research.js  conundrum-analyze.js
   hooks/                 turn_budget.py (counts each agent's turns and tool calls)
+                         guard_pipeline.py (keeps pipeline agents from editing the pipeline)
   settings.json          permission allow-list and hook registration
 docs/conundrum-skill-plan.md
 examples/                smoke-test output of one lens, with provenance notes

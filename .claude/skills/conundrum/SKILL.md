@@ -76,6 +76,8 @@ Read `runs/<slug>/dossier.md` and summarize it in 12 lines or fewer:
 - the share of claims resting only on search summaries;
 - anything the source checks dropped or corrected.
 
+**Check that the pipeline itself is untouched.** Run `git status --short -- .claude CLAUDE.md .mcp.json`. Pipeline agents can't write there, because the pipeline guard hook blocks it. Any change you didn't make yourself means something got past the guard: stop, show the user `git diff` for those paths, and don't promote anything or continue until they decide.
+
 **Promote the calculators that were built.** For each entry in the workflow result's `tools` with `ok: true`:
 1. **Re-run its self-test yourself** with `python3 runs/<slug>/tools/<name>.py selftest`; don't rely on the toolsmith's report.
 2. **Read its reference values.** Each must come from an independent source cited in a comment (a closed form, a definition, a published table), not from the code itself. At least one must be a limit where the model reduces to a simpler known law.
@@ -97,6 +99,8 @@ Call the Workflow tool with `name: "conundrum-analyze"` and `args: {slug, depth,
 
 ## 5. Report
 
+First check that the pipeline is still untouched, as at step 3: `git status --short -- .claude CLAUDE.md .mcp.json` should show only changes you made.
+
 Read `runs/<slug>/report.md` and `runs/<slug>/audit.md`. Present:
 - the bottom line;
 - the ranked-answers table;
@@ -110,6 +114,7 @@ Don't restate the whole report; it is in the file.
 
 - **A workflow stopped partway:** relaunch it with the same name and args. In the same session, completed agents return their saved results instead of running again.
 - **A workflow hit the usage limit:** in a local interactive session, waiting agents continue by themselves after the reset (up to two waits per run). In a background or cloud session the affected agents fail instead. Relaunch the same workflow with the same args after the reset: completed agents return saved results, and a cut-off agent continues from what it had appended to its file.
+- **An agent's tool call was refused with `[pipeline guard]`:** it tried to write outside `runs/`. That's expected to be rare. If it shows up in a run, mention it, and check that the agent's output doesn't depend on the refused write.
 - **A workflow returned `ok: false`:** tell the user what failed (the result says why), and offer to rerun that stage.
 - **Research came back thin because sources were blocked:** say so plainly, and offer to rerun where the network allows arXiv, INSPIRE and journal sites.
 - **The workflow approval prompt:** in manual permission mode each run asks for approval. The user can pick "Yes, and don't ask again" for these two workflows.
