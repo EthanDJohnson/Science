@@ -148,3 +148,27 @@ The format is in `rubric.md`.
 Status: supported | weak (search summaries only, or a single preprint) | unsupported | contradicted
 ## Summary: <N> claims checked, <K> flagged; most serious: ...
 ```
+
+## tools/<name>.py (toolsmith)
+
+A calculator, built so that it can be promoted into the shared toolkit (`references/tools.md`). It must:
+
+- **Import only the standard library,** plus `numpy`, `sympy` or `mpmath` if needed. Use `unit_tools.py` from the toolkit for units, via `sys.path.insert(0, ".claude/skills/conundrum/scripts")`.
+- **Start with a docstring** saying:
+  - what it computes, and the physics or engineering model with its formulas;
+  - its assumptions and validity range;
+  - its units (SI in the Python API);
+  - a Python usage example;
+  - a command-line example.
+- **Take and return SI values in its Python API.** Its command line may accept units through `unit_tools.Q`.
+- **Refuse inputs outside its validity range** by raising `ValueError`, not by returning a wrong number.
+- **Have `selftest(verbose: bool = True) -> bool`,** comparing results with at least four independent reference values:
+  - closed-form limits;
+  - exact definitions;
+  - published tables or worked textbook examples, cited in a comment with source and page or table;
+  - at least one limit where the model must reduce to a simpler known law.
+
+  A reference computed by the same code doesn't count.
+- **Run the self-test with `python3 <file> selftest`,** exiting 0 on success.
+
+Report the self-test result, each reference value and its source, and a proposed catalog row (Tool | Covers | Checked against | Try it).

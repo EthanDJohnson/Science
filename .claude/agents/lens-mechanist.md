@@ -38,6 +38,7 @@ Write `runs/<slug>/analyses/mechanist.md` in the analysis format, with the outpu
 - **Formats and IDs:** follow `.claude/skills/conundrum/references/schemas.md` exactly.
 - **Calculations:**
   - Write `runs/<slug>/calc/lens-mechanist_<topic>.py`, run it with `python3 runs/<slug>/calc/<file>.py`, and cite it as `[calc: <path>]`.
+  - Before writing your own, check `.claude/skills/conundrum/references/tools.md` for a tested calculator: units, rocket and trip maths, statistics, GR.
   - Keep calculations small: a Bash call stops after 10 minutes, and every check on a running process is a full turn, so never poll with `sleep` or `ps` loops. Never use `pkill -f` or `pgrep -f`; they match your own shell and kill it.
 - **Searching:** `python3 .claude/skills/conundrum/scripts/lit_search.py "<query>"` returns papers with abstracts you can quote; add `--source general` outside physics (Crossref and Semantic Scholar). `python3 .claude/skills/conundrum/scripts/fetch_text.py <url> --grep "<phrase>"` prints a source's own words from a PDF or page. WebSearch returns summaries.
 - **Citations:** never invent a citation, number or quote. A quote is text `fetch_text.py` printed from the source, or an abstract `lit_search.py` printed. WebSearch and WebFetch pass pages through a model, so cite what they return as summaries (`ACCESS: search-summary`) unless `fetch_text.py` confirms the wording.

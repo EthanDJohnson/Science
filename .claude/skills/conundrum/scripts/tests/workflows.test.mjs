@@ -123,6 +123,31 @@ test('research: every agent is asked for the {ok, path, summary} shape', async (
   for (const c of calls) assert.deepEqual(c.opts.schema?.required, WROTE_FIELDS, c.opts.label)
 })
 
+test('research: requested calculators are built alongside the research, into the run folder', async () => {
+  const tools = [{ name: 'rocket_trip', purpose: 'relativistic trip times' }, { name: 'casimir', purpose: 'plate energies' }]
+  const handler = c => (c.opts.label === 'tool:casimir' ? { ok: false, path: '', summary: 'gave up' } : wroteOk(c))
+  const { result, calls, logs } = await run('conundrum-research', { slug: 's', depth: 'quick', tools }, handler)
+  const smiths = byType(calls, 'toolsmith')
+  assert.deepEqual(smiths.map(c => c.opts.label), ['tool:rocket_trip', 'tool:casimir'])
+  assert.ok(smiths.every(c => c.opts.phase === 'Tools' && c.opts.schema.required.includes('ok')))
+  assert.match(smiths[0].prompt, /Write runs\/s\/tools\/rocket_trip\.py/)
+  assert.deepEqual(result.tools.map(t => [t.name, t.ok]), [['rocket_trip', true], ['casimir', false]])
+  assert.ok(logs.some(l => l.includes('calculators not built: casimir')))
+  assert.equal(result.ok, true)                        // a failed calculator never blocks the dossier
+  assert.equal(byType(calls, 'researcher').length, 3)
+})
+
+test('research: bad calculator requests are ignored loudly; tools still report when research fails', async () => {
+  const tools = [{ name: '../../etc/passwd', purpose: 'x' }, { name: 'Bad Name', purpose: 'y' }, { name: 'ok_tool' }, { name: 'units_ext', purpose: 'more units' }]
+  const { calls, logs } = await run('conundrum-research', { slug: 's', depth: 'quick', tools }, wroteOk)
+  assert.deepEqual(byType(calls, 'toolsmith').map(c => c.opts.label), ['tool:units_ext'])
+  assert.ok(logs.some(l => l.includes('ignoring 3 tool request(s)')))
+  const failed = await run('conundrum-research', { slug: 's', tools: [{ name: 'units_ext', purpose: 'p' }] },
+    c => (typeOf(c) === 'researcher' ? null : wroteOk(c)))
+  assert.equal(failed.result.ok, false)
+  assert.deepEqual(failed.result.tools.map(t => t.name), ['units_ext'])
+})
+
 test('research: unknown facets are ignored loudly; missing slug throws', async () => {
   const { calls, logs } = await run('conundrum-research', { slug: 's', facets: ['theory', 'astrology'] }, wroteOk)
   assert.equal(byType(calls, 'researcher').length, 1)

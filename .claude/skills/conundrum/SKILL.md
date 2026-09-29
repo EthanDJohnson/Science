@@ -16,7 +16,8 @@ Arguments: $ARGUMENTS
 Reference files, all in `.claude/skills/conundrum/references/`:
 - `schemas.md`: file formats;
 - `lenses.md`: lens catalog and selection rules;
-- `rubric.md`: how the judge weighs evidence.
+- `rubric.md`: how the judge weighs evidence;
+- `tools.md`: the tested calculators in the shared toolkit.
 
 ## 0. Preflight
 
@@ -38,7 +39,18 @@ Then check that WebFetch itself can read papers: WebFetch `https://arxiv.org/abs
    - **State the horizon for "viable":** in principle, and in practice within a stated time.
    - **List the hidden premises worth testing.**
    - **Say what a useful answer looks like.**
-4. **Get the brief confirmed.** Show the user the question made precise, the premises to test, what counts as an answer, and the depth with its expected size. Ask them to confirm or correct it, and apply any corrections to `brief.md`.
+4. **Check for calculator gaps.** List the calculations the question will need, for example relativistic travel times, Casimir energies, heat rejection or orbital transfers. Compare them with `tools.md`.
+   - **Propose a new calculator only for a calculation several agents will need and that is easy to get subtly wrong.** One-off arithmetic doesn't qualify; agents write that in their own scripts.
+   - **For each one, give a snake_case name not already in the toolkit,** and a one-line purpose saying what it must cover.
+   - **Usually there are none.** Say so and move on.
+5. **Get the brief confirmed.** Show the user:
+   - the question made precise;
+   - the premises to test;
+   - what counts as an answer;
+   - the depth with its expected size;
+   - any proposed calculators. Each costs roughly $2–5 at API prices and is built alongside the research.
+
+   Ask them to confirm or correct it, and apply any corrections to `brief.md`.
 
    | depth | what runs | agent runs | rough time | rough cost at API list prices |
    |---|---|---|---|---|
@@ -50,7 +62,7 @@ Then check that WebFetch itself can read papers: WebFetch `https://arxiv.org/abs
 
 ## 2. Research
 
-Call the Workflow tool with `name: "conundrum-research"` and `args: {slug, depth}`. It runs in the background, so wait for its completion notification. If the result lists `missing` or `unchecked` facets, mention them at the checkpoint.
+Call the Workflow tool with `name: "conundrum-research"` and `args: {slug, depth, tools}`. `tools` holds the confirmed calculators as `[{name, purpose}]`; leave it out if there are none. The workflow runs in the background, so wait for its completion notification. If the result lists `missing` or `unchecked` facets, mention them at the checkpoint.
 
 **In a cloud session, offer to commit and push `runs/<slug>/` now,** and again after step 4. The container is reclaimed after inactivity and unpushed files are lost, while a workflow's saved results survive, so a later relaunch would trust agents whose files no longer exist.
 
@@ -63,6 +75,16 @@ Read `runs/<slug>/dossier.md` and summarize it in 12 lines or fewer:
 - binding constraints;
 - the share of claims resting only on search summaries;
 - anything the source checks dropped or corrected.
+
+**Promote the calculators that were built.** For each entry in the workflow result's `tools` with `ok: true`:
+1. **Re-run its self-test yourself** with `python3 runs/<slug>/tools/<name>.py selftest`; don't rely on the toolsmith's report.
+2. **Read its reference values.** Each must come from an independent source cited in a comment (a closed form, a definition, a published table), not from the code itself. At least one must be a limit where the model reduces to a simpler known law.
+3. **If both hold, promote it.**
+   - Copy it to `.claude/skills/conundrum/scripts/<name>.py`. Never overwrite an existing file; if the name is taken, ask the user.
+   - Add its row to `tools.md`, noting "built in run <slug>".
+   - Run `python3 -m unittest discover -s .claude/skills/conundrum/scripts/tests`.
+   - Tell the user what was added, and where to find its reference values. The lenses can use it in the analysis stage, and future runs find it in the toolkit.
+4. **If anything fails,** leave it in the run folder, say what failed, and let the lenses do without it.
 
 Then:
 - **Ask for corrections or unpublished data.** Append them to the dossier under `## User-supplied`, marking each `[user]`.

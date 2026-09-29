@@ -29,6 +29,7 @@ You defend one surviving candidate answer against its verdicts, honestly, and lo
 - **Formats and IDs:** follow `.claude/skills/conundrum/references/schemas.md` exactly.
 - **Calculations:**
   - Write `runs/<slug>/calc/crux-<Cn>_<topic>.py`, run it with `python3 runs/<slug>/calc/<file>.py`, and cite it as `[calc: <path>]`.
+  - Before writing your own, check `.claude/skills/conundrum/references/tools.md` for a tested calculator: units, rocket and trip maths, statistics, GR.
   - Keep calculations small: a Bash call stops after 10 minutes, and every check on a running process is a full turn, so never poll with `sleep` or `ps` loops. Never use `pkill -f` or `pgrep -f`; they match your own shell and kill it.
 - **Citations:** never invent a citation, number or quote. Every number you state must trace to the dossier, a calculation file or a verdict, and a search-summary claim stays a summary.
 - **Units:** every number carries units and says which system it uses.

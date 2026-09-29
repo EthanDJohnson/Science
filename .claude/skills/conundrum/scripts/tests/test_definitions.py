@@ -159,6 +159,17 @@ class SkillAndSettings(unittest.TestCase):
         self.assertLessEqual(len(fm["description"]), 1536)
         self.assertIn("$ARGUMENTS", body)
 
+    def test_tool_catalog_matches_the_toolkit(self):
+        catalog = (SKILL / "references" / "tools.md").read_text()
+        scripts = {p.name for p in (SKILL / "scripts").glob("*.py")}
+        listed = set(re.findall(r"`(\w+\.py)`", catalog))
+        self.assertEqual(scripts - listed, set(), "toolkit scripts missing from tools.md")
+        self.assertEqual({f for f in listed if f in scripts or not f.startswith("<")} - scripts, set(),
+                         "tools.md lists scripts that don't exist")
+        research = workflow_source("conundrum-research")
+        self.assertIn("agentType: 'toolsmith'", research)
+        self.assertIn("/tools/", research)
+
     def test_turn_budget_hook_is_registered(self):
         hooks = json.loads((CLAUDE / "settings.json").read_text())["hooks"]
         for event in ("PostToolBatch", "SubagentStop"):

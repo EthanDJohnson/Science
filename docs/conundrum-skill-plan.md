@@ -35,6 +35,7 @@
 > - **A statistics lens (Bayes)** with a tested `stats_tools.py`. It covers significance, the look-elsewhere effect, counting experiments and Bayes-factor bounds. It replaces the decomposer in the default anomaly set, so a standard run still has five lenses.
 > - **Crossref and Semantic Scholar** in `lit_search.py` (`--source general`), for fields outside high-energy physics and gravitation.
 > - **A turn-budget hook** (`PostToolBatch`) that counts each agent's turns and tool calls and injects `[turn budget]` reminders at thresholds. Self-counting would cost tokens every turn and still rely on the agent remembering.
+> - **Calculators on demand.** Framing checks a question's calculations against `references/tools.md`. A toolsmith builds any agreed calculator during research, into the run folder. The main session re-verifies it at the checkpoint and promotes it into the shared toolkit. Two were built up front: `unit_tools.py` and `rocket_tools.py`.
 > - **`fetch_text.py` prints a source's own words from a PDF (via pypdf) or a web page.** Quotes are taken from it, not from WebFetch, which answers through a model. The source checker got the shell to use it.
 > - **The preflight reports workflow concurrency,** min(16, CPUs − 2). The first cloud container had 4 CPUs, so only 2 agents ran at once, roughly doubling a standard run's wall-clock time.
 

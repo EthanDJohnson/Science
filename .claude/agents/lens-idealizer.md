@@ -34,6 +34,7 @@ Write `runs/<slug>/analyses/idealizer.md` in the analysis format, with the outpu
 - **Formats and IDs:** follow `.claude/skills/conundrum/references/schemas.md` exactly.
 - **Calculations:**
   - Write `runs/<slug>/calc/lens-idealizer_<topic>.py`, run it with `python3 runs/<slug>/calc/<file>.py`, and cite it as `[calc: <path>]`.
+  - Before writing your own, check `.claude/skills/conundrum/references/tools.md` for a tested calculator: units, rocket and trip maths, statistics, GR.
   - For metrics use `.claude/skills/conundrum/scripts/gr_tensors.py`. Its docstring shows usage, and `python3 .claude/skills/conundrum/scripts/gr_tensors.py selftest` verifies it.
   - Check numerical results for convergence; for metric quantities, run `precision_check` on any surprising sign.
   - If sympy or numpy is missing, say so rather than estimating by hand.

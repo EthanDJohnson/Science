@@ -1,8 +1,9 @@
 export const meta = {
   name: 'conundrum-research',
   description: 'Conundrum stage 1: partitioned literature research, source checks, and a compiled dossier',
-  whenToUse: 'Run by the /conundrum skill after the user confirms the brief; args {slug, depth, facets?}',
+  whenToUse: 'Run by the /conundrum skill after the user confirms the brief; args {slug, depth, facets?, tools?}',
   phases: [
+    { title: 'Tools', detail: 'toolsmiths build requested calculators alongside the research' },
     { title: 'Research', detail: 'one researcher per facet' },
     { title: 'Check', detail: 'a source checker behind each researcher' },
     { title: 'Dossier', detail: 'compile the checked claims' },
@@ -46,6 +47,20 @@ if (!facets.length) throw new Error('no valid facets to research')
 const checking = depth !== 'quick'
 log(`depth ${depth}; facets: ${facets.join(', ')}; source checks ${checking ? 'on' : 'off'}`)
 
+// Calculators agreed at framing (SKILL.md step 1). Toolsmiths start alongside the researchers and
+// write only into the run folder; the main session promotes a calculator into the shared toolkit.
+const TOOL_NAME = /^[a-z][a-z0-9_]{2,40}$/
+const requestedTools = Array.isArray(args.tools) ? args.tools : []
+const tools = requestedTools.filter(t => t && TOOL_NAME.test(t.name || '') && typeof t.purpose === 'string' && t.purpose)
+if (tools.length < requestedTools.length) {
+  log(`ignoring ${requestedTools.length - tools.length} tool request(s) without a snake_case name and a purpose`)
+}
+const toolRuns = parallel(tools.map(t => () => agent(
+  `Run directory: ${dir}. Build the calculator "${t.name}": ${t.purpose}. ` +
+  `Write ${dir}/tools/${t.name}.py in the tool format and run its selftest.`,
+  { agentType: 'toolsmith', label: `tool:${t.name}`, phase: 'Tools', schema: WROTE })
+  .then(r => ({ name: t.name, ...(wrote(r) || { ok: false, path: `${dir}/tools/${t.name}.py`, summary: 'toolsmith failed' }) }))))
+
 // Each facet's check starts as soon as its own research finishes (no barrier).
 const results = await pipeline(facets,
   f => agent(
@@ -64,7 +79,7 @@ const missing = facets.filter(f => !done.some(r => r.facet === f))
 const unchecked = done.filter(r => r.check == null).map(r => r.facet)
 if (!done.length) {
   log('every researcher failed; no dossier compiled')
-  return { ok: false, reason: 'all researchers failed', dir, missing }
+  return { ok: false, reason: 'all researchers failed', dir, missing, tools: (await toolRuns).filter(Boolean) }
 }
 if (missing.length) log(`facets with no research notes: ${missing.join(', ')}`)
 if (checking && unchecked.length) log(`facets whose source check failed: ${unchecked.join(', ')}`)
@@ -76,6 +91,9 @@ const dossier = wrote(await agent(
   (unchecked.length ? ` These facets have no source check: ${unchecked.join(', ')}.` : ''),
   { agentType: 'dossier-compiler', label: 'dossier', schema: WROTE }))
 const dossierSummary = dossier ? dossier.summary : null
+const builtTools = (await toolRuns).filter(Boolean)
+const failedTools = builtTools.filter(t => !t.ok).map(t => t.name)
+if (failedTools.length) log(`calculators not built: ${failedTools.join(', ')}`)
 
 return {
   ok: dossierSummary != null,
@@ -87,4 +105,5 @@ return {
   unchecked,
   researchSummaries: Object.fromEntries(done.map(r => [r.facet, r.research])),
   dossierSummary,
+  tools: builtTools,
 }

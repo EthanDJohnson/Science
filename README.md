@@ -134,13 +134,27 @@ The philosopher labels in the agent files are mnemonics; the methods are the con
 - horizon finding and Hawking temperatures;
 - high-precision rechecks of surprising signs.
 
-It is tested against Schwarzschild, FRW, Morris–Thorne, Painlevé–Gullstrand and Alcubierre closed forms. `stats_tools.py` gives the statistics lens tested significance, look-elsewhere, counting-experiment and Bayes-factor calculations. `lit_search.py` prints abstracts the agents can quote, from four sources:
+It is tested against Schwarzschild, FRW, Morris–Thorne, Painlevé–Gullstrand and Alcubierre closed forms. The other calculators:
+- `stats_tools.py` gives the statistics lens tested significance, look-elsewhere, counting-experiment and Bayes-factor calculations;
+- `unit_tools.py` parses, converts and dimension-checks quantities such as `"0.5 * 1 t * (3 km/s)^2"`;
+- `rocket_tools.py` covers classical and relativistic rocket equations and constant-acceleration trips.
+
+Each checks itself against independent reference values, and `references/tools.md` catalogs them all.
+
+`lit_search.py` prints abstracts the agents can quote, from four sources:
 - INSPIRE-HEP and arXiv, the default for physics;
 - Crossref and Semantic Scholar (`--source general`) for engineering, materials, chemistry, statistics and other fields.
 
 Semantic Scholar also lists open-access PDF links. `fetch_text.py` prints a source's own words from a PDF or web page, around a phrase given with `--grep`, so agents quote the text itself: WebFetch passes pages through a model, whose answer can paraphrase. Two optional environment variables speed these up; nothing identifying is sent unless you set them:
 - `SEMANTIC_SCHOLAR_API_KEY` raises Semantic Scholar's shared rate limit;
 - `CROSSREF_MAILTO` gives Crossref an email address for its faster pool.
+
+**Calculators on demand.** At framing, Claude checks the calculations a question needs against the catalog. If several agents would need one that's missing and easy to get wrong, Claude proposes it with the brief. On your OK:
+1. A toolsmith agent builds it during the research stage, with a self-test against at least four independent reference values.
+2. At the dossier checkpoint, Claude re-runs the self-test and checks the references.
+3. Claude then promotes it into the shared toolkit, so future runs have it too.
+
+Agents never write straight into the toolkit; promotion is a step you see.
 
 ### Network access
 
@@ -204,6 +218,8 @@ python3 -m unittest discover -s .claude/skills/conundrum/scripts/tests   # tools
 node --test .claude/skills/conundrum/scripts/tests/workflows.test.mjs     # orchestration, with a mock runtime
 python3 .claude/skills/conundrum/scripts/gr_tensors.py selftest           # GR toolkit vs. known results
 python3 .claude/skills/conundrum/scripts/stats_tools.py selftest          # statistics toolkit vs. reference values
+python3 .claude/skills/conundrum/scripts/unit_tools.py selftest           # units vs. exact SI and IAU definitions
+python3 .claude/skills/conundrum/scripts/rocket_tools.py selftest         # rocket equations vs. closed forms and the 1 g table
 ```
 
 ### Layout
@@ -212,9 +228,10 @@ python3 .claude/skills/conundrum/scripts/stats_tools.py selftest          # stat
 .claude/
   skills/conundrum/
     SKILL.md
-    references/          lenses.md  schemas.md  rubric.md
-    scripts/             gr_tensors.py  stats_tools.py  lit_search.py  fetch_text.py  check_env.py  tests/
-  agents/                17 role definitions (model, effort, tools, method)
+    references/          lenses.md  schemas.md  rubric.md  tools.md (calculator catalog)
+    scripts/             gr_tensors.py  stats_tools.py  unit_tools.py  rocket_tools.py
+                         lit_search.py  fetch_text.py  check_env.py  tests/
+  agents/                18 role definitions (model, effort, tools, method)
   workflows/             conundrum-research.js  conundrum-analyze.js
   hooks/                 turn_budget.py (counts each agent's turns and tool calls)
   settings.json          permission allow-list and hook registration
