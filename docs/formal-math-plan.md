@@ -1,6 +1,6 @@
 # Formal mathematics for `/conundrum`: review and plan
 
-*Status: proposal, not built. Reviewed 2026-09-29. The cloud facts were checked the same day in this repository's cloud environment.*
+*Status: Phases 1a (math checks) and 1b (the foundations type) are built, on the `conundrum-math-checks` branch. Phase 2 (Lean) is not. Reviewed 2026-09-29. The cloud facts were checked the same day in this repository's cloud environment.*
 
 ## The proposal
 

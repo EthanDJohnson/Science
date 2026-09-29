@@ -32,7 +32,7 @@ Then check that WebFetch itself can read papers: WebFetch `https://arxiv.org/abs
 ## 1. Frame the question with the user
 
 1. **Create the run directory.** Build a slug from today's date (`date +%F`) plus a 3–6 word kebab-case summary, for example `2026-09-29-alcubierre-negative-energy`. Create `runs/<slug>/`.
-2. **Classify the question** as `feasibility`, `design`, `mechanism` or `anomaly`, using `lenses.md`.
+2. **Classify the question** as `feasibility`, `design`, `mechanism`, `anomaly` or `foundations`, using `lenses.md`. Foundations questions are about consistency and interpretation, such as the problem of time or the interpretations of quantum mechanics.
 3. **Look for earlier runs.** Run `python3 .claude/skills/conundrum/scripts/prior_runs.py list "<question>"`. It lists earlier runs that share the question's key terms, best match first. For each it gives the age, whether its sources were checked, the user's notes and a suggested mode. For each run that bears on this question, settle on one mode:
    - **ignore:** agents never see it. Use it for an independent re-check.
    - **leads:** its notes only point researchers at sources; nothing counts until it is found and quoted again. The default for a run that never finished or was never source-checked, and for an older run in a fast-moving field.
@@ -63,8 +63,8 @@ Then check that WebFetch itself can read papers: WebFetch `https://arxiv.org/abs
    | depth | what runs | agent runs | rough time | rough cost at API list prices |
    |---|---|---|---|---|
    | quick | 3 researchers, no source checks, 3 lenses, 1 refuter per candidate, Opus judge | ~16 | 1–2 hours | ~$35–60 |
-   | standard | 4 researchers + checks, 5 lenses, 1 refuter per candidate, Fable judge | ~23 | 1.5–3 hours | ~$45–90 |
-   | deep | 5 researchers + checks, 6–7 lenses, 3 refuters per candidate, crux round, Fable judge at max | ~40–50 | 3–5 hours | ~$100–180 |
+   | standard | 4 researchers + checks, 5 lenses + math checks, 1 refuter per candidate, Fable judge | ~28 | 2–3.5 hours | ~$55–110 |
+   | deep | 5 researchers + checks, 6–7 lenses + math checks, 3 refuters per candidate, crux round, Fable judge at max | ~46–57 | 3.5–5.5 hours | ~$115–210 |
 
    Say that these are extrapolated from two measured agents, not a full run. Times exclude the checkpoints and assume at least 5 agents can run at once (see the preflight). On a subscription the run draws on usage limits instead. `/workflows` shows live token counts, and `/usage` afterwards attributes usage to subagents and flags cache misses.
 

@@ -24,9 +24,12 @@ The main session picks lenses at the dossier checkpoint, after reading the brief
 | **design** ("how would we build X to spec") | decomposer, constraints, engineer, mechanist, examiner | idealizer for a sizing model |
 | **mechanism** ("how does X work / why does theory predict Y") | mechanist, idealizer, constraints, examiner, empiricist | dialectician |
 | **anomaly** ("why do we observe Y") | statistician, empiricist, mechanist, constraints, examiner | decomposer; dialectician |
+| **foundations** ("how is the problem of time resolved", "which interpretation of quantum mechanics holds up") | examiner, decomposer, dialectician, idealizer, constraints | empiricist, when a position makes a testable prediction; mechanist |
+
+**Foundations questions** are about consistency and interpretation, not about building or explaining something. Their candidate answers are positions: each resolves the problem, dissolves it, or modifies the theory. Positions are often empirically equivalent, so they are judged on internal consistency (the math checks matter most here), on what each gives up, and on whether any observation could tell them apart. The idealizer's toy model, for example a finite-dimensional Page–Wootters clock, is often the sharpest test.
 
 How many lenses to run at each depth:
-- **quick:** 3 lenses, always `constraints` and `examiner` plus the most type-specific one (`engineer`, `mechanist` or `statistician`).
+- **quick:** 3 lenses, always `constraints` and `examiner` plus the most type-specific one (`engineer`, `mechanist`, `statistician` or, for foundations, `idealizer`).
 - **standard:** the 5 in the row.
 - **deep:** the 5 plus every "add when" lens that applies, up to 7.
 

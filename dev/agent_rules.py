@@ -1,6 +1,6 @@
 """Generate the `## Ground rules` section and frontmatter limits of every conundrum agent.
 
-The 18 agent files share their ground rules; this script is their single source. Edit the rules
+The agent files share their ground rules; this script is their single source. Edit the rules
 here, never in the agent files, then regenerate. The test suite fails when they drift apart.
 
 From the project root:

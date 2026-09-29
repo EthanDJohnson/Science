@@ -16,7 +16,7 @@ The adjudicator reads `brief.md`, `dossier.md`, `candidates.md`, every `verdicts
    Mathematics the math checks (`math/*.md`) refuted supports nothing: a candidate resting on it falls unless it survives with the corrected math. Math they left unverified counts for less. Say where a math check changed a ranking.
    Evidence carried from an earlier run has a `PRIOR` line. A re-verified claim counts like any other; one marked `not re-verified` counts as a search summary. Where newer evidence supersedes a carried claim, the newer one wins; say so.
 3. **Refutation beats support.** A computed violation of an established bound outweighs any number of plausibility arguments. Check the calculation's assumptions before accepting it.
-4. **Separate "in principle" from "in practice"** for feasibility and design questions.
+4. **Separate "in principle" from "in practice"** for feasibility and design questions. Foundations questions use rule 8 instead.
    - *In principle*: consistent with admissible physics, and under which assumptions?
    - *In practice*: how many orders of magnitude separate what is required from what has been demonstrated, and what is the technology readiness level (TRL 1–9)?
 5. **Stay calibrated.**
@@ -27,6 +27,12 @@ The adjudicator reads `brief.md`, `dossier.md`, `candidates.md`, every `verdicts
 6. **Mutually exclusive candidates** (explanations) get a probability distribution that sums to 1, including an explicit "none of these".
    **Non-exclusive candidates** (options) each get an independent credence of viability, and the null candidate gets its own.
 7. **Don't break ties by length or position.** Order does not signal strength. When two candidates are close, compare them directly on their decisive tests.
+8. **Foundations questions** (the brief's type is `foundations`) weigh positions on three things:
+   - **Internal consistency:** does the position's mathematics hold up? The math checks and any refuted verdicts decide this.
+   - **What it gives up:** each assumption it drops, such as unitarity, a global time, locality or a single outcome.
+   - **Whether an observation could tell it apart** from its rivals.
+
+   Where positions are empirically equivalent, no evidence ranks them. Rank them by what they give up, and say that this is a judgment about cost, not a probability. Give credences only where evidence separates them.
 
 ## report.md format
 
@@ -42,6 +48,7 @@ its confidence, and the single biggest reason.
 | # | Candidate | In principle | In practice (horizon) | Key obstacle | Gap (orders of magnitude) | Credence |
 |---|---|---|---|---|---|---|
 (For explanation-type questions, replace the two feasibility columns with "Fits the evidence?")
+(For foundations questions use: | # | Position | Internally consistent? | What it gives up | Empirically distinguishable? | Open problems | Rank or credence |)
 
 ## Why, candidate by candidate
 For each surviving candidate: strongest evidence for, strongest against, decisive test.

@@ -22,7 +22,7 @@ Every run lives in `runs/<slug>/`. Each agent writes only the file(s) it was ask
 
 ```
 # Brief: <short title>
-slug: <slug> | depth: quick|standard|deep | type: feasibility|anomaly|mechanism|design | date: YYYY-MM-DD
+slug: <slug> | depth: quick|standard|deep | type: feasibility|anomaly|mechanism|design|foundations | date: YYYY-MM-DD
 
 ## Question as asked
 ## Question made precise
@@ -136,7 +136,7 @@ Each check script sits in `math/<lens>/<ID>.py`, with its log beside it as `<ID>
 ```
 # Candidate answers
 ## C1: <claim in one sentence>
-type: mechanism | option | explanation | null | reframe
+type: mechanism | option | explanation | position | null | reframe
 from: <lens candidate IDs merged here>
 argument: <mechanism or reasoning>
 predictions: if true we would see ...; if false ...
@@ -145,7 +145,8 @@ decisive test: <cheapest experiment or calculation that would settle it>
 ```
 
 Candidate types:
-- **null:** always present. For feasibility questions it is "no viable option within admissible physics at the required scale". For anomalies it is "artifact or known effect".
+- **position** (foundations questions): a stance that resolves the problem, dissolves it, or modifies the theory. State what it gives up.
+- **null:** always present. For feasibility questions it is "no viable option within admissible physics at the required scale". For anomalies it is "artifact or known effect". For foundations questions it is "no position resolves the problem within admissible physics".
 - **reframe:** include one whenever a hidden premise is doubtful.
 - **Mutual exclusivity:** say in a header line whether the candidates are mutually exclusive, which is typical for explanations, or not, which is typical for options.
 

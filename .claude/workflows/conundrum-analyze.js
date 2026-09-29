@@ -19,9 +19,14 @@ const DEFAULT_LENSES = {
   design: ['decomposer', 'constraints', 'engineer', 'mechanist', 'examiner'],
   mechanism: ['mechanist', 'idealizer', 'constraints', 'examiner', 'empiricist'],
   anomaly: ['statistician', 'empiricist', 'mechanist', 'constraints', 'examiner'],
+  foundations: ['examiner', 'decomposer', 'dialectician', 'idealizer', 'constraints'],
 }
-const QUICK_THIRD = { feasibility: 'engineer', design: 'engineer', mechanism: 'mechanist', anomaly: 'statistician' }
-const ANGLES = ['physics', 'evidence', 'scale']
+const QUICK_THIRD = { feasibility: 'engineer', design: 'engineer', mechanism: 'mechanist', anomaly: 'statistician',
+  foundations: 'idealizer' }
+// Deep runs give each refuter a different angle. Engineering scale means nothing to a position on a
+// foundations question, so those runs attack its consistency and its cost instead.
+const ANGLES_BY_TYPE = { foundations: ['consistency', 'evidence', 'cost'] }
+const DEFAULT_ANGLES = ['physics', 'evidence', 'scale']
 const MAX_CANDIDATES = 8
 
 const SLATE = {
@@ -36,7 +41,7 @@ const SLATE = {
         properties: {
           id: { type: 'string' },
           claim: { type: 'string' },
-          type: { type: 'string', enum: ['mechanism', 'option', 'explanation', 'null', 'reframe'] },
+          type: { type: 'string', enum: ['mechanism', 'option', 'explanation', 'position', 'null', 'reframe'] },
         },
       },
     },
@@ -91,6 +96,7 @@ const chosen = [...new Set(requested.filter(l => LENSES.includes(l)))]
 const HEAVY = ['idealizer', 'engineer', 'constraints']
 const lenses = [...chosen.filter(l => !HEAVY.includes(l)), ...HEAVY.filter(l => chosen.includes(l))]
 const refuters = depth === 'deep' ? 3 : 1
+const ANGLES = ANGLES_BY_TYPE[type] || DEFAULT_ANGLES
 log(`depth ${depth}; type ${type}; lenses: ${lenses.join(', ')}; refuters per candidate: ${refuters}`)
 
 // ----- Lenses: independent and isolated. In standard and deep runs, each lens's mathematics goes to
@@ -134,7 +140,7 @@ const mathNote = mathChecked.length
 // ----- Slate
 phase('Slate')
 const slate = await agent(
-  `Run directory: ${dir}. Build the candidate slate from ${dir}/analyses/ ` +
+  `Run directory: ${dir}. Question type: ${type}. Build the candidate slate from ${dir}/analyses/ ` +
   `(completed lenses: ${lensesDone.join(', ')}) and write ${dir}/candidates.md.` +
   (mathNote ? mathNote + ' A candidate may not rest on a claim they refuted.' : ''),
   { agentType: 'candidate-builder', schema: SLATE, label: 'slate', phase: 'Slate' })
@@ -157,7 +163,7 @@ if (!candidates.some(c => c.type === 'null')) log('warning: the slate has no nul
 phase('Falsify')
 const verdicts = (await parallel(candidates.flatMap(c =>
   Array.from({ length: refuters }, (_, i) => () => {
-    const angle = refuters === 1 ? 'strongest available (physics, evidence or scale; say which)' : ANGLES[i % ANGLES.length]
+    const angle = refuters === 1 ? `strongest available (${ANGLES.join(', ')}; say which)` : ANGLES[i % ANGLES.length]
     return agent(
       `Run directory: ${dir}. Candidate ${c.id} (${c.type}): "${c.claim}". You are refuter ${i}; angle: ${angle}. ` +
       `Write ${dir}/verdicts/${c.id}-${i}.md.` +
@@ -198,7 +204,7 @@ const judgeOpts = { agentType: 'adjudicator', label: 'judge', phase: 'Judge', sc
 if (depth === 'quick') Object.assign(judgeOpts, { model: 'opus', effort: 'high' })
 if (depth === 'deep') judgeOpts.effort = 'max'
 const judged = wrote(await agent(
-  `Run directory: ${dir}. Adjudicate from ${dir}/brief.md, ${dir}/dossier.md, ${dir}/candidates.md and ${dir}/verdicts/` +
+  `Run directory: ${dir}. Question type: ${type}. Adjudicate from ${dir}/brief.md, ${dir}/dossier.md, ${dir}/candidates.md and ${dir}/verdicts/` +
   (cruxed.length ? ` and ${dir}/cruxes/` : '') + `. Refuter votes: ${tally}.` +
   (unexamined.length ? ` Unexamined (refuters failed): ${unexamined.join(', ')}.` : '') +
   (trimmed.length ? ` Not falsified (over the slate cap): ${trimmed.join(', ')}.` : '') +

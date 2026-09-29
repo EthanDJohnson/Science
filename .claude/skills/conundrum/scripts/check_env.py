@@ -13,7 +13,7 @@ import sys
 import urllib.error
 import urllib.request
 
-PACKAGES = [("sympy", True), ("numpy", True), ("pypdf", False), ("scipy", False)]
+PACKAGES = [("sympy", True), ("mpmath", True), ("numpy", True), ("pypdf", False), ("scipy", False)]
 HINTS = {"pypdf": "lets fetch_text.py quote PDFs verbatim: pip install pypdf cffi"}
 SOURCES = [
     ("arXiv API", "https://export.arxiv.org/api/query?search_query=all:test&max_results=1"),

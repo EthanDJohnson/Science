@@ -155,6 +155,30 @@ class WorkflowWiring(unittest.TestCase):
         for row in re.findall(r"\[(.*?)\]", block):
             self.assertTrue(set(re.findall(r"'(\w+)'", row)) <= lenses, row)
 
+    def test_foundations_type_is_wired_through(self):
+        src = workflow_source("conundrum-analyze")
+        self.assertIn("foundations: [", src)
+        self.assertIn("'position'", src)
+        self.assertIn("`foundations`", (SKILL / "SKILL.md").read_text())
+        self.assertIn("**foundations**", (SKILL / "references" / "lenses.md").read_text())
+        schemas = (SKILL / "references" / "schemas.md").read_text()
+        self.assertIn("design|foundations", schemas)
+        self.assertIn("**position**", schemas)
+        self.assertIn("**Foundations questions**", (SKILL / "references" / "rubric.md").read_text())
+        self.assertIn("`position`", (AGENTS / "candidate-builder.md").read_text())
+
+    def test_math_checks_are_wired_through(self):
+        src = workflow_source("conundrum-analyze")
+        self.assertIn("agentType: 'math-checker'", src)
+        self.assertIn("## math/<lens>.md", (SKILL / "references" / "schemas.md").read_text())
+        self.assertIn("math checks", (SKILL / "references" / "rubric.md").read_text())
+        for reader in ("candidate-builder", "falsifier", "adjudicator", "report-auditor"):
+            self.assertIn("math/", (AGENTS / f"{reader}.md").read_text(), reader)
+        checker = (AGENTS / "math-checker.md").read_text()
+        for tool in ("math_checks.py", "math_run.py"):
+            self.assertIn(tool, checker)
+        self.assertIn("Never import, copy or run the lens's scripts", checker)
+
     def test_skill_calls_the_saved_workflow_names(self):
         skill = (SKILL / "SKILL.md").read_text()
         for name in ("conundrum-research", "conundrum-analyze"):

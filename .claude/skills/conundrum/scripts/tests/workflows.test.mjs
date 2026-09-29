@@ -246,6 +246,33 @@ test('analyze, standard: each lens goes to its own math checker, and every later
   assert.ok(logs.some(l => l.startsWith('math checks:')))
 })
 
+test('analyze, foundations: consistency lenses, position candidates, and the type reaches the slate and judge', async () => {
+  const slate = { candidates: [
+    { id: 'C1', claim: 'Relational observables resolve the problem of time', type: 'position' },
+    { id: 'C2', claim: 'Page-Wootters conditioning recovers Schrodinger evolution', type: 'position' },
+    { id: 'C3', claim: 'Time is fundamental; the constraint is modified', type: 'position' },
+    { id: 'C4', claim: 'No position resolves it within admissible physics', type: 'null' },
+    { id: 'C5', claim: 'The problem is ill-posed as stated', type: 'reframe' },
+  ] }
+  const { result, calls } = await run('conundrum-analyze', { slug: 's', depth: 'standard', type: 'foundations' },
+    analyzeHandler({ slate }))
+  assert.deepEqual(calls.filter(c => typeOf(c).startsWith('lens-')).map(typeOf),
+    ['lens-examiner', 'lens-decomposer', 'lens-dialectician', 'lens-idealizer', 'lens-constraints'])
+  const builder = byType(calls, 'candidate-builder')[0]
+  assert.ok(builder.opts.schema.properties.candidates.items.properties.type.enum.includes('position'))
+  assert.match(builder.prompt, /Question type: foundations/)
+  assert.match(byType(calls, 'adjudicator')[0].prompt, /Question type: foundations/)
+  assert.equal(byType(calls, 'falsifier').length, 5)
+  assert.equal(result.ok, true)
+  assert.match(byType(calls, 'falsifier')[0].prompt, /strongest available \(consistency, evidence, cost; say which\)/)
+  const deep = await run('conundrum-analyze', { slug: 's', depth: 'deep', type: 'foundations' }, analyzeHandler({ slate }))
+  assert.deepEqual([...new Set(byType(deep.calls, 'falsifier').map(c => c.prompt.match(/angle: (\w+)/)[1]))],
+    ['consistency', 'evidence', 'cost'])
+  const quick = await run('conundrum-analyze', { slug: 's', depth: 'quick', type: 'foundations' }, analyzeHandler({ slate }))
+  assert.deepEqual(quick.calls.filter(c => typeOf(c).startsWith('lens-')).map(typeOf),
+    ['lens-examiner', 'lens-idealizer', 'lens-constraints'])
+})
+
 test('analyze: a failed lens gets no math check; a failed math check is reported and never blocks the slate', async () => {
   const fail = c => c.opts.label === 'engineer' || c.opts.label === 'math:mechanist'
   const { result, calls, logs } = await run('conundrum-analyze', { slug: 's', depth: 'standard' }, analyzeHandler({ fail }))

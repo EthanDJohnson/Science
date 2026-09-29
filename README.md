@@ -31,10 +31,10 @@ The design, and the review of the Gemini proposal it started from, are in [`docs
 | Depth | What runs | Agent runs | Rough time | Rough cost at API list prices |
 |---|---|---|---|---|
 | `quick` | 3 researchers, 3 lenses, 1 refuter per candidate, Opus judge | ~16 | 1–2 hours | ~$35–60 |
-| `standard` | 4 researchers with source checks, 5 lenses, 1 refuter per candidate, Fable judge | ~23 | 1.5–3 hours | ~$45–90 |
-| `deep` | 5 researchers with checks, 6–7 lenses, 3 refuters per candidate with different angles, rebuttal round, Fable judge at max effort | ~40–50 | 3–5 hours | ~$100–180 |
+| `standard` | 4 researchers with source checks, 5 lenses with math checks, 1 refuter per candidate, Fable judge | ~28 | 2–3.5 hours | ~$55–110 |
+| `deep` | 5 researchers with checks, 6–7 lenses with math checks, 3 refuters per candidate with different angles, rebuttal round, Fable judge at max effort | ~46–57 | 3.5–5.5 hours | ~$115–210 |
 
-Times exclude the two checkpoints where the pipeline waits for you. They also assume at least 5 agents can run at once; see [Where to run it](#where-to-run-it). The costs are extrapolated from two measured agents, not from a full run:
+Math checks add one Opus agent per lens in standard and deep runs; their share of those figures is an estimate, not a measurement. Times exclude the two checkpoints where the pipeline waits for you. They also assume at least 5 agents can run at once; see [Where to run it](#where-to-run-it). The costs are extrapolated from two measured agents, not from a full run:
 
 | Measured agent | Turns | Cost at API list prices | Time |
 |---|---|---|---|
@@ -134,6 +134,7 @@ Everything lands in `runs/<slug>/`:
 | `research/*.md` | Sourced claims per facet, each with a verbatim quote, or a labelled search summary when the source couldn't be opened; `*.check.md` holds the source-check verdicts |
 | `dossier.md` | The checked evidence base: established results, key numbers, contested points, constraints |
 | `analyses/*.md` | One file per lens |
+| `math/*.md` | Standard and deep runs: an independent check of each lens's mathematics, with the check scripts and their logs in `math/<lens>/` |
 | `candidates.md` | The competing answers, each with its decisive test |
 | `verdicts/*.md` | The refutation attempts, each grounded in a calculation, a quote or an inconsistency |
 | `report.md` | The ranked answers with credences: in principle vs. in practice, orders-of-magnitude gaps, what would change the verdict |
@@ -168,7 +169,7 @@ Overrule it in plain words: "I don't trust that research, get it fresh", or "tha
 /conundrum ─ frame the brief with you
   └ workflow conundrum-research: researchers (Sonnet) → source checkers → dossier (Opus)
   ─ checkpoint: you review the dossier and approve the lenses
-  └ workflow conundrum-analyze: lenses (Opus) → candidate slate → refuters → [rebuttals] → judge (Fable) → audit
+  └ workflow conundrum-analyze: lenses (Opus) → [math checks] → candidate slate → refuters → [rebuttals] → judge (Fable) → audit
 ```
 
 **Lenses** are independent analysts, each with a different method:
@@ -186,6 +187,18 @@ Overrule it in plain words: "I don't trust that research, get it fresh", or "tha
 | Statistician | is the signal real? significance, look-elsewhere effect, prior odds (anomaly questions) |
 
 The philosopher labels in the agent files are mnemonics; the methods are the content.
+
+**Question types.** Framing classifies the question as feasibility, design, mechanism, anomaly or foundations, which sets the default lenses.
+- Foundations questions, such as the problem of time or the interpretations of quantum mechanics, get positions instead of options.
+- Positions are judged on internal consistency, on what each gives up, and on whether any observation could tell them apart.
+- Where positions are empirically equivalent, the judge ranks them by what they give up and says so, instead of inventing probabilities.
+
+**Math checks.** In standard and deep runs, each lens's analysis goes straight to a math checker, an Opus agent that re-derives the analysis's load-bearing mathematics from scratch. It never reuses the lens's scripts.
+- Each claim is checked with SymPy, then numerically at 50 points to 30 digits, including the domain's ends, plus a limit and the units.
+- Each claim is marked verified, refuted (with a counterexample) or unverified in `math/<lens>.md`, with a log for every verdict.
+- Refuted math can't support a candidate. The refuters can cite it, and the judge and auditor weigh it.
+
+Formal proofs in Lean are planned, not built; [`docs/formal-math-plan.md`](docs/formal-math-plan.md) explains why they come second.
 
 **Physics tooling.** `gr_tensors.py` computes the stress-energy a metric requires and what every observer measures. It also covers:
 - energy-condition scans with Hawking–Ellis classification;
@@ -290,6 +303,7 @@ python3 .claude/skills/conundrum/scripts/gr_tensors.py selftest           # GR t
 python3 .claude/skills/conundrum/scripts/stats_tools.py selftest          # statistics toolkit vs. reference values
 python3 .claude/skills/conundrum/scripts/unit_tools.py selftest           # units vs. exact SI and IAU definitions
 python3 .claude/skills/conundrum/scripts/rocket_tools.py selftest         # rocket equations vs. closed forms and the 1 g table
+python3 .claude/skills/conundrum/scripts/math_checks.py selftest          # math checks vs. known identities, limits and expansions
 ```
 
 ### Layout
@@ -300,15 +314,16 @@ python3 .claude/skills/conundrum/scripts/rocket_tools.py selftest         # rock
     SKILL.md
     references/          lenses.md  schemas.md  rubric.md  tools.md (calculator catalog)
     scripts/             gr_tensors.py  stats_tools.py  unit_tools.py  rocket_tools.py
+                         math_checks.py  math_run.py
                          lit_search.py  fetch_text.py  check_env.py  prior_runs.py  tests/
-  agents/                18 role definitions (model, effort, tools, method)
+  agents/                19 role definitions (model, effort, tools, method)
   workflows/             conundrum-research.js  conundrum-analyze.js
   hooks/                 turn_budget.py (counts each agent's turns and tool calls)
                          guard_pipeline.py (keeps pipeline agents from editing the pipeline)
   settings.json          permission allow-list and hook registration
 dev/                     agent_rules.py (the single source of every agent's ground rules: edit there, then run it)
                          run_costs.py (a run's turns, tokens and cost per agent, from the transcripts)
-docs/conundrum-skill-plan.md
+docs/                    conundrum-skill-plan.md (the design)  formal-math-plan.md (math checks and Lean)
 examples/                smoke-test output of one lens, with provenance notes
 runs/                    one directory per investigation
 ```
@@ -321,7 +336,7 @@ runs/                    one directory per investigation
   - quoting search summaries as if they were source text;
   - an agent that could run out of turns before writing its file;
   - an agent that killed its own shell with `pkill -f`.
-- **Cost and time are extrapolated** from two measured agents until a full run is measured with `dev/run_costs.py`.
+- **Cost and time are extrapolated** from two measured agents until a full run is measured with `dev/run_costs.py`. That includes the math checks, which have never run live.
 - **A turn-capped workflow agent's return value is undocumented.** The scripts treat a missing or `ok: false` result as a failure. Check `/workflows` on the first real run, and read the run's `journal.jsonl` if a result looks empty.
 - **Agents are told, not forced, to stay in their own run's folder.** Material from earlier runs reaches them through `prior/`, but no hook stops an agent from opening another run's files. The dossier's source notes count the claims carried from earlier runs, and the auditor traces every report claim to this run's evidence.
 - **Search summaries are weak evidence.** Where WebFetch can't reach papers, claims rest on INSPIRE abstracts and search summaries. The auditor flags report claims that rest only on summaries.
