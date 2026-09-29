@@ -49,6 +49,8 @@ class TurnBudget(unittest.TestCase):
                 b = tb.load_budget({"agent_type": path.stem, "cwd": str(ROOT)})
                 self.assertIsNotNone(b, "no budget line the hook can read")
                 self.assertLess(b["hi"], b["cap"])
+                if "**Writing:** write no files" in path.read_text():   # returns its document as text
+                    continue
                 self.assertTrue(b["appends"] or b["draft_by"] is not None,
                                 "neither a Checkpoints rule nor a first-draft call")
 
@@ -68,12 +70,18 @@ class TurnBudget(unittest.TestCase):
         self.assertTrue(all(text.startswith(tb.TAG) for text in out.values()))
 
     def test_draft_agent_reminders_count_calls_and_turns_separately(self):
-        out = self.run_turns("adjudicator", 3, 12)       # 3 parallel calls per turn
+        out = self.run_turns("report-auditor", 3, 12)    # 3 parallel calls per turn
         draft_turn = next(t for t, text in out.items() if "first draft" in text)
-        self.assertEqual(draft_turn, 9)                 # calls 24 -> 27 crosses call 25
-        self.assertIn("27 tool calls in 9 turns", out[9])
+        self.assertEqual(draft_turn, 7)                 # calls 18 -> 21 crosses call 20
+        self.assertIn("21 tool calls in 7 turns", out[7])
         self.assertIn("top of your budget", out[12])   # calls 33 -> 36 crosses 35
         self.assertNotIn("Append anything", " ".join(out.values()))
+
+    def test_an_agent_that_returns_text_is_told_to_finish_its_output(self):
+        out = self.run_turns("adjudicator", 3, 12)
+        top = next(text for text in out.values() if "top of your budget" in text)
+        self.assertIn("finish your final output", top)
+        self.assertNotIn("your file", " ".join(out.values()))
 
     def test_agents_are_counted_independently_and_cleaned_up(self):
         self.run_turns("researcher", 1, 9, agent_id="x")

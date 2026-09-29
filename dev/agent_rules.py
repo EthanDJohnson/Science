@@ -1,6 +1,6 @@
 """Generate the `## Ground rules` section and frontmatter limits of every conundrum agent.
 
-The 18 agent files share their ground rules; this script is their single source. Edit the rules
+The agent files share their ground rules; this script is their single source. Edit the rules
 here, never in the agent files, then regenerate. The test suite fails when they drift apart.
 
 From the project root:
@@ -59,6 +59,10 @@ CITE_CARRY = (
     "never invent a citation, number or quote. Carry every claim's `ACCESS` label through "
     "unchanged: a search-summary claim never becomes a quote."
 )
+CITE_MATH = (
+    "never invent a result. Every verdict cites the log of a check you ran, and a claim you "
+    "didn't check stays `unverified`."
+)
 CITE_TRACE = (
     "never invent a citation, number or quote. Every number you state must trace to the dossier, "
     "a calculation file or a verdict, and a search-summary claim stays a summary."
@@ -71,6 +75,11 @@ SEARCH = (f"- **Searching:** {LIT} returns papers with abstracts you can quote; 
           "physics (Crossref and Semantic Scholar). `python3 .claude/skills/conundrum/scripts/fetch_text.py <url> "
           "--grep \"<phrase>\"` prints a source's own words from a PDF or page. WebSearch returns summaries.")
 
+# Claude Code refuses a subagent's write to a file whose name starts with REPORT, SUMMARY, FINDINGS or
+# ANALYSIS (.md): "Subagents should return findings as text, not write report files." So the judge
+# returns the report as text, and the main session saves it.
+TEXT_ONLY = ("- **Writing:** write no files. Return your document as text in your final output: Claude Code "
+             "blocks subagents from writing report files, and the main session saves it.")
 RESUME = ("if your file already exists, an earlier attempt was cut off: read it, keep what is sound and "
           "continue from it instead of starting over.")
 SAME_STEP = "in the same step as your next tool call (a step can hold several calls, so this costs no extra turn)"
@@ -107,8 +116,17 @@ SPEC = {
                               "and a proposed catalog row (Tool | Covers | Checked against | Try it)."),
     "crux-advocate": dict(lo=10, hi=20, by=10, turns=30, mode="draft", target="runs/<slug>/cruxes/<Cn>.md",
                           summary="the deciding observation, in one line."),
-    "adjudicator": dict(lo=15, hi=35, by=25, turns=50, mode="draft", target="runs/<slug>/report.md",
-                        summary="the bottom line, in two sentences."),
+    "adjudicator": dict(lo=15, hi=35, turns=50, mode="text",
+                        finish="Finish by returning `ok` (true once the report is complete), `report` (the whole "
+                               "report in the rubric's format, as markdown) and `summary`: the bottom line, in two "
+                               "sentences."),
+    "math-checker": dict(lo=20, hi=35, turns=50, mode="append", target="runs/<slug>/math/<lens>.md",
+                         checkpoint="create `{target}` in your first few turns with its table header and the claims "
+                                    "you will check. Then fill in each claim's row as soon as you have its verdict, "
+                                    + SAME_STEP + ". " + LOST,
+                         finish="Finish by returning `ok` (true once your status file is written, false if you could "
+                                "not write it), `path`, the claim counts `verified`, `refuted` and `unverified`, and "
+                                "`summary`: the most consequential refutation, if any, and what you couldn't check."),
     "report-auditor": dict(lo=15, hi=35, by=20, turns=50, mode="draft", target="runs/<slug>/audit.md",
                            summary="how many claims you checked, how many you flagged, and the most serious flag."),
 }
@@ -126,6 +144,11 @@ CALC_PREFIX = {
     "crux-advocate": "crux-<Cn>",
 }
 
+
+MATH_RUN = ("- **Running code:** run each check with `python3 .claude/skills/conundrum/scripts/math_run.py "
+            "runs/<slug>/math/<lens>/<ID>.py`. It needs no permission prompt, and it saves the log your verdict "
+            "cites. It stops a check after 110 s; for a longer one, pass `--timeout` (up to 590) and raise the Bash "
+            "tool's timeout parameter to match. " + SHORT_CALC)
 
 SHELL = ("- **Shell:** stay on the pre-approved commands: `python3 .claude/skills/conundrum/scripts/<tool>.py ...`, "
          "`python3 runs/<slug>/...` and `mkdir -p runs/...`. Anything else (inline `python3 -c` or heredocs, curl, "
@@ -162,23 +185,29 @@ def ground_rules(name: str, tools: set[str]) -> str:
                  "and give your running count.")
     if s["mode"] == "append":
         lines.append("- **Checkpoints:** " + s["checkpoint"].format(target=s["target"]))
-    else:
+    elif s["mode"] == "draft":
         lines.append(f"- **First draft:** write a complete first draft of `{s['target']}` by about call {s['by']}, "
                      "then improve it with Edit. Never finish without it written.")
-    lines.append("- **Resuming:** " + RESUME)
+    if s["mode"] != "text":
+        lines.append("- **Resuming:** " + RESUME)
     lines.append("- **Paths:** work from the project root with relative paths and never `cd`. Read only your own "
                  "run's folder and the toolkit, never another run's folder.")
     if "Bash" in tools:
         lines.append(SHELL)
     many = "Bash" in tools and name not in ("researcher", "source-checker", "toolsmith")
-    lines.append(f"- **Writing:** write only the file{'s' if many else ''} you were asked to write"
-                 + (", plus your calculation scripts." if many else "."))
+    if s["mode"] == "text":
+        lines.append(TEXT_ONLY)
+    else:
+        lines.append(f"- **Writing:** write only the file{'s' if many else ''} you were asked to write"
+                     + (", plus your calculation scripts." if many else "."))
     if name != "adjudicator":
         lines.append("- **Formats and IDs:** follow `.claude/skills/conundrum/references/schemas.md` exactly.")
     else:
         lines.append("- **Format:** follow the report format in `.claude/skills/conundrum/references/rubric.md`.")
-    if "Bash" in tools and name not in ("researcher", "source-checker", "toolsmith"):
+    if "Bash" in tools and name not in ("researcher", "source-checker", "toolsmith", "math-checker"):
         lines += calc_bullets(name)
+    if name == "math-checker":
+        lines.append(MATH_RUN)
     if name == "toolsmith":
         lines.append(f"- **Running code:** `python3 runs/<slug>/tools/<name>.py selftest` needs no permission prompt. {SHORT_CALC}")
     if name.startswith("lens-") or name in ("falsifier", "toolsmith"):
@@ -190,6 +219,8 @@ def ground_rules(name: str, tools: set[str]) -> str:
         pass
     elif name == "source-checker":
         lines.append(f"- **Citations:** {CITE_CHECKER}")
+    elif name == "math-checker":
+        lines.append(f"- **Citations:** {CITE_MATH}")
     elif "WebSearch" in tools and "Bash" in tools:
         lines.append(f"- **Citations:** {CITE_WEB}")
     elif "WebSearch" in tools:
@@ -201,7 +232,7 @@ def ground_rules(name: str, tools: set[str]) -> str:
     if "WebSearch" in tools or "WebFetch" in tools:
         lines.append(WEB)
     if name not in {"report-auditor", "source-checker"}:
-        lines.append(UNITS_GR if (name in GR_CALC or name == "researcher") else UNITS)
+        lines.append(UNITS_GR if (name in GR_CALC or name in ("researcher", "math-checker")) else UNITS)
     lines.append("")
     if "finish" in s:
         lines.append(f"Your final output goes back to an orchestration script. {s['finish']}")
@@ -219,7 +250,7 @@ def render(path: Path) -> str:
     fm_match = re.match(r"^---\n(.*?)\n---\n", text, re.S)
     fm = fm_match.group(1)
     tools = [t.strip() for t in re.search(r"^tools: (.*)$", fm, re.M).group(1).split(",")]
-    if "Edit" not in tools:
+    if "Write" in tools and "Edit" not in tools:
         tools.insert(tools.index("Write") + 1, "Edit")
     fm = re.sub(r"^tools: .*$", "tools: " + ", ".join(tools), fm, flags=re.M)
     fm = re.sub(r"^maxTurns: .*$", f"maxTurns: {SPEC[name]['turns']}", fm, flags=re.M)

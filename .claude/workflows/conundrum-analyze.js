@@ -4,6 +4,7 @@ export const meta = {
   whenToUse: 'Run by the /conundrum skill after the dossier checkpoint; args {slug, depth, type, lenses?}',
   phases: [
     { title: 'Lenses', detail: 'independent analyses of the dossier' },
+    { title: 'Math', detail: "standard and deep runs: each lens's mathematics re-derived independently" },
     { title: 'Slate', detail: 'competing candidate answers' },
     { title: 'Falsify', detail: 'refuters per candidate' },
     { title: 'Crux', detail: 'deep runs: survivors answer their verdicts' },
@@ -18,9 +19,14 @@ const DEFAULT_LENSES = {
   design: ['decomposer', 'constraints', 'engineer', 'mechanist', 'examiner'],
   mechanism: ['mechanist', 'idealizer', 'constraints', 'examiner', 'empiricist'],
   anomaly: ['statistician', 'empiricist', 'mechanist', 'constraints', 'examiner'],
+  foundations: ['examiner', 'decomposer', 'dialectician', 'idealizer', 'constraints'],
 }
-const QUICK_THIRD = { feasibility: 'engineer', design: 'engineer', mechanism: 'mechanist', anomaly: 'statistician' }
-const ANGLES = ['physics', 'evidence', 'scale']
+const QUICK_THIRD = { feasibility: 'engineer', design: 'engineer', mechanism: 'mechanist', anomaly: 'statistician',
+  foundations: 'idealizer' }
+// Deep runs give each refuter a different angle. Engineering scale means nothing to a position on a
+// foundations question, so those runs attack its consistency and its cost instead.
+const ANGLES_BY_TYPE = { foundations: ['consistency', 'evidence', 'cost'] }
+const DEFAULT_ANGLES = ['physics', 'evidence', 'scale']
 const MAX_CANDIDATES = 8
 
 const SLATE = {
@@ -35,7 +41,7 @@ const SLATE = {
         properties: {
           id: { type: 'string' },
           claim: { type: 'string' },
-          type: { type: 'string', enum: ['mechanism', 'option', 'explanation', 'null', 'reframe'] },
+          type: { type: 'string', enum: ['mechanism', 'option', 'explanation', 'position', 'null', 'reframe'] },
         },
       },
     },
@@ -62,6 +68,31 @@ const WROTE = {
   },
 }
 const wrote = r => (r && r.ok ? r : null)
+// The judge returns the report as text: Claude Code refuses a subagent's write to a file named
+// report*.md ("Subagents should return findings as text, not write report files"), so the main
+// session saves it (SKILL.md step 5).
+const REPORT = {
+  type: 'object',
+  required: ['ok', 'report', 'summary'],
+  properties: {
+    ok: { type: 'boolean' },
+    report: { type: 'string' },
+    summary: { type: 'string' },
+  },
+}
+// A math checker reports its claim counts as well.
+const MATH = {
+  type: 'object',
+  required: ['ok', 'path', 'summary', 'verified', 'refuted', 'unverified'],
+  properties: {
+    ok: { type: 'boolean' },
+    path: { type: 'string' },
+    summary: { type: 'string' },
+    verified: { type: 'integer' },
+    refuted: { type: 'integer' },
+    unverified: { type: 'integer' },
+  },
+}
 
 if (!args || !args.slug) throw new Error('conundrum-analyze needs args.slug (the run directory under runs/)')
 const dir = `runs/${args.slug}`
@@ -77,26 +108,53 @@ const chosen = [...new Set(requested.filter(l => LENSES.includes(l)))]
 const HEAVY = ['idealizer', 'engineer', 'constraints']
 const lenses = [...chosen.filter(l => !HEAVY.includes(l)), ...HEAVY.filter(l => chosen.includes(l))]
 const refuters = depth === 'deep' ? 3 : 1
+const ANGLES = ANGLES_BY_TYPE[type] || DEFAULT_ANGLES
 log(`depth ${depth}; type ${type}; lenses: ${lenses.join(', ')}; refuters per candidate: ${refuters}`)
 
-// ----- Lenses: independent and isolated; the slate needs all of them, so this barrier is intentional.
+// ----- Lenses: independent and isolated. In standard and deep runs, each lens's mathematics goes to
+// an independent math checker as soon as that lens finishes (no barrier). The slate needs every lens
+// and its check, so the wait after this stage is intentional.
 phase('Lenses')
-const analyses = await parallel(lenses.map(l => () => agent(
-  `Run directory: ${dir}. Read ${dir}/brief.md and ${dir}/dossier.md, then write ${dir}/analyses/${l}.md. ` +
-  `Put any calculation scripts in ${dir}/calc/.`,
-  { agentType: `lens-${l}`, label: l, phase: 'Lenses', schema: WROTE }).then(wrote)))
+const checkingMath = depth !== 'quick'
+const lensResults = await pipeline(lenses,
+  l => agent(
+    `Run directory: ${dir}. Read ${dir}/brief.md and ${dir}/dossier.md, then write ${dir}/analyses/${l}.md. ` +
+    `Put any calculation scripts in ${dir}/calc/.`,
+    { agentType: `lens-${l}`, label: l, phase: 'Lenses', schema: WROTE }).then(wrote),
+  (analysis, l) => (analysis == null || !checkingMath) ? { analysis, math: null } : agent(
+    `Run directory: ${dir}. Lens: ${l}. Check the load-bearing mathematics in ${dir}/analyses/${l}.md ` +
+    `and write ${dir}/math/${l}.md, with your check scripts in ${dir}/math/${l}/.`,
+    { agentType: 'math-checker', label: `math:${l}`, phase: 'Math', schema: MATH })
+    .then(m => ({ analysis, math: m && m.ok ? m : null })))
+const analyses = lensResults.map(r => (r ? r.analysis : null))
 const lensesDone = lenses.filter((_, i) => analyses[i] != null)
 const lensesFailed = lenses.filter((_, i) => analyses[i] == null)
 if (lensesFailed.length) log(`lenses that failed: ${lensesFailed.join(', ')}`)
 if (lensesDone.length < 2) {
   return { ok: false, reason: 'fewer than two lens analyses completed', dir, lensesDone, lensesFailed }
 }
+const math = {}
+lenses.forEach((l, i) => {
+  const m = lensResults[i] && lensResults[i].math
+  if (m) math[l] = { verified: m.verified || 0, refuted: m.refuted || 0, unverified: m.unverified || 0 }
+})
+const mathChecked = Object.keys(math)
+const mathFailed = checkingMath ? lensesDone.filter(l => !math[l]) : []
+if (mathFailed.length) log(`math checks that failed: ${mathFailed.join(', ')}`)
+const mathTally = mathChecked.map(l => `${l}: ${math[l].verified} verified, ${math[l].refuted} refuted, ` +
+  `${math[l].unverified} unverified`).join('; ')
+if (mathChecked.length) log(`math checks: ${mathTally}`)
+const mathNote = mathChecked.length
+  ? ` Math checks of the lenses are in ${dir}/math/ (${mathTally}).` +
+    (mathFailed.length ? ` The math of ${mathFailed.join(', ')} went unchecked.` : '')
+  : ''
 
 // ----- Slate
 phase('Slate')
 const slate = await agent(
-  `Run directory: ${dir}. Build the candidate slate from ${dir}/analyses/ ` +
-  `(completed lenses: ${lensesDone.join(', ')}) and write ${dir}/candidates.md.`,
+  `Run directory: ${dir}. Question type: ${type}. Build the candidate slate from ${dir}/analyses/ ` +
+  `(completed lenses: ${lensesDone.join(', ')}) and write ${dir}/candidates.md.` +
+  (mathNote ? mathNote + ' A candidate may not rest on a claim they refuted.' : ''),
   { agentType: 'candidate-builder', schema: SLATE, label: 'slate', phase: 'Slate' })
 if (!slate || !slate.candidates || !slate.candidates.length) {
   return { ok: false, reason: 'candidate slate was not produced', dir, lensesDone }
@@ -117,10 +175,11 @@ if (!candidates.some(c => c.type === 'null')) log('warning: the slate has no nul
 phase('Falsify')
 const verdicts = (await parallel(candidates.flatMap(c =>
   Array.from({ length: refuters }, (_, i) => () => {
-    const angle = refuters === 1 ? 'strongest available (physics, evidence or scale; say which)' : ANGLES[i % ANGLES.length]
+    const angle = refuters === 1 ? `strongest available (${ANGLES.join(', ')}; say which)` : ANGLES[i % ANGLES.length]
     return agent(
       `Run directory: ${dir}. Candidate ${c.id} (${c.type}): "${c.claim}". You are refuter ${i}; angle: ${angle}. ` +
-      `Write ${dir}/verdicts/${c.id}-${i}.md.`,
+      `Write ${dir}/verdicts/${c.id}-${i}.md.` +
+      (mathChecked.length ? ` The math checks in ${dir}/math/ count as calculations: a claim they refuted is grounds for a verdict.` : ''),
       { agentType: 'falsifier', schema: VERDICT, label: `${c.id}#${i}`, phase: 'Falsify' })
       .then(v => (v == null ? null : { id: c.id, refuter: i, angle, verdict: v.verdict, basis: v.basis }))
   })))).filter(Boolean)
@@ -153,37 +212,51 @@ if (depth === 'deep' && alive.length >= 2) {
 
 // ----- Judge: Fable at high by default; quick runs use Opus, deep runs raise effort to max.
 phase('Judge')
-const judgeOpts = { agentType: 'adjudicator', label: 'judge', phase: 'Judge', schema: WROTE }
+const judgeOpts = { agentType: 'adjudicator', label: 'judge', phase: 'Judge', schema: REPORT }
 if (depth === 'quick') Object.assign(judgeOpts, { model: 'opus', effort: 'high' })
 if (depth === 'deep') judgeOpts.effort = 'max'
-const judged = wrote(await agent(
-  `Run directory: ${dir}. Adjudicate from ${dir}/brief.md, ${dir}/dossier.md, ${dir}/candidates.md and ${dir}/verdicts/` +
+const judged = (await agent(
+  `Run directory: ${dir}. Question type: ${type}. Adjudicate from ${dir}/brief.md, ${dir}/dossier.md, ${dir}/candidates.md and ${dir}/verdicts/` +
   (cruxed.length ? ` and ${dir}/cruxes/` : '') + `. Refuter votes: ${tally}.` +
   (unexamined.length ? ` Unexamined (refuters failed): ${unexamined.join(', ')}.` : '') +
   (trimmed.length ? ` Not falsified (over the slate cap): ${trimmed.join(', ')}.` : '') +
-  ` Write ${dir}/report.md.`,
+  mathNote +
+  ` Return the whole report as \`report\` in your final output; don't write it to a file.`,
   judgeOpts))
-const bottomLine = judged ? judged.summary : null
-if (bottomLine == null) {
-  return { ok: false, reason: 'adjudicator failed', dir, candidates, alive, eliminated, unexamined }
+// Keep a report the judge returned even if it flagged it incomplete: losing a finished report to a
+// false ok is worse than presenting it with a warning.
+const report = judged && typeof judged.report === 'string' && judged.report.trim() ? judged.report : null
+if (report == null) {
+  return { ok: false, reason: 'adjudicator failed: no report returned', dir, candidates, alive, eliminated, unexamined }
 }
+const reportIncomplete = !judged.ok
+if (reportIncomplete) log('the judge returned its report but did not mark it complete')
+const bottomLine = judged.summary || null
 
 // ----- Audit
 phase('Audit')
 const audited = wrote(await agent(
-  `Run directory: ${dir}. Audit ${dir}/report.md against the run's evidence and write ${dir}/audit.md.`,
+  `Run directory: ${dir}. Audit the judge's report below against the run's evidence and write ${dir}/audit.md. ` +
+  `The main session saves the report as ${dir}/report.md after this workflow, so read it here.` +
+  (mathChecked.length ? ` Trace the report's mathematical claims to the math checks in ${dir}/math/.` : '') +
+  `\n<report>\n${report}\n</report>`,
   { agentType: 'report-auditor', label: 'audit', phase: 'Audit', schema: WROTE }))
 const auditSummary = audited ? audited.summary : null
 
 return {
   ok: true,
   dir,
-  report: `${dir}/report.md`,
+  // The main session must save this text verbatim as reportPath before anything else.
+  report,
+  reportPath: `${dir}/report.md`,
+  reportIncomplete,
   audit: auditSummary == null ? null : `${dir}/audit.md`,
   bottomLine,
   auditSummary,
   lenses: lensesDone,
   lensesFailed,
+  math,
+  mathFailed,
   candidates,
   trimmed,
   alive,

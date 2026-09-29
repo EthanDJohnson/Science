@@ -58,7 +58,10 @@ class AgentDefinitions(unittest.TestCase):
                 self.assertTrue("schemas.md" in body or "rubric.md" in body)
                 if "python3 " in body:
                     self.assertIn("Bash", tools, "runs python3 but has no Bash tool")
-                self.assertIn("Write", tools)
+                if "**Writing:** write no files" in body:
+                    self.assertFalse({"Write", "Edit"} & tools, "returns text but can write files")
+                else:
+                    self.assertIn("Write", tools)
 
     def test_models_follow_the_plan(self):
         agents = pipeline_agents()
@@ -73,7 +76,7 @@ class AgentDefinitions(unittest.TestCase):
         # Smoke-test fixes: a cut-off agent that never wrote its file lost all its work, and an agent
         # that ends without {ok, path, summary} counts as failed. maxTurns is a safety net well above
         # the call budget, because agents overshoot budgets (measured: 48 calls against a budget of 25-40).
-        appenders = {"researcher", "source-checker"} | {s for s in pipeline_agents() if s.startswith("lens-")}
+        appenders = {"researcher", "source-checker", "math-checker"} | {s for s in pipeline_agents() if s.startswith("lens-")}
         for stem, (fm, body) in pipeline_agents().items():
             with self.subTest(agent=stem):
                 rules = body.partition("## Ground rules")[2]
@@ -82,6 +85,11 @@ class AgentDefinitions(unittest.TestCase):
                 self.assertIsNotNone(budget, "no call budget")
                 self.assertGreaterEqual(int(fm["maxTurns"]), 1.4 * int(budget.group(2)),
                                         "maxTurns leaves too little headroom over the budget")
+                self.assertIn("Finish by returning", rules)
+                if "**Writing:** write no files" in rules:   # returns its document as text (the judge)
+                    for field in ("`ok`", "`report`", "`summary`"):
+                        self.assertIn(field, rules)
+                    continue
                 self.assertIn("Edit", fm["tools"], "told to improve with Edit but lacks the tool")
                 if stem in appenders:
                     self.assertIn("**Checkpoints:**", rules)
@@ -105,6 +113,24 @@ class AgentDefinitions(unittest.TestCase):
             with self.subTest(agent=path.stem):
                 self.assertEqual(rules.render(path), path.read_text(),
                                  "edited by hand: change dev/agent_rules.py and run it instead")
+
+    def test_no_agent_writes_a_file_claude_code_refuses(self):
+        # Claude Code refuses a subagent's write to REPORT*.md, SUMMARY*.md, FINDINGS*.md or ANALYSIS*.md
+        # ("Subagents should return findings as text, not write report files"), ignoring case.
+        blocked = re.compile(r"^(report|summary|findings|analysis).*\.md$", re.I)
+        spec = importlib.util.spec_from_file_location("agent_rules", ROOT / "dev" / "agent_rules.py")
+        rules = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(rules)
+        for name, s in rules.SPEC.items():
+            if "target" in s:
+                with self.subTest(agent=name):
+                    self.assertIsNone(blocked.match(Path(s["target"]).name), s["target"])
+        for name in ("conundrum-research", "conundrum-analyze"):
+            for path in re.findall(r"[Ww]rite \$\{dir\}/([\w/.<>${}-]+\.md)", workflow_source(name)):
+                with self.subTest(workflow=name, path=path):
+                    self.assertIsNone(blocked.match(Path(path).name), path)
+        self.assertIn("report", (AGENTS / "adjudicator.md").read_text())
+        self.assertIn("reportPath", (SKILL / "SKILL.md").read_text())
 
     def test_calculation_and_citation_safety_rules(self):
         for stem, (fm, body) in pipeline_agents().items():
@@ -154,6 +180,30 @@ class WorkflowWiring(unittest.TestCase):
         block = re.search(r"const DEFAULT_LENSES = \{(.*?)\n\}", src, re.S).group(1)
         for row in re.findall(r"\[(.*?)\]", block):
             self.assertTrue(set(re.findall(r"'(\w+)'", row)) <= lenses, row)
+
+    def test_foundations_type_is_wired_through(self):
+        src = workflow_source("conundrum-analyze")
+        self.assertIn("foundations: [", src)
+        self.assertIn("'position'", src)
+        self.assertIn("`foundations`", (SKILL / "SKILL.md").read_text())
+        self.assertIn("**foundations**", (SKILL / "references" / "lenses.md").read_text())
+        schemas = (SKILL / "references" / "schemas.md").read_text()
+        self.assertIn("design|foundations", schemas)
+        self.assertIn("**position**", schemas)
+        self.assertIn("**Foundations questions**", (SKILL / "references" / "rubric.md").read_text())
+        self.assertIn("`position`", (AGENTS / "candidate-builder.md").read_text())
+
+    def test_math_checks_are_wired_through(self):
+        src = workflow_source("conundrum-analyze")
+        self.assertIn("agentType: 'math-checker'", src)
+        self.assertIn("## math/<lens>.md", (SKILL / "references" / "schemas.md").read_text())
+        self.assertIn("math checks", (SKILL / "references" / "rubric.md").read_text())
+        for reader in ("candidate-builder", "falsifier", "adjudicator", "report-auditor"):
+            self.assertIn("math/", (AGENTS / f"{reader}.md").read_text(), reader)
+        checker = (AGENTS / "math-checker.md").read_text()
+        for tool in ("math_checks.py", "math_run.py"):
+            self.assertIn(tool, checker)
+        self.assertIn("Never import, copy or run the lens's scripts", checker)
 
     def test_skill_calls_the_saved_workflow_names(self):
         skill = (SKILL / "SKILL.md").read_text()

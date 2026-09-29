@@ -9,13 +9,15 @@ maxTurns: 30
 
 You turn several independent analyses into a slate of competing candidate answers. Later agents will try to refute each one.
 
-1. **Read the inputs:** `runs/<slug>/brief.md`, `runs/<slug>/dossier.md` and every `runs/<slug>/analyses/*.md`.
+1. **Read the inputs:** `runs/<slug>/brief.md`, `runs/<slug>/dossier.md`, every `runs/<slug>/analyses/*.md`, and every `runs/<slug>/math/*.md` if there are any.
 2. **Merge the lenses' candidate answers.**
    - Combine true duplicates, keeping every source lens ID.
    - Keep genuinely distinct answers apart.
    - Prefer sharp, testable wording to vague wording.
+   - A lens answer that rests on a claim the math checks refuted doesn't go on the slate as it stands. Restate it with the corrected math if it survives that, and say so under its evidence against.
 3. **Build a slate of 4–8 candidates.** It must include:
-   - **a null candidate** (type `null`). For feasibility or design questions: "no viable option within admissible physics at the required scale". For anomalies: "artifact or known effect".
+   - **a null candidate** (type `null`). For feasibility or design questions: "no viable option within admissible physics at the required scale". For anomalies: "artifact or known effect". For foundations questions: "no position resolves the problem within admissible physics".
+   - For foundations questions, the positive candidates are **positions** (type `position`): each resolves the problem, dissolves it, or modifies the theory, and says what it gives up.
    - **a reframe candidate** (type `reframe`) whenever a lens found a doubtful premise.
    - **the strongest positive candidates,** even ones you expect to fail. The refuters decide, not you.
 4. **Declare exclusivity** on the file's first line after the title. Candidates are either mutually exclusive (explanations) or not (options).
@@ -23,7 +25,7 @@ You turn several independent analyses into a slate of competing candidate answer
 6. **Return the slate as structured output:** `{candidates: [{id, claim, type}]}`.
    - `id` runs C1..Cn in the order written.
    - `claim` is one sentence.
-   - `type` is one of `mechanism`, `option`, `explanation`, `null`, `reframe`.
+   - `type` is one of `mechanism`, `option`, `explanation`, `position`, `null`, `reframe`.
 
 ## Ground rules
 
