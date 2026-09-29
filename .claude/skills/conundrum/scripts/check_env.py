@@ -33,17 +33,27 @@ def check_packages():
     return out
 
 
+class _NoRedirect(urllib.request.HTTPRedirectHandler):
+    """Test the named host only. doi.org redirects to publishers, some of which bounce
+    automated clients to bot-check domains; that is the publisher, not the network."""
+
+    def redirect_request(self, req, fp, code, msg, headers, newurl):
+        return None
+
+
 def check_sources(timeout=8.0):
+    opener = urllib.request.build_opener(_NoRedirect)
     out = []
     for name, url in SOURCES:
         req = urllib.request.Request(url, headers={"User-Agent": "conundrum-skill/1.0 preflight"})
         try:
-            with urllib.request.urlopen(req, timeout=timeout) as resp:
-                out.append({"source": name, "ok": 200 <= resp.status < 400, "detail": f"HTTP {resp.status}"})
+            with opener.open(req, timeout=timeout) as resp:
+                out.append({"source": name, "ok": True, "detail": f"HTTP {resp.status}"})
         except urllib.error.HTTPError as exc:
-            # A 4xx from the site itself still proves the host is reachable.
-            out.append({"source": name, "ok": exc.code < 500 and exc.code not in (403, 407),
-                        "detail": f"HTTP {exc.code}"})
+            # Any HTTP answer (redirect, 404, 429 rate limit) means the host is reachable.
+            # The proxy's own refusals arrive as URLError ("Tunnel connection failed").
+            detail = f"HTTP {exc.code}" + (" (rate-limited right now)" if exc.code == 429 else "")
+            out.append({"source": name, "ok": True, "detail": detail})
         except (urllib.error.URLError, TimeoutError, OSError) as exc:
             out.append({"source": name, "ok": False, "detail": str(getattr(exc, "reason", exc))[:80]})
     return out

@@ -19,6 +19,7 @@ from __future__ import annotations
 import argparse
 import json
 import sys
+import time
 import urllib.error
 import urllib.parse
 import urllib.request
@@ -32,20 +33,32 @@ USER_AGENT = "conundrum-skill/1.0 (research assistant; low volume)"
 INSPIRE_FIELDS = ",".join([
     "titles.title", "authors.full_name", "abstracts.value", "arxiv_eprints.value",
     "dois.value", "citation_count", "publication_info", "earliest_date", "control_number",
+    "document_type",
 ])
+RETRY_STATUSES = (429, 503)  # arXiv in particular throttles automated clients
 
 
 class SourceUnavailable(Exception):
     pass
 
 
-def _get(url: str, timeout: float) -> bytes:
+def _get(url: str, timeout: float, retries: int = 2) -> bytes:
     req = urllib.request.Request(url, headers={"User-Agent": USER_AGENT})
-    try:
-        with urllib.request.urlopen(req, timeout=timeout) as resp:
-            return resp.read()
-    except (urllib.error.URLError, TimeoutError, OSError) as exc:
-        raise SourceUnavailable(str(getattr(exc, "reason", exc))) from exc
+    for attempt in range(retries + 1):
+        try:
+            with urllib.request.urlopen(req, timeout=timeout) as resp:
+                return resp.read()
+        except urllib.error.HTTPError as exc:
+            if exc.code in RETRY_STATUSES and attempt < retries:
+                retry_after = exc.headers.get("Retry-After") if exc.headers else None
+                wait = float(retry_after) if retry_after and retry_after.isdigit() else 4.0 * (attempt + 1)
+                time.sleep(min(wait, 30.0))
+                continue
+            label = "rate-limited, try again in a minute" if exc.code in RETRY_STATUSES else exc.reason
+            raise SourceUnavailable(f"HTTP {exc.code}: {label}") from exc
+        except (urllib.error.URLError, TimeoutError, OSError) as exc:
+            raise SourceUnavailable(str(getattr(exc, "reason", exc))) from exc
+    raise SourceUnavailable("no response")  # pragma: no cover - loop always returns or raises
 
 
 def _clip(text: str, limit: int) -> str:
@@ -74,6 +87,7 @@ def parse_inspire(payload: dict) -> list[dict]:
             "arxiv": arxiv,
             "doi": doi,
             "journal": journal,
+            "doc_type": ", ".join(md.get("document_type") or []),
             "citations": md.get("citation_count"),
             "url": f"https://inspirehep.net/literature/{recid}" if recid else "",
             "abstract": (md.get("abstracts") or [{}])[0].get("value", ""),
@@ -134,8 +148,11 @@ def format_record(rec: dict, abstract_chars: int) -> str:
     if rec.get("doi"):
         ids.append(f"doi:{rec['doi']}")
     meta = [rec.get("year") or "n.d.", who]
+    doc_type = rec.get("doc_type") or ""
     if rec.get("journal"):
         meta.append(rec["journal"])
+    elif doc_type and doc_type != "article":
+        meta.append(doc_type)  # book, book chapter, conference paper, thesis ...
     else:
         meta.append("preprint (no journal ref)")
     if rec.get("citations") is not None:

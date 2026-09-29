@@ -24,6 +24,9 @@ Run `python3 .claude/skills/conundrum/scripts/check_env.py`.
 - **Required package missing:** ask whether to install it (`pip install sympy numpy`) before continuing. The physics calculations depend on it.
 - **Literature sources blocked:** tell the user in one line that research will lean on search snippets, which the pipeline marks and weighs down. Continue unless they want to fix network access first.
 
+Then check that WebFetch itself can read papers: WebFetch `https://arxiv.org/abs/gr-qc/0009013` and ask for the title.
+- **WebFetch fails with EGRESS_BLOCKED while `check_env.py` shows arxiv.org reachable:** the environment's network settings changed after this session started. WebFetch picks them up only in a new session. Tell the user so. They can continue, with research leaning on `lit_search` abstracts and search snippets, or start a new session first.
+
 ## 1. Frame the question with the user
 
 1. **Create the run directory.** Build a slug from today's date (`date +%F`) plus a 3–6 word kebab-case summary, for example `2026-09-29-alcubierre-negative-energy`. Create `runs/<slug>/`.

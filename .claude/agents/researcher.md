@@ -26,7 +26,10 @@ Your prompt names the run directory (`runs/<slug>/`), your facet and its mandate
    - Institutional reports.
    - Press articles, used only to find the primary source.
    - Label fringe claims `STATUS: fringe`. That covers unreplicated devices and non-peer-reviewed breakthrough claims.
-5. **Open the 5–10 most load-bearing sources** with WebFetch, at least the abstract page. If a fetch is blocked, keep the claim, mark it `ACCESS: snippet`, and quote only what the snippet shows.
+5. **Open the 5–10 most load-bearing sources** with WebFetch, at least the abstract page.
+   - If a fetch is blocked but `lit_search` printed the paper's abstract, quote the abstract and mark the claim `ACCESS: abstract`.
+   - Otherwise keep the claim, mark it `ACCESS: snippet`, and quote only what the snippet shows.
+   - The arXiv API often rate-limits automated clients. When it does, rely on INSPIRE, which indexes the same physics papers with their arXiv IDs.
 6. **Write `runs/<slug>/research/<facet>.md`** in the research format.
    - Aim for 10–30 claims, with numbers and conditions wherever they exist and a verbatim quote for each.
    - List what you searched for and didn't find under Gaps.

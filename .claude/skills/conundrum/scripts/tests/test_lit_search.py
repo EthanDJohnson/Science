@@ -102,6 +102,49 @@ class Formatting(unittest.TestCase):
         self.assertIn("preprint (no journal ref)", text)
 
 
+class DocumentTypes(unittest.TestCase):
+    def test_book_without_journal_is_not_called_a_preprint(self):
+        payload = {"hits": {"hits": [{"id": "9", "metadata": {
+            "control_number": 9, "titles": [{"title": "A monograph"}],
+            "authors": [{"full_name": "Writer, Wanda"}], "document_type": ["book"],
+            "dois": [{"value": "10.0000/book"}], "earliest_date": "2017-01-01"}}]}}
+        text = lit_search.format_record(lit_search.parse_inspire(payload)[0], 0)
+        self.assertIn("| book", text)
+        self.assertNotIn("preprint", text)
+
+
+class RateLimits(unittest.TestCase):
+    @staticmethod
+    def http_error(code):
+        return lit_search.urllib.error.HTTPError("https://x", code, "Unknown Error", {}, None)
+
+    def test_retries_a_429_then_succeeds(self):
+        ok = mock.MagicMock()
+        ok.__enter__.return_value.read.return_value = b"payload"
+        with mock.patch.object(lit_search.urllib.request, "urlopen",
+                               side_effect=[self.http_error(429), ok]) as urlopen, \
+                mock.patch.object(lit_search.time, "sleep") as sleep:
+            self.assertEqual(lit_search._get("https://x", 5), b"payload")
+        self.assertEqual(urlopen.call_count, 2)
+        sleep.assert_called_once()
+
+    def test_persistent_429_says_rate_limited(self):
+        with mock.patch.object(lit_search.urllib.request, "urlopen", side_effect=self.http_error(429)), \
+                mock.patch.object(lit_search.time, "sleep"):
+            with self.assertRaises(lit_search.SourceUnavailable) as ctx:
+                lit_search._get("https://x", 5, retries=2)
+        self.assertIn("rate-limited", str(ctx.exception))
+
+    def test_other_http_errors_fail_fast(self):
+        with mock.patch.object(lit_search.urllib.request, "urlopen", side_effect=self.http_error(500)) as urlopen, \
+                mock.patch.object(lit_search.time, "sleep") as sleep:
+            with self.assertRaises(lit_search.SourceUnavailable) as ctx:
+                lit_search._get("https://x", 5)
+        self.assertIn("HTTP 500", str(ctx.exception))
+        self.assertEqual(urlopen.call_count, 1)
+        sleep.assert_not_called()
+
+
 class Failures(unittest.TestCase):
     def run_main(self, argv):
         buf = io.StringIO()

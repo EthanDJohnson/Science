@@ -82,8 +82,42 @@ The philosopher labels in the agent files are mnemonics; the methods are the con
 
 - **Local runs** have full web access.
 - **Claude Code on the web** may block literature sites under the environment's network policy. The preflight reports which sources are reachable. Blocked research falls back to search snippets, which the pipeline marks and weighs down.
-  - To fix it, allow `export.arxiv.org`, `arxiv.org`, `inspirehep.net`, `doi.org` and the main journal domains in the environment's network settings.
-  - Cloud containers start fresh, so add `pip install sympy numpy` to the environment's setup script, or let the preflight install them.
+
+**To open it up.** The Android app can't edit environments, so use claude.ai/code in a browser or the Desktop app.
+1. Click the cloud button showing the environment name (e.g. **Default**) above the message box.
+2. Hover over the environment and click its gear icon.
+3. Set **Network access** to **Custom**, paste the list below, and tick **Also include default list of common package managers** (PyPI).
+4. Add `pip install sympy numpy` to **Setup script**; it is cached for later sessions.
+
+```
+arxiv.org
+*.arxiv.org
+inspirehep.net
+doi.org
+dx.doi.org
+www.osti.gov
+ui.adsabs.harvard.edu
+ntrs.nasa.gov
+*.aps.org
+iopscience.iop.org
+link.springer.com
+www.sciencedirect.com
+www.nature.com
+www.science.org
+pubs.aip.org
+academic.oup.com
+royalsocietypublishing.org
+onlinelibrary.wiley.com
+www.cambridge.org
+ieeexplore.ieee.org
+www.mdpi.com
+```
+
+**What to expect after saving:**
+- **Shell tools** (the preflight and `lit_search.py`) see the change immediately.
+- **Claude's WebFetch tool** only sees it in a new session.
+- **Paywalls and bot walls remain.** Many publishers answer automated clients with 403s or bot-check redirects, and nearly everything is on arXiv anyway.
+- **arXiv's API rate-limits shared cloud addresses.** INSPIRE indexes the same papers with their arXiv IDs.
 
 ### Permissions
 
