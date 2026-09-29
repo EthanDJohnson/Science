@@ -58,7 +58,10 @@ class AgentDefinitions(unittest.TestCase):
                 self.assertTrue("schemas.md" in body or "rubric.md" in body)
                 if "python3 " in body:
                     self.assertIn("Bash", tools, "runs python3 but has no Bash tool")
-                self.assertIn("Write", tools)
+                if "**Writing:** write no files" in body:
+                    self.assertFalse({"Write", "Edit"} & tools, "returns text but can write files")
+                else:
+                    self.assertIn("Write", tools)
 
     def test_models_follow_the_plan(self):
         agents = pipeline_agents()
@@ -82,6 +85,11 @@ class AgentDefinitions(unittest.TestCase):
                 self.assertIsNotNone(budget, "no call budget")
                 self.assertGreaterEqual(int(fm["maxTurns"]), 1.4 * int(budget.group(2)),
                                         "maxTurns leaves too little headroom over the budget")
+                self.assertIn("Finish by returning", rules)
+                if "**Writing:** write no files" in rules:   # returns its document as text (the judge)
+                    for field in ("`ok`", "`report`", "`summary`"):
+                        self.assertIn(field, rules)
+                    continue
                 self.assertIn("Edit", fm["tools"], "told to improve with Edit but lacks the tool")
                 if stem in appenders:
                     self.assertIn("**Checkpoints:**", rules)
@@ -105,6 +113,24 @@ class AgentDefinitions(unittest.TestCase):
             with self.subTest(agent=path.stem):
                 self.assertEqual(rules.render(path), path.read_text(),
                                  "edited by hand: change dev/agent_rules.py and run it instead")
+
+    def test_no_agent_writes_a_file_claude_code_refuses(self):
+        # Claude Code refuses a subagent's write to REPORT*.md, SUMMARY*.md, FINDINGS*.md or ANALYSIS*.md
+        # ("Subagents should return findings as text, not write report files"), ignoring case.
+        blocked = re.compile(r"^(report|summary|findings|analysis).*\.md$", re.I)
+        spec = importlib.util.spec_from_file_location("agent_rules", ROOT / "dev" / "agent_rules.py")
+        rules = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(rules)
+        for name, s in rules.SPEC.items():
+            if "target" in s:
+                with self.subTest(agent=name):
+                    self.assertIsNone(blocked.match(Path(s["target"]).name), s["target"])
+        for name in ("conundrum-research", "conundrum-analyze"):
+            for path in re.findall(r"[Ww]rite \$\{dir\}/([\w/.<>${}-]+\.md)", workflow_source(name)):
+                with self.subTest(workflow=name, path=path):
+                    self.assertIsNone(blocked.match(Path(path).name), path)
+        self.assertIn("report", (AGENTS / "adjudicator.md").read_text())
+        self.assertIn("reportPath", (SKILL / "SKILL.md").read_text())
 
     def test_calculation_and_citation_safety_rules(self):
         for stem, (fm, body) in pipeline_agents().items():

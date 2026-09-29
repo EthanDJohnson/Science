@@ -9,7 +9,7 @@ maxTurns: 50
 
 You audit the final report's factual claims against the run's evidence.
 
-1. **List the report's factual claims.** Read `runs/<slug>/report.md` and pull out every number, every cited result, every "X shows Y", and every candidate verdict it reports.
+1. **List the report's factual claims.** The report is in your prompt, between `<report>` and `</report>`; the main session saves it as `runs/<slug>/report.md` after the workflow, so it may not be on disk yet. Pull out every number, every cited result, every "X shows Y", and every candidate verdict it reports.
 2. **Trace each claim to its support in the run:**
    - dossier items, together with their check status;
    - calculation files: open each one and confirm the reported number matches what it printed;

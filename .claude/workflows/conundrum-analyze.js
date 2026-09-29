@@ -68,6 +68,18 @@ const WROTE = {
   },
 }
 const wrote = r => (r && r.ok ? r : null)
+// The judge returns the report as text: Claude Code refuses a subagent's write to a file named
+// report*.md ("Subagents should return findings as text, not write report files"), so the main
+// session saves it (SKILL.md step 5).
+const REPORT = {
+  type: 'object',
+  required: ['ok', 'report', 'summary'],
+  properties: {
+    ok: { type: 'boolean' },
+    report: { type: 'string' },
+    summary: { type: 'string' },
+  },
+}
 // A math checker reports its claim counts as well.
 const MATH = {
   type: 'object',
@@ -200,34 +212,44 @@ if (depth === 'deep' && alive.length >= 2) {
 
 // ----- Judge: Fable at high by default; quick runs use Opus, deep runs raise effort to max.
 phase('Judge')
-const judgeOpts = { agentType: 'adjudicator', label: 'judge', phase: 'Judge', schema: WROTE }
+const judgeOpts = { agentType: 'adjudicator', label: 'judge', phase: 'Judge', schema: REPORT }
 if (depth === 'quick') Object.assign(judgeOpts, { model: 'opus', effort: 'high' })
 if (depth === 'deep') judgeOpts.effort = 'max'
-const judged = wrote(await agent(
+const judged = (await agent(
   `Run directory: ${dir}. Question type: ${type}. Adjudicate from ${dir}/brief.md, ${dir}/dossier.md, ${dir}/candidates.md and ${dir}/verdicts/` +
   (cruxed.length ? ` and ${dir}/cruxes/` : '') + `. Refuter votes: ${tally}.` +
   (unexamined.length ? ` Unexamined (refuters failed): ${unexamined.join(', ')}.` : '') +
   (trimmed.length ? ` Not falsified (over the slate cap): ${trimmed.join(', ')}.` : '') +
   mathNote +
-  ` Write ${dir}/report.md.`,
+  ` Return the whole report as \`report\` in your final output; don't write it to a file.`,
   judgeOpts))
-const bottomLine = judged ? judged.summary : null
-if (bottomLine == null) {
-  return { ok: false, reason: 'adjudicator failed', dir, candidates, alive, eliminated, unexamined }
+// Keep a report the judge returned even if it flagged it incomplete: losing a finished report to a
+// false ok is worse than presenting it with a warning.
+const report = judged && typeof judged.report === 'string' && judged.report.trim() ? judged.report : null
+if (report == null) {
+  return { ok: false, reason: 'adjudicator failed: no report returned', dir, candidates, alive, eliminated, unexamined }
 }
+const reportIncomplete = !judged.ok
+if (reportIncomplete) log('the judge returned its report but did not mark it complete')
+const bottomLine = judged.summary || null
 
 // ----- Audit
 phase('Audit')
 const audited = wrote(await agent(
-  `Run directory: ${dir}. Audit ${dir}/report.md against the run's evidence and write ${dir}/audit.md.` +
-  (mathChecked.length ? ` Trace the report's mathematical claims to the math checks in ${dir}/math/.` : ''),
+  `Run directory: ${dir}. Audit the judge's report below against the run's evidence and write ${dir}/audit.md. ` +
+  `The main session saves the report as ${dir}/report.md after this workflow, so read it here.` +
+  (mathChecked.length ? ` Trace the report's mathematical claims to the math checks in ${dir}/math/.` : '') +
+  `\n<report>\n${report}\n</report>`,
   { agentType: 'report-auditor', label: 'audit', phase: 'Audit', schema: WROTE }))
 const auditSummary = audited ? audited.summary : null
 
 return {
   ok: true,
   dir,
-  report: `${dir}/report.md`,
+  // The main session must save this text verbatim as reportPath before anything else.
+  report,
+  reportPath: `${dir}/report.md`,
+  reportIncomplete,
   audit: auditSummary == null ? null : `${dir}/audit.md`,
   bottomLine,
   auditSummary,

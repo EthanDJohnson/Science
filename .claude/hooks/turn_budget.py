@@ -56,6 +56,7 @@ def load_budget(event: dict) -> dict | None:
         "cap": int(cap.group(1)) if cap else None,
         "draft_by": int(draft.group(1)) if draft else None,
         "appends": "**Checkpoints:**" in text,
+        "returns_text": "**Writing:** write no files" in text,   # the judge returns its report instead
     }
 
 
@@ -69,17 +70,18 @@ def message(b: dict, before: dict, after: dict) -> str | None:
     calls0, calls1, turns = before["calls"], after["calls"], after["turns"]
     new_ten = calls1 // 10 > calls0 // 10
     notes = []
+    work = "your final output" if b.get("returns_text") else "your file"
     if b["appends"] and new_ten:
         notes.append("Append anything you have settled that isn't in your file yet, in your next step.")
     if b["draft_by"] is not None and calls0 < b["draft_by"] <= calls1:
         notes.append("Write the complete first draft of your file now if you haven't.")
     if calls0 < b["hi"] <= calls1:
-        notes.append("That is the top of your budget: finish your file and return, unless another step "
+        notes.append(f"That is the top of your budget: finish {work} and return, unless another step "
                      "would change your answer.")
     if b["cap"] is not None and turns >= b["cap"] - LAST_TURNS:
         left = max(0, b["cap"] - turns)
         notes.append(f"About {left} turn{'' if left == 1 else 's'} remain{'s' if left == 1 else ''} before you "
-                     "are cut off: make sure your file is complete now, then return.")
+                     f"are cut off: make sure {work} is complete now, then return.")
     if not notes and not new_ten:
         return None
     status = f"{TAG} {calls1} tool calls in {turns} turns so far; budget about {b['lo']}–{b['hi']} calls"

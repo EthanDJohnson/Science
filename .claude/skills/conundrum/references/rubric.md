@@ -1,6 +1,6 @@
 # Adjudication rubric and report format
 
-The adjudicator reads `brief.md`, `dossier.md`, `candidates.md`, every `verdicts/*.md`, every `cruxes/*.md` if present, and any calculation files those cite. It writes `report.md`.
+The adjudicator reads `brief.md`, `dossier.md`, `candidates.md`, every `verdicts/*.md`, every `cruxes/*.md` if present, and any calculation files those cite. It returns the report as text, which the main session saves as `report.md`.
 
 ## How to weigh evidence
 

@@ -23,7 +23,7 @@ Reference files, all in `.claude/skills/conundrum/references/`:
 
 Run `python3 .claude/skills/conundrum/scripts/check_env.py`.
 - **Few agents at once:** if it notes that only a few agents run at once, mention that runs here will take longer than the table below. It's roughly 2× for standard and 3–4× for deep.
-- **Required package missing:** ask whether to install it (`pip install sympy numpy`) before continuing. The physics calculations depend on it.
+- **Required package missing:** ask whether to install it (`pip install sympy numpy scipy`) before continuing. The physics calculations depend on it, and agents' scripts often use scipy.
 - **Literature sources blocked:** tell the user in one line that research will lean on search summaries and INSPIRE abstracts, which the pipeline marks and weighs down. Continue unless they want to fix network access first.
 
 Then check that WebFetch itself can read papers: WebFetch `https://arxiv.org/abs/gr-qc/0009013` and ask for the title.
@@ -62,11 +62,11 @@ Then check that WebFetch itself can read papers: WebFetch `https://arxiv.org/abs
 
    | depth | what runs | agent runs | rough time | rough cost at API list prices |
    |---|---|---|---|---|
-   | quick | 3 researchers, no source checks, 3 lenses, 1 refuter per candidate, Opus judge | ~16 | 1–2 hours | ~$35–60 |
-   | standard | 4 researchers + checks, 5 lenses + math checks, 1 refuter per candidate, Fable judge | ~28 | 2–3.5 hours | ~$55–110 |
-   | deep | 5 researchers + checks, 6–7 lenses + math checks, 3 refuters per candidate, crux round, Fable judge at max | ~46–57 | 3.5–5.5 hours | ~$115–210 |
+   | quick | 3 researchers, no source checks, 3 lenses, 1 refuter per candidate, Opus judge | ~18 | 1–2 hours | ~$25–40 |
+   | standard | 4 researchers + checks, 5 lenses + math checks, 1 refuter per candidate, Fable judge | ~28 | 2–3.5 hours | ~$35–65 |
+   | deep | 5 researchers + checks, 6–7 lenses + math checks, 3 refuters per candidate, crux round, Fable judge at max | ~46–57 | 3.5–5.5 hours | ~$60–110 |
 
-   Say that these are extrapolated from two measured agents, not a full run. Times exclude the checkpoints and assume at least 5 agents can run at once (see the preflight). On a subscription the run draws on usage limits instead. `/workflows` shows live token counts, and `/usage` afterwards attributes usage to subagents and flags cache misses.
+   Say that quick was measured once ($29 at list prices, including reruns after interruptions), and that standard and deep are extrapolated from it. Times exclude the checkpoints and assume at least 5 agents can run at once (see the preflight). On a subscription the run draws on usage limits instead. `/workflows` shows live token counts, and `/usage` afterwards attributes usage to subagents and flags cache misses.
 
    Once the brief is confirmed, act on the earlier runs:
    - **Record what the user said about a run,** so later runs remember it. For distrust, run `prior_runs.py mark <run> --trust distrusted --note "<their reason>"`, and later runs ignore it without asking. A caveat, such as "the plot values were read by eye", goes in with `--note` alone.
@@ -107,7 +107,11 @@ Then:
 
 ## 4. Analyze
 
-Call the Workflow tool with `name: "conundrum-analyze"` and `args: {slug, depth, type, lenses}`, and wait for completion. Then offer to commit and push `runs/<slug>/` again (see step 2).
+Call the Workflow tool with `name: "conundrum-analyze"` and `args: {slug, depth, type, lenses}`, and wait for completion.
+
+**Save the report first.** The result's `report` field holds the judge's report as text; write it verbatim to `reportPath` (`runs/<slug>/report.md`). The judge can't save it itself, because Claude Code blocks subagents from writing files named `report*.md`. If `reportIncomplete` is true, tell the user the judge didn't mark the report complete.
+
+Then offer to commit and push `runs/<slug>/` again (see step 2).
 
 ## 5. Report
 
@@ -139,6 +143,6 @@ Don't restate the whole report; it is in the file.
 - **A workflow stopped partway:** relaunch it with the same name and args. In the same session, completed agents return their saved results instead of running again.
 - **A workflow hit the usage limit:** in a local interactive session, waiting agents continue by themselves after the reset (up to two waits per run). In a background or cloud session the affected agents fail instead. Relaunch the same workflow with the same args after the reset: completed agents return saved results, and a cut-off agent continues from what it had appended to its file.
 - **An agent's tool call was refused with `[pipeline guard]`:** it tried to write outside `runs/`. That's expected to be rare. If it shows up in a run, mention it, and check that the agent's output doesn't depend on the refused write.
-- **A workflow returned `ok: false`:** tell the user what failed (the result says why), and offer to rerun that stage.
+- **A workflow returned `ok: false`:** tell the user what failed (the result says why), and offer to rerun that stage. If the analyze stage failed at the judge, a relaunch with the same args returns every earlier agent's saved result and runs only the judge and the audit.
 - **Research came back thin because sources were blocked:** say so plainly, and offer to rerun where the network allows arXiv, INSPIRE and journal sites.
 - **The workflow approval prompt:** in manual permission mode each run asks for approval. The user can pick "Yes, and don't ask again" for these two workflows.

@@ -188,15 +188,18 @@ const SLATE5 = {
 }
 
 const mathOk = c => ({ ...wroteOk(c), verified: 3, refuted: 0, unverified: 1 })
+const REPORT_TEXT = '# Warp options: report\n\n## Bottom line\nNo option works.\n'
+const judgeOk = () => ({ ok: true, report: REPORT_TEXT, summary: 'judge done' })
 
 function analyzeHandler({ slate = SLATE5, verdict = () => ({ verdict: 'survives', basis: 'calculation' }), fail = () => false,
-  math = mathOk } = {}) {
+  math = mathOk, judge = judgeOk } = {}) {
   return c => {
     if (fail(c)) return null
     switch (typeOf(c)) {
       case 'candidate-builder': return slate
       case 'falsifier': return verdict(c)
       case 'math-checker': return math(c)
+      case 'adjudicator': return judge(c)
       default: return wroteOk(c)
     }
   }
@@ -403,8 +406,33 @@ test('analyze: a failed judge returns ok:false and skips the audit', async () =>
   const fail = c => typeOf(c) === 'adjudicator'
   const { result, calls } = await run('conundrum-analyze', { slug: 's' }, analyzeHandler({ fail }))
   assert.equal(result.ok, false)
-  assert.equal(result.reason, 'adjudicator failed')
+  assert.equal(result.reason, 'adjudicator failed: no report returned')
   assert.equal(byType(calls, 'report-auditor').length, 0)
+  const empty = await run('conundrum-analyze', { slug: 's' }, analyzeHandler({ judge: () => ({ ok: true, report: ' ', summary: 's' }) }))
+  assert.equal(empty.result.ok, false)
+})
+
+test('analyze: the judge returns its report as text; the auditor gets it, and so does the main session', async () => {
+  const { result, calls } = await run('conundrum-analyze', { slug: 's' }, analyzeHandler())
+  const judge = byType(calls, 'adjudicator')[0]
+  assert.deepEqual(judge.opts.schema.required, ['ok', 'report', 'summary'])
+  assert.match(judge.prompt, /don't write it to a file/)
+  assert.doesNotMatch(judge.prompt, /Write runs\/s\/report\.md/)
+  const audit = byType(calls, 'report-auditor')[0]
+  assert.ok(audit.prompt.includes(`<report>\n${REPORT_TEXT}\n</report>`))
+  assert.equal(result.report, REPORT_TEXT)
+  assert.equal(result.reportPath, 'runs/s/report.md')
+  assert.equal(result.reportIncomplete, false)
+})
+
+test('analyze: a report the judge left unmarked is kept, flagged, and still audited', async () => {
+  const judge = () => ({ ok: false, report: REPORT_TEXT, summary: 'judge done' })
+  const { result, calls, logs } = await run('conundrum-analyze', { slug: 's' }, analyzeHandler({ judge }))
+  assert.equal(result.ok, true)
+  assert.equal(result.report, REPORT_TEXT)
+  assert.equal(result.reportIncomplete, true)
+  assert.ok(logs.some(l => l.includes('did not mark it complete')))
+  assert.equal(byType(calls, 'report-auditor').length, 1)
 })
 
 test('analyze: a failed audit still returns the report, with audit: null', async () => {
@@ -429,6 +457,7 @@ test('analyze: file-writing agents get the {ok, path, summary} shape; slate and 
     if (typeOf(c) === 'candidate-builder') assert.deepEqual(required, ['candidates'])
     else if (typeOf(c) === 'falsifier') assert.deepEqual(required, ['verdict', 'basis'])
     else if (typeOf(c) === 'math-checker') assert.deepEqual(required, [...WROTE_FIELDS, 'verified', 'refuted', 'unverified'])
+    else if (typeOf(c) === 'adjudicator') assert.deepEqual(required, ['ok', 'report', 'summary'])
     else assert.deepEqual(required, WROTE_FIELDS, c.opts.label)
   }
 })

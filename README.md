@@ -16,7 +16,7 @@ The design, and the review of the Gemini proposal it started from, are in [`docs
 
 1. **Requirements**
    - Claude Code with dynamic workflows. They're available on paid plans; on Pro, turn them on under Dynamic workflows in `/config`.
-   - Python 3.10+ with `pip install sympy numpy pypdf cffi`. `pypdf` lets agents quote PDFs verbatim. `cffi` is there because some system Python packages (a broken `cryptography`) otherwise make `pypdf` crash on import; the preflight reports this.
+   - Python 3.10+ with `pip install sympy numpy scipy pypdf cffi`. `pypdf` lets agents quote PDFs verbatim. `cffi` is there because some system Python packages (a broken `cryptography`) otherwise make `pypdf` crash on import; the preflight reports this.
 2. **Start a new Claude Code session in this repo.** Claude Code loads the skill, agents and workflows at session start.
 3. **Run the skill:**
    ```
@@ -28,27 +28,22 @@ The design, and the review of the Gemini proposal it started from, are in [`docs
 
 ### Depth and cost
 
-| Depth | What runs | Agent runs | Rough time | Rough cost at API list prices |
+| Depth | What runs | Agent runs | Rough time | Cost at API list prices |
 |---|---|---|---|---|
-| `quick` | 3 researchers, 3 lenses, 1 refuter per candidate, Opus judge | ~16 | 1–2 hours | ~$35–60 |
-| `standard` | 4 researchers with source checks, 5 lenses with math checks, 1 refuter per candidate, Fable judge | ~28 | 2–3.5 hours | ~$55–110 |
-| `deep` | 5 researchers with checks, 6–7 lenses with math checks, 3 refuters per candidate with different angles, rebuttal round, Fable judge at max effort | ~46–57 | 3.5–5.5 hours | ~$115–210 |
+| `quick` | 3 researchers, 3 lenses, 1 refuter per candidate, Opus judge | ~18 | 1–2 hours | ~$25–40 (measured once: $29) |
+| `standard` | 4 researchers with source checks, 5 lenses with math checks, 1 refuter per candidate, Fable judge | ~28 | 2–3.5 hours | ~$35–65 |
+| `deep` | 5 researchers with checks, 6–7 lenses with math checks, 3 refuters per candidate with different angles, rebuttal round, Fable judge at max effort | ~46–57 | 3.5–5.5 hours | ~$60–110 |
 
-Math checks add one Opus agent per lens in standard and deep runs; their share of those figures is an estimate, not a measurement. Times exclude the two checkpoints where the pipeline waits for you. They also assume at least 5 agents can run at once; see [Where to run it](#where-to-run-it). The costs are extrapolated from two measured agents, not from a full run:
+Times exclude the two checkpoints where the pipeline waits for you, and assume at least 5 agents can run at once; see [Where to run it](#where-to-run-it).
 
-| Measured agent | Turns | Cost at API list prices | Time |
-|---|---|---|---|
-| Constraints lens (Opus, before the fixes; see [`examples/`](examples/smoke-test-constraints-lens/)) | 64 | ~$12.70 | 73 min |
-| Researcher (Sonnet), one narrow facet | 44 | ~$1.20 | 8 min |
+**The one measured run** was a quick run on the Alcubierre question on 2026-09-29, in a cloud session. It cost $28.72 at list prices:
+- the agents $21.92 and the main session $6.79;
+- about $3.40 of it re-ran agents after a usage-limit stop and a container restart;
+- per agent: researchers ~$0.55–0.75, lenses ~$1.10–2.50, the slate ~$2, refuters ~$0.35–1.30, the judge ~$1.
 
-`python3 dev/run_costs.py` measures these from Claude Code's transcripts, per agent; run it after your first run to replace the extrapolation.
+Standard and deep costs are extrapolated from that run. They add source checks, math checks (one Opus agent per lens, not yet run live), more lenses and refuters, and Fable's higher prices for the judge. `python3 dev/run_costs.py` measures a run from Claude Code's transcripts, per agent.
 
-Where the lens's money went:
-- **31%** waiting on slow calculations, including two cache expiries that each cost about $1;
-- **29%** on one long planning burst, the cache rewrite it triggered, and carrying it through every later turn;
-- **43%** in its last 24 turns, because every turn re-reads the whole context, which grew from 145k to 394k tokens.
-
-The toolkit fixes and the no-polling rules target the first item. The harness reported "409k tokens" for that agent, but that is its final context size. It processed about 15.8M tokens, 93% of them cache reads.
+**What the fixes bought.** Before the toolkit fixes and the no-polling rule, a smoke test of the constraints lens cost ~$12.70 over 64 turns (see [`examples/`](examples/smoke-test-constraints-lens/)). Most of that went on waiting for slow calculations and on re-reading a context that grew to 394k tokens. In the measured run, the same lens cost ~$2.50.
 
 Cache reads count against plan usage at the cached rate, so the API list price is a rough proxy for how much of your window a run uses. `/workflows` shows live token counts and lets you stop a run. Afterwards `/usage` attributes usage to subagents and flags cache misses, and `dev/run_costs.py` prices each agent at API list prices.
 
@@ -73,7 +68,7 @@ The stages hand over through files, so they can also change machines. For exampl
 1. **Get the code and a current Claude Code.** Clone the repo, or `git pull` in your copy, and stay on `main`. Run `claude update`: a workflow waits out a usage limit only from version 2.1.271.
 2. **Install and check the Python side:**
    ```
-   pip install sympy numpy pypdf cffi
+   pip install sympy numpy scipy pypdf cffi
    python3 .claude/skills/conundrum/scripts/check_env.py
    ```
    The preflight should show every package working, the literature sources reachable, and at least 5 agents at once.
@@ -239,7 +234,7 @@ Agents never write straight into the toolkit; promotion is a step you see.
 1. Click the cloud button showing the environment name (e.g. **Default**) above the message box.
 2. Hover over the environment and click its gear icon.
 3. Set **Network access** to **Custom**, paste the list below, and tick **Also include default list of common package managers** (PyPI).
-4. Add `pip install sympy numpy pypdf cffi` to **Setup script**; new sessions run it.
+4. Add `pip install sympy numpy scipy pypdf cffi` to **Setup script**; new sessions run it.
 
 ```
 arxiv.org
@@ -330,13 +325,15 @@ runs/                    one directory per investigation
 
 ### Known limitations of v1
 
-- **Never run end to end yet.** It is tested offline: the tools, a mock-runtime run of both workflows, and definition consistency. One lens was also smoke-tested live. Your first real run is the real test, so start with `standard`.
+- **One quick run so far.** A quick run on the Alcubierre question completed end to end on 2026-09-29.
+  - It exposed one blocker, now fixed. Claude Code refused the judge's write to `report.md`, because it blocks subagents from writing files named `report*.md`. The judge now returns the report as text, and the main session saves it.
+  - Standard and deep runs, the math checks and the foundations type haven't run live yet.
 - **What the smoke test fixed.** The constraints lens produced a sound, calculation-backed analysis (see [`examples/`](examples/smoke-test-constraints-lens/)). It also exposed problems, now fixed:
   - a toolkit bug that passed the weak energy condition where it fails;
   - quoting search summaries as if they were source text;
   - an agent that could run out of turns before writing its file;
   - an agent that killed its own shell with `pkill -f`.
-- **Cost and time are extrapolated** from two measured agents until a full run is measured with `dev/run_costs.py`. That includes the math checks, which have never run live.
+- **Standard and deep costs are extrapolated** from the one measured quick run, including the math checks, which have never run live.
 - **A turn-capped workflow agent's return value is undocumented.** The scripts treat a missing or `ok: false` result as a failure. Check `/workflows` on the first real run, and read the run's `journal.jsonl` if a result looks empty.
 - **Agents are told, not forced, to stay in their own run's folder.** Material from earlier runs reaches them through `prior/`, but no hook stops an agent from opening another run's files. The dossier's source notes count the claims carried from earlier runs, and the auditor traces every report claim to this run's evidence.
 - **Search summaries are weak evidence.** Where WebFetch can't reach papers, claims rest on INSPIRE abstracts and search summaries. The auditor flags report claims that rest only on summaries.
