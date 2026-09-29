@@ -14,7 +14,7 @@ It tested one agent's instructions and the GR toolkit. It is not a full `/conund
 - **Every `[new: ...]` quote in the analysis is WebSearch summary text,** not verbatim source text. The agent disclosed this under "Assumptions I relied on". The current prompts require such claims to be labelled `search-summary`, never quoted.
 - **The files are unchanged agent output.** Paths inside them still say `runs/smoke-constraints/`.
 - **The analysis predates the analysis format's "Lens-specific outputs" section.**
-- **It cost** 409k tokens, 75 tool calls and 73 minutes, for one agent.
+- **It cost** about $12 at API list prices: 75 tool calls in 64 turns over 73 minutes, and about 15.8M tokens processed (93% cache reads). The harness's "409k tokens" is the agent's final context size. About a third of the cost went on waiting for slow calculations, and its three least obvious findings (F3, F7 and F11 in the analysis) were finished in turns 44 to 56.
 
 ## Files
 

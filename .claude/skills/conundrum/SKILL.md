@@ -41,15 +41,17 @@ Then check that WebFetch itself can read papers: WebFetch `https://arxiv.org/abs
 
    | depth | what runs | agent runs | rough time | rough cost at API list prices |
    |---|---|---|---|---|
-   | quick | 3 researchers, no source checks, 3 lenses, 1 refuter per candidate, Opus judge | ~16 | 1–2 hours | ~$20–50 |
-   | standard | 4 researchers + checks, 5 lenses, 1 refuter per candidate, Fable judge | ~23 | 1.5–3 hours | ~$30–70 |
-   | deep | 5 researchers + checks, 6–7 lenses, 3 refuters per candidate, crux round, Fable judge at max | ~40–50 | 3–5 hours | ~$80–200 |
+   | quick | 3 researchers, no source checks, 3 lenses, 1 refuter per candidate, Opus judge | ~16 | 1–2 hours | ~$35–60 |
+   | standard | 4 researchers + checks, 5 lenses, 1 refuter per candidate, Fable judge | ~23 | 1.5–3 hours | ~$45–90 |
+   | deep | 5 researchers + checks, 6–7 lenses, 3 refuters per candidate, crux round, Fable judge at max | ~40–50 | 3–5 hours | ~$100–180 |
 
-   Say that these are extrapolated from one measured agent, not a full run, and that times exclude the checkpoints. On a subscription the run draws on usage limits instead, and `/workflows` shows real token counts as it runs.
+   Say that these are extrapolated from two measured agents, not a full run, and that times exclude the checkpoints. On a subscription the run draws on usage limits instead. `/workflows` shows live token counts, and `/usage` afterwards attributes usage to subagents and flags cache misses.
 
 ## 2. Research
 
 Call the Workflow tool with `name: "conundrum-research"` and `args: {slug, depth}`. It runs in the background, so wait for its completion notification. If the result lists `missing` or `unchecked` facets, mention them at the checkpoint.
+
+**In a cloud session, offer to commit and push `runs/<slug>/` now,** and again after step 4. The container is reclaimed after inactivity and unpushed files are lost, while a workflow's saved results survive, so a later relaunch would trust agents whose files no longer exist.
 
 ## 3. Checkpoint with the user
 
@@ -68,7 +70,7 @@ Then:
 
 ## 4. Analyze
 
-Call the Workflow tool with `name: "conundrum-analyze"` and `args: {slug, depth, type, lenses}`, and wait for completion.
+Call the Workflow tool with `name: "conundrum-analyze"` and `args: {slug, depth, type, lenses}`, and wait for completion. Then offer to commit and push `runs/<slug>/` again (see step 2).
 
 ## 5. Report
 
@@ -84,6 +86,7 @@ Don't restate the whole report; it is in the file.
 ## If something fails
 
 - **A workflow stopped partway:** relaunch it with the same name and args. In the same session, completed agents return their saved results instead of running again.
+- **A workflow hit the usage limit:** in a local interactive session, waiting agents continue by themselves after the reset (up to two waits per run). In a background or cloud session the affected agents fail instead. Relaunch the same workflow with the same args after the reset: completed agents return saved results, and a cut-off agent continues from what it had appended to its file.
 - **A workflow returned `ok: false`:** tell the user what failed (the result says why), and offer to rerun that stage.
 - **Research came back thin because sources were blocked:** say so plainly, and offer to rerun where the network allows arXiv, INSPIRE and journal sites.
 - **The workflow approval prompt:** in manual permission mode each run asks for approval. The user can pick "Yes, and don't ask again" for these two workflows.

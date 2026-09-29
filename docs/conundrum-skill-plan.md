@@ -27,6 +27,8 @@
 >   - horizon finding;
 >   - high-precision rechecks.
 > - **Costs in §5.7 are re-estimated** from the smoke test's measured usage.
+> - **Turn limits are a safety net, not a target.** They sit at 1.5× the call budget, because agents overshoot budgets (a researcher used 48 calls against a budget of 25–40). Agents that build a file piece by piece append to it as they go, and no agent polls a running process.
+> - **Calculation-heavy lenses start last,** because a relaunch replays a failed agent and every agent that started after it.
 
 A second opinion on a Gemini conversation about (1) Harb et al.'s "philosophy agents" chemistry paper, (2) whether philosophy-style system prompts help frontier models, and (3) how to build a multi-agent "scientific conundrum" skill in Claude Code. Sections 1–4 check Gemini's claims; section 5 is my plan.
 
@@ -539,11 +541,11 @@ return { report: `${dir}/report.md`, alive }
 
 | Depth | What changes | Agents per run | Rough time | Rough cost at API list prices |
 |---|---|---|---|---|
-| quick | 3 facets, no source check, 3 lenses, 1 refuter per candidate, no crux, Opus judge at `high` | ~16 | 1–2 hours | ~$20–50 |
-| standard | 4 facets with checks, 5 lenses, 1 refuter per candidate, no crux, Fable judge at `high` | ~23 | 1.5–3 hours | ~$30–70 |
-| deep | 5 facets with checks, 6–7 lenses, 3 refuters per candidate, crux round, Fable judge at `max` (pairwise judging: v2) | ~40–50 | 3–5 hours | ~$80–200 |
+| quick | 3 facets, no source check, 3 lenses, 1 refuter per candidate, no crux, Opus judge at `high` | ~16 | 1–2 hours | ~$35–60 |
+| standard | 4 facets with checks, 5 lenses, 1 refuter per candidate, no crux, Fable judge at `high` | ~23 | 1.5–3 hours | ~$45–90 |
+| deep | 5 facets with checks, 6–7 lenses, 3 refuters per candidate, crux round, Fable judge at `max` (pairwise judging: v2) | ~40–50 | 3–5 hours | ~$100–180 |
 
-My first estimates ($10–25, $20–40 and $50–100) were about half of these. The smoke test measured one calculation-heavy lens at 409k tokens, 75 tool calls and 73 minutes, before its call budget was added. These figures scale that up, and they're still not from a full run. Run one standard pilot and read the per-agent token counts in `/workflows` before trusting them.
+My first estimates ($10–25, $20–40 and $50–100) were low. Two agents have been measured since: a calculation-heavy Opus lens (64 turns, about $12 at API list prices, 73 minutes, before the fixes) and a Sonnet researcher (44 turns, about $0.90, 8 minutes). The smoke test's "409k tokens" was that agent's final context size, not what it consumed: it processed about 15.8M tokens, 93% of them cache reads. Each turn re-reads the whole context, so cost grows faster than the turn count, and a wait of more than 5 minutes lets the prompt cache expire and makes the next turn several times dearer. The figures above scale these two agents up and are still not from a full run. Run one standard pilot and read `/usage` before trusting them.
 
 - **On a subscription**, runs draw down your usage window instead. Workflows pause at a usage limit and resume after the reset.
 - **A deep analyze run can cross the 25-agent "Large workflow" warning.** If you run deep often, set the Dynamic workflow size to `large` in `/config`, which raises the warning threshold to 50.

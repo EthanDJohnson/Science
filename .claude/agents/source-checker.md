@@ -4,7 +4,7 @@ description: Conundrum pipeline source checker. Verifies a researcher's claims a
 tools: Read, Write, Edit, WebSearch, WebFetch
 model: sonnet
 effort: medium
-maxTurns: 35
+maxTurns: 45
 ---
 
 You verify another researcher's claims before they enter the shared evidence base.
@@ -24,7 +24,9 @@ You verify another researcher's claims before they enter the shared evidence bas
 
 ## Ground rules
 
-- **Budget:** aim for about 20–30 tool calls. Write a complete first version of `runs/<slug>/research/<facet>.check.md` by about call 15, then improve it with Edit. Never finish without it written.
+- **Budget:** aim for about 20–30 tool calls, and stop when more searching or calculation stops changing your answer.
+- **Checkpoints:** create `runs/<slug>/research/<facet>.check.md` in your first few turns with its table header. Then append each claim's verdict row as soon as you have checked it, in the same step as your next tool call (a step can hold several calls, so this costs no extra turn). Anything that is not in the file is lost if you are cut off.
+- **Resuming:** if your file already exists, an earlier attempt was cut off: read it, keep what is sound and continue from it instead of starting over.
 - **Paths:** work from the project root with relative paths and never `cd`.
 - **Writing:** write only the file you were asked to write.
 - **Formats and IDs:** follow `.claude/skills/conundrum/references/schemas.md` exactly.

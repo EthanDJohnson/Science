@@ -30,11 +30,36 @@ The design, and the review of the Gemini proposal it started from, are in [`docs
 
 | Depth | What runs | Agent runs | Rough time | Rough cost at API list prices |
 |---|---|---|---|---|
-| `quick` | 3 researchers, 3 lenses, 1 refuter per candidate, Opus judge | ~16 | 1–2 hours | ~$20–50 |
-| `standard` | 4 researchers with source checks, 5 lenses, 1 refuter per candidate, Fable judge | ~23 | 1.5–3 hours | ~$30–70 |
-| `deep` | 5 researchers with checks, 6–7 lenses, 3 refuters per candidate with different angles, rebuttal round, Fable judge at max effort | ~40–50 | 3–5 hours | ~$80–200 |
+| `quick` | 3 researchers, 3 lenses, 1 refuter per candidate, Opus judge | ~16 | 1–2 hours | ~$35–60 |
+| `standard` | 4 researchers with source checks, 5 lenses, 1 refuter per candidate, Fable judge | ~23 | 1.5–3 hours | ~$45–90 |
+| `deep` | 5 researchers with checks, 6–7 lenses, 3 refuters per candidate with different angles, rebuttal round, Fable judge at max effort | ~40–50 | 3–5 hours | ~$100–180 |
 
-Times exclude the two checkpoints where the pipeline waits for you. Both columns are extrapolated from one measured agent, not from a full run. The constraints lens took 409k tokens, 75 tool calls and 73 minutes in its smoke test (see [`examples/`](examples/smoke-test-constraints-lens/)), before its budget was tightened. On a subscription a run draws on your usage limits instead, and a deep run can use a large share of them. `/workflows` shows live token counts, and you can stop a run there.
+Times exclude the two checkpoints where the pipeline waits for you. The costs are extrapolated from two measured agents, not from a full run:
+
+| Measured agent | Turns | Cost at API list prices | Time |
+|---|---|---|---|
+| Constraints lens (Opus, before the fixes; see [`examples/`](examples/smoke-test-constraints-lens/)) | 64 | ~$12 | 73 min |
+| Researcher (Sonnet), one narrow facet | 44 | ~$0.90 | 8 min |
+
+Where the lens's money went:
+- **31%** waiting on slow calculations, including two cache expiries that each cost about $1;
+- **29%** on one long planning burst, the cache rewrite it triggered, and carrying it through every later turn;
+- **43%** in its last 24 turns, because every turn re-reads the whole context, which grew from 145k to 394k tokens.
+
+The toolkit fixes and the no-polling rules target the first item. The harness reported "409k tokens" for that agent, but that is its final context size. It processed about 15.8M tokens, 93% of them cache reads.
+
+Cache reads count against plan usage at the cached rate, so the API list price is a rough proxy for how much of your window a run uses. `/workflows` shows live token counts and lets you stop a run. Afterwards `/usage` attributes usage to subagents and flags cache misses.
+
+### If a run is cut off
+
+| Cut | What is lost | What survives |
+|---|---|---|
+| An agent reaches its turn limit | Whatever it hadn't written to its file. Its reasoning isn't stored in a usable form, so the file is its only memory | Its file, and every completed agent's saved result |
+| Your usage limit, in a local interactive subscription session | Nothing: waiting agents continue after the reset, up to two waits per run | Everything |
+| Your usage limit, in a background or cloud session | The in-flight work of the agents that hit it | Their files and every completed agent's result. Relaunch after the reset |
+| A cloud container reclaimed after inactivity | Every file you didn't push | The workflow's saved results, so a relaunch trusts agents whose files are gone. Push `runs/<slug>/` after each stage |
+
+Agents append findings to their files as they go, in the same step as their next tool call, so a cut costs a few turns of work and a checkpoint costs output tokens, not an extra turn. A relaunched agent that finds its file continues from it. A relaunch also reruns a failed agent and every agent that started after it, so the calculation-heavy lenses start last.
 
 ### What you get
 
@@ -169,7 +194,8 @@ runs/                    one directory per investigation
   - quoting search summaries as if they were source text;
   - an agent that could run out of turns before writing its file;
   - an agent that killed its own shell with `pkill -f`.
-- **Cost and time are extrapolated** from that one agent until a full run is measured.
+- **Cost and time are extrapolated** from two measured agents until a full run is measured.
+- **A turn-capped workflow agent's return value is undocumented.** The scripts treat a missing or `ok: false` result as a failure. Check `/workflows` on the first real run, and read the run's `journal.jsonl` if a result looks empty.
 - **Search summaries are weak evidence.** Where WebFetch can't reach papers, claims rest on INSPIRE abstracts and search summaries. The auditor flags report claims that rest only on summaries.
 - **Not yet in v1:**
   - pairwise judging in deep mode;

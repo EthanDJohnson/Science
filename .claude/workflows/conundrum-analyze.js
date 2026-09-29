@@ -71,7 +71,11 @@ let requested = args.lenses && args.lenses.length ? args.lenses : DEFAULT_LENSES
 if (depth === 'quick' && !(args.lenses && args.lenses.length)) requested = ['constraints', 'examiner', QUICK_THIRD[type]]
 const unknownLenses = requested.filter(l => !LENSES.includes(l))
 if (unknownLenses.length) log(`ignoring unknown lenses: ${unknownLenses.join(', ')}`)
-const lenses = [...new Set(requested.filter(l => LENSES.includes(l)))]
+const chosen = [...new Set(requested.filter(l => LENSES.includes(l)))]
+// A relaunch after a failure replays the failed agent and every agent that started after it, even
+// completed ones. Start the calculation-heavy lenses last: they are the likeliest to run long or fail.
+const HEAVY = ['idealizer', 'engineer', 'constraints']
+const lenses = [...chosen.filter(l => !HEAVY.includes(l)), ...HEAVY.filter(l => chosen.includes(l))]
 const refuters = depth === 'deep' ? 3 : 1
 log(`depth ${depth}; type ${type}; lenses: ${lenses.join(', ')}; refuters per candidate: ${refuters}`)
 

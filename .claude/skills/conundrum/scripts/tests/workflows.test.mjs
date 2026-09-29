@@ -158,7 +158,7 @@ test('analyze, standard: default feasibility lenses, one refuter each, no crux, 
   const { result, calls } = await run('conundrum-analyze', { slug: 's', depth: 'standard', type: 'feasibility' },
     analyzeHandler({ verdict }))
   assert.deepEqual(calls.filter(c => typeOf(c).startsWith('lens-')).map(typeOf),
-    ['lens-decomposer', 'lens-constraints', 'lens-examiner', 'lens-engineer', 'lens-mechanist'])
+    ['lens-decomposer', 'lens-examiner', 'lens-mechanist', 'lens-engineer', 'lens-constraints'])
   assert.equal(byType(calls, 'falsifier').length, 5)
   assert.deepEqual(result.eliminated, ['C1'])
   assert.deepEqual(result.alive, ['C2', 'C3', 'C4', 'C5'])
@@ -199,7 +199,7 @@ test('analyze, deep: three refuters with distinct angles, majority vote, judge a
 test('analyze, quick: three lenses, no crux, Opus judge', async () => {
   const { result, calls } = await run('conundrum-analyze', { slug: 's', depth: 'quick', type: 'anomaly' }, analyzeHandler())
   assert.deepEqual(calls.filter(c => typeOf(c).startsWith('lens-')).map(typeOf),
-    ['lens-constraints', 'lens-examiner', 'lens-empiricist'])
+    ['lens-examiner', 'lens-empiricist', 'lens-constraints'])
   assert.equal(byType(calls, 'crux-advocate').length, 0)
   const judge = byType(calls, 'adjudicator')[0]
   assert.equal(judge.opts.model, 'opus')
@@ -212,6 +212,13 @@ test('analyze: fewer than two lenses completing stops before the slate', async (
   const { result, calls } = await run('conundrum-analyze', { slug: 's' }, analyzeHandler({ fail }))
   assert.equal(result.ok, false)
   assert.equal(byType(calls, 'candidate-builder').length, 0)
+})
+
+test('analyze: calculation-heavy lenses start last, so a relaunch replays as little as possible', async () => {
+  const lenses = ['constraints', 'engineer', 'decomposer', 'idealizer', 'examiner']
+  const { calls } = await run('conundrum-analyze', { slug: 's', lenses }, analyzeHandler())
+  assert.deepEqual(calls.filter(c => typeOf(c).startsWith('lens-')).map(typeOf),
+    ['lens-decomposer', 'lens-examiner', 'lens-idealizer', 'lens-engineer', 'lens-constraints'])
 })
 
 test('analyze: a missing slate stops before falsification', async () => {
@@ -265,7 +272,7 @@ test('analyze: a lens returning ok:false is reported failed and left out of the 
   const { result, calls } = await run('conundrum-analyze', { slug: 's', type: 'feasibility' }, c =>
     (typeOf(c) === 'lens-engineer' ? { ok: false, path: '', summary: 'cut off' } : handler(c)))
   assert.deepEqual(result.lensesFailed, ['engineer'])
-  assert.match(byType(calls, 'candidate-builder')[0].prompt, /completed lenses: decomposer, constraints, examiner, mechanist\)/)
+  assert.match(byType(calls, 'candidate-builder')[0].prompt, /completed lenses: decomposer, examiner, mechanist, constraints\)/)
   assert.equal(result.ok, true)
 })
 

@@ -4,7 +4,7 @@ description: Conundrum pipeline auditor. Traces every factual claim in the final
 tools: Read, Write, Edit, Grep, Glob
 model: sonnet
 effort: medium
-maxTurns: 45
+maxTurns: 50
 ---
 
 You audit the final report's factual claims against the run's evidence.
@@ -23,7 +23,9 @@ You audit the final report's factual claims against the run's evidence.
 
 ## Ground rules
 
-- **Budget:** aim for about 15–35 tool calls. Write a complete first version of `runs/<slug>/audit.md` by about call 20, then improve it with Edit. Never finish without it written.
+- **Budget:** aim for about 15–35 tool calls, and stop when more searching or calculation stops changing your answer.
+- **First draft:** write a complete first draft of `runs/<slug>/audit.md` by about call 20, then improve it with Edit. Never finish without it written.
+- **Resuming:** if your file already exists, an earlier attempt was cut off: read it, keep what is sound and continue from it instead of starting over.
 - **Paths:** work from the project root with relative paths and never `cd`.
 - **Writing:** write only the file you were asked to write.
 - **Formats and IDs:** follow `.claude/skills/conundrum/references/schemas.md` exactly.

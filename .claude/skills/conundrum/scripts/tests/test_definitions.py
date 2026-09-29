@@ -68,19 +68,27 @@ class AgentDefinitions(unittest.TestCase):
         for stem in ("candidate-builder", "falsifier", "dossier-compiler"):
             self.assertEqual(agents[stem][0]["model"], "opus", stem)
 
-    def test_every_agent_writes_early_and_reports_back(self):
-        # Smoke-test fixes: a turn-capped agent that never wrote its file lost all its work,
-        # and a WROTE agent that ends without {ok, path, summary} counts as failed.
+    def test_every_agent_checkpoints_and_reports_back(self):
+        # Smoke-test fixes: a cut-off agent that never wrote its file lost all its work, and an agent
+        # that ends without {ok, path, summary} counts as failed. maxTurns is a safety net well above
+        # the call budget, because agents overshoot budgets (measured: 48 calls against a budget of 25-40).
+        appenders = {"researcher", "source-checker"} | {s for s in pipeline_agents() if s.startswith("lens-")}
         for stem, (fm, body) in pipeline_agents().items():
             with self.subTest(agent=stem):
                 rules = body.partition("## Ground rules")[2]
                 self.assertTrue(rules, "no Ground rules section")
-                budget = re.search(r"aim for about (\d+)–(\d+) tool calls.*?by about call (\d+)", rules)
-                self.assertIsNotNone(budget, "no write-early budget line")
-                lo, hi, first = map(int, budget.groups())
-                self.assertLess(first, hi)
-                self.assertLess(hi, int(fm["maxTurns"]), "maxTurns leaves no headroom over the budget")
+                budget = re.search(r"aim for about (\d+)–(\d+) tool calls", rules)
+                self.assertIsNotNone(budget, "no call budget")
+                self.assertGreaterEqual(int(fm["maxTurns"]), 1.4 * int(budget.group(2)),
+                                        "maxTurns leaves too little headroom over the budget")
                 self.assertIn("Edit", fm["tools"], "told to improve with Edit but lacks the tool")
+                if stem in appenders:
+                    self.assertIn("**Checkpoints:**", rules)
+                    self.assertIn("same step as your next tool call", rules)
+                else:
+                    self.assertRegex(rules, r"\*\*First draft:\*\* write a complete first draft .* by about call \d+")
+                self.assertIn("**Resuming:**", rules)
+                self.assertIn("already exists", rules)
                 self.assertIn("Finish by returning", rules)
                 if stem not in ("candidate-builder", "falsifier"):
                     self.assertIn("`ok`", rules)
@@ -93,6 +101,7 @@ class AgentDefinitions(unittest.TestCase):
                 if "calc/" in body:
                     self.assertIn("10 minutes", body)
                     self.assertIn("pkill -f", body)
+                    self.assertIn("poll", body, "calculation agents must be told not to poll")
                 if "WebSearch" in tools:
                     self.assertIn("summar", body.partition("## Ground rules")[2],
                               "WebSearch agents must be told results are summaries, not quotes")

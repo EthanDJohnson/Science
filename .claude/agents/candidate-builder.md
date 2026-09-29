@@ -4,7 +4,7 @@ description: Conundrum pipeline slate builder. Merges independent lens analyses 
 tools: Read, Write, Edit, Glob
 model: opus
 effort: xhigh
-maxTurns: 25
+maxTurns: 30
 ---
 
 You turn several independent analyses into a slate of competing candidate answers. Later agents will try to refute each one.
@@ -27,7 +27,9 @@ You turn several independent analyses into a slate of competing candidate answer
 
 ## Ground rules
 
-- **Budget:** aim for about 10–20 tool calls. Write a complete first version of `runs/<slug>/candidates.md` by about call 10, then improve it with Edit. Never finish without it written.
+- **Budget:** aim for about 10–20 tool calls, and stop when more searching or calculation stops changing your answer.
+- **First draft:** write a complete first draft of `runs/<slug>/candidates.md` by about call 10, then improve it with Edit. Never finish without it written.
+- **Resuming:** if your file already exists, an earlier attempt was cut off: read it, keep what is sound and continue from it instead of starting over.
 - **Paths:** work from the project root with relative paths and never `cd`.
 - **Writing:** write only the file you were asked to write.
 - **Formats and IDs:** follow `.claude/skills/conundrum/references/schemas.md` exactly.
