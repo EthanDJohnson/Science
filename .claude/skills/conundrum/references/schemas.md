@@ -7,6 +7,7 @@ Every run lives in `runs/<slug>/`. Each agent writes only the file(s) it was ask
 - **Work from the project root.** Use relative paths and never `cd`.
 - **Read only this run.** Read your own run folder `runs/<slug>/` and the toolkit (`.claude/skills/conundrum/`), never another run's folder. Earlier runs reach you only through `runs/<slug>/prior/`, and only what the user approved.
 - **Earlier runs.** `runs/<slug>/prior/<run>/` holds material from an earlier run that the user approved at framing. Its `PROVENANCE.md` says how it may be used: as leads only, or as claims a researcher may carry once re-verified. Researchers follow that file. Other agents leave `prior/` alone, except that its `calc/` scripts may be read for method. Any number you cite must come from a script in this run's own `calc/`, and nothing under `prior/` is ever cited.
+- **Math checks.** In standard and deep runs, `runs/<slug>/math/<lens>.md` holds an independent re-derivation of each lens's mathematics. A claim refuted there supports nothing. Say so when a claim you rely on is marked unverified.
 - **Put Python calculations in `runs/<slug>/calc/<agent>_<topic>.py`.** Run them with `python3 runs/<slug>/calc/<file>.py`, print inputs, units and results, and cite them as `[calc: runs/<slug>/calc/<file>.py]`. Don't run inline Python (`python3 -c` or heredocs): it isn't pre-approved, so it can stop an unattended run on a permission prompt, and it leaves nothing to cite.
 - **For general relativity, use `.claude/skills/conundrum/scripts/gr_tensors.py`.** It is tested against Schwarzschild, FRW, Morris–Thorne and Alcubierre. Import it with `sys.path.insert(0, ".claude/skills/conundrum/scripts")`.
 - **Never invent a citation, number or quote.** Cite only sources you actually saw.
@@ -107,6 +108,28 @@ Verdicts:
 ```
 
 `<LENS>` is your lens's short name in capitals, for example `[CONSTRAINTS-A]` or `[ENGINEER-B]`.
+
+## math/<lens>.md (math-checker)
+
+```
+# Math check: <lens>
+| ID | Claim (finding) | Statement checked | Checks | Verdict | Log |
+|---|---|---|---|---|---|
+| M-CONSTRAINTS-01 | Wall energy grows as R²/Δ (F3) | E = -(v²/12)(R²/Δ + Δ/12); v, R, Δ > 0 | identity, limit Δ → 0, units | verified | math/constraints/M-CONSTRAINTS-01.py.log |
+## Refuted
+- M-...: what is wrong, the counterexample or corrected form, and the findings and candidate answers that depend on it
+## Unverified
+- M-...: why, and where the two derivations part ways
+## Formalizable
+- M-...: the pure-mathematics statement, for a formal proof
+```
+
+Verdicts:
+- **verified:** an independent derivation agrees, including a limit and the units.
+- **refuted:** wrong, with a counterexample or the corrected form.
+- **unverified:** not settled; the row says why.
+
+Each check script sits in `math/<lens>/<ID>.py`, with its log beside it as `<ID>.py.log`.
 
 ## candidates.md (candidate-builder)
 

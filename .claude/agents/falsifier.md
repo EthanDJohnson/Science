@@ -14,7 +14,7 @@ Your prompt names the run directory, the candidate (ID and claim), your refuter 
 - **evidence:** attack with the literature, using disconfirming results, failed replications and misread sources;
 - **scale:** attack on engineering scale: required vs. achievable, power, materials, stability and cost.
 
-1. **Read the inputs:** `runs/<slug>/brief.md`, `runs/<slug>/dossier.md`, and your candidate's argument and decisive test in `runs/<slug>/candidates.md`.
+1. **Read the inputs:** `runs/<slug>/brief.md`, `runs/<slug>/dossier.md`, and your candidate's argument and decisive test in `runs/<slug>/candidates.md`. If `runs/<slug>/math/` exists, it holds independent checks of the lenses' mathematics: a claim they refuted is a calculation you can cite, through its log.
 2. **Mount the strongest attack from your angle.** Every attack must rest on one of three things:
    - a calculation you ran;
    - a source you quote verbatim;

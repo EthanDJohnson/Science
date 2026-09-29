@@ -187,12 +187,16 @@ const SLATE5 = {
   ],
 }
 
-function analyzeHandler({ slate = SLATE5, verdict = () => ({ verdict: 'survives', basis: 'calculation' }), fail = () => false } = {}) {
+const mathOk = c => ({ ...wroteOk(c), verified: 3, refuted: 0, unverified: 1 })
+
+function analyzeHandler({ slate = SLATE5, verdict = () => ({ verdict: 'survives', basis: 'calculation' }), fail = () => false,
+  math = mathOk } = {}) {
   return c => {
     if (fail(c)) return null
     switch (typeOf(c)) {
       case 'candidate-builder': return slate
       case 'falsifier': return verdict(c)
+      case 'math-checker': return math(c)
       default: return wroteOk(c)
     }
   }
@@ -216,8 +220,48 @@ test('analyze, standard: default feasibility lenses, one refuter each, no crux, 
   assert.match(judge.prompt, /C1: refuted/)
   assert.equal(byType(calls, 'report-auditor').length, 1)
   assert.equal(result.ok, true)
-  // 5 lenses + slate + 5 refuters + judge + audit
-  assert.equal(calls.length, 13)
+  // 5 lenses + 5 math checks + slate + 5 refuters + judge + audit
+  assert.equal(calls.length, 18)
+})
+
+test('analyze, standard: each lens goes to its own math checker, and every later stage hears the results', async () => {
+  const math = c => (c.opts.label === 'math:constraints' ? { ...mathOk(c), refuted: 2 } : mathOk(c))
+  const { result, calls, logs } = await run('conundrum-analyze', { slug: 's', depth: 'standard' }, analyzeHandler({ math }))
+  const checkers = byType(calls, 'math-checker')
+  assert.deepEqual(checkers.map(c => c.opts.label),
+    ['math:decomposer', 'math:examiner', 'math:mechanist', 'math:engineer', 'math:constraints'])
+  for (const c of checkers) {
+    assert.equal(c.opts.phase, 'Math')
+    assert.deepEqual(c.opts.schema.required, ['ok', 'path', 'summary', 'verified', 'refuted', 'unverified'])
+    assert.match(c.prompt, new RegExp(`runs/s/analyses/${c.opts.label.slice(5)}\\.md`))
+  }
+  assert.deepEqual(result.math.constraints, { verified: 3, refuted: 2, unverified: 1 })
+  assert.deepEqual(result.mathFailed, [])
+  const slate = byType(calls, 'candidate-builder')[0].prompt
+  assert.match(slate, /constraints: 3 verified, 2 refuted, 1 unverified/)
+  assert.match(slate, /may not rest on a claim they refuted/)
+  for (const c of byType(calls, 'falsifier')) assert.match(c.prompt, /runs\/s\/math\//)
+  assert.match(byType(calls, 'adjudicator')[0].prompt, /Math checks of the lenses/)
+  assert.match(byType(calls, 'report-auditor')[0].prompt, /math checks in runs\/s\/math\//)
+  assert.ok(logs.some(l => l.startsWith('math checks:')))
+})
+
+test('analyze: a failed lens gets no math check; a failed math check is reported and never blocks the slate', async () => {
+  const fail = c => c.opts.label === 'engineer' || c.opts.label === 'math:mechanist'
+  const { result, calls, logs } = await run('conundrum-analyze', { slug: 's', depth: 'standard' }, analyzeHandler({ fail }))
+  assert.ok(!byType(calls, 'math-checker').some(c => c.opts.label === 'math:engineer'))
+  assert.deepEqual(result.mathFailed, ['mechanist'])
+  assert.ok(logs.some(l => l.includes('math checks that failed: mechanist')))
+  assert.match(byType(calls, 'candidate-builder')[0].prompt, /The math of mechanist went unchecked/)
+  assert.equal(result.ok, true)
+})
+
+test('analyze, quick: no math checks, and no stage is told about them', async () => {
+  const { result, calls } = await run('conundrum-analyze', { slug: 's', depth: 'quick' }, analyzeHandler())
+  assert.equal(byType(calls, 'math-checker').length, 0)
+  for (const c of calls) assert.doesNotMatch(c.prompt, /math/i, c.opts.label)
+  assert.deepEqual(result.math, {})
+  assert.deepEqual(result.mathFailed, [])
 })
 
 test('analyze, deep: three refuters with distinct angles, majority vote, judge at max effort', async () => {
@@ -357,6 +401,7 @@ test('analyze: file-writing agents get the {ok, path, summary} shape; slate and 
     const required = c.opts.schema?.required
     if (typeOf(c) === 'candidate-builder') assert.deepEqual(required, ['candidates'])
     else if (typeOf(c) === 'falsifier') assert.deepEqual(required, ['verdict', 'basis'])
+    else if (typeOf(c) === 'math-checker') assert.deepEqual(required, [...WROTE_FIELDS, 'verified', 'refuted', 'unverified'])
     else assert.deepEqual(required, WROTE_FIELDS, c.opts.label)
   }
 })

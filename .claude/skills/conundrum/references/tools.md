@@ -13,6 +13,15 @@ Every calculator has a `selftest()` against independent reference values. The te
 | `unit_tools.py` | Units and dimensions: parse `"0.5 * 1 t * (3 km/s)^2"`, convert (`.to("MJ")`), check (`.expect("energy")`). SI prefixes, astronomical units, TNT, CODATA constants, Planck units | Exact SI and IAU definitions, and known values (G M_sun / c^2 = 1476.6 m) | `python3 .claude/skills/conundrum/scripts/unit_tools.py "G*Msun/c^2" --to km` |
 | `rocket_tools.py` | Tsiolkovsky and relativistic (Ackeret) rocket equations; photon rocket; constant-proper-acceleration trips, with or without a coast, giving ship time, Earth time, peak speed and mass ratio | Closed forms, and the 1 g table in Gibbs and Baez, "The Relativistic Rocket" | `python3 .claude/skills/conundrum/scripts/rocket_tools.py trip --distance "4.37 ly" --accel "1 g0" --ve c` |
 
+## Checking tools
+
+The math checker uses these to re-derive each lens's mathematics independently (standard and deep runs).
+
+| Tool | Covers | Try it |
+|---|---|---|
+| `math_checks.py` | Identities, limits, series, signs, inequalities, quantities with units, and dimensions. SymPy first, then 50 points at 30 digits, including the domain's ends. Each check prints PASS, FAIL (with a counterexample) or UNDECIDED | `python3 .claude/skills/conundrum/scripts/math_checks.py identity "(x+1)**2" "x**2 + 2*x + 1"` |
+| `math_run.py` | Runs one check script under `runs/` with a time limit, and saves its output, exit code and library versions to a log beside it | `python3 .claude/skills/conundrum/scripts/math_run.py runs/<slug>/math/<lens>/<ID>.py` |
+
 ## Research tools
 
 | Tool | Covers |

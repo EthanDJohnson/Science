@@ -73,7 +73,7 @@ class AgentDefinitions(unittest.TestCase):
         # Smoke-test fixes: a cut-off agent that never wrote its file lost all its work, and an agent
         # that ends without {ok, path, summary} counts as failed. maxTurns is a safety net well above
         # the call budget, because agents overshoot budgets (measured: 48 calls against a budget of 25-40).
-        appenders = {"researcher", "source-checker"} | {s for s in pipeline_agents() if s.startswith("lens-")}
+        appenders = {"researcher", "source-checker", "math-checker"} | {s for s in pipeline_agents() if s.startswith("lens-")}
         for stem, (fm, body) in pipeline_agents().items():
             with self.subTest(agent=stem):
                 rules = body.partition("## Ground rules")[2]

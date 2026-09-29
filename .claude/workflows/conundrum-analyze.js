@@ -4,6 +4,7 @@ export const meta = {
   whenToUse: 'Run by the /conundrum skill after the dossier checkpoint; args {slug, depth, type, lenses?}',
   phases: [
     { title: 'Lenses', detail: 'independent analyses of the dossier' },
+    { title: 'Math', detail: "standard and deep runs: each lens's mathematics re-derived independently" },
     { title: 'Slate', detail: 'competing candidate answers' },
     { title: 'Falsify', detail: 'refuters per candidate' },
     { title: 'Crux', detail: 'deep runs: survivors answer their verdicts' },
@@ -62,6 +63,19 @@ const WROTE = {
   },
 }
 const wrote = r => (r && r.ok ? r : null)
+// A math checker reports its claim counts as well.
+const MATH = {
+  type: 'object',
+  required: ['ok', 'path', 'summary', 'verified', 'refuted', 'unverified'],
+  properties: {
+    ok: { type: 'boolean' },
+    path: { type: 'string' },
+    summary: { type: 'string' },
+    verified: { type: 'integer' },
+    refuted: { type: 'integer' },
+    unverified: { type: 'integer' },
+  },
+}
 
 if (!args || !args.slug) throw new Error('conundrum-analyze needs args.slug (the run directory under runs/)')
 const dir = `runs/${args.slug}`
@@ -79,24 +93,50 @@ const lenses = [...chosen.filter(l => !HEAVY.includes(l)), ...HEAVY.filter(l => 
 const refuters = depth === 'deep' ? 3 : 1
 log(`depth ${depth}; type ${type}; lenses: ${lenses.join(', ')}; refuters per candidate: ${refuters}`)
 
-// ----- Lenses: independent and isolated; the slate needs all of them, so this barrier is intentional.
+// ----- Lenses: independent and isolated. In standard and deep runs, each lens's mathematics goes to
+// an independent math checker as soon as that lens finishes (no barrier). The slate needs every lens
+// and its check, so the wait after this stage is intentional.
 phase('Lenses')
-const analyses = await parallel(lenses.map(l => () => agent(
-  `Run directory: ${dir}. Read ${dir}/brief.md and ${dir}/dossier.md, then write ${dir}/analyses/${l}.md. ` +
-  `Put any calculation scripts in ${dir}/calc/.`,
-  { agentType: `lens-${l}`, label: l, phase: 'Lenses', schema: WROTE }).then(wrote)))
+const checkingMath = depth !== 'quick'
+const lensResults = await pipeline(lenses,
+  l => agent(
+    `Run directory: ${dir}. Read ${dir}/brief.md and ${dir}/dossier.md, then write ${dir}/analyses/${l}.md. ` +
+    `Put any calculation scripts in ${dir}/calc/.`,
+    { agentType: `lens-${l}`, label: l, phase: 'Lenses', schema: WROTE }).then(wrote),
+  (analysis, l) => (analysis == null || !checkingMath) ? { analysis, math: null } : agent(
+    `Run directory: ${dir}. Lens: ${l}. Check the load-bearing mathematics in ${dir}/analyses/${l}.md ` +
+    `and write ${dir}/math/${l}.md, with your check scripts in ${dir}/math/${l}/.`,
+    { agentType: 'math-checker', label: `math:${l}`, phase: 'Math', schema: MATH })
+    .then(m => ({ analysis, math: m && m.ok ? m : null })))
+const analyses = lensResults.map(r => (r ? r.analysis : null))
 const lensesDone = lenses.filter((_, i) => analyses[i] != null)
 const lensesFailed = lenses.filter((_, i) => analyses[i] == null)
 if (lensesFailed.length) log(`lenses that failed: ${lensesFailed.join(', ')}`)
 if (lensesDone.length < 2) {
   return { ok: false, reason: 'fewer than two lens analyses completed', dir, lensesDone, lensesFailed }
 }
+const math = {}
+lenses.forEach((l, i) => {
+  const m = lensResults[i] && lensResults[i].math
+  if (m) math[l] = { verified: m.verified || 0, refuted: m.refuted || 0, unverified: m.unverified || 0 }
+})
+const mathChecked = Object.keys(math)
+const mathFailed = checkingMath ? lensesDone.filter(l => !math[l]) : []
+if (mathFailed.length) log(`math checks that failed: ${mathFailed.join(', ')}`)
+const mathTally = mathChecked.map(l => `${l}: ${math[l].verified} verified, ${math[l].refuted} refuted, ` +
+  `${math[l].unverified} unverified`).join('; ')
+if (mathChecked.length) log(`math checks: ${mathTally}`)
+const mathNote = mathChecked.length
+  ? ` Math checks of the lenses are in ${dir}/math/ (${mathTally}).` +
+    (mathFailed.length ? ` The math of ${mathFailed.join(', ')} went unchecked.` : '')
+  : ''
 
 // ----- Slate
 phase('Slate')
 const slate = await agent(
   `Run directory: ${dir}. Build the candidate slate from ${dir}/analyses/ ` +
-  `(completed lenses: ${lensesDone.join(', ')}) and write ${dir}/candidates.md.`,
+  `(completed lenses: ${lensesDone.join(', ')}) and write ${dir}/candidates.md.` +
+  (mathNote ? mathNote + ' A candidate may not rest on a claim they refuted.' : ''),
   { agentType: 'candidate-builder', schema: SLATE, label: 'slate', phase: 'Slate' })
 if (!slate || !slate.candidates || !slate.candidates.length) {
   return { ok: false, reason: 'candidate slate was not produced', dir, lensesDone }
@@ -120,7 +160,8 @@ const verdicts = (await parallel(candidates.flatMap(c =>
     const angle = refuters === 1 ? 'strongest available (physics, evidence or scale; say which)' : ANGLES[i % ANGLES.length]
     return agent(
       `Run directory: ${dir}. Candidate ${c.id} (${c.type}): "${c.claim}". You are refuter ${i}; angle: ${angle}. ` +
-      `Write ${dir}/verdicts/${c.id}-${i}.md.`,
+      `Write ${dir}/verdicts/${c.id}-${i}.md.` +
+      (mathChecked.length ? ` The math checks in ${dir}/math/ count as calculations: a claim they refuted is grounds for a verdict.` : ''),
       { agentType: 'falsifier', schema: VERDICT, label: `${c.id}#${i}`, phase: 'Falsify' })
       .then(v => (v == null ? null : { id: c.id, refuter: i, angle, verdict: v.verdict, basis: v.basis }))
   })))).filter(Boolean)
@@ -161,6 +202,7 @@ const judged = wrote(await agent(
   (cruxed.length ? ` and ${dir}/cruxes/` : '') + `. Refuter votes: ${tally}.` +
   (unexamined.length ? ` Unexamined (refuters failed): ${unexamined.join(', ')}.` : '') +
   (trimmed.length ? ` Not falsified (over the slate cap): ${trimmed.join(', ')}.` : '') +
+  mathNote +
   ` Write ${dir}/report.md.`,
   judgeOpts))
 const bottomLine = judged ? judged.summary : null
@@ -171,7 +213,8 @@ if (bottomLine == null) {
 // ----- Audit
 phase('Audit')
 const audited = wrote(await agent(
-  `Run directory: ${dir}. Audit ${dir}/report.md against the run's evidence and write ${dir}/audit.md.`,
+  `Run directory: ${dir}. Audit ${dir}/report.md against the run's evidence and write ${dir}/audit.md.` +
+  (mathChecked.length ? ` Trace the report's mathematical claims to the math checks in ${dir}/math/.` : ''),
   { agentType: 'report-auditor', label: 'audit', phase: 'Audit', schema: WROTE }))
 const auditSummary = audited ? audited.summary : null
 
@@ -184,6 +227,8 @@ return {
   auditSummary,
   lenses: lensesDone,
   lensesFailed,
+  math,
+  mathFailed,
   candidates,
   trimmed,
   alive,

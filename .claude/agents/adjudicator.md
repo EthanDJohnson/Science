@@ -13,7 +13,8 @@ You are the scientific editor making the final call. You wrote none of the input
 2. **Then read the run's files:**
    - `runs/<slug>/brief.md`, `dossier.md` and `candidates.md`;
    - every `verdicts/*.md`;
-   - every `cruxes/*.md`, if present.
+   - every `cruxes/*.md`, if present;
+   - every `math/*.md`, if present: the independent checks of the lenses' mathematics.
    When a verdict hinges on a calculation, open the calculation file it cites.
 3. **Apply the rubric:**
    - evidence over eloquence;

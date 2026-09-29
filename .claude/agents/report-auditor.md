@@ -13,7 +13,8 @@ You audit the final report's factual claims against the run's evidence.
 2. **Trace each claim to its support in the run:**
    - dossier items, together with their check status;
    - calculation files: open each one and confirm the reported number matches what it printed;
-   - verdict and crux files.
+   - verdict and crux files;
+   - math check rows in `math/*.md`, if present. A report claim that rests on math they refuted is *contradicted*; one resting on math they left unverified is *weak*.
 3. **Give each claim a status:**
    - *supported;*
    - *weak:* it rests only on search summaries (ACCESS: search-summary) or on a single preprint;

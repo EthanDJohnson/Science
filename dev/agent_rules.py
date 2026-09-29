@@ -59,6 +59,10 @@ CITE_CARRY = (
     "never invent a citation, number or quote. Carry every claim's `ACCESS` label through "
     "unchanged: a search-summary claim never becomes a quote."
 )
+CITE_MATH = (
+    "never invent a result. Every verdict cites the log of a check you ran, and a claim you "
+    "didn't check stays `unverified`."
+)
 CITE_TRACE = (
     "never invent a citation, number or quote. Every number you state must trace to the dossier, "
     "a calculation file or a verdict, and a search-summary claim stays a summary."
@@ -109,6 +113,13 @@ SPEC = {
                           summary="the deciding observation, in one line."),
     "adjudicator": dict(lo=15, hi=35, by=25, turns=50, mode="draft", target="runs/<slug>/report.md",
                         summary="the bottom line, in two sentences."),
+    "math-checker": dict(lo=20, hi=35, turns=50, mode="append", target="runs/<slug>/math/<lens>.md",
+                         checkpoint="create `{target}` in your first few turns with its table header and the claims "
+                                    "you will check. Then fill in each claim's row as soon as you have its verdict, "
+                                    + SAME_STEP + ". " + LOST,
+                         finish="Finish by returning `ok` (true once your status file is written, false if you could "
+                                "not write it), `path`, the claim counts `verified`, `refuted` and `unverified`, and "
+                                "`summary`: the most consequential refutation, if any, and what you couldn't check."),
     "report-auditor": dict(lo=15, hi=35, by=20, turns=50, mode="draft", target="runs/<slug>/audit.md",
                            summary="how many claims you checked, how many you flagged, and the most serious flag."),
 }
@@ -126,6 +137,11 @@ CALC_PREFIX = {
     "crux-advocate": "crux-<Cn>",
 }
 
+
+MATH_RUN = ("- **Running code:** run each check with `python3 .claude/skills/conundrum/scripts/math_run.py "
+            "runs/<slug>/math/<lens>/<ID>.py`. It needs no permission prompt, and it saves the log your verdict "
+            "cites. It stops a check after 110 s; for a longer one, pass `--timeout` (up to 590) and raise the Bash "
+            "tool's timeout parameter to match. " + SHORT_CALC)
 
 SHELL = ("- **Shell:** stay on the pre-approved commands: `python3 .claude/skills/conundrum/scripts/<tool>.py ...`, "
          "`python3 runs/<slug>/...` and `mkdir -p runs/...`. Anything else (inline `python3 -c` or heredocs, curl, "
@@ -177,8 +193,10 @@ def ground_rules(name: str, tools: set[str]) -> str:
         lines.append("- **Formats and IDs:** follow `.claude/skills/conundrum/references/schemas.md` exactly.")
     else:
         lines.append("- **Format:** follow the report format in `.claude/skills/conundrum/references/rubric.md`.")
-    if "Bash" in tools and name not in ("researcher", "source-checker", "toolsmith"):
+    if "Bash" in tools and name not in ("researcher", "source-checker", "toolsmith", "math-checker"):
         lines += calc_bullets(name)
+    if name == "math-checker":
+        lines.append(MATH_RUN)
     if name == "toolsmith":
         lines.append(f"- **Running code:** `python3 runs/<slug>/tools/<name>.py selftest` needs no permission prompt. {SHORT_CALC}")
     if name.startswith("lens-") or name in ("falsifier", "toolsmith"):
@@ -190,6 +208,8 @@ def ground_rules(name: str, tools: set[str]) -> str:
         pass
     elif name == "source-checker":
         lines.append(f"- **Citations:** {CITE_CHECKER}")
+    elif name == "math-checker":
+        lines.append(f"- **Citations:** {CITE_MATH}")
     elif "WebSearch" in tools and "Bash" in tools:
         lines.append(f"- **Citations:** {CITE_WEB}")
     elif "WebSearch" in tools:
@@ -201,7 +221,7 @@ def ground_rules(name: str, tools: set[str]) -> str:
     if "WebSearch" in tools or "WebFetch" in tools:
         lines.append(WEB)
     if name not in {"report-auditor", "source-checker"}:
-        lines.append(UNITS_GR if (name in GR_CALC or name == "researcher") else UNITS)
+        lines.append(UNITS_GR if (name in GR_CALC or name in ("researcher", "math-checker")) else UNITS)
     lines.append("")
     if "finish" in s:
         lines.append(f"Your final output goes back to an orchestration script. {s['finish']}")

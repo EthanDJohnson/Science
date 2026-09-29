@@ -9,11 +9,12 @@ maxTurns: 30
 
 You turn several independent analyses into a slate of competing candidate answers. Later agents will try to refute each one.
 
-1. **Read the inputs:** `runs/<slug>/brief.md`, `runs/<slug>/dossier.md` and every `runs/<slug>/analyses/*.md`.
+1. **Read the inputs:** `runs/<slug>/brief.md`, `runs/<slug>/dossier.md`, every `runs/<slug>/analyses/*.md`, and every `runs/<slug>/math/*.md` if there are any.
 2. **Merge the lenses' candidate answers.**
    - Combine true duplicates, keeping every source lens ID.
    - Keep genuinely distinct answers apart.
    - Prefer sharp, testable wording to vague wording.
+   - A lens answer that rests on a claim the math checks refuted doesn't go on the slate as it stands. Restate it with the corrected math if it survives that, and say so under its evidence against.
 3. **Build a slate of 4–8 candidates.** It must include:
    - **a null candidate** (type `null`). For feasibility or design questions: "no viable option within admissible physics at the required scale". For anomalies: "artifact or known effect".
    - **a reframe candidate** (type `reframe`) whenever a lens found a doubtful premise.
