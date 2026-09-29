@@ -242,3 +242,14 @@ No classical energy condition or quantum energy inequality enters any constraint
   - The arithmetic in RQ-06, RQ-07, RQ-08 and RQ-13.
   - All come from `calc/quantitative_pw_clock.py` and `calc/quantitative_scales.py`, and the checker re-ran them.
 - **Earlier runs:** none. There is no `prior/` folder; the brief lists the warp-bubble run as "ignore". So 0 claims were carried from earlier runs and 0 were re-verified.
+
+## User-supplied
+
+- [U-01] [user] **How to read the toy-model fidelities in D-17 and Q-25 to Q-27.** Proposed by the main session at the dossier checkpoint and approved by the user. When omega/eps is not an integer, the fidelities in Q-25 and Q-26 come from the *best approximate* solution of the constraint: the system energy omega is missing from the clock's spectrum, so no exact physical state carries it. They measure this spectral mismatch (coverage). They are not evidence that conditional evolution breaks down.
+  - For any exact physical state of an uncoupled constraint J = H_C⊗1 + 1⊗H_S, the conditional state psi_S(t) = (<t|⊗1)|Psi>> obeys i d/dt psi_S = H_S psi_S exactly, for every t and any clock spectrum (equally spaced or not, degenerate or not). The reason is that d<t|/dt = i<t|H_C when |t> = sum_k e^{-i E_k t}|E_k>.
+  - Non-ideal uncoupled clocks fail in other ways:
+    - *coverage:* only system energies e with -e in spec(H_C) survive;
+    - *readability:* time states are orthogonal only for an equally spaced spectrum at lattice times, and a Gaussian reading error sigma dephases the energy basis by exp(-sigma^2 Delta^2/2);
+    - *degeneracy:* the map from physical states to psi_S is not injective.
+  - Only a coupling between clock and system makes the conditional evolution non-unitary or time-nonlocal; the Smith–Ahmadi gravitational coupling is an exactly solvable case.
+  - (refs: D-17, Q-25 to Q-27) [calc: runs/2026-09-29-problem-of-time-quantum-gravity/tools/page_wootters.py selftest, promoted as .claude/skills/conundrum/scripts/page_wootters.py; checks "unequally spaced clock: fidelity 1 at arbitrary t" and the docstring's "Key identity"]
