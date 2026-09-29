@@ -1,6 +1,17 @@
 # `/conundrum`: review of Gemini's design, and a build plan
 
-*Status: plan only, nothing implemented yet. Written 2026-09-29.*
+*Status: v1 built (see the [README](../README.md) and `.claude/`). Plan written 2026-09-29.*
+
+> **What v1 changed from this plan**, after tuning for theoretical-physics and engineering feasibility questions:
+>
+> - **Research facets** are theory, quantitative, critiques, engineering and frontier.
+> - **An Engineer lens** (Archimedes) adds orders-of-magnitude gaps and TRL.
+> - **The null candidate** reads "no viable option within admissible physics".
+> - **The crux round runs in deep mode only.** The debate evidence in §4 says extra rounds add little over independent votes.
+> - **The slate file is `candidates.md`,** and the auditor writes a separate `audit.md`.
+> - **Deep mode's pairwise judging is deferred to v2.**
+> - **Agent counts in §5.7 are corrected:** about 16, 23 and 40–50.
+> - **Tested physics tooling is included:** `gr_tensors.py`, `lit_search.py` and `check_env.py`.
 
 A second opinion on a Gemini conversation about (1) Harb et al.'s "philosophy agents" chemistry paper, (2) whether philosophy-style system prompts help frontier models, and (3) how to build a multi-agent "scientific conundrum" skill in Claude Code. Sections 1–4 check Gemini's claims; section 5 is my plan.
 
@@ -232,7 +243,7 @@ Full texts were blocked here, so these come from abstracts and search excerpts. 
  │ 2  LENSES    4–5 lens agents, isolated (parallel) → analyses/<lens>.md
  │ 3  SLATE     4–8 competing hypotheses, each with distinguishing predictions
  │ 4  FALSIFY   refuter(s) per hypothesis, with Python + targeted search
- │ 5  CRUX      only if ≥2 survive: one written rebuttal per survivor
+ │ 5  CRUX      deep runs, if ≥2 survive: one written rebuttal per survivor
  │ 6  JUDGE     neutral adjudicator → report.md (probabilities + decisive tests)
  │ 7  AUDIT     every claim in the report traced to the dossier or a calculation
  └──────────────────────────────────────────────────────────────────────────
@@ -263,7 +274,7 @@ Why three layers:
 | 2 | Lenses | 5 | Opus 5.5 / `high` (Constraints lens: `xhigh`) | `analyses/<lens>.md` |
 | 3 | Slate | 1 | Opus 5.5 / `xhigh` | `hypotheses.md` |
 | 4 | Falsify | 1 per hypothesis (deep: 3, majority vote) | Opus 5.5 / `high` | `verdicts/<id>-<n>.md` |
-| 5 | Crux (conditional) | 1 per survivor | Opus 5.5 / `high` | `cruxes/<id>.md` |
+| 5 | Crux (deep runs only) | 1 per survivor | Opus 5.5 / `high` | `cruxes/<id>.md` |
 | 6 | Judge | 1 | **Fable 5.1 / `high`** (or Opus 5.5 / `max`) | `report.md` |
 | 7 | Audit | 1 | Sonnet 5.5 / `medium` | flags on `report.md` |
 
@@ -513,9 +524,9 @@ return { report: `${dir}/report.md`, alive }
 
 | Depth | What changes | Agents per run | Rough cost at API list prices |
 |---|---|---|---|
-| quick | 2 facets, no source check, 3 lenses, 1 refuter per hypothesis, no crux, Opus judge at `high` | ~10 | ~$5–15 |
-| standard | as in §5.3 | ~15–20 | ~$15–40 |
-| deep | 4 facets with checks, 6–7 lenses, 3 refuters per hypothesis, crux round, pairwise judging in both orders, Fable judge at `max` | ~35–45 | ~$50–120 |
+| quick | 3 facets, no source check, 3 lenses, 1 refuter per candidate, no crux, Opus judge at `high` | ~16 | ~$10–25 |
+| standard | 4 facets with checks, 5 lenses, 1 refuter per candidate, no crux, Fable judge at `high` | ~23 | ~$20–40 |
+| deep | 5 facets with checks, 6–7 lenses, 3 refuters per candidate, crux round, Fable judge at `max` (pairwise judging: v2) | ~40–50 | ~$50–100 |
 
 The costs are my estimates, not measurements, and could easily be off by 2×. Run one standard pilot and read the per-agent token counts in `/workflows` before trusting them.
 

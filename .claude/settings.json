@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "WebSearch",
+      "WebFetch",
+      "Bash(python3 .claude/skills/conundrum/scripts/*)",
+      "Bash(python3 runs/*)",
+      "Bash(mkdir -p runs/*)",
+      "Bash(date +%F)",
+      "Edit(runs/**)"
+    ]
+  }
+}
