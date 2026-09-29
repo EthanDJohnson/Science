@@ -38,8 +38,10 @@ Times exclude the two checkpoints where the pipeline waits for you. They also as
 
 | Measured agent | Turns | Cost at API list prices | Time |
 |---|---|---|---|
-| Constraints lens (Opus, before the fixes; see [`examples/`](examples/smoke-test-constraints-lens/)) | 64 | ~$12 | 73 min |
-| Researcher (Sonnet), one narrow facet | 44 | ~$0.90 | 8 min |
+| Constraints lens (Opus, before the fixes; see [`examples/`](examples/smoke-test-constraints-lens/)) | 64 | ~$12.70 | 73 min |
+| Researcher (Sonnet), one narrow facet | 44 | ~$1.20 | 8 min |
+
+`python3 dev/run_costs.py` measures these from Claude Code's transcripts, per agent; run it after your first run to replace the extrapolation.
 
 Where the lens's money went:
 - **31%** waiting on slow calculations, including two cache expiries that each cost about $1;
@@ -48,7 +50,7 @@ Where the lens's money went:
 
 The toolkit fixes and the no-polling rules target the first item. The harness reported "409k tokens" for that agent, but that is its final context size. It processed about 15.8M tokens, 93% of them cache reads.
 
-Cache reads count against plan usage at the cached rate, so the API list price is a rough proxy for how much of your window a run uses. `/workflows` shows live token counts and lets you stop a run. Afterwards `/usage` attributes usage to subagents and flags cache misses.
+Cache reads count against plan usage at the cached rate, so the API list price is a rough proxy for how much of your window a run uses. `/workflows` shows live token counts and lets you stop a run. Afterwards `/usage` attributes usage to subagents and flags cache misses, and `dev/run_costs.py` prices each agent at API list prices.
 
 ### Where to run it
 
@@ -65,6 +67,43 @@ A workflow runs at most min(16, CPUs − 2) agents at once. The preflight prints
 Token cost is the same either way. Local is the more robust choice when a computer can stay on for a few hours. `claude remote-control`, run in the project folder, lets you follow a local session from the Claude app. The docs list Remote Control sessions among those that don't pause at the usage limit, though, so a long run is safest in a plain terminal session.
 
 The stages hand over through files, so they can also change machines. For example, frame and research in the cloud, push, pull, then run the analysis locally.
+
+### Your first local run
+
+1. **Get the code and a current Claude Code.** Clone the repo, or `git pull` in your copy, and stay on `main`. Run `claude update`: a workflow waits out a usage limit only from version 2.1.271.
+2. **Install and check the Python side:**
+   ```
+   pip install sympy numpy pypdf cffi
+   python3 .claude/skills/conundrum/scripts/check_env.py
+   ```
+   The preflight should show every package working, the literature sources reachable, and at least 5 agents at once.
+3. **Turn on the sandbox (recommended).** Agents write Python scripts and run them, and `.claude/settings.json` pre-approves that, so on your computer those scripts run as you. In the sandbox, shell commands:
+   - can write only inside the project and temp folders, and never into `.claude/skills`, `agents`, `hooks` or `workflows`, the settings files or `.git` hooks;
+   - reach only allowed hosts. A command that needs a new host asks you first; in auto mode, Claude names the hosts on the command instead;
+   - can still read the rest of your disk, `~/.ssh` included, so the host list is what keeps data from leaving. `sandbox.filesystem.denyRead` can hide folders.
+
+   WebSearch and WebFetch run inside Claude Code, outside the sandbox, under their usual permission rules. The sandbox runs on macOS, Linux and WSL2; on Windows, run Claude Code inside WSL2.
+
+   Turn it on with `/sandbox`, choosing the mode that runs sandboxed commands without asking. Then pre-allow the literature hosts in `.claude/settings.local.json`, which stays out of git; create the file or add to it:
+   ```json
+   {
+     "sandbox": {
+       "enabled": true,
+       "network": {
+         "allowedDomains": ["arxiv.org", "*.arxiv.org", "inspirehep.net", "doi.org", "dx.doi.org",
+           "api.crossref.org", "api.semanticscholar.org", "www.semanticscholar.org", "www.osti.gov",
+           "ui.adsabs.harvard.edu", "ntrs.nasa.gov", "*.aps.org", "iopscience.iop.org", "link.springer.com",
+           "www.sciencedirect.com", "www.nature.com", "www.science.org", "pubs.aip.org", "academic.oup.com",
+           "royalsocietypublishing.org", "onlinelibrary.wiley.com", "www.cambridge.org", "ieeexplore.ieee.org",
+           "www.mdpi.com"]
+       }
+     }
+   }
+   ```
+4. **Start a fresh session in a plain terminal.** Run `claude` in the project folder, not `claude remote-control`: the docs exclude Remote Control sessions from the usage-limit wait. A fresh session keeps the run's transcript separate, which step 7 reads. Start early in a usage window, and keep the computer awake: on macOS, `caffeinate -i claude`; on Linux, `systemd-inhibit claude`.
+5. **Start small.** Run `/conundrum quick <your question>` first: about 16 agents and 1–2 hours. Move to `standard` once it has run cleanly.
+6. **Watch it.** `/workflows` shows each agent's progress. Note any permission prompt and any agent that reports a `[pipeline guard]` refusal; each one points at a rule to fix.
+7. **Measure it.** When it's done, run `python3 dev/run_costs.py` in the project folder, or type `! python3 dev/run_costs.py` in the session. It prints each agent's turns, tokens and cost at list prices: the numbers the estimates above still lack.
 
 ### If a run is cut off
 
@@ -158,7 +197,7 @@ Agents never write straight into the toolkit; promotion is a step you see.
 
 ### Network access
 
-- **Local runs** have full web access.
+- **Local runs** have full web access. In the sandbox, shell commands reach only the hosts you allow; see [Your first local run](#your-first-local-run).
 - **Claude Code on the web** may block literature sites under the environment's network policy. The preflight reports which sources are reachable. Blocked research falls back to INSPIRE abstracts and WebSearch summaries. Summaries are written by a model, not the source, so the pipeline labels them `search-summary` and weighs them down.
 
 **To open it up.** The Android app can't edit environments, so use claude.ai/code in a browser or the Desktop app.
@@ -223,7 +262,7 @@ Everything else prompts as usual. Each workflow launch also asks for approval; c
 ### Tests
 
 ```
-python3 -m unittest discover -s .claude/skills/conundrum/scripts/tests   # tools + definition consistency
+python3 -m unittest discover -s .claude/skills/conundrum/scripts/tests   # tools, hooks, dev scripts, definition consistency
 node --test .claude/skills/conundrum/scripts/tests/workflows.test.mjs     # orchestration, with a mock runtime
 python3 .claude/skills/conundrum/scripts/gr_tensors.py selftest           # GR toolkit vs. known results
 python3 .claude/skills/conundrum/scripts/stats_tools.py selftest          # statistics toolkit vs. reference values
@@ -245,6 +284,8 @@ python3 .claude/skills/conundrum/scripts/rocket_tools.py selftest         # rock
   hooks/                 turn_budget.py (counts each agent's turns and tool calls)
                          guard_pipeline.py (keeps pipeline agents from editing the pipeline)
   settings.json          permission allow-list and hook registration
+dev/                     agent_rules.py (the single source of every agent's ground rules: edit there, then run it)
+                         run_costs.py (a run's turns, tokens and cost per agent, from the transcripts)
 docs/conundrum-skill-plan.md
 examples/                smoke-test output of one lens, with provenance notes
 runs/                    one directory per investigation
@@ -258,7 +299,7 @@ runs/                    one directory per investigation
   - quoting search summaries as if they were source text;
   - an agent that could run out of turns before writing its file;
   - an agent that killed its own shell with `pkill -f`.
-- **Cost and time are extrapolated** from two measured agents until a full run is measured.
+- **Cost and time are extrapolated** from two measured agents until a full run is measured with `dev/run_costs.py`.
 - **A turn-capped workflow agent's return value is undocumented.** The scripts treat a missing or `ok: false` result as a failure. Check `/workflows` on the first real run, and read the run's `journal.jsonl` if a result looks empty.
 - **Search summaries are weak evidence.** Where WebFetch can't reach papers, claims rest on INSPIRE abstracts and search summaries. The auditor flags report claims that rest only on summaries.
 - **Not yet in v1:**
