@@ -199,12 +199,18 @@ test('analyze, deep: three refuters with distinct angles, majority vote, judge a
 test('analyze, quick: three lenses, no crux, Opus judge', async () => {
   const { result, calls } = await run('conundrum-analyze', { slug: 's', depth: 'quick', type: 'anomaly' }, analyzeHandler())
   assert.deepEqual(calls.filter(c => typeOf(c).startsWith('lens-')).map(typeOf),
-    ['lens-examiner', 'lens-empiricist', 'lens-constraints'])
+    ['lens-examiner', 'lens-statistician', 'lens-constraints'])
   assert.equal(byType(calls, 'crux-advocate').length, 0)
   const judge = byType(calls, 'adjudicator')[0]
   assert.equal(judge.opts.model, 'opus')
   assert.equal(judge.opts.effort, 'high')
   assert.equal(result.alive.length, 5)
+})
+
+test('analyze, standard anomaly: the statistician replaces the decomposer', async () => {
+  const { calls } = await run('conundrum-analyze', { slug: 's', depth: 'standard', type: 'anomaly' }, analyzeHandler())
+  assert.deepEqual(calls.filter(c => typeOf(c).startsWith('lens-')).map(typeOf),
+    ['lens-statistician', 'lens-empiricist', 'lens-mechanist', 'lens-examiner', 'lens-constraints'])
 })
 
 test('analyze: fewer than two lenses completing stops before the slate', async () => {

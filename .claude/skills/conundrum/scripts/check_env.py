@@ -18,6 +18,8 @@ SOURCES = [
     ("INSPIRE-HEP API", "https://inspirehep.net/api/literature?q=t%20test&size=1&fields=titles.title"),
     ("arxiv.org pages", "https://arxiv.org/abs/gr-qc/0009013"),
     ("doi.org", "https://doi.org/10.1088/0264-9381/11/5/001"),
+    ("Crossref API", "https://api.crossref.org/works?rows=1&query=test"),
+    ("Semantic Scholar API", "https://api.semanticscholar.org/graph/v1/paper/search?query=test&limit=1&fields=title"),
 ]
 
 
@@ -69,7 +71,7 @@ def main() -> int:
         tag = "ok" if p["ok"] else ("MISSING (required)" if p["required"] else "missing (optional)")
         print(f"package {p['package']:<6} {tag}{' ' + p['version'] if p['version'] else ''}")
     for s in sources:
-        print(f"source  {s['source']:<16} {'reachable' if s['ok'] else 'BLOCKED'} ({s['detail']})")
+        print(f"source  {s['source']:<20} {'reachable' if s['ok'] else 'BLOCKED'} ({s['detail']})")
     missing = [p["package"] for p in packages if p["required"] and not p["ok"]]
     blocked = [s["source"] for s in sources if not s["ok"]]
     print()

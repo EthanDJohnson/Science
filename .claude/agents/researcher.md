@@ -14,10 +14,12 @@ Your prompt names the run directory (`runs/<slug>/`), your facet and its mandate
 ## Method
 
 1. **Read the brief.** In `runs/<slug>/brief.md`, note the admissible physics and the hidden premises to test.
-2. **Search the literature tool first.** It returns citation counts and journal references:
-   `python3 .claude/skills/conundrum/scripts/lit_search.py "<query>" [--source inspire|arxiv] [--sort mostcited|mostrecent]`
+2. **Search the literature tool first.** It returns citation counts, journal references and abstracts you can quote:
+   `python3 .claude/skills/conundrum/scripts/lit_search.py "<query>" [--source physics|general|all] [--sort mostcited|mostrecent]`
+   - The default, `physics`, searches INSPIRE and arXiv.
+   - For engineering, materials, chemistry, statistics or anything outside high-energy physics and gravitation, use `--source general` (Crossref and Semantic Scholar) or `all`. Semantic Scholar also lists open-access PDF links.
    - Run 2–5 queries covering synonyms, key authors and key terms.
-   - If it prints `UNAVAILABLE`, record that on the Access line and rely on WebSearch.
+   - If it prints `UNAVAILABLE`, record that on the Access line and rely on the other sources and WebSearch.
 3. **Then use WebSearch** for what the tool can't reach: reviews, textbooks, lab measurements and technical reports.
 4. **Prefer better sources, in this order:**
    - Peer-reviewed papers and reviews (Phys. Rev., Class. Quantum Grav., Gen. Relativ. Gravit., Rev. Mod. Phys., Nature and similar).

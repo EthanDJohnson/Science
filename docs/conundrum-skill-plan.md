@@ -29,6 +29,11 @@
 > - **Costs in §5.7 are re-estimated** from the smoke test's measured usage.
 > - **Turn limits are a safety net, not a target.** They sit at 1.5× the call budget, because agents overshoot budgets (a researcher used 48 calls against a budget of 25–40). Agents that build a file piece by piece append to it as they go, and no agent polls a running process.
 > - **Calculation-heavy lenses start last,** because a relaunch replays a failed agent and every agent that started after it.
+>
+> **Added after the first runs:**
+>
+> - **A statistics lens (Bayes)** with a tested `stats_tools.py`. It covers significance, the look-elsewhere effect, counting experiments and Bayes-factor bounds. It replaces the decomposer in the default anomaly set, so a standard run still has five lenses.
+> - **Crossref and Semantic Scholar** in `lit_search.py` (`--source general`), for fields outside high-energy physics and gravitation.
 
 A second opinion on a Gemini conversation about (1) Harb et al.'s "philosophy agents" chemistry paper, (2) whether philosophy-style system prompts help frontier models, and (3) how to build a multi-agent "scientific conundrum" skill in Claude Code. Sections 1–4 check Gemini's claims; section 5 is my plan.
 

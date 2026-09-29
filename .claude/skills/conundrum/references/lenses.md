@@ -12,6 +12,7 @@ Each lens is an independent Opus analyst with its own method, defined in `.claud
 | `idealizer` | Plato | The simplest idealized or toy model that captures the question, **solved**, plus where reality departs from it | Theory-heavy questions |
 | `empiricist` | Hume | What has actually been observed or measured vs. inferred; base rates (how often do claims like this survive?); analogous cases | Anomalies; claims resting on experiments |
 | `dialectician` | Hegel | For two well-supported but conflicting bodies of evidence: the regime or condition under which both hold | When the dossier's "Contested" section has a real contradiction |
+| `statistician` | Bayes | For each claimed signal: local and **global** significance (look-elsewhere effect), systematics, the Bayes-factor bound and the prior the claim needs, the failure modes that apply, and the data that would settle it, **computed with `stats_tools.py`** | Anomalies; any claim resting on a marginal measurement |
 
 ## Choosing lenses
 
@@ -22,10 +23,10 @@ The main session picks lenses at the dossier checkpoint, after reading the brief
 | **feasibility** ("can X be done / what are the options for X") | decomposer, constraints, examiner, engineer, mechanist | idealizer if theory-heavy; dialectician if the dossier has a live contradiction |
 | **design** ("how would we build X to spec") | decomposer, constraints, engineer, mechanist, examiner | idealizer for a sizing model |
 | **mechanism** ("how does X work / why does theory predict Y") | mechanist, idealizer, constraints, examiner, empiricist | dialectician |
-| **anomaly** ("why do we observe Y") | decomposer, mechanist, empiricist, constraints, examiner | dialectician |
+| **anomaly** ("why do we observe Y") | statistician, empiricist, mechanist, constraints, examiner | decomposer; dialectician |
 
 How many lenses to run at each depth:
-- **quick:** 3 lenses, always `constraints` and `examiner` plus the most type-specific one (`engineer`, `mechanist` or `empiricist`).
+- **quick:** 3 lenses, always `constraints` and `examiner` plus the most type-specific one (`engineer`, `mechanist` or `statistician`).
 - **standard:** the 5 in the row.
 - **deep:** the 5 plus every "add when" lens that applies, up to 7.
 

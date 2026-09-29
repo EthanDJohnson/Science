@@ -16,7 +16,7 @@ The design, and the review of the Gemini proposal it started from, are in [`docs
 
 1. **Requirements**
    - Claude Code with dynamic workflows. They're available on paid plans; on Pro, turn them on under Dynamic workflows in `/config`.
-   - Python 3.10+ with `pip install sympy numpy`.
+   - Python 3.10+ with `pip install sympy numpy`. Optionally add `pypdf`, so agents can quote open-access PDFs verbatim.
 2. **Start a new Claude Code session in this repo.** Claude Code loads the skill, agents and workflows at session start.
 3. **Run the skill:**
    ```
@@ -98,6 +98,7 @@ Everything lands in `runs/<slug>/`:
 | Idealizer | toy model, solved |
 | Empiricist | what was actually measured |
 | Dialectician | resolves contradictions |
+| Statistician | is the signal real? significance, look-elsewhere effect, prior odds (anomaly questions) |
 
 The philosopher labels in the agent files are mnemonics; the methods are the content.
 
@@ -109,7 +110,13 @@ The philosopher labels in the agent files are mnemonics; the methods are the con
 - horizon finding and Hawking temperatures;
 - high-precision rechecks of surprising signs.
 
-It is tested against Schwarzschild, FRW, Morris–Thorne, Painlevé–Gullstrand and Alcubierre closed forms. `lit_search.py` queries INSPIRE-HEP and arXiv and prints abstracts the agents can quote.
+It is tested against Schwarzschild, FRW, Morris–Thorne, Painlevé–Gullstrand and Alcubierre closed forms. `stats_tools.py` gives the statistics lens tested significance, look-elsewhere, counting-experiment and Bayes-factor calculations. `lit_search.py` prints abstracts the agents can quote, from four sources:
+- INSPIRE-HEP and arXiv, the default for physics;
+- Crossref and Semantic Scholar (`--source general`) for engineering, materials, chemistry, statistics and other fields.
+
+Semantic Scholar also lists open-access PDF links. Two optional environment variables speed these up; nothing identifying is sent unless you set them:
+- `SEMANTIC_SCHOLAR_API_KEY` raises Semantic Scholar's shared rate limit;
+- `CROSSREF_MAILTO` gives Crossref an email address for its faster pool.
 
 ### Network access
 
@@ -120,7 +127,7 @@ It is tested against Schwarzschild, FRW, Morris–Thorne, Painlevé–Gullstrand
 1. Click the cloud button showing the environment name (e.g. **Default**) above the message box.
 2. Hover over the environment and click its gear icon.
 3. Set **Network access** to **Custom**, paste the list below, and tick **Also include default list of common package managers** (PyPI).
-4. Add `pip install sympy numpy` to **Setup script**; it is cached for later sessions.
+4. Add `pip install sympy numpy pypdf` to **Setup script**; it is cached for later sessions.
 
 ```
 arxiv.org
@@ -144,6 +151,9 @@ onlinelibrary.wiley.com
 www.cambridge.org
 ieeexplore.ieee.org
 www.mdpi.com
+api.crossref.org
+api.semanticscholar.org
+www.semanticscholar.org
 ```
 
 **What to expect after saving:**
@@ -151,6 +161,7 @@ www.mdpi.com
 - **Claude's WebFetch tool** only sees it in a new session.
 - **Paywalls and bot walls remain.** Many publishers answer automated clients with 403s or bot-check redirects, and nearly everything is on arXiv anyway.
 - **arXiv's API rate-limits shared cloud addresses.** INSPIRE indexes the same papers with their arXiv IDs.
+- **Semantic Scholar rate-limits requests without an API key.** The tool retries with backoff. A free key (see above) avoids most of it.
 
 ### Permissions
 
@@ -177,8 +188,8 @@ python3 .claude/skills/conundrum/scripts/gr_tensors.py selftest           # GR t
   skills/conundrum/
     SKILL.md
     references/          lenses.md  schemas.md  rubric.md
-    scripts/             gr_tensors.py  lit_search.py  check_env.py  tests/
-  agents/                16 role definitions (model, effort, tools, method)
+    scripts/             gr_tensors.py  stats_tools.py  lit_search.py  check_env.py  tests/
+  agents/                17 role definitions (model, effort, tools, method)
   workflows/             conundrum-research.js  conundrum-analyze.js
   settings.json          permission allow-list
 docs/conundrum-skill-plan.md

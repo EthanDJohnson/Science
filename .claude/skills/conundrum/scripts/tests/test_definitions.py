@@ -44,7 +44,7 @@ def pipeline_agents() -> dict:
 class AgentDefinitions(unittest.TestCase):
     def test_every_agent_is_well_formed(self):
         agents = pipeline_agents()
-        self.assertGreaterEqual(len(agents), 16)
+        self.assertGreaterEqual(len(agents), 17)
         for stem, (fm, body) in agents.items():
             with self.subTest(agent=stem):
                 self.assertEqual(fm.get("name"), stem)
@@ -127,7 +127,7 @@ class WorkflowWiring(unittest.TestCase):
     def test_every_lens_has_an_agent_and_a_catalog_entry(self):
         src = workflow_source("conundrum-analyze")
         lenses = re.findall(r"'(\w+)'", re.search(r"const LENSES = \[(.*?)\]", src).group(1))
-        self.assertEqual(len(lenses), 8)
+        self.assertEqual(len(lenses), 9)
         catalog = (SKILL / "references" / "lenses.md").read_text()
         for lens in lenses:
             with self.subTest(lens=lens):

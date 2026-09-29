@@ -12,14 +12,14 @@ export const meta = {
   ],
 }
 
-const LENSES = ['decomposer', 'constraints', 'examiner', 'engineer', 'mechanist', 'idealizer', 'empiricist', 'dialectician']
+const LENSES = ['decomposer', 'constraints', 'examiner', 'engineer', 'mechanist', 'idealizer', 'empiricist', 'dialectician', 'statistician']
 const DEFAULT_LENSES = {
   feasibility: ['decomposer', 'constraints', 'examiner', 'engineer', 'mechanist'],
   design: ['decomposer', 'constraints', 'engineer', 'mechanist', 'examiner'],
   mechanism: ['mechanist', 'idealizer', 'constraints', 'examiner', 'empiricist'],
-  anomaly: ['decomposer', 'mechanist', 'empiricist', 'constraints', 'examiner'],
+  anomaly: ['statistician', 'empiricist', 'mechanist', 'constraints', 'examiner'],
 }
-const QUICK_THIRD = { feasibility: 'engineer', design: 'engineer', mechanism: 'mechanist', anomaly: 'empiricist' }
+const QUICK_THIRD = { feasibility: 'engineer', design: 'engineer', mechanism: 'mechanist', anomaly: 'statistician' }
 const ANGLES = ['physics', 'evidence', 'scale']
 const MAX_CANDIDATES = 8
 

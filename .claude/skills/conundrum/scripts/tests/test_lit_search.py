@@ -56,6 +56,41 @@ ARXIV_FIXTURE = b"""<?xml version="1.0" encoding="UTF-8"?>
 </feed>
 """
 
+CROSSREF_FIXTURE = {
+    "status": "ok",
+    "message": {"items": [
+        {"DOI": "10.0000/example.3", "title": ["A  journal   article"], "type": "journal-article",
+         "author": [{"given": "Ada", "family": "Example"}, {"name": "The Collaboration"}],
+         "issued": {"date-parts": [[2019, 4, 2]]}, "container-title": ["Phys. Rev. D"],
+         "volume": "99", "page": "084001", "is-referenced-by-count": 12,
+         "abstract": "<jats:title>Abstract</jats:title><jats:p>Energy &amp; momentum <jats:italic>are</jats:italic> conserved.</jats:p>"},
+        {"DOI": "10.0000/example.4", "title": ["A posted preprint"], "type": "posted-content",
+         "author": [{"family": "Solo"}], "issued": {"date-parts": [[2024]]},
+         "container-title": ["Some Server"], "is-referenced-by-count": 3},
+        {"DOI": "10.0000/example.5", "title": ["An old classic"], "type": "journal-article",
+         "issued": {"date-parts": [[None]]}, "container-title": ["J. Old"], "is-referenced-by-count": 500},
+    ]},
+}
+
+S2_FIXTURE = {
+    "total": 3, "offset": 0,
+    "data": [
+        {"paperId": "p1", "title": "Relevant but young", "year": 2023, "citationCount": 4,
+         "authors": [{"name": "A. Author"}], "externalIds": {"DOI": "10.0000/example.6", "ArXiv": "2301.00001"},
+         "journal": {"name": "Class. Quantum Grav.", "volume": "40", "pages": " 105009 "},
+         "publicationTypes": ["JournalArticle"], "url": "https://www.semanticscholar.org/paper/p1",
+         "abstract": "A relevant abstract.", "openAccessPdf": {"url": "https://arxiv.org/pdf/2301.00001", "status": "GREEN"}},
+        {"paperId": "p2", "title": "Highly cited review", "year": 2010, "citationCount": 900,
+         "authors": [], "externalIds": {}, "journal": {"name": "Rev. Mod. Phys."},
+         "publicationTypes": ["Review", "JournalArticle"], "url": "https://www.semanticscholar.org/paper/p2",
+         "abstract": None, "openAccessPdf": {"url": "", "status": None}},
+        {"paperId": "p3", "title": "An arXiv-only preprint", "year": 2025, "citationCount": None,
+         "authors": [{"name": "B. Writer"}], "externalIds": {"ArXiv": "2501.00002"},
+         "journal": {"name": "arXiv.org"}, "publicationTypes": None, "url": "", "abstract": "Short.",
+         "openAccessPdf": None},
+    ],
+}
+
 
 class Parsing(unittest.TestCase):
     def test_parse_inspire_full_record(self):
@@ -87,6 +122,90 @@ class Parsing(unittest.TestCase):
         self.assertEqual(lit_search.arxiv_query("alcubierre negative energy"),
                          "all:alcubierre AND all:negative AND all:energy")
         self.assertEqual(lit_search.arxiv_query("ti:warp AND cat:gr-qc"), "ti:warp AND cat:gr-qc")
+
+
+class GeneralSources(unittest.TestCase):
+    def test_parse_crossref_article(self):
+        rec = lit_search.parse_crossref(CROSSREF_FIXTURE)[0]
+        self.assertEqual(rec["title"], "A journal article")
+        self.assertEqual(rec["authors"], ["Ada Example", "The Collaboration"])
+        self.assertEqual(rec["year"], "2019")
+        self.assertEqual(rec["journal"], "Phys. Rev. D 99 084001")
+        self.assertEqual(rec["doc_type"], "article")
+        self.assertEqual(rec["citations"], 12)
+        self.assertEqual(rec["url"], "https://doi.org/10.0000/example.3")
+        self.assertEqual(rec["abstract"], "Energy & momentum are conserved.")
+
+    def test_crossref_preprint_and_missing_year(self):
+        pre, old = lit_search.parse_crossref(CROSSREF_FIXTURE)[1:]
+        self.assertEqual(pre["journal"], "")
+        self.assertEqual(pre["doc_type"], "preprint")
+        self.assertIn("| preprint", lit_search.format_record(pre, 0))
+        self.assertEqual(old["year"], "")
+
+    def test_parse_s2(self):
+        young, review, preprint = lit_search.parse_s2(S2_FIXTURE)
+        self.assertEqual(young["journal"], "Class. Quantum Grav. 40 105009")
+        self.assertEqual(young["arxiv"], "2301.00001")
+        self.assertEqual(young["open_access_pdf"], "https://arxiv.org/pdf/2301.00001")
+        self.assertIn("open-access PDF: https://arxiv.org/pdf/2301.00001", lit_search.format_record(young, 100))
+        self.assertEqual(review["doc_type"], "review")
+        self.assertEqual(review["abstract"], "")
+        self.assertEqual(review["open_access_pdf"], "")
+        self.assertEqual(preprint["journal"], "")
+        self.assertIn("preprint (no journal ref)", lit_search.format_record(preprint, 0))
+
+    def test_mostcited_re_sorts_a_relevance_pool(self):
+        urls = []
+
+        def fake_get(url, timeout, headers=None):
+            urls.append(url)
+            return json.dumps(S2_FIXTURE).encode()
+        with mock.patch.object(lit_search, "_get", side_effect=fake_get):
+            recs = lit_search.search_s2("warp", 2, "mostcited", 5)
+        self.assertEqual([r["title"] for r in recs], ["Highly cited review", "Relevant but young"])
+        self.assertIn("limit=10", urls[0])
+        with mock.patch.object(lit_search, "_get", side_effect=fake_get):
+            recs = lit_search.search_s2("warp", 2, "relevance", 5)
+        self.assertEqual([r["title"] for r in recs], ["Relevant but young", "Highly cited review"])
+        self.assertIn("limit=2", urls[-1])
+        with mock.patch.object(lit_search, "_get", side_effect=fake_get):
+            recs = lit_search.search_s2("warp", 3, "mostrecent", 5)
+        self.assertEqual([r["year"] for r in recs], ["2025", "2023", "2010"])
+
+    def test_nothing_identifying_is_sent_unless_configured(self):
+        calls = []
+
+        def fake_get(url, timeout, headers=None):
+            calls.append((url, headers))
+            return json.dumps(CROSSREF_FIXTURE if "crossref" in url else S2_FIXTURE).encode()
+        clean = {k: v for k, v in os.environ.items() if k not in ("CROSSREF_MAILTO", "SEMANTIC_SCHOLAR_API_KEY")}
+        with mock.patch.dict(os.environ, clean, clear=True), mock.patch.object(lit_search, "_get", side_effect=fake_get):
+            lit_search.search_crossref("warp", 2, "mostcited", 5)
+            lit_search.search_s2("warp", 2, "mostcited", 5)
+        self.assertNotIn("mailto", calls[0][0])
+        self.assertIsNone(calls[1][1])
+        with mock.patch.dict(os.environ, {"CROSSREF_MAILTO": "me@example.org", "SEMANTIC_SCHOLAR_API_KEY": "k123"}), \
+                mock.patch.object(lit_search, "_get", side_effect=fake_get):
+            lit_search.search_crossref("warp", 2, "mostcited", 5)
+            lit_search.search_s2("warp", 2, "mostcited", 5)
+        self.assertIn("mailto=me%40example.org", calls[2][0])
+        self.assertEqual(calls[3][1], {"x-api-key": "k123"})
+
+    def test_source_aliases_and_lists(self):
+        self.assertEqual(lit_search.parse_sources("both"), ["inspire", "arxiv"])
+        self.assertEqual(lit_search.parse_sources("general"), ["crossref", "s2"])
+        self.assertEqual(lit_search.parse_sources("all"), ["inspire", "arxiv", "crossref", "s2"])
+        self.assertEqual(lit_search.parse_sources("s2, inspire,s2"), ["s2", "inspire"])
+        with self.assertRaises(lit_search.argparse.ArgumentTypeError):
+            lit_search.parse_sources("astrology")
+
+    def test_blocked_host_is_named(self):
+        err = lit_search.urllib.error.URLError("Tunnel connection failed: 403 Forbidden")
+        with mock.patch.object(lit_search.urllib.request, "urlopen", side_effect=err):
+            with self.assertRaises(lit_search.SourceUnavailable) as ctx:
+                lit_search._get("https://api.crossref.org/works?query=x", 5)
+        self.assertIn("may not allow api.crossref.org", str(ctx.exception))
 
 
 class Formatting(unittest.TestCase):
@@ -168,6 +287,21 @@ class Failures(unittest.TestCase):
             code, out = self.run_main(["warp drive"])
         self.assertEqual(code, 0)
         self.assertIn("## arXiv: 1 result(s)", out)
+
+    def test_all_sources_run_in_order(self):
+        def fake_get(url, timeout, headers=None):
+            if "inspirehep" in url:
+                return json.dumps(INSPIRE_FIXTURE).encode()
+            if "crossref" in url:
+                return json.dumps(CROSSREF_FIXTURE).encode()
+            if "semanticscholar" in url:
+                return json.dumps(S2_FIXTURE).encode()
+            raise lit_search.SourceUnavailable("rate-limited")
+        with mock.patch.object(lit_search, "_get", side_effect=fake_get):
+            code, out = self.run_main(["warp drive", "--source", "all", "--max", "2"])
+        self.assertEqual(code, 0)
+        order = [out.index(h) for h in ("## INSPIRE-HEP", "UNAVAILABLE: arXiv", "## Crossref", "## Semantic Scholar")]
+        self.assertEqual(order, sorted(order))
 
     def test_json_output(self):
         with mock.patch.object(lit_search, "_get", return_value=json.dumps(INSPIRE_FIXTURE).encode()):
