@@ -13,9 +13,14 @@ Metric: ds^2 = -dt^2 + (dx - v f(r) dt)^2 + dy^2 + dz^2, r measured from the bub
        E_min(R, D) = -(v^2/12) * R (R + D) / D,
    which tends to -(v^2/12) R as D -> infinity (f = R/r, a 1/r tail reaching to infinity).
    So thickening has diminishing returns: no spherical profile beats v^2 R/12.
-2. Tidal gradients, from the full Riemann tensor in the Eulerian frame:
+2. The largest Riemann component in the Eulerian frame, as a proxy for tides:
    (a) at the centre of a tanh bubble as its wall thickens inward;
    (b) around a bubble with the minimum-energy 1/r tail, versus a thin tanh wall.
+   CORRECTION: this proxy is wrong for the ship. Inside the bubble the largest components are the
+   "magnetic" part R_{0ijk}, which acts only on things moving relative to the ship, so section 2(a)
+   overstates the stretch by up to many orders of magnitude (10 m wall, 2.3 m from the centre:
+   3.6e6 g/m here against 0.04 g/m from the tidal tensor). interior_tides.py computes the tidal
+   tensor properly, inside and outside the bubble; use its numbers.
 3. Horizons at v = 2 for a thin tanh wall and the 1/r tail: position, surface gravity, and
    the share of the negative energy lying where the ship cannot send signals.
 4. Quantum inequality: how the free-field bound scales with wall thickness.
@@ -79,7 +84,8 @@ print("\n   All values are at v = c and scale as v^2. The tanh wall can dip belo
 print("   thickening it eats the flat interior (section 2a).")
 
 # ---------------------------------------------------------------- 2. tidal gradients
-print("\n== 2. Tidal gradients (largest Riemann component in the Eulerian frame, times c^2), v = c")
+print("\n== 2. Largest Riemann component (Eulerian frame, times c^2), v = c. NOT the tide on the ship:")
+print("   inside the bubble this is the magnetic part, which overstates it; see interior_tides.py.")
 st, s = metrics.alcubierre()
 t, x, y, z, v = s["t"], s["x"], s["y"], s["z"], s["v"]
 Rs, sig = s["R"], s["sigma"]
