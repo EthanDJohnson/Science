@@ -6,6 +6,7 @@ a model or effort value Claude Code would reject. Run from the project root:
 
     python3 -m unittest discover -s .claude/skills/conundrum/scripts/tests -v
 """
+import importlib.util
 import json
 import re
 import unittest
@@ -93,6 +94,17 @@ class AgentDefinitions(unittest.TestCase):
                 if stem not in ("candidate-builder", "falsifier"):
                     self.assertIn("`ok`", rules)
                     self.assertIn("`summary`", rules)
+
+    def test_ground_rules_match_their_generator(self):
+        # dev/agent_rules.py is the single source of every agent's ground rules and maxTurns.
+        spec = importlib.util.spec_from_file_location("agent_rules", ROOT / "dev" / "agent_rules.py")
+        rules = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(rules)
+        self.assertEqual(set(rules.SPEC), set(pipeline_agents()), "agents and the generator's SPEC disagree")
+        for path in sorted(AGENTS.glob("*.md")):
+            with self.subTest(agent=path.stem):
+                self.assertEqual(rules.render(path), path.read_text(),
+                                 "edited by hand: change dev/agent_rules.py and run it instead")
 
     def test_calculation_and_citation_safety_rules(self):
         for stem, (fm, body) in pipeline_agents().items():

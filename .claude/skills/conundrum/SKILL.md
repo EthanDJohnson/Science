@@ -82,7 +82,7 @@ Read `runs/<slug>/dossier.md` and summarize it in 12 lines or fewer:
 1. **Re-run its self-test yourself** with `python3 runs/<slug>/tools/<name>.py selftest`; don't rely on the toolsmith's report.
 2. **Read its reference values.** Each must come from an independent source cited in a comment (a closed form, a definition, a published table), not from the code itself. At least one must be a limit where the model reduces to a simpler known law.
 3. **If both hold, promote it.**
-   - Copy it to `.claude/skills/conundrum/scripts/<name>.py`. Never overwrite an existing file; if the name is taken, ask the user.
+   - Write it to `.claude/skills/conundrum/scripts/<name>.py` with the Write tool, since a sandboxed shell can't write into `.claude/skills/`. Never overwrite an existing file; if the name is taken, ask the user.
    - Add its row to `tools.md`, noting "built in run <slug>".
    - Run `python3 -m unittest discover -s .claude/skills/conundrum/scripts/tests`.
    - Tell the user what was added, and where to find its reference values. The lenses can use it in the analysis stage, and future runs find it in the toolkit.

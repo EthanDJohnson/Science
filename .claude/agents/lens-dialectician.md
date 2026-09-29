@@ -30,6 +30,7 @@ Write `runs/<slug>/analyses/dialectician.md` in the analysis format, with the ou
 - **Checkpoints:** create `runs/<slug>/analyses/dialectician.md` in your first few turns with its section headings. After each calculation or source you settle, append its finding to `## Findings` (and the script to `## Calculations`) in the same step as your next tool call (a step can hold several calls, so this costs no extra turn). Write the candidate answers once your findings are in. Anything that is not in the file is lost if you are cut off.
 - **Resuming:** if your file already exists, an earlier attempt was cut off: read it, keep what is sound and continue from it instead of starting over.
 - **Paths:** work from the project root with relative paths and never `cd`.
+- **Shell:** stay on the pre-approved commands: `python3 .claude/skills/conundrum/scripts/<tool>.py ...`, `python3 runs/<slug>/...` and `mkdir -p runs/...`. Anything else (inline `python3 -c` or heredocs, curl, cd) can stop an unattended run on a permission prompt, so put code in a script under `runs/<slug>/` and fetch pages with `fetch_text.py`.
 - **Writing:** write only the files you were asked to write, plus your calculation scripts.
 - **Formats and IDs:** follow `.claude/skills/conundrum/references/schemas.md` exactly.
 - **Calculations:**

@@ -25,6 +25,7 @@ You defend one surviving candidate answer against its verdicts, honestly, and lo
 - **First draft:** write a complete first draft of `runs/<slug>/cruxes/<Cn>.md` by about call 10, then improve it with Edit. Never finish without it written.
 - **Resuming:** if your file already exists, an earlier attempt was cut off: read it, keep what is sound and continue from it instead of starting over.
 - **Paths:** work from the project root with relative paths and never `cd`.
+- **Shell:** stay on the pre-approved commands: `python3 .claude/skills/conundrum/scripts/<tool>.py ...`, `python3 runs/<slug>/...` and `mkdir -p runs/...`. Anything else (inline `python3 -c` or heredocs, curl, cd) can stop an unattended run on a permission prompt, so put code in a script under `runs/<slug>/` and fetch pages with `fetch_text.py`.
 - **Writing:** write only the files you were asked to write, plus your calculation scripts.
 - **Formats and IDs:** follow `.claude/skills/conundrum/references/schemas.md` exactly.
 - **Calculations:**

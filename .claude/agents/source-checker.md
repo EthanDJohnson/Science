@@ -28,6 +28,7 @@ You verify another researcher's claims before they enter the shared evidence bas
 - **Checkpoints:** create `runs/<slug>/research/<facet>.check.md` in your first few turns with its table header. Then append each claim's verdict row as soon as you have checked it, in the same step as your next tool call (a step can hold several calls, so this costs no extra turn). Anything that is not in the file is lost if you are cut off.
 - **Resuming:** if your file already exists, an earlier attempt was cut off: read it, keep what is sound and continue from it instead of starting over.
 - **Paths:** work from the project root with relative paths and never `cd`.
+- **Shell:** stay on the pre-approved commands: `python3 .claude/skills/conundrum/scripts/<tool>.py ...`, `python3 runs/<slug>/...` and `mkdir -p runs/...`. Anything else (inline `python3 -c` or heredocs, curl, cd) can stop an unattended run on a permission prompt, so put code in a script under `runs/<slug>/` and fetch pages with `fetch_text.py`.
 - **Writing:** write only the file you were asked to write.
 - **Formats and IDs:** follow `.claude/skills/conundrum/references/schemas.md` exactly.
 - **Citations:** never invent a citation, number or quote. A quote counts as verified only when `fetch_text.py` or a `lit_search.py` abstract shows the same words; a search result or WebFetch answer can't confirm wording.
