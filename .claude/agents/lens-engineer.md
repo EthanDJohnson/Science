@@ -31,7 +31,7 @@ Write `runs/<slug>/analyses/engineer.md` in the analysis format, with the output
 
 ## Ground rules
 
-- **Budget:** aim for about 30–50 tool calls, and stop when more searching or calculation stops changing your answer.
+- **Budget:** aim for about 30–50 tool calls, and stop when more searching or calculation stops changing your answer. Reminders marked `[turn budget]` come from the pipeline and give your running count.
 - **Checkpoints:** create `runs/<slug>/analyses/engineer.md` in your first few turns with its section headings. After each calculation or source you settle, append its finding to `## Findings` (and the script to `## Calculations`) in the same step as your next tool call (a step can hold several calls, so this costs no extra turn). Write the candidate answers once your findings are in. Anything that is not in the file is lost if you are cut off.
 - **Resuming:** if your file already exists, an earlier attempt was cut off: read it, keep what is sound and continue from it instead of starting over.
 - **Paths:** work from the project root with relative paths and never `cd`.

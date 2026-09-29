@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import importlib
 import json
+import os
 import sys
 import urllib.error
 import urllib.request
@@ -61,12 +62,21 @@ def check_sources(timeout=8.0):
     return out
 
 
+def workflow_concurrency() -> tuple[int, int]:
+    """CPUs available to this process, and the agents a workflow runs at once: min(16, CPUs - 2)."""
+    cpus = len(os.sched_getaffinity(0)) if hasattr(os, "sched_getaffinity") else (os.cpu_count() or 1)
+    return cpus, max(1, min(16, cpus - 2))
+
+
 def main() -> int:
     packages, sources = check_packages(), check_sources()
+    cpus, parallel = workflow_concurrency()
     if "--json" in sys.argv:
-        print(json.dumps({"python": sys.version.split()[0], "packages": packages, "sources": sources}, indent=2))
+        print(json.dumps({"python": sys.version.split()[0], "cpus": cpus, "workflow_parallel_agents": parallel,
+                          "packages": packages, "sources": sources}, indent=2))
         return 0
     print(f"python {sys.version.split()[0]}")
+    print(f"cpus    {cpus} (workflows run up to {parallel} agent{'s' if parallel != 1 else ''} at once)")
     for p in packages:
         tag = "ok" if p["ok"] else ("MISSING (required)" if p["required"] else "missing (optional)")
         print(f"package {p['package']:<6} {tag}{' ' + p['version'] if p['version'] else ''}")
@@ -82,6 +92,9 @@ def main() -> int:
               "such claims are marked ACCESS: search-summary and weighted down.")
     elif blocked:
         print(f"NOTE: blocked: {', '.join(blocked)}. Researchers will use the reachable sources and WebSearch.")
+    if parallel < 5:
+        print(f"NOTE: only {parallel} agents run at once here, so runs take longer than the estimates, which assume "
+              "5 or more (roughly 2x for standard, 3-4x for deep). A machine with more CPUs runs them faster.")
     if not missing and not blocked:
         print("READY: all packages present and all sources reachable.")
     return 0

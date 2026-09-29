@@ -21,6 +21,7 @@ Reference files, all in `.claude/skills/conundrum/references/`:
 ## 0. Preflight
 
 Run `python3 .claude/skills/conundrum/scripts/check_env.py`.
+- **Few agents at once:** if it notes that only a few agents run at once, mention that runs here will take longer than the table below. It's roughly 2× for standard and 3–4× for deep.
 - **Required package missing:** ask whether to install it (`pip install sympy numpy`) before continuing. The physics calculations depend on it.
 - **Literature sources blocked:** tell the user in one line that research will lean on search summaries and INSPIRE abstracts, which the pipeline marks and weighs down. Continue unless they want to fix network access first.
 
@@ -45,7 +46,7 @@ Then check that WebFetch itself can read papers: WebFetch `https://arxiv.org/abs
    | standard | 4 researchers + checks, 5 lenses, 1 refuter per candidate, Fable judge | ~23 | 1.5–3 hours | ~$45–90 |
    | deep | 5 researchers + checks, 6–7 lenses, 3 refuters per candidate, crux round, Fable judge at max | ~40–50 | 3–5 hours | ~$100–180 |
 
-   Say that these are extrapolated from two measured agents, not a full run, and that times exclude the checkpoints. On a subscription the run draws on usage limits instead. `/workflows` shows live token counts, and `/usage` afterwards attributes usage to subagents and flags cache misses.
+   Say that these are extrapolated from two measured agents, not a full run. Times exclude the checkpoints and assume at least 5 agents can run at once (see the preflight). On a subscription the run draws on usage limits instead. `/workflows` shows live token counts, and `/usage` afterwards attributes usage to subagents and flags cache misses.
 
 ## 2. Research
 

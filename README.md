@@ -34,7 +34,7 @@ The design, and the review of the Gemini proposal it started from, are in [`docs
 | `standard` | 4 researchers with source checks, 5 lenses, 1 refuter per candidate, Fable judge | ~23 | 1.5–3 hours | ~$45–90 |
 | `deep` | 5 researchers with checks, 6–7 lenses, 3 refuters per candidate with different angles, rebuttal round, Fable judge at max effort | ~40–50 | 3–5 hours | ~$100–180 |
 
-Times exclude the two checkpoints where the pipeline waits for you. The costs are extrapolated from two measured agents, not from a full run:
+Times exclude the two checkpoints where the pipeline waits for you. They also assume at least 5 agents can run at once; see [Where to run it](#where-to-run-it). The costs are extrapolated from two measured agents, not from a full run:
 
 | Measured agent | Turns | Cost at API list prices | Time |
 |---|---|---|---|
@@ -50,6 +50,22 @@ The toolkit fixes and the no-polling rules target the first item. The harness re
 
 Cache reads count against plan usage at the cached rate, so the API list price is a rough proxy for how much of your window a run uses. `/workflows` shows live token counts and lets you stop a run. Afterwards `/usage` attributes usage to subagents and flags cache misses.
 
+### Where to run it
+
+A workflow runs at most min(16, CPUs − 2) agents at once. The preflight prints the number for your machine.
+
+| | Local terminal on your computer | Cloud session (claude.ai/code, or started from the app) |
+|---|---|---|
+| Agents at once | Typically 6–14 on an 8–16-core machine | 2: the container has 4 CPUs, so a standard run takes about 2× as long and a deep run 3–4× |
+| Hitting your usage limit | The run waits for the reset and continues by itself, up to twice per run (interactive session, v2.1.271 or later) | Probably fails the agents that hit it: the docs exclude SDK and background sessions from the pause. Relaunch after the reset |
+| Run files | Stay on your disk | Lost if not pushed before the container is reclaimed; the skill offers to push after each stage |
+| Literature access | Full web access | Allowlisted hosts only; WebFetch sees changes only in a new session |
+| Your computer | Must stay awake for the whole run | Can be off; start and follow it from your phone |
+
+Token cost is the same either way. Local is the more robust choice when a computer can stay on for a few hours. `claude remote-control`, run in the project folder, lets you follow a local session from the Claude app. The docs list Remote Control sessions among those that don't pause at the usage limit, though, so a long run is safest in a plain terminal session.
+
+The stages hand over through files, so they can also change machines. For example, frame and research in the cloud, push, pull, then run the analysis locally.
+
 ### If a run is cut off
 
 | Cut | What is lost | What survives |
@@ -60,6 +76,14 @@ Cache reads count against plan usage at the cached rate, so the API list price i
 | A cloud container reclaimed after inactivity | Every file you didn't push | The workflow's saved results, so a relaunch trusts agents whose files are gone. Push `runs/<slug>/` after each stage |
 
 Agents append findings to their files as they go, in the same step as their next tool call, so a cut costs a few turns of work and a checkpoint costs output tokens, not an extra turn. A relaunched agent that finds its file continues from it. A relaunch also reruns a failed agent and every agent that started after it, so the calculation-heavy lenses start last.
+
+**Turn counting.** Agents can't count their own turns reliably, so a hook counts for them: `.claude/hooks/turn_budget.py`, registered in `.claude/settings.json`. It runs once per agent turn (`PostToolBatch`) and costs no tokens. Only when a threshold is crossed does it add a one-line `[turn budget]` reminder to that agent's context:
+- every 10 tool calls, with a nudge to append settled findings;
+- at the first-draft call, for agents that write one document;
+- at the top of the call budget;
+- on each of the last 5 turns before the cutoff.
+
+It reads each agent's budget from its definition file and ignores the main conversation and every other agent.
 
 ### What you get
 
@@ -171,7 +195,7 @@ www.semanticscholar.org
 - running Python scripts under the skill's `scripts/` and under `runs/`;
 - creating and writing files under `runs/`.
 
-Everything else prompts as usual. Each workflow launch also asks for approval; choose "don't ask again" for a workflow to skip it next time.
+It also registers the turn-budget hook above. Everything else prompts as usual. Each workflow launch also asks for approval; choose "don't ask again" for a workflow to skip it next time.
 
 ### Tests
 
@@ -179,6 +203,7 @@ Everything else prompts as usual. Each workflow launch also asks for approval; c
 python3 -m unittest discover -s .claude/skills/conundrum/scripts/tests   # tools + definition consistency
 node --test .claude/skills/conundrum/scripts/tests/workflows.test.mjs     # orchestration, with a mock runtime
 python3 .claude/skills/conundrum/scripts/gr_tensors.py selftest           # GR toolkit vs. known results
+python3 .claude/skills/conundrum/scripts/stats_tools.py selftest          # statistics toolkit vs. reference values
 ```
 
 ### Layout
@@ -191,7 +216,8 @@ python3 .claude/skills/conundrum/scripts/gr_tensors.py selftest           # GR t
     scripts/             gr_tensors.py  stats_tools.py  lit_search.py  check_env.py  tests/
   agents/                17 role definitions (model, effort, tools, method)
   workflows/             conundrum-research.js  conundrum-analyze.js
-  settings.json          permission allow-list
+  hooks/                 turn_budget.py (counts each agent's turns and tool calls)
+  settings.json          permission allow-list and hook registration
 docs/conundrum-skill-plan.md
 examples/                smoke-test output of one lens, with provenance notes
 runs/                    one directory per investigation

@@ -32,7 +32,7 @@ You compile the research into the single evidence base every later agent relies 
 
 ## Ground rules
 
-- **Budget:** aim for about 10–20 tool calls, and stop when more searching or calculation stops changing your answer.
+- **Budget:** aim for about 10–20 tool calls, and stop when more searching or calculation stops changing your answer. Reminders marked `[turn budget]` come from the pipeline and give your running count.
 - **First draft:** write a complete first draft of `runs/<slug>/dossier.md` by about call 12, then improve it with Edit. Never finish without it written.
 - **Resuming:** if your file already exists, an earlier attempt was cut off: read it, keep what is sound and continue from it instead of starting over.
 - **Paths:** work from the project root with relative paths and never `cd`.

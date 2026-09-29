@@ -159,6 +159,13 @@ class SkillAndSettings(unittest.TestCase):
         self.assertLessEqual(len(fm["description"]), 1536)
         self.assertIn("$ARGUMENTS", body)
 
+    def test_turn_budget_hook_is_registered(self):
+        hooks = json.loads((CLAUDE / "settings.json").read_text())["hooks"]
+        for event in ("PostToolBatch", "SubagentStop"):
+            commands = [h["command"] for group in hooks[event] for h in group["hooks"]]
+            self.assertTrue(any(".claude/hooks/turn_budget.py" in c for c in commands), event)
+        self.assertTrue((CLAUDE / "hooks" / "turn_budget.py").exists())
+
     def test_settings_allow_what_the_agents_need(self):
         allow = json.loads((CLAUDE / "settings.json").read_text())["permissions"]["allow"]
         for rule in ("WebSearch", "WebFetch", "Bash(python3 runs/*)",
