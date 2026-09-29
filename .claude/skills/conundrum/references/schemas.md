@@ -5,6 +5,8 @@ Every run lives in `runs/<slug>/`. Each agent writes only the file(s) it was ask
 ## Rules that apply to every file
 
 - **Work from the project root.** Use relative paths and never `cd`.
+- **Read only this run.** Read your own run folder `runs/<slug>/` and the toolkit (`.claude/skills/conundrum/`), never another run's folder. Earlier runs reach you only through `runs/<slug>/prior/`, and only what the user approved.
+- **Earlier runs.** `runs/<slug>/prior/<run>/` holds material from an earlier run that the user approved at framing. Its `PROVENANCE.md` says how it may be used: as leads only, or as claims a researcher may carry once re-verified. Researchers follow that file. Other agents leave `prior/` alone, except that its `calc/` scripts may be read for method. Any number you cite must come from a script in this run's own `calc/`, and nothing under `prior/` is ever cited.
 - **Put Python calculations in `runs/<slug>/calc/<agent>_<topic>.py`.** Run them with `python3 runs/<slug>/calc/<file>.py`, print inputs, units and results, and cite them as `[calc: runs/<slug>/calc/<file>.py]`. Don't run inline Python (`python3 -c` or heredocs): it isn't pre-approved, so it can stop an unattended run on a permission prompt, and it leaves nothing to cite.
 - **For general relativity, use `.claude/skills/conundrum/scripts/gr_tensors.py`.** It is tested against Schwarzschild, FRW, Morris–Thorne and Alcubierre. Import it with `sys.path.insert(0, ".claude/skills/conundrum/scripts")`.
 - **Never invent a citation, number or quote.** Cite only sources you actually saw.
@@ -29,7 +31,12 @@ slug: <slug> | depth: quick|standard|deep | type: feasibility|anomaly|mechanism|
 ## Hidden premises to test
 ## What counts as an answer
 ## Known constraints, prior attempts, and user-supplied data
+## Prior runs
+- <run> (<its date>): ignore | leads | update[, same question]. <one-line reason>
+(or "None.")
 ```
+
+`same question` marks an earlier run that this one repeats. Recording this run (`prior_runs.py record`) then marks that one superseded, so later runs offer this one instead.
 
 ## research/<facet>.md (researcher)
 
@@ -45,11 +52,14 @@ Access: lit_search INSPIRE <ok|blocked>, arXiv <ok|blocked>; WebFetch domains th
   ACCESS: full-text | abstract | search-summary
   STATUS: peer-reviewed | textbook-or-review | preprint | secondary | fringe
   CONFIDENCE: high | medium | low
+  PRIOR: <run> (<its date>), was <old ID>; re-verified | not re-verified   (only on a claim carried from an earlier run)
 ## Gaps
 - <what you looked for and could not find>
 ```
 
 `<F>` is the facet initial: T theory, Q quantitative, C critiques, E engineering, F frontier. Write 10–30 claims, and prefer fewer claims with good sources over many weak ones.
+
+A claim carried from an earlier run takes this run's ID and a `PRIOR` line. `re-verified` means you found the same words in the source during this run. A claim you couldn't re-verify is written as `ACCESS: search-summary` with a `SUMMARY:` line, however it was quoted before.
 
 ## research/<facet>.check.md (source-checker)
 
@@ -79,7 +89,7 @@ Verdicts:
 ## 4. Constraints: theorems, bounds, no-go results, each with its assumptions
 ## 5. Frontier and speculative (labelled; not established)
 ## 6. Unknowns and gaps
-## 7. Source-quality notes: dropped claims (contradicted), corrections (misattributed), share of claims resting only on search summaries, fringe excluded
+## 7. Source-quality notes: dropped claims (contradicted), corrections (misattributed), share of claims resting only on search summaries, fringe excluded, claims carried from earlier runs (by run, and how many were re-verified)
 ```
 
 ## analyses/<lens>.md (lens agents)
@@ -172,3 +182,14 @@ A calculator, built so that it can be promoted into the shared toolkit (`referen
 - **Run the self-test with `python3 <file> selftest`,** exiting 0 on success.
 
 Report the self-test result, each reference value and its source, and a proposed catalog row (Tool | Covers | Checked against | Try it).
+
+## run.json (the run's record)
+
+Written by `prior_runs.py record <slug>` when a run finishes, and updated by `prior_runs.py mark`. Later runs read it at framing to decide how far to trust this one.
+
+```
+{"slug", "date", "title", "question", "type", "depth",
+ "status": "complete" | "partial", "source_checked": true | false, "bottom_line",
+ "prior": [{"slug", "date", "mode", "same_question"}],
+ "trust": "ok" | "distrusted", "notes": ["<date>: <note>"], "superseded_by": <run> | null, "recorded": <date>}
+```

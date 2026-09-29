@@ -33,24 +33,32 @@ Then check that WebFetch itself can read papers: WebFetch `https://arxiv.org/abs
 
 1. **Create the run directory.** Build a slug from today's date (`date +%F`) plus a 3–6 word kebab-case summary, for example `2026-09-29-alcubierre-negative-energy`. Create `runs/<slug>/`.
 2. **Classify the question** as `feasibility`, `design`, `mechanism` or `anomaly`, using `lenses.md`.
-3. **Draft `runs/<slug>/brief.md`** in the brief format. Do the thinking the user would want done up front:
+3. **Look for earlier runs.** Run `python3 .claude/skills/conundrum/scripts/prior_runs.py list "<question>"`. It lists earlier runs that share the question's key terms, best match first. For each it gives the age, whether its sources were checked, the user's notes and a suggested mode. For each run that bears on this question, settle on one mode:
+   - **ignore:** agents never see it. Use it for an independent re-check.
+   - **leads:** its notes only point researchers at sources; nothing counts until it is found and quoted again. The default for a run that never finished or was never source-checked, and for an older run in a fast-moving field.
+   - **update:** claims that re-verify carry over, labelled with the run and its date, and researchers look for newer work. The default for a complete, source-checked run.
+
+   Runs the user marked distrusted, and runs a newer one superseded, are ignored without asking; name them in one line. No mode ever passes an earlier run's analyses, verdicts or report to the agents. If an earlier run asked the same question, start the brief from its definitions, and tell the user what you changed.
+4. **Draft `runs/<slug>/brief.md`** in the brief format. Do the thinking the user would want done up front:
    - **Define every loaded term.** For example, "superluminal effective speed" relative to which observers; "negative energy" meaning which energy density, measured by whom.
    - **State the admissible physics.** The default is established GR plus QFT, including semiclassical gravity. Speculative extensions are allowed only when labelled.
    - **State the horizon for "viable":** in principle, and in practice within a stated time.
    - **List the hidden premises worth testing.**
    - **Say what a useful answer looks like.**
-4. **Check for calculator gaps.** List the calculations the question will need, for example relativistic travel times, Casimir energies, heat rejection or orbital transfers. Compare them with `tools.md`.
+   - **List the earlier runs** under `## Prior runs`, with the mode you propose for each and why.
+5. **Check for calculator gaps.** List the calculations the question will need, for example relativistic travel times, Casimir energies, heat rejection or orbital transfers. Compare them with `tools.md`.
    - **Propose a new calculator only for a calculation several agents will need and that is easy to get subtly wrong.** One-off arithmetic doesn't qualify; agents write that in their own scripts.
    - **For each one, give a snake_case name not already in the toolkit,** and a one-line purpose saying what it must cover.
    - **Usually there are none.** Say so and move on.
-5. **Get the brief confirmed.** Show the user:
+6. **Get the brief confirmed.** Show the user:
    - the question made precise;
    - the premises to test;
    - what counts as an answer;
    - the depth with its expected size;
-   - any proposed calculators. Each costs roughly $2–5 at API prices and is built alongside the research.
+   - any proposed calculators. Each costs roughly $2–5 at API prices and is built alongside the research;
+   - the earlier runs, with the mode you propose for each and its reason.
 
-   Ask them to confirm or correct it, and apply any corrections to `brief.md`.
+   Ask them to confirm or correct it, and apply any corrections to `brief.md`. The user may overrule a mode in plain words, such as "I don't trust that research, get it fresh" (ignore) or "that's six months old in a fast-moving field, discount it" (leads).
 
    | depth | what runs | agent runs | rough time | rough cost at API list prices |
    |---|---|---|---|---|
@@ -60,9 +68,13 @@ Then check that WebFetch itself can read papers: WebFetch `https://arxiv.org/abs
 
    Say that these are extrapolated from two measured agents, not a full run. Times exclude the checkpoints and assume at least 5 agents can run at once (see the preflight). On a subscription the run draws on usage limits instead. `/workflows` shows live token counts, and `/usage` afterwards attributes usage to subagents and flags cache misses.
 
+   Once the brief is confirmed, act on the earlier runs:
+   - **Record what the user said about a run,** so later runs remember it. For distrust, run `prior_runs.py mark <run> --trust distrusted --note "<their reason>"`, and later runs ignore it without asking. A caveat, such as "the plot values were read by eye", goes in with `--note` alone.
+   - **Copy in each leads or update run** with `prior_runs.py import <run> --into <slug> --mode <mode>`. It copies evidence, never conclusions, into `runs/<slug>/prior/<run>/`, with a `PROVENANCE.md` telling researchers how they may use it.
+
 ## 2. Research
 
-Call the Workflow tool with `name: "conundrum-research"` and `args: {slug, depth, tools}`. `tools` holds the confirmed calculators as `[{name, purpose}]`; leave it out if there are none. The workflow runs in the background, so wait for its completion notification. If the result lists `missing` or `unchecked` facets, mention them at the checkpoint.
+Call the Workflow tool with `name: "conundrum-research"` and `args: {slug, depth, tools, prior}`. `tools` holds the confirmed calculators as `[{name, purpose}]`, and `prior` the brief's leads and update runs as `[{slug, mode}]`; leave either out if it is empty. The workflow runs in the background, so wait for its completion notification. If the result lists `missing` or `unchecked` facets, mention them at the checkpoint.
 
 **In a cloud session, offer to commit and push `runs/<slug>/` now,** and again after step 4. The container is reclaimed after inactivity and unpushed files are lost, while a workflow's saved results survive, so a later relaunch would trust agents whose files no longer exist.
 
@@ -101,14 +113,26 @@ Call the Workflow tool with `name: "conundrum-analyze"` and `args: {slug, depth,
 
 First check that the pipeline is still untouched, as at step 3: `git status --short -- .claude CLAUDE.md .mcp.json` should show only changes you made.
 
-Read `runs/<slug>/report.md` and `runs/<slug>/audit.md`. Present:
+Read `runs/<slug>/report.md` and `runs/<slug>/audit.md`.
+
+**Compare with earlier runs.** For each run in the brief's `## Prior runs` that has a report and isn't marked distrusted, compare its ranked answers with this run's. Append `## What changed since <run>` to `report.md`, in 15 lines or fewer:
+- answers that rose, fell, appeared or dropped out, with their credences;
+- the new evidence behind each change, by dossier ID;
+- anything the earlier run relied on that this run found superseded.
+
+The judge never saw the earlier report, so this is the first comparison.
+
+Present:
 - the bottom line;
 - the ranked-answers table;
+- what changed since earlier runs, if you compared any;
 - the top three decisive tests or calculations;
 - every audit flag marked `unsupported` or `contradicted`, plus the count marked `weak`;
 - the paths to `report.md`, `dossier.md` and `calc/`.
 
 Don't restate the whole report; it is in the file.
+
+**Record the run** with `python3 .claude/skills/conundrum/scripts/prior_runs.py record <slug>`. It writes `runs/<slug>/run.json`, which later runs read at framing, and marks any earlier run of the same question as superseded. If the user says how far to trust this run, add it with `prior_runs.py mark`.
 
 ## If something fails
 

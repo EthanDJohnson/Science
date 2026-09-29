@@ -1,0 +1,20 @@
+{
+  "slug": "2026-09-29-warp-bubble-shapes",
+  "date": "2026-09-29",
+  "title": "Warp-bubble shapes that need less energy",
+  "question": "Are there other shapes that cost less energy? I seem to remember a white paper on that, send a research agent out for that paper, please. (Asked after a smoke test computed the energy of a spherical Alcubierre bubble with radius R = 100 m.)",
+  "type": "design",
+  "depth": "quick",
+  "status": "partial",
+  "source_checked": false,
+  "bottom_line": "",
+  "prior": [],
+  "trust": "ok",
+  "notes": [
+    "2026-09-29: A single researcher run by hand, outside the pipeline; its sources were never checked.",
+    "2026-09-29: RS-05 was corrected by hand after rendering White's slide; its values were read off the plot by eye.",
+    "2026-09-29: RS-03 (White's JBIS version) rests on a search summary, and RS-13's 'two orders of magnitude' was not checked against the paper's text.",
+    "2026-09-29: calc/wall_thickness.py section 2 uses a wrong tidal measure; calc/interior_tides.py computes the tidal tensor correctly."
+  ],
+  "superseded_by": null
+}
