@@ -6,7 +6,7 @@ A second opinion on a Gemini conversation about (1) Harb et al.'s "philosophy ag
 
 ## TL;DR
 
-1. **The paper is real, but narrower than Gemini said.** *The ballad of LLM agents: philosophical reasoning for chemistry* (Harb et al., Argonne) is peer-reviewed in *Machine Learning: Science and Technology* (2026), not only on ChemRxiv as Gemini cited. It tested **only OpenAI models** (GPT-4o, GPT-5, GPT-5.1), on the **open-ended numerical-answer subset** of ChemBench. Gemini's headline numbers ("+7–11 points on average", "Hume 68.3% aggregate") are **GPT-4o-only** results presented as study-wide ones.
+1. **The paper is real, but narrower than Gemini said.** *The ballad of LLM agents: philosophical reasoning for chemistry* (Harb et al., Argonne) is peer-reviewed in *Machine Learning: Science and Technology* (2026), not only on ChemRxiv as Gemini cited. It tested **only OpenAI models** (GPT-4o, GPT-5, GPT-5.1), on the **open-ended numerical-answer subset** of ChemBench. Gemini's headline numbers (an "average of 7 to 11 percentage points", and Hume's "highest aggregate accuracy (68.3%)") are **GPT-4o-only** results presented as study-wide ones.
 2. **The paper can't tell you whether personas help Opus 5.5 or Fable 5.1.**
    - GPT-5.1's API default is *no reasoning*; GPT-5's is medium. The paper's baselines may not have been reasoning at all.
    - In physical chemistry, the newer GPT-5.1 started 40 points below GPT-5 (56.7% vs. 97.0%). Socrates brought it to 94.0%, roughly where GPT-5 started with no philosophy.
@@ -20,7 +20,10 @@ A second opinion on a Gemini conversation about (1) Harb et al.'s "philosophy ag
    - Its critic argues in prose instead of running calculations and searches.
    - The hypothesis never gets a second turn.
    - Nothing checks citations. That is the same failure its own paper summary showed.
-5. **Its Claude Code instructions are outdated or invented.** Build it as three layers:
+5. **The evidence favors model diversity over persona diversity.**
+   - Mixing model families is one of the few consistently helpful ingredients in multi-agent reasoning.
+   - An outside critic, such as the "Astra 6" (OpenAI's GPT-6 Astra) you mentioned, is a better bet than another philosopher.
+6. **Its Claude Code instructions are outdated or invented.** Build it as three layers:
    - A **skill** holds the entry point, the framing step and a human checkpoint.
    - The skill runs **saved dynamic workflows**, which are deterministic, parallel and resumable.
    - The workflows call **custom subagents**. Each lens's system prompt, model and effort live in `.claude/agents/*.md`.
@@ -37,8 +40,8 @@ A second opinion on a Gemini conversation about (1) Harb et al.'s "philosophy ag
 | Evaluated on "ChemBench tasks" | Only the **open-ended numerical-answer subset**, scored at relative-error thresholds (strict = 1%) | ⚠️ scope omitted |
 | (implied) Applies to frontier models generally | Only GPT-4o, GPT-5 and GPT-5.1. No Claude, Gemini or open-weight models | ⚠️ |
 | Seven philosopher prompts | The abstract names Socrates, Descartes, Kant and Hume. Results mention Aristotle, and an indexed excerpt describes Hegel and Plato prompts | ✅ probably |
-| "PAs consistently outperformed… by an average of 7 to 11 points" | That range is **GPT-4o only**, at the 1% threshold: "all philosophical agents outperformed the base model… by a range of 7–11 percentage points" | ❌ misattributed |
-| "Hume highest aggregate accuracy (68.3%), Aristotle and Kant 66.7%" | Also **GPT-4o only**, at 1%. 68.3% and 66.7% are exactly 41/60 and 40/60. If that's the denominator, the "best philosopher" won by one question | ❌ misattributed |
+| PAs "consistently outperformed the default base models… by an average of 7 to 11 percentage points" | That range is **GPT-4o only**, at the 1% threshold: "all philosophical agents outperformed the base model… by a range of 7–11 percentage points" | ❌ misattributed |
+| Hume "achieved the highest aggregate accuracy (68.3%)", followed by Aristotle and Kant (66.7%) | Also **GPT-4o only**, at 1%. 68.3% and 66.7% are exactly 41/60 and 40/60. If that's the denominator, the "best philosopher" won by one question | ❌ misattributed |
 | (not reported) | Headline gains at the strict threshold: GPT-4o + Hume **+11.5**, GPT-5 + Kant **+4.5**, GPT-5.1 + Socrates **+21.8** points. Another indexed version of the abstract gives +18.4 / +14.1 / +11.7, with **Descartes** as GPT-5.1's best. The "best philosopher" changes with version or threshold | ❗ key numbers missing |
 | Socrates took GPT-5.1 from 56.7% to 94.0% (physical chemistry) | A search excerpt attributes it to GPT-5.1. I couldn't check it against the PDF | ✅ probably |
 | Descartes took GPT-4o to 86.6% | Confirmed, on a subdomain | ✅ |
@@ -86,7 +89,7 @@ A second opinion on a Gemini conversation about (1) Harb et al.'s "philosophy ag
 **Needs fixing**
 
 1. **It contradicts its own summary of the paper.**
-   - It drops Aristotle and Kant, which were #2 and #3 by its own numbers.
+   - It drops Aristotle and Kant, tied for second by its own numbers.
    - It drops Plato, which it said helped analytical chemistry.
    - It cites the paper for a fixed Descartes/Hume/Socrates trio that the paper doesn't support.
 2. **Premature convergence.**
@@ -120,7 +123,81 @@ A second opinion on a Gemini conversation about (1) Harb et al.'s "philosophy ag
 
 ## 4. What the broader evidence says
 
-_Pending: literature check in progress._
+Full texts were blocked here, so these come from abstracts and search excerpts. Figures come from the papers' own reporting.
+
+**Persona prompts don't reliably improve accuracy.**
+
+- **Zheng et al. (EMNLP Findings 2024).**
+  - Tested 162 roles, 2,410 factual questions and 4 model families.
+  - Personas gave no gain over no persona, and the effects were "largely random".
+  - Choosing the best persona automatically did no better than random.
+- **Wharton Prompting Science Report 4 (Dec 2025).**
+  - Covered GPQA Diamond and MMLU-Pro across six models, including reasoning models.
+  - No expert persona reliably helped, and low-knowledge personas hurt.
+- **Araujo et al. (EMNLP 2025).** Expert personas were neutral to slightly positive. Irrelevant persona details cost up to about 30 points.
+- **Kong et al. (NAACL 2024), the instructive exception.**
+  - Large role-play gains on ChatGPT, which the authors attribute to role-play acting as an implicit chain-of-thought trigger.
+  - That is the same confound as in §1. For models that already think, the trigger should add little.
+
+**At equal compute, debate mostly isn't better than voting.**
+
+- **Early wins weren't compute-matched** (Du et al., ICML 2024).
+- **With matched budgets, debate lost or tied:**
+  - Self-consistency beat debate (Huang et al., ICLR 2024).
+  - Debate didn't reliably beat ensembling (Smit et al., ICML 2024).
+  - Majority voting explains most of debate's gains (Choi et al., NeurIPS 2025).
+  - At equal thinking-token budgets, single agents matched or beat multi-agent designs on multi-hop QA (Tran & Kiela, 2026).
+- **Where debate does help:**
+  - Mixing different models (Zhang et al. 2025; ReConcile, ACL 2024).
+  - Checkable evidence, such as debaters' quotes verified against the source (Khan et al., ICML 2024).
+  - Voting rather than consensus, with few rounds. More rounds before the vote hurt (Kaesberg et al., ACL Findings 2025).
+- **Agents conform and flip:**
+  - They follow the majority (BenchForm, ICLR 2025).
+  - They abandon correct answers under peer reasoning (Wynn et al. 2025).
+  - They reach premature consensus through sycophancy (Yao et al. 2025).
+
+**Critique works when it's grounded.**
+
+- **Without external feedback, self-correction doesn't help and can hurt** (Huang et al., ICLR 2024; Kamoi et al., TACL 2024 survey).
+  - Reasoning models' reflections mostly confirm their first answer (Kang et al. 2025).
+- **With tools and verifiers, it works:**
+  - CRITIC (search plus a code interpreter).
+  - Self-Debug (execution feedback).
+  - Sound external verifiers (Stechly et al., ICLR 2025).
+- **Models struggle to find their own errors, but fix them once told where** (Tyen et al., ACL Findings 2024).
+
+**Judges are biased, and reasoning traces aren't transcripts.**
+
+- **LLM judges show position, verbosity and self-preference bias** (Zheng et al., NeurIPS 2023; Wang et al., ACL 2024). The better a model recognizes its own outputs, the more it favors them (Panickssery et al., NeurIPS 2024).
+- **Stated reasoning often omits what actually drove the answer** (Turpin et al., NeurIPS 2023). In Anthropic's 2025 study, Claude 3.7 Sonnet mentioned a hint it had used about 25% of the time.
+
+**Prior systems that worked lean on tools, diversity and external checks.**
+
+- **Google's AI co-scientist** (Nature 2026).
+  - Stages: generation, literature-grounded reflection, an Elo tournament of pairwise debates, similarity-based deduplication, evolution, and meta-review.
+  - The authors warn that Elo is self-evaluated, and checked it against external correctness.
+- **Stanford's Virtual Lab** (Nature 2025).
+  - A PI agent works with specialist agents and a Scientific Critic, which caught concrete errors.
+  - Parallel meetings are merged into one.
+  - Tools and wet-lab tests carried the result.
+- **Anthropic's multi-agent research system** (2025).
+  - It beat single-agent Opus 4 by 90.2% on an internal eval.
+  - Token usage explained 80% of variance on BrowseComp, and runs used about 15× chat tokens.
+  - Subagents write outputs to the filesystem, and a separate agent handles citations.
+  - Effort is scaled to how complex the query is.
+- **The classics:** Chamberlin (1890) on multiple working hypotheses; Platt (1964) on strong inference.
+
+**What this means for the design**
+
+| Evidence | Design choice (§5) |
+|---|---|
+| Persona effects on objective tasks are close to noise | Lenses defined by method; persona vs. neutral wording becomes an eval arm |
+| Voting beats debate at equal compute, and agents conform | Independent refuters with a majority vote; at most one crux round; advocates never see each other's drafts |
+| Grounded critique works; intrinsic critique doesn't | Every verdict must state its basis: a calculation, a quoted source, or an inconsistency |
+| Mixing model families helps | An optional non-Claude critic is the best-supported upgrade (§5.9) |
+| Judges favor position, length and their own outputs | Judge on a different model than the refuters; an evidence-over-eloquence rubric; pairwise comparisons in both orders in deep mode |
+| Single agents can match multi-agent systems at equal budget | Eval arm A: a single Opus at `max` with the same dossier |
+| Token spend drives research quality, at ~15× chat | Depth tiers, with research on Sonnet |
 
 ---
 
@@ -438,12 +515,12 @@ return { report: `${dir}/report.md`, alive }
 |---|---|---|---|
 | quick | 2 facets, no source check, 3 lenses, 1 refuter per hypothesis, no crux, Opus judge at `high` | ~10 | ~$5–15 |
 | standard | as in §5.3 | ~15–20 | ~$15–40 |
-| deep | 4 facets with checks, 6–7 lenses, 3 refuters per hypothesis, crux round, Fable judge at `max` | ~35–45 | ~$50–120 |
+| deep | 4 facets with checks, 6–7 lenses, 3 refuters per hypothesis, crux round, pairwise judging in both orders, Fable judge at `max` | ~35–45 | ~$50–120 |
 
 The costs are my estimates, not measurements, and could easily be off by 2×. Run one standard pilot and read the per-agent token counts in `/workflows` before trusting them.
 
 - **On a subscription**, runs draw down your usage window instead. Workflows pause at a usage limit and resume after the reset.
-- **Deep runs cross the 25-agent "Large workflow" warning.** If you run deep often, set the Dynamic workflow size to `large` in `/config`.
+- **A deep analyze run can cross the 25-agent "Large workflow" warning.** If you run deep often, set the Dynamic workflow size to `large` in `/config`, which raises the warning threshold to 50.
 - **Pre-approve tools** (`WebSearch`, `WebFetch`, `Bash(python3 *)`, writes under `runs/`) so a long run doesn't stall on permission prompts.
 - **Expect an approval prompt per workflow run** in manual permission mode. For these two saved workflows, choose "Yes, and don't ask again".
 
@@ -471,9 +548,10 @@ The costs are my estimates, not measurements, and could easily be off by 2×. Ru
 3. Build `conundrum-analyze`.
 4. Write the `/conundrum` skill that wraps both, with the checkpoints.
 5. Run the evals (§5.8) and prune whatever doesn't earn its cost.
-6. Optional extras:
-   - An interactive crux round using agent teams (experimental; ~7× tokens in plan mode).
-   - A non-Claude critic for model diversity, via a CLI or MCP bridge.
+6. Add a non-Claude critic. Of the optional extras, this is the one the evidence supports best (§4).
+   - The "Astra 6" you mentioned is OpenAI's GPT-6 Astra, released in September 2026.
+   - Claude Code can't run it as a subagent. A falsifier or a second judge can still call it through its API or CLI from `Bash`, or through an MCP server.
+7. Optional: an interactive crux round using agent teams (experimental; ~7× tokens in plan mode).
 
 ### 5.10 Decisions for you
 
@@ -501,5 +579,39 @@ The costs are my estimates, not measurements, and could easily be off by 2×. Ru
 - Workflows: https://code.claude.com/docs/en/workflows
 - Agent teams: https://code.claude.com/docs/en/agent-teams
 - Costs: https://code.claude.com/docs/en/costs
+
+**Persona prompts**
+
+- Zheng et al. 2024: https://aclanthology.org/2024.findings-emnlp.888/
+- Wharton Prompting Science Report 4: https://arxiv.org/abs/2512.05858
+- Araujo et al. 2025: https://aclanthology.org/2025.emnlp-main.1364/
+- Kong et al. 2024: https://aclanthology.org/2024.naacl-long.228/
+
+**Debate, voting and self-correction**
+
+- Du et al. 2024: https://proceedings.mlr.press/v235/du24e.html
+- Smit et al. 2024: https://proceedings.mlr.press/v235/smit24a.html
+- Choi et al. 2025: https://arxiv.org/abs/2508.17536
+- Zhang et al. 2025: https://arxiv.org/abs/2502.08788
+- Tran & Kiela 2026: https://arxiv.org/abs/2604.02460
+- Kaesberg et al. 2025: https://aclanthology.org/2025.findings-acl.606/
+- Huang et al. 2024: https://arxiv.org/abs/2310.01798
+- Kamoi et al. 2024: https://aclanthology.org/2024.tacl-1.78/
+- BenchForm (Weng et al. 2025): https://arxiv.org/abs/2501.13381
+
+**Faithfulness of stated reasoning**
+
+- Turpin et al. 2023: https://arxiv.org/abs/2305.04388
+- Anthropic 2025: https://www.anthropic.com/research/reasoning-models-dont-say-think
+
+**Prior systems**
+
+- AI co-scientist: https://www.nature.com/articles/s41586-026-10644-y
+- Virtual Lab: https://www.nature.com/articles/s41586-025-09442-9
+- Anthropic multi-agent research: https://www.anthropic.com/engineering/multi-agent-research-system
+
+**Other**
+
+- GPT-6 Astra: https://openai.com/index/gpt-6-astra/
 
 **How I checked.** Paper details come from search-indexed text of the journal, OSTI and ChemRxiv pages. This environment's network policy blocks the full text, so claims marked ❓ need a check against the PDF.
