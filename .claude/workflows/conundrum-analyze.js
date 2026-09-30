@@ -1,7 +1,7 @@
 export const meta = {
   name: 'conundrum-analyze',
   description: 'Conundrum stage 2: independent lenses, candidate slate, falsification, crux round, adjudication, audit',
-  whenToUse: 'Run by the /conundrum skill after the dossier checkpoint; args {slug, depth, type, lenses?}',
+  whenToUse: "Run by the /conundrum skill after the dossier checkpoint; args {slug, depth, type, lenses?, stopAfter?: 'slate', slateNote?}",
   phases: [
     { title: 'Lenses', detail: 'independent analyses of the dossier' },
     { title: 'Math', detail: "standard and deep runs: each lens's mathematics re-derived independently" },
@@ -24,8 +24,13 @@ const DEFAULT_LENSES = {
 const QUICK_THIRD = { feasibility: 'engineer', design: 'engineer', mechanism: 'mechanist', anomaly: 'statistician',
   foundations: 'idealizer' }
 // Deep runs give each refuter a different angle. Engineering scale means nothing to a position on a
-// foundations question, so those runs attack its consistency and its cost instead.
-const ANGLES_BY_TYPE = { foundations: ['consistency', 'evidence', 'cost'] }
+// foundations question, so those runs attack its consistency and its cost instead. An anomaly candidate
+// names the dominant cause of a discrepancy, so its refuters check the size of the shift it produces,
+// the evidence, and the independent bounds it must satisfy. Angle names are single words.
+const ANGLES_BY_TYPE = {
+  foundations: ['consistency', 'evidence', 'cost'],
+  anomaly: ['magnitude', 'evidence', 'bounds'],
+}
 const DEFAULT_ANGLES = ['physics', 'evidence', 'scale']
 const MAX_CANDIDATES = 8
 
@@ -110,6 +115,7 @@ const lenses = [...chosen.filter(l => !HEAVY.includes(l)), ...HEAVY.filter(l => 
 const refuters = depth === 'deep' ? 3 : 1
 const ANGLES = ANGLES_BY_TYPE[type] || DEFAULT_ANGLES
 log(`depth ${depth}; type ${type}; lenses: ${lenses.join(', ')}; refuters per candidate: ${refuters}`)
+if (depth === 'deep' && lenses.length < 6) log(`warning: a deep run with only ${lenses.length} lenses; lenses.md adds 1–2 more at deep`)
 
 // ----- Lenses, then an independent math check of each (standard and deep runs).
 // A resume replays saved agents only for the unchanged prefix of agent() calls, in call order, so the
@@ -159,16 +165,23 @@ const mathNote = mathChecked.length
 
 // ----- Slate
 phase('Slate')
+// A slateNote (the user's correction after a stopAfter: 'slate' checkpoint) changes only this prompt, so
+// a relaunch replays the lenses and math checks and rebuilds the slate.
+const slateNote = typeof args.slateNote === 'string' && args.slateNote.trim() ? args.slateNote.trim() : ''
 const slate = await agent(
   `Run directory: ${dir}. Question type: ${type}. Build the candidate slate from ${dir}/analyses/ ` +
   `(completed lenses: ${lensesDone.join(', ')}) and write ${dir}/candidates.md.` +
-  (mathNote ? mathNote + ' A candidate may not rest on a claim they refuted.' : ''),
+  (mathNote ? mathNote + ' A candidate may not rest on a claim they refuted.' : '') +
+  (slateNote ? ` The user reviewed an earlier slate and asks: ${slateNote} Rewrite ${dir}/candidates.md accordingly.` : ''),
   { agentType: 'candidate-builder', schema: SLATE, label: 'slate', phase: 'Slate' })
 if (!slate || !slate.candidates || !slate.candidates.length) {
   return { ok: false, reason: 'candidate slate was not produced', dir, lensesDone }
 }
 const seenIds = new Set()
 const unique = slate.candidates.filter(c => !seenIds.has(c.id) && seenIds.add(c.id))
+if (unique.length < slate.candidates.length) {
+  log(`slate repeated candidate IDs; kept the first of each: ${slate.candidates.length - unique.length} dropped`)
+}
 // Never drop the null or reframe candidates when trimming an oversized slate.
 const pinned = unique.filter(c => c.type === 'null' || c.type === 'reframe')
 const room = Math.max(0, MAX_CANDIDATES - pinned.length)
@@ -178,6 +191,13 @@ const candidates = unique.filter(c => kept.has(c.id))
 const trimmed = unique.filter(c => !kept.has(c.id)).map(c => c.id)
 if (trimmed.length) log(`slate had ${unique.length} candidates; not falsified (over the ${MAX_CANDIDATES} cap): ${trimmed.join(', ')}`)
 if (!candidates.some(c => c.type === 'null')) log('warning: the slate has no null candidate')
+
+// The user can stop here to review a slate before the costly half (falsification, crux, judge). A relaunch
+// with the same args minus stopAfter, and resumeFromRunId, replays every agent so far.
+if (args.stopAfter === 'slate') {
+  return { ok: true, stoppedAfter: 'slate', dir, candidates, trimmed, lenses: lensesDone, lensesFailed, math, mathFailed,
+    slatePath: `${dir}/candidates.md` }
+}
 
 // ----- Falsify: independent refuters; deep mode gives each a different angle.
 phase('Falsify')
@@ -190,10 +210,19 @@ const verdicts = (await parallel(candidates.flatMap(c =>
       (mathChecked.length ? ` The math checks in ${dir}/math/ count as calculations: a claim they refuted is grounds for a verdict.` : ''),
       { agentType: 'falsifier', schema: VERDICT, label: `${c.id}#${i}`, phase: 'Falsify' })
       .then(v => (v == null ? null : { id: c.id, refuter: i, angle, verdict: v.verdict, basis: v.basis }))
-  })))).filter(Boolean)
+  }))))
+// parallel() keeps call order, so a failed refuter (null) is identified by its position.
+const slots = candidates.flatMap(c => Array.from({ length: refuters }, (_, i) => `${c.id}#${i}`))
+const refutersFailed = slots.filter((_, k) => verdicts[k] == null)
+const verdictsIn = verdicts.filter(Boolean)
+if (refutersFailed.length) log(`refuters that failed: ${refutersFailed.join(', ')}`)
 
 const votes = {}
-for (const v of verdicts) (votes[v.id] = votes[v.id] || []).push(v.verdict)
+const shown = {}
+for (const v of verdictsIn) {
+  (votes[v.id] = votes[v.id] || []).push(v.verdict);
+  (shown[v.id] = shown[v.id] || []).push(refuters > 1 ? `${v.verdict} (${v.angle}, ${v.basis})` : `${v.verdict} (${v.basis})`)
+}
 const refutedByMajority = id => {
   const vs = votes[id] || []
   return vs.length > 0 && vs.filter(x => x === 'refuted').length * 2 > vs.length
@@ -201,21 +230,27 @@ const refutedByMajority = id => {
 const unexamined = candidates.filter(c => !votes[c.id]).map(c => c.id)
 const alive = candidates.filter(c => !refutedByMajority(c.id)).map(c => c.id)
 const eliminated = candidates.filter(c => refutedByMajority(c.id)).map(c => c.id)
-const tally = candidates.map(c => `${c.id}: ${(votes[c.id] || ['no verdict']).join('/')}`).join('; ')
+const tally = candidates.map(c => `${c.id}: ${(shown[c.id] || ['no verdict']).join(' / ')}`).join('; ')
 log(`votes: ${tally}`)
 if (unexamined.length) log(`no verdict returned for ${unexamined.join(', ')}; kept alive and flagged to the judge`)
+// Candidates judged on fewer verdicts than planned: a single 'refuted' can eliminate one of them.
+const thin = candidates.filter(c => votes[c.id] && votes[c.id].length < refuters).map(c => c.id)
 
 // ----- Crux (deep only): each survivor answers its own verdicts without seeing the others'.
 // Evidence on multi-agent debate says extra rounds add little over independent votes, so
 // standard runs rely on the decisive tests already in candidates.md instead.
+// A candidate with no verdicts has nothing to answer, so it gets no advocate.
 const cruxed = []
-if (depth === 'deep' && alive.length >= 2) {
+const cruxFailed = []
+const answerable = alive.filter(id => !unexamined.includes(id))
+if (depth === 'deep' && answerable.length >= 2) {
   phase('Crux')
-  const answers = await parallel(alive.map(id => () => agent(
-    `Run directory: ${dir}. Your candidate: ${id}. Rivals: ${alive.filter(x => x !== id).join(', ')}. ` +
+  const answers = await parallel(answerable.map(id => () => agent(
+    `Run directory: ${dir}. Your candidate: ${id}. Rivals: ${answerable.filter(x => x !== id).join(', ')}. ` +
     `Answer the verdicts in ${dir}/verdicts/${id}-*.md and write ${dir}/cruxes/${id}.md.`,
     { agentType: 'crux-advocate', label: `crux:${id}`, phase: 'Crux', schema: WROTE }).then(wrote)))
-  alive.forEach((id, i) => { if (answers[i] != null) cruxed.push(id) })
+  answerable.forEach((id, i) => { (answers[i] != null ? cruxed : cruxFailed).push(id) })
+  if (cruxFailed.length) log(`crux advocates that failed: ${cruxFailed.join(', ')}`)
 }
 
 // ----- Judge: Fable at high by default; quick runs use Opus, deep runs raise effort to max.
@@ -227,15 +262,20 @@ const judged = (await agent(
   `Run directory: ${dir}. Question type: ${type}. Adjudicate from ${dir}/brief.md, ${dir}/dossier.md, ${dir}/candidates.md and ${dir}/verdicts/` +
   (cruxed.length ? ` and ${dir}/cruxes/` : '') + `. Refuter votes: ${tally}.` +
   (unexamined.length ? ` Unexamined (refuters failed): ${unexamined.join(', ')}.` : '') +
+  (thin.length ? ` Fewer verdicts than refuters (some failed): ${thin.join(', ')}.` : '') +
+  (cruxFailed.length ? ` Survivors with no crux file (the advocate failed, not a concession): ${cruxFailed.join(', ')}.` : '') +
   (trimmed.length ? ` Not falsified (over the slate cap): ${trimmed.join(', ')}.` : '') +
   mathNote +
+  (depth === 'deep' ? ` There are ${verdictsIn.length} verdict files${cruxed.length ? `, ${cruxed.length} crux files` : ''}` +
+    `${mathChecked.length ? ` and ${mathChecked.length} math files` : ''}: read them several per step, in parallel.` : '') +
   ` Return the whole report as \`report\` in your final output; don't write it to a file.`,
   judgeOpts))
 // Keep a report the judge returned even if it flagged it incomplete: losing a finished report to a
 // false ok is worse than presenting it with a warning.
 const report = judged && typeof judged.report === 'string' && judged.report.trim() ? judged.report : null
 if (report == null) {
-  return { ok: false, reason: 'adjudicator failed: no report returned', dir, candidates, alive, eliminated, unexamined }
+  return { ok: false, reason: 'adjudicator failed: no report returned', dir, candidates, alive, eliminated, unexamined,
+    refutersFailed, cruxFailed }
 }
 const reportIncomplete = !judged.ok
 if (reportIncomplete) log('the judge returned its report but did not mark it complete')
@@ -270,5 +310,7 @@ return {
   alive,
   eliminated,
   unexamined,
+  refutersFailed,
   cruxed,
+  cruxFailed,
 }

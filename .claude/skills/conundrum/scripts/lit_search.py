@@ -15,9 +15,19 @@ they can be quoted as ACCESS: abstract. When a source is unreachable (for exampl
 restrictive network policy) it says so plainly, so the researcher can fall back to WebSearch
 and mark evidence as ACCESS: search-summary.
 
-Crossref and Semantic Scholar rank by relevance only. For them, --sort mostcited or mostrecent
-re-sorts a relevance-ranked pool of up to 100 results, so famous papers that merely share a
-word with the query don't crowd out relevant ones.
+Results come best match first (--sort relevance, the default). Sorting a plain query by
+citations or date brings back famous or merely recent papers that share a word with it, so
+use --sort mostcited or mostrecent only with a narrow query, such as an INSPIRE title search.
+Crossref and Semantic Scholar rank by relevance only; for them, --sort mostcited or mostrecent
+re-sorts a relevance-ranked pool of up to 100 results.
+
+--since YEAR keeps work from that year on, translated for each source: INSPIRE "de>=YEAR"
+(earliest date, so a 2024 preprint published in 2025 still counts), arXiv submittedDate,
+Crossref from-pub-date, Semantic Scholar year. Prefer it to writing a date into the query.
+
+INSPIRE also takes its own search syntax (t "title words", a author, refersto:arxiv:<id> or
+refersto:doi:<doi> for the papers citing one; this script looks up the record INSPIRE needs for
+that). The other sources can't read it, so a query that uses it goes to INSPIRE only.
 
 Optional environment variables (nothing identifying is sent unless you set them):
     SEMANTIC_SCHOLAR_API_KEY   sent as the x-api-key header; raises the shared rate limit.
@@ -25,8 +35,9 @@ Optional environment variables (nothing identifying is sent unless you set them)
 
 Usage (from the project root):
     python3 .claude/skills/conundrum/scripts/lit_search.py "alcubierre negative energy"
-    python3 .claude/skills/conundrum/scripts/lit_search.py "quantum inequality warp" --source inspire --sort mostcited
-    python3 .claude/skills/conundrum/scripts/lit_search.py 't "warp drive" and date>2020' --source inspire
+    python3 .claude/skills/conundrum/scripts/lit_search.py "neutron lifetime beam" --since 2024
+    python3 .claude/skills/conundrum/scripts/lit_search.py 't "warp drive"' --source inspire --sort mostcited
+    python3 .claude/skills/conundrum/scripts/lit_search.py "refersto:arxiv:2412.19519" --source inspire --sort mostrecent
     python3 .claude/skills/conundrum/scripts/lit_search.py "casimir energy density" --source arxiv --max 5 --json
     python3 .claude/skills/conundrum/scripts/lit_search.py "look-elsewhere effect trials factor" --source general
 
@@ -241,31 +252,63 @@ def arxiv_query(text: str) -> str:
     return " AND ".join(f"all:{t}" for t in terms)
 
 
-def search_inspire(query: str, n: int, sort: str, timeout: float) -> list[dict]:
-    params = {"q": query, "size": n, "sort": sort, "fields": INSPIRE_FIELDS}
+# INSPIRE's own syntax that no other source can read: citation operators, date comparisons, and a
+# leading field keyword followed by a quoted phrase (t "...", a "...").
+INSPIRE_ONLY = re.compile(r'\b(refersto|citedby):|\b(date|de|du|year)\s*[<>]|^\s*(t|a|j|k|ti|au|title|author)\s+"', re.I)
+# INSPIRE sorts: its relevance ranking is called bestmatch.
+INSPIRE_SORT = {"relevance": "bestmatch", "mostcited": "mostcited", "mostrecent": "mostrecent"}
+
+
+# INSPIRE answers refersto: only for a record ID; refersto:arxiv:<id> is silently ignored.
+REFERSTO = re.compile(r"\brefersto:(arxiv|eprint|doi):(\S+)", re.I)
+
+
+def resolve_refersto(query: str, timeout: float) -> str:
+    """Rewrite refersto:arxiv:<id> or refersto:doi:<doi> as refersto:recid:<n>, the form INSPIRE answers."""
+    def recid(match: re.Match) -> str:
+        kind = "doi" if match.group(1).lower() == "doi" else "arxiv"
+        params = {"q": f"{kind}:{match.group(2)}", "size": 1, "fields": "control_number"}
+        hits = json.loads(_get(f"{INSPIRE_URL}?{urllib.parse.urlencode(params)}", timeout)).get("hits", {}).get("hits", [])
+        if not hits:
+            raise ValueError(f"INSPIRE has no record for {kind}:{match.group(2)}")
+        return f"refersto:recid:{hits[0]['metadata']['control_number']}"
+    return REFERSTO.sub(recid, query)
+
+
+def search_inspire(query: str, n: int, sort: str, timeout: float, since: int | None = None) -> list[dict]:
+    query = resolve_refersto(query, timeout) if REFERSTO.search(query) else query
+    q = f"{query} and de>={since}" if since else query
+    params = {"q": q, "size": n, "sort": INSPIRE_SORT.get(sort, sort), "fields": INSPIRE_FIELDS}
     data = _get(f"{INSPIRE_URL}?{urllib.parse.urlencode(params)}", timeout)
     return parse_inspire(json.loads(data))
 
 
-def search_arxiv(query: str, n: int, sort: str, timeout: float) -> list[dict]:
+def search_arxiv(query: str, n: int, sort: str, timeout: float, since: int | None = None) -> list[dict]:
     sort_by = {"mostrecent": "submittedDate"}.get(sort, "relevance")
-    params = {"search_query": arxiv_query(query), "start": 0, "max_results": n,
+    q = arxiv_query(query)
+    if since:
+        q = f"{q} AND submittedDate:[{since}01010000 TO 209912312359]"
+    params = {"search_query": q, "start": 0, "max_results": n,
               "sortBy": sort_by, "sortOrder": "descending"}
     return parse_arxiv(_get(f"{ARXIV_URL}?{urllib.parse.urlencode(params)}", timeout))
 
 
-def search_crossref(query: str, n: int, sort: str, timeout: float) -> list[dict]:
+def search_crossref(query: str, n: int, sort: str, timeout: float, since: int | None = None) -> list[dict]:
     pool = n if sort == "relevance" else min(POOL_MAX, max(n, 5 * n))
     params = {"query": query, "rows": pool, "select": CROSSREF_SELECT}
+    if since:
+        params["filter"] = f"from-pub-date:{since}-01-01"
     if os.environ.get("CROSSREF_MAILTO"):
         params["mailto"] = os.environ["CROSSREF_MAILTO"]
     data = _get(f"{CROSSREF_URL}?{urllib.parse.urlencode(params)}", timeout)
     return rank(parse_crossref(json.loads(data)), sort, n)
 
 
-def search_s2(query: str, n: int, sort: str, timeout: float) -> list[dict]:
+def search_s2(query: str, n: int, sort: str, timeout: float, since: int | None = None) -> list[dict]:
     pool = n if sort == "relevance" else min(POOL_MAX, max(n, 5 * n))
     params = {"query": query, "limit": pool, "fields": S2_FIELDS}
+    if since:
+        params["year"] = f"{since}-"
     key = os.environ.get("SEMANTIC_SCHOLAR_API_KEY")
     data = _get(f"{S2_URL}?{urllib.parse.urlencode(params)}", timeout, headers={"x-api-key": key} if key else None)
     return rank(parse_s2(json.loads(data)), sort, n)
@@ -336,23 +379,33 @@ def main(argv=None) -> int:
     ap.add_argument("--source", type=parse_sources, default="physics",
                     help="physics (default: inspire,arxiv), general (crossref,s2), all, or a comma-separated list")
     ap.add_argument("--max", type=int, default=8, help="results per source (default 8)")
-    ap.add_argument("--sort", choices=["mostrecent", "mostcited", "relevance"], default="mostcited",
-                    help="INSPIRE sorts server-side; arXiv by relevance or date; Crossref and Semantic "
-                         "Scholar re-sort a relevance-ranked pool")
+    ap.add_argument("--sort", choices=["relevance", "mostrecent", "mostcited"], default="relevance",
+                    help="best match first (default); INSPIRE sorts server-side; arXiv by relevance or date; "
+                         "Crossref and Semantic Scholar re-sort a relevance-ranked pool")
+    ap.add_argument("--since", type=int, metavar="YEAR", help="only work from this year on, filtered by each source")
     ap.add_argument("--abstract-chars", type=int, default=400)
     ap.add_argument("--timeout", type=float, default=20.0)
     ap.add_argument("--json", action="store_true", help="print records as JSON")
     args = ap.parse_args(argv)
+    if args.since is not None and not 1900 <= args.since <= 2100:
+        ap.error("--since takes a four-digit year")
 
-    inspire_sort = args.sort if args.sort in ("mostrecent", "mostcited") else "mostcited"
     runners = {
-        "inspire": lambda: search_inspire(args.query, args.max, inspire_sort, args.timeout),
-        "arxiv": lambda: search_arxiv(args.query, args.max, args.sort, args.timeout),
-        "crossref": lambda: search_crossref(args.query, args.max, args.sort, args.timeout),
-        "s2": lambda: search_s2(args.query, args.max, args.sort, args.timeout),
+        "inspire": lambda: search_inspire(args.query, args.max, args.sort, args.timeout, args.since),
+        "arxiv": lambda: search_arxiv(args.query, args.max, args.sort, args.timeout, args.since),
+        "crossref": lambda: search_crossref(args.query, args.max, args.sort, args.timeout, args.since),
+        "s2": lambda: search_s2(args.query, args.max, args.sort, args.timeout, args.since),
     }
     sources = args.source if isinstance(args.source, list) else parse_sources(args.source)
-    searches = [(SOURCES[key], runners[key]) for key in sources]
+    inspire_only = bool(INSPIRE_ONLY.search(args.query))
+    searches = []
+    for key in sources:
+        if inspire_only and key != "inspire":
+            print(f"SKIPPED: {SOURCES[key]} can't read INSPIRE search syntax; ask it in plain words "
+                  "(use --since for dates).")
+            continue
+        searches.append((SOURCES[key], runners[key]))
+    since_note = f" (since {args.since})" if args.since else ""
 
     answered, all_records = 0, []
     for name, run in searches:
@@ -367,9 +420,12 @@ def main(argv=None) -> int:
         answered += 1
         all_records.extend(records)
         if not args.json:
-            print(f"## {name}: {len(records)} result(s) for {args.query!r}")
+            print(f"## {name}: {len(records)} result(s) for {args.query!r}{since_note}")
             for rec in records:
                 print(format_record(rec, args.abstract_chars))
+            if not records and name == SOURCES["inspire"]:
+                print("  INSPIRE found nothing. It reads some leading words as search fields (a, t, j, k, d ...), "
+                      "and hyphenated names need quotes (\"J-PARC\"): try fewer, distinctive words, or reorder them.")
     if args.json:
         print(json.dumps(all_records, indent=2, ensure_ascii=False))
     return 0 if answered else 3

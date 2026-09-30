@@ -1,7 +1,7 @@
 export const meta = {
   name: 'conundrum-research',
   description: 'Conundrum stage 1: partitioned literature research, source checks, and a compiled dossier',
-  whenToUse: 'Run by the /conundrum skill after the user confirms the brief; args {slug, depth, facets?, tools?, prior?}',
+  whenToUse: 'Run by the /conundrum skill after the user confirms the brief; args {slug, depth, type?, facets?, tools?, prior?}',
   phases: [
     { title: 'Tools', detail: 'toolsmiths build requested calculators alongside the research' },
     { title: 'Research', detail: 'one researcher per facet' },
@@ -12,10 +12,22 @@ export const meta = {
 
 const FACETS = {
   theory: 'governing theory and established results: equations, theorems, what is proven vs. conjectured, and the standard references',
-  quantitative: 'numbers: requirements, bounds, and measured or computed magnitudes, each with units, conditions and source',
+  quantitative: 'numbers: requirements, bounds, and measured or computed magnitudes, each with units, conditions and source; ' +
+    'for measurements, the statistical and systematic uncertainties exactly as quoted, and any value a re-analysis or erratum superseded',
   critiques: 'objections, no-go theorems, instabilities, failed or debunked proposals, and conflicting results',
-  engineering: 'experimental and engineering state of the art: what has been built or measured, at what scale, and its technology readiness',
-  frontier: 'recent (roughly the last five years) preprints and speculative proposals, each labelled with its evidential status',
+  engineering: 'experimental and engineering state of the art: what has been built or measured, at what scale, and its technology readiness; ' +
+    'and the planned or running experiments that will improve on it: who, the target precision and when results are expected',
+  frontier: 'recent (roughly the last five years) results, preprints, conference talks and proposals, newest first, each labelled with its evidential status',
+}
+// An anomaly turns on each experiment's error budget, which no generic facet asks for, and not on
+// technology readiness. The facet keys stay the same, so labels and file names don't change.
+const FACETS_BY_TYPE = {
+  anomaly: {
+    engineering: 'the measurements themselves, method by method: every result bearing on the anomaly with its statistical and ' +
+      'systematic uncertainties exactly as quoted, the largest items of each systematic budget, blinding, the in-situ tests each ' +
+      'experiment ran, which results supersede or re-analyse others, and which share an apparatus; and the planned or running ' +
+      'experiments that will improve on them: who, the target precision and when results are expected',
+  },
 }
 const DEFAULT_FACETS = {
   quick: ['theory', 'quantitative', 'critiques'],
@@ -45,7 +57,9 @@ if (unknown.length) log(`ignoring unknown facets: ${unknown.join(', ')}`)
 const facets = requested.filter(f => FACETS[f])
 if (!facets.length) throw new Error('no valid facets to research')
 const checking = depth !== 'quick'
-log(`depth ${depth}; facets: ${facets.join(', ')}; source checks ${checking ? 'on' : 'off'}`)
+const type = typeof args.type === 'string' ? args.type : ''
+const mandate = f => ((FACETS_BY_TYPE[type] || {})[f]) || FACETS[f]
+log(`depth ${depth}; ${type ? `type ${type}; ` : ''}facets: ${facets.join(', ')}; source checks ${checking ? 'on' : 'off'}`)
 
 // Calculators agreed at framing (SKILL.md step 1). Toolsmiths start alongside the researchers and
 // write only into the run folder; the main session promotes a calculator into the shared toolkit.
@@ -82,8 +96,8 @@ const priorNote = prior.length
 // Checks still overlap slower researchers, but their order no longer depends on who finishes first.
 const settle = p => Promise.resolve(p).then(r => r, () => null)
 const researchRuns = facets.map(f => settle(agent(
-  `Run directory: ${dir}. Your facet: ${f}. Mandate: ${FACETS[f]}. ` +
-  `Read ${dir}/brief.md, then write ${dir}/research/${f}.md.` + priorNote,
+  `Run directory: ${dir}. Your facet: ${f}. Mandate: ${mandate(f)}. ` +
+  `Read ${dir}/brief.md (its Research facets section scopes this mandate), then write ${dir}/research/${f}.md.` + priorNote,
   { agentType: 'researcher', label: `research:${f}`, phase: 'Research', schema: WROTE })))
 const results = []
 const checkRuns = []

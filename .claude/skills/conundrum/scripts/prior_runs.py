@@ -87,9 +87,15 @@ def header(text: str) -> dict[str, str]:
 
 
 def first_paragraph(text: str, limit: int) -> str:
+    """The first paragraph, whitespace collapsed. A longer one is cut at its last full sentence
+    within the limit, so a bottom line never stops mid-sentence before its credences."""
     para = re.split(r"\n\s*\n", text.strip(), maxsplit=1)[0] if text.strip() else ""
     para = " ".join(para.split())
-    return para if len(para) <= limit else para[: limit - 1].rstrip() + "…"
+    if len(para) <= limit:
+        return para
+    cut = para[: limit - 1]
+    end = max(cut.rfind(". "), cut.rfind("? "), cut.rfind("! "))
+    return cut[: end + 1] + " …" if end >= limit // 2 else cut.rstrip() + "…"
 
 
 def parse_prior(brief_text: str) -> list[dict]:
@@ -121,7 +127,7 @@ def describe(run: Path) -> dict:
         "depth": (fields.get("depth") or "").split(" ")[0],
         "status": "complete" if report else "partial",
         "source_checked": any((run / "research").glob("*.check.md")),
-        "bottom_line": first_paragraph(sections(report).get("bottom line", ""), 500),
+        "bottom_line": first_paragraph(sections(report).get("bottom line", ""), 1200),
         "prior": parse_prior(brief),
         "trust": "ok",
         "notes": [],

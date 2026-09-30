@@ -32,7 +32,7 @@ The design, and the review of the Gemini proposal it started from, are in [`docs
 |---|---|---|---|---|
 | `quick` | 3 researchers, 3 lenses, 1 refuter per candidate, Opus judge | ~18 | 1–2 hours | ~$25–40 (measured once: $29) |
 | `standard` | 4 researchers with source checks, 5 lenses with math checks, 1 refuter per candidate, Fable judge | ~30 | ~2.5 hours | ~$35–50 (measured once: $39) |
-| `deep` | 5 researchers with checks, 6–7 lenses with math checks, 3 refuters per candidate with different angles, rebuttal round, Fable judge at max effort | ~46–57 | 3–5 hours | ~$55–90 |
+| `deep` | 5 researchers with checks, 6–7 lenses with math checks, 3 refuters per candidate with different angles, rebuttal round, Fable judge at max effort | ~45–62 | 4–5 hours | ~$55–90 |
 
 Times include the two checkpoints where the pipeline waits for you. The measured standard run took about 2.5 hours in a cloud session running only 2 agents at once; see [Where to run it](#where-to-run-it).
 
@@ -196,6 +196,7 @@ The philosopher labels in the agent files are mnemonics; the methods are the con
 - Foundations questions, such as the problem of time or the interpretations of quantum mechanics, get positions instead of options.
 - Positions are judged on internal consistency, on what each gives up, and on whether any observation could tell them apart.
 - Where positions are empirically equivalent, the judge ranks them by what they give up and says so, instead of inventing probabilities.
+- Anomaly questions get candidates that each name the dominant cause of a discrepancy: a systematic in one method, a kind of new physics, or the null (a fluctuation, or uncertainties underestimated across experiments). The slate adds a prediction matrix of what each candidate predicts for every independent class of measurement. Deep refuters attack each candidate's magnitude, its evidence and the independent bounds it must meet. The judge must check each explanation's size and sign against the gap, keep an explicit "unidentified" share within a method, and name the deciding measurement with who and when.
 
 **Math checks.** In standard and deep runs, each lens's analysis goes straight to a math checker, an Opus agent that re-derives the analysis's load-bearing mathematics from scratch. It never reuses the lens's scripts.
 - Each claim is checked with SymPy, then numerically at 50 points to 30 digits, including the domain's ends, plus a limit and the units.
@@ -213,7 +214,7 @@ Formal proofs in Lean are planned, not built; [`docs/formal-math-plan.md`](docs/
 - high-precision rechecks of surprising signs.
 
 It is tested against Schwarzschild, FRW, Morris–Thorne, Painlevé–Gullstrand and Alcubierre closed forms. The other calculators:
-- `stats_tools.py` gives the statistics lens tested significance, look-elsewhere, counting-experiment and Bayes-factor calculations;
+- `stats_tools.py` gives the statistics lens tested significance, look-elsewhere, counting-experiment and Bayes-factor calculations, plus the tools for disagreeing methods: tension with asymmetric errors, chi-squared within and between methods, and the data or precision a decisive test needs when systematics set a floor;
 - `unit_tools.py` parses, converts and dimension-checks quantities such as `"0.5 * 1 t * (3 km/s)^2"`;
 - `rocket_tools.py` covers classical and relativistic rocket equations and constant-acceleration trips.
 
@@ -223,7 +224,7 @@ Each checks itself against independent reference values, and `references/tools.m
 - INSPIRE-HEP and arXiv, the default for physics;
 - Crossref and Semantic Scholar (`--source general`) for engineering, materials, chemistry, statistics and other fields.
 
-Semantic Scholar also lists open-access PDF links. `fetch_text.py` prints a source's own words from a PDF or web page, around a phrase given with `--grep`, so agents quote the text itself: WebFetch passes pages through a model, whose answer can paraphrase. Two optional environment variables speed these up; nothing identifying is sent unless you set them:
+Results come best match first; `--since <year>` restricts every source to recent work, and `"refersto:arxiv:<id>"` lists the papers citing a result, which is how re-analyses and rebuttals turn up. Semantic Scholar also lists open-access PDF links. `fetch_text.py` prints a source's own words from a PDF or web page, around a phrase given with `--grep`, so agents quote the text itself: WebFetch passes pages through a model, whose answer can paraphrase. Two optional environment variables speed these up; nothing identifying is sent unless you set them:
 - `SEMANTIC_SCHOLAR_API_KEY` raises Semantic Scholar's shared rate limit;
 - `CROSSREF_MAILTO` gives Crossref an email address for its faster pool.
 

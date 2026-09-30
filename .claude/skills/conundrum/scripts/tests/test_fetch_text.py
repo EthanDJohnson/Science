@@ -144,3 +144,26 @@ class HtmlAndErrors(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class BotChecks(unittest.TestCase):
+    CHALLENGE = (b"<html><body><h1>Client Challenge</h1><p>JavaScript is disabled in your browser. "
+                 b"A required part of this site couldn't load.</p></body></html>")
+
+    def test_a_bot_check_page_is_blocked_not_quoted(self):
+        code, out = run(["https://doi.org/10.1140/epja/x", "--grep", "pressure"],
+                        FakeResponse(self.CHALLENGE, "text/html", url="https://link.springer.com/article/x"))
+        self.assertEqual(code, 3)
+        self.assertIn("BLOCKED: link.springer.com served a bot-check page", out)
+        self.assertIn("never contradicted", out)
+        self.assertNotIn("NO MATCH", out)
+
+    def test_a_long_article_that_mentions_captcha_is_not_blocked(self):
+        page = b"<html><body><p>" + b"Neutron lifetime measurements with a captcha-free apparatus. " * 200 + b"</p></body></html>"
+        code, out = run(["https://x/article", "--grep", "apparatus"], FakeResponse(page, "text/html"))
+        self.assertEqual(code, 0)
+
+    def test_no_match_on_a_short_page_says_it_may_be_a_stub(self):
+        code, out = run(["https://x/page", "--grep", "lifetime"], FakeResponse(HTML, "text/html"))
+        self.assertEqual(code, 2)
+        self.assertIn("may be a stub or a landing page", out)

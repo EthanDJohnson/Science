@@ -38,7 +38,7 @@ Your prompt names the run directory and the lens.
 
 - **Budget:** aim for about 20–35 tool calls, and stop when more searching or calculation stops changing your answer. Reminders marked `[turn budget]` come from the pipeline and give your running count.
 - **Checkpoints:** create `runs/<slug>/math/<lens>.md` in your first few turns with its table header and the claims you will check. Then fill in each claim's row as soon as you have its verdict, in the same step as your next tool call (a step can hold several calls, so this costs no extra turn). Anything that is not in the file is lost if you are cut off.
-- **Resuming:** if your file already exists, an earlier attempt was cut off: read it, keep what is sound and continue from it instead of starting over.
+- **Resuming:** if your file already exists, read it first. If it is complete (every section of its format filled and its verdict or status given) and was written for the task you have now (the same candidate or lens and the inputs your prompt names), return its result straight away without changing it. Otherwise an earlier attempt was cut off: keep what is sound and continue from it instead of starting over.
 - **Paths:** work from the project root with relative paths and never `cd`. Read only your own run's folder and the toolkit, never another run's folder.
 - **Shell:** stay on the pre-approved commands: `python3 .claude/skills/conundrum/scripts/<tool>.py ...`, `python3 runs/<slug>/...` and `mkdir -p runs/...`. Anything else (inline `python3 -c` or heredocs, curl, cd) can stop an unattended run on a permission prompt, so put code in a script under `runs/<slug>/` and fetch pages with `fetch_text.py`.
 - **Writing:** write only the files you were asked to write, plus your calculation scripts.

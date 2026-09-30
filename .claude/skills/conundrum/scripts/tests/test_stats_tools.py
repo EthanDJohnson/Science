@@ -75,3 +75,61 @@ class Behaviour(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class Disagreements(unittest.TestCase):
+    """The tools an anomaly question needs: tensions, method groups and systematic floors."""
+
+    def test_tension_matches_an_independent_gaussian_tail(self):
+        t = S.tension(888.1, 2.0, 877.8, 0.3)
+        z = 10.3 / math.sqrt(2.0**2 + 0.3**2)
+        self.assertAlmostEqual(t["z"], z, places=12)
+        self.assertAlmostEqual(t["p_two_sided"] / float(mp.erfc(z / mp.sqrt(2))), 1.0, places=10)
+        self.assertAlmostEqual(t["difference"], 10.3, places=12)
+        # Symmetric in its arguments, and the side of an asymmetric error that faces the other value is used.
+        self.assertAlmostEqual(S.tension(877.8, 0.3, 888.1, 2.0)["z"], t["z"], places=12)
+        jparc = S.total_error(1.7, (4.0, 3.6))
+        above = S.tension(877.2, jparc, 887.7, 2.2)["sigma"]
+        below = S.tension(877.2, jparc, 870.0, 2.2)["sigma"]
+        self.assertAlmostEqual(above, math.hypot(jparc[0], 2.2), places=12)
+        self.assertAlmostEqual(below, math.hypot(jparc[1], 2.2), places=12)
+        with self.assertRaises(ValueError):
+            S.tension(1.0, 0.0, 2.0, 0.0)
+
+    def test_total_error_keeps_symmetric_inputs_symmetric(self):
+        self.assertAlmostEqual(S.total_error(3.0, 4.0), 5.0, places=12)
+        self.assertIsInstance(S.total_error(3.0, 4.0), float)
+        self.assertEqual(len(S.total_error(3.0, (4.0, 0.0))), 2)
+
+    def test_grouped_chi2_splits_the_pooled_chi2_exactly(self):
+        beam = ([887.7, 888.4, 889.2], [2.2, 2.9, 4.8])
+        bottle = ([877.75, 878.5, 877.7, 880.2], [0.33, 0.8, 0.7, 1.2])
+        g = S.grouped_chi2({"beam": beam, "bottle": bottle})
+        self.assertAlmostEqual(g["within_chi2"] + g["between_chi2"], g["pooled"]["chi2"], places=9)
+        self.assertEqual(g["within_dof"] + g["between_dof"], g["pooled"]["dof"])
+        # Between two groups the between-group chi2 is the squared tension of the group means.
+        t = S.tension(g["groups"]["beam"]["mean"], g["groups"]["beam"]["error"],
+                      g["groups"]["bottle"]["mean"], g["groups"]["bottle"]["error"])
+        self.assertAlmostEqual(g["between_chi2"], t["z"] ** 2, places=9)
+        self.assertAlmostEqual(g["between_z"], t["z"], places=6)
+        ref = float(mp.gammainc(0.5, g["between_chi2"] / 2, mp.inf, regularized=True))
+        self.assertAlmostEqual(g["p_between"] / ref, 1.0, places=9)
+        with self.assertRaises(ValueError):
+            S.grouped_chi2({"only": beam})
+
+    def test_exposure_with_a_systematic_floor(self):
+        # No floor: the old statistics-only answer.
+        self.assertAlmostEqual(S.exposure_to_reach(2.0), 6.25, places=12)
+        self.assertAlmostEqual(S.exposure_to_reach(delta=4.0, sigma_stat=2.0), 6.25, places=12)
+        # With a floor: the answer reaches the target exactly, and is dearer than without it.
+        k = S.exposure_to_reach(delta=10.3, sigma_stat=1.7, sigma_sys=1.0, sigma_other=0.3)
+        self.assertAlmostEqual(S.z_after_exposure(10.3, 1.7, 1.0, k, sigma_other=0.3), 5.0, places=9)
+        self.assertGreater(k, S.exposure_to_reach(delta=10.3, sigma_stat=1.7))
+        # Above the ceiling delta / sqrt(sys^2 + other^2), no amount of data is enough.
+        self.assertEqual(S.exposure_to_reach(delta=10.3, sigma_stat=1.7, sigma_sys=4.0), math.inf)
+        self.assertLess(S.z_after_exposure(10.3, 1.7, 4.0, 1e12), 5.0)
+        self.assertAlmostEqual(S.precision_needed(10.3, 5.0), 2.06, places=12)
+        with self.assertRaises(ValueError):
+            S.exposure_to_reach(delta=10.0, sigma_sys=1.0)
+        with self.assertRaises(ValueError):
+            S.exposure_to_reach()

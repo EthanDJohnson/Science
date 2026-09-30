@@ -17,7 +17,11 @@ spaces; nothing else is changed. When quoting you may close stray spaces inside 
 nothing else. PDF extraction can also garble equations, ligatures (fi, fl) and hyphenated line
 breaks, so don't quote a passage that looks garbled.
 
-Exit status: 0 on success, 2 if --grep found nothing, 3 if the source was unreachable,
+Some publishers answer automated requests with a short bot-check page ("Client Challenge", "Just a
+moment...") and a 200 status. That page is reported as BLOCKED, not printed as the source: the
+paper's arXiv version (INSPIRE lists it) or its lit_search abstract is the way in.
+
+Exit status: 0 on success, 2 if --grep found nothing, 3 if the source was unreachable or blocked,
 4 if a PDF needs pypdf (pip install pypdf cffi).
 """
 from __future__ import annotations
@@ -102,6 +106,18 @@ def parse_pages(spec: str, n: int) -> list[int]:
     return pages
 
 
+# A bot-check or access page: short, and saying so. Real article pages are much longer.
+CHALLENGE = re.compile(r"client challenge|just a moment|enable javascript|captcha|are you a robot|access denied|"
+                       r"verify you are human|checking your browser|unusual traffic", re.I)
+CHALLENGE_MAX_CHARS = 5000
+SHORT_PAGE = 1500
+
+
+def blocked(text: str) -> bool:
+    """True for a bot-check page served in place of the source."""
+    return len(text) < CHALLENGE_MAX_CHARS and bool(CHALLENGE.search(text))
+
+
 def phrase_pattern(phrase: str) -> str:
     """Match a phrase ignoring case and whitespace, so 'bubble wall' also finds 'bub ble wall'."""
     return r"\s*".join(re.escape(c) for c in phrase if not c.isspace())
@@ -141,6 +157,12 @@ def main(argv=None) -> int:
         else:
             chunks = [("", html_text(body, content_type))]
             kind = content_type.split(";")[0] or "text"
+            if blocked(chunks[0][1]):
+                host = urllib.parse.urlparse(final_url).netloc
+                print(f"BLOCKED: {host} served a bot-check page, not the source. Find the arXiv version "
+                      '(lit_search.py "doi:<doi>" --source inspire lists its arXiv ID) or quote the lit_search '
+                      "abstract. A blocked page makes a claim unverifiable, never contradicted.")
+                return 3
     except Unavailable as exc:
         print(f"UNAVAILABLE: {args.url} ({exc}). Quote an abstract from lit_search.py or mark ACCESS: search-summary.")
         return 3
@@ -154,7 +176,9 @@ def main(argv=None) -> int:
         pattern = args.regex or phrase_pattern(args.grep)
         found = passages(chunks, pattern, args.context, args.max_matches)
         if not found:
-            print(f"NO MATCH for {(args.regex or args.grep)!r}. Try fewer or different words.")
+            short = (f" The page is only {total:,} characters: it may be a stub or a landing page, not the paper."
+                     if total < SHORT_PAGE else "")
+            print(f"NO MATCH for {(args.regex or args.grep)!r}. Try fewer or different words.{short}")
             return 2
         for p in found:
             print(p)

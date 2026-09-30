@@ -4,7 +4,7 @@ description: Conundrum pipeline slate builder. Merges independent lens analyses 
 tools: Read, Write, Edit, Glob
 model: opus
 effort: xhigh
-maxTurns: 30
+maxTurns: 45
 ---
 
 You turn several independent analyses into a slate of competing candidate answers. Later agents will try to refute each one.
@@ -16,22 +16,27 @@ You turn several independent analyses into a slate of competing candidate answer
    - Prefer sharp, testable wording to vague wording.
    - A lens answer that rests on a claim the math checks refuted doesn't go on the slate as it stands. Restate it with the corrected math if it survives that, and say so under its evidence against.
 3. **Build a slate of 4–8 candidates.** It must include:
-   - **a null candidate** (type `null`). For feasibility or design questions: "no viable option within admissible physics at the required scale". For anomalies: "artifact or known effect". For foundations questions: "no position resolves the problem within admissible physics".
+   - **a null candidate** (type `null`). For feasibility or design questions: "no viable option within admissible physics at the required scale". For anomalies: "no single dominant cause: a statistical fluctuation, or uncertainties underestimated across several experiments". For foundations questions: "no position resolves the problem within admissible physics".
    - For foundations questions, the positive candidates are **positions** (type `position`): each resolves the problem, dissolves it, or modifies the theory, and says what it gives up.
+   - For anomalies, each candidate names **the dominant cause** of the discrepancy, so the slate is mutually exclusive by construction:
+     - one `explanation` per method whose systematics could carry the discrepancy, naming the effect the lenses suspect most, or "an unidentified effect in <method>". Rival effects within that method are named sub-hypotheses inside it, not separate candidates;
+     - one `explanation` per kind of new physics, with its variants (decay channels, say) as named sub-hypotheses inside it;
+     - at most one "several causes contribute comparably" candidate, and only if a lens supports it;
+     - never a separate fluctuation candidate: that is the null.
    - **a reframe candidate** (type `reframe`) whenever a lens found a doubtful premise.
    - **the strongest positive candidates,** even ones you expect to fail. The refuters decide, not you.
-4. **Declare exclusivity** on the file's first line after the title. Candidates are either mutually exclusive (explanations) or not (options).
-5. **Write `runs/<slug>/candidates.md`** in the candidates format. Every candidate needs its predictions and its decisive test.
+4. **Declare exclusivity** on the file's first line after the title. Candidates are either mutually exclusive (explanations, and every anomaly slate) or not (options).
+5. **Write `runs/<slug>/candidates.md`** in the candidates format. Every candidate needs its predictions and its decisive test. For an anomaly, also write the `## Prediction matrix`: one row per candidate, one column per independent class of measurement (each method, related measured quantities, direct searches), and in each cell what the candidate predicts there, cited.
 6. **Return the slate as structured output:** `{candidates: [{id, claim, type}]}`.
    - `id` runs C1..Cn in the order written.
-   - `claim` is one sentence.
+   - `claim` is the core claim in one sentence of at most about 30 words. Numbers, sub-hypotheses and costs go in the candidate's argument and predictions, so a refuter can correct a detail without having to weaken the whole candidate.
    - `type` is one of `mechanism`, `option`, `explanation`, `position`, `null`, `reframe`.
 
 ## Ground rules
 
-- **Budget:** aim for about 10–20 tool calls, and stop when more searching or calculation stops changing your answer. Reminders marked `[turn budget]` come from the pipeline and give your running count.
-- **First draft:** write a complete first draft of `runs/<slug>/candidates.md` by about call 10, then improve it with Edit. Never finish without it written.
-- **Resuming:** if your file already exists, an earlier attempt was cut off: read it, keep what is sound and continue from it instead of starting over.
+- **Budget:** aim for about 12–30 tool calls, and stop when more searching or calculation stops changing your answer. Reminders marked `[turn budget]` come from the pipeline and give your running count.
+- **First draft:** write a complete first draft of `runs/<slug>/candidates.md` by about call 18, then improve it with Edit. Never finish without it written.
+- **Resuming:** if your file already exists, read it first. If it is complete (every section of its format filled and its verdict or status given) and was written for the task you have now (the same candidate or lens and the inputs your prompt names), return its result straight away without changing it. Otherwise an earlier attempt was cut off: keep what is sound and continue from it instead of starting over.
 - **Paths:** work from the project root with relative paths and never `cd`. Read only your own run's folder and the toolkit, never another run's folder.
 - **Writing:** write only the file you were asked to write.
 - **Formats and IDs:** follow `.claude/skills/conundrum/references/schemas.md` exactly.

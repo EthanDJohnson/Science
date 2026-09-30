@@ -177,3 +177,18 @@ class PriorRuns(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class BottomLines(unittest.TestCase):
+    def test_a_long_bottom_line_is_cut_at_a_sentence_not_mid_word(self):
+        text = ("On a fixed classical spacetime there is no conflict. " * 12
+                + "The weak null stands at about 0.85 and the relational answer at 0.15.")
+        cut = pr.first_paragraph(text, 500)
+        self.assertLessEqual(len(cut), 500)
+        self.assertTrue(cut.endswith("conflict. …"), cut[-40:])
+        self.assertEqual(pr.first_paragraph("Short. Two.", 500), "Short. Two.")
+        self.assertEqual(pr.first_paragraph("x" * 20, 10), "x" * 9 + "…")   # no sentence to cut at
+
+    def test_the_record_keeps_a_bottom_line_of_up_to_about_1200_characters(self):
+        para = "One sentence of the bottom line, with its credence of 0.85. " * 15
+        self.assertEqual(len(pr.first_paragraph(para, 1200)), len(para.strip()))

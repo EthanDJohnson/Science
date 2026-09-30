@@ -312,3 +312,66 @@ class Failures(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class RelevanceAndRecency(unittest.TestCase):
+    """Best match first by default, a per-source --since filter, and INSPIRE-only syntax kept to INSPIRE."""
+
+    def capture(self, argv, responder=None):
+        urls = []
+
+        def fake_get(url, timeout, headers=None):
+            urls.append(url)
+            if responder:
+                return responder(url)
+            if "inspirehep" in url:
+                return json.dumps(INSPIRE_FIXTURE).encode()
+            if "crossref" in url:
+                return json.dumps(CROSSREF_FIXTURE).encode()
+            if "semanticscholar" in url:
+                return json.dumps(S2_FIXTURE).encode()
+            return ARXIV_FIXTURE
+        out = io.StringIO()
+        with mock.patch.object(lit_search, "_get", side_effect=fake_get), contextlib.redirect_stdout(out):
+            code = lit_search.main(argv)
+        return code, out.getvalue(), urls
+
+    def test_default_sort_is_inspire_bestmatch(self):
+        _, _, urls = self.capture(["neutron lifetime", "--source", "inspire"])
+        self.assertIn("sort=bestmatch", urls[0])
+        _, _, urls = self.capture(["neutron lifetime", "--source", "inspire", "--sort", "mostcited"])
+        self.assertIn("sort=mostcited", urls[0])
+
+    def test_since_is_translated_for_each_source(self):
+        code, out, urls = self.capture(["neutron lifetime", "--source", "all", "--since", "2024"])
+        self.assertEqual(code, 0)
+        inspire, arxiv, crossref, s2 = urls
+        self.assertIn("de%3E%3D2024", inspire)
+        self.assertIn("submittedDate%3A%5B202401010000+TO+209912312359%5D", arxiv)
+        self.assertIn("filter=from-pub-date%3A2024-01-01", crossref)
+        self.assertIn("year=2024-", s2)
+        self.assertIn("(since 2024)", out)
+        with self.assertRaises(SystemExit):
+            with contextlib.redirect_stderr(io.StringIO()):
+                lit_search.main(["x", "--since", "24"])
+
+    def test_inspire_only_syntax_skips_the_other_sources(self):
+        _, out, urls = self.capture(['t "neutron lifetime"'])
+        self.assertTrue(all("inspirehep" in u for u in urls))
+        self.assertIn("SKIPPED: arXiv can't read INSPIRE search syntax", out)
+        _, out, urls = self.capture(["a neutron lifetime puzzle"])
+        self.assertTrue(any("arxiv" in u for u in urls), "plain words starting with 'a' still go to arXiv")
+
+    def test_refersto_arxiv_is_resolved_to_a_record_id(self):
+        def responder(url):
+            if "control_number" in url and "arxiv%3A2412.19519" in url:
+                return json.dumps({"hits": {"hits": [{"metadata": {"control_number": 2863199}}]}}).encode()
+            return json.dumps(INSPIRE_FIXTURE).encode()
+        _, _, urls = self.capture(["refersto:arxiv:2412.19519", "--source", "inspire"], responder)
+        self.assertEqual(len(urls), 2)
+        self.assertIn("refersto%3Arecid%3A2863199", urls[1])
+
+    def test_an_empty_inspire_answer_explains_its_syntax(self):
+        empty = lambda url: json.dumps({"hits": {"total": 0, "hits": []}}).encode()  # noqa: E731
+        _, out, _ = self.capture(["J-PARC neutron lifetime", "--source", "inspire"], empty)
+        self.assertIn('hyphenated names need quotes ("J-PARC")', out)

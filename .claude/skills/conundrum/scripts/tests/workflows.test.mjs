@@ -490,3 +490,101 @@ test('workflow scripts avoid APIs the runtime forbids', () => {
     assert.doesNotMatch(src, /Date\.now\(|Math\.random\(|new Date\(\)|import\(|require\(/, name)
   }
 })
+
+// ---------------------------------------------------------------- anomaly questions and deep-run robustness
+const ANOMALY_SLATE = { candidates: [
+  { id: 'C1', claim: 'An unidentified effect in the proton-counting beam method', type: 'explanation' },
+  { id: 'C2', claim: 'A loss channel in bottle experiments', type: 'explanation' },
+  { id: 'C3', claim: 'Dark decay of the neutron', type: 'explanation' },
+  { id: 'C4', claim: 'No single dominant cause: a fluctuation or underestimated uncertainties', type: 'null' },
+] }
+const ANOMALY_LENSES = ['statistician', 'empiricist', 'mechanist', 'examiner', 'decomposer', 'dialectician', 'constraints']
+
+test('analyze, anomaly: refuters attack magnitude, evidence and bounds, never engineering scale', async () => {
+  const deep = await run('conundrum-analyze', { slug: 's', depth: 'deep', type: 'anomaly', lenses: ANOMALY_LENSES },
+    analyzeHandler({ slate: ANOMALY_SLATE }))
+  for (const id of ['C1', 'C2', 'C3', 'C4']) {
+    const angles = byType(deep.calls, 'falsifier').filter(c => c.opts.label.startsWith(`${id}#`))
+      .map(c => c.prompt.match(/angle: (\w+)/)[1])
+    assert.deepEqual(angles, ['magnitude', 'evidence', 'bounds'], id)
+  }
+  for (const c of byType(deep.calls, 'falsifier')) assert.doesNotMatch(c.prompt, /angle: scale/)
+  // The judge sees each refuter's angle and basis, and is told to read its many inputs in batches.
+  const judge = byType(deep.calls, 'adjudicator')[0]
+  assert.match(judge.prompt, /C1: survives \(magnitude, calculation\) \/ survives \(evidence, calculation\)/)
+  assert.match(judge.prompt, /There are 12 verdict files, 4 crux files and 7 math files: read them several per step/)
+  const standard = await run('conundrum-analyze', { slug: 's', depth: 'standard', type: 'anomaly' },
+    analyzeHandler({ slate: ANOMALY_SLATE }))
+  assert.match(byType(standard.calls, 'falsifier')[0].prompt, /strongest available \(magnitude, evidence, bounds; say which\)/)
+  assert.doesNotMatch(byType(standard.calls, 'adjudicator')[0].prompt, /several per step/)
+})
+
+test('analyze: a deep run with fewer than six lenses is logged', async () => {
+  const few = await run('conundrum-analyze', { slug: 's', depth: 'deep', type: 'anomaly' }, analyzeHandler({ slate: ANOMALY_SLATE }))
+  assert.ok(few.logs.some(l => l.includes('a deep run with only 5 lenses')))
+  const enough = await run('conundrum-analyze', { slug: 's', depth: 'deep', type: 'anomaly', lenses: ANOMALY_LENSES },
+    analyzeHandler({ slate: ANOMALY_SLATE }))
+  assert.ok(!enough.logs.some(l => l.includes('a deep run with only')))
+})
+
+test('analyze: stopAfter slate returns before falsification, and a relaunch replays the same prefix', async () => {
+  const args = { slug: 's', depth: 'deep', type: 'anomaly', lenses: ANOMALY_LENSES }
+  const stopped = await run('conundrum-analyze', { ...args, stopAfter: 'slate' }, analyzeHandler({ slate: ANOMALY_SLATE }))
+  assert.equal(stopped.result.ok, true)
+  assert.equal(stopped.result.stoppedAfter, 'slate')
+  assert.equal(stopped.result.slatePath, 'runs/s/candidates.md')
+  assert.deepEqual(stopped.result.candidates.map(c => c.id), ['C1', 'C2', 'C3', 'C4'])
+  assert.equal(byType(stopped.calls, 'falsifier').length, 0)
+  assert.equal(byType(stopped.calls, 'adjudicator').length, 0)
+  const full = await run('conundrum-analyze', args, analyzeHandler({ slate: ANOMALY_SLATE }))
+  const key = c => `${typeOf(c)}|${c.opts.label}|${c.prompt}`
+  assert.deepEqual(full.calls.slice(0, stopped.calls.length).map(key), stopped.calls.map(key))
+  // A slate note changes only the slate prompt, so lenses and math checks still replay.
+  const noted = await run('conundrum-analyze', { ...args, stopAfter: 'slate', slateNote: 'Split C1 by beam flux and proton loss.' },
+    analyzeHandler({ slate: ANOMALY_SLATE }))
+  const slateAt = stopped.calls.findIndex(c => typeOf(c) === 'candidate-builder')
+  assert.deepEqual(noted.calls.slice(0, slateAt).map(key), stopped.calls.slice(0, slateAt).map(key))
+  assert.match(noted.calls[slateAt].prompt, /The user reviewed an earlier slate and asks: Split C1 by beam flux and proton loss\./)
+  assert.doesNotMatch(stopped.calls[slateAt].prompt, /reviewed an earlier slate/)
+})
+
+test('analyze, deep: failed refuters and crux advocates are named to the judge; unexamined candidates get no advocate', async () => {
+  const fail = c => (typeOf(c) === 'falsifier' && (c.opts.label === 'C1#2' || c.opts.label.startsWith('C4#')))
+    || (typeOf(c) === 'crux-advocate' && c.opts.label === 'crux:C2')
+  const { result, calls, logs } = await run('conundrum-analyze', { slug: 's', depth: 'deep', type: 'anomaly', lenses: ANOMALY_LENSES },
+    analyzeHandler({ slate: ANOMALY_SLATE, fail }))
+  assert.deepEqual(result.refutersFailed, ['C1#2', 'C4#0', 'C4#1', 'C4#2'])
+  assert.deepEqual(result.unexamined, ['C4'])
+  assert.deepEqual(byType(calls, 'crux-advocate').map(c => c.opts.label), ['crux:C1', 'crux:C2', 'crux:C3'])
+  assert.deepEqual(result.cruxed, ['C1', 'C3'])
+  assert.deepEqual(result.cruxFailed, ['C2'])
+  const judge = byType(calls, 'adjudicator')[0].prompt
+  assert.match(judge, /Fewer verdicts than refuters \(some failed\): C1\./)
+  assert.match(judge, /Survivors with no crux file \(the advocate failed, not a concession\): C2\./)
+  assert.match(judge, /Unexamined \(refuters failed\): C4/)
+  assert.ok(logs.some(l => l.includes('refuters that failed: C1#2, C4#0, C4#1, C4#2')))
+})
+
+test('analyze: repeated candidate IDs are logged, not dropped silently', async () => {
+  const slate = { candidates: [...SLATE5.candidates, { id: 'C2', claim: 'a second C2', type: 'option' }] }
+  const { logs } = await run('conundrum-analyze', { slug: 's' }, analyzeHandler({ slate }))
+  assert.ok(logs.some(l => l.includes('slate repeated candidate IDs') && l.includes('1 dropped')))
+})
+
+test('research: an anomaly asks for error budgets and upcoming experiments; the facet keys stay the same', async () => {
+  const anomaly = await run('conundrum-research', { slug: 's', depth: 'deep', type: 'anomaly' }, wroteOk)
+  const eng = byType(anomaly.calls, 'researcher').find(c => c.opts.label === 'research:engineering')
+  assert.match(eng.prompt, /largest items of each systematic budget/)
+  assert.match(eng.prompt, /supersede or re-analyse/)
+  assert.doesNotMatch(eng.prompt, /technology readiness/)
+  assert.ok(anomaly.logs.some(l => l.includes('type anomaly')))
+  const feasibility = await run('conundrum-research', { slug: 's', depth: 'deep', type: 'feasibility' }, wroteOk)
+  const engF = byType(feasibility.calls, 'researcher').find(c => c.opts.label === 'research:engineering')
+  assert.match(engF.prompt, /technology readiness/)
+  assert.deepEqual(byType(anomaly.calls, 'researcher').map(c => c.opts.label),
+    byType(feasibility.calls, 'researcher').map(c => c.opts.label))
+  for (const c of byType(anomaly.calls, 'researcher')) assert.match(c.prompt, /Research facets section scopes this mandate/)
+  const quant = byType(anomaly.calls, 'researcher').find(c => c.opts.label === 'research:quantitative')
+  assert.match(quant.prompt, /statistical and systematic uncertainties exactly as quoted/)
+  assert.match(eng.prompt, /when results are expected/)
+})
