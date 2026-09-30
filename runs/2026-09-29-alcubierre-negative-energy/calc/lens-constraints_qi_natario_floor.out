@@ -1,0 +1,19 @@
+=== A. Horizon surface gravity, thin tanh wall (units of Delta_PF, sigma = 2/Delta) ===
+v=1.5: n=200001: kappa*Delta = [np.float64(1.333333334044104), np.float64(1.333333334044104)] ; analytic 4(v-1)/v = 1.333333
+v=1.5: n=300001: kappa*Delta = [np.float64(1.333333334044104), np.float64(1.333333334044104)] ; analytic 4(v-1)/v = 1.333333
+v=2.0: n=200001: kappa*Delta = [np.float64(2.0000000005460095), np.float64(2.0000000005460095)] ; analytic 4(v-1)/v = 2.000000
+v=2.0: n=300001: kappa*Delta = [np.float64(2.0000000005460095), np.float64(2.0000000005460095)] ; analytic 4(v-1)/v = 2.000000
+v=10.0: n=200001: kappa*Delta = [np.float64(3.599999999808166), np.float64(3.599999999808166)] ; analytic 4(v-1)/v = 3.600000
+v=10.0: n=300001: kappa*Delta = [np.float64(3.599999999808166), np.float64(3.599999999808166)] ; analytic 4(v-1)/v = 3.600000
+QI wall v=10c: Delta = 1.579e-32 m, kappa = 2.280e+32 /m, T_H = 8.309e+28 K (= 5.86e-04 T_Planck), 1/(kappa c) = 1.463e-41 s, e-folds in 0.437 yr = 9.43e+47
+
+=== C. Thick-wall floor (spherical Alcubierre, Eulerian): E = -(v^2/12) int f'^2 r^2 dr ===
+D=1 m: int f'^2 r^2: linear 1.01003e+04, cosine 1.24607e+04, optimal 1.01000e+04, bound R(R+D)/D 1.01000e+04 ; E_min(v=10c) = -8.4167e+04 m = -1.133e+32 kg = -5.698e+01 Msun
+D=10 m: int f'^2 r^2: linear 1.10333e+03, cosine 1.36056e+03, optimal 1.10000e+03, bound R(R+D)/D 1.10000e+03 ; E_min(v=10c) = -9.1667e+03 m = -1.234e+31 kg = -6.206e+00 Msun
+D=100 m: int f'^2 r^2: linear 2.33333e+02, cosine 2.81613e+02, optimal 2.00000e+02, bound R(R+D)/D 2.00000e+02 ; E_min(v=10c) = -1.6667e+03 m = -2.244e+30 kg = -1.128e+00 Msun
+D=10000 m: int f'^2 r^2: linear 3.43433e+03, cosine 3.61194e+03, optimal 1.01000e+02, bound R(R+D)/D 1.01000e+02 ; E_min(v=10c) = -8.4167e+02 m = -1.133e+30 kg = -5.698e-01 Msun
+D -> inf: E_min -> -v^2 R/12 = -8.3333e+02 m = -1.122e+30 kg (v=10c, R=100 m)
+
+=== B. Natario zero-expansion: curvature radius at the wall vs sigma (R = 1, v = 1) ===
+symbolic setup 7s
+sigma=8.0: Delta_PF=0.2500: min r_c = 8.1692e-02 m at (0.0, np.float64(0.0), np.float64(0.9375), 0.0001) ; r_c*sigma^2 = 5.2283 ; min rho = -1.9632e+00 /m^2 ; rho_min/sigma^4 = -4.7931e-04  [360s]

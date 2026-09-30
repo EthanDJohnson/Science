@@ -1,0 +1,13 @@
+setup 0s
+
+=== Analytic lapse hill alone (v=0): NEC integral, worst NEC density ===
+A0=   3.0: I_NEC = -2.9778 m   worst NEC density = -0.2236 m^-2 (continuous min over n)
+A0=  10.0: I_NEC = -5.6478 m   worst NEC density = -0.3253 m^-2 (continuous min over n)
+A0= 100.0: I_NEC = -10.5308 m   worst NEC density = -0.3694 m^-2 (continuous min over n)
+
+=== Numerical (gr_tensors, 64 sampled null directions), two grids ===
+Alcubierre A0=1 : I_NEC(h=0.05)=-4.1057 m, I_NEC(h=0.035)=-4.1032 m | E_Eul grid=-0.22334 m (lens -0.22334) | I_NEC/E_Eul = 18.37  [61s]
+Loup A0=3        : I_NEC(h=0.05)=-3.9881 m, I_NEC(h=0.035)=-3.9888 m | E_Eul grid=-0.02516 m (lens -0.02516) | I_NEC/E_Eul = 158.54  [124s]
+Loup A0=10       : I_NEC(h=0.05)=-5.5997 m, I_NEC(h=0.035)=-5.6018 m | E_Eul grid=-0.00228 m (lens -0.00228) | I_NEC/E_Eul = 2456.91  [188s]
+lapse alone A0=10: I_NEC(h=0.05)=-5.2768 m, I_NEC(h=0.035)=-5.2790 m | E_Eul grid=+0.00000 m (lens +0.00000) | I_NEC/E_Eul = nan  [249s]
+done

@@ -1,0 +1,10 @@
+setup 0s
+=== 1. Eulerian energy vs lapse height A0 (R=1, sigma=8, v=1; lapse bump R_A=1.6, sigma_A=4) ===
+A0=1.0: n=48: E_tot -0.22334 m, E_neg -0.22334 m, E_pos +0.00000 m | n=72: E_tot -0.22334 m, E_neg -0.22334 m, E_pos +0.00000 m  [0s]
+A0=3.0: n=48: E_tot -0.02516 m, E_neg -0.02516 m, E_pos +0.00000 m | n=72: E_tot -0.02516 m, E_neg -0.02516 m, E_pos +0.00000 m  [1s]
+A0=10.0: n=48: E_tot -0.00228 m, E_neg -0.00228 m, E_pos +0.00000 m | n=72: E_tot -0.00228 m, E_neg -0.00228 m, E_pos +0.00000 m  [1s]
+
+=== 2. Lapse bump alone (v = 0), A0 = 10: Eulerian rho and energy conditions ===
+Eulerian rho on the ray: ['+0.00e+00', '+0.00e+00', '+0.00e+00', '+0.00e+00', '+0.00e+00', '+0.00e+00', '+0.00e+00', '+0.00e+00', '+0.00e+00', '+0.00e+00', '+0.00e+00', '+0.00e+00', '+0.00e+00', '+0.00e+00', '+0.00e+00', '+0.00e+00', '+0.00e+00']
+points 17, violations {'nec': 17, 'wec': 17, 'sec': 17, 'dec': 17}, worst NEC -3.144e-01, worst SEC -15.854745408104744  [14s]
+done
