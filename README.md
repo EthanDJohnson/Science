@@ -224,9 +224,16 @@ Each checks itself against independent reference values, and `references/tools.m
 - INSPIRE-HEP and arXiv, the default for physics;
 - Crossref and Semantic Scholar (`--source general`) for engineering, materials, chemistry, statistics and other fields.
 
-Results come best match first; `--since <year>` restricts every source to recent work, and `"refersto:arxiv:<id>"` lists the papers citing a result, which is how re-analyses and rebuttals turn up. Semantic Scholar also lists open-access PDF links. `fetch_text.py` prints a source's own words from a PDF or web page, around a phrase given with `--grep`, so agents quote the text itself: WebFetch passes pages through a model, whose answer can paraphrase. Two optional environment variables speed these up; nothing identifying is sent unless you set them:
+Results come best match first; `--since <year>` restricts every source to recent work, and `"refersto:arxiv:<id>"` lists the papers citing a result, which is how re-analyses and rebuttals turn up. Semantic Scholar also lists open-access PDF links. `fetch_text.py` prints a source's own words from a PDF or web page, around a phrase given with `--grep`, so agents quote the text itself: WebFetch passes pages through a model, whose answer can paraphrase. **Paywalls.** For a journal paper, `find_fulltext.py <doi>` finds a free, legal copy: the published version when it is open, otherwise an accepted manuscript (OSTI for US national-lab work, or a university repository) or the arXiv preprint.
+- It asks INSPIRE, OpenAlex, OSTI and Europe PMC.
+- With `--grep` it searches the best copy it can open, moving on when a copy is blocked or unreachable.
+- It labels which version it quoted, since preprint numbers occasionally differ from the published ones.
+- It never contacts anyone. When no free copy exists and the answer may turn on the paper, agents flag it as a paper to request. The main session lists those at the dossier checkpoint and in the report, and a copy you supply in `runs/<slug>/user/` becomes quotable.
+
+Optional environment variables; nothing identifying is sent unless you set them:
 - `SEMANTIC_SCHOLAR_API_KEY` raises Semantic Scholar's shared rate limit;
-- `CROSSREF_MAILTO` gives Crossref an email address for its faster pool.
+- `CROSSREF_MAILTO` gives Crossref an email address for its faster pool (OpenAlex uses it too, or `OPENALEX_MAILTO`);
+- `UNPAYWALL_EMAIL` turns on Unpaywall in `find_fulltext.py`, which requires a contact address.
 
 **Calculators on demand.** At framing, Claude checks the calculations a question needs against the catalog. If several agents would need one that's missing and easy to get wrong, Claude proposes it with the brief. On your OK:
 1. A toolsmith agent builds it during the research stage, with a self-test against at least four independent reference values.
@@ -320,7 +327,7 @@ python3 .claude/skills/conundrum/scripts/math_checks.py selftest          # math
     references/          lenses.md  schemas.md  rubric.md  tools.md (calculator catalog)
     scripts/             gr_tensors.py  stats_tools.py  unit_tools.py  rocket_tools.py
                          math_checks.py  math_run.py
-                         lit_search.py  fetch_text.py  check_env.py  prior_runs.py  tests/
+                         lit_search.py  fetch_text.py  find_fulltext.py  check_env.py  prior_runs.py  tests/
   agents/                19 role definitions (model, effort, tools, method)
   workflows/             conundrum-research.js  conundrum-analyze.js
   hooks/                 turn_budget.py (counts each agent's turns and tool calls)

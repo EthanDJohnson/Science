@@ -28,7 +28,8 @@ The math checker uses these to re-derive each lens's mathematics independently (
 | Tool | Covers |
 |---|---|
 | `lit_search.py` | INSPIRE-HEP, arXiv, Crossref and Semantic Scholar search, printing abstracts that can be quoted |
-| `fetch_text.py` | A source's own words from a PDF or web page, around a phrase, for verbatim quotes |
+| `fetch_text.py` | A source's own words from a PDF or web page (or a file the user supplied under `runs/`), around a phrase, for verbatim quotes |
+| `find_fulltext.py` | A free, legal full text of a paper from its DOI or arXiv ID: asks INSPIRE, OpenAlex, OSTI and Europe PMC (Unpaywall with `UNPAYWALL_EMAIL`; Semantic Scholar as a fallback), ranks copies published, then accepted manuscript, then preprint, and with `--grep` searches the best one it can open. Never contacts anyone; a paper with no free copy is flagged for the user to request |
 | `check_env.py` | Preflight: packages, reachable sources, and how many agents run at once |
 | `prior_runs.py` | Earlier runs related to a question; importing their evidence (never their conclusions) into a new run; each run's record of status, trust and notes |
 

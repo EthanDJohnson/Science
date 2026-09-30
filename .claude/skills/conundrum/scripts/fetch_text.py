@@ -7,8 +7,11 @@ removed. With --grep it prints only the passages around a phrase, which keeps a 
 of the agent's context (and its cost). --grep ignores case and whitespace, because PDF extraction
 often inserts stray spaces inside words ("bub ble"); --regex takes a regular expression instead.
 
+It also reads a local file under runs/, such as a paper the user supplied in runs/<slug>/user/.
+
 Usage (from the project root):
     python3 .claude/skills/conundrum/scripts/fetch_text.py https://arxiv.org/pdf/gr-qc/9702026 --grep "Planck length"
+    python3 .claude/skills/conundrum/scripts/fetch_text.py runs/<slug>/user/paper.pdf --grep "systematic"
     python3 .claude/skills/conundrum/scripts/fetch_text.py <pdf-url> --pages 1-3
     python3 .claude/skills/conundrum/scripts/fetch_text.py https://arxiv.org/abs/gr-qc/0009013 --max-chars 3000
 
@@ -34,6 +37,7 @@ import sys
 import urllib.error
 import urllib.parse
 import urllib.request
+from pathlib import Path
 
 USER_AGENT = "conundrum-skill/1.0 (research assistant; low volume)"
 MAX_BYTES = 50_000_000
@@ -47,8 +51,30 @@ class NeedsPypdf(Exception):
     pass
 
 
+class Blocked(Exception):
+    """A bot-check page served in place of the source; the message is the host."""
+
+
+LOCAL_TYPES = {".pdf": "application/pdf", ".html": "text/html", ".htm": "text/html", ".xml": "application/xml"}
+
+
+def read_local(path: str) -> tuple[bytes, str, str]:
+    """A file under runs/ (for example a paper the user supplied): (body, content type, path)."""
+    runs = (Path.cwd() / "runs").resolve()
+    real = Path(path).resolve()
+    if runs not in real.parents:
+        raise Unavailable("local files are read only from runs/<slug>/")
+    if not real.is_file():
+        raise Unavailable("no such file")
+    if real.stat().st_size > MAX_BYTES:
+        raise Unavailable(f"larger than {MAX_BYTES // 1_000_000} MB")
+    return real.read_bytes(), LOCAL_TYPES.get(real.suffix.lower(), "text/plain"), path
+
+
 def fetch(url: str, timeout: float) -> tuple[bytes, str, str]:
-    """Return (body, content type, final URL)."""
+    """Return (body, content type, final URL). A path without a scheme is read from runs/."""
+    if "://" not in url:
+        return read_local(url)
     req = urllib.request.Request(url, headers={"User-Agent": USER_AGENT})
     try:
         with urllib.request.urlopen(req, timeout=timeout) as resp:
@@ -136,9 +162,23 @@ def passages(chunks: list[tuple[str, str]], pattern: str, context: int, limit: i
     return out
 
 
-def main(argv=None) -> int:
-    ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("url")
+# ---------------------------------------------------------------- shared with find_fulltext.py
+def load(url: str, timeout: float, pages: str | None = None) -> tuple[list[tuple[str, str]], str, str]:
+    """Fetch a source and return (chunks, kind, final URL): chunks are (label, text) pairs, one per PDF page
+    or one for a page. Raises Unavailable, Blocked (a bot-check page) or NeedsPypdf."""
+    body, content_type, final_url = fetch(url, timeout)
+    if is_pdf(body, content_type):
+        texts = pdf_pages(body)
+        chosen = parse_pages(pages, len(texts)) if pages else list(range(1, len(texts) + 1))
+        return ([(f"[p. {p}] ", texts[p - 1]) for p in chosen],
+                f"PDF, {len(texts)} page{'s' if len(texts) != 1 else ''}", final_url)
+    text = html_text(body, content_type)
+    if blocked(text):
+        raise Blocked(urllib.parse.urlparse(final_url).netloc)
+    return [("", text)], content_type.split(";")[0] or "text", final_url
+
+
+def add_text_options(ap: argparse.ArgumentParser) -> None:
     ap.add_argument("--grep", help="phrase to find, ignoring case and whitespace; print only the passages around it")
     ap.add_argument("--regex", help="like --grep, but a case-insensitive regular expression")
     ap.add_argument("--context", type=int, default=300, help="characters of context on each side of a match")
@@ -146,26 +186,42 @@ def main(argv=None) -> int:
     ap.add_argument("--pages", help="PDF pages to use, for example 1-3,5")
     ap.add_argument("--max-chars", type=int, default=20000, help="cap on printed text without --grep")
     ap.add_argument("--timeout", type=float, default=30.0)
+
+
+def matches(chunks: list[tuple[str, str]], args) -> list[str]:
+    """The passages around args.grep (or args.regex)."""
+    return passages(chunks, args.regex or phrase_pattern(args.grep), args.context, args.max_matches)
+
+
+def no_match_note(args, total: int) -> str:
+    short = (f" The page is only {total:,} characters: it may be a stub or a landing page, not the paper."
+             if total < SHORT_PAGE else "")
+    return f"NO MATCH for {(args.regex or args.grep)!r}. Try fewer or different words.{short}"
+
+
+def print_text(chunks: list[tuple[str, str]], max_chars: int) -> None:
+    text = " ".join(label + t for label, t in chunks)
+    print(text[:max_chars])
+    if len(text) > max_chars:
+        print(f"(clipped: {len(text) - max_chars:,} more characters; use --grep or --pages)")
+
+
+def main(argv=None) -> int:
+    ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    ap.add_argument("url")
+    add_text_options(ap)
     args = ap.parse_args(argv)
 
     try:
-        body, content_type, final_url = fetch(args.url, args.timeout)
-        if is_pdf(body, content_type):
-            pages = pdf_pages(body)
-            chosen = parse_pages(args.pages, len(pages)) if args.pages else list(range(1, len(pages) + 1))
-            chunks = [(f"[p. {p}] ", pages[p - 1]) for p in chosen]
-            kind = f"PDF, {len(pages)} page{'s' if len(pages) != 1 else ''}"
-        else:
-            chunks = [("", html_text(body, content_type))]
-            kind = content_type.split(";")[0] or "text"
-            if blocked(chunks[0][1]):
-                host = urllib.parse.urlparse(final_url).netloc
-                print(f"BLOCKED: {host} served a bot-check page, not the source. Find the arXiv version "
-                      '(lit_search.py "doi:<doi>" --source inspire lists its arXiv ID) or quote the lit_search '
-                      "abstract. A blocked page makes a claim unverifiable, never contradicted.")
-                return 3
+        chunks, kind, final_url = load(args.url, args.timeout, args.pages)
+    except Blocked as exc:
+        print(f"BLOCKED: {exc} served a bot-check page, not the source. For a paper, find_fulltext.py <doi> "
+              "finds a free copy (arXiv, a repository manuscript or PubMed Central); otherwise quote the lit_search "
+              "abstract. A blocked page makes a claim unverifiable, never contradicted.")
+        return 3
     except Unavailable as exc:
-        print(f"UNAVAILABLE: {args.url} ({exc}). Quote an abstract from lit_search.py or mark ACCESS: search-summary.")
+        print(f"UNAVAILABLE: {args.url} ({exc}). For a paper, find_fulltext.py <doi> finds a free copy; otherwise "
+              "quote an abstract from lit_search.py or mark ACCESS: search-summary.")
         return 3
     except NeedsPypdf as exc:
         print(f"CANNOT READ PDF: {exc}.")
@@ -174,20 +230,14 @@ def main(argv=None) -> int:
     total = sum(len(t) for _, t in chunks)
     print(f"SOURCE: {final_url} | {kind} | {total:,} characters")
     if args.grep or args.regex:
-        pattern = args.regex or phrase_pattern(args.grep)
-        found = passages(chunks, pattern, args.context, args.max_matches)
+        found = matches(chunks, args)
         if not found:
-            short = (f" The page is only {total:,} characters: it may be a stub or a landing page, not the paper."
-                     if total < SHORT_PAGE else "")
-            print(f"NO MATCH for {(args.regex or args.grep)!r}. Try fewer or different words.{short}")
+            print(no_match_note(args, total))
             return 2
         for p in found:
             print(p)
         return 0
-    text = " ".join(label + t for label, t in chunks)
-    print(text[: args.max_chars])
-    if len(text) > args.max_chars:
-        print(f"(clipped: {len(text) - args.max_chars:,} more characters; use --grep or --pages)")
+    print_text(chunks, args.max_chars)
     return 0
 
 
