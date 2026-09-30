@@ -1,0 +1,31 @@
+# math_run log
+command:  python3 runs/2026-09-30-neutron-lifetime-beam-bottle/math/mechanist/M-MECHANIST-08.py
+started:  2026-09-30T18:18:01Z
+duration: 0.5 s
+exit:     1
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   10 PASS, 2 FAIL, 0 UNDECIDED
+
+--- stdout ---
+100 kPa 869.77+-2.63; 50 kPa 883.33+-2.29; diff 13.56+-3.49 = 3.88 sigma
+FAIL 869.7725663716815 s == 869.8 s: relative tolerance 2e-05; 869.773 vs 869.8 (SI)
+PASS 883.3301152959261 s == 883.3 s: within 0.0001; 883.33 vs 883.3 (SI)
+PASS 13.557548924244657 s == 13.6 s: within 0.005; 13.5575 vs 13.6 (SI)
+PASS 3.4911346027453303 s == 3.5 s: within 0.01; 3.49113 vs 3.5 (SI)
+PASS 3.8834220008542153 == 3.9: within 0.01; 3.88342 vs 3.9 (SI)
+extrapolated to 0 kPa: 896.9 +- 5.3 s
+PASS 896.8876642201708 s == 897 s: within 0.001; 896.888 vs 897 (SI)
+PASS 5.2856337336130075 s == 5 s: within 0.08; 5.28563 vs 5 (SI)
+PASS a == a: symbolic
+old SFC 870.44+-3.19, new SFC 880.43+-2.06
+PASS 870.4376712328767 s == 870.4 s: within 0.0001; 870.438 vs 870.4 (SI)
+PASS 880.4323529411764 s == 880.4 s: within 0.0001; 880.432 vs 880.4 (SI)
+facing (+4.0): beam 2.243 sigma, UCNtau 0.142 sigma
+symmetrised 3.8: beam 2.323 sigma, UCNtau 0.149 sigma
+lower (-3.6): beam 2.408 sigma, UCNtau 0.155 sigma
+PASS 2.243185380294501 == 2.24: within 0.005; 2.24319 vs 2.24 (SI)
+FAIL 0.14234033318833048 == 0.16: relative tolerance 0.05; 0.14234 vs 0.16 (SI)
+SUMMARY: 10 pass, 2 fail, 0 undecided
+
+--- stderr ---
+

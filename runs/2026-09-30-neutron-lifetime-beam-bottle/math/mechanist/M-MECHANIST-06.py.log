@@ -1,0 +1,20 @@
+# math_run log
+command:  python3 runs/2026-09-30-neutron-lifetime-beam-bottle/math/mechanist/M-MECHANIST-06.py
+started:  2026-09-30T18:17:59Z
+duration: 0.7 s
+exit:     0
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   6 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+needed/depol bound = 130.2; gas rate exact 1.4277e-07, linear 1.4275e-07 s^-1; ratio 91.2
+PASS 130.21537841427858 == 130: within 0.01; 130.215 vs 130 (SI)
+PASS 1.4276973955645e-07 Hz == 1.4e-7 Hz: within 0.03; 1.4277e-07 vs 1.4e-07 (SI)
+PASS 91.2065671751068 == 90: within 0.03; 91.2066 vs 90 (SI)
+PASS 0.11 s / (877.82 s)^2 has the dimension of Hz: dimensional analysis
+PASS N0*exp(-g*t)*exp(-l*t) == N0*exp(t*(-g - l)): symbolic
+PASS series of tau - 1/(l + 1/tau) about l = 0 to order 2 == l*tau**2: symbolic: l*tau**2
+SUMMARY: 6 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

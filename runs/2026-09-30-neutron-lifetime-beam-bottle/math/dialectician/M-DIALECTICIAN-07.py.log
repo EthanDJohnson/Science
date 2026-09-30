@@ -1,0 +1,36 @@
+# math_run log
+command:  python3 runs/2026-09-30-neutron-lifetime-beam-bottle/math/dialectician/M-DIALECTICIAN-07.py
+started:  2026-09-30T18:27:47Z
+duration: 0.6 s
+exit:     0
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   11 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+UCNtau: loss rate 1.2679e-05 1/s, time constant 7.8871e+04 s
+  UCNtau rate: mine = 1.2679e-05 1/s, lens = 1.268e-05 1/s
+PASS 1.2679007339571908e-05 1/s == 1.268e-05 1/s: within 0.0006; 1.2679e-05 vs 1.268e-05 (SI)
+  UCNtau time const: mine = 78870.5 s, lens = 79000.0 s
+PASS 78870.52773279362 s == 79000.0 s: within 0.006; 78870.5 vs 79000 (SI)
+Gravitrap: loss rate 7.9232e-06 1/s, time constant 1.2621e+05 s
+  Gravitrap rate: mine = 7.92325e-06 1/s, lens = 7.92e-06 1/s
+PASS 7.923246235771314e-06 1/s == 7.92e-06 1/s: within 0.0006; 7.92325e-06 vs 7.92e-06 (SI)
+  Gravitrap time const: mine = 126211 s, lens = 126000.0 s
+PASS 126210.89516128761 s == 126000.0 s: within 0.006; 126211 vs 126000 (SI)
+Gravitrap - UCNtau = 3.68 s; 3.799 sigma (facing side), 3.811 (symmetrized UCNtau sys)
+  Grav - UCN: mine = 3.68 s, lens = 3.68 s
+PASS 3.67999999999995 s == 3.68 s: within 0.00163043; 3.68 vs 3.68 (SI)
+  sigma: mine = 3.79886 , lens = 3.8 
+PASS 3.7988646394704846  == 3.8 : within 0.0131579; 3.79886 vs 3.8 (SI)
+J-PARC shift needed = 10.50 s; upper error 4.346 s; ratio 2.416
+  J-PARC shift: mine = 10.5 s, lens = 10.5 s
+PASS 10.5 s == 10.5 s: within 0.000952381; 10.5 vs 10.5 (SI)
+  ratio to upper error: mine = 2.41587 , lens = 2.4 
+PASS 2.415868660953496  == 2.4 : within 0.0208333; 2.41587 vs 2.4 (SI)
+PASS -1/b + 1/a == (-a + b)/(a*b): symbolic
+PASS series of -1/(a + d) + 1/a about d = 0 to order 2 == d/a**2: symbolic: d/a**2
+PASS 1/(877.82 s) - 1/(887.7 s) has the dimension of frequency: dimensional analysis
+SUMMARY: 11 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

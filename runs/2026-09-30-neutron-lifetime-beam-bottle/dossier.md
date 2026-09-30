@@ -220,7 +220,7 @@ Other gaps:
   - **Recomputed D-50** (GS2023, Vud = 0.97361(32)). τ_β by λ source:
     - PERKEO III 878.50 ± 0.88 s;
     - UCNA 877.60 ± 2.36 s;
-    - PERKEO II 880.34 ± 1.40 s;
+    - PERKEO II 880.34 ± 1.63 s (corrected from ± 1.40 s, which dropped the 0.0008 statistical part of λ's error; M-EMPIRICIST-11, M-EXAMINER-10);
     - PDG 2024 average 879.65 ± 1.61 s;
     - aSPECT 2020 888.53 ± 3.31 s;
     - aSPECT 2024 889.58 ± 3.20 s;

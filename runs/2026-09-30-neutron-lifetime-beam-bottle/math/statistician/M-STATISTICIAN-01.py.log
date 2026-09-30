@@ -1,0 +1,44 @@
+# math_run log
+command:  python3 runs/2026-09-30-neutron-lifetime-beam-bottle/math/statistician/M-STATISTICIAN-01.py
+started:  2026-09-30T18:03:02Z
+duration: 0.7 s
+exit:     1
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   23 PASS, 2 FAIL, 0 UNDECIDED
+
+--- stdout ---
+PASS lim s2->oo of (x2/s2**2 + x1/s1**2)/(s2**(-2) + s1**(-2)) == x1: symbolic limit x1
+PASS s1**2*(x1/s1**2 + x2/s1**2)/2 == x1/2 + x2/2: symbolic
+PASS 887.7 s * 0.5 + 889.2 s * 0.5 == 888.45 s: within 0.001; 888.45 vs 888.45 (SI)
+proton: mean 887.966 s, err 2.038 s, scaled 2.038 s, chi2 0.079/1, p 0.7787, S 1.000  (lens (887.97, 2.04, 0.08, 1))
+PASS 887.970000000000 == 887.970000000000: symbolic
+PASS 2.04000000000000 == 2.04000000000000: symbolic
+PASS 0.0800000000000000 == 0.0800000000000000: symbolic
+material: mean 880.032 s, err 0.491 s, scaled 0.702 s, chi2 8.191/4, p 0.08483, S 1.431  (lens (880.03, 0.49, 8.19, 4))
+PASS 880.030000000000 == 880.030000000000: symbolic
+PASS 0.490000000000000 == 0.490000000000000: symbolic
+PASS 8.19000000000000 == 8.19000000000000: symbolic
+magnetic: mean 877.815 s, err 0.266 s, scaled 0.266 s, chi2 0.089/2, p 0.9564, S 1.000  (lens (877.82, 0.27, 0.09, 2))
+FAIL 877.810000000000 == 877.820000000000: numeric, constants; counterexample (no symbols) = -; lhs = 877.81, rhs = 877.82
+PASS 0.270000000000000 == 0.270000000000000: symbolic
+PASS 0.0900000000000000 == 0.0900000000000000: symbolic
+storage: mean 878.319 s, err 0.234 s, scaled 0.434 s, chi2 24.056/7, p 0.001114, S 1.854  (lens (878.32, 0.23, 24.0, 7))
+PASS 878.320000000000 == 878.320000000000: symbolic
+PASS 0.230000000000000 == 0.230000000000000: symbolic
+FAIL 24.1000000000000 == 24.0000000000000: numeric, constants; counterexample (no symbols) = -; lhs = 24.1, rhs = 24.0
+PASS 1.43000000000000 == 1.43000000000000: symbolic
+PASS 0.700000000000000 == 0.700000000000000: symbolic
+PASS 1.85000000000000 == 1.85000000000000: symbolic
+PASS 0.430000000000000 == 0.430000000000000: symbolic
+PASS 0.0850000000000000 == 0.0850000000000000: symbolic
+PASS 0.00110000000000000 == 0.00110000000000000: symbolic
+BL1 weight share 0.8227448227448227
+PASS 0.820000000000000 == 0.820000000000000: symbolic
+PASS 4.35000000000000 == 4.35000000000000: symbolic
+PASS 3.98000000000000 == 3.98000000000000: symbolic
+storage without Pattie18 shift 0.06455578163570408
+PASS 0.0600000000000000 == 0.0600000000000000: symbolic
+SUMMARY: 23 pass, 2 fail, 0 undecided
+
+--- stderr ---
+

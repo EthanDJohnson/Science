@@ -1,0 +1,38 @@
+# math_run log
+command:  python3 runs/2026-09-30-neutron-lifetime-beam-bottle/math/mechanist/M-MECHANIST-09.py
+started:  2026-09-30T18:19:08Z
+duration: 3.2 s
+exit:     1
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   7 PASS, 1 FAIL, 0 UNDECIDED
+
+--- stdout ---
+PASS 60.30773945240298 == 60.3077: within 1e-05; 60.3077 vs 60.3077 (SI)
+B_res = 4.6429 T; mu*4.6 T = 277.42 neV
+PASS 4.642856550656052 T == 4.64 T: within 0.001; 4.64286 vs 4.64 (SI)
+eps = 0.4648 neV, tau_nn' = 1.416e-06 s, P_det = 5.511e-06
+PASS 1.41611866802926e-06 s == 1.4e-6 s: within 0.02; 1.41612e-06 vs 1.4e-06 (SI)
+PASS 5.511139254018686e-06 == 5.5e-6: within 0.01; 5.51114e-06 vs 5.5e-06 (SI)
+PASS 2*eps**2/(delta**2*(1 + 4*eps**2/delta**2)) == 2*eps**2/(delta**2 + 4*eps**2): symbolic
+PASS series of 2*eps**2/(delta**2 + 4*eps**2) about eps = 0 to order 3 == 2*eps**2/delta**2: symbolic: 2*eps**2/delta**2
+required P_trap (tau_beta = 877.82 s) = 1.1436e-02; with +1.143 % convention: 1.1306e-02
+uniform 4.6 T field: theta0 needed = 1.004e-03
+solenoid L=0.6 m, a=0.05 m, trap |z|<0.1 m: B(edge)=4.576 T, theta0 = 1.151e-03
+solenoid L=0.6 m, a=0.05 m, trap |z|<0.15 m: B(edge)=4.530 T, theta0 = 1.306e-03
+solenoid L=0.6 m, a=0.05 m, trap |z|<0.2 m: B(edge)=4.406 T, theta0 = 1.484e-03
+solenoid L=0.6 m, a=0.1 m, trap |z|<0.1 m: B(edge)=4.520 T, theta0 = 1.379e-03
+solenoid L=0.6 m, a=0.1 m, trap |z|<0.15 m: B(edge)=4.384 T, theta0 = 1.653e-03
+solenoid L=0.6 m, a=0.1 m, trap |z|<0.2 m: B(edge)=4.092 T, theta0 = 1.915e-03
+solenoid L=0.6 m, a=0.15 m, trap |z|<0.1 m: B(edge)=4.465 T, theta0 = 1.546e-03
+solenoid L=0.6 m, a=0.15 m, trap |z|<0.15 m: B(edge)=4.258 T, theta0 = 1.883e-03
+solenoid L=0.6 m, a=0.15 m, trap |z|<0.2 m: B(edge)=3.889 T, theta0 = 2.192e-03
+range over profiles: 1.00e-03 (uniform) to 2.19e-03
+max adiabaticity ratio |dtheta/dt|/splitting (v = 2000 m/s, a = 0.1 m) = 5.45e-04
+FAIL 0.001004431313045572 == 1.66e-3: relative tolerance 0.1; 0.00100443 vs 0.00166 (SI)
+PASS 0.0021920383796289913 == 1.66e-3: within 0.3; 0.00219204 vs 0.00166 (SI)
+Dm = 300 neV, theta0 = 1e-3, uniform: P_trap = 1.764e-04, shift = 0.153 s
+Dm = 300 neV, theta0 = 1e-3, a=0.1,half=0.15: P_trap = 1.360e-04, shift = 0.118 s
+SUMMARY: 7 pass, 1 fail, 0 undecided
+
+--- stderr ---
+

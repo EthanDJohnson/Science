@@ -1,0 +1,44 @@
+# math_run log
+command:  python3 runs/2026-09-30-neutron-lifetime-beam-bottle/math/empiricist/M-EMPIRICIST-09.py
+started:  2026-09-30T18:11:44Z
+duration: 0.6 s
+exit:     1
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   14 PASS, 1 FAIL, 0 UNDECIDED
+
+--- stdout ---
+PASS -6*K*lam/(V**2*(3*lam**2 + 1)**2) == -6*K*lam/(V**2*(3*lam**2 + 1)**2): symbolic
+PASS -2*K/(V**3*(3*lam**2 + 1)) == -2*K/(V**3*(3*lam**2 + 1)): symbolic
+PASS lim lam->0 of K/(V**2*(3*lam**2 + 1)) == K/V**2: symbolic limit K/V**2
+PASS -6*K*lam/(V**2*(3*lam**2 + 1)**2) is negative: symbolic, K in [0.1, 10], V in [0.1, 10], lam in [0.1, 10]
+PASS 4908.6 s / 0.97420^2 == 5172.0 s: within 0.0002; 5172.03 vs 5172 (SI)
+K' = 5172.034 s
+PERKEO III: tau 878.452 s (lens 878.5); sigma 0.881 s (lens 0.88); dtau/dlambda 1142.7 s; sigma with sigma_lambda=0.0011: 1.396
+  PERKEO III tau (pairing spread 0.06 s): mine 878.452, lens 878.5
+PASS 0.04783095005220162 < 0.0800000000000000: symbolic, constant
+  PERKEO III sigma: mine 0.88096, lens 0.88
+PASS 0.0009598399407037966 < 0.0200000000000000: symbolic, constant
+UCNA: tau 877.550 s (lens 877.6); sigma 2.361 s (lens 2.36); dtau/dlambda 1141.0 s; sigma with sigma_lambda=0.0011: 1.394
+  UCNA tau (pairing spread 0.06 s): mine 877.55, lens 877.6
+PASS 0.04988294605152532 < 0.0800000000000000: symbolic, constant
+  UCNA sigma: mine 2.36146, lens 2.36
+PASS 0.0014640395844427237 < 0.0200000000000000: symbolic, constant
+PERKEO II: tau 880.295 s (lens 880.34); sigma 1.631 s (lens 1.4); dtau/dlambda 1146.0 s; sigma with sigma_lambda=0.0011: 1.400
+  PERKEO II tau (pairing spread 0.06 s): mine 880.295, lens 880.34
+PASS 0.04545576067512513 < 0.0800000000000000: symbolic, constant
+  PERKEO II sigma: mine 1.63076, lens 1.4
+FAIL 0.23076467409707659 < 0.0200000000000000: numeric, constant; counterexample value = 0.2107646741; value 0.2107646741
+aSPECT 2024: tau 889.530 s (lens 889.58); sigma 3.199 s (lens 3.2); dtau/dlambda 1162.8 s; sigma with sigma_lambda=0.0011: 1.419
+  aSPECT 2024 tau (pairing spread 0.06 s): mine 889.53, lens 889.58
+PASS 0.05027228896643976 < 0.0800000000000000: symbolic, constant
+  aSPECT 2024 sigma: mine 3.19929, lens 3.2
+PASS 0.0007138996933941932 < 0.0200000000000000: symbolic, constant
+aCORN: tau 874.818 s (lens 874.86); sigma 7.070 s (lens 7.07); dtau/dlambda 1136.1 s; sigma with sigma_lambda=0.0011: 1.389
+  aCORN tau (pairing spread 0.06 s): mine 874.818, lens 874.86
+PASS 0.04236500517650654 < 0.0800000000000000: symbolic, constant
+  aCORN sigma: mine 7.06952, lens 7.07
+PASS 0.0004756825050582503 < 0.0200000000000000: symbolic, constant
+SUMMARY: 14 pass, 1 fail, 0 undecided
+
+--- stderr ---
+

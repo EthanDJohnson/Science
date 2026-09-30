@@ -1,0 +1,31 @@
+# math_run log
+command:  python3 runs/2026-09-30-neutron-lifetime-beam-bottle/math/empiricist/M-EMPIRICIST-03.py
+started:  2026-09-30T18:10:53Z
+duration: 1.0 s
+exit:     0
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   7 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+PASS W1*(m1 - (W1*m1 + W2*m2)/(W1 + W2))**2 + W2*(m2 - (W1*m1 + W2*m2)/(W1 + W2))**2 == (m1 - m2)**2/(1/W2 + 1/W1): symbolic
+proton vs rest 21.659
+without Sussex-ILL: 16.887
+  without Sussex chi2: mine 16.8872, lens 16.89
+PASS 0.002772886906120764 < 0.00600000000000000: symbolic, constant
+without BL1: 4.956, z 2.226
+  without BL1 chi2: mine 4.95575, lens 4.96
+PASS 0.004249888490678977 < 0.00600000000000000: symbolic, constant
+  without BL1 z: mine 2.22615, lens 2.2
+PASS 0.026151412530001323 < 0.0600000000000000: symbolic, constant
+without UCNtau: 14.907, z 3.861, rest mean 879.888
+  without UCNtau z: mine 3.86098, lens 3.86
+PASS 0.00098087655910772398 < 0.00600000000000000: symbolic, constant
+  rest mean without UCNtau: mine 879.888, lens 879.89
+PASS 0.002286791448383951 < 0.00600000000000000: symbolic, constant
+Sussex-ILL vs UCNtau z 2.346 (facing 2.346)
+  Sussex vs UCNtau: mine 2.3461, lens 2.35
+PASS 0.0039024573841323872 < 0.00600000000000000: symbolic, constant
+SUMMARY: 7 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

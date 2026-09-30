@@ -1,0 +1,40 @@
+# math_run log
+command:  python3 runs/2026-09-30-neutron-lifetime-beam-bottle/math/constraints/M-CONSTRAINTS-11.py
+started:  2026-09-30T18:37:22Z
+duration: 0.9 s
+exit:     0
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   14 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+PASS log(sB*exp((-mB + x)**2/(2*sB**2))*exp(-(-mS + x)**2/(2*sS**2))/sS) == log(sB/sS) - (-mS + x)**2/(2*sS**2) + (-mB + x)**2/(2*sB**2): symbolic
+PASS lim sS->oo of log(exp((-mB + x)**2/(2*sS**2))*exp(-(-mS + x)**2/(2*sS**2))) == 0: symbolic limit 0
+   sigma_J up: got 4.34626, lens 4.35
+PASS 4.346262762420146 == 4.35: within 0.00137931; 4.34626 vs 4.35 (SI)
+   sigma_J down: got 3.98121, lens 3.98
+PASS 3.9812058474788765 == 3.98: within 0.00150754; 3.98121 vs 3.98 (SI)
+   vs BL1: got 2.14599, lens 2.15
+PASS 2.1459876881973807 == 2.15: within 0.0027907; 2.14599 vs 2.15 (SI)
+   vs UCNtau: got 0.14236, lens 0.14
+PASS 0.14236031254972906 == 0.14: within 0.0428571; 0.14236 vs 0.14 (SI)
+   vs Gravitrap: got 0.967821, lens 0.97
+PASS 0.9678206437036286 == 0.97: within 0.00618557; 0.967821 vs 0.97 (SI)
+   vs SM A route: got 0.338998, lens 0.34
+PASS 0.3389979835781911 == 0.34: within 0.0176471; 0.338998 vs 0.34 (SI)
+   vs SM a route: got 1.9097, lens 1.91
+PASS 1.9097038220059457 == 1.91: within 0.00314136; 1.9097 vs 1.91 (SI)
+   scale factor: got 2.29492, lens 2.29
+PASS 2.2949219304078006 == 2.29: within 0.00262009; 2.29492 vs 2.29 (SI)
+   scaled stat: got 3.90137, lens 3.9
+PASS 3.9013672816932607 == 3.9: within 0.00153846; 3.90137 vs 3.9 (SI)
+   vs BL1 scaled: got 1.74346, lens 1.74
+PASS 1.7434581619682028 == 1.74: within 0.00344828; 1.74346 vs 1.74 (SI)
+   LR with normalisation 11.12 (scaled 4.89); profile exp(dchi2/2) 9.90 (scaled 4.54)
+   LR as quoted: got 11.1219, lens 11.1
+PASS 11.12189266255332 == 11.1: within 0.00540541; 11.1219 vs 11.1 (SI)
+   LR scaled: got 4.89107, lens 4.9
+PASS 4.891066157263616 == 4.9: within 0.0122449; 4.89107 vs 4.9 (SI)
+SUMMARY: 14 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

@@ -1,0 +1,30 @@
+# math_run log
+command:  python3 runs/2026-09-30-neutron-lifetime-beam-bottle/math/decomposer/M-DECOMPOSER-03.py
+started:  2026-09-30T18:25:07Z
+duration: 0.7 s
+exit:     0
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   11 PASS, 1 FAIL, 1 UNDECIDED
+
+--- stdout ---
+storage: 878.384 +- 0.246, chi2 23.326/6, p 6.944e-04, S 1.972
+PASS storage chi2: got 23.3259, lens 23.3, tol 0.05
+PASS storage p (1e-4): got 6.94356, lens 7, tol 0.5
+PASS storage S: got 1.97171, lens 1.97, tol 0.005
+PASS storage mean (s): got 878.384, lens 878.38, tol 0.005
+FAIL storage scaled sigma (s): got 0.484876, lens 0.49, tol 0.005
+material 880.032 +- 0.491 (S 1.431 -> 0.702), chi2 8.191/4
+magnetic 877.831 +- 0.284, chi2 0.063/1
+PASS material mean: got 880.032, lens 880.03, tol 0.005
+PASS material scaled sigma: got 0.702268, lens 0.7, tol 0.005
+PASS material S: got 1.43099, lens 1.43, tol 0.005
+PASS magnetic mean: got 877.831, lens 877.83, tol 0.005
+PASS magnetic sigma: got 0.284167, lens 0.28, tol 0.005
+material - magnetic = 2.202 +- 0.758 s, 2.906 sigma
+PASS difference (s): got 2.20159, lens 2.2, tol 0.005
+PASS difference z: got 2.90607, lens 2.9, tol 0.05
+UNDECIDED lim c->k of sqrt(c)*s/sqrt(k) == s: symbolic limit sqrt(k)*s/sqrt(k)
+SUMMARY: 0 pass, 0 fail, 1 undecided
+
+--- stderr ---
+

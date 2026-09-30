@@ -64,7 +64,7 @@ print()
 print("=" * 78)
 print("Part 3. D-50 recomputed with a consistent pairing (GS2023 RC, Vud = 0.97361(32))")
 print("=" * 78)
-lams = [("PERKEO III", 1.27641, 0.00056), ("UCNA 2018", 1.2772, 0.0020), ("PERKEO II", 1.2748, 0.0011),
+lams = [("PERKEO III", 1.27641, 0.00056), ("UCNA 2018", 1.2772, 0.0020), ("PERKEO II", 1.2748, (0.0008**2 + 0.00105**2) ** 0.5),
         ("PDG 2024 avg", 1.2754, 0.0013), ("aSPECT 2020", 1.2677, 0.0028), ("aSPECT 2024", 1.2668, 0.0027),
         ("aCORN", 1.2796, 0.0062)]
 print(f"{'lambda source':14s} {'|lambda|':>9s} {'tau_beta consistent (s)':>24s} {'D-50 mixed (s)':>15s} {'shift (s)':>9s}")
@@ -72,7 +72,7 @@ for name, l, sl in lams:
     good = tau_beta(l, sl, 0.97361, 0.00032, rc_set="GS2023")
     mixed = tau_beta(l, sl, 0.97367, 0.00032, rc_set="CMS2018")
     print(f"{name:14s} {l:9.5f} {good['tau']:15.2f} +- {good['sigma']:5.2f} {mixed['tau']:15.2f} {good['tau'] - mixed['tau']:9.2f}")
-print("(PERKEO II error symmetrised to 0.0011 from +0.0010/-0.0011 and 0.0008 stat: rounded, for display only)")
+print("(PERKEO II error: 0.0008 stat (+) 0.00105 sys, the systematic symmetrised from +0.0010/-0.0011; corrected after M-EMPIRICIST-11)")
 
 print()
 print("=" * 78)

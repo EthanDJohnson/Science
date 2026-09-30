@@ -1,0 +1,63 @@
+# math_run log
+command:  python3 runs/2026-09-30-neutron-lifetime-beam-bottle/calc/lens-dialectician_syntheses.py
+started:  2026-09-30T17:58:22Z
+duration: 0.7 s
+exit:     0
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+=== Reference values ===
+BL1 887.7 +- 2.25 s; UCNtau 877.82 +- 0.29 s; Gravitrap 881.5 +- 0.92 s
+J-PARC 877.2 +4.35/-3.98 s (stat+sys quadrature)
+
+=== Synthesis I: J-PARC internal scatter ===
+stat-weighted mean of 4 configs = 877.49 +- 1.73 s (stat); chi2 = 19.6/3; PDG S = 2.55
+(paper quotes chi2/DOF = 15.8/3 and combined 877.2 +- 1.7 stat: our stat-only reconstruction differs because the paper's weights include per-condition systematics)
+paper S = 2.29; inflated stat = 3.90 s; total +5.59/-5.31 s
+  [quoted] J-PARC vs BL1: 2.15 sigma ; J-PARC vs UCNtau: -0.16 sigma
+  [S-inflated] J-PARC vs BL1: 1.74 sigma ; J-PARC vs UCNtau: -0.12 sigma
+  config 100kPa/oldSFC: 870.9 s; (BL1 - v)/stat = 4.04 sigma incl. BL1 error
+  config 100kPa/newSFC: 868.3 s; (BL1 - v)/stat = 4.23 sigma incl. BL1 error
+  config 50kPa/oldSFC: 868.2 s; (BL1 - v)/stat = 2.43 sigma incl. BL1 error
+  config 50kPa/newSFC: 884.8 s; (BL1 - v)/stat = 0.88 sigma incl. BL1 error
+pressure effect tau(50)-tau(100): old SFC -2.7 +- 8.5 s; new SFC +16.5 +- 4.7 s
+  interaction (new - old) = +19.2 +- 9.7 s (1.99 sigma)
+linear-in-pressure fit: tau(p=0) = 896.9 +- 5.3 s, slope = -0.271 +- 0.070 s/kPa, chi2 = 4.5/2
+gap BL1-UCNtau = 9.88 s; LiNA sigma for 5 sigma separation (ignoring BL1 error) = 1.98 s; for 3 sigma = 3.29 s
+
+=== Synthesis II: A-route vs a-route lambda, and the Fierz reconciliation ===
+<m_e/E_e> (Fermi function off) = 0.6540
+<m_e/E_e> (Fermi function on) = 0.6553
+toolkit tau_beta(PERKEO III, GS2023 Vud 0.97361) -> {'tau': 878.4991924869005, 'sigma': 0.8821001066831571}
+tau_beta SM (b=0): PERKEO III lambda 878.50 s; aSPECT 2024 lambda 889.58 s
+tau_beta with Fierz synthesis lambda(c)=1.2724, b(c)=-0.0181: 893.70 s
+  rho(lambda,b)=-0.8: tau = 893.7 +- 2.8 s (incl. Vud 0.6 s); vs UCNtau 5.61 sigma; vs BL1 1.67 sigma; vs J-PARC 3.19 sigma
+  rho(lambda,b)=+0.0: tau = 893.7 +- 4.2 s (incl. Vud 0.6 s); vs UCNtau 3.80 sigma; vs BL1 1.27 sigma; vs J-PARC 2.74 sigma
+  rho(lambda,b)=+0.8: tau = 893.7 +- 5.2 s (incl. Vud 0.6 s); vs UCNtau 3.06 sigma; vs BL1 1.06 sigma; vs J-PARC 2.44 sigma
+b needed with PERKEO III lambda to give tau = 877.82 s (UCNtau): +0.0012
+b needed with PERKEO III lambda to give tau = 887.7 s (BL1): -0.0158
+a predicted from PERKEO III lambda = -0.10687; aSPECT measured -0.10402(82): diff = 0.00285 = 3.48 sigma_aSPECT; fractional |a| deficit = 0.0267
+
+=== Synthesis III: charge exchange in the proton trap ===
+proton-loss fraction needed to take true 877.82 s to 887.7 s: 1.113 %
+Caylor 0.3% loss at 1e-7 Pa, 10 ms: lifetime shift if every exchanged proton were lost undetected = 2.64 s
+H2 partial pressure needed (linear in n) for 1.11% loss, ions undetected: 3.71e-07 Pa
+Caylor worst case for BL1 (H2+ detected as charge): shift < 0.5 s => net missing fraction < 0.056 %
+Fraction of the gap covered by <0.5 s: < 5.1 %; by full 0.3% undetected loss: 27 %
+
+=== Synthesis IV: bottle-side loss and the J-PARC coincidence ===
+missing loss rate if BL1 true, UCNtau: 1.268e-05 s^-1 (time constant 7.887e+04 s)
+missing loss rate if BL1 true, Gravitrap: 7.923e-06 s^-1 (time constant 1.262e+05 s)
+Gravitrap - UCNtau = 3.68 s, 3.81 sigma
+J-PARC shift needed if BL1 true: +10.5 s = 2.42 x its quoted upper total error
+
+=== Null: error inflation of the size seen inside the field ===
+BL1 error x1.0: BL1 vs UCNtau = 4.36 sigma
+BL1 error x1.5: BL1 vs UCNtau = 2.92 sigma
+BL1 error x2.0: BL1 vs UCNtau = 2.19 sigma
+BL1 error x2.3: BL1 vs UCNtau = 1.91 sigma
+J-PARC zero-pressure extrapolation 896.9 +- 5.3 s vs UCNtau: 3.59 sigma; vs BL1: 1.60 sigma (stat-only, exploratory)
+
+--- stderr ---
+

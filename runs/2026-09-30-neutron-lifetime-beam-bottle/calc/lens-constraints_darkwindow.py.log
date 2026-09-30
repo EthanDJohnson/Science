@@ -1,0 +1,39 @@
+# math_run log
+command:  python3 runs/2026-09-30-neutron-lifetime-beam-bottle/calc/lens-constraints_darkwindow.py
+started:  2026-09-30T18:10:12Z
+duration: 0.0 s
+exit:     0
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+=== 1. Nuclear thresholds (atomic masses; electrons cancel) ===
+  S_n(9Be -> 8Be + n)      = 1664.54 keV -> m_chi > m_n - S_n = 937.901 MeV  (F-G print 937.900 MeV: check True)
+  S(9Be -> 2 alpha + n)    = 1572.70 keV -> m_chi > 937.993 MeV  (McKeen et al. print '938.0 MeV': check True)
+  S_n(11Be -> 10Be + n)    = 501.64 keV (D-65 prints 501.6(3) keV: check True)
+  11Be -> 10Be + chi open for m_chi < 939.064 MeV: covers the whole window -> 11Be ceiling B_X < 2.0e-4 [D-65] applies
+  m_H = m_p + m_e - 13.6 eV = 938.783074 MeV; p stability needs m_chi > m_p - m_e = 937.761 MeV (weaker than 9Be)
+
+=== 2. Windows (m_n > M_f > 9Be bound; chi stable against chi -> p e nu if m_chi < m_p + m_e) ===
+  [F-G printed (9Be->8Be+n)] lower bound 937.901 MeV
+    n->chi gamma (chi stable): 937.901 < m_chi < 938.783 MeV; E_gamma in (0.782, 1.663) MeV
+    n->chi e+e-: 937.901 < m_chi < 938.543 MeV (range 643 keV); pair kinetic energy T_ee <= 643 keV (T_ee ~ m_n - m_chi - 2m_e, chi recoil neglected)
+    unexcluded e+e- window (T_ee < 32 keV): 938.511 < m_chi < 938.543 MeV = 5.0% of the chi mass range
+    n->chi phi: 937.901 < m_chi + m_phi < 939.565 MeV (width 1665 keV); no visible particle
+  [three-body (9Be->2a+chi)] lower bound 937.993 MeV
+    n->chi gamma (chi stable): 937.993 < m_chi < 938.783 MeV; E_gamma in (0.782, 1.571) MeV
+    n->chi e+e-: 937.993 < m_chi < 938.543 MeV (range 551 keV); pair kinetic energy T_ee <= 551 keV (T_ee ~ m_n - m_chi - 2m_e, chi recoil neglected)
+    unexcluded e+e- window (T_ee < 32 keV): 938.511 < m_chi < 938.543 MeV = 5.8% of the chi mass range
+    n->chi phi: 937.993 < m_chi + m_phi < 939.565 MeV (width 1573 keV); no visible particle
+
+=== 3. Hydrogen decay H -> chi nu in the pure mixing model (n -> chi gamma) ===
+  Gamma_n = 7.4983e-25 MeV; needed dark rate = 8.3455e-27 MeV (Br = 1.113%)
+    m_chi = 937.993 MeV: E_gamma = 1.571 MeV, theta needed = 6.666e-11, Q = 0.790 MeV, tau_H = 9.41e+28 s (bound ~1e29 s: VIOLATES)
+    m_chi = 938.200 MeV: E_gamma = 1.364 MeV, theta needed = 8.239e-11, Q = 0.583 MeV, tau_H = 1.13e+29 s (bound ~1e29 s: allowed)
+    m_chi = 938.400 MeV: E_gamma = 1.165 MeV, theta needed = 1.045e-10, Q = 0.383 MeV, tau_H = 1.63e+29 s (bound ~1e29 s: allowed)
+    m_chi = 938.600 MeV: E_gamma = 0.965 MeV, theta needed = 1.385e-10, Q = 0.183 MeV, tau_H = 4.06e+29 s (bound ~1e29 s: allowed)
+    m_chi = 938.700 MeV: E_gamma = 0.865 MeV, theta needed = 1.632e-10, Q = 0.083 MeV, tau_H = 1.42e+30 s (bound ~1e29 s: allowed)
+  (Applies only to single-chi mixing with m_chi < m_H; the n->chi gamma channel is excluded independently by LANL [D-85].)
+
+--- stderr ---
+

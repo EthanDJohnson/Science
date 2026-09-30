@@ -1,0 +1,29 @@
+# math_run log
+command:  python3 runs/2026-09-30-neutron-lifetime-beam-bottle/math/decomposer/M-DECOMPOSER-09.py
+started:  2026-09-30T18:27:18Z
+duration: 0.9 s
+exit:     0
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   10 PASS, 0 FAIL, 1 UNDECIDED
+
+--- stdout ---
+PERKEO III: Br 0.077 +- 0.105%; UL95 one-sided 0.250%, two-sided 0.283%; needed 1.113% at +9.85 sigma; Br>0 at 0.73 sigma
+PASS PERKEO III Br (%): got 0.077272, lens 0.08, tol 0.006
+PASS PERKEO III err (%): got 0.10519, lens 0.11, tol 0.006
+PASS PERKEO III UL95 one-sided (%): got 0.25031, lens 0.25, tol 0.006
+PDG 2024: Br 0.208 +- 0.185%; UL95 one-sided 0.513%, two-sided 0.571%; needed 1.113% at +4.88 sigma; Br>0 at 1.13 sigma
+PASS PDG 2024 Br (%): got 0.208496, lens 0.21, tol 0.006
+PASS PDG 2024 err (%): got 0.185187, lens 0.19, tol 0.006
+PASS PDG 2024 UL95 one-sided (%): got 0.513128, lens 0.51, tol 0.006
+aSPECT 2024: Br 1.322 +- 0.356%; UL95 one-sided 1.908%, two-sided 2.020%; needed 1.113% at -0.59 sigma; Br>0 at 3.71 sigma
+PASS aSPECT 2024 Br (%): got 1.32164, lens 1.32, tol 0.006
+PASS aSPECT 2024 err (%): got 0.356326, lens 0.36, tol 0.006
+A route: Br 0.101 +- 0.100%, needed excluded at 10.11 sigma
+>7 sigma claim: True
+PASS aSPECT Br>0 significance: got 3.70907, lens 3.7, tol 0.05
+PASS 1 - ts/tb == (tb - ts)/tb: symbolic
+UNDECIDED lim tb->ts of 1 - ts/tb == 0: symbolic limit (ts - ts)/ts
+SUMMARY: 1 pass, 0 fail, 1 undecided
+
+--- stderr ---
+

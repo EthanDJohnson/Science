@@ -1,0 +1,81 @@
+# math_run log
+command:  python3 runs/2026-09-30-neutron-lifetime-beam-bottle/calc/lens-empiricist_partitions.py
+started:  2026-09-30T17:40:05Z
+duration: 0.2 s
+exit:     0
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+Inputs (s): BL1 887.7+-2.25, Sussex 889.2+-4.84, J-PARC 877.2 +4.35/-3.98 (sym 4.16), UCNtau 877.82+-0.297, Ezhov 878.3+-1.89, Gravitrap 881.5+-0.92, Serebrov05 878.5+-0.76, MAMBO 880.7+-1.77, Steyerl 882.5+-2.05, Arz 880.2+-1.2
+
+== per-class weighted means ==
+proton_beam      mean 887.97 s  err 2.04 s  chi2 0.08/1  S 1.00  err_scaled 2.04 s
+electron_beam    mean 877.20 s  err 4.16 s  chi2 0.00/0  S 1.00  err_scaled 4.16 s
+material_bottle  mean 880.03 s  err 0.49 s  chi2 8.19/4  S 1.43  err_scaled 0.70 s
+magnetic_trap    mean 877.83 s  err 0.29 s  chi2 0.06/1  S 1.00  err_scaled 0.29 s
+
+== partition: beam(p+e) vs bottle ==
+  beam_p_e               mean 885.88 +- 1.83 s  within chi2 5.47/2
+  bottle                 mean 878.41 +- 0.25 s  within chi2 23.06/6
+  within chi2 28.53/8 (p 0.000383); between chi2 16.35/1 (p 5.26e-05, z 4.04); pooled chi2 44.88/9
+
+== partition: proton-counting vs all else ==
+  proton                 mean 887.97 +- 2.04 s  within chi2 0.08/1
+  rest                   mean 878.41 +- 0.25 s  within chi2 23.15/7
+  within chi2 23.23/8 (p 0.00309); between chi2 21.66/1 (p 3.26e-06, z 4.65); pooled chi2 44.88/9
+
+== partition: BL1 vs all else (reframe) ==
+  BL1                    mean 887.70 +- 2.25 s  within chi2 0.00/0
+  rest                   mean 878.44 +- 0.25 s  within chi2 28.10/8
+  within chi2 28.10/8 (p 0.000455); between chi2 16.78/1 (p 4.19e-05, z 4.10); pooled chi2 44.88/9
+
+== partition: proton / electron / material / magnetic ==
+  proton_beam            mean 887.97 +- 2.04 s  within chi2 0.08/1
+  electron_beam          mean 877.20 +- 4.16 s  within chi2 0.00/0
+  material_bottle        mean 880.03 +- 0.49 s  within chi2 8.19/4
+  magnetic_trap          mean 877.83 +- 0.29 s  within chi2 0.06/1
+  within chi2 8.33/6 (p 0.215); between chi2 36.55/3 (p 5.72e-08, z 5.43); pooled chi2 44.88/9
+
+== partition: material vs magnetic ==
+  material               mean 880.03 +- 0.49 s  within chi2 8.19/4
+  magnetic               mean 877.83 +- 0.29 s  within chi2 0.06/1
+  within chi2 8.25/5 (p 0.143); between chi2 14.81/1 (p 0.000119, z 3.85); pooled chi2 23.06/6
+
+== pairwise tensions (two-sided, asymmetric where given) ==
+  proton beam mean vs bottle mean (unscaled): diff +9.55 s  sigma 2.05 s  z 4.65  p 3.3e-06
+  proton beam mean vs bottle mean (S-scaled): diff +9.55 s  sigma 2.10 s  z 4.56  p 5.2e-06
+  BL1 alone vs UCNtau: diff +9.88 s  sigma 2.27 s  z 4.36  p 1.3e-05
+  Sussex alone vs UCNtau: diff +11.38 s  sigma 4.85 s  z 2.35  p 0.019
+  J-PARC vs UCNtau: diff -0.62 s  sigma 4.36 s  z 0.14  p 0.89
+  J-PARC vs proton beam mean: diff -10.77 s  sigma 4.80 s  z 2.24  p 0.025
+  J-PARC vs BL1: diff -10.50 s  sigma 4.89 s  z 2.15  p 0.032
+  Gravitrap vs UCNtau: diff +3.68 s  sigma 0.97 s  z 3.80  p 0.00015
+
+J-PARC internal S = 2.29; stat 1.7 -> 3.90 s; total +5.59/-5.31 s
+  J-PARC (S-inflated) vs proton beam mean: diff -10.77 s  sigma 5.95 s  z 1.81  p 0.07
+  J-PARC (S-inflated) vs UCNtau: diff -0.62 s  sigma 5.60 s  z 0.11  p 0.91
+J-PARC 4 conditions (stat only): mean 877.49 s, chi2 19.56/3 (paper quotes 15.8/3 with its errors), p 0.00021
+J-PARC without 50 kPa/new-SFC: mean 869.61 +- 2.49 s (stat only), chi2 0.28/2
+J-PARC 50 kPa/new-SFC alone: 884.8 +- 2.4 s (stat) -> vs BL1 diff -2.9 s; vs UCNtau diff +7.0 s
+
+UCNtau per-year: mean 877.82 s, chi2 6.67/4, p 0.155, S 1.29
+
+Leave-one-out, proton vs rest between chi2: full 21.66; without BL1 4.96 (z 2.23); without Sussex 16.89 (z 4.11)
+Without UCNtau: between chi2 14.91 (z 3.86); rest mean 879.89 s
+
+Gap: proton beam 887.97 s - bottle 878.41 s = 9.55 s; fraction 1-tt/tb = 0.01076; missing rate 1/tt - 1/tb = 1.225e-05 s^-1
+
+P(|z| > Z) for one comparison: Gaussian vs Student-t (unit scale), Bailey 2017 nu ~ 2-4
+  Z=3.0: Gauss 2.70e-03, t2 9.55e-02, t3 5.77e-02, t4 3.99e-02, t10 1.33e-02
+  Z=4.0: Gauss 6.33e-05, t2 5.72e-02, t3 2.80e-02, t4 1.61e-02, t10 2.52e-03
+  Z=4.5: Gauss 6.80e-06, t2 4.60e-02, t3 2.05e-02, t4 1.08e-02, t10 1.14e-03
+  Z=5.0: Gauss 5.73e-07, t2 3.77e-02, t3 1.54e-02, t4 7.49e-03, t10 5.37e-04
+Observed proton-vs-rest z = 4.65
+  nu=2: p(one comparison) 4.320e-02; equivalent Gaussian z 2.02
+  nu=3: p(one comparison) 1.871e-02; equivalent Gaussian z 2.35
+  nu=4: p(one comparison) 9.633e-03; equivalent Gaussian z 2.59
+  nu=10: p(one comparison) 9.026e-04; equivalent Gaussian z 3.32
+
+--- stderr ---
+

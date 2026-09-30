@@ -1,0 +1,38 @@
+# math_run log
+command:  python3 runs/2026-09-30-neutron-lifetime-beam-bottle/math/empiricist/M-EMPIRICIST-07.py
+started:  2026-09-30T18:11:41Z
+duration: 1.8 s
+exit:     1
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   10 PASS, 1 FAIL, 0 UNDECIDED
+
+--- stdout ---
+PASS 2*Integral(sqrt(2)/(4*(t**2/2 + 1)**(3/2)), (t, z, oo)) == -z/sqrt(z**2 + 2) + 1: numeric at 50 points, z in [0.1, 10]
+PASS lim nu->oo of (1 + t**2/nu)**(-nu/2 - 1/2) == exp(-t**2/2): symbolic limit exp(-t**2/2)
+Gaussian two-sided P(>4.65) = 3.3194e-6
+  Gaussian: mine 3.31935e-06, lens 3.3e-06
+PASS 1.9350288742928231E-8 < 6.00000000000000E-8: symbolic, constant
+nu=2: quadrature 0.0432686, beta 0.0432686, Gaussian-equivalent z 2.021
+  nu=2 quad = beta: mine 0.0432686, lens 0.04326860818722559
+PASS 0 < 1.00000000000000E-15: symbolic, constant
+  nu=2 tail: mine 0.0432686, lens 0.043
+PASS 0.0002686081872255936 < 0.000308000000000000: symbolic, constant
+nu=3: quadrature 0.0187564, beta 0.0187564, Gaussian-equivalent z 2.350
+  nu=3 quad = beta: mine 0.0187564, lens 0.01875635172964802
+PASS 0 < 1.00000000000000E-15: symbolic, constant
+  nu=3 tail: mine 0.0187564, lens 0.019
+FAIL 0.0002436482703519795 < 0.000164000000000000: numeric, constant; counterexample value = 7.964827035e-5; value 7.964827035e-5
+nu=4: quadrature 0.00966146, beta 0.00966146, Gaussian-equivalent z 2.588
+  nu=4 quad = beta: mine 0.00966146, lens 0.009661455314227805
+PASS 0 < 1.00000000000000E-15: symbolic, constant
+  nu=4 tail: mine 0.00966146, lens 0.0096
+PASS 0.00006145531422780586 < 0.000107600000000000: symbolic, constant
+large-nu check nu=1e4: 3.3619e-6 vs Gaussian 3.3194e-6
+  Gaussian-equivalent range low (nu=2): mine 2.02111, lens 2.0
+PASS 0.021107789412752299 < 0.0600000000000000: symbolic, constant
+  Gaussian-equivalent range high (nu=4): mine 2.58772, lens 2.6
+PASS 0.012283831029979590 < 0.0600000000000000: symbolic, constant
+SUMMARY: 10 pass, 1 fail, 0 undecided
+
+--- stderr ---
+

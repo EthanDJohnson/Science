@@ -1,0 +1,20 @@
+# math_run log
+command:  python3 runs/2026-09-30-neutron-lifetime-beam-bottle/math/mechanist/M-MECHANIST-13.py
+started:  2026-09-30T18:20:03Z
+duration: 0.6 s
+exit:     1
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   3 PASS, 1 FAIL, 0 UNDECIDED
+
+--- stdout ---
+B = 4.6 T: mu*B = 277.4 neV, ratio to Q = 3.548e-13
+B = 5.0 T: mu*B = 301.5 neV, ratio to Q = 3.856e-13
+PASS 3.547511764705882e-13 == 4e-13: within 0.15; 3.54751e-13 vs 4e-13 (SI)
+PASS series of (x + 1)**5 about x = 0 to order 2 == 5*x + 1: symbolic: 5*x + 1
+needed / (dE/Q) = 3.222e+10 (log10 10.51); needed / (5 dE/Q) = 6.444e+09
+PASS 32219766298.4992 == 1e10: within 2.5; 3.22198e+10 vs 1e+10 (SI)
+FAIL 32219766298.4992 == 1e13: relative tolerance 0.5; 3.22198e+10 vs 1e+13 (SI)
+SUMMARY: 3 pass, 1 fail, 0 undecided
+
+--- stderr ---
+

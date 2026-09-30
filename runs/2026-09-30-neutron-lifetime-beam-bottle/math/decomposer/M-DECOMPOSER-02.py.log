@@ -1,0 +1,30 @@
+# math_run log
+command:  python3 runs/2026-09-30-neutron-lifetime-beam-bottle/math/decomposer/M-DECOMPOSER-02.py
+started:  2026-09-30T18:24:12Z
+duration: 0.6 s
+exit:     0
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   13 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+BL1-UCNtau: 9.880 +- 2.266 s, 4.361 sigma
+PASS BL1-UCNtau Delta (s): got 9.88, lens 9.88, tol 0.005
+PASS BL1-UCNtau sigma (s): got 2.26553, lens 2.27, tol 0.005
+PASS BL1-UCNtau z: got 4.36101, lens 4.36, tol 0.005
+BL1+SIL vs UCNtau 4.929
+PASS BL1+SIL vs UCNtau z: got 4.92874, lens 4.93, tol 0.005
+storage 7: 878.384 +- 0.246 (S=1.972 -> 0.485); BL1+SIL vs storage 4.573
+PASS BL1+SIL vs all storage (scaled) z: got 4.57335, lens 4.57, tol 0.005
+fractions 0.01113 0.01143; rates 1.2679e-05 1.3016e-05 s^-1
+PASS fraction low: got 0.0111299, lens 0.0111, tol 5e-05
+PASS fraction high: got 0.011426, lens 0.0114, tol 5e-05
+PASS rate low (1e-5 s^-1): got 1.2679, lens 1.27, tol 0.005
+PASS rate high (1e-5 s^-1): got 1.30163, lens 1.3, tol 0.005
+PASS 1/ts - 1/tp == (tp - ts)/(tp*ts): symbolic
+PASS series of -1/(d + t) + 1/t about d = 0 to order 2 == d/t**2: symbolic: d/t**2
+PASS 1/(877.82 s) - 1/(887.7 s) has the dimension of Hz: dimensional analysis
+PASS 1/(877.82 s) - 1/(887.7 s) == 1.268e-5 Hz: within 0.002; 1.2679e-05 vs 1.268e-05 (SI)
+SUMMARY: 4 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

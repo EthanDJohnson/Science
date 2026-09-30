@@ -1,0 +1,26 @@
+# math_run log
+command:  python3 runs/2026-09-30-neutron-lifetime-beam-bottle/math/constraints/M-CONSTRAINTS-09.py
+started:  2026-09-30T18:37:32Z
+duration: 9.5 s
+exit:     0
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   3 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+   (a) free neutron gas M_max = 0.710 Msun (dr 0.01 km: 0.710); literature OV ~0.71
+PASS 0.7097011448736814 == 0.71: within 0.02; 0.709701 vs 0.71 (SI)
+   (b) toy neutron matter (m_V/g = 60 MeV) M_max = 3.553 Msun, max cs2 = 0.38
+   (c) toy n + free chi (m_chi = 937.993) M_max = 0.698 Msun, max cs2 = 0.15
+   (c) toy n + free chi (m_chi = 938.543) M_max = 0.697 Msun, max cs2 = 0.14
+   (c') free n + free chi M_max = 0.503 Msun (EOS-insensitivity test)
+PASS 0.6980998413595185 == 0.69: within 0.05; 0.6981 vs 0.69 (SI)
+PASS 0.6980998413595185 < 1.00000000000000: symbolic, constant
+   (d) chi repulsion m_V/g = 200 MeV: M_max = 1.23 Msun (lens 1.13), max cs2 = 0.29
+   (d) chi repulsion m_V/g = 100 MeV: M_max = 1.90 Msun (lens 1.62), max cs2 = 0.33
+   (d) chi repulsion m_V/g = 60 MeV: M_max = 2.52 Msun (lens 1.9), max cs2 = 0.37
+   (d) chi repulsion m_V/g = 45 MeV: M_max = 2.83 Msun (lens 2.06), max cs2 = 0.38
+   (d) chi repulsion m_V/g = 30 MeV: M_max = 3.16 Msun (lens 2.21), max cs2 = 0.35
+SUMMARY: 3 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

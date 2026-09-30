@@ -1,0 +1,44 @@
+# math_run log
+command:  python3 runs/2026-09-30-neutron-lifetime-beam-bottle/math/examiner/M-EXAMINER-02.py
+started:  2026-09-30T18:20:34Z
+duration: 0.6 s
+exit:     0
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   13 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+material 880.032 +- 0.491 s (chi2 8.19/4); magnetic 877.831 +- 0.284 s (chi2 0.063/1)
+  material mean: mine = 880.032 s  lens = 880.03 s
+PASS 880.0324787942898 s == 880.03 s: within 5.68219e-06; 880.032 vs 880.03 (SI)
+  material sigma: mine = 0.490758 s  lens = 0.49 s
+PASS 0.49075822795061913 s == 0.49 s: within 0.0102051; 0.490758 vs 0.49 (SI)
+  magnetic mean: mine = 877.831 s  lens = 877.83 s
+PASS 877.830887752651 s == 877.83 s: within 5.69643e-06; 877.831 vs 877.83 (SI)
+  magnetic sigma: mine = 0.284167 s  lens = 0.28 s
+PASS 0.2841669089828599 s == 0.28 s: within 0.0178589; 0.284167 vs 0.28 (SI)
+  between chi2: mine = 15.0718   lens = 15.07 
+PASS 15.071786239543 == 15.07: within 0.000331818; 15.0718 vs 15.07 (SI)
+  z material-magnetic: mine = 3.88224   lens = 3.88 
+PASS 3.882239848276122 == 3.88: within 0.00128879; 3.88224 vs 3.88 (SI)
+material internal S = 1.431; z with material error scaled by S = 2.906
+modern material 880.971 +- 0.676 s, z = 4.284
+  modern material mean: mine = 880.971 s  lens = 880.97 s
+PASS 880.9711619814817 s == 880.97 s: within 5.67613e-06; 880.971 vs 880.97 (SI)
+  modern material sigma: mine = 0.675675 s  lens = 0.68 s
+PASS 0.675675081780997 s == 0.68 s: within 0.00735368; 0.675675 vs 0.68 (SI)
+  modern z: mine = 4.28414   lens = 4.28 
+PASS 4.284144855324877 == 4.28: within 0.00116834; 4.28414 vs 4.28 (SI)
+  rate class means: 880.03 vs 877.83 s -> 2.850e-06 s^-1
+  rate modern material vs magnetic: 880.97 vs 877.83 s -> 4.061e-06 s^-1
+  rate Gravitrap vs UCNtau: 881.50 vs 877.82 s -> 4.756e-06 s^-1
+  rate 3 s at 878 s: 881.00 vs 878.00 s -> 3.878e-06 s^-1
+  rate Gravitrap vs UCNtau: mine = 4.75576e-06 1/s  lens = 4.8e-06 1/s
+PASS 4.755761103800594e-06 1/s == 4.8e-06 1/s: within 0.0104177; 4.75576e-06 vs 4.8e-06 (SI)
+  'about a third of the gap' (3 s / 9.88 s): mine = 0.303644   lens = 0.33 
+PASS 0.3036437246963564 == 0.33: within 0.121224; 0.303644 vs 0.33 (SI)
+PASS series of -1/(a + d) + 1/a about d = 0 to order 2 == d/a**2: symbolic: d/a**2
+PASS 1/(877.83 s) - 1/(880.97 s) has the dimension of 1/s: dimensional analysis
+SUMMARY: 13 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

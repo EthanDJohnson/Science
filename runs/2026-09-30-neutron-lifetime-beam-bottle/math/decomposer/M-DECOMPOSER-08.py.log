@@ -1,0 +1,39 @@
+# math_run log
+command:  python3 runs/2026-09-30-neutron-lifetime-beam-bottle/math/decomposer/M-DECOMPOSER-08.py
+started:  2026-09-30T18:27:18Z
+duration: 0.6 s
+exit:     0
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   15 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+--- C = 5024.7 s
+A: A-lam + UCNtau: Vud 0.97412(37e-5), +1.05 sigma vs superallowed; row 0.99923 +- 0.00081 (-0.94 sigma)
+B: aSPECT + BL1: Vud 0.97466(212e-5), +0.49 sigma vs superallowed; row 1.00028 +- 0.00415 (+0.07 sigma)
+mixed: A-lam + BL1: Vud 0.96869(127e-5), -3.76 sigma vs superallowed; row 0.98867 +- 0.00249 (-4.55 sigma)
+mixed: aSPECT + UCNtau: Vud 0.98013(174e-5), +3.69 sigma vs superallowed; row 1.01097 +- 0.00343 (+3.20 sigma)
+--- C = 5024.46 s
+A: A-lam + UCNtau: Vud 0.97410(37e-5), +1.00 sigma vs superallowed; row 0.99919 +- 0.00081 (-1.00 sigma)
+B: aSPECT + BL1: Vud 0.97464(212e-5), +0.48 sigma vs superallowed; row 1.00024 +- 0.00415 (+0.06 sigma)
+mixed: A-lam + BL1: Vud 0.96866(127e-5), -3.78 sigma vs superallowed; row 0.98863 +- 0.00249 (-4.57 sigma)
+mixed: aSPECT + UCNtau: Vud 0.98011(174e-5), +3.67 sigma vs superallowed; row 1.01093 +- 0.00343 (+3.18 sigma)
+PASS World A Vud: got 0.9741, lens 0.9741, tol 3e-05
+PASS World A error: got 0.000368454, lens 0.00037, tol 1e-05
+PASS World A z: got 1.00492, lens 1.0, tol 0.1
+PASS World A row: got 0.999187, lens 0.99919, tol 5e-05
+PASS World A row err: got 0.000812821, lens 0.00081, tol 2e-05
+PASS World B Vud: got 0.974639, lens 0.97464, tol 3e-05
+PASS World B error: got 0.00211905, lens 0.00212, tol 2e-05
+PASS World B z: got 0.480045, lens 0.5, tol 0.1
+PASS World B row: got 1.00024, lens 1.0002, tol 0.0001
+PASS World B row err: got 0.00414818, lens 0.0042, tol 0.0001
+PASS mixed A-lam+beam Vud z: got -3.77668, lens -3.8, tol 0.1
+PASS mixed A-lam+beam row z: got -4.56906, lens -4.6, tol 0.1
+PASS mixed aSPECT+storage Vud z: got 3.67303, lens 3.7, tol 0.1
+Vub^2 (4e-3)^2 = 1.6e-05 (negligible)
+PASS -3*l/(3*l**2 + 1) == -3*l/(3*l**2 + 1): symbolic
+PASS -1/(2*t) == -1/(2*t): symbolic
+SUMMARY: 2 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

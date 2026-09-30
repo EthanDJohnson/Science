@@ -1,0 +1,68 @@
+# math_run log
+command:  python3 runs/2026-09-30-neutron-lifetime-beam-bottle/math/examiner/M-EXAMINER-01.py
+started:  2026-09-30T18:20:33Z
+duration: 0.8 s
+exit:     1
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   18 PASS, 1 FAIL, 0 UNDECIDED
+
+--- stdout ---
+inputs (x, sigma):
+  BL1: 887.7 +- 2.2472 s
+  Sussex: 889.2 +- 4.8415 s
+  JPARC: 877.2 +- 4.1629 s
+  Grav: 881.5 +- 0.9220 s
+  Ser05: 878.5 +- 0.7616 s
+  MAMBO: 880.7 +- 1.7692 s
+  Steyerl: 882.5 +- 2.0518 s
+  Arz: 880.2 +- 1.2000 s
+  UCNtau: 877.82 +- 0.2874 s
+  Ezhov: 878.3 +- 1.8868 s
+beam vs bottle: between 16.488/1 (4.060 sigma), within 28.800/8 (p=0.000344), total 45.287, sum 45.287
+  beam/bottle between chi2: mine = 16.4876   lens = 16.49 
+PASS 16.487643838376854 == 16.49: within 0.000303244; 16.4876 vs 16.49 (SI)
+  beam/bottle z: mine = 4.0605   lens = 4.06 
+PASS 4.060497979112345 == 4.06: within 0.00123165; 4.0605 vs 4.06 (SI)
+  beam/bottle within chi2: mine = 28.7996   lens = 28.8 
+PASS 28.79958256736859 == 28.8: within 0.000173628; 28.7996 vs 28.8 (SI)
+  beam/bottle within p: mine = 0.000343825   lens = 0.00034 
+PASS 0.00034382506715836787 == 0.00034: within 0.0147074; 0.000343825 vs 0.00034 (SI)
+  decomposition within+between = total: mine = 45.2872   lens = 45.28722640574577 
+PASS 45.28722640574544 == 45.28722640574577: within 2.20835e-11; 45.2872 vs 45.2872 (SI)
+proton vs rest: between 21.802/1 (4.669 sigma), within 23.485/8 (p=0.00279), total 45.287, sum 45.287
+  proton/rest between: mine = 21.8018   lens = 21.8 
+PASS 21.80176759002991 == 21.8: within 0.000229381; 21.8018 vs 21.8 (SI)
+  proton/rest z: mine = 4.66924   lens = 4.67 
+PASS 4.669236296229388 == 4.67: within 0.00107077; 4.66924 vs 4.67 (SI)
+  proton/rest within: mine = 23.4855   lens = 23.49 
+PASS 23.485458815715525 == 23.49: within 0.000212878; 23.4855 vs 23.49 (SI)
+  proton/rest within p: mine = 0.00279381   lens = 0.0028 
+PASS 0.0027938051354569685 == 0.0028: within 0.0178589; 0.00279381 vs 0.0028 (SI)
+Delta chi2 between (proton/rest - beam/bottle) = 5.314
+  Delta chi2_between: mine = 5.31412   lens = 5.3 
+PASS 5.314123751653057 == 5.3: within 0.00943491; 5.31412 vs 5.3 (SI)
+non-proton ('rest') internal chi2 = 23.406/7, S = 1.829
+  rest chi2: mine = 23.4065   lens = 23.4 
+PASS 23.406483736740444 == 23.4: within 0.00213697; 23.4065 vs 23.4 (SI)
+proton vs rest, J-PARC inflated: between 21.794/1 (4.668 sigma), within 23.452/8 (p=0.00283), total 45.246, sum 45.246
+  inflated z: mine = 4.66836   lens = 4.67 
+PASS 4.668356182599857 == 4.67: within 0.00107077; 4.66836 vs 4.67 (SI)
+BL1 alone vs rest: between 16.999/1 (4.123 sigma), within 23.406/7 (p=0.00145), total 40.406, sum 40.406
+  BL1 vs rest between: mine = 16.9992   lens = 17.0 
+PASS 16.999163587375826 == 17.0: within 0.000294147; 16.9992 vs 17 (SI)
+  BL1 vs rest z: mine = 4.123   lens = 4.12 
+PASS 4.123004194440558 == 4.12: within 0.00121371; 4.123 vs 4.12 (SI)
+four classes: between 36.954/3 (5.462 sigma), within 8.333/6 (p=0.215), total 45.287, sum 45.287
+  4-class between: mine = 36.9541   lens = 36.95 
+PASS 36.954123104529664 == 36.95: within 0.000135332; 36.9541 vs 36.95 (SI)
+  4-class z: mine = 5.4621   lens = 5.46 
+PASS 5.462099021439063 == 5.46: within 0.000915842; 5.4621 vs 5.46 (SI)
+  4-class within: mine = 8.3331   lens = 8.33 
+PASS 8.333103301213391 == 8.33: within 0.0006003; 8.3331 vs 8.33 (SI)
+  4-class within p: mine = 0.214701   lens = 0.22 
+FAIL 0.2147007856477473 == 0.22: relative tolerance 0.0227295; 0.214701 vs 0.22 (SI)
+PASS (x2 - (x2/s2**2 + x1/s1**2)/(s2**(-2) + s1**(-2)))**2/s2**2 + (x1 - (x2/s2**2 + x1/s1**2)/(s2**(-2) + s1**(-2)))**2/s1**2 == (x1 - x2)**2/(s1**2 + s2**2): symbolic
+SUMMARY: 18 pass, 1 fail, 0 undecided
+
+--- stderr ---
+

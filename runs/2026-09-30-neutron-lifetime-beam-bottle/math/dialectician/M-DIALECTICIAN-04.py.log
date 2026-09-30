@@ -1,0 +1,31 @@
+# math_run log
+command:  python3 runs/2026-09-30-neutron-lifetime-beam-bottle/math/dialectician/M-DIALECTICIAN-04.py
+started:  2026-09-30T18:29:00Z
+duration: 0.6 s
+exit:     0
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   8 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+K/(hbar c)^6 = 8120.2762e-10 GeV^-4 s (literature 8120.2776e-10)
+  K: mine = 8.12028e-07 , lens = 8.1202776e-07 
+PASS 8.120276236227304e-07  == 8.1202776e-07 : within 2e-05; 8.12028e-07 vs 8.12028e-07 (SI)
+tau*Vud^2*(1+3l^2)*(1+DRV) = 5024.46 s (compare 5024.7 s); K_eff = 4902.92 s
+  5024.7: mine = 5024.46 s, lens = 5024.7 s
+PASS 5024.461188888148 s == 5024.7 s: within 0.0001; 5024.46 vs 5024.7 (SI)
+PERKEO III lambda 1.27641: tau = 878.499 s; aSPECT 2024 lambda 1.2668: 889.577 s
+  tau PERKEO III: mine = 878.499 s, lens = 878.5 s
+PASS 878.4990418498754 s == 878.5 s: within 0.00011383; 878.499 vs 878.5 (SI)
+  tau aSPECT: mine = 889.577 s, lens = 889.58 s
+PASS 889.5771915917386 s == 889.58 s: within 0.000112413; 889.577 vs 889.58 (SI)
+  ratio (constant-free): mine = 1.01261 , lens = 1.012610315110345 
+PASS 1.0126103151103452  == 1.012610315110345 : within 1e-12; 1.01261 vs 1.01261 (SI)
+Difference 11.08 s; implied from ratio with lens's 878.50: 889.58 s
+errors (lambda+Vud): PERKEO 0.86 s (lens 0.88 with K error), aSPECT 3.19 s (lens 3.20)
+PASS -6*K*l/(V**2*(3*l**2 + 1)**2) == -6*K*l/(V**2*(3*l**2 + 1)**2): symbolic
+PASS lim l->0 of K/(V**2*(3*l**2 + 1)) == K/V**2: symbolic limit K/V**2
+PASS hbar/(1 GeV) has the dimension of time: dimensional analysis
+SUMMARY: 8 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

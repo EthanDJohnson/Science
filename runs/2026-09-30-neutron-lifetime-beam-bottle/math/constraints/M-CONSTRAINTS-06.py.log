@@ -1,0 +1,27 @@
+# math_run log
+command:  python3 runs/2026-09-30-neutron-lifetime-beam-bottle/math/constraints/M-CONSTRAINTS-06.py
+started:  2026-09-30T18:34:53Z
+duration: 3.7 s
+exit:     0
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   7 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+   endpoint E0 = 1.29258 MeV, W0 = 2.52952
+   <1/W>: no Coulomb 0.65424, NR Fermi 0.65550 (N 2x: 0.65550), relativistic 0.65550
+   <m_e/E> (NR Fermi): got 0.655497, lens 0.6555
+PASS 0.6554971863926924 == 0.6555: within 0.000457666; 0.655497 vs 0.6555 (SI)
+   <m_e/E> (rel Fermi): got 0.6555, lens 0.6555
+PASS 0.6555002421968481 == 0.6555: within 0.000457666; 0.6555 vs 0.6555 (SI)
+PASS lim a->0 of 2*pi*W*a/(p*(1 - exp(-2*pi*W*a/p))) == 1: symbolic limit 1
+   needed b: got -0.0158107, lens -0.0158
+PASS -0.015810688253310366 == -0.0158: within 0.00379747; -0.0158107 vs -0.0158 (SI)
+PASS t0/t1 == t0/t1: symbolic
+   distance from PERKEO III b = 0.017(21): got -1.56241, lens -1.6
+PASS -1.5624137263481124 == -1.6: within 0.0375; -1.56241 vs -1.6 (SI)
+   distance from aSPECT b = -0.0098(193): got -0.311435, lens -0.3
+PASS -0.3114346245238531 == -0.3: within 0.2; -0.311435 vs -0.3 (SI)
+SUMMARY: 7 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

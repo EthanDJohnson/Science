@@ -1,0 +1,53 @@
+# math_run log
+command:  python3 runs/2026-09-30-neutron-lifetime-beam-bottle/math/constraints/M-CONSTRAINTS-01.py
+started:  2026-09-30T18:33:45Z
+duration: 0.6 s
+exit:     0
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   18 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+PASS 0 == 0: symbolic
+PASS F_t*K_n/(C_sa*(dRp + 1)) == F_t*K_n/(C_sa*(dRp + 1)): symbolic
+PASS lim lam->0 of F_t*K_n/(C_sa*(dRp + 1)*(3*lam**2 + 1)) == F_t*K_n/(C_sa*(dRp + 1)): symbolic limit F_t*K_n/(C_sa*(dRp + 1))
+PASS (5024.7 s) * (3072 s) / (2984.43 s) has the dimension of time: dimensional analysis
+   Vud^2(1+RC) GS2023: got 0.985891, lens 0.985891
+PASS 0.9858913109610512 == 0.985891: within 1.52147e-06; 0.985891 vs 0.985891 (SI)
+   Vud^2(1+RC) SGPR2018: got 0.985877, lens 0.985877
+PASS 0.9858771180495118 == 0.985877: within 1.52149e-06; 0.985877 vs 0.985877 (SI)
+   Vud^2(1+RC) AVG2020: got 0.985894, lens 0.985894
+PASS 0.9858937834843907 == 0.985894: within 1.52146e-06; 0.985894 vs 0.985894 (SI)
+   Vud^2(1+RC) CMS2018: got 0.985946, lens 0.985946
+PASS 0.9859463307703998 == 0.985946: within 1.52138e-06; 0.985946 vs 0.985946 (SI)
+   spread of invariant = 6.92e-05 (lens: constant to 7e-5)
+   spread: got 6.92127e-05, lens 7e-05
+PASS 6.921272088800112e-05 == 7e-05: within 0.142857; 6.92127e-05 vs 7e-05 (SI)
+   with Tan K = 5024.46 s: 878.499 s
+   tau_beta GS2023 from 5024.7 s formula = 878.541 s (lens 878.50)
+   tau_beta(GS2023) = 878.541 s
+   tau_beta(SGPR2018) = 878.553 s
+   tau_beta(AVG2020) = 878.539 s
+   tau_beta(CMS2018) = 878.492 s
+   min tau_beta consistent: got 878.492, lens 878.45
+PASS 878.4917704977403 == 878.45: within 6.83021e-05; 878.492 vs 878.45 (SI)
+   max tau_beta consistent: got 878.553, lens 878.51
+PASS 878.5534443155017 == 878.51: within 6.82975e-05; 878.553 vs 878.51 (SI)
+   CMS 5172.0/(1+3lam^2): got 878.446, lens 878.45
+PASS 878.4463510143081 == 878.45: within 6.83021e-06; 878.446 vs 878.45 (SI)
+   HT Ft route tau_beta: got 878.538, lens 878.5
+PASS 878.5381123021886 == 878.5: within 0.00011383; 878.538 vs 878.5 (SI)
+   mixed pairing tau_beta (my K is 0.04 s high: 5024.7 s rounding): got 879.448, lens 879.41
+PASS 879.4484136295808 == 879.41: within 5.68563e-05; 879.448 vs 879.41 (SI)
+   mixed pairing bias: got 0.907617, lens 0.91
+PASS 0.9076169874880406 == 0.91: within 0.00659341; 0.907617 vs 0.91 (SI)
+   Ma inner RC: got 0.02439, lens 0.02439
+PASS 0.02439 == 0.02439: within 0.000205002; 0.02439 vs 0.02439 (SI)
+   Ma pairing shift vs GS: got -0.10813, lens -0.11
+PASS -0.10813000132236539 == -0.11000000000001364: within 0.0545455; -0.10813 vs -0.11 (SI)
+   GS Vud rescaled by dRV change alone = 0.97380 (Ma quotes 0.97386; rest from other inputs)
+   sqrt(K_CMS/K_GS) = sqrt((1+RC_GS)/(1+RC_CMS)): got 1.00058, lens 1.00058
+PASS 1.000578072803871 == 1.000578: within 2.99827e-06; 1.00058 vs 1.00058 (SI)
+SUMMARY: 18 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

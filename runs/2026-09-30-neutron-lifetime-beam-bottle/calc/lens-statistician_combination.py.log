@@ -1,0 +1,160 @@
+# math_run log
+command:  python3 runs/2026-09-30-neutron-lifetime-beam-bottle/calc/lens-statistician_combination.py
+started:  2026-09-30T17:39:16Z
+duration: 0.1 s
+exit:     0
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+Input totals (s): BL1 2.247, Sussex 4.841, J-PARC +4.346/-3.981 (sym 4.164), MUS25 +0.297/-0.278, PAT18 +0.806/-0.728
+
+== 1. Class combinations ==
+proton beam (BL1+Sussex)           mean 887.966 +- 2.038 s (scaled +- 2.038, S=1.00), chi2 0.08 / 1 dof, p=0.779
+material bottles (5)               mean 880.032 +- 0.491 s (scaled +- 0.702, S=1.43), chi2 8.19 / 4 dof, p=0.0848
+magnetic traps (3)                 mean 877.815 +- 0.267 s (scaled +- 0.267, S=1.00), chi2 0.09 / 2 dof, p=0.957
+all storage (8)                    mean 878.321 +- 0.234 s (scaled +- 0.434, S=1.85), chi2 24.04 / 7 dof, p=0.00112
+PDG-set check: storage w/o Pattie  mean 878.384 +- 0.246 s (scaled +- 0.485, S=1.97), chi2 23.32 / 6 dof, p=0.000696
+J-PARC 2024: 877.2 +4.35/-3.98 s (single result)
+BL1 weight share in proton-beam mean: 0.823
+
+== 2. Tensions (two-sided) ==
+p-beam vs storage (storage S-scaled err)                   diff   +9.65 s, sigma 2.08 s, z 4.63, p2 3.69e-06
+p-beam vs storage (unscaled)                               diff   +9.65 s, sigma 2.05 s, z 4.70, p2 2.59e-06
+BL1 alone vs storage (scaled)                              diff   +9.38 s, sigma 2.29 s, z 4.10, p2 4.17e-05
+Sussex alone vs storage (scaled)                           diff  +10.88 s, sigma 4.86 s, z 2.24, p2 2.52e-02
+p-beam vs magnetic traps                                   diff  +10.15 s, sigma 2.06 s, z 4.94, p2 7.90e-07
+p-beam vs material bottles (scaled)                        diff   +7.93 s, sigma 2.16 s, z 3.68, p2 2.33e-04
+material vs magnetic (both scaled)                         diff   +2.22 s, sigma 0.75 s, z 2.95, p2 3.16e-03
+Serebrov18 vs Musedinovic25                                diff   +3.68 s, sigma 0.97 s, z 3.80, p2 1.45e-04
+J-PARC vs p-beam (asym, facing side)                       diff  -10.77 s, sigma 4.80 s, z 2.24, p2 2.49e-02
+J-PARC vs BL1 alone                                        diff  -10.50 s, sigma 4.89 s, z 2.15, p2 3.19e-02
+J-PARC vs storage (asym, facing side)                      diff   -1.12 s, sigma 4.37 s, z 0.26, p2 7.98e-01
+J-PARC internal S = sqrt(15.8/3) = 2.29 -> inflated errors +5.59/-5.31
+J-PARC(inflated) vs p-beam                                 diff  -10.77 s, sigma 5.95 s, z 1.81, p2 7.03e-02
+J-PARC(inflated) vs storage                                diff   -1.12 s, sigma 5.60 s, z 0.20, p2 8.42e-01
+J-PARC 4 conditions, stat only     mean 877.490 +- 1.729 s (scaled +- 4.414, S=2.55), chi2 19.56 / 3 dof, p=0.00021
+J-PARC 4 conditions, +sym other cols mean 876.727 +- 2.821 s (scaled +- 4.537, S=1.61), chi2 7.76 / 3 dof, p=0.0513
+  (the listed columns beyond stat are unlabelled in the dossier; second line is a stress test only)
+
+== 3. Beam averages with J-PARC ==
+beam (BL1+Sussex+J-PARC sym)       mean 885.885 +- 1.831 s (scaled +- 3.028, S=1.65), chi2 5.47 / 2 dof, p=0.0648
+beam incl. J-PARC vs storage                               diff   +7.56 s, sigma 3.06 s, z 2.47, p2 1.34e-02
+
+== 4. Grouped chi2 (J-PARC symmetrized to mean of sides, 4.16 s) ==
+-- beam(p) vs storage (J-PARC excluded)
+    groups 
+      pbeam                mean 887.966 +- 2.038 chi2 0.08/1 p 0.779
+      storage              mean 878.321 +- 0.234 chi2 24.04/7 p 0.00112
+    within_chi2 24.12037
+    within_dof 8
+    p_within 0.00219
+    between_chi2 22.0994
+    between_dof 1
+    p_between 0.0
+    between_z 4.701
+    pooled {'mean': 878.4463, 'error': 0.2328, 'chi2': 46.2198, 'dof': 9, 'scale_factor': 2.2662, 'error_scaled': 0.5275, 'p_consistent': 0.0}
+-- beam(p+e) vs storage
+    groups 
+      beam                 mean 885.885 +- 1.831 chi2 5.47/2 p 0.0648
+      storage              mean 878.321 +- 0.234 chi2 24.04/7 p 0.00112
+    within_chi2 29.51339
+    within_dof 9
+    p_within 0.00053
+    between_chi2 16.7957
+    between_dof 1
+    p_between 4e-05
+    between_z 4.09826
+    pooled {'mean': 878.4424, 'error': 0.2324, 'chi2': 46.3091, 'dof': 10, 'scale_factor': 2.152, 'error_scaled': 0.5001, 'p_consistent': 0.0}
+-- proton-counting vs everything else
+    groups 
+      pbeam                mean 887.966 +- 2.038 chi2 0.08/1 p 0.779
+      rest                 mean 878.317 +- 0.234 chi2 24.11/8 p 0.00219
+    within_chi2 24.19256
+    within_dof 9
+    p_within 0.00401
+    between_chi2 22.11652
+    between_dof 1
+    p_between 0.0
+    between_z 4.70282
+    pooled {'mean': 878.4424, 'error': 0.2324, 'chi2': 46.3091, 'dof': 10, 'scale_factor': 2.152, 'error_scaled': 0.5001, 'p_consistent': 0.0}
+-- three classes: pbeam, ebeam, storage
+    groups 
+      pbeam                mean 887.966 +- 2.038 chi2 0.08/1 p 0.779
+      ebeam                mean 877.200 +- 4.164 chi2 0.00/0 p 1
+      storage              mean 878.321 +- 0.234 chi2 24.04/7 p 0.00112
+    within_chi2 24.12037
+    within_dof 8
+    p_within 0.00219
+    between_chi2 22.18872
+    between_dof 2
+    p_between 2e-05
+    between_z 4.3258
+    pooled {'mean': 878.4424, 'error': 0.2324, 'chi2': 46.3091, 'dof': 10, 'scale_factor': 2.152, 'error_scaled': 0.5001, 'p_consistent': 0.0}
+-- four classes: pbeam, ebeam, material, magnetic
+    groups 
+      pbeam                mean 887.966 +- 2.038 chi2 0.08/1 p 0.779
+      ebeam                mean 877.200 +- 4.164 chi2 0.00/0 p 1
+      material             mean 880.032 +- 0.491 chi2 8.19/4 p 0.0848
+      magnetic             mean 877.815 +- 0.267 chi2 0.09/2 p 0.957
+    within_chi2 8.3587
+    within_dof 7
+    p_within 0.30203
+    between_chi2 37.95039
+    between_dof 3
+    p_between 0.0
+    between_z 5.54763
+    pooled {'mean': 878.4424, 'error': 0.2324, 'chi2': 46.3091, 'dof': 10, 'scale_factor': 2.152, 'error_scaled': 0.5001, 'p_consistent': 0.0}
+
+== 5. Partition comparison: total chi2 of a 2-mean model ==
+one common value (all 11)          mean 878.442 +- 0.232 s (scaled +- 0.500, S=2.15), chi2 46.31 / 10 dof, p=1.26e-06
+pooled z-equivalent of one-value chi2: p=1.26e-06 -> 4.85 sigma (two-sided)
+beam/bottle partition chi2 = 29.51; proton/rest partition chi2 = 24.19; delta = 5.32 (J-PARC favours proton/rest)
+Likelihood ratio proton/rest vs beam/bottle = exp(delta/2) = 14.30
+BL1-vs-rest partition chi2 = 29.15
+
+== 6. Correlations: shared apparatus/group systematics ==
+storage GLS rho_sys=0.0: mean 878.321 +- 0.234, chi2 24.04/7, S=1.85
+storage GLS rho_total=0.0 (stress): mean 878.321 +- 0.234, chi2 24.04/7, S=1.85; tension with p-beam 4.63 sigma
+storage GLS rho_sys=0.8: mean 878.316 +- 0.247, chi2 23.78/7, S=1.84
+storage GLS rho_total=0.8 (stress): mean 878.098 +- 0.216, chi2 40.90/7, S=2.42; tension with p-beam 4.69 sigma
+p-beam GLS rho_sys=0.0: mean 887.966 +- 2.038, chi2 0.079; tension with storage(scaled) 4.63 sigma
+p-beam GLS rho_sys=0.8: mean 887.636 +- 2.240, chi2 0.133; tension with storage(scaled) 4.08 sigma
+
+== 7. Common unknown systematic needed to erase the tension ==
+common extra uncertainty on either side for tension to fall to 3 sigma: 2.45 s
+common extra uncertainty on either side for tension to fall to 2 sigma: 4.35 s
+common extra uncertainty on either side for tension to fall to 1 sigma: 9.42 s
+gap = 9.65 s = 0.0109 of tau; missing rate = 1.237e-05 s^-1
+global error-inflation factor for z=3: 1.57 (unscaled z0=4.70)
+global error-inflation factor for z=2: 2.35 (unscaled z0=4.70)
+
+== 8. Look-elsewhere over partitions ==
+local z 4.63 (p2 3.69e-06):  1 partitions tried -> global p 3.69e-06, z 4.63
+local z 4.63 (p2 3.69e-06):  3 partitions tried -> global p 1.11e-05, z 4.40
+local z 4.63 (p2 3.69e-06):  5 partitions tried -> global p 1.85e-05, z 4.28
+local z 4.63 (p2 3.69e-06): 10 partitions tried -> global p 3.69e-05, z 4.13
+
+== 9. Bayes-factor bounds (fluctuation vs real difference) ==
+p-beam vs storage          z 4.63 p2 3.69e-06: Sellke BF_min 1.25e-04 (max odds 7969:1), Gaussian bound 2.23e-05; prior needed for 50% 0.0001, for 95% 0.0024
+J-PARC vs p-beam           z 2.24 p2 2.48e-02: Sellke BF_min 2.50e-01 (max odds 4:1), Gaussian bound 8.07e-02; prior needed for 50% 0.1997, for 95% 0.8258
+J-PARC(infl) vs p-beam     z 1.81 p2 7.03e-02: Sellke BF_min 5.07e-01 (max odds 2:1), Gaussian bound 1.94e-01; prior needed for 50% 0.3366, for 95% 0.9060
+material vs magnetic       z 2.95 p2 3.16e-03: Sellke BF_min 4.94e-02 (max odds 20:1), Gaussian bound 1.28e-02; prior needed for 50% 0.0471, for 95% 0.4844
+Gaussian-prior BF(two values : one) with gap prior N(0, 5 s): 3530.7; posterior at prior 0.5: 0.9997
+Gaussian-prior BF(two values : one) with gap prior N(0, 10 s): 5851.1; posterior at prior 0.5: 0.9998
+Gaussian-prior BF(two values : one) with gap prior N(0, 20 s): 4137.5; posterior at prior 0.5: 0.9998
+
+== 10. Precision needed ==
+single new measurement vs a known pole (either side), z=3: total sigma <= 3.22 s
+   new result must have sigma <= 3.19 s to exclude the storage value, <= 2.49 s to exclude the p-beam value ()
+single new measurement vs a known pole (either side), z=5: total sigma <= 1.93 s
+   new result must have sigma <= 1.88 s to exclude the storage value, <= 0.00 s to exclude the p-beam value (impossible: p-beam error alone exceeds budget)
+LiNA ~1 s / BL2 <1 s    : separation of the two poles 8.8 sigma (vs storage), 4.2 sigma (vs p-beam)
+BL3 0.3 s               : separation of the two poles 18.3 sigma (vs storage), 4.7 sigma (vs p-beam)
+UCNProBe 1-2 s (1.5)    : separation of the two poles 6.2 sigma (vs storage), 3.8 sigma (vs p-beam)
+UCNProBe 2 s            : separation of the two poles 4.7 sigma (vs storage), 3.4 sigma (vs p-beam)
+BL1: gap/sys floor -> max z from more BL1-type data: 4.95; exposure_to_reach 5 sigma: inf
+J-PARC 2024 (stat 1.7, sys ~3.8): exposure to separate from p-beam at 5 sigma: inf; at 3 sigma: inf
+
+--- stderr ---
+

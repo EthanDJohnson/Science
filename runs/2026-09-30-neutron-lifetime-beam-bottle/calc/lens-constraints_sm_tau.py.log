@@ -1,0 +1,86 @@
+# math_run log
+command:  python3 runs/2026-09-30-neutron-lifetime-beam-bottle/calc/lens-constraints_sm_tau.py
+started:  2026-09-30T18:08:17Z
+duration: 7.8 s
+exit:     0
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+=== A. Re-derivation of U-01: Delta_R^V cancels for a consistently paired superallowed Vud ===
+PERKEO III |lambda| = 1.27641 +- 0.00056 (stat 45, sys 33 in quadrature) [D-40]
+  GS2023  : Vud^2*(1+RC) = 0.985891   tau_beta(PERKEO III) = 878.50 +- 0.88 s   (Gorchtein-Seng 2024 Vud with GS2023 Delta_R^V=0.02479 [D-43,D-48])
+  SGPR2018: Vud^2*(1+RC) = 0.985877   tau_beta(PERKEO III) = 878.51 +- 0.72 s   (Seng 2018 Vud with Delta_R^V=0.02467 [D-43,D-48])
+  AVG2020 : Vud^2*(1+RC) = 0.985894   tau_beta(PERKEO III) = 878.50 +- 0.86 s   (Hardy-Towner 2020 Vud with Delta_R^V=0.02454 [D-43,D-48])
+  CMS2018 : Vud^2*(1+RC) = 0.985946   tau_beta(PERKEO III) = 878.45 +- 0.81 s   (CMS 2018 Vud 0.97420(10)(18) with RC 0.03886 [D-49])
+  Ma2024* : Vud^2*(1+RC) = 0.986013   tau_beta(PERKEO III) = 878.39 +- 0.87 s   (Ma et al. 2024 lattice box Vud; Delta_R^V=0.02479-2*(3.85-3.65)e-3 is THIS LENS'S INFERENCE (2 x box shift) [D-43])
+  MIXED (CMS2018 RC with PDG-2024 Vud 0.97367): tau_beta = 879.41 s  <- the D-50 bias
+
+=== B. tau_beta by lambda input (GS2023 pairing, Vud = 0.97361(32)) and spread over pairings ===
+  PERKEO III (A)         |lam|=1.27641(0.00056): tau_beta = 878.50 +- 0.88 s [lam 0.64, Vud 0.58, K 0.19]; pairing range 878.39-878.51 s
+  UCNA 2018 (A)          |lam|=1.27720(0.00200): tau_beta = 877.60 +- 2.36 s [lam 2.28, Vud 0.58, K 0.19]; pairing range 877.49-877.61 s
+  PERKEO II (A)          |lam|=1.27480(0.00132): tau_beta = 880.34 +- 1.63 s [lam 1.51, Vud 0.58, K 0.19]; pairing range 880.23-880.35 s
+  PDG 2024 avg (S=2.7)   |lam|=1.27540(0.00130): tau_beta = 879.65 +- 1.61 s [lam 1.49, Vud 0.58, K 0.19]; pairing range 879.55-879.67 s
+  aSPECT 2020 (a)        |lam|=1.26770(0.00280): tau_beta = 888.53 +- 3.31 s [lam 3.25, Vud 0.58, K 0.19]; pairing range 888.42-888.54 s
+  aSPECT 2024 (a)        |lam|=1.26680(0.00270): tau_beta = 889.58 +- 3.20 s [lam 3.14, Vud 0.58, K 0.19]; pairing range 889.47-889.59 s
+  aCORN 2021 (a)         |lam|=1.27960(0.00620): tau_beta = 874.86 +- 7.07 s [lam 7.04, Vud 0.58, K 0.19]; pairing range 874.76-874.88 s
+
+=== C. lambda by method class ===
+  beta-asymmetry (A) group: |lam| = 1.27623 +- 0.00050, chi2 = 1.51/2, S = 1.00
+  proton-recoil (a) group: |lam| = 1.26884 +- 0.00248, chi2 = 3.58/1, S = 1.89
+  all five current: |lam| = 1.27594 +- 0.00049, chi2 = 13.66/4, S = 1.85
+  grouped chi2: within 5.10/3, between 8.56/1 (z = 2.93)
+  tau_beta(A group)  = 878.70 +- 0.83 s
+  tau_beta(a group)  = 887.21 +- 2.93 s
+  tau_beta(all five, error x S) = 879.03 +- 1.20 s
+  PERKEO III vs aSPECT 2024 lambda tension: z = 3.49
+
+=== D. Exotic branch and z-scores of tau_beta against each lifetime class ===
+  inputs: UCNtau 877.82 +- 0.30 s; BL1 887.7 +- 2.25 s; J-PARC 877.2 +4.35/-3.98 s
+  Br_X needed for dark decay (1 - tau_UCNtau/tau_BL1) = 1.113 %
+  lambda route                 tau_beta         Br_X (%) 95% UL (%)  z vs BL1 z vs UCNtau z vs J-PARC
+  PERKEO III (A)            878.50+-0.88   0.077+-0.106      0.251      3.81        0.73        0.29   (needed Br is +9.80 sigma from this route's Br_X)
+  UCNA 2018 (A)             877.60+-2.36  -0.025+-0.271      0.421      3.10        0.09        0.08   (needed Br is +4.20 sigma from this route's Br_X)
+  PERKEO II (A)             880.34+-1.63   0.286+-0.188      0.595      2.65        1.52        0.68   (needed Br is +4.40 sigma from this route's Br_X)
+  PDG 2024 avg (S=2.7)      879.65+-1.61   0.209+-0.185      0.514      2.91        1.12        0.53   (needed Br is +4.88 sigma from this route's Br_X)
+  aSPECT 2020 (a)           888.53+-3.31   1.206+-0.369      1.813      0.21        3.22        2.07   (needed Br is -0.25 sigma from this route's Br_X)
+  aSPECT 2024 (a)           889.58+-3.20   1.322+-0.356      1.908      0.48        3.66        2.29   (needed Br is -0.59 sigma from this route's Br_X)
+  aCORN 2021 (a)            874.86+-7.07  -0.338+-0.812      0.997      1.73        0.42        0.29   (needed Br is +1.79 sigma from this route's Br_X)
+  A-group avg               878.70+-0.83   0.101+-0.100      0.266      3.75        1.00        0.34   (needed Br is +10.07 sigma from this route's Br_X)
+  a-group avg               887.21+-2.93   1.058+-0.329      1.599      0.13        3.18        1.91   (needed Br is +0.17 sigma from this route's Br_X)
+  all-5 avg (S-scaled)      879.03+-1.20   0.138+-0.140      0.369      3.40        0.98        0.41   (needed Br is +6.96 sigma from this route's Br_X)
+
+=== E. lambda and Vud required by each lifetime; first-row CKM ===
+  UCNtau    tau=877.82: needs |lam| = 1.27700 +- 0.00059 (with Vud 0.97361); Vud(PERKEO III) = 0.97399 +- 0.00040; Vud(aSPECT 2024) = 0.98011 +- 0.00174
+  Gravitrap tau=881.5: needs |lam| = 1.27379 +- 0.00096 (with Vud 0.97361); Vud(PERKEO III) = 0.97195 +- 0.00063; Vud(aSPECT 2024) = 0.97806 +- 0.00180
+  BL1       tau=887.7: needs |lam| = 1.26842 +- 0.00201 (with Vud 0.97361); Vud(PERKEO III) = 0.96855 +- 0.00128; Vud(aSPECT 2024) = 0.97464 +- 0.00212
+  J-PARC    tau=877.2: needs |lam| = 1.27755 +- 0.00369 (with Vud 0.97361); Vud(PERKEO III) = 0.97433 +- 0.00234; Vud(aSPECT 2024) = 0.98045 +- 0.00290
+  superallowed GS2023 0.97361(32)        | Kl3 0.2233(5): 0.99779(66e-5) z=-3.3 | Kmu2 0.2250(4): 0.99856(65e-5) z=-2.2 | PDG avg 0.22431(85): 0.99825(73e-5) z=-2.4
+  superallowed PDG2024 0.97367(32)       | Kl3 0.2233(5): 0.99791(66e-5) z=-3.2 | Kmu2 0.2250(4): 0.99867(65e-5) z=-2.0 | PDG avg 0.22431(85): 0.99836(73e-5) z=-2.2
+  neutron UCNtau + PERKEO III            | Kl3 0.2233(5): 0.99853(82e-5) z=-1.8 | Kmu2 0.2250(4): 0.99929(81e-5) z=-0.9 | PDG avg 0.22431(85): 0.99898(87e-5) z=-1.2
+  neutron UCNtau + aSPECT 2024           | Kl3 0.2233(5): 1.01049(342e-5) z=+3.1 | Kmu2 0.2250(4): 1.01125(342e-5) z=+3.3 | PDG avg 0.22431(85): 1.01094(343e-5) z=+3.2
+  neutron BL1 + PERKEO III               | Kl3 0.2233(5): 0.98797(249e-5) z=-4.8 | Kmu2 0.2250(4): 0.98873(249e-5) z=-4.5 | PDG avg 0.22431(85): 0.98842(251e-5) z=-4.6
+  neutron BL1 + aSPECT 2024              | Kl3 0.2233(5): 0.99980(414e-5) z=-0.0 | Kmu2 0.2250(4): 1.00056(413e-5) z=+0.1 | PDG avg 0.22431(85): 1.00025(415e-5) z=+0.1
+  Vud from exact unitarity (Vus PDG avg) = 0.97451; with PERKEO III lambda this gives tau_beta = 876.88 s
+    unitarity with Kl3 0.2233(5): Vud = 0.97474 -> tau_beta(PERKEO III) = 876.46 s, tau_beta(aSPECT 2024) = 887.51 s
+    unitarity with Kmu2 0.2250(4): Vud = 0.97435 -> tau_beta(PERKEO III) = 877.16 s, tau_beta(aSPECT 2024) = 888.22 s
+    unitarity with PDG avg 0.22431(85): Vud = 0.97451 -> tau_beta(PERKEO III) = 876.88 s, tau_beta(aSPECT 2024) = 887.93 s
+
+=== F. Sensitivities and the lambda precision at which the SM route decides ===
+  dtau/dlambda = -1142.7 s per unit |lambda|; dtau/dVud = -1804.6 s per unit Vud
+  1 s in tau_beta <-> d|lambda| = 0.000875 or dVud = 0.000554
+  gap to resolve = 9.88 s; Vud(0.00032) contributes 0.58 s
+  z=3: (i) sharp: sigma_tau_beta <= 3.29 s -> sigma_lambda <= 0.00284 (= 0.222 %); (ii) vs UCNtau error: sigma_lambda <= 0.00283; (iii) vs BL1 error: sigma_lambda <= 0.00205
+  z=5: (i) sharp: sigma_tau_beta <= 1.98 s -> sigma_lambda <= 0.00165 (= 0.130 %); (ii) vs UCNtau error: sigma_lambda <= 0.00163; (iii) vs BL1 error: IMPOSSIBLE (BL1 error alone caps z at 4.40)
+  lambda gap between the routes: 0.00961 -> 10.98 s in tau_beta
+  Nab target d|lam|/|lam| = 0.04% -> d|lam| = 0.00051 -> 0.58 s in tau_beta [D-107]
+  a new lambda measurement separating PERKEO III (0.00056) from aSPECT 2024 (0.0027) at 3 sigma against the FARTHER of the two needs sigma <= 0.00315 (vs PERKEO III error) and <= 0.00172 (vs aSPECT error; 0 = impossible)
+  a new lambda measurement separating PERKEO III (0.00056) from aSPECT 2024 (0.0027) at 5 sigma against the FARTHER of the two needs sigma <= 0.00184 (vs PERKEO III error) and <= 0.00000 (vs aSPECT error; 0 = impossible)
+
+=== G. Fierz-term escape ===
+  W0 = 2.52952 m_e; <m_e/E_e> = 0.65550 (N=20000); 0.65550 (N=30000) convergence check
+  b needed so that tau_beta(PERKEO III lambda) = BL1 887.7 s: b = -0.0158 (rate effect only; b also biases the lambda extracted from A, which this ignores)
+  compare aSPECT 2024 free-fit b = -0.0098 +- 0.0193 [D-42]: z = -0.31; superallowed b_F <= 0.0033 (90% CL) constrains only the scalar (Fermi) part [D-66]
+
+--- stderr ---
+

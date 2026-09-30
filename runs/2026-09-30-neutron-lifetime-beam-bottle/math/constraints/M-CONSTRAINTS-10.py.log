@@ -1,0 +1,25 @@
+# math_run log
+command:  python3 runs/2026-09-30-neutron-lifetime-beam-bottle/math/constraints/M-CONSTRAINTS-10.py
+started:  2026-09-30T18:37:22Z
+duration: 0.6 s
+exit:     0
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   6 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+PASS g**4*m**2/(4*pi*m_V**4) == g**4*m**2/(4*pi*m_V**4): symbolic
+PASS (938 MeV)^2 * (1 / (60 MeV))^4 * (197.327 MeV fm)^2 has the dimension of area: dimensional analysis
+   m_V/g = 60.0 MeV: sigma = 2.104e-24 cm^2, sigma/m = 1.26 cm^2/g, alpha' m_chi/m_V (g=1) = 1.24
+   m_V/g = 45.0 MeV: sigma = 6.648e-24 cm^2, sigma/m = 3.98 cm^2/g, alpha' m_chi/m_V (g=1) = 1.66
+   sigma/m at 60 MeV: got 1.25802, lens 1.3
+PASS 1.2580232994035383 == 1.3: within 0.0461538; 1.25802 vs 1.3 (SI)
+   sigma/m at 45 MeV: got 3.97597, lens 4
+PASS 3.9759748721889605 == 4.0: within 0.015; 3.97597 vs 4 (SI)
+   Born parameter at 60 MeV: got 1.24405, lens 1.2
+PASS 1.2440518544633017 == 1.2: within 0.05; 1.24405 vs 1.2 (SI)
+   Born parameter at 45 MeV: got 1.65874, lens 1.7
+PASS 1.6587358059510688 == 1.7: within 0.0352941; 1.65874 vs 1.7 (SI)
+SUMMARY: 6 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

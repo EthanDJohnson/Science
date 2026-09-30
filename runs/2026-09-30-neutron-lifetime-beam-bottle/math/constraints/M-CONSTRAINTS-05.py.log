@@ -1,0 +1,51 @@
+# math_run log
+command:  python3 runs/2026-09-30-neutron-lifetime-beam-bottle/math/constraints/M-CONSTRAINTS-05.py
+started:  2026-09-30T18:33:47Z
+duration: 0.6 s
+exit:     0
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   19 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+   gap (s): got 9.88, lens 9.88
+PASS 9.879999999999995 == 9.88: within 0.000607287; 9.88 vs 9.88 (SI)
+   sigma_lam for 3 sigma: got 0.00283253, lens 0.0028
+PASS 0.0028325337058109487 == 0.0028: within 0.0214286; 0.00283253 vs 0.0028 (SI)
+   (subtracting also UCNtau 0.30 s: 0.00282)
+   sigma_lam for 5 sigma: got 0.00164536, lens 0.00165
+PASS 0.0016453642790573372 == 0.00165: within 0.00606061; 0.00164536 vs 0.00165 (SI)
+   (subtracting also UCNtau 0.30 s: 0.00162)
+   BL1 cap: got 4.39654, lens 4.4
+PASS 4.396542295761048 == 4.4: within 0.0113636; 4.39654 vs 4.4 (SI)
+PASS lim s->0 of g/sqrt(b**2 + s**2) == g/b: symbolic limit g/b
+PASS g/sqrt(b**2 + s**2) <= g/b: numeric at 50 points, b in [0.1, 10], g in [0.1, 10], s in [0, 10]
+   Nab dlam: got 0.00051056, lens 0.00051
+PASS 0.00051056 == 0.00051: within 0.0117647; 0.00051056 vs 0.00051 (SI)
+   Nab dtau: got 0.583417, lens 0.58
+PASS 0.583416912 == 0.58: within 0.0103448; 0.583417 vs 0.58 (SI)
+   Nab at aSPECT value vs PERKEO III: got 12.7057, lens 12.8
+PASS 12.705689163688842 == 12.8: within 0.0078125; 12.7057 vs 12.8 (SI)
+   Nab at PERKEO value vs aSPECT: got 3.49728, lens 3.5
+PASS 3.4972815693131194 == 3.5: within 0.0171429; 3.49728 vs 3.5 (SI)
+   Nab sigma(tau_beta): got 0.84259, lens 0.84
+PASS 0.8425901046217578 == 0.84: within 0.00714286; 0.84259 vs 0.84 (SI)
+   PERKEO-like tau_beta vs BL1: got 3.83383, lens 3.8
+PASS 3.8338331246985344 == 3.8: within 0.0157895; 3.83383 vs 3.8 (SI)
+   aSPECT-like tau_beta vs UCNtau: got 13.1582, lens 13.2
+PASS 13.158214333604576 == 13.2: within 0.00454545; 13.1582 vs 13.2 (SI)
+   storage-like reading at 1.0 s vs BL1: got 4.01679, lens 4
+PASS 4.016791203217802 == 4.0: within 0.015; 4.01679 vs 4 (SI)
+   beam-like reading at 1.0 s vs UCNtau: got 9.47028, lens 9.5
+PASS 9.470276912514539 == 9.5: within 0.00631579; 9.47028 vs 9.5 (SI)
+   storage-like reading at 2.0 s vs BL1: got 3.28422, lens 3.3
+PASS 3.2842231268537945 == 3.3: within 0.0181818; 3.28422 vs 3.3 (SI)
+   beam-like reading at 2.0 s vs UCNtau: got 4.8863, lens 4.9
+PASS 4.88630143244153 == 4.9: within 0.0122449; 4.8863 vs 4.9 (SI)
+   storage-like reading at 0.3 s vs BL1: got 4.35788, lens 4.4
+PASS 4.357881182945359 == 4.4: within 0.0136364; 4.35788 vs 4.4 (SI)
+   beam-like reading at 0.3 s vs UCNtau: got 23.3916, lens 23
+PASS 23.39157795623268 == 23.0: within 0.0217391; 23.3916 vs 23 (SI)
+SUMMARY: 19 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

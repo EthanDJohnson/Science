@@ -1,0 +1,33 @@
+# math_run log
+command:  python3 runs/2026-09-30-neutron-lifetime-beam-bottle/math/decomposer/M-DECOMPOSER-05.py
+started:  2026-09-30T18:25:08Z
+duration: 0.6 s
+exit:     0
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   13 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+J-PARC totals +4.346 / -3.981 s
+PASS J-PARC up total: got 4.34626, lens 4.35, tol 0.005
+PASS J-PARC down total: got 3.98121, lens 3.98, tol 0.005
+z: BL1 2.146, BL1+SIL 2.243, UCNtau 0.142
+PASS vs BL1: got 2.14599, lens 2.15, tol 0.005
+PASS vs BL1+SIL: got 2.24266, lens 2.24, tol 0.005
+PASS vs UCNtau: got 0.14234, lens 0.14, tol 0.005
+S_J = 2.2949; scaled up total 5.588; vs BL1 1.743
+PASS S_J: got 2.29492, lens 2.29, tol 0.005
+PASS scaled vs BL1: got 1.74346, lens 1.74, tol 0.005
+quoted: LR point 18.32; with pole errors 9.90; normalised 11.12
+PASS LR quoted (point-hypothesis definition): got 18.3208, lens 18, tol 0.9
+scaled: LR point 5.81; with pole errors 4.54; normalised 4.89
+PASS LR scaled (point-hypothesis definition): got 5.80954, lens 5.8, tol 0.29
+three-condition mean 869.608 +- 2.492 (chi2 0.277/2); fourth 884.8 +- 2.4; gap 4.39 sigma
+PASS three-condition mean: got 869.608, lens 869.6, tol 0.05
+PASS three-condition sigma: got 2.49223, lens 2.5, tol 0.05
+all four, stat only: 877.490 +- 1.729, chi2 19.56/3
+PASS lim s->oo of exp(((-j + xb)**2 - (-j + xs)**2)/(2*s**2)) == 1: symbolic limit 1
+PASS exp(za**2/2)*exp(-zs**2/2) == exp(za**2/2 - zs**2/2): symbolic
+SUMMARY: 2 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

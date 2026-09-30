@@ -1,0 +1,24 @@
+# math_run log
+command:  python3 runs/2026-09-30-neutron-lifetime-beam-bottle/math/decomposer/M-DECOMPOSER-10.py
+started:  2026-09-30T18:27:19Z
+duration: 0.6 s
+exit:     0
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   7 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+|dtau/dlam| at PERKEO III = 1142.7 s per unit lambda
+3 sigma: s_lam <= 0.00283 (0.222% relative)
+PASS s_lam at 3 sigma: got 0.00283215, lens 0.0028, tol 6e-05
+5 sigma: s_lam <= 0.00164 (0.129% relative)
+PASS s_lam at 5 sigma: got 0.00164475, lens 0.0016, tol 6e-05
+PASS 3 sigma relative (%): got 0.221884, lens 0.22, tol 0.006
+PASS 5 sigma relative (%): got 0.128858, lens 0.13, tol 0.006
+Nab s_lam = 0.000507; 0.0094/s = 18.55; with the A-route 0.00050 in quadrature 13.20
+PASS Nab separation: got 18.5507, lens 18, tol 0.6
+PASS -6*C*l/(v**2*(3*l**2 + 1)**2) == -6*C*l/(v**2*(3*l**2 + 1)**2): symbolic
+PASS lim l->0 of -6*C*l/(v**2*(3*l**2 + 1)**2) == 0: symbolic limit 0
+SUMMARY: 2 pass, 0 fail, 0 undecided
+
+--- stderr ---
+
