@@ -22,6 +22,10 @@ SOURCES = [
     ("doi.org", "https://doi.org/10.1088/0264-9381/11/5/001"),
     ("Crossref API", "https://api.crossref.org/works?rows=1&query=test"),
     ("Semantic Scholar API", "https://api.semanticscholar.org/graph/v1/paper/search?query=test&limit=1&fields=title"),
+    # Free full-text finders for find_fulltext.py
+    ("OpenAlex API", "https://api.openalex.org/works?per-page=1&search=test"),
+    ("OSTI API", "https://www.osti.gov/api/v1/records?rows=1&q=test"),
+    ("Europe PMC API", "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=test&format=json&pageSize=1"),
 ]
 
 

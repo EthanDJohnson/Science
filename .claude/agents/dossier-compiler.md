@@ -28,7 +28,7 @@ You compile the research into the single evidence base every later agent relies 
    - **Contested:** where sources conflict, both sides with references.
    - **Constraints:** theorems, bounds and no-go results, each with its assumptions and domain of validity stated: for a GR bound, which energy condition, quantum-inequality form and spacetime class; for a particle-physics bound, which astrophysical, cosmological or nuclear inputs it rests on.
    - **Frontier and speculative:** labelled as such.
-   - **Unknowns and gaps.**
+   - **Unknowns and gaps,** including the papers the researchers flagged as `PAPER TO REQUEST`, deduplicated, each with what it would settle.
    - **Source-quality notes:** superseded values, each with what replaced it; what you dropped or corrected and why, the share of claims resting only on search summaries, any missing facets named in your prompt, and how many claims were carried from earlier runs, from which runs, and how many of those were re-verified.
 5. **Add no facts of your own.** If something important is missing, list it under Unknowns.
 

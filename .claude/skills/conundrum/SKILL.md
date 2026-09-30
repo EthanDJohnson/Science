@@ -90,7 +90,8 @@ Read `runs/<slug>/dossier.md` and summarize it in 12 lines or fewer:
 - contested points;
 - binding constraints;
 - the share of claims resting only on search summaries;
-- anything the source checks dropped or corrected.
+- anything the source checks dropped or corrected;
+- the papers flagged to request: no free copy was found, and the answer may turn on them. The user may be able to get them, for example by asking the authors. Never contact anyone yourself.
 
 **Check that the pipeline itself is untouched.** Run `git status --short -- .claude CLAUDE.md .mcp.json`. Pipeline agents can't write there, because the pipeline guard hook blocks it. Any change you didn't make yourself means something got past the guard: stop, show the user `git diff` for those paths, and don't promote anything or continue until they decide.
 
@@ -105,7 +106,7 @@ Read `runs/<slug>/dossier.md` and summarize it in 12 lines or fewer:
 4. **If anything fails,** leave it in the run folder, say what failed, and let the lenses do without it.
 
 Then:
-- **Ask for corrections or unpublished data.** Append them to the dossier under `## User-supplied`, marking each `[user]`.
+- **Ask for corrections or unpublished data,** and for any flagged paper the user can supply. Append them to the dossier under `## User-supplied`, marking each `[user]`. Save a supplied paper in `runs/<slug>/user/` and list its path there: agents read it with `fetch_text.py runs/<slug>/user/<file>`.
 - **Choose lenses** with `lenses.md`, from type × depth. Show each one with a line on why. A deep run takes 6–7: the type's five plus the ones `lenses.md` adds at deep.
 - **Offer a stop after the slate** when this project has never run this depth or question type before (check the `depth` and `type` in `runs/*/run.json`). The analyze stage then returns once the lenses, math checks and candidate slate are done, about half its cost in a deep run (two-thirds in a standard one), so the user can look at the candidates before the refuters and the judge run on them.
 - **Confirm the user wants to continue.** This is the expensive half.
@@ -141,6 +142,7 @@ Present:
 - what changed since earlier runs, if you compared any;
 - the top three decisive tests or calculations;
 - every audit flag marked `unsupported` or `contradicted`, plus the count marked `weak`;
+- the papers the report says the answer may turn on but no free copy exists for, so the user can decide whether to request them;
 - the paths to `report.md`, `dossier.md` and `calc/`.
 
 Don't restate the whole report; it is in the file.

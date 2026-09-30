@@ -175,5 +175,39 @@ class BotChecksSparePages(unittest.TestCase):
 
 
 
+class LocalFiles(unittest.TestCase):
+    """A paper the user supplied, saved under runs/<slug>/user/."""
+
+    def setUp(self):
+        import tempfile
+        from pathlib import Path
+        self.box = tempfile.TemporaryDirectory()
+        self.root = Path(os.path.realpath(self.box.name))
+        (self.root / "runs" / "s" / "user").mkdir(parents=True)
+        self.here = os.getcwd()
+        os.chdir(self.root)
+
+    def tearDown(self):
+        os.chdir(self.here)
+        self.box.cleanup()
+
+    @unittest.skipUnless(HAVE_PYPDF, "pypdf not installed")
+    def test_a_supplied_pdf_under_runs_is_read(self):
+        (self.root / "runs" / "s" / "user" / "paper.pdf").write_bytes(PDF)
+        code, out = run(["runs/s/user/paper.pdf", "--grep", "few hundred Planck"])
+        self.assertEqual(code, 0)
+        self.assertIn("SOURCE: runs/s/user/paper.pdf | PDF, 2 pages", out)
+
+    def test_files_outside_runs_are_refused(self):
+        (self.root / "secret.txt").write_text("key")
+        code, out = run(["secret.txt"])
+        self.assertEqual(code, 3)
+        self.assertIn("local files are read only from runs/<slug>/", out)
+        code, out = run(["runs/s/user/missing.pdf"])
+        self.assertEqual(code, 3)
+        self.assertIn("no such file", out)
+
+
+
 if __name__ == "__main__":
     unittest.main()

@@ -43,13 +43,13 @@ SHORT_CALC = (
 )
 
 CITE_WEB = (
-    "never invent a citation, number or quote. A quote is text `fetch_text.py` printed from the source, "
-    "or an abstract `lit_search.py` printed. WebSearch and WebFetch pass pages through a model, so cite "
+    "never invent a citation, number or quote. A quote is text `fetch_text.py` or `find_fulltext.py` printed "
+    "from the source, or an abstract `lit_search.py` printed. WebSearch and WebFetch pass pages through a model, so cite "
     "what they return as summaries (`ACCESS: search-summary`) unless `fetch_text.py` confirms the wording."
 )
 CITE_CHECKER = (
-    "never invent a citation, number or quote. A quote counts as verified only when `fetch_text.py` or a "
-    "`lit_search.py` abstract shows the same words; a search result or WebFetch answer can't confirm wording."
+    "never invent a citation, number or quote. A quote counts as verified only when `fetch_text.py`, "
+    "`find_fulltext.py` or a `lit_search.py` abstract shows the same words; a search result or WebFetch answer can't confirm wording."
 )
 CITE_WEB_NO_BASH = (
     "never invent a citation, number or quote. A quote is verbatim text from a page you opened. "
@@ -74,7 +74,9 @@ UNITS = "- **Units:** every number carries units and says which system it uses."
 UNITS_GR = "- **Units:** every number carries units and says which system it uses (SI, or geometric with G = c = 1)."
 SEARCH = (f"- **Searching:** {LIT} returns the best-matching papers with abstracts you can quote; add `--since <year>` "
           "for recent work, and `--source general` outside physics (Crossref and Semantic Scholar). `python3 .claude/skills/conundrum/scripts/fetch_text.py <url> "
-          "--grep \"<phrase>\"` prints a source's own words from a PDF or page. WebSearch returns summaries.")
+          "--grep \"<phrase>\"` prints a source's own words from a PDF or page, and `python3 .claude/skills/conundrum/scripts/"
+          "find_fulltext.py <doi> --grep \"<phrase>\"` does the same from a free copy when the publisher's page is paywalled or blocked. "
+          "WebSearch returns summaries.")
 
 # Claude Code refuses a subagent's write to a file whose name starts with REPORT, SUMMARY, FINDINGS or
 # ANALYSIS (.md): "Subagents should return findings as text, not write report files." So the judge

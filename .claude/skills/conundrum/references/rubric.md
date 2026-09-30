@@ -81,7 +81,8 @@ produce it, roughly when, and which way each outcome would move the headline.
 | Quantity | Value (units) | Source or calc |
 
 ## Caveats
-Evidence resting only on search summaries, blocked sources, unresolved contradictions, speculative physics used.
+Evidence resting only on search summaries, blocked sources, unresolved contradictions, speculative physics used,
+and any paper flagged to request (no free copy) that the answer may turn on, with what it would settle.
 
 ## Sources
 The references actually relied on, with URLs.
