@@ -206,3 +206,25 @@ Other gaps:
 **Carried from earlier runs:** 0 claims (no prior runs bear on this question; none re-verified because none carried).
 
 **Interested parties:** Serebrov 2021 critique of BL1 comes from the Gravitrap group; Byrne 2019/2022 from the Sussex–ILL group; Caylor 2025 and Wietfeldt 2023 from the BL1 group; Tan 2023 and Fornal 2023 are proponents' reviews.
+
+## User-supplied
+
+- [U-01] [user] **Correction to D-50 and to §6's "unresolved 5.7×10⁻⁴ Vud offset": pair a superallowed Vud with its own inner radiative correction.** This is a user-endorsed correction with its calculation in [calc: runs/2026-09-30-neutron-lifetime-beam-bottle/calc/user_rc_pairing.py] (log beside it). Lenses that use it should re-derive it or cite the calc. It must pass an independent math check; do not take it on trust.
+  - **(1) ΔR^V cancels.** A superallowed |Vud|² ∝ 1/[Ft (1 + ΔR^V)], and the same ΔR^V divides τ_β. So τ_β predicted from superallowed Vud and λ does not depend on the ΔR^V evaluation, as long as Vud was extracted with that same ΔR^V. The calc checks this symbolically: ∂τ_β/∂ΔR^V = 0.
+  - **(2) D-50 used a mixed pairing.** It combined K = 4908.6 s (CMS 2018, Marciano–Sirlin inner RC ΔR^V = 0.02361) with the PDG 2024 Vud 0.97367 (extracted with a 2018+ ΔR^V near 0.0245–0.0248). That overstates every D-50 entry by about +0.91 s (0.10%).
+  - **Consistent pairings** give τ_β = 878.45–878.51 s for PERKEO III λ (spread 0.06 s):
+    - CMS2018 with Vud 0.97420 (this equals CMS's 5172.0(1.1) s/(1 + 3λ²) = 878.45 s);
+    - SGPR2018 with 0.97366;
+    - AVG2020 with 0.97373;
+    - GS2023 with 0.97361.
+  - **Recomputed D-50** (GS2023, Vud = 0.97361(32)). τ_β by λ source:
+    - PERKEO III 878.50 ± 0.88 s;
+    - UCNA 877.60 ± 2.36 s;
+    - PERKEO II 880.34 ± 1.40 s;
+    - PDG 2024 average 879.65 ± 1.61 s;
+    - aSPECT 2020 888.53 ± 3.31 s;
+    - aSPECT 2024 889.58 ± 3.20 s;
+    - aCORN 874.86 ± 7.07 s.
+  - **Uncertainties:** the calculator's Gaussian propagation treats the Vud and RC errors as independent, which slightly overstates σ for a superallowed Vud.
+  - **(3) The offset is explained.** The Vud offset in §6 (bare CMS-2018 formula 0.97459 against Cirigliano/Gorchtein–Seng 0.97402–0.97404 for the same τ and λ) equals √(K_CMS2018/K_GS2023) = 1.000578. It is the inner-RC update from 0.02361 to 0.02479, not unexplained physics.
+  - Inputs: D-40 to D-44, D-48, D-49, through the toolkit calculator `neutron_beta_decay.py`.
