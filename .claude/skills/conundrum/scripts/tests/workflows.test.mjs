@@ -462,6 +462,28 @@ test('analyze: file-writing agents get the {ok, path, summary} shape; slate and 
   }
 })
 
+test('agents are called in the same order however they finish, so a resume replays all that finished', async () => {
+  // A resume replays saved agents only for the unchanged prefix of agent() calls, in call order.
+  const callOrder = async (name, args, base, delay) => {
+    const handler = c => new Promise(done => setTimeout(() => done(base(c)), delay(c.opts.label)))
+    return (await run(name, args, handler)).calls.map(c => c.opts.label)
+  }
+  const lenses = ['decomposer', 'examiner', 'mechanist', 'engineer', 'constraints']
+  const firstSlowest = l => (lenses.includes(l) ? (5 - lenses.indexOf(l)) * 4 : 0)
+  const lastSlowest = l => (lenses.includes(l) ? lenses.indexOf(l) * 4 : 0)
+  const args = { slug: 's', depth: 'standard' }
+  const a = await callOrder('conundrum-analyze', args, analyzeHandler(), firstSlowest)
+  const b = await callOrder('conundrum-analyze', args, analyzeHandler(), lastSlowest)
+  assert.deepEqual(a, b)
+  assert.deepEqual(a.slice(0, 10), [...lenses, ...lenses.map(l => `math:${l}`)])
+
+  const facets = ['research:theory', 'research:quantitative', 'research:critiques', 'research:engineering']
+  const r1 = await callOrder('conundrum-research', args, wroteOk, l => (facets.includes(l) ? (4 - facets.indexOf(l)) * 4 : 0))
+  const r2 = await callOrder('conundrum-research', args, wroteOk, l => (facets.includes(l) ? facets.indexOf(l) * 4 : 0))
+  assert.deepEqual(r1, r2)
+  assert.deepEqual(r1.slice(0, 8), [...facets, ...facets.map(f => f.replace('research:', 'check:'))])
+})
+
 test('workflow scripts avoid APIs the runtime forbids', () => {
   for (const name of ['conundrum-research', 'conundrum-analyze']) {
     const { src } = load(name)

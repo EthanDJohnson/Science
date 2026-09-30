@@ -31,17 +31,26 @@ The design, and the review of the Gemini proposal it started from, are in [`docs
 | Depth | What runs | Agent runs | Rough time | Cost at API list prices |
 |---|---|---|---|---|
 | `quick` | 3 researchers, 3 lenses, 1 refuter per candidate, Opus judge | ~18 | 1–2 hours | ~$25–40 (measured once: $29) |
-| `standard` | 4 researchers with source checks, 5 lenses with math checks, 1 refuter per candidate, Fable judge | ~28 | 2–3.5 hours | ~$35–65 |
-| `deep` | 5 researchers with checks, 6–7 lenses with math checks, 3 refuters per candidate with different angles, rebuttal round, Fable judge at max effort | ~46–57 | 3.5–5.5 hours | ~$60–110 |
+| `standard` | 4 researchers with source checks, 5 lenses with math checks, 1 refuter per candidate, Fable judge | ~30 | ~2.5 hours | ~$35–50 (measured once: $39) |
+| `deep` | 5 researchers with checks, 6–7 lenses with math checks, 3 refuters per candidate with different angles, rebuttal round, Fable judge at max effort | ~46–57 | 3–5 hours | ~$55–90 |
 
-Times exclude the two checkpoints where the pipeline waits for you, and assume at least 5 agents can run at once; see [Where to run it](#where-to-run-it).
+Times include the two checkpoints where the pipeline waits for you. The measured standard run took about 2.5 hours in a cloud session running only 2 agents at once; see [Where to run it](#where-to-run-it).
 
-**The one measured run** was a quick run on the Alcubierre question on 2026-09-29, in a cloud session. It cost $28.72 at list prices:
-- the agents $21.92 and the main session $6.79;
-- about $3.40 of it re-ran agents after a usage-limit stop and a container restart;
-- per agent: researchers ~$0.55–0.75, lenses ~$1.10–2.50, the slate ~$2, refuters ~$0.35–1.30, the judge ~$1.
+**Measured runs**, both in cloud sessions on 2026-09-29:
 
-Standard and deep costs are extrapolated from that run. They add source checks, math checks (one Opus agent per lens, not yet run live), more lenses and refuters, and Fable's higher prices for the judge. `python3 dev/run_costs.py` measures a run from Claude Code's transcripts, per agent.
+| | Quick: Alcubierre drives | Standard: the problem of time |
+|---|---|---|
+| Total at list prices | $28.72 | $38.64 |
+| Agents / main session | $21.92 / $6.79 | $33.23 / $5.41 |
+| Spent re-running agents after interruptions | ~$3.40 (a usage-limit stop and a container restart) | ~$1.80 (a container restart) |
+
+Per agent in the standard run:
+- researchers ~$0.45–0.85, source checkers ~$0.10–0.20, the dossier ~$0.95;
+- lenses ~$1.05–2.55, math checks ~$0.60–1.55;
+- a calculator built on demand ~$1.80;
+- the slate ~$2.35, refuters ~$0.65–1.05, the Fable judge ~$2.70, the audit ~$0.15.
+
+The deep figures are extrapolated from these runs. `python3 dev/run_costs.py` measures a run from Claude Code's transcripts, per agent.
 
 **What the fixes bought.** Before the toolkit fixes and the no-polling rule, a smoke test of the constraints lens cost ~$12.70 over 64 turns (see [`examples/`](examples/smoke-test-constraints-lens/)). Most of that went on waiting for slow calculations and on re-reading a context that grew to 394k tokens. In the measured run, the same lens cost ~$2.50.
 
@@ -53,7 +62,7 @@ A workflow runs at most min(16, CPUs − 2) agents at once. The preflight prints
 
 | | Local terminal on your computer | Cloud session (claude.ai/code, or started from the app) |
 |---|---|---|
-| Agents at once | Typically 6–14 on an 8–16-core machine | 2: the container has 4 CPUs, so a standard run takes about 2× as long and a deep run 3–4× |
+| Agents at once | Typically 6–14 on an 8–16-core machine | 2, as the container has 4 CPUs. The measured standard run still took about 2.5 hours; a deep run, with about twice the agents, will feel the limit more |
 | Hitting your usage limit | The run waits for the reset and continues by itself, up to twice per run (interactive session, v2.1.271 or later) | Probably fails the agents that hit it: the docs exclude SDK and background sessions from the pause. Relaunch after the reset |
 | Run files | Stay on your disk | Lost if not pushed before the container is reclaimed; the skill offers to push after each stage |
 | Literature access | Full web access | Allowlisted hosts only; WebFetch sees changes only in a new session |
@@ -109,7 +118,7 @@ The stages hand over through files, so they can also change machines. For exampl
 | Your usage limit, in a background or cloud session | The in-flight work of the agents that hit it | Their files and every completed agent's result. Relaunch after the reset |
 | A cloud container reclaimed after inactivity | Every file you didn't push | The workflow's saved results, so a relaunch trusts agents whose files are gone. Push `runs/<slug>/` after each stage |
 
-Agents append findings to their files as they go, in the same step as their next tool call, so a cut costs a few turns of work and a checkpoint costs output tokens, not an extra turn. A relaunched agent that finds its file continues from it. A relaunch also reruns a failed agent and every agent that started after it, so the calculation-heavy lenses start last.
+Agents append findings to their files as they go, in the same step as their next tool call, so a cut costs a few turns of work and a checkpoint costs output tokens, not an extra turn. A relaunched agent that finds its file continues from it. A relaunch replays saved results only up to the first agent that didn't finish, in the order the agents were started, and reruns everything after it. So the workflows start agents in a fixed order, whichever finishes first, with the calculation-heavy lenses last.
 
 **Turn counting.** Agents can't count their own turns reliably, so a hook counts for them: `.claude/hooks/turn_budget.py`, registered in `.claude/settings.json`. It runs once per agent turn (`PostToolBatch`) and costs no tokens. Only when a threshold is crossed does it add a one-line `[turn budget]` reminder to that agent's context:
 - every 10 tool calls, with a nudge to append settled findings;
@@ -325,15 +334,15 @@ runs/                    one directory per investigation
 
 ### Known limitations of v1
 
-- **One quick run so far.** A quick run on the Alcubierre question completed end to end on 2026-09-29.
+- **Two runs so far.** A quick run on the Alcubierre question completed end to end on 2026-09-29.
   - It exposed one blocker, now fixed. Claude Code refused the judge's write to `report.md`, because it blocks subagents from writing files named `report*.md`. The judge now returns the report as text, and the main session saves it.
-  - Standard and deep runs, the math checks and the foundations type haven't run live yet.
+  - A standard run on the problem of time followed. It exercised the math checks, the foundations type, a calculator built on demand, and the returned report, with no refusals.
 - **What the smoke test fixed.** The constraints lens produced a sound, calculation-backed analysis (see [`examples/`](examples/smoke-test-constraints-lens/)). It also exposed problems, now fixed:
   - a toolkit bug that passed the weak energy condition where it fails;
   - quoting search summaries as if they were source text;
   - an agent that could run out of turns before writing its file;
   - an agent that killed its own shell with `pkill -f`.
-- **Standard and deep costs are extrapolated** from the one measured quick run, including the math checks, which have never run live.
+- **Deep runs are unmeasured.** Their cost and time are extrapolated from one quick and one standard run.
 - **A turn-capped workflow agent's return value is undocumented.** The scripts treat a missing or `ok: false` result as a failure. Check `/workflows` on the first real run, and read the run's `journal.jsonl` if a result looks empty.
 - **Agents are told, not forced, to stay in their own run's folder.** Material from earlier runs reaches them through `prior/`, but no hook stops an agent from opening another run's files. The dossier's source notes count the claims carried from earlier runs, and the auditor traces every report claim to this run's evidence.
 - **Search summaries are weak evidence.** Where WebFetch can't reach papers, claims rest on INSPIRE abstracts and search summaries. The auditor flags report claims that rest only on summaries.

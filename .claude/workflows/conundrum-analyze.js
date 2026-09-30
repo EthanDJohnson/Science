@@ -111,22 +111,30 @@ const refuters = depth === 'deep' ? 3 : 1
 const ANGLES = ANGLES_BY_TYPE[type] || DEFAULT_ANGLES
 log(`depth ${depth}; type ${type}; lenses: ${lenses.join(', ')}; refuters per candidate: ${refuters}`)
 
-// ----- Lenses: independent and isolated. In standard and deep runs, each lens's mathematics goes to
-// an independent math checker as soon as that lens finishes (no barrier). The slate needs every lens
-// and its check, so the wait after this stage is intentional.
+// ----- Lenses, then an independent math check of each (standard and deep runs).
+// A resume replays saved agents only for the unchanged prefix of agent() calls, in call order, so the
+// calls must come in the same order on every run. Every lens starts at once, in a fixed order. Each
+// lens's math check starts once that lens and every lens before it have finished: checks still overlap
+// the slower lenses, but their order no longer depends on which lens happens to finish first. (Started
+// in finishing order, a resume after a container restart re-ran checks that had already finished.)
 phase('Lenses')
 const checkingMath = depth !== 'quick'
-const lensResults = await pipeline(lenses,
-  l => agent(
-    `Run directory: ${dir}. Read ${dir}/brief.md and ${dir}/dossier.md, then write ${dir}/analyses/${l}.md. ` +
-    `Put any calculation scripts in ${dir}/calc/.`,
-    { agentType: `lens-${l}`, label: l, phase: 'Lenses', schema: WROTE }).then(wrote),
-  (analysis, l) => (analysis == null || !checkingMath) ? { analysis, math: null } : agent(
+const settle = p => Promise.resolve(p).then(r => r, () => null)
+const lensRuns = lenses.map(l => settle(agent(
+  `Run directory: ${dir}. Read ${dir}/brief.md and ${dir}/dossier.md, then write ${dir}/analyses/${l}.md. ` +
+  `Put any calculation scripts in ${dir}/calc/.`,
+  { agentType: `lens-${l}`, label: l, phase: 'Lenses', schema: WROTE })))
+const analyses = []
+const mathRuns = []
+for (const [i, l] of lenses.entries()) {
+  const analysis = wrote(await lensRuns[i])
+  analyses.push(analysis)
+  mathRuns.push(analysis == null || !checkingMath ? null : settle(agent(
     `Run directory: ${dir}. Lens: ${l}. Check the load-bearing mathematics in ${dir}/analyses/${l}.md ` +
     `and write ${dir}/math/${l}.md, with your check scripts in ${dir}/math/${l}/.`,
-    { agentType: 'math-checker', label: `math:${l}`, phase: 'Math', schema: MATH })
-    .then(m => ({ analysis, math: m && m.ok ? m : null })))
-const analyses = lensResults.map(r => (r ? r.analysis : null))
+    { agentType: 'math-checker', label: `math:${l}`, phase: 'Math', schema: MATH })))
+}
+const mathResults = (await Promise.all(mathRuns)).map(m => (m && m.ok ? m : null))
 const lensesDone = lenses.filter((_, i) => analyses[i] != null)
 const lensesFailed = lenses.filter((_, i) => analyses[i] == null)
 if (lensesFailed.length) log(`lenses that failed: ${lensesFailed.join(', ')}`)
@@ -135,7 +143,7 @@ if (lensesDone.length < 2) {
 }
 const math = {}
 lenses.forEach((l, i) => {
-  const m = lensResults[i] && lensResults[i].math
+  const m = mathResults[i]
   if (m) math[l] = { verified: m.verified || 0, refuted: m.refuted || 0, unverified: m.unverified || 0 }
 })
 const mathChecked = Object.keys(math)
