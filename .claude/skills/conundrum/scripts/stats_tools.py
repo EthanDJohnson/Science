@@ -12,9 +12,18 @@ when significance is estimated by hand:
     gross_vitells_global_p          look-elsewhere correction from up-crossings of a scanned test statistic
     fisher_combined_p, stouffer_z   combining independent results
     weighted_mean                   inverse-variance mean, chi2 and the PDG scale factor for disagreeing data
-    min_bayes_factor                the most evidence a p-value can carry against the null
+    grouped_chi2                    the same, split into chi2 within each group (method) and between groups
+    tension                         two-sided tension between two results; takes asymmetric errors
+    total_error                     statistical and systematic parts in quadrature, keeping asymmetry
+    min_bayes_factor                the most evidence a (two-sided) p-value can carry against the null
     posterior_probability           prior probability x Bayes factor -> posterior probability
-    exposure_to_reach               how much more data a real effect needs to reach a target significance
+    exposure_to_reach               how much more data a real effect needs to reach a target significance,
+                                    with a systematic floor that more data can't beat
+    z_after_exposure                the significance after k times the data, with that floor
+    precision_needed                the total uncertainty a decisive test of a difference needs
+
+Errors given as an (up, down) pair are asymmetric: +up / -down. tension() uses the side that faces the
+other value, the usual approximation; the exact treatment needs each result's likelihood.
 
 Run from the project root:
     python3 .claude/skills/conundrum/scripts/stats_tools.py selftest
@@ -126,9 +135,47 @@ def stouffer_z(z_values, weights=None) -> float:
     return sum(w * z for w, z in zip(ws, zs)) / math.sqrt(sum(w * w for w in ws))
 
 
+def _side(err, toward_higher: bool) -> float:
+    """The error that applies toward a higher value (up) or a lower one (down). err is a number or (up, down)."""
+    if isinstance(err, (tuple, list)):
+        if len(err) != 2:
+            raise ValueError("an asymmetric error is an (up, down) pair")
+        return abs(float(err[0])) if toward_higher else abs(float(err[1]))
+    return abs(float(err))
+
+
+def total_error(*parts):
+    """Combine independent uncertainties in quadrature. Each part is a number or an (up, down) pair; the
+    result is a number when every part is symmetric, otherwise an (up, down) pair."""
+    if len(parts) == 1 and isinstance(parts[0], list):
+        raise ValueError("pass the parts as separate arguments: total_error(stat, sys), not total_error([stat, sys])")
+    ups = [_side(e, True) for e in parts]
+    downs = [_side(e, False) for e in parts]
+    up, down = math.sqrt(sum(u * u for u in ups)), math.sqrt(sum(d * d for d in downs))
+    if all(not isinstance(e, (tuple, list)) for e in parts):
+        return up
+    return (up, down)
+
+
+def tension(x1: float, e1, x2: float, e2) -> dict:
+    """Two-sided tension between two independent results. Each error is a number or an (up, down) pair,
+    and the side facing the other value is used. Returns the difference x1 - x2, its uncertainty, z and
+    the two-sided p-value."""
+    s1, s2 = _side(e1, x2 > x1), _side(e2, x1 > x2)
+    sigma = math.sqrt(s1 * s1 + s2 * s2)
+    if sigma <= 0:
+        raise ValueError("the combined uncertainty must be positive")
+    z = abs(x1 - x2) / sigma
+    return {"difference": x1 - x2, "sigma": sigma, "z": z, "p_two_sided": sigma_to_p(z, two_sided=True)}
+
+
 def weighted_mean(values, errors) -> dict:
-    """Inverse-variance mean with chi^2 and the PDG scale factor S = sqrt(chi^2/(N-1)) when S > 1."""
+    """Inverse-variance mean with chi^2 and the PDG scale factor S = sqrt(chi^2/(N-1)) when S > 1.
+    Errors must be symmetric numbers."""
     vals, errs = list(values), list(errors)
+    if any(isinstance(e, (tuple, list)) for e in errs):
+        raise ValueError("weighted_mean and grouped_chi2 take symmetric errors: symmetrize an (up, down) pair, "
+                         "for example as (up + down) / 2 or the side facing the other values, and say which")
     w = [1 / e**2 for e in errs]
     mean = sum(wi * x for wi, x in zip(w, vals)) / sum(w)
     err = 1 / math.sqrt(sum(w))
@@ -137,6 +184,59 @@ def weighted_mean(values, errors) -> dict:
     scale = math.sqrt(chi2 / dof) if dof > 0 and chi2 > dof else 1.0
     return {"mean": mean, "error": err, "chi2": chi2, "dof": dof, "scale_factor": scale,
             "error_scaled": err * scale, "p_consistent": _chi2_sf(chi2, dof) if dof > 0 else 1.0}
+
+
+def grouped_chi2(groups: dict) -> dict:
+    """Split the disagreement among measurements into within-group and between-group parts.
+
+    groups maps a name (a method, say) to (values, errors), with symmetric errors. The pooled chi2 of
+    all measurements equals the sum of the within-group chi2s plus the between-group chi2,
+    sum over groups of W_g (mean_g - pooled mean)^2 with W_g the group's total weight. A large
+    between-group chi2 with small within-group ones says the methods disagree while each agrees
+    with itself; a pooled scale factor would hide that. between_z is the two-sided Gaussian equivalent.
+    """
+    if len(groups) < 2:
+        raise ValueError("grouped_chi2 needs at least two groups")
+    groups = {name: (list(vals), list(errs)) for name, (vals, errs) in groups.items()}
+    per = {}
+    for name, (vals, errs) in groups.items():
+        wm = weighted_mean(vals, errs)
+        per[name] = {"mean": wm["mean"], "error": wm["error"], "chi2": wm["chi2"], "dof": wm["dof"],
+                     "p_consistent": wm["p_consistent"], "n": len(vals)}
+    all_vals = [v for vals, _ in groups.values() for v in vals]
+    all_errs = [e for _, errs in groups.values() for e in errs]
+    pooled = weighted_mean(all_vals, all_errs)
+    between = sum((1 / g["error"] ** 2) * (g["mean"] - pooled["mean"]) ** 2 for g in per.values())
+    between_dof = len(per) - 1
+    within = sum(g["chi2"] for g in per.values())
+    within_dof = sum(g["dof"] for g in per.values())
+    p_between = _chi2_sf(between, between_dof)
+    if between_dof == 1:
+        z_between = math.sqrt(between)                  # exact for one degree of freedom
+    elif 0 < p_between < 1:
+        z_between = p_to_sigma(p_between, two_sided=True)
+    elif p_between >= 1:
+        z_between = 0.0
+    else:   # p underflows a float: work with its logarithm instead
+        z_between = _z_from_log_p(_log_chi2_sf_tail(between, between_dof))
+    return {"groups": per, "within_chi2": within, "within_dof": within_dof,
+            "p_within": _chi2_sf(within, within_dof) if within_dof > 0 else 1.0,
+            "between_chi2": between, "between_dof": between_dof, "p_between": p_between, "between_z": z_between,
+            "pooled": pooled}
+
+
+def _log_chi2_sf_tail(x: float, dof: int) -> float:
+    """ln P(chi2_dof > x) far in the tail (x >> dof), from Gamma(s, y) ~ y^(s-1) e^(-y) (1 + (s-1)/y)."""
+    s, y = dof / 2, x / 2
+    return (s - 1) * math.log(y) - y - math.lgamma(s) + math.log1p((s - 1) / y)
+
+
+def _z_from_log_p(log_p: float) -> float:
+    """Two-sided Gaussian z for a p-value given by its logarithm, using the tail 2 * phi(z) / z."""
+    z = math.sqrt(-2 * log_p)
+    for _ in range(50):   # fixed point of ln p = ln 2 - z^2/2 - ln(z sqrt(2 pi))
+        z = math.sqrt(max(0.0, 2 * (math.log(2) - log_p - math.log(z * math.sqrt(2 * math.pi)))))
+    return z
 
 
 def _chi2_sf(x: float, dof: int) -> float:
@@ -177,6 +277,7 @@ def _chi2_sf(x: float, dof: int) -> float:
 def min_bayes_factor(p: float) -> dict:
     """Lower bounds on the Bayes factor for the null against the alternative, given a p-value.
 
+    p must be two-sided: convert a z-score with sigma_to_p(z, two_sided=True), not the one-sided default.
     sellke: -e p ln p (Sellke, Bayarri & Berger 2001), valid for p < 1/e.
     gaussian: exp(-z^2/2) with z the two-sided z-score (Edwards, Lindman & Savage 1963), the
     bound over all alternatives for a Gaussian test statistic.
@@ -200,10 +301,35 @@ def prior_needed(bayes_factor_alt_vs_null: float, target_posterior: float = 0.5)
     return prior_odds / (1 + prior_odds)
 
 
-def exposure_to_reach(z_now: float, z_target: float = 5.0) -> float:
-    """Factor by which data (events, time, luminosity) must grow for a real, fixed effect to reach
-    z_target, given it shows z_now: significance grows as sqrt(exposure), so (z_target/z_now)^2."""
-    return (z_target / z_now) ** 2
+def exposure_to_reach(z_now: float | None = None, z_target: float = 5.0, *, delta: float | None = None,
+                      sigma_stat: float | None = None, sigma_sys: float = 0.0, sigma_other: float = 0.0) -> float:
+    """Factor k by which data (events, time, luminosity) must grow for a real, fixed effect to reach z_target.
+
+    Statistics only: significance grows as sqrt(exposure), so k = (z_target/z_now)^2.
+    With a systematic floor, give the effect delta, the statistical error sigma_stat (which shrinks as
+    1/sqrt(k)), the systematic error sigma_sys and any fixed error sigma_other (a reference value's,
+    say), none of which shrink. The significance can never exceed delta/sqrt(sigma_sys^2 + sigma_other^2),
+    so the answer is math.inf when z_target lies above that ceiling: more data won't settle it.
+    """
+    if delta is None and sigma_sys == 0 and sigma_other == 0:
+        if z_now is None or z_now <= 0:
+            raise ValueError("give z_now > 0, or delta and sigma_stat")
+        return (z_target / z_now) ** 2
+    if delta is None or sigma_stat is None or sigma_stat <= 0:
+        raise ValueError("with a systematic floor, give delta and sigma_stat > 0")
+    room = (abs(delta) / z_target) ** 2 - sigma_sys ** 2 - sigma_other ** 2
+    return math.inf if room <= 0 else sigma_stat ** 2 / room
+
+
+def z_after_exposure(delta: float, sigma_stat: float, sigma_sys: float = 0.0, k: float = 1.0,
+                     sigma_other: float = 0.0) -> float:
+    """Significance of an effect delta after k times the data: delta / sqrt(sigma_stat^2/k + sigma_sys^2 + sigma_other^2)."""
+    return abs(delta) / math.sqrt(sigma_stat ** 2 / k + sigma_sys ** 2 + sigma_other ** 2)
+
+
+def precision_needed(delta: float, z_target: float = 5.0) -> float:
+    """Total uncertainty on a difference delta that a test needs to tell it from zero at z_target: delta/z_target."""
+    return abs(delta) / z_target
 
 
 # ---------------------------------------------------------------- self-test
@@ -233,6 +359,24 @@ def selftest(verbose: bool = True) -> bool:
     check("chi2 survival, x = 3.84, 1 dof", _chi2_sf(3.841459, 1), 0.05)
     check("chi2 survival, x = 20, 10 dof", _chi2_sf(20.0, 10), 0.029253)
     check("exposure for 3 -> 5 sigma", exposure_to_reach(3.0), 25 / 9)
+    check("exposure from delta and sigma_stat, no floor", exposure_to_reach(delta=3.0, sigma_stat=1.0), 25 / 9)
+    check("exposure with a systematic floor", exposure_to_reach(delta=10.0, sigma_stat=4.0, sigma_sys=1.0), 16 / 3)
+    check("z after that exposure", z_after_exposure(10.0, 4.0, 1.0, 16 / 3), 5.0)
+    results.append(exposure_to_reach(delta=10.0, sigma_stat=4.0, sigma_sys=2.5) == math.inf)
+    if verbose:
+        print(f"{'PASS' if results[-1] else 'FAIL'}  a target above the systematic ceiling needs infinite data")
+    check("precision needed for a 10.3 gap at 5 sigma", precision_needed(10.3), 2.06)
+    t = tension(888.1, 2.0, 877.8, 0.3)
+    check("tension, 888.1 +- 2.0 vs 877.8 +- 0.3", t["z"], 10.3 / math.sqrt(4.09))
+    check("tension uses the upper error toward a higher value", tension(10.0, (2.0, 1.0), 13.0, 0.0)["z"], 1.5)
+    check("tension uses the lower error toward a lower value", tension(10.0, (2.0, 1.0), 7.0, 0.0)["z"], 3.0)
+    up, down = total_error(1.7, (4.0, 3.6))
+    check("stat 1.7 with sys +4.0/-3.6, upper", up, math.sqrt(1.7**2 + 4.0**2))
+    check("stat 1.7 with sys +4.0/-3.6, lower", down, math.sqrt(1.7**2 + 3.6**2))
+    g = grouped_chi2({"a": ([1.0, 3.0], [1.0, 1.0]), "b": ([5.0], [1.0])})
+    check("grouped chi2: within", g["within_chi2"], 2.0)
+    check("grouped chi2: between", g["between_chi2"], 6.0)
+    check("grouped chi2: within + between = pooled", g["within_chi2"] + g["between_chi2"], g["pooled"]["chi2"])
     passed = all(results)
     if verbose:
         print(f"\n{sum(results)}/{len(results)} checks passed")

@@ -18,6 +18,8 @@ You verify another researcher's claims before they enter the shared evidence bas
    - **Overstated consensus:** one paper's contested claim presented as established.
    - **Search-summary claims:** a model-written search summary can't confirm itself. Open the source or search for the claim's specifics; if you can't confirm it, mark it `unverifiable`.
    - **Claims carried from an earlier run** (a `PRIOR` line): check them like any other. An earlier run's word is not evidence.
+   - **Superseded values:** a number that was correct when published but later re-analysed or corrected. Mark it `misattributed` and name the current value and its source.
+   - **Blocked pages:** when a journal page prints `UNAVAILABLE` or `BLOCKED`, check the paper's arXiv version instead (`lit_search.py "doi:<doi>" --source inspire` lists its arXiv ID), and say so in the note. A page you couldn't open makes a claim `unverifiable`, never `contradicted`.
 4. **Write `runs/<slug>/research/<facet>.check.md`** with one row per checked claim.
    - Give each claim one verdict: `verified`, `unverifiable`, `contradicted`, `misattributed` or `status-wrong`.
    - Add a one-line note to each row.
@@ -27,7 +29,8 @@ You verify another researcher's claims before they enter the shared evidence bas
 
 - **Budget:** aim for about 20–30 tool calls, and stop when more searching or calculation stops changing your answer. Reminders marked `[turn budget]` come from the pipeline and give your running count.
 - **Checkpoints:** create `runs/<slug>/research/<facet>.check.md` in your first few turns with its table header. Then append each claim's verdict row as soon as you have checked it, in the same step as your next tool call (a step can hold several calls, so this costs no extra turn). Anything that is not in the file is lost if you are cut off.
-- **Resuming:** if your file already exists, an earlier attempt was cut off: read it, keep what is sound and continue from it instead of starting over.
+- **Resuming:** if your file already exists, read it first. If its `status:` line says `final` and it was written for the task you have now (the same candidate claim or lens as your prompt states it, and the inputs your prompt names), return its result straight away without changing it. Otherwise an earlier attempt was cut off: keep what is sound and continue from it instead of starting over.
+- **Finishing:** from the start, your file carries a `status: draft` line where its format shows one. Change it to `status: final` in your last step, once the file is complete, and never before: a relaunch trusts only a final file.
 - **Paths:** work from the project root with relative paths and never `cd`. Read only your own run's folder and the toolkit, never another run's folder.
 - **Shell:** stay on the pre-approved commands: `python3 .claude/skills/conundrum/scripts/<tool>.py ...`, `python3 runs/<slug>/...` and `mkdir -p runs/...`. Anything else (inline `python3 -c` or heredocs, curl, cd) can stop an unattended run on a permission prompt, so put code in a script under `runs/<slug>/` and fetch pages with `fetch_text.py`.
 - **Writing:** write only the file you were asked to write.

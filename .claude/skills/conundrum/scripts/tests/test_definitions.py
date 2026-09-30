@@ -193,6 +193,34 @@ class WorkflowWiring(unittest.TestCase):
         self.assertIn("**Foundations questions**", (SKILL / "references" / "rubric.md").read_text())
         self.assertIn("`position`", (AGENTS / "candidate-builder.md").read_text())
 
+    def test_every_refuter_angle_is_defined_for_the_falsifier(self):
+        src = workflow_source("conundrum-analyze")
+        block = re.search(r"const ANGLES_BY_TYPE = \{(.*?)\n\}", src, re.S).group(1)
+        angles = set(re.findall(r"'(\w+)'", block))
+        angles |= set(re.findall(r"'(\w+)'", re.search(r"const DEFAULT_ANGLES = \[(.*?)\]", src).group(1)))
+        self.assertIn("magnitude", angles)
+        falsifier = (AGENTS / "falsifier.md").read_text()
+        for angle in sorted(angles):
+            self.assertIn(f"- **{angle}:**", falsifier, f"the {angle} angle is used but never defined")
+
+    def test_anomaly_type_is_wired_through(self):
+        # One wording of the anomaly null everywhere; it must not swallow the method systematics.
+        null = ("no single dominant cause: a statistical fluctuation, or several smaller effects or "
+                "underestimated uncertainties, none of which dominates")
+        for path in (AGENTS / "candidate-builder.md", AGENTS / "lens-statistician.md",
+                     SKILL / "references" / "schemas.md"):
+            text = " ".join(path.read_text().split())
+            self.assertIn(null, text, path.name)
+            self.assertNotIn("artifact or known effect", text, path.name)
+        self.assertIn("## Prediction matrix", (SKILL / "references" / "schemas.md").read_text())
+        self.assertIn("`## Prediction matrix`", (AGENTS / "candidate-builder.md").read_text())
+        rubric = (SKILL / "references" / "rubric.md").read_text()
+        self.assertIn("**Anomaly questions**", rubric)
+        self.assertIn("(For anomaly questions use:", rubric)
+        self.assertIn("rule 9", (AGENTS / "adjudicator.md").read_text())
+        self.assertIn("anomaly: {", workflow_source("conundrum-research"))
+        self.assertIn("args: {slug, depth, type, tools, prior}", (SKILL / "SKILL.md").read_text())
+
     def test_math_checks_are_wired_through(self):
         src = workflow_source("conundrum-analyze")
         self.assertIn("agentType: 'math-checker'", src)

@@ -175,5 +175,31 @@ class PriorRuns(unittest.TestCase):
             pr.main(["--runs", runs, "mark", self.done.name])              # nothing to mark
 
 
+class BottomLines(unittest.TestCase):
+    def test_a_long_bottom_line_is_cut_at_a_sentence_not_mid_word(self):
+        text = ("On a fixed classical spacetime there is no conflict. " * 12
+                + "The weak null stands at about 0.85 and the relational answer at 0.15.")
+        cut = pr.first_paragraph(text, 500)
+        self.assertLessEqual(len(cut), 500)
+        self.assertTrue(cut.endswith("conflict. …"), cut[-40:])
+        self.assertEqual(pr.first_paragraph("Short. Two.", 500), "Short. Two.")
+        self.assertEqual(pr.first_paragraph("x" * 20, 10), "x" * 9 + "…")   # no sentence to cut at
+
+    def test_the_record_keeps_a_bottom_line_of_up_to_about_1200_characters(self):
+        para = "One sentence of the bottom line, with its credence of 0.85. " * 15
+        self.assertEqual(len(pr.first_paragraph(para, 1200)), len(para.strip()))
+
+
+class RecordKeepsTheBottomLine(unittest.TestCase):
+    def test_describe_keeps_a_long_bottom_line_whole(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            line = ("On a fixed classical spacetime there is no conflict between the theories here. " * 17
+                    + "The weak null stands at about 0.85 and the relational answer at about 0.15.")
+            self.assertGreater(len(line), 1400)
+            run = make_run(Path(tmp), "2026-09-29-problem-of-time", "How is the problem of time resolved?", report=line)
+            self.assertTrue(pr.describe(run)["bottom_line"].endswith("about 0.15."))
+
+
+
 if __name__ == "__main__":
     unittest.main()

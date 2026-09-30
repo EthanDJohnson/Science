@@ -9,6 +9,7 @@ import os
 import sys
 import tempfile
 import unittest
+from unittest import mock
 from pathlib import Path
 
 SCRIPTS = Path(__file__).resolve().parents[1]
@@ -147,6 +148,26 @@ class Runner(unittest.TestCase):
                 self.assertEqual(code, 2)
                 self.assertIn(why, err)
         self.assertFalse((self.root / ".claude").exists())
+
+
+class RunnerKeepsOutput(Runner):
+    def test_a_timed_out_script_keeps_what_it_printed_without_pythonunbuffered(self):
+        path = self.script("slow.py", "import time\nprint('RESULT a = 1')\nprint('PASS b')\ntime.sleep(30)\n")
+        env = {k: v for k, v in os.environ.items() if k != "PYTHONUNBUFFERED"}
+        with mock.patch.dict(os.environ, env, clear=True):
+            code, out, _ = self.run_main(path, "--timeout", "2")
+        self.assertEqual(code, 124)
+        log = (self.checks / "slow.py.log").read_text()
+        self.assertIn("RESULT a = 1", log)
+        self.assertIn("1 PASS", log)
+
+    def test_a_calculation_without_check_lines_says_so(self):
+        path = self.script("calc.py", "print('tension = 5.09 sigma')\n")
+        code, out, _ = self.run_main(path)
+        self.assertEqual(code, 0)
+        self.assertIn("no PASS/FAIL lines", out)
+        self.assertIn("tension = 5.09 sigma", out)
+
 
 
 if __name__ == "__main__":

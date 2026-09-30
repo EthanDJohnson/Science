@@ -1,6 +1,6 @@
 ---
 name: conundrum
-description: Multi-agent investigation of a hard physics or engineering question (feasibility, design, mechanism or anomaly). Partitioned literature research, a source-checked dossier, independent method lenses, competing candidate answers, calculation-grounded falsification, and a neutral adjudicated report. Expensive (roughly 15 to 50 agent runs over 1 to 5 hours); runs only when invoked as /conundrum.
+description: Multi-agent investigation of a hard physics or engineering question (feasibility, design, mechanism or anomaly). Partitioned literature research, a source-checked dossier, independent method lenses, competing candidate answers, calculation-grounded falsification, and a neutral adjudicated report. Expensive (roughly 15 to 60 agent runs over 1 to 5 hours); runs only when invoked as /conundrum.
 argument-hint: "[quick|standard|deep] <question>"
 disable-model-invocation: true
 ---
@@ -22,7 +22,7 @@ Reference files, all in `.claude/skills/conundrum/references/`:
 ## 0. Preflight
 
 Run `python3 .claude/skills/conundrum/scripts/check_env.py`.
-- **Few agents at once:** if it notes that only a few agents run at once, mention it. The measured standard run still took about 2.5 hours with 2 agents at once, but a deep run, with about twice the agents, will take noticeably longer.
+- **Few agents at once:** if it notes that only a few agents run at once, mention it. The time estimates below assume 2 at once, as in the measured runs; a machine with more CPUs runs faster.
 - **Required package missing:** ask whether to install it (`pip install sympy numpy scipy`) before continuing. The physics calculations depend on it, and agents' scripts often use scipy.
 - **Literature sources blocked:** tell the user in one line that research will lean on search summaries and INSPIRE abstracts, which the pipeline marks and weighs down. Continue unless they want to fix network access first.
 
@@ -45,11 +45,13 @@ Then check that WebFetch itself can read papers: WebFetch `https://arxiv.org/abs
    - **State the horizon for "viable":** in principle, and in practice within a stated time.
    - **List the hidden premises worth testing.**
    - **Say what a useful answer looks like.**
+   - **Scope the research facets** under `## Research facets`, for the facets this depth runs (quick: theory, quantitative, critiques; standard adds engineering; deep adds frontier): one line per facet saying what it owns for this question and what it leaves to the others, so each experiment, effect or topic has one owner and the researchers don't chase the same papers. For an anomaly, `engineering` covers the measurements themselves: each experiment's method and systematic error budget, statistical and systematic uncertainties kept apart, results that supersede others, and the experiments planned or running (who, target precision, when). `quantitative` covers the related quantities and Standard Model inputs, `critiques` the proposed explanations and the searches and bounds against them, and `frontier` the last few years' results, talks and proposals, newest first. At quick depth, which has no engineering facet, give the error budgets to `quantitative`.
+   - **Name the owner of each worked calculation** the question needs, under `## Worked calculations`: for example, the statistician combines the measurements and computes the tension. The owner must do it, and its result is the reference the slate builder, the refuters and the judge use. Lenses run at the same time and can't read each other, so another lens that needs the number computes its own and says so.
    - **List the earlier runs** under `## Prior runs`, with the mode you propose for each and why.
-5. **Check for calculator gaps.** List the calculations the question will need, for example relativistic travel times, Casimir energies, heat rejection or orbital transfers. Compare them with `tools.md`.
+5. **Check for calculator gaps.** List the calculations the question will need, for example relativistic travel times, Casimir energies, heat rejection, orbital transfers, or a relation between measured constants that several agents will use (a lifetime from couplings with radiative corrections, say). Compare them with `tools.md`.
    - **Propose a new calculator only for a calculation several agents will need and that is easy to get subtly wrong.** One-off arithmetic doesn't qualify; agents write that in their own scripts.
    - **For each one, give a snake_case name not already in the toolkit,** and a one-line purpose saying what it must cover.
-   - **Usually there are none.** Say so and move on.
+   - **Often there are none.** Say so and move on.
 6. **Get the brief confirmed.** Show the user:
    - the question made precise;
    - the premises to test;
@@ -64,9 +66,11 @@ Then check that WebFetch itself can read papers: WebFetch `https://arxiv.org/abs
    |---|---|---|---|---|
    | quick | 3 researchers, no source checks, 3 lenses, 1 refuter per candidate, Opus judge | ~18 | 1–2 hours | ~$25–40 |
    | standard | 4 researchers + checks, 5 lenses + math checks, 1 refuter per candidate, Fable judge | ~30 | ~2.5 hours | ~$35–50 |
-   | deep | 5 researchers + checks, 6–7 lenses + math checks, 3 refuters per candidate, crux round, Fable judge at max | ~46–57 | 3–5 hours | ~$55–90 |
+   | deep | 5 researchers + checks, 6–7 lenses + math checks, 3 refuters per candidate, crux round, Fable judge at max | ~45–62 | 4–5 hours | ~$55–90 |
 
    Say that quick and standard have each been measured once ($29 and $39 at list prices, including reruns after interruptions), and that deep is extrapolated from them. Times include the checkpoints; the measured standard run took about 2.5 hours in a cloud session running 2 agents at once. On a subscription the run draws on usage limits instead. `/workflows` shows live token counts, and `/usage` afterwards attributes usage to subagents and flags cache misses.
+
+   **A deep run in a cloud session on a subscription will probably cross a usage limit partway.** There, agents that hit the limit fail instead of waiting for the reset. Suggest launching the analyze stage at the start of a fresh usage window, or running it locally, where waiting agents continue after the reset; the stages hand over through files, so research can run in one place and analysis in another.
 
    Once the brief is confirmed, act on the earlier runs:
    - **Record what the user said about a run,** so later runs remember it. For distrust, run `prior_runs.py mark <run> --trust distrusted --note "<their reason>"`, and later runs ignore it without asking. A caveat, such as "the plot values were read by eye", goes in with `--note` alone.
@@ -74,7 +78,7 @@ Then check that WebFetch itself can read papers: WebFetch `https://arxiv.org/abs
 
 ## 2. Research
 
-Call the Workflow tool with `name: "conundrum-research"` and `args: {slug, depth, tools, prior}`. `tools` holds the confirmed calculators as `[{name, purpose}]`, and `prior` the brief's leads and update runs as `[{slug, mode}]`; leave either out if it is empty. The workflow runs in the background, so wait for its completion notification. If the result lists `missing` or `unchecked` facets, mention them at the checkpoint.
+Call the Workflow tool with `name: "conundrum-research"` and `args: {slug, depth, type, tools, prior}`. `type` is the question type from step 1; `tools` holds the confirmed calculators as `[{name, purpose}]`, and `prior` the brief's leads and update runs as `[{slug, mode}]`; leave either out if it is empty. Append `research <runId>` to `runs/<slug>/workflow-runs.txt` as soon as the launch returns: a relaunch needs the run ID (see "If something fails"). The workflow runs in the background, so wait for its completion notification. If the result lists `missing` or `unchecked` facets, mention them at the checkpoint.
 
 **In a cloud session, offer to commit and push `runs/<slug>/` now,** and again after step 4. The container is reclaimed after inactivity and unpushed files are lost, while a workflow's saved results survive, so a later relaunch would trust agents whose files no longer exist.
 
@@ -102,12 +106,17 @@ Read `runs/<slug>/dossier.md` and summarize it in 12 lines or fewer:
 
 Then:
 - **Ask for corrections or unpublished data.** Append them to the dossier under `## User-supplied`, marking each `[user]`.
-- **Choose lenses** with `lenses.md`, from type × depth. Show each one with a line on why.
+- **Choose lenses** with `lenses.md`, from type × depth. Show each one with a line on why. A deep run takes 6–7: the type's five plus the ones `lenses.md` adds at deep.
+- **Offer a stop after the slate** when this project has never run this depth or question type before (check the `depth` and `type` in `runs/*/run.json`). The analyze stage then returns once the lenses, math checks and candidate slate are done, about half its cost in a deep run (two-thirds in a standard one), so the user can look at the candidates before the refuters and the judge run on them.
 - **Confirm the user wants to continue.** This is the expensive half.
 
 ## 4. Analyze
 
-Call the Workflow tool with `name: "conundrum-analyze"` and `args: {slug, depth, type, lenses}`, and wait for completion.
+Call the Workflow tool with `name: "conundrum-analyze"` and `args: {slug, depth, type, lenses}`, adding `stopAfter: "slate"` if the user took that offer, and wait for completion. Append `analyze <runId>` to `runs/<slug>/workflow-runs.txt` as soon as the launch returns.
+
+**If the result says `stoppedAfter: "slate"`,** show the user `runs/<slug>/candidates.md`: its exclusivity line, each candidate's claim and decisive test, and for an anomaly its prediction matrix. Ask whether to continue. Then relaunch with the same args without `stopAfter`, plus `resumeFromRunId`: the lenses, math checks and slate come back from saved results. If the user wants the slate changed, also pass their request as `slateNote`: the lenses and math checks are replayed, and only the slate is rebuilt. Resuming works only in this session.
+
+**If any agents failed,** that is, if `lensesFailed`, `mathFailed`, `refutersFailed`, `cruxFailed` or `unexamined` is non-empty, or `audit` is null, tell the user which, before presenting anything, and offer a relaunch with `resumeFromRunId`. It reruns the first failed agent and every agent after it, and an agent whose file is marked `status: final` returns it unchanged. If `audit` is null, don't present audit flags: `audit.md` may be missing, unfinished, or the audit of an earlier report.
 
 **Save the report first.** The result's `report` field holds the judge's report as text; write it verbatim to `reportPath` (`runs/<slug>/report.md`). The judge can't save it itself, because Claude Code blocks subagents from writing files named `report*.md`. If `reportIncomplete` is true, tell the user the judge didn't mark the report complete.
 
@@ -117,7 +126,7 @@ Then offer to commit and push `runs/<slug>/` again (see step 2).
 
 First check that the pipeline is still untouched, as at step 3: `git status --short -- .claude CLAUDE.md .mcp.json` should show only changes you made.
 
-Read `runs/<slug>/report.md` and `runs/<slug>/audit.md`.
+Read `runs/<slug>/report.md`, and `runs/<slug>/audit.md` if the workflow result's `audit` is not null.
 
 **Compare with earlier runs.** For each run in the brief's `## Prior runs` that has a report and isn't marked distrusted, compare its ranked answers with this run's. Append `## What changed since <run>` to `report.md`, in 15 lines or fewer:
 - answers that rose, fell, appeared or dropped out, with their credences;
@@ -140,9 +149,10 @@ Don't restate the whole report; it is in the file.
 
 ## If something fails
 
-- **A workflow stopped partway:** relaunch it with the same name and args. In the same session, completed agents return their saved results instead of running again.
-- **A workflow hit the usage limit:** in a local interactive session, waiting agents continue by themselves after the reset (up to two waits per run). In a background or cloud session the affected agents fail instead. Relaunch the same workflow with the same args after the reset: completed agents return saved results, and a cut-off agent continues from what it had appended to its file.
+- **A workflow stopped partway:** if it still shows as running, stop it first (TaskStop). Relaunch it with the same name and args, plus `resumeFromRunId` set to the run ID on the last line for that stage in `runs/<slug>/workflow-runs.txt`, and append the relaunch's own ID. Every agent before the first failed or unfinished one returns its saved result; that agent and every one after it run again, and a rerun agent whose file is marked `status: final` returns it unchanged. Resuming works only in the session that launched the workflow; in a new session everything reruns.
+- **A workflow hit the usage limit:** in a local interactive session, waiting agents continue by themselves after the reset (up to two waits per run). In a background or cloud session the affected agents fail instead. After the reset, relaunch as above; a cut-off agent continues from what it had appended to its file. In a cloud session, once you can act again, offer to push `runs/<slug>/` before anything else.
+- **The container was reclaimed:** before relaunching, list `analyses/`, `math/`, `verdicts/` and `cruxes/`. If a file is missing for an agent the relaunch would replay, tell the user: a resume would trust a result whose file is gone. Offer a fresh analyze run instead.
 - **An agent's tool call was refused with `[pipeline guard]`:** it tried to write outside `runs/`. That's expected to be rare. If it shows up in a run, mention it, and check that the agent's output doesn't depend on the refused write.
-- **A workflow returned `ok: false`:** tell the user what failed (the result says why), and offer to rerun that stage. If the analyze stage failed at the judge, a relaunch with the same args returns every earlier agent's saved result and runs only the judge and the audit.
+- **A workflow returned `ok: false`:** tell the user what failed (the result says why), and offer to rerun that stage. If the analyze stage failed at the judge, a relaunch with `resumeFromRunId` returns the saved result of every agent before the first failure and runs everything from there: just the judge and the audit if nothing failed earlier.
 - **Research came back thin because sources were blocked:** say so plainly, and offer to rerun where the network allows arXiv, INSPIRE and journal sites.
 - **The workflow approval prompt:** in manual permission mode each run asks for approval. The user can pick "Yes, and don't ask again" for these two workflows.

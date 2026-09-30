@@ -1,8 +1,10 @@
 #!/usr/bin/env python3
-"""Run one /conundrum check script with a time limit, and save everything it printed.
+"""Run one /conundrum calculation or check script with a time limit, and save everything it printed.
 
-The math checker runs its scripts through this, so every verdict cites a log anyone can re-run.
-The log goes beside the script, as <script>.log. It holds the command, start time, duration,
+Every pipeline calculation runs through this: the math checker's checks, and the lenses', refuters'
+and crux advocates' scripts in runs/<slug>/calc/. The judge and the auditor can't run code, so the
+log is how they check a cited number against what the script printed. The log goes beside the
+script, as <script>.log. It holds the command, start time, duration,
 exit code, the Python and library versions, a count of the PASS, FAIL and UNDECIDED lines, and
 the script's full output and errors.
 
@@ -14,8 +16,8 @@ the script's full output and errors.
   the pipeline guard applies to scripts run directly.
 - The default time limit is 110 s, just under the Bash tool's default of 2 minutes. For a longer
   limit, raise the Bash tool's timeout parameter to match. The most allowed is 590 s.
-- It prints a one-line summary and the end of the output, and exits with the script's exit code:
-  124 on a timeout, 2 when it refuses.
+- It prints a one-line summary and the last 150 lines of output (the log keeps all of it), and
+  exits with the script's exit code: 124 on a timeout, 2 when it refuses.
 """
 from __future__ import annotations
 
@@ -32,7 +34,7 @@ from pathlib import Path
 GUARD = Path(__file__).resolve().parents[3] / "hooks" / "guard_pipeline.py"
 DEFAULT_TIMEOUT = 110
 MAX_TIMEOUT = 590
-TAIL = 40
+TAIL = 150
 
 
 def versions() -> str:
@@ -67,7 +69,8 @@ def refusal(script: Path, root: Path) -> str | None:
 def run(script: Path, timeout: float) -> tuple[int, str, str, float, bool]:
     start = time.monotonic()
     try:
-        done = subprocess.run([sys.executable, str(script)], capture_output=True, text=True, timeout=timeout)
+        # -u: unbuffered, so what a script printed before a timeout still reaches the log.
+        done = subprocess.run([sys.executable, "-u", str(script)], capture_output=True, text=True, timeout=timeout)
         return done.returncode, done.stdout, done.stderr, time.monotonic() - start, False
     except subprocess.TimeoutExpired as late:
         text = lambda b: b.decode(errors="replace") if isinstance(b, bytes) else (b or "")   # noqa: E731
@@ -96,7 +99,7 @@ def main(argv=None) -> int:
     started = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
     code, out, err, took, late = run(args.script, limit)
     tally = counts(out)
-    summary = ", ".join(f"{n} {k}" for k, n in tally.items())
+    summary = ", ".join(f"{n} {k}" for k, n in tally.items()) if any(tally.values()) else "no PASS/FAIL lines"
     status = f"124 (timed out after {limit:g} s)" if late else str(code)
     log = args.script.with_name(args.script.name + ".log")
     log.write_text(
@@ -111,7 +114,8 @@ def main(argv=None) -> int:
     print(f"exit {status} in {took:.1f} s: {summary}. Log: {log}")
     lines = out.rstrip("\n").splitlines()
     if lines:
-        print(("...\n" if len(lines) > TAIL else "") + "\n".join(lines[-TAIL:]))
+        head = f"... ({len(lines) - TAIL} earlier lines are in the log)\n" if len(lines) > TAIL else ""
+        print(head + "\n".join(lines[-TAIL:]))
     if err.strip():
         print("--- stderr (end) ---\n" + "\n".join(err.rstrip("\n").splitlines()[-20:]))
     return code

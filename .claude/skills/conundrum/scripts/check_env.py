@@ -103,8 +103,8 @@ def main() -> int:
     elif blocked:
         print(f"NOTE: blocked: {', '.join(blocked)}. Researchers will use the reachable sources and WebSearch.")
     if parallel < 5:
-        print(f"NOTE: only {parallel} agents run at once here, so runs take longer than the estimates, which assume "
-              "5 or more (roughly 2x for standard, 3-4x for deep). A machine with more CPUs runs them faster.")
+        print(f"NOTE: only {parallel} agents run at once here. The time estimates in SKILL.md were measured at "
+              "2 at once; a machine with more CPUs runs faster.")
     if not missing and not blocked:
         print("READY: all packages present and all sources reachable.")
     return 0
