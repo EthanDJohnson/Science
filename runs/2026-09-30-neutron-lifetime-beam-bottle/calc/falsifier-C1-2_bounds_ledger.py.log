@@ -1,0 +1,38 @@
+# math_run log
+command:  python3 runs/2026-09-30-neutron-lifetime-beam-bottle/calc/falsifier-C1-2_bounds_ledger.py
+started:  2026-09-30T19:00:20Z
+duration: 0.0 s
+exit:     0
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+== Independent constraints vs the two poles ==
+SM tau_beta, A route                          x=  878.70  z_S= +0.41  z_B= -4.21  dchi2(S-B)= -17.55
+SM tau_beta, a route                          x=  887.21  z_S= +3.00  z_B= -0.21  dchi2(S-B)=  +8.97
+SM tau_beta, PDG lambda                       x=  879.68  z_S= +0.82  z_B= -3.19  dchi2(S-B)=  -9.51
+J-PARC 2024 (as quoted)                       x=  877.20  z_S= -0.26  z_B= -2.24  dchi2(S-B)=  -4.96
+J-PARC 2024 (stat x2.29)                      x=  877.20  z_S= -0.20  z_B= -1.81  dchi2(S-B)=  -3.24
+Lunar Prospector (space)                      x=  887.00  z_S= +0.62  z_B= -0.07  dchi2(S-B)=  +0.38
+Sussex-ILL (same method, not independent)     x=  889.20  z_S= +2.24  z_B= +0.23  dchi2(S-B)=  +4.96
+
+== BBN helium-4 (Yeh et al. 2023) ==
+dYp/dtau = 2.00e-04 per s; sigma_obs(Yp) ~ 0.0033
+Yp shift between the poles = 0.0019 = 0.58 sigma_obs -> uninformative
+
+== Sums ==
+Sum dchi2 over A route + a route + J-PARC + space: -13.16 (negative favours C1)
+Sum dchi2 with PDG lambda + inflated J-PARC + space: -12.37
+Worst case for C1 (a route only + inflated J-PARC + space): +6.10
+
+== The a-route cost C1 must pay ==
+A route vs a route tau_beta split: 8.51 s, 2.79 sigma (C1 must blame the a route)
+C1 storage pole vs a route: 3.00 sigma
+C1 storage pole vs aSPECT 2024 alone (889.58 +/- 3.20): 3.49 sigma
+
+== Unitarity (M-CONSTRAINTS-04 inputs) ==
+Exact first-row unitarity + A-route lambda + Vus 0.22431 -> tau_beta = 876.88 s
+  pull vs storage pole: -1.44 s ; vs beam pole: -11.09 s
+
+--- stderr ---
+

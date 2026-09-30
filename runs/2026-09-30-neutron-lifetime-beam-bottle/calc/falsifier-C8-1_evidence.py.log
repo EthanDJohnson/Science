@@ -1,0 +1,23 @@
+# math_run log
+command:  python3 runs/2026-09-30-neutron-lifetime-beam-bottle/calc/falsifier-C8-1_evidence.py
+started:  2026-09-30T19:55:14Z
+duration: 0.0 s
+exit:     0
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+PERKEO III combined sigma = 0.00056
+aCORN2021 vs PERKEO III z = -0.51 ; vs aSPECT2024 z = -1.89
+aCORN2024 vs PERKEO III z = +0.85 ; vs aSPECT2024 z = -0.66
+aSPECT: needed |a| bias 2.67 % = 27 x backscatter/threshold item (0.1 %), = 2.7 x sum of ALL listed corrections (1.0 %)
+BL1: needed shift 9.88 s = 24.7 x 'proton backscatter calc unc' (0.4 s)
+BL1: needed shift 9.88 s = 19.8 x 'Si scattering unc' (0.5 s)
+BL1: needed shift 9.88 s = 12.3 x 'trap nonlinearity unc' (0.8 s)
+BL1: needed shift 9.88 s = 1.9 x the full trap-nonlinearity CORRECTION (5.3 s)
+Caylor 2025 H2 charge exchange ~0.3% -> 2.66 s = 27 % of the gap
+aSPECT tau_beta vs BL1: z = +0.48 ; any aSPECT tau_beta in [883.8, 891.6] s matches BL1 within 1 sigma
+i.e. an aSPECT offset from the A route (878.71 s) of anything from 5.1 to 12.9 s would 'map one-to-one'
+
+--- stderr ---
+

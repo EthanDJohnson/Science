@@ -1,0 +1,28 @@
+# math_run log
+command:  python3 runs/2026-09-30-neutron-lifetime-beam-bottle/calc/falsifier-C4-1_regeneration_limits.py
+started:  2026-09-30T19:18:07Z
+duration: 0.0 s
+exit:     0
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+Resonance fields for the Delta m band C4 needs:
+  Delta m =  260.0 neV -> B_res = 4.311 T
+  Delta m =  278.0 neV -> B_res = 4.610 T
+  Delta m =  280.0 neV -> B_res = 4.643 T
+  Delta m =  302.0 neV -> B_res = 5.008 T
+  B = 4.60 T -> |mu_n| B =  277.4 neV
+  B = 4.70 T -> |mu_n| B =  283.4 neV
+  B = 5.00 T -> |mu_n| B =  301.5 neV
+  B = 6.60 T -> |mu_n| B =  398.0 neV
+
+Needed conversion in trap P_needed = 1.1130e-02; naive regeneration P^2 = 1.239e-04
+SNS 2022, 6.6 T (B4C): p < 2.50e-08; P^2 needed / limit = 4.955e+03; per-pass cap sqrt(p) = 1.581e-04 (70x below need); beam shift cap = 0.1404 s vs gap 9.88 s
+SNS 2024, 4.70 T (Cd): p < 3.10e-10; P^2 needed / limit = 3.996e+05; per-pass cap sqrt(p) = 1.761e-05 (632x below need); beam shift cap = 0.0156 s vs gap 9.88 s
+SNS 2024, combined (Cd): p < 2.80e-10; P^2 needed / limit = 4.424e+05; per-pass cap sqrt(p) = 1.673e-05 (665x below need); beam shift cap = 0.0149 s vs gap 9.88 s
+
+Berezhiani worked example P_trap = 0.0043 -> tau ratio 1.0043 vs needed 1.0113; fraction of gap = 0.39
+
+--- stderr ---
+

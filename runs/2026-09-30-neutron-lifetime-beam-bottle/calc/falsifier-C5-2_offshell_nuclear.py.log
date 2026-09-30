@@ -1,0 +1,106 @@
+# math_run log
+command:  python3 runs/2026-09-30-neutron-lifetime-beam-bottle/calc/falsifier-C5-2_offshell_nuclear.py
+started:  2026-09-30T19:35:31Z
+duration: 29.6 s
+exit:     0
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+Inputs: tau_n = 877.82 s, Br = 0.01113, Gamma_0 = Br/tau_n = 1.2679e-05 s^-1
+On-shell X+ window: 937.389 MeV < m_X < 939.054 MeV (9Be stability / free decay)
+BL1 requirement: tau_X <= 10 ms  ->  Gamma_X >= 6.582e-20 MeV
+
+Earth: N_nuclei ~ 8.99e+49; heat flow 4.7e+13 W; E_dep >= 1.022 MeV
+  -> max per-nucleus decay rate from heat flow = 3.19e-24 s^-1 (partial lifetime >= 9.93e+15 yr)
+
+Per-bound-neutron rate at Gamma_X = hbar/10 ms  (Gamma_nuc in s^-1; partial lifetime in yr)
+[A] m_D=370 m_X=937.439 Q0=1.615 MeV | 2H:7.4e-20 9Be:7.6e-20 13C:6.4e-20 17O:6.7e-20 16O:3.6e-20 28Si:3.3e-20 24Mg:3.4e-20 56Fe:4.6e-20
+      min over Earth nuclei (O,Si,Mg,Fe) = 3.29e-20 s^-1 -> tau = 9.64e+11 yr; / heat-flow max = 1.0e+04
+[A] m_D=370 m_X=938.222 Q0=0.833 MeV | 2H:1.1e-18 9Be:1.1e-18 13C:9.4e-19 17O:9.8e-19 16O:5.3e-19 28Si:4.8e-19 24Mg:5.0e-19 56Fe:6.7e-19
+      min over Earth nuclei (O,Si,Mg,Fe) = 4.83e-19 s^-1 -> tau = 6.56e+10 yr; / heat-flow max = 1.5e+05
+[A] m_D=370 m_X=938.272 Q0=0.782 MeV | 2H:1.4e-18 9Be:1.4e-18 13C:1.2e-18 17O:1.3e-18 16O:6.7e-19 28Si:6.2e-19 24Mg:6.4e-19 56Fe:8.6e-19
+      min over Earth nuclei (O,Si,Mg,Fe) = 6.18e-19 s^-1 -> tau = 5.13e+10 yr; / heat-flow max = 1.9e+05
+[A] m_D=370 m_X=938.854 Q0=0.200 MeV | 2H:2.4e-16 9Be:2.4e-16 13C:2.0e-16 17O:2.1e-16 16O:1.1e-16 28Si:1.1e-16 24Mg:1.1e-16 56Fe:1.5e-16
+      min over Earth nuclei (O,Si,Mg,Fe) = 1.05e-16 s^-1 -> tau = 3.01e+08 yr; / heat-flow max = 3.3e+07
+[A] m_D=400 m_X=937.439 Q0=1.615 MeV | 2H:1.7e-20 9Be:1.7e-20 13C:1.3e-20 17O:1.4e-20 16O:5.8e-21 28Si:5.1e-21 24Mg:5.4e-21 56Fe:8.2e-21
+      min over Earth nuclei (O,Si,Mg,Fe) = 5.11e-21 s^-1 -> tau = 6.20e+12 yr; / heat-flow max = 1.6e+03
+[A] m_D=400 m_X=938.222 Q0=0.833 MeV | 2H:2.4e-19 9Be:2.5e-19 13C:2.0e-19 17O:2.1e-19 16O:8.4e-20 28Si:7.4e-20 24Mg:7.8e-20 56Fe:1.2e-19
+      min over Earth nuclei (O,Si,Mg,Fe) = 7.44e-20 s^-1 -> tau = 4.26e+11 yr; / heat-flow max = 2.3e+04
+[A] m_D=400 m_X=938.272 Q0=0.782 MeV | 2H:3.1e-19 9Be:3.2e-19 13C:2.5e-19 17O:2.7e-19 16O:1.1e-19 28Si:9.5e-20 24Mg:1.0e-19 56Fe:1.5e-19
+      min over Earth nuclei (O,Si,Mg,Fe) = 9.50e-20 s^-1 -> tau = 3.33e+11 yr; / heat-flow max = 3.0e+04
+[A] m_D=400 m_X=938.854 Q0=0.200 MeV | 2H:5.2e-17 9Be:5.4e-17 13C:4.2e-17 17O:4.5e-17 16O:1.8e-17 28Si:1.6e-17 24Mg:1.7e-17 56Fe:2.6e-17
+      min over Earth nuclei (O,Si,Mg,Fe) = 1.61e-17 s^-1 -> tau = 1.97e+09 yr; / heat-flow max = 5.0e+06
+[A] m_D=460 m_X=937.439 Q0=1.615 MeV | 2H:3.6e-24 9Be:5.1e-24 13C:6.1e-25 17O:1.1e-24 16O:1.9e-30 28Si:7.8e-33 24Mg:1.3e-31 56Fe:3.0e-27
+      min over Earth nuclei (O,Si,Mg,Fe) = 7.77e-33 s^-1 -> tau = 4.08e+24 yr; / heat-flow max = 2.4e-09
+[A] m_D=460 m_X=938.222 Q0=0.833 MeV | 2H:4.0e-23 9Be:5.6e-23 13C:7.2e-24 17O:1.2e-23 16O:2.3e-29 28Si:9.5e-32 24Mg:1.6e-30 56Fe:3.6e-26
+      min over Earth nuclei (O,Si,Mg,Fe) = 9.55e-32 s^-1 -> tau = 3.32e+23 yr; / heat-flow max = 3.0e-08
+[A] m_D=460 m_X=938.272 Q0=0.782 MeV | 2H:5.1e-23 9Be:7.1e-23 13C:9.1e-24 17O:1.5e-23 16O:2.9e-29 28Si:1.2e-31 24Mg:2.0e-30 56Fe:4.5e-26
+      min over Earth nuclei (O,Si,Mg,Fe) = 1.21e-31 s^-1 -> tau = 2.62e+23 yr; / heat-flow max = 3.8e-08
+[A] m_D=460 m_X=938.854 Q0=0.200 MeV | 2H:7.2e-21 9Be:1.0e-20 13C:1.3e-21 17O:2.2e-21 16O:4.3e-27 28Si:1.8e-29 24Mg:3.0e-28 56Fe:6.7e-24
+      min over Earth nuclei (O,Si,Mg,Fe) = 1.81e-29 s^-1 -> tau = 1.75e+21 yr; / heat-flow max = 5.7e-06
+[B] m_D=370 m_X=937.439 Q0=1.615 MeV | 2H:1.1e-20 9Be:1.1e-20 13C:8.8e-21 17O:9.4e-21 16O:3.9e-21 28Si:3.5e-21 24Mg:3.7e-21 56Fe:5.5e-21
+      min over Earth nuclei (O,Si,Mg,Fe) = 3.49e-21 s^-1 -> tau = 9.09e+12 yr; / heat-flow max = 1.1e+03
+[B] m_D=370 m_X=938.222 Q0=0.833 MeV | 2H:1.6e-19 9Be:1.6e-19 13C:1.3e-19 17O:1.4e-19 16O:5.7e-20 28Si:5.0e-20 24Mg:5.3e-20 56Fe:7.9e-20
+      min over Earth nuclei (O,Si,Mg,Fe) = 5.04e-20 s^-1 -> tau = 6.29e+11 yr; / heat-flow max = 1.6e+04
+[B] m_D=370 m_X=938.272 Q0=0.782 MeV | 2H:2.0e-19 9Be:2.1e-19 13C:1.6e-19 17O:1.7e-19 16O:7.2e-20 28Si:6.4e-20 24Mg:6.8e-20 56Fe:1.0e-19
+      min over Earth nuclei (O,Si,Mg,Fe) = 6.44e-20 s^-1 -> tau = 4.92e+11 yr; / heat-flow max = 2.0e+04
+[B] m_D=370 m_X=938.854 Q0=0.200 MeV | 2H:3.4e-17 9Be:3.5e-17 13C:2.7e-17 17O:2.9e-17 16O:1.2e-17 28Si:1.1e-17 24Mg:1.1e-17 56Fe:1.7e-17
+      min over Earth nuclei (O,Si,Mg,Fe) = 1.08e-17 s^-1 -> tau = 2.92e+09 yr; / heat-flow max = 3.4e+06
+[B] m_D=400 m_X=937.439 Q0=1.615 MeV | 2H:2.6e-21 9Be:2.8e-21 13C:1.9e-21 17O:2.1e-21 16O:6.0e-22 28Si:5.1e-22 24Mg:5.5e-22 56Fe:9.8e-22
+      min over Earth nuclei (O,Si,Mg,Fe) = 5.09e-22 s^-1 -> tau = 6.23e+13 yr; / heat-flow max = 1.6e+02
+[B] m_D=400 m_X=938.222 Q0=0.833 MeV | 2H:3.7e-20 9Be:3.9e-20 13C:2.7e-20 17O:3.0e-20 16O:8.6e-21 28Si:7.3e-21 24Mg:7.8e-21 56Fe:1.4e-20
+      min over Earth nuclei (O,Si,Mg,Fe) = 7.25e-21 s^-1 -> tau = 4.37e+12 yr; / heat-flow max = 2.3e+03
+[B] m_D=400 m_X=938.272 Q0=0.782 MeV | 2H:4.7e-20 9Be:5.0e-20 13C:3.5e-20 17O:3.8e-20 16O:1.1e-20 28Si:9.3e-21 24Mg:9.9e-21 56Fe:1.8e-20
+      min over Earth nuclei (O,Si,Mg,Fe) = 9.26e-21 s^-1 -> tau = 3.42e+12 yr; / heat-flow max = 2.9e+03
+[B] m_D=400 m_X=938.854 Q0=0.200 MeV | 2H:7.8e-18 9Be:8.3e-18 13C:5.8e-18 17O:6.3e-18 16O:1.8e-18 28Si:1.5e-18 24Mg:1.7e-18 56Fe:3.0e-18
+      min over Earth nuclei (O,Si,Mg,Fe) = 1.54e-18 s^-1 -> tau = 2.06e+10 yr; / heat-flow max = 4.8e+05
+[B] m_D=460 m_X=937.439 Q0=1.615 MeV | 2H:5.7e-25 9Be:9.4e-25 13C:5.1e-26 17O:1.1e-25 16O:1.8e-33 28Si:9.2e-37 24Mg:4.6e-35 56Fe:3.9e-29
+      min over Earth nuclei (O,Si,Mg,Fe) = 9.17e-37 s^-1 -> tau = 3.46e+28 yr; / heat-flow max = 2.9e-13
+[B] m_D=460 m_X=938.222 Q0=0.833 MeV | 2H:5.4e-24 9Be:8.6e-24 13C:5.1e-25 17O:1.1e-24 16O:1.9e-32 28Si:1.0e-35 24Mg:5.0e-34 56Fe:4.1e-28
+      min over Earth nuclei (O,Si,Mg,Fe) = 1.00e-35 s^-1 -> tau = 3.17e+27 yr; / heat-flow max = 3.1e-12
+[B] m_D=460 m_X=938.272 Q0=0.782 MeV | 2H:6.7e-24 9Be:1.1e-23 13C:6.4e-25 17O:1.3e-24 16O:2.4e-32 28Si:1.3e-35 24Mg:6.3e-34 56Fe:5.2e-28
+      min over Earth nuclei (O,Si,Mg,Fe) = 1.26e-35 s^-1 -> tau = 2.52e+27 yr; / heat-flow max = 3.9e-12
+[B] m_D=460 m_X=938.854 Q0=0.200 MeV | 2H:8.5e-22 9Be:1.3e-21 13C:8.4e-23 17O:1.7e-22 16O:3.3e-30 28Si:1.7e-33 24Mg:8.6e-32 56Fe:7.1e-26
+      min over Earth nuclei (O,Si,Mg,Fe) = 1.73e-33 s^-1 -> tau = 1.83e+25 yr; / heat-flow max = 5.4e-10
+
+Smallest (Earth-nucleus rate)/(heat-flow ceiling) over all cases = 2.87e-13
+Nucleon-decay limits for comparison: > ~1e29 yr (invisible modes) and > 1e30-1e34 yr (visible modes).
+
+Gamma_X (and tau_X) needed so that 16O neutrons live > 1e29 yr, and > heat-flow bound:
+  m_D=370, m_X=938.222: Gamma_X < 3.69e-37 MeV (tau_X > 1.79e+15 s); heat-flow: tau_X > 1.77e+02 s  [variant B]
+  m_D=400, m_X=938.222: Gamma_X < 2.43e-36 MeV (tau_X > 2.70e+14 s); heat-flow: tau_X > 2.68e+01 s  [variant B]
+  m_D=460, m_X=938.222: Gamma_X < 1.08e-24 MeV (tau_X > 6.12e+02 s); heat-flow: tau_X > 6.07e-11 s  [variant B]
+
+Sanity check (free neutron, full Breit-Wigner, test width Gamma_X = 1e-4 MeV):
+  Gamma_X=1e-04 MeV, m_D=400: Gamma(free n -> chain)/Gamma_0 = 35.4117  (expect 1 + off-shell tail proportional to Gamma_X)
+  Gamma_X=1e-04 MeV, m_D=460: Gamma(free n -> chain)/Gamma_0 = 1.0186  (expect 1 + off-shell tail proportional to Gamma_X)
+  Gamma_X=1e-08 MeV, m_D=400: Gamma(free n -> chain)/Gamma_0 = 0.9716  (expect 1 + off-shell tail proportional to Gamma_X)
+  Gamma_X=1e-08 MeV, m_D=460: Gamma(free n -> chain)/Gamma_0 = 0.9682  (expect 1 + off-shell tail proportional to Gamma_X)
+
+Liquid-scintillator check, m_D = 460 MeV, 13C valence neutron (S_n = 4.9463 MeV):
+  100 t pseudocumene: N_C = 4.51e+30, N_13C = 4.83e+28
+  [A] m_X=937.439: Gamma(13C) = 6.14e-25 s^-1 -> 2.56e+09 events/day/100 t (Borexino 8B rate above 3 MeV: 0.217 cpd/100 t) ratio = 1.2e+10
+        tau_X needed for <= 0.217 cpd/100 t: > 1.18e+08 s
+  [A] m_X=938.222: Gamma(13C) = 7.18e-24 s^-1 -> 2.99e+10 events/day/100 t (Borexino 8B rate above 3 MeV: 0.217 cpd/100 t) ratio = 1.4e+11
+        tau_X needed for <= 0.217 cpd/100 t: > 1.38e+09 s
+  [A] m_X=938.272: Gamma(13C) = 9.05e-24 s^-1 -> 3.78e+10 events/day/100 t (Borexino 8B rate above 3 MeV: 0.217 cpd/100 t) ratio = 1.7e+11
+        tau_X needed for <= 0.217 cpd/100 t: > 1.74e+09 s
+  [A] m_X=938.854: Gamma(13C) = 1.31e-21 s^-1 -> 5.48e+12 events/day/100 t (Borexino 8B rate above 3 MeV: 0.217 cpd/100 t) ratio = 2.5e+13
+        tau_X needed for <= 0.217 cpd/100 t: > 2.53e+11 s
+  [B] m_X=937.439: Gamma(13C) = 5.09e-26 s^-1 -> 2.13e+08 events/day/100 t (Borexino 8B rate above 3 MeV: 0.217 cpd/100 t) ratio = 9.8e+08
+        tau_X needed for <= 0.217 cpd/100 t: > 9.79e+06 s
+  [B] m_X=938.222: Gamma(13C) = 5.14e-25 s^-1 -> 2.15e+09 events/day/100 t (Borexino 8B rate above 3 MeV: 0.217 cpd/100 t) ratio = 9.9e+09
+        tau_X needed for <= 0.217 cpd/100 t: > 9.89e+07 s
+  [B] m_X=938.272: Gamma(13C) = 6.43e-25 s^-1 -> 2.68e+09 events/day/100 t (Borexino 8B rate above 3 MeV: 0.217 cpd/100 t) ratio = 1.2e+10
+        tau_X needed for <= 0.217 cpd/100 t: > 1.24e+08 s
+  [B] m_X=938.854: Gamma(13C) = 8.42e-23 s^-1 -> 3.51e+11 events/day/100 t (Borexino 8B rate above 3 MeV: 0.217 cpd/100 t) ratio = 1.6e+12
+        tau_X needed for <= 0.217 cpd/100 t: > 1.62e+10 s
+
+--- stderr ---
+/home/user/Science/runs/2026-09-30-neutron-lifetime-beam-bottle/calc/falsifier-C5-2_offshell_nuclear.py:152: IntegrationWarning: The algorithm does not converge.  Roundoff error is detected
+  in the extrapolation table.  It is assumed that the requested tolerance
+  cannot be achieved, and that the returned result (if full_output = 1) is 
+  the best which can be obtained.
+  return integrate.quad(integrand, Mmin, Mmax, points=pts, limit=2000)[0] / fQ0
+

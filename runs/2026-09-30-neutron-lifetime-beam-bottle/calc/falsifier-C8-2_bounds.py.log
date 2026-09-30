@@ -1,0 +1,39 @@
+# math_run log
+command:  python3 runs/2026-09-30-neutron-lifetime-beam-bottle/calc/falsifier-C8-2_bounds.py
+started:  2026-09-30T19:59:24Z
+duration: 16.4 s
+exit:     0
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   2 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+check: a(lambda=1.27641) = -0.10687
+Tmax = 751.2 eV (Beck 2020 quotes 751 eV)
+closure: fit of undistorted data -> a = -0.10687
+PASS closure
+PASS Tmax
+validation: U offset +80 mV -> da/a = -1.14%  (Beck 2020: ~1%)
+A. uniform 1.1% loss: a_fit = -0.10687, da/a = +0.000%
+B. eta=0.001: a_fit=-0.10628, da/a=+0.55%
+B. eta=0.005: a_fit=-0.10391, da/a=+2.77%
+B. eta=0.010: a_fit=-0.10094, da/a=+5.55%
+B. eta=0.020: a_fit=-0.09495, da/a=+11.16%
+D. eta needed for a_fit = -0.10402: 0.0048 (check a_fit = -0.10403)
+   i.e. efficiency difference eps(Tmax)-eps(0) = 0.48% across 0-751 eV
+   spectrum-averaged loss implied = 0.25%
+   slope at SDD energy (15.0-15.75 keV): 0.64% per keV
+E. power law n=0.5: implied below-threshold loss at 15 keV = 19.2%, at 30 keV (BL1-like) = 13.6%
+E. power law n=1.0: implied below-threshold loss at 15 keV = 9.6%, at 30 keV (BL1-like) = 4.8%
+E. power law n=2.0: implied below-threshold loss at 15 keV = 4.8%, at 30 keV (BL1-like) = 1.2%
+C. cutoff T<50 eV lost (3.1% of all protons): a_fit=-0.10687, da/a=+0.00%
+C. cutoff T<100 eV lost (8.4% of all protons): a_fit=-0.07000, da/a=+34.50%
+C. cutoff T<150 eV lost (15.2% of all protons): a_fit=-0.07000, da/a=+34.50%
+C. cutoff T<200 eV lost (22.8% of all protons): a_fit=-0.07000, da/a=+34.50%
+F. proton-side lambda bias (aSPECT - PERKEO III) = +0.0096
+   aCORN vs 'same bias' prediction -1.2668: z = -1.89 sigma
+   aCORN vs unbiased PERKEO III: z = -0.51 sigma
+   likelihood ratio unbiased:biased = 5.2
+   aCORN vs aSPECT directly: z = -1.89 sigma
+
+--- stderr ---
+

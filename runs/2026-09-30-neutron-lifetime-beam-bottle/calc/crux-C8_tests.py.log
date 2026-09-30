@@ -1,0 +1,29 @@
+# math_run log
+command:  python3 runs/2026-09-30-neutron-lifetime-beam-bottle/calc/crux-C8_tests.py
+started:  2026-09-30T20:11:31Z
+duration: 0.0 s
+exit:     0
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+a(PERKEO III lambda) = -0.10687 +- 0.00016
+required Delta a (aSPECT - PERKEO-predicted) = +0.00285
+Nab: sigma_lambda = 0.00051, sigma_a = 0.00015
+Nab alone, pole-to-pole separation (fixed poles) = 19.0 sigma
+PERKEO-like Nab reading vs aSPECT-pole (R-strong) = 3.42 sigma
+aSPECT-like Nab reading vs PERKEO-pole (C1) = 12.8 sigma
+tau_beta(aCORN 2024) = 884.48 +- 7.04 s
+check tau_beta(aSPECT 2024) = 889.58 s
+LiNA 1 s: reading 888 vs storage pole = 8.9 sigma; reading 878 vs proton pole = 4.2 sigma
+BL2 1 s: reading 888 vs storage pole = 8.9 sigma; reading 878 vs proton pole = 4.2 sigma
+UCNProBe 1.5 s: reading 888 vs storage pole = 6.2 sigma; reading 878 vs proton pole = 3.8 sigma
+BL3 0.3 s: reading 888 vs storage pole = 18.4 sigma; reading 878 vs proton pole = 4.7 sigma
+BL2 reading 881 +- 1 s: 2.5 sigma above storage pole, 3.1 sigma below proton pole
+BL2 reading 883 +- 1 s: 4.3 sigma above storage pole, 2.2 sigma below proton pole
+BL2 reading 885 +- 1 s: 6.1 sigma above storage pole, 1.3 sigma below proton pole
+scan changing a proportional proton-side loss by x0.5: shift 4.9 s = 3.5 sigma for two 1 s points
+scan changing a proportional proton-side loss by x2.0: shift 9.9 s = 7.0 sigma for two 1 s points
+
+--- stderr ---
+

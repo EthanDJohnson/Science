@@ -1,0 +1,42 @@
+# math_run log
+command:  python3 runs/2026-09-30-neutron-lifetime-beam-bottle/calc/falsifier-C2-1_evidence.py
+started:  2026-09-30T19:05:07Z
+duration: 0.1 s
+exit:     0
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+== 1. Non-storage evidence against 'beam value is true' ==
+J-PARC (quoted)        877.20 +- 4.35 s : vs BL1 2.14 sigma, vs proton class 2.24 sigma
+J-PARC (stat x2.29)    877.20 +- 5.58 s : vs BL1 1.74 sigma, vs proton class 1.81 sigma
+A-route tau_beta       878.70 +- 0.83 s : vs BL1 3.75 sigma, vs proton class 4.21 sigma
+J-PARC + A-route combined: 878.65 +- 0.82 s (chi2 0.11/1); vs BL1 3.78 sigma; vs proton class 4.24 sigma
+SM tau_beta, A and a groups together: 879.33 +- 0.80 s, chi2 7.81/1, S = 2.79, scaled error 2.23 s
+   vs BL1 2.64 sigma
+J-PARC + scaled SM route: 878.89 +- 1.99 s; vs BL1 2.94 sigma; vs proton class 3.19 sigma
+J-PARC(inflated) + scaled SM route: 879.04 +- 2.07 s; vs BL1 2.83 sigma
+
+== 2. Loss rate each storage result needs if BL1 (887.7 s) is true ==
+UCNtau 2025 (magnetic)       tau 877.82 +- 0.30 s -> needed loss  12.68 +- 0.39 x1e-6 s^-1 (time constant 0.91 d)
+Ezhov 2018 (magnetic)        tau 878.30 +- 1.89 s -> needed loss  12.06 +- 2.45 x1e-6 s^-1 (time constant 0.96 d)
+Serebrov 2005 (material)     tau 878.50 +- 0.76 s -> needed loss  11.80 +- 0.99 x1e-6 s^-1 (time constant 0.98 d)
+Arzumanov 2015 (material)    tau 880.20 +- 1.20 s -> needed loss   9.60 +- 1.55 x1e-6 s^-1 (time constant 1.21 d)
+MAMBO II 2010 (material)     tau 880.70 +- 1.77 s -> needed loss   8.95 +- 2.28 x1e-6 s^-1 (time constant 1.29 d)
+Gravitrap 2018 (material)    tau 881.50 +- 0.92 s -> needed loss   7.92 +- 1.19 x1e-6 s^-1 (time constant 1.46 d)
+Steyerl 2012 (material)      tau 882.50 +- 2.05 s -> needed loss   6.64 +- 2.63 x1e-6 s^-1 (time constant 1.74 d)
+single common loss fit: 11.90 +- 0.33 x1e-6 s^-1, chi2 23.19/6
+   p-value 7.35e-04
+range of needed loss: 6.64 to 12.68 x1e-6 s^-1
+magnetic needs 12.66 +- 0.38; material needs 9.81 +- 0.63 (chi2 8.19/4) x1e-6 s^-1; ratio 0.77
+difference 2.86 x1e-6 s^-1 at 3.86 sigma (unscaled)
+
+== 3. In-situ bounds in UCNtau 2025 (Musedinovic, table) vs needed loss ==
+depolarization unc. +0.07 s    -> 9.08e-8 s^-1 ; needed/bound = 140
+heating unc. +0.07 s           -> 9.08e-8 s^-1 ; needed/bound = 140
+residual gas corr. 0.05 s      -> 6.49e-8 s^-1 ; needed/bound = 195
+total sys +0.20 s              -> 25.95e-8 s^-1 ; needed/bound = 49
+needed shift in UCNtau: 9.88 s
+
+--- stderr ---
+

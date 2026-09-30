@@ -1,0 +1,65 @@
+# math_run log
+command:  python3 runs/2026-09-30-neutron-lifetime-beam-bottle/calc/crux-C7_discriminators.py
+started:  2026-09-30T20:09:36Z
+duration: 1.2 s
+exit:     0
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+== 1. BL2 / BL3 reading R: distance from storage pole and proton pole (sigma) ==
+BL2 sigma 1.0 s, R = 878.3 s: vs storage  0.02 sigma, vs proton pole  4.26 sigma
+BL2 sigma 1.0 s, R = 880.0 s: vs storage  1.54 sigma, vs proton pole  3.51 sigma
+BL2 sigma 1.0 s, R = 882.0 s: vs storage  3.38 sigma, vs proton pole  2.63 sigma
+BL2 sigma 1.0 s, R = 884.0 s: vs storage  5.22 sigma, vs proton pole  1.75 sigma
+BL2 sigma 1.0 s, R = 886.0 s: vs storage  7.06 sigma, vs proton pole  0.87 sigma
+BL2 sigma 1.0 s, R = 888.0 s: vs storage  8.89 sigma, vs proton pole  0.01 sigma
+BL3 sigma 0.3 s, R = 878.3 s: vs storage  0.04 sigma, vs proton pole  4.69 sigma
+BL3 sigma 0.3 s, R = 880.0 s: vs storage  3.20 sigma, vs proton pole  3.87 sigma
+BL3 sigma 0.3 s, R = 882.0 s: vs storage  7.02 sigma, vs proton pole  2.90 sigma
+BL3 sigma 0.3 s, R = 884.0 s: vs storage 10.83 sigma, vs proton pole  1.93 sigma
+BL3 sigma 0.3 s, R = 886.0 s: vs storage 14.65 sigma, vs proton pole  0.96 sigma
+BL3 sigma 0.3 s, R = 888.0 s: vs storage 18.46 sigma, vs proton pole  0.01 sigma
+
+== 2. C1 (one effect >= 2/3 of gap) vs C7 (each item <= 1/3 of gap) ==
+BL1-UCNtau gap 9.88 s; C1 single effect >= 6.59 s; C7 items <= 3.29 s
+  scan-difference error 0.5 s: separation (one_big - each_small)/sigma = 6.59
+  scan-difference error 1.0 s: separation (one_big - each_small)/sigma = 3.29
+  scan-difference error 1.1 s: separation (one_big - each_small)/sigma = 2.99
+  scan-difference error 1.5 s: separation (one_big - each_small)/sigma = 2.20
+  scan-difference error 2.4 s: separation (one_big - each_small)/sigma = 1.37
+BL1 existing 5 ms vs 10 ms split (equal halves): each stat 1.70 s, difference error 2.40 s; C1-A2 predicted 5.1 s -> 2.12 sigma from 0
+
+== 3. BL1 excess as spread over its own budget items (Gaussian) ==
+BL1 budget quadrature 2.32 s; excess vs UCNtau 9.88 s
+equal-k pull on every item (same sign): k = 2.30
+min-chi2 spread (shift ∝ sigma_i^2): total pull = 4.22 sigma (unchanged by spreading)
+BL1 error x1.0: 4.36 sigma, one-sided p = 6.65e-06
+BL1 error x1.5: 2.92 sigma, one-sided p = 0.00177
+BL1 error x2.0: 2.19 sigma, one-sided p = 0.0142
+BL1 error x2.3: 1.91 sigma, one-sided p = 0.0283
+
+== 4. Heavy-tail cost: BL1 + Sussex + aSPECT all high, independent (unit-scale Student-t) ==
+nu=2: one-sided P BL1 0.0255, Sussex 0.0741, aSPECT 0.0434; joint 8.18e-05; BL1+Sussex 0.00189
+nu=3: one-sided P BL1 0.0119, Sussex 0.0525, aSPECT 0.0252; joint 1.57e-05; BL1+Sussex 0.000623
+nu=4: one-sided P BL1 0.00653, Sussex 0.0415, aSPECT 0.0169; joint 4.58e-06; BL1+Sussex 0.000271
+Gauss: one-sided P BL1 1.02e-05, Sussex 0.0107, aSPECT 0.000762; joint 8.36e-11; BL1+Sussex 1.1e-07
+
+== 5. Nab: PERKEO-like vs aSPECT-like ==
+sigma_Nab = 0.00051; |Delta lambda| = 0.00961
+Nab reads PERKEO-like: 3.50 sigma from aSPECT
+Nab reads aSPECT-like: 12.68 sigma from PERKEO III (A route)
+
+== 6. UCNProBe beta-rate minus storage lifetime in one trap ==
+difference error 1.0 s: C2/C3 predicted +9.65 s -> 9.65 sigma from C7's 0
+difference error 1.5 s: C2/C3 predicted +9.65 s -> 6.43 sigma from C7's 0
+difference error 2.0 s: C2/C3 predicted +9.65 s -> 4.83 sigma from C7's 0
+difference error 2.5 s: C2/C3 predicted +9.65 s -> 3.86 sigma from C7's 0
+
+== 7. LiNA (~1 s) ==
+LiNA R = 878.0 +- 1.0 s: vs storage 0.29 sigma; vs proton pole 4.39 sigma
+LiNA R = 883.0 +- 1.0 s: vs storage 4.30 sigma; vs proton pole 2.19 sigma
+LiNA R = 888.0 +- 1.0 s: vs storage 8.89 sigma; vs proton pole 0.01 sigma
+
+--- stderr ---
+

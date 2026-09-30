@@ -1,0 +1,95 @@
+# math_run log
+command:  python3 runs/2026-09-30-neutron-lifetime-beam-bottle/calc/falsifier-C5-0_magnitude.py
+started:  2026-09-30T19:26:25Z
+duration: 11.2 s
+exit:     0
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+Required exotic partial rate Gamma_X-branch = 1.2679e-05 s^-1 (Br = 1.113% of total)
+(1) X+ mass window: 937.4817 < m_X < 939.0544 MeV ; m_p = 938.27209 ; |m_X - m_p| < 0.790 MeV
+    q/m of X+ equals the proton's to within 0.084%
+(2) BL1 well depth +800 eV (Nico 2005). Recoil of X+ and fraction with axial KE > 800 eV:
+    m_X = 937.4817 MeV: T_max =  2168.1 eV, <T> = 1147.6 eV, f(T>800) = 0.7081, f(T_axial>800) = 0.1646
+    m_X = 937.8000 MeV: T_max =  1518.6 eV, <T> =  783.4 eV, f(T>800) = 0.4990, f(T_axial>800) = 0.0692
+    m_X = 938.2721 MeV: T_max =   748.7 eV, <T> =  363.8 eV, f(T>800) = 0.0000, f(T_axial>800) = 0.0000
+    m_X = 938.6000 MeV: T_max =   354.7 eV, <T> =  159.2 eV, f(T>800) = 0.0000, f(T_axial>800) = 0.0000
+    m_X = 938.9000 MeV: T_max =    95.8 eV, <T> =   37.2 eV, f(T>800) = 0.0000, f(T_axial>800) = 0.0000
+    sanity: proton-mass recoil max 749.2 eV (Nico 2005 quotes 751 eV)
+    stable X+: max uncounted fraction (lightest allowed m_X) u = 0.164 -> beam shift 1.60 s of needed 9.88 s
+    stable X+ with m_X = m_p: u = 0 -> beam shift 0.00 s
+(3) Short-lived X+: counted fraction f = (tau/T)(1-exp(-T/tau)); beam shift reproduced:
+    T_trap = 5 ms, tau_X = 1e-06 s: counted f = 0.0002, shift = 9.88 s
+    T_trap = 5 ms, tau_X = 1e-04 s: counted f = 0.0200, shift = 9.68 s
+    T_trap = 5 ms, tau_X = 1e-03 s: counted f = 0.1987, shift = 7.90 s
+    T_trap = 5 ms, tau_X = 3e-03 s: counted f = 0.4867, shift = 5.04 s
+    T_trap = 5 ms, tau_X = 1e-02 s: counted f = 0.7869, shift = 2.09 s
+    T_trap = 5 ms, tau_X = 1e-01 s: counted f = 0.9754, shift = 0.24 s
+    T_trap = 10 ms, tau_X = 1e-06 s: counted f = 0.0001, shift = 9.88 s
+    T_trap = 10 ms, tau_X = 1e-04 s: counted f = 0.0100, shift = 9.78 s
+    T_trap = 10 ms, tau_X = 1e-03 s: counted f = 0.1000, shift = 8.88 s
+    T_trap = 10 ms, tau_X = 3e-03 s: counted f = 0.2893, shift = 7.00 s
+    T_trap = 10 ms, tau_X = 1e-02 s: counted f = 0.6321, shift = 3.61 s
+    T_trap = 10 ms, tau_X = 1e-01 s: counted f = 0.9516, shift = 0.47 s
+    T_trap = 5 ms: tau_X <= 5.000e-04 s needed for f <= 0.10 (>= ~90% of gap)
+    T_trap = 10 ms: tau_X <= 1.000e-03 s needed for f <= 0.10 (>= ~90% of gap)
+(4) Off-shell X* decay of bound neutrons: coefficient C = Gamma_bound/(Gamma_1 * hbar*Gamma_X) [MeV^-1]
+    and the minimum tau_X = hbar*C*Gamma_1/Gamma_bound,max for nucleon-lifetime bounds tau_N (per neutron)
+    2H  m_A=370 MeV, Qcut=   1 MeV, nX=4.0: C = 1.606e-02 MeV^-1; tau_N>1e+25 yr -> tau_X > 4.2e+04 s; tau_N>1e+29 yr -> tau_X > 4.2e+08 s; tau_N>2e+32 yr -> tau_X > 7.2e+11 s;
+    2H  m_A=370 MeV, Qcut=   1 MeV, nX=2.5: C = 1.633e-02 MeV^-1; tau_N>1e+25 yr -> tau_X > 4.3e+04 s; tau_N>1e+29 yr -> tau_X > 4.3e+08 s; tau_N>2e+32 yr -> tau_X > 7.3e+11 s;
+    2H  m_A=370 MeV, Qcut=  20 MeV, nX=2.5: C = 2.905e+03 MeV^-1; tau_N>1e+25 yr -> tau_X > 7.6e+09 s; tau_N>1e+29 yr -> tau_X > 7.6e+13 s; tau_N>2e+32 yr -> tau_X > 1.3e+17 s;
+    2H  m_A=400 MeV, Qcut=   1 MeV, nX=4.0: C = 1.574e-02 MeV^-1; tau_N>1e+25 yr -> tau_X > 4.1e+04 s; tau_N>1e+29 yr -> tau_X > 4.1e+08 s; tau_N>2e+32 yr -> tau_X > 7.0e+11 s;
+    2H  m_A=400 MeV, Qcut=   1 MeV, nX=2.5: C = 1.613e-02 MeV^-1; tau_N>1e+25 yr -> tau_X > 4.2e+04 s; tau_N>1e+29 yr -> tau_X > 4.2e+08 s; tau_N>2e+32 yr -> tau_X > 7.2e+11 s;
+    2H  m_A=400 MeV, Qcut=  20 MeV, nX=2.5: C = 2.610e+03 MeV^-1; tau_N>1e+25 yr -> tau_X > 6.9e+09 s; tau_N>1e+29 yr -> tau_X > 6.9e+13 s; tau_N>2e+32 yr -> tau_X > 1.2e+17 s;
+    2H  m_A=430 MeV, Qcut=   1 MeV, nX=4.0: C = 1.494e-02 MeV^-1; tau_N>1e+25 yr -> tau_X > 3.9e+04 s; tau_N>1e+29 yr -> tau_X > 3.9e+08 s; tau_N>2e+32 yr -> tau_X > 6.7e+11 s;
+    2H  m_A=430 MeV, Qcut=   1 MeV, nX=2.5: C = 1.562e-02 MeV^-1; tau_N>1e+25 yr -> tau_X > 4.1e+04 s; tau_N>1e+29 yr -> tau_X > 4.1e+08 s; tau_N>2e+32 yr -> tau_X > 7.0e+11 s;
+    2H  m_A=430 MeV, Qcut=  20 MeV, nX=2.5: C = 1.947e+03 MeV^-1; tau_N>1e+25 yr -> tau_X > 5.1e+09 s; tau_N>1e+29 yr -> tau_X > 5.1e+13 s; tau_N>2e+32 yr -> tau_X > 8.7e+16 s;
+    2H  m_A=460 MeV, Qcut=   1 MeV, nX=4.0: C = 9.776e-03 MeV^-1; tau_N>1e+25 yr -> tau_X > 2.6e+04 s; tau_N>1e+29 yr -> tau_X > 2.6e+08 s; tau_N>2e+32 yr -> tau_X > 4.4e+11 s;
+    2H  m_A=460 MeV, Qcut=   1 MeV, nX=2.5: C = 1.198e-02 MeV^-1; tau_N>1e+25 yr -> tau_X > 3.2e+04 s; tau_N>1e+29 yr -> tau_X > 3.2e+08 s; tau_N>2e+32 yr -> tau_X > 5.4e+11 s;
+    2H  m_A=460 MeV, Qcut=  20 MeV, nX=2.5: C = 5.479e+01 MeV^-1; tau_N>1e+25 yr -> tau_X > 1.4e+08 s; tau_N>1e+29 yr -> tau_X > 1.4e+12 s; tau_N>2e+32 yr -> tau_X > 2.5e+15 s;
+    16O m_A=370 MeV, Qcut=   1 MeV, nX=4.0: C = 2.494e-04 MeV^-1; tau_N>1e+25 yr -> tau_X > 6.6e+02 s; tau_N>1e+29 yr -> tau_X > 6.6e+06 s; tau_N>2e+32 yr -> tau_X > 1.1e+10 s;
+    16O m_A=370 MeV, Qcut=   1 MeV, nX=2.5: C = 2.823e-04 MeV^-1; tau_N>1e+25 yr -> tau_X > 7.4e+02 s; tau_N>1e+29 yr -> tau_X > 7.4e+06 s; tau_N>2e+32 yr -> tau_X > 1.3e+10 s;
+    16O m_A=370 MeV, Qcut=  20 MeV, nX=2.5: C = 7.497e+02 MeV^-1; tau_N>1e+25 yr -> tau_X > 2.0e+09 s; tau_N>1e+29 yr -> tau_X > 2.0e+13 s; tau_N>2e+32 yr -> tau_X > 3.4e+16 s;
+    16O m_A=400 MeV, Qcut=   1 MeV, nX=4.0: C = 2.139e-04 MeV^-1; tau_N>1e+25 yr -> tau_X > 5.6e+02 s; tau_N>1e+29 yr -> tau_X > 5.6e+06 s; tau_N>2e+32 yr -> tau_X > 9.6e+09 s;
+    16O m_A=400 MeV, Qcut=   1 MeV, nX=2.5: C = 2.565e-04 MeV^-1; tau_N>1e+25 yr -> tau_X > 6.8e+02 s; tau_N>1e+29 yr -> tau_X > 6.8e+06 s; tau_N>2e+32 yr -> tau_X > 1.1e+10 s;
+    16O m_A=400 MeV, Qcut=  20 MeV, nX=2.5: C = 6.051e+02 MeV^-1; tau_N>1e+25 yr -> tau_X > 1.6e+09 s; tau_N>1e+29 yr -> tau_X > 1.6e+13 s; tau_N>2e+32 yr -> tau_X > 2.7e+16 s;
+    16O m_A=430 MeV, Qcut=   1 MeV, nX=4.0: C = 1.408e-04 MeV^-1; tau_N>1e+25 yr -> tau_X > 3.7e+02 s; tau_N>1e+29 yr -> tau_X > 3.7e+06 s; tau_N>2e+32 yr -> tau_X > 6.3e+09 s;
+    16O m_A=430 MeV, Qcut=   1 MeV, nX=2.5: C = 1.975e-04 MeV^-1; tau_N>1e+25 yr -> tau_X > 5.2e+02 s; tau_N>1e+29 yr -> tau_X > 5.2e+06 s; tau_N>2e+32 yr -> tau_X > 8.8e+09 s;
+    16O m_A=430 MeV, Qcut=  20 MeV, nX=2.5: C = 3.182e+02 MeV^-1; tau_N>1e+25 yr -> tau_X > 8.4e+08 s; tau_N>1e+29 yr -> tau_X > 8.4e+12 s; tau_N>2e+32 yr -> tau_X > 1.4e+16 s;
+    16O m_A=460 MeV, Qcut=   1 MeV, nX=4.0: C = 6.376e-08 MeV^-1; tau_N>1e+25 yr -> tau_X > 1.7e-01 s; tau_N>1e+29 yr -> tau_X > 1.7e+03 s; tau_N>2e+32 yr -> tau_X > 2.9e+06 s;
+    16O m_A=460 MeV, Qcut=   1 MeV, nX=2.5: C = 1.589e-06 MeV^-1; tau_N>1e+25 yr -> tau_X > 4.2e+00 s; tau_N>1e+29 yr -> tau_X > 4.2e+04 s; tau_N>2e+32 yr -> tau_X > 7.1e+07 s;
+    16O m_A=460 MeV, Qcut=  20 MeV, nX=2.5: C = 2.000e-05 MeV^-1; tau_N>1e+25 yr -> tau_X > 5.3e+01 s; tau_N>1e+29 yr -> tau_X > 5.3e+05 s; tau_N>2e+32 yr -> tau_X > 9.0e+08 s;
+    Weakest lower bound on tau_X over all rows with a very weak tau_N > 1e25 yr: 1.68e-01 s
+    BL1 requires tau_X <= 5.0e-04 s -> gap between windows = factor 3.4e+02
+    16O with Super-K-scale tau_N > 1.7e32 yr (weakest row): tau_X > 2.85e+06 s = 9.05e-02 yr; factor 5.7e+09 over BL1 max
+(5) Critical per-neutron lifetime tau_N* above which the tau_X window closes (tau_X,min > BL1 max 5e-4 s):
+    tau_N* = tau_Xmax / (hbar * C * Gamma_1); most conservative settings Qcut = 1 MeV, nX = 4
+    2H  m_X=937.492 MeV m_A=370 MeV: C = 2.308e-03 MeV^-1 -> tau_N* = 8.22e+17 yr
+    2H  m_X=937.492 MeV m_A=400 MeV: C = 2.278e-03 MeV^-1 -> tau_N* = 8.33e+17 yr
+    2H  m_X=937.492 MeV m_A=460 MeV: C = 1.662e-03 MeV^-1 -> tau_N* = 1.14e+18 yr
+    2H  m_X=938.272 MeV m_A=370 MeV: C = 1.606e-02 MeV^-1 -> tau_N* = 1.18e+17 yr
+    2H  m_X=938.272 MeV m_A=400 MeV: C = 1.574e-02 MeV^-1 -> tau_N* = 1.21e+17 yr
+    2H  m_X=938.272 MeV m_A=460 MeV: C = 9.776e-03 MeV^-1 -> tau_N* = 1.94e+17 yr
+    2H  m_X=938.900 MeV m_A=370 MeV: C = 4.284e+00 MeV^-1 -> tau_N* = 4.43e+14 yr
+    2H  m_X=938.900 MeV m_A=400 MeV: C = 4.176e+00 MeV^-1 -> tau_N* = 4.55e+14 yr
+    2H  m_X=938.900 MeV m_A=460 MeV: C = 2.297e+00 MeV^-1 -> tau_N* = 8.27e+14 yr
+    16O m_X=937.492 MeV m_A=370 MeV: C = 1.677e-05 MeV^-1 -> tau_N* = 1.13e+20 yr
+    16O m_X=937.492 MeV m_A=400 MeV: C = 1.449e-05 MeV^-1 -> tau_N* = 1.31e+20 yr
+    16O m_X=937.492 MeV m_A=460 MeV: C = 5.053e-09 MeV^-1 -> tau_N* = 3.76e+23 yr
+    16O m_X=938.272 MeV m_A=370 MeV: C = 2.494e-04 MeV^-1 -> tau_N* = 7.61e+18 yr
+    16O m_X=938.272 MeV m_A=400 MeV: C = 2.139e-04 MeV^-1 -> tau_N* = 8.87e+18 yr
+    16O m_X=938.272 MeV m_A=460 MeV: C = 6.376e-08 MeV^-1 -> tau_N* = 2.98e+22 yr
+    16O m_X=938.900 MeV m_A=370 MeV: C = 1.008e-01 MeV^-1 -> tau_N* = 1.88e+16 yr
+    16O m_X=938.900 MeV m_A=400 MeV: C = 8.597e-02 MeV^-1 -> tau_N* = 2.21e+16 yr
+    16O m_X=938.900 MeV m_A=460 MeV: C = 2.270e-05 MeV^-1 -> tau_N* = 8.36e+19 yr
+(6) Escape sliver: off-shell route closed in nucleus if 2 m_A + 2 m_e > m_n - S (nothing left for e- nubar e+ 2A)
+    2H        : closed for m_A > 468.159 MeV
+    9Be(2a+n) : closed for m_A > 468.485 MeV
+    16O       : closed for m_A > 461.440 MeV
+    X+ -> 2A e+ open only for m_A < (m_X,max - m_e)/2 = 469.272 MeV
+    deuterons in 1 kt D2O: 6.01e+31 (one neutron each); at tau_N* = 1.14e18 yr -> 5.3e+13 decays/yr
+    sanity: C scales as 1/(2 pi delta) for small Qcut; 2H delta = -1.442 MeV below m_X (needs m* < m_X:  True )
+
+--- stderr ---
+

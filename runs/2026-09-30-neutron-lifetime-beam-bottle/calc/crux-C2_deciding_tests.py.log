@@ -1,0 +1,39 @@
+# math_run log
+command:  python3 runs/2026-09-30-neutron-lifetime-beam-bottle/calc/crux-C2_deciding_tests.py
+started:  2026-09-30T20:03:32Z
+duration: 0.0 s
+exit:     0
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+== 1. UCNProBe same-trap test: C2 predicts tau_beta - tau_storage ~ +9.65 s; C1/C5/C6/C7(approx)/C8 predict ~0 ==
+predicted gap under C2 = 9.65 s
+  UCNProBe sigma = 1.0 s: prediction separation = 9.6 sigma
+  UCNProBe sigma = 1.5 s: prediction separation = 6.4 sigma
+  UCNProBe sigma = 2.0 s: prediction separation = 4.8 sigma
+  sigma needed to separate predictions at 3 sigma: 3.22 s
+  sigma needed to separate predictions at 5 sigma: 1.93 s
+  tau_beta to 1.0 s needs absolute beta-efficiency x UCN-count normalisation to 0.113 %
+  tau_beta to 1.5 s needs absolute beta-efficiency x UCN-count normalisation to 0.169 %
+  tau_beta to 2.0 s needs absolute beta-efficiency x UCN-count normalisation to 0.225 %
+== 2. C2 vs C3: apparatus dependence of the extra loss ==
+needed loss material = 1.016e-05 s^-1, magnetic = 1.302e-05 s^-1, ratio = 0.78
+material - magnetic lifetime split = 2.21 +- 0.75 s (2.95 sigma, scaled material error)
+C3 (bulk invisible decay) predicts identical tau_storage - tau_beta = -9.65 s in every trap;
+C2 (apparatus-dependent loss) predicts ~-7.94 s (material) vs ~-10.15 s (magnetic)
+  to see the 2.21 s trap dependence at 2 sigma, each in-trap beta-vs-storage gap needs sigma <= 0.78 s
+  to see the 2.21 s trap dependence at 3 sigma, each in-trap beta-vs-storage gap needs sigma <= 0.52 s
+== 3. LiNA (electron beam): C2 predicts ~888 s; C5, C8, C1 predict ~878 s ==
+  LiNA sigma = 1.0 s: separation of 888 vs 878 predictions = 9.6 sigma
+  LiNA sigma = 2.0 s: separation of 888 vs 878 predictions = 4.8 sigma
+== 4. BL2 against C7: C2 888 s vs C7 880-886 s ==
+  BL2 sigma = 1.0 s: 888 vs 880 s separation = 8.0 sigma
+  BL2 sigma = 1.0 s: 888 vs 883 s separation = 5.0 sigma
+  BL2 sigma = 1.0 s: 888 vs 886 s separation = 2.0 sigma
+== 5. Symmetric lambda cost ==
+  A-route vs a-route split (M-STATISTICIAN-10): 3.49 sigma; C1 needs the a route wrong, C2 needs the A route wrong
+  PERKEO III vs aSPECT 2024: 3.49 sigma
+
+--- stderr ---
+
