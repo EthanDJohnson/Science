@@ -1,0 +1,24 @@
+# math_run log
+command:  python3 runs/2026-09-29-problem-of-time-quantum-gravity/math/constraints/M-CONSTRAINTS-12.py
+started:  2026-09-30T00:07:34Z
+duration: 0.4 s
+exit:     0
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   11 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+PASS 3*T**(2/3)*t_P**(4/3)*w**2/2 == 3*T**(2/3)*t_P**(4/3)*w**2/2: symbolic
+PASS t_P^(4/3) * (1 s)^(2/3) * (2*pi*429 THz)^2 has the dimension of dimensionless: dimensional analysis
+PASS t_P^(2/3) * (1 s)^(1/3) == 1.43e-29 s: within 0.005; 1.42712e-29 vs 1.43e-29 (SI)
+PASS t_P^(2/3) * (92 h)^(1/3) == 9.9e-28 s: within 0.005; 9.87392e-28 vs 9.9e-28 (SI)
+PASS 7.6e-21 * 92 h == 2.5e-15 s: within 0.02; 2.51712e-15 vs 2.5e-15 (SI)
+PASS 7.6e-21 * 92 h / (t_P^(2/3) * (92 h)^(1/3)) == 2.5e12: within 0.03; 2.54926e+12 vs 2.5e+12 (SI)
+PASS 1.5 * t_P^(4/3) * (1 s)^(2/3) * (2*pi*429 THz)^2 == 2.2e-27: within 0.02; 2.21965e-27 vs 2.2e-27 (SI)
+PASS 1.5 * t_P^(4/3) * (1 yr)^(2/3) * (2*pi*429 THz)^2 == 2.2e-22: within 0.03; 2.2166e-22 vs 2.2e-22 (SI)
+PASS 1.5 * t_P^(4/3) * (13.8 Gyr)^(2/3) * (2*pi*429 THz)^2 == 1.3e-15: within 0.03; 1.27528e-15 vs 1.3e-15 (SI)
+PASS (0.01005/(1.5 * t_P^(4/3) * (1 s)^(2/3)))^0.5 == 5.7e27 1/s: within 0.01; 5.73559e+27 vs 5.7e+27 (SI)
+PASS hbar*(0.01005/(1.5 * t_P^(4/3) * (1 s)^(2/3)))^0.5 == 3.8e12 eV: within 0.01; 6.04859e-07 vs 6.08827e-07 (SI)
+SUMMARY: 11 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

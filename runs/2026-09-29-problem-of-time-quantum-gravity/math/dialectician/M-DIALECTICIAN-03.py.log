@@ -1,0 +1,22 @@
+# math_run log
+command:  python3 runs/2026-09-29-problem-of-time-quantum-gravity/math/dialectician/M-DIALECTICIAN-03.py
+started:  2026-09-29T23:59:58Z
+duration: 1.3 s
+exit:     0
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   8 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+resonant pairs: 2
+PASS sharp conditional state = exp(-i H_S t) psi0 (fidelity): numeric (numpy); min fidelity 1.000000000000
+PASS blurred dephasing sigma = 0.05 s: numeric (numpy); |rho01| = 0.494407, predicted 0.494407
+PASS blurred dephasing sigma = 0.2 s: numeric (numpy); |rho01| = 0.417635, predicted 0.417635, quoted 0.417635
+PASS blurred dephasing sigma = 0.5 s: numeric (numpy); |rho01| = 0.162326, predicted 0.162326
+PASS blurred dephasing sigma = 0.8 s: numeric (numpy); |rho01| = 0.028067, predicted 0.028067, quoted 0.028067
+PASS exp(-Delta**2*sigma**2/2) == exp(-Delta**2*sigma**2/2): symbolic
+PASS lim sigma->0 of exp(-Delta**2*sigma**2/2) == 1: symbolic limit 1
+PASS (3 rad/s) * (0.2 s) has the dimension of dimensionless: dimensional analysis
+SUMMARY: 8 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

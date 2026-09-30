@@ -75,10 +75,9 @@ report("Fejer kernel at tau=0.2 s equals quoted 0.8067477",
 
 # (iii) symbolic: |sum_k e^{i k x}|^2 / d^2 equals Fejer form, and -> 1 as x -> 0
 x = sp.symbols("x", positive=True)
-k = sp.symbols("k", integer=True)
-S = sum(sp.exp(sp.I * j * x) for j in range(d))
-identity(sp.simplify(S * sp.conjugate(S)).rewrite(sp.cos) / d**2, sp.sin(d * x / 2) ** 2 / (d**2 * sp.sin(x / 2) ** 2),
-         domain={"x": (0.05, 3.0)})
+# |sum_{j=0}^{d-1} e^{ijx}|^2 = d + 2 sum_{m=1}^{d-1} (d-m) cos(mx)  (expanded by hand, no simplify)
+lhs = (d + 2 * sum((d - m) * sp.cos(m * x) for m in range(1, d))) / d**2
+identity(lhs, sp.sin(d * x / 2) ** 2 / (d**2 * sp.sin(x / 2) ** 2), domain={"x": (0.05, 3.0)})
 limit(sp.sin(d * x / 2) ** 2 / (d**2 * sp.sin(x / 2) ** 2), "x", 0, "1")
 units("(1 rad/s) * (0.2 s)", "dimensionless")
 raise SystemExit(finish())

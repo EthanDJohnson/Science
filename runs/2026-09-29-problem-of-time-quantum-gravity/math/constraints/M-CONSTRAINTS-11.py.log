@@ -1,0 +1,22 @@
+# math_run log
+command:  python3 runs/2026-09-29-problem-of-time-quantum-gravity/math/constraints/M-CONSTRAINTS-11.py
+started:  2026-09-30T00:07:34Z
+duration: 0.4 s
+exit:     0
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   9 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+PASS 4*pi*G*hbar/c**3 == 4*pi*G*hbar/c**3: symbolic
+PASS c^3/(8*pi*G) * (1 1/m^2) * (1 m^4) has the dimension of J s: dimensional analysis
+PASS 4*pi*hbar*G/c^3 has the dimension of m^2: dimensional analysis
+PASS 4*pi*hbar*G/c^3 == 3.28e-69 m^2: within 0.003; 3.28269e-69 vs 3.28e-69 (SI)
+PASS 4*pi*l_P^2 == 3.28e-69 m^2: within 0.003; 3.28269e-69 vs 3.28e-69 (SI)
+PASS (4*pi*hbar*G/c^3)/(c*1 s*(4*pi/3)*(c/(67.4 km/s/Mpc))^3) == 1.0e-156 1/m^2: within 0.03; 1.01108e-156 vs 1e-156 (SI)
+PASS (4*pi*hbar*G/c^3)/(c*1 s*(4*pi/3)*(c/(67.4 km/s/Mpc))^3)/(1.09e-52 1/m^2) == 9e-105: within 0.05; 9.27598e-105 vs 9e-105 (SI)
+PASS (4*pi*hbar*G/c^3)/(c*1e-15 s*(4*pi/3)*(c/(67.4 km/s/Mpc))^3)/(1.09e-52 1/m^2) == 9e-90: within 0.05; 9.27598e-90 vs 9e-90 (SI)
+PASS lim hbar->0 of 4*pi*G*hbar/c**3 == 0: symbolic limit 0
+SUMMARY: 9 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

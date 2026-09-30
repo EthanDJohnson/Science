@@ -1,0 +1,22 @@
+# math_run log
+command:  python3 runs/2026-09-29-problem-of-time-quantum-gravity/math/idealizer/M-IDEALIZER-14.py
+started:  2026-09-29T23:59:36Z
+duration: 0.6 s
+exit:     0
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   5 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+t = 0.5 tau: |coherence| = 0.882444, Gaussian prediction 0.882497
+PASS 0.8824439241050828 == 0.8824969025845953: within 0.01; 0.882444 vs 0.882497 (SI)
+t = 1.0 tau: |coherence| = 0.606055, Gaussian prediction 0.606531
+PASS 0.6060546230313789 == 0.6065306597126334: within 0.01; 0.606055 vs 0.606531 (SI)
+t = 2.0 tau: |coherence| = 0.134812, Gaussian prediction 0.135335
+PASS 0.13481218493640473 == 0.1353352832366127: within 0.01; 0.134812 vs 0.135335 (SI)
+sharp-clock fidelity 0.9999999999999996 norm 0.9999999999999999
+PASS 0.9999999999999996 == 1: within 1e-12; 1 vs 1 (SI)
+PASS 0.9999999999999994 == 1: within 1e-10; 1 vs 1 (SI)
+SUMMARY: 5 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

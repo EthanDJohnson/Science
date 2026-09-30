@@ -1,0 +1,26 @@
+# math_run log
+command:  python3 runs/2026-09-29-problem-of-time-quantum-gravity/math/constraints/M-CONSTRAINTS-10.py
+started:  2026-09-30T00:06:27Z
+duration: 0.4 s
+exit:     0
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   13 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+PASS (3*pi*hbar*c/(2*G))^0.5 * c^2 == 2.650e19 GeV: within 0.002; 4.24627e+09 vs 4.24577e+09 (SI)
+PASS (3*pi*hbar*c/(2*G))^0.5 * c^2 has the dimension of energy: dimensional analysis
+PASS ((h_planck*429 THz)/((3*pi*hbar*c/(2*G))^0.5 * c^2))^2 == 4.5e-57: within 0.03; 4.48138e-57 vs 4.5e-57 (SI)
+PASS ((13.6 eV)/((3*pi*hbar*c/(2*G))^0.5 * c^2))^2 == 2.6e-55: within 0.03; 2.6332e-55 vs 2.6e-55 (SI)
+PASS ((14 TeV)/((3*pi*hbar*c/(2*G))^0.5 * c^2))^2 == 2.8e-31: within 0.03; 2.79037e-31 vs 2.8e-31 (SI)
+PASS ((1e13 GeV)/((3*pi*hbar*c/(2*G))^0.5 * c^2))^2 == 1.4e-13: within 0.03; 1.42366e-13 vs 1.4e-13 (SI)
+PASS ((1e14 GeV)/((3*pi*hbar*c/(2*G))^0.5 * c^2))^2 == 1.4e-11: within 0.03; 1.42366e-11 vs 1.4e-11 (SI)
+PASS (2/(2*2+1))^0.5 == 0.63: within 0.02; 0.632456 vs 0.63 (SI)
+PASS (2/(2*10+1))^0.5 == 0.31: within 0.02; 0.308607 vs 0.31 (SI)
+PASS (2/(2*30+1))^0.5 == 0.18: within 0.02; 0.181071 vs 0.18 (SI)
+PASS (2/61)^0.5/1.42e-11 == 1.3e10: within 0.03; 1.27515e+10 vs 1.3e+10 (SI)
+PASS 7.6e-21/4.48e-57 == 1.7e36: within 0.02; 1.69643e+36 vs 1.7e+36 (SI)
+PASS lim l->oo of sqrt(2)/sqrt(2*l + 1) == 0: symbolic limit 0
+SUMMARY: 13 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

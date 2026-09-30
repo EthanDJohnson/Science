@@ -1,0 +1,30 @@
+# math_run log
+command:  python3 runs/2026-09-29-problem-of-time-quantum-gravity/math/constraints/M-CONSTRAINTS-13.py
+started:  2026-09-30T00:07:34Z
+duration: 0.6 s
+exit:     0
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   13 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+PASS sqrt((cos(x)/2 + 1/2)**2 + sin(x)**2/4) == Abs(cos(x/2)): numeric at 50 points, x in [-3, 3]
+PASS lim x->0 of cos(x/2) == 1: symbolic limit 1
+PASS g0 * 0.01 m * 1 s / c^2 == 1.1e-18 s: within 0.01; 1.09114e-18 vs 1.1e-18 (SI)
+dh=0.01: dtau=1.0911e-18 s, V=0.999999
+PASS 0.9999989187084845 == 1.0: within 1e-05; 0.999999 vs 1 (SI)
+PASS g0 * 0.1 m * 1 s / c^2 == 1.1e-17 s: within 0.01; 1.09114e-17 vs 1.1e-17 (SI)
+dh=0.1: dtau=1.0911e-17 s, V=0.999892
+PASS 0.9998918727775982 == 0.99989: within 1e-05; 0.999892 vs 0.99989 (SI)
+PASS g0 * 0.5 m * 1 s / c^2 == 5.5e-17 s: within 0.01; 5.45568e-17 vs 5.5e-17 (SI)
+dh=0.5: dtau=5.4557e-17 s, V=0.997298
+PASS 0.9972979884126051 == 0.9973: within 1e-05; 0.997298 vs 0.9973 (SI)
+PASS g0 * 1 m * 1 s / c^2 has the dimension of s: dimensional analysis
+PASS (2/1e+23)^0.5 * hbar * c^2 / (kB * 300 K * g0 * 1e-06 m) has the dimension of s: dimensional analysis
+PASS (2/1e+23)^0.5 * hbar * c^2 / (kB * 300 K * g0 * 1e-06 m) == 1.04e-3 s: within 0.01; 0.00104354 vs 0.00104 (SI)
+PASS (2/6000)^0.5 * hbar * c^2 / (kB * 500 K * g0 * 1e-07 m) == 2.6e7 s: within 0.02; 2.55613e+07 vs 2.6e+07 (SI)
+diamond modes N = 1504156380504.8179
+PASS (2/1504156380504.8179)^0.5 * hbar * c^2 / (kB * 1 K * g0 * 0.00025 m) == 3.2e2 s: within 0.02; 322.881 vs 320 (SI)
+SUMMARY: 13 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

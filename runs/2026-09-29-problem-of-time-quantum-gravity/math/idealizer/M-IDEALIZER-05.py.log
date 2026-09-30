@@ -1,0 +1,32 @@
+# math_run log
+command:  python3 runs/2026-09-29-problem-of-time-quantum-gravity/math/idealizer/M-IDEALIZER-05.py
+started:  2026-09-29T23:55:03Z
+duration: 0.6 s
+exit:     0
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   10 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+d=4: t_half=0.97012, direct |<0|t>|=0.500000, t_half*d=3.8805, prob-half would give t=0.7153
+PASS 0.9701234225174348 == 0.97: within 0.01; 0.970123 vs 0.97 (SI)
+d=8: t_half=0.47660, direct |<0|t>|=0.500000, t_half*d=3.8128, prob-half would give t=0.3503
+PASS 0.4766023403932151 == 0.477: within 0.01; 0.476602 vs 0.477 (SI)
+d=16: t_half=0.23728, direct |<0|t>|=0.500000, t_half*d=3.7964, prob-half would give t=0.1742
+PASS 0.23727581242584544 == 0.237: within 0.01; 0.237276 vs 0.237 (SI)
+d=32: t_half=0.11851, direct |<0|t>|=0.500000, t_half*d=3.7923, prob-half would give t=0.0870
+PASS 0.11851070620337535 == 0.1185: within 0.01; 0.118511 vs 0.1185 (SI)
+d=64: t_half=0.05924, direct |<0|t>|=0.500000, t_half*d=3.7913, prob-half would give t=0.0435
+PASS 0.05923948315922855 == 0.0592: within 0.01; 0.0592395 vs 0.0592 (SI)
+large-d t_half*d = 3.790988534067962
+PASS 3.790988534067962 == 3.8: within 0.01; 3.79099 vs 3.8 (SI)
+PASS lim d->oo of sin(x/2)/(d*sin(x/(2*d))) == 2*sin(x/2)/x: symbolic limit 2*sin(x/2)/x
+d=4: POVM defect 2.90e-16
+PASS 1.0000000000000002 == 1: within 1e-12; 1 vs 1 (SI)
+d=8: POVM defect 8.77e-16
+PASS 1.0000000000000009 == 1: within 1e-12; 1 vs 1 (SI)
+d=16: POVM defect 1.92e-15
+PASS 1.000000000000002 == 1: within 1e-12; 1 vs 1 (SI)
+SUMMARY: 10 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

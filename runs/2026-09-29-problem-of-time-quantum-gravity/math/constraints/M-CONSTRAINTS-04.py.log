@@ -1,0 +1,29 @@
+# math_run log
+command:  python3 runs/2026-09-29-problem-of-time-quantum-gravity/math/constraints/M-CONSTRAINTS-04.py
+started:  2026-09-30T00:03:36Z
+duration: 3.1 s
+exit:     0
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   11 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+rho (rest frame) = 1/(16*pi*aG**2)
+PASS 1/(16*pi*aG**2) == 1/(16*pi*aG**2): symbolic
+G - 8 pi T_stiff = Matrix([[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]])
+PASS 0 == 0: symbolic
+PASS 1/(8*pi*aG**2) is positive: symbolic, aG in [0.1, 10]
+PASS 1/(16*pi*aG**2) is positive: symbolic, aG in [0.1, 10]
+PASS 1/(4*pi*aG**2) is positive: symbolic, aG in [0.1, 10]
+PASS 0 is nonnegative: symbolic, constant
+scan: {'points': 8, 'skipped': 17, 'violations': {'nec': 0, 'wec': 0, 'sec': 0, 'dec': 0}, 'worst': {'nec_min': (0.001511206407527383, (0.0, 0.7999999999999999, 0.3, 0.0)), 'wec_min': (0.01996204233500901, (0.0, 0.2, 0.3, 0.0)), 'sec_min': (0.03985641022149593, (0.0, 0.2, 0.3, 0.0))}}
+PASS log(1 + sqrt(2)) == log(1 + sqrt(2)): symbolic
+PASS 0.881373587019543 == 0.8814: within 0.0001; 0.881374 vs 0.8814 (SI)
+PASS -sinh(r)**4 + sinh(r)**2 is negative: numeric at 50 points, r in [0.8824, 3]
+PASS -sinh(r)**4 + sinh(r)**2 is positive: numeric at 50 points, r in [0.001, 0.8813]
+PASS lim r->0 of (-sinh(r)**4 + sinh(r)**2)/r**2 == 1: symbolic limit 1
+SUMMARY: 11 pass, 0 fail, 0 undecided
+
+--- stderr ---
+<lambdifygenerated-7>:2: RuntimeWarning: invalid value encountered in sqrt
+  x0 = sqrt(1 - sinh(r)**2)
+

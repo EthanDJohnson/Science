@@ -1,0 +1,25 @@
+# math_run log
+command:  python3 runs/2026-09-29-problem-of-time-quantum-gravity/math/idealizer/M-IDEALIZER-08.py
+started:  2026-09-29T23:57:50Z
+duration: 6.8 s
+exit:     1
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   6 PASS, 2 FAIL, 0 UNDECIDED
+
+--- stdout ---
+pops at e=25.3 [0.33325645 0.33332233 0.33342122]  at e=74.7 [0.3333073  0.33332961 0.33336309]
+FAIL 0.3334212228511234 == 0.3334211: relative tolerance 2e-07; 0.333421 vs 0.333421 (SI)
+PASS 0.333363088223011 == 0.3333631: within 2e-07; 0.333363 vs 0.333363 (SI)
+FAIL 0.33325644833013807 == 0.3332566: relative tolerance 2e-07; 0.333256 vs 0.333257 (SI)
+PASS 0.3333072999056221 == 0.3333073: within 2e-07; 0.333307 vs 0.333307 (SI)
+PASS series of log(1/(-E_n*u + 1))/2 about u = 0 to order 2 == E_n*u/2: symbolic: E_n*u/2
+E_S/(2 M e) at mid e = 50: 0.00025
+PASS 0.00025 == 2.5e-4: within 1e-09; 0.00025 vs 0.00025 (SI)
+Wronskian j(x): [1. 1. 1. 1. 1. 1. 1.]
+k|psi|^2 (WKB proxy): [1.       1.000004 1.000003 1.       0.999999 0.999997 0.999999]
+PASS 1.0 == 0.9999999982639738: within 1e-08; 1 vs 1 (SI)
+PASS 1.0000038803821987 == 0.9999970985555687: within 0.001; 1 vs 0.999997 (SI)
+SUMMARY: 6 pass, 2 fail, 0 undecided
+
+--- stderr ---
+
