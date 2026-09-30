@@ -1,0 +1,21 @@
+# math_run log
+command:  python3 runs/2026-09-29-problem-of-time-quantum-gravity/math/dialectician/M-DIALECTICIAN-02.py
+started:  2026-09-29T23:56:50Z
+duration: 0.6 s
+exit:     0
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   8 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+PASS GLM conditional = |<b|U(tau)|a>|^2 for all a,b, tau in 1,2,4 steps (psi0=|0>, j1=1): numeric (numpy)
+PASS W unitary and W Psi = Psi (psi0=|0>, j1=1): numeric (numpy)
+PASS GLM conditional = |<b|U(tau)|a>|^2 for all a,b, tau in 1,2,4 steps (random psi0, j1=2): numeric (numpy)
+PASS W unitary and W Psi = Psi (random psi0, j1=2): numeric (numpy)
+PASS quoted values 0.146447, 0.500000, 1.000000: numeric (numpy); 0.146447, 0.500000, 1.000000
+PASS textbook sin^2(tau/2) at 0.2 s and 1.3 s = 0.00997, 0.366: numeric (numpy); 0.00997, 0.3663
+PASS sin(t/2)**2 == sin(t/2)**2: symbolic
+PASS lim t->0 of sin(t/2)**2/t**2 == 1/4: symbolic limit 1/4
+SUMMARY: 8 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

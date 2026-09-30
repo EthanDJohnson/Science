@@ -1,0 +1,24 @@
+# math_run log
+command:  python3 runs/2026-09-29-problem-of-time-quantum-gravity/math/dialectician/M-DIALECTICIAN-04.py
+started:  2026-09-30T00:00:16Z
+duration: 0.3 s
+exit:     0
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   10 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+PASS 3*T**(2/3)*omega**2*t_P**(4/3)/2 == 3*T**(2/3)*omega**2*t_P**(4/3)/2: symbolic
+PASS T**(1/3)*t_P**(2/3) == T**(1/3)*t_P**(2/3): symbolic
+PASS lim T->oo of t_P**(2/3)/T**(2/3) == 0: symbolic limit 0
+PASS (5.391e-44 s)^(2/3) * (1 s)^(1/3) has the dimension of s: dimensional analysis
+PASS (5.391e-44 s)^(4/3) * (1 s)^(2/3) * (1 rad/s)^2 has the dimension of dimensionless: dimensional analysis
+t_P = 5.391246e-44 s; dT(1 s) = 1.4271e-29 s; exp(1 s) = 2.2196e-27; exp(13.8 Gyr) = 1.2753e-15
+PASS dT(1 s) = 1.427e-29 s: numeric (float, SI); 1.4271e-29 s
+PASS exponent(1 s) = 2.219e-27: numeric (float, SI); 2.2196e-27
+PASS exponent(13.8 Gyr) = 1.275e-15: numeric (float, SI); 1.2753e-15
+PASS route 2: (sqrt3 dT)^2 w^2/2 at 1 s equals route 1: numeric (float, SI)
+PASS (hbar * G / c^5)^(1/2) == 5.391e-44 s: within 0.001; 5.39125e-44 vs 5.391e-44 (SI)
+SUMMARY: 10 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

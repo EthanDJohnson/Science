@@ -1,0 +1,28 @@
+# math_run log
+command:  python3 runs/2026-09-29-problem-of-time-quantum-gravity/math/idealizer/M-IDEALIZER-07.py
+started:  2026-09-29T23:57:49Z
+duration: 0.6 s
+exit:     0
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   11 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+PASS series of -2*sqrt(e0)*sqrt(-E_n + e0/epsilon)/sqrt(epsilon) + 2*e0/epsilon about epsilon = 0 to order 2 == E_n**2*epsilon/(4*e0) + E_n: symbolic: E_n**2*epsilon/(4*e0) + E_n
+PASS lim M->oo of -2*sqrt(M)*sqrt(e0)*sqrt(-E_n + M*e0) + 2*M*e0 == E_n: symbolic limit E_n
+M=10.0: 1-F0=0.000188813, prediction=0.000187847, 1-F1=1.283e-9
+PASS 0.0001888128888546436 == 1.89e-4: within 0.01; 0.000188813 vs 0.000189 (SI)
+PASS 0.0001888128888546436 == 0.00018784722222222222: within 0.01; 0.000188813 vs 0.000187847 (SI)
+PASS 1.2832397271099739e-09 == 1.3e-9: within 0.05; 1.28324e-09 vs 1.3e-09 (SI)
+M=100.0: 1-F0=1.87945e-6, prediction=1.87847e-6, 1-F1=1.276e-13
+PASS 1.8794459870842885e-06 == 1.88e-6: within 0.01; 1.87945e-06 vs 1.88e-06 (SI)
+PASS 1.8794459870842885e-06 == 1.8784722222222222e-06: within 0.01; 1.87945e-06 vs 1.87847e-06 (SI)
+M=1000.0: 1-F0=1.87857e-8, prediction=1.87847e-8, 1-F1=1.275e-17
+PASS 1.878569678631497e-08 == 1.88e-8: within 0.01; 1.87857e-08 vs 1.88e-08 (SI)
+PASS 1.878569678631497e-08 == 1.8784722222222224e-08: within 0.01; 1.87857e-08 vs 1.87847e-08 (SI)
+M=10000.0: 1-F0=1.87848e-10, prediction=1.87847e-10, 1-F1=1.275e-21
+PASS 1.8784819686613257e-10 == 1.88e-10: within 0.01; 1.87848e-10 vs 1.88e-10 (SI)
+PASS 1.8784819686613257e-10 == 1.8784722222222222e-10: within 0.01; 1.87848e-10 vs 1.87847e-10 (SI)
+SUMMARY: 11 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

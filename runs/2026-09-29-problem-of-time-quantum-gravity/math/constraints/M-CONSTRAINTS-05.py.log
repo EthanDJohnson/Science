@@ -1,0 +1,34 @@
+# math_run log
+command:  python3 runs/2026-09-29-problem-of-time-quantum-gravity/math/constraints/M-CONSTRAINTS-05.py
+started:  2026-09-30T00:05:10Z
+duration: 1.0 s
+exit:     0
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   18 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+PASS sqrt(exp(6*I*xs) + 2*exp(5*I*xs) + 3*exp(4*I*xs) + 4*exp(3*I*xs) + 5*exp(2*I*xs) + 6*exp(I*xs) + 7 + 6*exp(-I*xs) + 5*exp(-2*I*xs) + 4*exp(-3*I*xs) + 3*exp(-4*I*xs) + 2*exp(-5*I*xs) + exp(-6*I*xs))/7 == Abs(sin(7*xs/2)/sin(xs/2))/7: numeric at 50 points, xs in [0.05, 3]
+d=4: lattice max overlap 1.39e-16, quarter 0.9061, half 0.6533, POVM defect 2.4e-16, dE 1.1180 rad/s, pi/(2dE) 1.4050 s
+PASS 0.9061274463528879 == 0.90: within 0.01; 0.906127 vs 0.9 (SI)
+PASS 0.6532814824381883 == 0.64: within 0.025; 0.653281 vs 0.64 (SI)
+PASS 1.4049629462081452 s == 1.41 s: within 0.01; 1.40496 vs 1.41 (SI)
+PASS lattice orthogonality
+PASS POVM identity
+d=16: lattice max overlap 1.85e-15, quarter 0.9007, half 0.6376, POVM defect 5.5e-16, dE 4.6098 rad/s, pi/(2dE) 0.3408 s
+PASS 0.9006779805633547 == 0.90: within 0.01; 0.900678 vs 0.9 (SI)
+PASS 0.6376435773361454 == 0.64: within 0.025; 0.637644 vs 0.64 (SI)
+PASS 0.34075356631148035 s == 0.34 s: within 0.01; 0.340754 vs 0.34 (SI)
+PASS lattice orthogonality
+PASS POVM identity
+d=64: lattice max overlap 2.49e-15, quarter 0.9003, half 0.6367, POVM defect 2.9e-15, dE 18.4730 rad/s, pi/(2dE) 0.0850 s
+PASS 0.900338914225343 == 0.90: within 0.01; 0.900339 vs 0.9 (SI)
+PASS 0.6366836927259824 == 0.64: within 0.025; 0.636684 vs 0.64 (SI)
+PASS 0.0850322257424647 s == 0.085 s: within 0.01; 0.0850322 vs 0.085 (SI)
+PASS lattice orthogonality
+PASS POVM identity
+PASS lim d->oo of sqrt(2)/(2*d*sin(pi/(4*d))) == 2*sqrt(2)/pi: symbolic limit 2*sqrt(2)/pi
+PASS lim d->oo of 1/(d*sin(pi/(2*d))) == 2/pi: symbolic limit 2/pi
+SUMMARY: 12 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

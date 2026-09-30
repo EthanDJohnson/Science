@@ -1,0 +1,24 @@
+# math_run log
+command:  python3 runs/2026-09-29-problem-of-time-quantum-gravity/math/idealizer/M-IDEALIZER-12.py
+started:  2026-09-29T23:59:26Z
+duration: 0.3 s
+exit:     0
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   11 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+PASS G*m*m_p*t*(-1/d_2 + 1/d_1)/hbar == G*m*m_p*t*(-1/d_2 + 1/d_1)/hbar: symbolic
+PASS lim d_2->oo of G*m*omega*t*(-1/d_2 + 1/d_1)/c**2 == G*m*omega*t/(c**2*d_1): symbolic limit G*m*omega*t/(c**2*d_1)
+PASS c^2 / ((2*pi*429.2e12 Hz) * G * (1/(200 um) - 1/(450 um)) * 1 s) has the dimension of kg: dimensional analysis
+PASS c^2 / ((2*pi*429.2e12 Hz) * G * (1/(200 um) - 1/(450 um)) * 1 s) == 1.8e8 kg: within 0.01; 1.79762e+08 vs 1.8e+08 (SI)
+PASS c^2 / ((2*pi*429.2e12 Hz) * G * (1/(1 mm) - 1/(2 mm)) * 1 s) == 1.0e9 kg: within 0.01; 9.98679e+08 vs 1e+09 (SI)
+PASS c^2 / ((2*pi*429.2e12 Hz) * G * (1/(1 cm) - 1/(2 cm)) * 1 s) == 1.0e10 kg: within 0.01; 9.98679e+09 vs 1e+10 (SI)
+PASS 1e-14 kg * c^2 / hbar == 8.5e36 Hz: within 0.01; 8.52247e+36 vs 8.5e+36 (SI)
+PASS 1e-14 kg * c^2 / hbar / (2*pi*429.2e12 Hz) == 3.2e21: within 0.02; 3.16028e+21 vs 3.2e+21 (SI)
+PASS G * (1e-14 kg)^2 * 1 s * (1/(200 um) - 1/(450 um)) / hbar has the dimension of 1: dimensional analysis
+PASS G * (1e-14 kg)^2 * 1 s * (1/(200 um) - 1/(450 um)) / hbar == 0.176: within 0.003; 0.175803 vs 0.176 (SI)
+PASS G * (1e-14 kg)^2 * 2.5 s * (1/(200 um) - 1/(450 um)) / hbar == 0.440: within 0.003; 0.439508 vs 0.44 (SI)
+SUMMARY: 11 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

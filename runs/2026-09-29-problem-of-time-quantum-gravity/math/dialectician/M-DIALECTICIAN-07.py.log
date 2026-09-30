@@ -1,0 +1,23 @@
+# math_run log
+command:  python3 runs/2026-09-29-problem-of-time-quantum-gravity/math/dialectician/M-DIALECTICIAN-07.py
+started:  2026-09-30T00:00:25Z
+duration: 0.6 s
+exit:     0
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   8 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+eps(E) = [E/(E*lam - 1)]
+PASS -E/(E*lam - 1) == E/(-E*lam + 1): symbolic
+PASS series of E/(-E*lam + 1) about lam = 0 to order 3 == E**3*lam**2 + E**2*lam + E: symbolic: E**3*lam**2 + E**2*lam + E
+PASS lim lam->0 of E/(-E*lam + 1) == E: symbolic limit E
+dim ker J = 3
+PASS H_eff Hermitian: numeric (numpy)
+PASS conditional evolution = exp(-i H_eff t), norm conserved: numeric (numpy); min fidelity 1.000000000000, norm ratio 1.000000000000
+PASS hbar * G / (c^4 * 1 mm) == 8.714e-76 s: within 0.001; 8.71363e-76 vs 8.714e-76 (SI)
+PASS G * (2 * 3.14159265358979 * hbar * 429 THz) / (c^4 * 1 mm) == 2.35e-60: within 0.003; 2.34875e-60 vs 2.35e-60 (SI)
+PASS G * (1 J) / (c^4 * 1 m) has the dimension of dimensionless: dimensional analysis
+SUMMARY: 8 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

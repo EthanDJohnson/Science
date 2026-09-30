@@ -1,0 +1,23 @@
+# math_run log
+command:  python3 runs/2026-09-29-problem-of-time-quantum-gravity/math/dialectician/M-DIALECTICIAN-08.py
+started:  2026-09-30T00:00:03Z
+duration: 0.4 s
+exit:     0
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   3 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+min |eig J| (no retune): 0.1989668329148221
+retune shift = -0.1989668329148221 rad/s; dim ker J = 1
+t = 0.0: nonHermiticity 4.943e-17 rad/s, d ln||psi||^2/dt = 0 /s
+t = 0.5: nonHermiticity 0.0003917 rad/s, d ln||psi||^2/dt = -0.0003917 /s
+t = 1.0: nonHermiticity 0.0009963 rad/s, d ln||psi||^2/dt = 0.0009963 /s
+t = 2.0: nonHermiticity 0.001122 rad/s, d ln||psi||^2/dt = -0.001122 /s
+t = 3.0: nonHermiticity 0.0003215 rad/s, d ln||psi||^2/dt = 0.0003215 /s
+PASS effective generator is non-Hermitian (non-unitary) for g = 0.2: numeric (numpy); max 0.00112 rad/s
+PASS size ~1e-3 rad/s (max between 0.3e-3 and 3e-3): numeric (numpy); values ['4.94e-17', '0.000392', '0.000996', '0.00112', '0.000322']
+PASS control g = 0: generator Hermitian: numeric (numpy); 8.47e-12
+SUMMARY: 3 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

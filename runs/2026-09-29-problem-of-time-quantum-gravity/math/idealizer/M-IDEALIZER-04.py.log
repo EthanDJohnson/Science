@@ -1,0 +1,25 @@
+# math_run log
+command:  python3 runs/2026-09-29-problem-of-time-quantum-gravity/math/idealizer/M-IDEALIZER-04.py
+started:  2026-09-29T23:55:02Z
+duration: 1.0 s
+exit:     0
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   7 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+seed 1: min |eig J|/g = [0.041 0.041 0.045], eta = [0.00050493 0.00507299 0.05294537], eta/g = [0.50493406 0.50729905 0.5294537 ], slope 1.010
+PASS 1.010296663756692 == 1: within 0.05; 1.0103 vs 1 (SI)
+PASS 0.041032595808427795 > 0: symbolic, constant
+seed 2: min |eig J|/g = [0.16  0.16  0.156], eta = [0.00093054 0.00929457 0.0918034 ], eta/g = [0.93054073 0.92945706 0.91803397], slope 0.997
+PASS 0.9970616817459353 == 1: within 0.05; 0.997062 vs 1 (SI)
+PASS 0.15622683331219292 > 0: symbolic, constant
+seed 3: min |eig J|/g = [0.149 0.148 0.141], eta = [0.00033645 0.00336382 0.03355782], eta/g = [0.33645461 0.33638224 0.33557822], slope 0.999
+PASS 0.999433638516165 == 1: within 0.05; 0.999434 vs 1 (SI)
+PASS 0.14105461916777667 > 0: symbolic, constant
+g=0 generator: [[0. +0.j 0.5+0.j]
+ [0.5+0.j 0. +0.j]]
+PASS 1.0 == 1: within 1e-10; 1 vs 1 (SI)
+SUMMARY: 7 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

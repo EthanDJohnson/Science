@@ -1,0 +1,27 @@
+# math_run log
+command:  python3 runs/2026-09-29-problem-of-time-quantum-gravity/math/examiner/M-EXAMINER-06.py
+started:  2026-09-29T23:48:44Z
+duration: 0.3 s
+exit:     0
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   7 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+|J Psi| = 0.0
+PASS 0.0 < 1.00000000000000E-12: symbolic, constant
+lattice orthonormality defect: 4.996003610813204e-16
+PASS 4.99600361081320E-16 < 1.00000000000000E-12: symbolic, constant
+t1, t2 = 0.7853981633974483 2.356194490192345
+naive Kuchar P = 1.4955606793889346e-17 ; textbook = 0.4999999999999999
+PASS 1.49556067938893E-17 < 1.00000000000000E-12: symbolic, constant
+PASS 0.49999999999999988898 == 1/2: numeric at 48 points, constants
+GLM P(0 at t2 | 0 at t1) = 0.5000000000000006
+PASS 5.55111512312578E-16 < 1.00000000000000E-12: symbolic, constant
+history state (no record) vs PW null state (x) |r>: max diff = 3.079805996504836e-16
+PASS 3.07980599650484E-16 < 1.00000000000000E-12: symbolic, constant
+GLM (other state/times) = 0.14644660940672624 ; textbook = 0.14644660940672616
+PASS 0.14644660940672624139 == 0.14644660940672615812: numeric at 48 points, constants
+SUMMARY: 7 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

@@ -1,0 +1,21 @@
+# math_run log
+command:  python3 runs/2026-09-29-problem-of-time-quantum-gravity/math/idealizer/M-IDEALIZER-13.py
+started:  2026-09-29T23:59:35Z
+duration: 0.4 s
+exit:     0
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   8 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+PASS hbar * G / (c^4 * 1 mm) == 8.7e-76 s: within 0.01; 8.71363e-76 vs 8.7e-76 (SI)
+PASS hbar * G / (c^4 * 1 mm) * 2*pi*429.2e12 Hz has the dimension of 1: dimensional analysis
+PASS hbar * G / (c^4 * 1 mm) * 2*pi*429.2e12 Hz == 2.4e-60: within 0.03; 2.34984e-60 vs 2.4e-60 (SI)
+PASS (1.77 eV / (2.65e19 GeV))^2 == 4.5e-57: within 0.01; 4.46123e-57 vs 4.5e-57 (SI)
+PASS (14 TeV / (2.65e19 GeV))^2 == 2.8e-31: within 0.01; 2.79103e-31 vs 2.8e-31 (SI)
+PASS (1e16 GeV / (2.65e19 GeV))^2 == 1.4e-7: within 0.02; 1.42399e-07 vs 1.4e-07 (SI)
+PASS (hbar * c^5 / G)^0.5 == 1.2209e19 GeV: within 0.001; 1.95608e+09 vs 1.9561e+09 (SI)
+PASS (2.65e19 GeV / (hbar * c^5 / G)^0.5)^2 == 4.71: within 0.01; 4.71128 vs 4.71 (SI)
+SUMMARY: 8 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

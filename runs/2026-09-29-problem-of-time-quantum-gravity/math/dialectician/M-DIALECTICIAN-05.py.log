@@ -1,0 +1,20 @@
+# math_run log
+command:  python3 runs/2026-09-29-problem-of-time-quantum-gravity/math/dialectician/M-DIALECTICIAN-05.py
+started:  2026-09-30T00:00:00Z
+duration: 0.7 s
+exit:     0
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   7 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+PASS 2/3 == 2/3: symbolic
+PASS 2 == 2: symbolic
+PASS 1 == 1: symbolic
+PASS 4 == 4: symbolic
+PASS lim T->0 of 2*T**2/((T**2 + n*tau**2)*log((T**2 + n*tau**2)/(n*tau**2))) == 2: symbolic limit 2
+PASS lim T->oo of 2*T**2/((T**2 + n*tau**2)*log((T**2 + n*tau**2)/(n*tau**2))) == 0: symbolic limit 0
+PASS lim n->oo of n*log(T**2/(n*tau**2) + 1) == T**2/tau**2: symbolic limit T**2/tau**2
+SUMMARY: 7 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

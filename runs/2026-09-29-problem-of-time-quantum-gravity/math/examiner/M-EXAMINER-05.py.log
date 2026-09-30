@@ -1,0 +1,26 @@
+# math_run log
+command:  python3 runs/2026-09-29-problem-of-time-quantum-gravity/math/examiner/M-EXAMINER-05.py
+started:  2026-09-29T23:48:36Z
+duration: 0.4 s
+exit:     0
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   6 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+kernel dimension (uncoupled): 4
+uncoupled: max |psi(t) - e^{-iH_S t} psi(0)| / |psi(0)| = 1.870891053946006e-15
+PASS 1.87089105394601E-15 < 1.00000000000000E-9: symbolic, constant
+coupling g = 0.2: deviation from exp(-i (H_S - w) t) = 7.363e-01
+PASS 0.736298184544486 > 0.00100000000000000: symbolic, constant
+coupling g = 0.001: deviation from exp(-i (H_S - w) t) = 3.564e-03
+coupling g = 0.0: deviation from exp(-i (H_S - w) t) = 3.876e-15
+PASS 3.87581675706483E-15 < 1.00000000000000E-9: symbolic, constant
+kernel dimension (Smith-Ahmadi): 4
+Smith-Ahmadi: deviation from exp(-i H_S(1-lam H_S)^-1 t) = 2.639772083999158e-15 ; from exp(-i H_S t) = 0.3524758380189298
+PASS 2.63977208399916E-15 < 1.00000000000000E-9: symbolic, constant
+PASS 0.352475838018930 > 0.00100000000000000: symbolic, constant
+PASS series of e/(-e*l + 1) about l = 0 to order 2 == e**2*l + e: symbolic: e**2*l + e
+SUMMARY: 6 pass, 0 fail, 0 undecided
+
+--- stderr ---
+
