@@ -69,7 +69,8 @@ def refusal(script: Path, root: Path) -> str | None:
 def run(script: Path, timeout: float) -> tuple[int, str, str, float, bool]:
     start = time.monotonic()
     try:
-        done = subprocess.run([sys.executable, str(script)], capture_output=True, text=True, timeout=timeout)
+        # -u: unbuffered, so what a script printed before a timeout still reaches the log.
+        done = subprocess.run([sys.executable, "-u", str(script)], capture_output=True, text=True, timeout=timeout)
         return done.returncode, done.stdout, done.stderr, time.monotonic() - start, False
     except subprocess.TimeoutExpired as late:
         text = lambda b: b.decode(errors="replace") if isinstance(b, bytes) else (b or "")   # noqa: E731

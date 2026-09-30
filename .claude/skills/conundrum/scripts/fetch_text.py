@@ -106,11 +106,12 @@ def parse_pages(spec: str, n: int) -> list[int]:
     return pages
 
 
-# A bot-check or access page: short, and saying so. Real article pages are much longer.
+# A bot-check or access page: short, and saying so. Real pages are longer: an arXiv abstract page
+# extracts to about 4,500 characters, a Springer challenge page to about 230.
 CHALLENGE = re.compile(r"client challenge|just a moment|enable javascript|captcha|are you a robot|access denied|"
                        r"verify you are human|checking your browser|unusual traffic", re.I)
-CHALLENGE_MAX_CHARS = 5000
 SHORT_PAGE = 1500
+CHALLENGE_MAX_CHARS = SHORT_PAGE
 
 
 def blocked(text: str) -> bool:

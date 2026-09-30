@@ -205,8 +205,8 @@ class WorkflowWiring(unittest.TestCase):
 
     def test_anomaly_type_is_wired_through(self):
         # One wording of the anomaly null everywhere; it must not swallow the method systematics.
-        null = ("no single dominant cause: a statistical fluctuation, or uncertainties underestimated "
-                "across several experiments")
+        null = ("no single dominant cause: a statistical fluctuation, or several smaller effects or "
+                "underestimated uncertainties, none of which dominates")
         for path in (AGENTS / "candidate-builder.md", AGENTS / "lens-statistician.md",
                      SKILL / "references" / "schemas.md"):
             text = " ".join(path.read_text().split())

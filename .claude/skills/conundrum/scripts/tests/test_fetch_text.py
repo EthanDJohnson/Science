@@ -142,10 +142,6 @@ class HtmlAndErrors(unittest.TestCase):
         self.assertEqual(fetch_text.parse_pages("1-3,5,3,99", 6), [1, 2, 3, 5])
 
 
-if __name__ == "__main__":
-    unittest.main()
-
-
 class BotChecks(unittest.TestCase):
     CHALLENGE = (b"<html><body><h1>Client Challenge</h1><p>JavaScript is disabled in your browser. "
                  b"A required part of this site couldn't load.</p></body></html>")
@@ -167,3 +163,17 @@ class BotChecks(unittest.TestCase):
         code, out = run(["https://x/page", "--grep", "lifetime"], FakeResponse(HTML, "text/html"))
         self.assertEqual(code, 2)
         self.assertIn("may be a stub or a landing page", out)
+
+
+class BotChecksSparePages(unittest.TestCase):
+    def test_an_abstract_sized_page_that_mentions_access_denied_is_not_blocked(self):
+        text = b"We report a measurement of the neutron lifetime; access denied to the trap region was tested. "
+        page = b"<html><body><p>" + text * 45 + b"</p></body></html>"    # about 4,400 characters, like an arXiv abstract page
+        code, out = run(["https://arxiv.org/abs/2412.19519", "--grep", "neutron lifetime"], FakeResponse(page, "text/html"))
+        self.assertEqual(code, 0)
+        self.assertNotIn("BLOCKED", out)
+
+
+
+if __name__ == "__main__":
+    unittest.main()

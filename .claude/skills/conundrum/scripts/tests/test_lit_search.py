@@ -310,10 +310,6 @@ class Failures(unittest.TestCase):
         self.assertEqual(len(json.loads(out)), 2)
 
 
-if __name__ == "__main__":
-    unittest.main()
-
-
 class RelevanceAndRecency(unittest.TestCase):
     """Best match first by default, a per-source --since filter, and INSPIRE-only syntax kept to INSPIRE."""
 
@@ -375,3 +371,47 @@ class RelevanceAndRecency(unittest.TestCase):
         empty = lambda url: json.dumps({"hits": {"total": 0, "hits": []}}).encode()  # noqa: E731
         _, out, _ = self.capture(["J-PARC neutron lifetime", "--source", "inspire"], empty)
         self.assertIn('hyphenated names need quotes ("J-PARC")', out)
+
+
+class SinceAndCitations(RelevanceAndRecency):
+    def test_since_keeps_an_or_query_inside_the_filter(self):
+        _, _, urls = self.capture(['t "neutron lifetime" or t "UCNtau"', "--source", "inspire", "--since", "2025"])
+        self.assertIn(lit_search.urllib.parse.quote_plus('(t "neutron lifetime" or t "UCNtau") and de>=2025'), urls[0])
+        _, _, urls = self.capture(["ti:neutron OR abs:UCNtau", "--source", "arxiv", "--since", "2025"])
+        self.assertIn(lit_search.urllib.parse.quote_plus("(ti:neutron OR abs:UCNtau) AND submittedDate"), urls[0])
+
+    def test_refersto_accepts_the_ids_lit_search_prints(self):
+        looked_up = []
+
+        def responder(url):
+            if url.endswith("fields=control_number"):
+                looked_up.append(url)
+                return json.dumps({"hits": {"hits": [{"metadata": {"control_number": 42}}]}}).encode()
+            return json.dumps(INSPIRE_FIXTURE).encode()
+        _, _, urls = self.capture(["refersto:arxiv:arXiv:2412.19519v1", "--source", "inspire"], responder)
+        self.assertIn("arxiv%3A2412.19519&", looked_up[0])
+        _, _, urls = self.capture(["(refersto:arxiv:2403.00914) and t neutron", "--source", "inspire"], responder)
+        self.assertIn(lit_search.urllib.parse.quote_plus("(refersto:recid:42) and t neutron"), urls[-1])
+        # A DOI with its own parentheses keeps them.
+        self.capture(["refersto:doi:10.1016/0146-6410(81)90041-7", "--source", "inspire"], responder)
+        self.assertIn(lit_search.urllib.parse.quote_plus("doi:10.1016/0146-6410(81)90041-7"), looked_up[-1])
+
+    def test_an_unknown_identifier_is_not_found_not_unavailable(self):
+        def responder(url):
+            return json.dumps({"hits": {"hits": []}}).encode()
+        code, out, _ = self.capture(["refersto:arxiv:9999.99999", "--source", "inspire"], responder)
+        self.assertEqual(code, 0)
+        self.assertIn("NOT FOUND: INSPIRE has no record for arxiv:9999.99999", out)
+        self.assertNotIn("UNAVAILABLE", out)
+
+    def test_more_inspire_syntax_stays_off_arxiv_but_plain_words_do_not(self):
+        for q in ('a Wietfeldt and t "neutron lifetime"', "topcite 100+ and neutron", "collaboration:UCNtau",
+                  "exactauthor:F.E.Wietfeldt.1"):
+            self.assertTrue(lit_search.INSPIRE_ONLY.search(q), q)
+        for q in ("a theory of neutron decay", "neutron and a proton", "a search for dark decays", "beam lifetime"):
+            self.assertFalse(lit_search.INSPIRE_ONLY.search(q), q)
+
+
+
+if __name__ == "__main__":
+    unittest.main()

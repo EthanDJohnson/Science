@@ -82,12 +82,20 @@ SEARCH = (f"- **Searching:** {LIT} returns the best-matching papers with abstrac
 TEXT_ONLY = ("- **Writing:** write no files. Return your document as text in your final output: Claude Code "
              "blocks subagents from writing report files, and the main session saves it.")
 # A relaunch reruns every agent after the first failed one in call order, finished ones included, so a
-# complete file is returned as it stands rather than reworked.
-RESUME = ("if your file already exists, read it first. If it is complete (every section of its format filled "
-          "and its verdict or status given) and was written for the task you have now (the same candidate or "
-          "lens and the inputs your prompt names), return its result straight away without changing it. "
-          "Otherwise an earlier attempt was cut off: keep what is sound and continue from it instead of "
-          "starting over.")
+# finished file is returned as it stands rather than reworked. Only an explicit final status marks a file
+# finished: draft-mode agents write a complete-looking first draft early, which must not pass for final.
+RESUME = ("if your file already exists, read it first. If its `status:` line says `final` and it was written "
+          "for the task you have now (the same candidate claim or lens as your prompt states it, and the inputs "
+          "your prompt names), return its result straight away without changing it. Otherwise an earlier attempt "
+          "was cut off: keep what is sound and continue from it instead of starting over.")
+RESUME_CONTINUE = ("if your file already exists, an earlier attempt was cut off: read it, keep what is sound and "
+                   "continue from it instead of starting over.")
+# The auditor's input is the report in its prompt, which a relaunch can change without leaving a trace.
+RESUME_AUDIT = ("if your file already exists, it may audit an earlier version of the report: audit the report "
+                "in your prompt afresh, reusing only the checks that still apply to it.")
+FINISHING = ("- **Finishing:** from the start, your file carries a `status: draft` line where its format shows "
+             "one. Change it to `status: final` in your last step, once the file is complete, and never before: "
+             "a relaunch trusts only a final file.")
 SAME_STEP = "in the same step as your next tool call (a step can hold several calls, so this costs no extra turn)"
 LOST = "Anything that is not in the file is lost if you are cut off."
 
@@ -122,7 +130,7 @@ SPEC = {
                               "and a proposed catalog row (Tool | Covers | Checked against | Try it)."),
     "crux-advocate": dict(lo=10, hi=20, by=10, turns=30, mode="draft", target="runs/<slug>/cruxes/<Cn>.md",
                           summary="the deciding observation, in one line."),
-    "adjudicator": dict(lo=25, hi=55, turns=80, mode="text",
+    "adjudicator": dict(lo=25, hi=70, turns=100, mode="text",
                         finish="Finish by returning `ok` (true once the report is complete), `report` (the whole "
                                "report in the rubric's format, as markdown) and `summary`: the bottom line, in two "
                                "sentences."),
@@ -208,7 +216,10 @@ def ground_rules(name: str, tools: set[str]) -> str:
         lines.append(f"- **First draft:** write a complete first draft of `{s['target']}` by about call {s['by']}, "
                      "then improve it with Edit. Never finish without it written.")
     if s["mode"] != "text":
-        lines.append("- **Resuming:** " + RESUME)
+        resume = {"toolsmith": RESUME_CONTINUE, "report-auditor": RESUME_AUDIT}.get(name, RESUME)
+        lines.append("- **Resuming:** " + resume)
+        if name != "toolsmith":
+            lines.append(FINISHING)
     lines.append("- **Paths:** work from the project root with relative paths and never `cd`. Read only your own "
                  "run's folder and the toolkit, never another run's folder.")
     if name.startswith("lens-"):

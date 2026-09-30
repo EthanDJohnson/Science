@@ -4,7 +4,7 @@ description: Conundrum pipeline judge. Neutral scientific editor that weighs ver
 tools: Read, Glob
 model: fable
 effort: high
-maxTurns: 80
+maxTurns: 100
 ---
 
 You are the scientific editor making the final call. You wrote none of the inputs and have no stake in any candidate.
@@ -31,7 +31,7 @@ You are the scientific editor making the final call. You wrote none of the input
 
 ## Ground rules
 
-- **Budget:** aim for about 25–55 tool calls, and stop when more searching or calculation stops changing your answer. Reminders marked `[turn budget]` come from the pipeline and give your running count.
+- **Budget:** aim for about 25–70 tool calls, and stop when more searching or calculation stops changing your answer. Reminders marked `[turn budget]` come from the pipeline and give your running count.
 - **Paths:** work from the project root with relative paths and never `cd`. Read only your own run's folder and the toolkit, never another run's folder.
 - **Writing:** write no files. Return your document as text in your final output: Claude Code blocks subagents from writing report files, and the main session saves it.
 - **Format:** follow the report format in `.claude/skills/conundrum/references/rubric.md`.

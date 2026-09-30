@@ -147,6 +147,8 @@ def _side(err, toward_higher: bool) -> float:
 def total_error(*parts):
     """Combine independent uncertainties in quadrature. Each part is a number or an (up, down) pair; the
     result is a number when every part is symmetric, otherwise an (up, down) pair."""
+    if len(parts) == 1 and isinstance(parts[0], list):
+        raise ValueError("pass the parts as separate arguments: total_error(stat, sys), not total_error([stat, sys])")
     ups = [_side(e, True) for e in parts]
     downs = [_side(e, False) for e in parts]
     up, down = math.sqrt(sum(u * u for u in ups)), math.sqrt(sum(d * d for d in downs))
@@ -168,8 +170,12 @@ def tension(x1: float, e1, x2: float, e2) -> dict:
 
 
 def weighted_mean(values, errors) -> dict:
-    """Inverse-variance mean with chi^2 and the PDG scale factor S = sqrt(chi^2/(N-1)) when S > 1."""
+    """Inverse-variance mean with chi^2 and the PDG scale factor S = sqrt(chi^2/(N-1)) when S > 1.
+    Errors must be symmetric numbers."""
     vals, errs = list(values), list(errors)
+    if any(isinstance(e, (tuple, list)) for e in errs):
+        raise ValueError("weighted_mean and grouped_chi2 take symmetric errors: symmetrize an (up, down) pair, "
+                         "for example as (up + down) / 2 or the side facing the other values, and say which")
     w = [1 / e**2 for e in errs]
     mean = sum(wi * x for wi, x in zip(w, vals)) / sum(w)
     err = 1 / math.sqrt(sum(w))
@@ -191,11 +197,12 @@ def grouped_chi2(groups: dict) -> dict:
     """
     if len(groups) < 2:
         raise ValueError("grouped_chi2 needs at least two groups")
+    groups = {name: (list(vals), list(errs)) for name, (vals, errs) in groups.items()}
     per = {}
     for name, (vals, errs) in groups.items():
         wm = weighted_mean(vals, errs)
         per[name] = {"mean": wm["mean"], "error": wm["error"], "chi2": wm["chi2"], "dof": wm["dof"],
-                     "p_consistent": wm["p_consistent"], "n": len(list(vals))}
+                     "p_consistent": wm["p_consistent"], "n": len(vals)}
     all_vals = [v for vals, _ in groups.values() for v in vals]
     all_errs = [e for _, errs in groups.values() for e in errs]
     pooled = weighted_mean(all_vals, all_errs)
@@ -204,11 +211,32 @@ def grouped_chi2(groups: dict) -> dict:
     within = sum(g["chi2"] for g in per.values())
     within_dof = sum(g["dof"] for g in per.values())
     p_between = _chi2_sf(between, between_dof)
-    z_between = p_to_sigma(p_between, two_sided=True) if 0 < p_between < 1 else (0.0 if p_between >= 1 else math.inf)
+    if between_dof == 1:
+        z_between = math.sqrt(between)                  # exact for one degree of freedom
+    elif 0 < p_between < 1:
+        z_between = p_to_sigma(p_between, two_sided=True)
+    elif p_between >= 1:
+        z_between = 0.0
+    else:   # p underflows a float: work with its logarithm instead
+        z_between = _z_from_log_p(_log_chi2_sf_tail(between, between_dof))
     return {"groups": per, "within_chi2": within, "within_dof": within_dof,
             "p_within": _chi2_sf(within, within_dof) if within_dof > 0 else 1.0,
             "between_chi2": between, "between_dof": between_dof, "p_between": p_between, "between_z": z_between,
             "pooled": pooled}
+
+
+def _log_chi2_sf_tail(x: float, dof: int) -> float:
+    """ln P(chi2_dof > x) far in the tail (x >> dof), from Gamma(s, y) ~ y^(s-1) e^(-y) (1 + (s-1)/y)."""
+    s, y = dof / 2, x / 2
+    return (s - 1) * math.log(y) - y - math.lgamma(s) + math.log1p((s - 1) / y)
+
+
+def _z_from_log_p(log_p: float) -> float:
+    """Two-sided Gaussian z for a p-value given by its logarithm, using the tail 2 * phi(z) / z."""
+    z = math.sqrt(-2 * log_p)
+    for _ in range(50):   # fixed point of ln p = ln 2 - z^2/2 - ln(z sqrt(2 pi))
+        z = math.sqrt(max(0.0, 2 * (math.log(2) - log_p - math.log(z * math.sqrt(2 * math.pi)))))
+    return z
 
 
 def _chi2_sf(x: float, dof: int) -> float:

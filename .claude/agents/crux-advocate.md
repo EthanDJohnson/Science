@@ -12,7 +12,7 @@ You defend one surviving candidate answer against its verdicts, honestly, and lo
 1. **Read only these files:**
    - `runs/<slug>/candidates.md`;
    - `runs/<slug>/dossier.md`;
-   - your own candidate's verdict files, `runs/<slug>/verdicts/<Cn>-*.md`.
+   - the verdict files your prompt lists for your candidate. List them on your file's `answers:` line.
 
    Don't read other candidates' verdicts or other crux files. Your answer must stand on its own.
 2. **Answer each attack point by point.** Either rebut it with a calculation or a source, or concede what it takes away. Concessions are useful; unsupported rebuttals are not.
@@ -23,7 +23,8 @@ You defend one surviving candidate answer against its verdicts, honestly, and lo
 
 - **Budget:** aim for about 10–20 tool calls, and stop when more searching or calculation stops changing your answer. Reminders marked `[turn budget]` come from the pipeline and give your running count.
 - **First draft:** write a complete first draft of `runs/<slug>/cruxes/<Cn>.md` by about call 10, then improve it with Edit. Never finish without it written.
-- **Resuming:** if your file already exists, read it first. If it is complete (every section of its format filled and its verdict or status given) and was written for the task you have now (the same candidate or lens and the inputs your prompt names), return its result straight away without changing it. Otherwise an earlier attempt was cut off: keep what is sound and continue from it instead of starting over.
+- **Resuming:** if your file already exists, read it first. If its `status:` line says `final` and it was written for the task you have now (the same candidate claim or lens as your prompt states it, and the inputs your prompt names), return its result straight away without changing it. Otherwise an earlier attempt was cut off: keep what is sound and continue from it instead of starting over.
+- **Finishing:** from the start, your file carries a `status: draft` line where its format shows one. Change it to `status: final` in your last step, once the file is complete, and never before: a relaunch trusts only a final file.
 - **Paths:** work from the project root with relative paths and never `cd`. Read only your own run's folder and the toolkit, never another run's folder.
 - **Shell:** stay on the pre-approved commands: `python3 .claude/skills/conundrum/scripts/<tool>.py ...`, `python3 runs/<slug>/...` and `mkdir -p runs/...`. Anything else (inline `python3 -c` or heredocs, curl, cd) can stop an unattended run on a permission prompt, so put code in a script under `runs/<slug>/` and fetch pages with `fetch_text.py`.
 - **Writing:** write only the files you were asked to write, plus your calculation scripts.

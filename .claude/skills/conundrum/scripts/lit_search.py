@@ -254,7 +254,8 @@ def arxiv_query(text: str) -> str:
 
 # INSPIRE's own syntax that no other source can read: citation operators, date comparisons, and a
 # leading field keyword followed by a quoted phrase (t "...", a "...").
-INSPIRE_ONLY = re.compile(r'\b(refersto|citedby):|\b(date|de|du|year)\s*[<>]|^\s*(t|a|j|k|ti|au|title|author)\s+"', re.I)
+INSPIRE_ONLY = re.compile(r'\b(refersto|citedby|exactauthor|collaboration|texkey|recid|cn)\s*:|\btopcite\s+\d|'
+                          r'\b(date|de|du|year)\s*[<>]|(^|\b(and|or)\s+)(t|a|j|k|ti|au|title|author)\s+"', re.I)
 # INSPIRE sorts: its relevance ranking is called bestmatch.
 INSPIRE_SORT = {"relevance": "bestmatch", "mostcited": "mostcited", "mostrecent": "mostrecent"}
 
@@ -263,21 +264,32 @@ INSPIRE_SORT = {"relevance": "bestmatch", "mostcited": "mostcited", "mostrecent"
 REFERSTO = re.compile(r"\brefersto:(arxiv|eprint|doi):(\S+)", re.I)
 
 
+class NotFound(Exception):
+    """An identifier INSPIRE has no record for: a wrong ID, not a source that is down."""
+
+
 def resolve_refersto(query: str, timeout: float) -> str:
-    """Rewrite refersto:arxiv:<id> or refersto:doi:<doi> as refersto:recid:<n>, the form INSPIRE answers."""
+    """Rewrite refersto:arxiv:<id> or refersto:doi:<doi> as refersto:recid:<n>, the form INSPIRE answers.
+    An arXiv version suffix (v2) and an arXiv: prefix are dropped, and a closing parenthesis that
+    belongs to the query rather than the identifier is kept outside it."""
     def recid(match: re.Match) -> str:
         kind = "doi" if match.group(1).lower() == "doi" else "arxiv"
-        params = {"q": f"{kind}:{match.group(2)}", "size": 1, "fields": "control_number"}
+        ident, tail = match.group(2), ""
+        while ident.endswith(")") and ident.count(")") > ident.count("("):
+            ident, tail = ident[:-1], ")" + tail
+        if kind == "arxiv":
+            ident = re.sub(r"v\d+$", "", re.sub(r"(?i)^arxiv:", "", ident))
+        params = {"q": f"{kind}:{ident}", "size": 1, "fields": "control_number"}
         hits = json.loads(_get(f"{INSPIRE_URL}?{urllib.parse.urlencode(params)}", timeout)).get("hits", {}).get("hits", [])
         if not hits:
-            raise ValueError(f"INSPIRE has no record for {kind}:{match.group(2)}")
-        return f"refersto:recid:{hits[0]['metadata']['control_number']}"
+            raise NotFound(f"INSPIRE has no record for {kind}:{ident}; check the identifier")
+        return f"refersto:recid:{hits[0]['metadata']['control_number']}{tail}"
     return REFERSTO.sub(recid, query)
 
 
 def search_inspire(query: str, n: int, sort: str, timeout: float, since: int | None = None) -> list[dict]:
     query = resolve_refersto(query, timeout) if REFERSTO.search(query) else query
-    q = f"{query} and de>={since}" if since else query
+    q = f"({query}) and de>={since}" if since else query   # parentheses keep an "or" inside the filter
     params = {"q": q, "size": n, "sort": INSPIRE_SORT.get(sort, sort), "fields": INSPIRE_FIELDS}
     data = _get(f"{INSPIRE_URL}?{urllib.parse.urlencode(params)}", timeout)
     return parse_inspire(json.loads(data))
@@ -287,7 +299,7 @@ def search_arxiv(query: str, n: int, sort: str, timeout: float, since: int | Non
     sort_by = {"mostrecent": "submittedDate"}.get(sort, "relevance")
     q = arxiv_query(query)
     if since:
-        q = f"{q} AND submittedDate:[{since}01010000 TO 209912312359]"
+        q = f"({q}) AND submittedDate:[{since}01010000 TO 209912312359]"
     params = {"search_query": q, "start": 0, "max_results": n,
               "sortBy": sort_by, "sortOrder": "descending"}
     return parse_arxiv(_get(f"{ARXIV_URL}?{urllib.parse.urlencode(params)}", timeout))
@@ -413,6 +425,10 @@ def main(argv=None) -> int:
             records = run()
         except SourceUnavailable as exc:
             print(f"UNAVAILABLE: {name} ({exc}). Fall back to WebSearch and mark ACCESS: search-summary.")
+            continue
+        except NotFound as exc:
+            answered += 1   # the source answered: the identifier was wrong
+            print(f"NOT FOUND: {exc}.")
             continue
         except (ValueError, ET.ParseError) as exc:
             print(f"UNAVAILABLE: {name} returned an unreadable response ({exc}).")

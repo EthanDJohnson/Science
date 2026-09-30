@@ -81,7 +81,7 @@ class TurnBudget(unittest.TestCase):
         # A deep judge reads ~45 files; at 3 per turn it must not be told to wrap up by call 36.
         early = self.run_turns("adjudicator", 3, 12, agent_id="early")
         self.assertNotIn("top of your budget", " ".join(early.values()))
-        out = self.run_turns("adjudicator", 3, 20)      # calls 57 -> 60 cross the top of the budget, 55
+        out = self.run_turns("adjudicator", 3, 24)      # calls 69 -> 72 cross the top of the budget, 70
         top = next(text for text in out.values() if "top of your budget" in text)
         self.assertIn("finish your final output", top)
         self.assertNotIn("your file", " ".join(out.values()))

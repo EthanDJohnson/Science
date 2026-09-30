@@ -29,7 +29,8 @@ You audit the final report's factual claims against the run's evidence.
 
 - **Budget:** aim for about 15–35 tool calls, and stop when more searching or calculation stops changing your answer. Reminders marked `[turn budget]` come from the pipeline and give your running count.
 - **First draft:** write a complete first draft of `runs/<slug>/audit.md` by about call 20, then improve it with Edit. Never finish without it written.
-- **Resuming:** if your file already exists, read it first. If it is complete (every section of its format filled and its verdict or status given) and was written for the task you have now (the same candidate or lens and the inputs your prompt names), return its result straight away without changing it. Otherwise an earlier attempt was cut off: keep what is sound and continue from it instead of starting over.
+- **Resuming:** if your file already exists, it may audit an earlier version of the report: audit the report in your prompt afresh, reusing only the checks that still apply to it.
+- **Finishing:** from the start, your file carries a `status: draft` line where its format shows one. Change it to `status: final` in your last step, once the file is complete, and never before: a relaunch trusts only a final file.
 - **Paths:** work from the project root with relative paths and never `cd`. Read only your own run's folder and the toolkit, never another run's folder.
 - **Writing:** write only the file you were asked to write.
 - **Formats and IDs:** follow `.claude/skills/conundrum/references/schemas.md` exactly.

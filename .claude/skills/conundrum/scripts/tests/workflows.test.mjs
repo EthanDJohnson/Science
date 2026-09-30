@@ -512,7 +512,10 @@ test('analyze, anomaly: refuters attack magnitude, evidence and bounds, never en
   // The judge sees each refuter's angle and basis, and is told to read its many inputs in batches.
   const judge = byType(deep.calls, 'adjudicator')[0]
   assert.match(judge.prompt, /C1: survives \(magnitude, calculation\) \/ survives \(evidence, calculation\)/)
-  assert.match(judge.prompt, /There are 12 verdict files, 4 crux files and 7 math files: read them several per step/)
+  assert.match(judge.prompt, /the verdict files in runs\/s\/verdicts\/ \(C1-0\.md, C1-1\.md, C1-2\.md, C2-0\.md, /)
+  assert.match(judge.prompt, /the crux files in runs\/s\/cruxes\/ \(C1\.md, C2\.md, C3\.md, C4\.md\)/)
+  assert.match(judge.prompt, /Any other file in those folders is an unfinished draft or left from an earlier slate/)
+  assert.match(judge.prompt, /read them several per step, in parallel/)
   const standard = await run('conundrum-analyze', { slug: 's', depth: 'standard', type: 'anomaly' },
     analyzeHandler({ slate: ANOMALY_SLATE }))
   assert.match(byType(standard.calls, 'falsifier')[0].prompt, /strongest available \(magnitude, evidence, bounds; say which\)/)
@@ -544,8 +547,9 @@ test('analyze: stopAfter slate returns before falsification, and a relaunch repl
     analyzeHandler({ slate: ANOMALY_SLATE }))
   const slateAt = stopped.calls.findIndex(c => typeOf(c) === 'candidate-builder')
   assert.deepEqual(noted.calls.slice(0, slateAt).map(key), stopped.calls.slice(0, slateAt).map(key))
-  assert.match(noted.calls[slateAt].prompt, /The user reviewed an earlier slate and asks: Split C1 by beam flux and proton loss\./)
-  assert.doesNotMatch(stopped.calls[slateAt].prompt, /reviewed an earlier slate/)
+  assert.match(noted.calls[slateAt].prompt, /The user reviewed the earlier slate in runs\/s\/candidates\.md and asks: Split C1 by beam flux and proton loss\./)
+  assert.match(noted.calls[slateAt].prompt, /don't return it unchanged/)
+  assert.doesNotMatch(stopped.calls[slateAt].prompt, /reviewed the earlier slate/)
 })
 
 test('analyze, deep: failed refuters and crux advocates are named to the judge; unexamined candidates get no advocate', async () => {
@@ -560,7 +564,11 @@ test('analyze, deep: failed refuters and crux advocates are named to the judge; 
   assert.deepEqual(result.cruxFailed, ['C2'])
   const judge = byType(calls, 'adjudicator')[0].prompt
   assert.match(judge, /Fewer verdicts than refuters \(some failed\): C1\./)
-  assert.match(judge, /Survivors with no crux file \(the advocate failed, not a concession\): C2\./)
+  assert.match(judge, /Refuters that failed: C1#2, C4#0, C4#1, C4#2; a verdict file they left is an unfinished draft/)
+  assert.match(judge, /Crux advocates that failed: C2; any crux file they left is an unfinished draft/)
+  assert.match(judge, /verdicts\/ \(C1-0\.md, C1-1\.md, C2-0\.md/)   // C1-2 failed, so it is not listed
+  // Each advocate is told exactly which verdicts to answer.
+  assert.match(byType(calls, 'crux-advocate')[0].prompt, /Answer the verdicts C1-0\.md, C1-1\.md in runs\/s\/verdicts\//)
   assert.match(judge, /Unexamined \(refuters failed\): C4/)
   assert.ok(logs.some(l => l.includes('refuters that failed: C1#2, C4#0, C4#1, C4#2')))
 })
@@ -585,6 +593,36 @@ test('research: an anomaly asks for error budgets and upcoming experiments; the 
     byType(feasibility.calls, 'researcher').map(c => c.opts.label))
   for (const c of byType(anomaly.calls, 'researcher')) assert.match(c.prompt, /Research facets section scopes this mandate/)
   const quant = byType(anomaly.calls, 'researcher').find(c => c.opts.label === 'research:quantitative')
-  assert.match(quant.prompt, /statistical and systematic uncertainties exactly as quoted/)
+  assert.match(quant.prompt, /Standard Model inputs/)
+  assert.match(quant.prompt, /own measurements belong to the engineering facet/)
+  const quantF = byType(feasibility.calls, 'researcher').find(c => c.opts.label === 'research:quantitative')
+  assert.match(quantF.prompt, /statistical and systematic uncertainties exactly as quoted/)
   assert.match(eng.prompt, /when results are expected/)
+})
+
+test('analyze: a mistyped stopAfter is refused before any agent runs', async () => {
+  const calls = []
+  await assert.rejects(run('conundrum-analyze', { slug: 's', stopAfter: 'Slate' }, c => { calls.push(c); return null }),
+    /unknown stopAfter: Slate/)
+  assert.equal(calls.length, 0)
+})
+
+test('analyze: a refuter that returns no valid verdict counts as failed, not as a vote', async () => {
+  const verdict = c => (c.opts.label === 'C1#0' ? 'I ran out of turns' : { verdict: 'survives', basis: 'calculation' })
+  const { result, calls } = await run('conundrum-analyze', { slug: 's' }, analyzeHandler({ verdict }))
+  assert.deepEqual(result.refutersFailed, ['C1#0'])
+  assert.doesNotMatch(byType(calls, 'adjudicator')[0].prompt, /undefined/)
+})
+
+test('analyze: failure returns still name what failed before them', async () => {
+  const mathFail = c => typeOf(c) === 'math-checker' && c.opts.label === 'math:examiner'
+  const noSlate = await run('conundrum-analyze', { slug: 's' }, analyzeHandler({ slate: null, fail: mathFail }))
+  assert.equal(noSlate.result.ok, false)
+  assert.deepEqual(noSlate.result.mathFailed, ['examiner'])
+  assert.deepEqual(noSlate.result.lensesFailed, [])
+  const noJudge = await run('conundrum-analyze', { slug: 's' },
+    analyzeHandler({ fail: c => mathFail(c) || typeOf(c) === 'adjudicator' }))
+  assert.equal(noJudge.result.ok, false)
+  assert.deepEqual(noJudge.result.mathFailed, ['examiner'])
+  assert.ok(Array.isArray(noJudge.result.refutersFailed) && Array.isArray(noJudge.result.trimmed))
 })

@@ -127,7 +127,7 @@ def describe(run: Path) -> dict:
         "depth": (fields.get("depth") or "").split(" ")[0],
         "status": "complete" if report else "partial",
         "source_checked": any((run / "research").glob("*.check.md")),
-        "bottom_line": first_paragraph(sections(report).get("bottom line", ""), 1200),
+        "bottom_line": first_paragraph(sections(report).get("bottom line", ""), 2000),
         "prior": parse_prior(brief),
         "trust": "ok",
         "notes": [],

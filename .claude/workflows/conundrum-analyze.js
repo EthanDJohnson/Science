@@ -103,6 +103,8 @@ if (!args || !args.slug) throw new Error('conundrum-analyze needs args.slug (the
 const dir = `runs/${args.slug}`
 const depth = ['quick', 'standard', 'deep'].includes(args.depth) ? args.depth : 'standard'
 const type = DEFAULT_LENSES[args.type] ? args.type : 'feasibility'
+// A mistyped stopAfter would silently run the costly half, so refuse it before any agent starts.
+if (args.stopAfter != null && args.stopAfter !== 'slate') throw new Error(`unknown stopAfter: ${args.stopAfter} (only 'slate')`)
 let requested = args.lenses && args.lenses.length ? args.lenses : DEFAULT_LENSES[type]
 if (depth === 'quick' && !(args.lenses && args.lenses.length)) requested = ['constraints', 'examiner', QUICK_THIRD[type]]
 const unknownLenses = requested.filter(l => !LENSES.includes(l))
@@ -172,10 +174,13 @@ const slate = await agent(
   `Run directory: ${dir}. Question type: ${type}. Build the candidate slate from ${dir}/analyses/ ` +
   `(completed lenses: ${lensesDone.join(', ')}) and write ${dir}/candidates.md.` +
   (mathNote ? mathNote + ' A candidate may not rest on a claim they refuted.' : '') +
-  (slateNote ? ` The user reviewed an earlier slate and asks: ${slateNote} Rewrite ${dir}/candidates.md accordingly.` : ''),
+  (slateNote ? ` The user reviewed the earlier slate in ${dir}/candidates.md and asks: ${slateNote} That file is the slate ` +
+    `the user rejected: revise it to meet this request, and don't return it unchanged.` : ''),
   { agentType: 'candidate-builder', schema: SLATE, label: 'slate', phase: 'Slate' })
+// What every later return reports, so a failure on any path still names what failed before it.
+const soFar = { dir, lenses: lensesDone, lensesFailed, math, mathFailed }
 if (!slate || !slate.candidates || !slate.candidates.length) {
-  return { ok: false, reason: 'candidate slate was not produced', dir, lensesDone }
+  return { ok: false, reason: 'candidate slate was not produced', ...soFar, lensesDone }
 }
 const seenIds = new Set()
 const unique = slate.candidates.filter(c => !seenIds.has(c.id) && seenIds.add(c.id))
@@ -195,8 +200,7 @@ if (!candidates.some(c => c.type === 'null')) log('warning: the slate has no nul
 // The user can stop here to review a slate before the costly half (falsification, crux, judge). A relaunch
 // with the same args minus stopAfter, and resumeFromRunId, replays every agent so far.
 if (args.stopAfter === 'slate') {
-  return { ok: true, stoppedAfter: 'slate', dir, candidates, trimmed, lenses: lensesDone, lensesFailed, math, mathFailed,
-    slatePath: `${dir}/candidates.md` }
+  return { ok: true, stoppedAfter: 'slate', ...soFar, candidates, trimmed, slatePath: `${dir}/candidates.md` }
 }
 
 // ----- Falsify: independent refuters; deep mode gives each a different angle.
@@ -209,7 +213,8 @@ const verdicts = (await parallel(candidates.flatMap(c =>
       `Write ${dir}/verdicts/${c.id}-${i}.md.` +
       (mathChecked.length ? ` The math checks in ${dir}/math/ count as calculations: a claim they refuted is grounds for a verdict.` : ''),
       { agentType: 'falsifier', schema: VERDICT, label: `${c.id}#${i}`, phase: 'Falsify' })
-      .then(v => (v == null ? null : { id: c.id, refuter: i, angle, verdict: v.verdict, basis: v.basis }))
+      .then(v => (v && ['refuted', 'weakened', 'survives'].includes(v.verdict)
+        ? { id: c.id, refuter: i, angle, verdict: v.verdict, basis: v.basis || 'none' } : null))
   }))))
 // parallel() keeps call order, so a failed refuter (null) is identified by its position.
 const slots = candidates.flatMap(c => Array.from({ length: refuters }, (_, i) => `${c.id}#${i}`))
@@ -240,14 +245,16 @@ const thin = candidates.filter(c => votes[c.id] && votes[c.id].length < refuters
 // Evidence on multi-agent debate says extra rounds add little over independent votes, so
 // standard runs rely on the decisive tests already in candidates.md instead.
 // A candidate with no verdicts has nothing to answer, so it gets no advocate.
+const verdictFiles = id => verdictsIn.filter(v => v.id === id).map(v => `${id}-${v.refuter}.md`)
 const cruxed = []
 const cruxFailed = []
 const answerable = alive.filter(id => !unexamined.includes(id))
 if (depth === 'deep' && answerable.length >= 2) {
   phase('Crux')
+  // The advocate is told exactly which verdicts to answer, so a relaunch that adds one changes its prompt.
   const answers = await parallel(answerable.map(id => () => agent(
     `Run directory: ${dir}. Your candidate: ${id}. Rivals: ${answerable.filter(x => x !== id).join(', ')}. ` +
-    `Answer the verdicts in ${dir}/verdicts/${id}-*.md and write ${dir}/cruxes/${id}.md.`,
+    `Answer the verdicts ${verdictFiles(id).join(', ')} in ${dir}/verdicts/ and write ${dir}/cruxes/${id}.md.`,
     { agentType: 'crux-advocate', label: `crux:${id}`, phase: 'Crux', schema: WROTE }).then(wrote)))
   answerable.forEach((id, i) => { (answers[i] != null ? cruxed : cruxFailed).push(id) })
   if (cruxFailed.length) log(`crux advocates that failed: ${cruxFailed.join(', ')}`)
@@ -258,24 +265,30 @@ phase('Judge')
 const judgeOpts = { agentType: 'adjudicator', label: 'judge', phase: 'Judge', schema: REPORT }
 if (depth === 'quick') Object.assign(judgeOpts, { model: 'opus', effort: 'high' })
 if (depth === 'deep') judgeOpts.effort = 'max'
+// The judge reads exactly this slate's finished files: a failed agent may have left a draft on disk, and a
+// relaunch that rebuilt the slate leaves the earlier slate's files behind (rubric rule 11).
 const judged = (await agent(
-  `Run directory: ${dir}. Question type: ${type}. Adjudicate from ${dir}/brief.md, ${dir}/dossier.md, ${dir}/candidates.md and ${dir}/verdicts/` +
-  (cruxed.length ? ` and ${dir}/cruxes/` : '') + `. Refuter votes: ${tally}.` +
+  `Run directory: ${dir}. Question type: ${type}. Adjudicate from ${dir}/brief.md, ${dir}/dossier.md, ${dir}/candidates.md, ` +
+  `the verdict files in ${dir}/verdicts/ (${verdictsIn.length ? verdictsIn.map(v => `${v.id}-${v.refuter}.md`).join(', ') : 'none'})` +
+  (cruxed.length ? ` and the crux files in ${dir}/cruxes/ (${cruxed.map(id => `${id}.md`).join(', ')})` : '') +
+  `. Any other file in those folders is an unfinished draft or left from an earlier slate, and casts no vote.` +
+  ` Refuter votes: ${tally}.` +
   (unexamined.length ? ` Unexamined (refuters failed): ${unexamined.join(', ')}.` : '') +
+  (refutersFailed.length ? ` Refuters that failed: ${refutersFailed.join(', ')}; a verdict file they left is an unfinished draft, not counted in the tally.` : '') +
   (thin.length ? ` Fewer verdicts than refuters (some failed): ${thin.join(', ')}.` : '') +
-  (cruxFailed.length ? ` Survivors with no crux file (the advocate failed, not a concession): ${cruxFailed.join(', ')}.` : '') +
+  (cruxFailed.length ? ` Crux advocates that failed: ${cruxFailed.join(', ')}; any crux file they left is an unfinished draft: ` +
+    `weigh its rebuttals only where they cite a calculation or source, and treat nothing in it as a concession.` : '') +
   (trimmed.length ? ` Not falsified (over the slate cap): ${trimmed.join(', ')}.` : '') +
   mathNote +
-  (depth === 'deep' ? ` There are ${verdictsIn.length} verdict files${cruxed.length ? `, ${cruxed.length} crux files` : ''}` +
-    `${mathChecked.length ? ` and ${mathChecked.length} math files` : ''}: read them several per step, in parallel.` : '') +
+  (depth === 'deep' ? ` A deep run has many files: read them several per step, in parallel.` : '') +
   ` Return the whole report as \`report\` in your final output; don't write it to a file.`,
   judgeOpts))
 // Keep a report the judge returned even if it flagged it incomplete: losing a finished report to a
 // false ok is worse than presenting it with a warning.
 const report = judged && typeof judged.report === 'string' && judged.report.trim() ? judged.report : null
 if (report == null) {
-  return { ok: false, reason: 'adjudicator failed: no report returned', dir, candidates, alive, eliminated, unexamined,
-    refutersFailed, cruxFailed }
+  return { ok: false, reason: 'adjudicator failed: no report returned', ...soFar, candidates, trimmed, alive, eliminated,
+    unexamined, refutersFailed, cruxed, cruxFailed }
 }
 const reportIncomplete = !judged.ok
 if (reportIncomplete) log('the judge returned its report but did not mark it complete')

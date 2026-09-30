@@ -23,6 +23,9 @@ const FACETS = {
 // technology readiness. The facet keys stay the same, so labels and file names don't change.
 const FACETS_BY_TYPE = {
   anomaly: {
+    quantitative: 'the related measured quantities and Standard Model inputs that bear on the anomaly (couplings, mixing-matrix ' +
+      'elements, radiative corrections, astrophysical and cosmological inputs), each with units and uncertainties as quoted; ' +
+      "the anomaly's own measurements belong to the engineering facet",
     engineering: 'the measurements themselves, method by method: every result bearing on the anomaly with its statistical and ' +
       'systematic uncertainties exactly as quoted, the largest items of each systematic budget, blinding, the in-situ tests each ' +
       'experiment ran, which results supersede or re-analyse others, and which share an apparatus; and the planned or running ' +

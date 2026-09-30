@@ -73,10 +73,6 @@ class Behaviour(unittest.TestCase):
         self.assertAlmostEqual(clash["error_scaled"], clash["error"] * clash["scale_factor"])
 
 
-if __name__ == "__main__":
-    unittest.main()
-
-
 class Disagreements(unittest.TestCase):
     """The tools an anomaly question needs: tensions, method groups and systematic floors."""
 
@@ -133,3 +129,36 @@ class Disagreements(unittest.TestCase):
             S.exposure_to_reach(delta=10.0, sigma_sys=1.0)
         with self.assertRaises(ValueError):
             S.exposure_to_reach()
+
+
+class DisagreementEdgeCases(unittest.TestCase):
+    def test_grouped_chi2_accepts_iterators(self):
+        as_lists = S.grouped_chi2({"a": ([1.0, 3.0], [1.0, 1.0]), "b": ([5.0], [1.0])})
+        as_iters = S.grouped_chi2({"a": (iter([1.0, 3.0]), iter([1.0, 1.0])), "b": (iter([5.0]), iter([1.0]))})
+        self.assertEqual(as_iters["groups"]["a"]["n"], 2)
+        self.assertAlmostEqual(as_iters["between_chi2"], as_lists["between_chi2"], places=12)
+        self.assertAlmostEqual(as_iters["pooled"]["mean"], as_lists["pooled"]["mean"], places=12)
+
+    def test_between_z_stays_finite_far_out_in_the_tail(self):
+        two = S.grouped_chi2({"a": ([0.0], [1.0]), "b": ([60.0], [1.0])})
+        self.assertAlmostEqual(two["between_z"], math.sqrt(two["between_chi2"]), places=9)   # 60 / sqrt(2)
+        # Three groups: 2 degrees of freedom, a p-value of about e^-3600, far below the smallest float.
+        three = S.grouped_chi2({"a": ([0.0], [1.0]), "b": ([60.0], [1.0]), "c": ([120.0], [1.0])})
+        self.assertEqual(three["p_between"], 0.0)
+        log_p = mp.log(mp.gammainc(1, three["between_chi2"] / 2, mp.inf, regularized=True))
+        exact = mp.findroot(lambda z: mp.log(mp.erfc(z / mp.sqrt(2))) - log_p, 80)
+        self.assertAlmostEqual(three["between_z"] / float(exact), 1.0, places=6)
+        for k, x in ((3, 3000.0), (7, 5000.0)):   # the tail formula against mpmath at other dof
+            ref = float(mp.log(mp.gammainc(k / 2, x / 2, mp.inf, regularized=True)))
+            self.assertAlmostEqual(S._log_chi2_sf_tail(x, k) / ref, 1.0, places=5)
+
+    def test_asymmetric_errors_are_refused_where_they_cannot_be_used(self):
+        with self.assertRaisesRegex(ValueError, "symmetric errors"):
+            S.weighted_mean([877.75, 878.5], [S.total_error(0.28, (0.22, 0.16)), 0.8])
+        with self.assertRaisesRegex(ValueError, "separate arguments"):
+            S.total_error([1.7, 4.0])
+
+
+
+if __name__ == "__main__":
+    unittest.main()
