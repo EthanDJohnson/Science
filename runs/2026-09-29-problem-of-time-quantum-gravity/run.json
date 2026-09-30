@@ -1,0 +1,23 @@
+{
+  "slug": "2026-09-29-problem-of-time-quantum-gravity",
+  "date": "2026-09-29",
+  "title": "The problem of time — reconciling quantum-mechanical and general-relativistic time",
+  "question": "Problem of time: In quantum mechanics, time is a classical background parameter, and the flow of time is universal and absolute. In general relativity, time is one component of four-dimensional spacetime, and the flow of time changes depending on the curvature of spacetime and the spacetime traject…",
+  "type": "foundations",
+  "depth": "standard",
+  "status": "complete",
+  "source_checked": true,
+  "bottom_line": "On any fixed, globally hyperbolic classical spacetime the two concepts are already reconciled: relativistic quantum theory runs on GR's proper times, and a quantum clock resolving the gravitational redshift across 1 mm (measured −9.8(2.3)e-20 per mm against −1.09e-19 predicted, at 7.6e-21 fractional uncertainty, SI) confirms it (confidence high: peer-reviewed measurement plus verified calculation). The genuine \"problem of time\" is narrower than the question states: it arises when the whole syst…",
+  "prior": [
+    {
+      "slug": "2026-09-29-warp-bubble-shapes",
+      "date": "2026-09-29",
+      "mode": "ignore",
+      "same_question": false
+    }
+  ],
+  "trust": "ok",
+  "notes": [],
+  "superseded_by": null,
+  "recorded": "2026-09-30"
+}
