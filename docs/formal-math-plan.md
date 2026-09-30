@@ -1,6 +1,6 @@
 # Formal mathematics for `/conundrum`: review and plan
 
-*Status: Phases 1a (math checks) and 1b (the foundations type) are built, on the `conundrum-math-checks` branch. Phase 2 (Lean) is not. Reviewed 2026-09-29. The cloud facts were checked the same day in this repository's cloud environment.*
+*Status: Phases 1a (math checks) and 1b (the foundations type) are built and merged. Their first live run, a standard run on the problem of time, checked 59 claims: 55 verified, 2 refuted (both corrected, neither changing a ranking) and 2 left unverified, at about $0.60–1.55 per lens. Phase 2 (Lean) is not built. Reviewed 2026-09-29. The cloud facts were checked the same day in this repository's cloud environment.*
 
 ## The proposal
 

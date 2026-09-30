@@ -76,18 +76,27 @@ const priorNote = prior.length
     `Read each one's PROVENANCE.md before searching; it says how its notes may be used.`
   : ''
 
-// Each facet's check starts as soon as its own research finishes (no barrier).
-const results = await pipeline(facets,
-  f => agent(
-    `Run directory: ${dir}. Your facet: ${f}. Mandate: ${FACETS[f]}. ` +
-    `Read ${dir}/brief.md, then write ${dir}/research/${f}.md.` + priorNote,
-    { agentType: 'researcher', label: `research:${f}`, phase: 'Research', schema: WROTE })
-    .then(r => (wrote(r) ? { facet: f, research: r.summary, check: null } : null)),
-  (prev, f) => (prev == null || !checking) ? prev : agent(
+// A resume replays saved agents only for the unchanged prefix of agent() calls, in call order, so the
+// calls must come in the same order on every run. Every researcher starts at once, in a fixed order;
+// each facet's source check starts once that facet's research and every earlier facet's have finished.
+// Checks still overlap slower researchers, but their order no longer depends on who finishes first.
+const settle = p => Promise.resolve(p).then(r => r, () => null)
+const researchRuns = facets.map(f => settle(agent(
+  `Run directory: ${dir}. Your facet: ${f}. Mandate: ${FACETS[f]}. ` +
+  `Read ${dir}/brief.md, then write ${dir}/research/${f}.md.` + priorNote,
+  { agentType: 'researcher', label: `research:${f}`, phase: 'Research', schema: WROTE })))
+const results = []
+const checkRuns = []
+for (const [i, f] of facets.entries()) {
+  const r = wrote(await researchRuns[i])
+  results.push(r ? { facet: f, research: r.summary, check: null } : null)
+  checkRuns.push(r == null || !checking ? null : settle(agent(
     `Run directory: ${dir}. Check the load-bearing claims in ${dir}/research/${f}.md ` +
     `and write ${dir}/research/${f}.check.md.`,
-    { agentType: 'source-checker', label: `check:${f}`, phase: 'Check', schema: WROTE })
-    .then(r => ({ ...prev, check: wrote(r) ? r.summary : null })))
+    { agentType: 'source-checker', label: `check:${f}`, phase: 'Check', schema: WROTE })))
+}
+const checks = await Promise.all(checkRuns)
+results.forEach((r, i) => { if (r) r.check = wrote(checks[i]) ? checks[i].summary : null })
 
 const done = results.filter(Boolean)
 const missing = facets.filter(f => !done.some(r => r.facet === f))

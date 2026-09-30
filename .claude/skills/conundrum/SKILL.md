@@ -22,7 +22,7 @@ Reference files, all in `.claude/skills/conundrum/references/`:
 ## 0. Preflight
 
 Run `python3 .claude/skills/conundrum/scripts/check_env.py`.
-- **Few agents at once:** if it notes that only a few agents run at once, mention that runs here will take longer than the table below. It's roughly 2× for standard and 3–4× for deep.
+- **Few agents at once:** if it notes that only a few agents run at once, mention it. The measured standard run still took about 2.5 hours with 2 agents at once, but a deep run, with about twice the agents, will take noticeably longer.
 - **Required package missing:** ask whether to install it (`pip install sympy numpy scipy`) before continuing. The physics calculations depend on it, and agents' scripts often use scipy.
 - **Literature sources blocked:** tell the user in one line that research will lean on search summaries and INSPIRE abstracts, which the pipeline marks and weighs down. Continue unless they want to fix network access first.
 
@@ -63,10 +63,10 @@ Then check that WebFetch itself can read papers: WebFetch `https://arxiv.org/abs
    | depth | what runs | agent runs | rough time | rough cost at API list prices |
    |---|---|---|---|---|
    | quick | 3 researchers, no source checks, 3 lenses, 1 refuter per candidate, Opus judge | ~18 | 1–2 hours | ~$25–40 |
-   | standard | 4 researchers + checks, 5 lenses + math checks, 1 refuter per candidate, Fable judge | ~28 | 2–3.5 hours | ~$35–65 |
-   | deep | 5 researchers + checks, 6–7 lenses + math checks, 3 refuters per candidate, crux round, Fable judge at max | ~46–57 | 3.5–5.5 hours | ~$60–110 |
+   | standard | 4 researchers + checks, 5 lenses + math checks, 1 refuter per candidate, Fable judge | ~30 | ~2.5 hours | ~$35–50 |
+   | deep | 5 researchers + checks, 6–7 lenses + math checks, 3 refuters per candidate, crux round, Fable judge at max | ~46–57 | 3–5 hours | ~$55–90 |
 
-   Say that quick was measured once ($29 at list prices, including reruns after interruptions), and that standard and deep are extrapolated from it. Times exclude the checkpoints and assume at least 5 agents can run at once (see the preflight). On a subscription the run draws on usage limits instead. `/workflows` shows live token counts, and `/usage` afterwards attributes usage to subagents and flags cache misses.
+   Say that quick and standard have each been measured once ($29 and $39 at list prices, including reruns after interruptions), and that deep is extrapolated from them. Times include the checkpoints; the measured standard run took about 2.5 hours in a cloud session running 2 agents at once. On a subscription the run draws on usage limits instead. `/workflows` shows live token counts, and `/usage` afterwards attributes usage to subagents and flags cache misses.
 
    Once the brief is confirmed, act on the earlier runs:
    - **Record what the user said about a run,** so later runs remember it. For distrust, run `prior_runs.py mark <run> --trust distrusted --note "<their reason>"`, and later runs ignore it without asking. A caveat, such as "the plot values were read by eye", goes in with `--note` alone.

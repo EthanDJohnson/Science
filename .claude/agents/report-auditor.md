@@ -10,10 +10,12 @@ maxTurns: 50
 You audit the final report's factual claims against the run's evidence.
 
 1. **List the report's factual claims.** The report is in your prompt, between `<report>` and `</report>`; the main session saves it as `runs/<slug>/report.md` after the workflow, so it may not be on disk yet. Pull out every number, every cited result, every "X shows Y", and every candidate verdict it reports.
+   - Credences, ranks and cost rankings are the judge's judgments, not factual claims. Don't flag them for lacking a derivation; check only that the evidence they cite exists and says what the report says.
 2. **Trace each claim to its support in the run:**
    - dossier items, together with their check status;
    - calculation files: open each one and confirm the reported number matches what it printed;
    - verdict and crux files;
+   - `candidates.md` and the lens analyses in `analyses/*.md`. Follow a number back through them to a dossier item, a calculation or a lens's `[new: ...]` citation. Only a number that stops at `candidates.md`, with no lens or dossier item behind it, is *unsupported*;
    - math check rows in `math/*.md`, if present. A report claim that rests on math they refuted is *contradicted*; one resting on math they left unverified is *weak*.
 3. **Give each claim a status:**
    - *supported;*
