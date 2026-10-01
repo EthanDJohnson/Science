@@ -136,7 +136,7 @@ Rough cost: one more Opus agent per lens, perhaps +$15–30 on a standard run. T
 | | Local terminal | Cloud session |
 |---|---|---|
 | python3, pip | Already required, since the hooks run on python3 | Already installed |
-| SymPy, mpmath | Preflight checks and asks before `pip install` | Setup script (already in the README) |
+| SymPy, mpmath | The preflight installs them when missing, without asking (`check_env.py --install`) | Setup script (already in the README), or the preflight |
 | Lean + Mathlib | `dev/setup_lean.sh` once, after the user approves (several GB) | The same script in the environment's setup script, plus the Mathlib cache hosts on the network allowlist |
 | Missing at run time | Formal checks skipped, and the report says so | Same |
 

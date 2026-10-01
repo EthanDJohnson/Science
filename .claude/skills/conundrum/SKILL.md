@@ -21,9 +21,10 @@ Reference files, all in `.claude/skills/conundrum/references/`:
 
 ## 0. Preflight
 
-Run `python3 .claude/skills/conundrum/scripts/check_env.py`.
+Run `python3 .claude/skills/conundrum/scripts/check_env.py --install`, with the Bash tool's timeout at 600000 ms. Don't ask first: the user wants missing packages installed without a question. It has pip install whichever of its fixed list is missing or broken (sympy, mpmath, numpy, scipy, and pypdf with cffi) and nothing else. A fresh cloud container usually needs them; a machine that has them gets nothing installed.
+- **Installed:** say in one line what it installed.
+- **Install failed:** an `ACTION:` line means a required package is still missing. Show the user the reason it gives and ask how to proceed: the physics calculations depend on these packages, and agents' scripts often use scipy. A `NOTE:` that only pypdf failed is no reason to stop: say that agents can then quote abstracts and web pages but not PDFs, and continue.
 - **Few agents at once:** if it notes that only a few agents run at once, mention it. The time estimates below assume 2 at once, as in the measured runs; a machine with more CPUs runs faster.
-- **Required package missing:** ask whether to install it (`pip install sympy numpy scipy`) before continuing. The physics calculations depend on it, and agents' scripts often use scipy.
 - **Literature sources blocked:** tell the user in one line that research will lean on search summaries and INSPIRE abstracts, which the pipeline marks and weighs down. Continue unless they want to fix network access first.
 
 Then check that WebFetch itself can read papers: WebFetch `https://arxiv.org/abs/gr-qc/0009013` and ask for the title.

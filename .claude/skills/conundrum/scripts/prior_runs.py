@@ -3,11 +3,11 @@
 and keep each run's record so later runs remember how far to trust it.
 
 From the project root:
-    python3 .claude/skills/conundrum/scripts/prior_runs.py list "<question>"   # related runs, best match first
+    python3 .claude/skills/conundrum/scripts/prior_runs.py list "the question" # related runs, best match first
     python3 .claude/skills/conundrum/scripts/prior_runs.py list                # every run, newest first
     python3 .claude/skills/conundrum/scripts/prior_runs.py import <old> --into <new> --mode leads|update
     python3 .claude/skills/conundrum/scripts/prior_runs.py record <slug>       # when a run finishes
-    python3 .claude/skills/conundrum/scripts/prior_runs.py mark <slug> --trust distrusted --note "<why>"
+    python3 .claude/skills/conundrum/scripts/prior_runs.py mark <slug> --trust distrusted --note "the reason"
 
 How a new run may treat an earlier one (chosen with the user at framing, SKILL.md step 1):
 - ignore: agents never see it, and nothing is imported.

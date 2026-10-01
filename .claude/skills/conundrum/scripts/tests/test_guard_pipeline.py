@@ -124,6 +124,13 @@ class Guard(unittest.TestCase):
                 with self.subTest(agent=path.stem):
                     self.assertTrue(guard.is_pipeline_agent({"agent_id": "x", "agent_type": path.stem}))
 
+    def test_pipeline_agents_may_run_every_toolkit_script(self):
+        # The guard reads a script before an agent runs it. A toolkit script with a line that looks like
+        # a write into .claude/ would be refused to every agent.
+        for path in sorted((ROOT / ".claude" / "skills" / "conundrum" / "scripts").glob("*.py")):
+            with self.subTest(script=path.name):
+                guard.check_code(path.read_text(), path.name)
+
 
 if __name__ == "__main__":
     unittest.main()
