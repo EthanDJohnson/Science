@@ -82,17 +82,17 @@ UNITS
 PYTHON USAGE
   import sys; sys.path.insert(0, ".claude/skills/conundrum/scripts")
   from neutron_beta_decay import tau_beta, vud_from_tau, br_exotic
-  r = tau_beta(1.27641, 0.00056, 0.97367, 0.00032, rc_set="GS2023")
-  print(r["tau"], r["sigma"], r["dtau_dlambda"])          # ~878.2 s, ~0.8 s, ~-1142 s
+  r = tau_beta(1.27641, 0.00056, 0.97361, 0.00032, rc_set="GS2023")
+  print(r["tau"], r["sigma"], r["dtau_dlambda"])          # ~878.5 s, ~0.9 s, ~-1143 s
   print(vud_from_tau(877.75, 0.34, 1.27642, 0.00056)["vud"])  # ~0.97404
   print(br_exotic(877.75, 0.34, r["tau"], r["sigma"]))
 
 COMMAND LINE
   python3 .claude/skills/conundrum/scripts/neutron_beta_decay.py selftest
-  python3 .../neutron_beta_decay.py tau --lam 1.27641 --slam 0.00056 --vud 0.97367 --svud 0.00032 --rc GS2023
+  python3 .../neutron_beta_decay.py tau --lam 1.27641 --slam 0.00056 --vud 0.97361 --svud 0.00032 --rc GS2023
   python3 .../neutron_beta_decay.py vud --tau "877.75 s" --stau "0.34 s" --lam 1.27642 --slam 0.00056
-  python3 .../neutron_beta_decay.py lam --tau "887.7 s" --stau "2.2 s" --vud 0.97367 --svud 0.00032
-  python3 .../neutron_beta_decay.py br --tau "877.75 s" --stau "0.34 s" --lam 1.27641 --slam 0.00056 --vud 0.97367 --svud 0.00032
+  python3 .../neutron_beta_decay.py lam --tau "887.7 s" --stau "2.2 s" --vud 0.97361 --svud 0.00032
+  python3 .../neutron_beta_decay.py br --tau "877.75 s" --stau "0.34 s" --lam 1.27641 --slam 0.00056 --vud 0.97361 --svud 0.00032
   python3 .../neutron_beta_decay.py ckm --vud 0.97367 --svud 0.00032 --vus 0.22431 --svus 0.00085 --vub 0.00382 --svub 0.00020
   python3 .../neutron_beta_decay.py f
 """

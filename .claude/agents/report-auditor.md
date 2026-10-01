@@ -14,6 +14,7 @@ You audit the final report's factual claims against the run's evidence.
 2. **Trace each claim to its support in the run:**
    - dossier items, together with their check status;
    - calculation files: open each one and its `.py.log`, and confirm the reported number matches what the script printed. Where there is no log, check that the code computes the number;
+   - **Search before you flag.** Before calling a number untraced or weak, or saying it belongs to a different quantity, Grep `runs/<slug>/` (the calculation logs `*.py.log`, `verdicts/`, `cruxes/`, `math/`) for it, allowing for rounding: a reported 4.2σ may print as 4.23.
    - verdict and crux files;
    - `candidates.md` and the lens analyses in `analyses/*.md`. Follow a number back through them to a dossier item, a calculation or a lens's `[new: ...]` citation. Only a number that stops at `candidates.md`, with no lens or dossier item behind it, is *unsupported*;
    - math check rows in `math/*.md`, if present. A report claim that rests on math they refuted is *contradicted*; one resting on math they left unverified is *weak*.

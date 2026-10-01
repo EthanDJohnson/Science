@@ -57,18 +57,18 @@ Then check that WebFetch itself can read papers: WebFetch `https://arxiv.org/abs
    - the premises to test;
    - what counts as an answer;
    - the depth with its expected size;
-   - any proposed calculators. Each costs roughly $2–5 at API prices and is built alongside the research;
+   - any proposed calculators. Each costs roughly 2 US dollars at API prices and is built alongside the research;
    - the earlier runs, with the mode you propose for each and its reason.
 
    Ask them to confirm or correct it, and apply any corrections to `brief.md`. The user may overrule a mode in plain words, such as "I don't trust that research, get it fresh" (ignore) or "that's six months old in a fast-moving field, discount it" (leads).
 
-   | depth | what runs | agent runs | rough time | rough cost at API list prices |
+   | depth | what runs | agent runs | rough time | rough cost at API list prices (US dollars) |
    |---|---|---|---|---|
-   | quick | 3 researchers, no source checks, 3 lenses, 1 refuter per candidate, Opus judge | ~18 | 1–2 hours | ~$25–40 |
-   | standard | 4 researchers + checks, 5 lenses + math checks, 1 refuter per candidate, Fable judge | ~30 | ~2.5 hours | ~$35–50 |
-   | deep | 5 researchers + checks, 6–7 lenses + math checks, 3 refuters per candidate, crux round, Fable judge at max | ~45–62 | 4–5 hours | ~$55–90 |
+   | quick | 3 researchers, no source checks, 3 lenses, 1 refuter per candidate, Opus judge | ~18 | 1–2 hours | ~25–40 |
+   | standard | 4 researchers + checks, 5 lenses + math checks, 1 refuter per candidate, Fable judge | ~30 | ~2.5 hours | ~35–50 |
+   | deep | 5 researchers + checks, 6–7 lenses + math checks, 3 refuters per candidate, crux round, Fable judge at max | ~45–62 | 4–5 hours | ~55–90 |
 
-   Say that quick and standard have each been measured once ($29 and $39 at list prices, including reruns after interruptions), and that deep is extrapolated from them. Times include the checkpoints; the measured standard run took about 2.5 hours in a cloud session running 2 agents at once. On a subscription the run draws on usage limits instead. `/workflows` shows live token counts, and `/usage` afterwards attributes usage to subagents and flags cache misses.
+   Say that each depth has been measured once at list prices: quick 29 US dollars and standard 39 (both including reruns after interruptions), and deep 84 (61 agent runs with a full 8-candidate slate, no reruns). Times include the checkpoints; in a cloud session running 2 agents at once, the measured standard run took about 2.5 hours and the deep run about 4. On a subscription the run draws on usage limits instead. `/workflows` shows live token counts, and `/usage` afterwards attributes usage to subagents and flags cache misses.
 
    **A deep run in a cloud session on a subscription will probably cross a usage limit partway.** There, agents that hit the limit fail instead of waiting for the reset. Suggest launching the analyze stage at the start of a fresh usage window, or running it locally, where waiting agents continue after the reset; the stages hand over through files, so research can run in one place and analysis in another.
 
@@ -99,7 +99,8 @@ Read `runs/<slug>/dossier.md` and summarize it in 12 lines or fewer:
 1. **Re-run its self-test yourself** with `python3 runs/<slug>/tools/<name>.py selftest`; don't rely on the toolsmith's report.
 2. **Read its reference values.** Each must come from an independent source cited in a comment (a closed form, a definition, a published table), not from the code itself. At least one must be a limit where the model reduces to a simpler known law.
 3. **If both hold, promote it.**
-   - Write it to `.claude/skills/conundrum/scripts/<name>.py` with the Write tool, since a sandboxed shell can't write into `.claude/skills/`. Never overwrite an existing file; if the name is taken, ask the user.
+   - Copy it to `.claude/skills/conundrum/scripts/<name>.py` with `cp -n`; a sandboxed shell can't write into `.claude/skills/`, so there use the Write tool. Never overwrite an existing file; if the name is taken, ask the user.
+   - In the copy, change each `runs/<slug>/tools` path (the docstring's usage examples) to `.claude/skills/conundrum/scripts`, so later agents run the toolkit copy, not a file in this run's folder. Then `diff` the run copy against the promoted one: only those lines, and any note you add, may differ.
    - Add its row to `tools.md`, noting "built in run <slug>".
    - Run `python3 -m unittest discover -s .claude/skills/conundrum/scripts/tests`.
    - Tell the user what was added, and where to find its reference values. The lenses can use it in the analysis stage, and future runs find it in the toolkit.

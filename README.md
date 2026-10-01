@@ -32,17 +32,17 @@ The design, and the review of the Gemini proposal it started from, are in [`docs
 |---|---|---|---|---|
 | `quick` | 3 researchers, 3 lenses, 1 refuter per candidate, Opus judge | ~18 | 1–2 hours | ~$25–40 (measured once: $29) |
 | `standard` | 4 researchers with source checks, 5 lenses with math checks, 1 refuter per candidate, Fable judge | ~30 | ~2.5 hours | ~$35–50 (measured once: $39) |
-| `deep` | 5 researchers with checks, 6–7 lenses with math checks, 3 refuters per candidate with different angles, rebuttal round, Fable judge at max effort | ~45–62 | 4–5 hours | ~$55–90 |
+| `deep` | 5 researchers with checks, 6–7 lenses with math checks, 3 refuters per candidate with different angles, rebuttal round, Fable judge at max effort | ~45–62 | 4–5 hours | ~$55–90 (measured once: $84) |
 
-Times include the two checkpoints where the pipeline waits for you. The measured standard run took about 2.5 hours in a cloud session running only 2 agents at once; see [Where to run it](#where-to-run-it).
+Times include the two checkpoints where the pipeline waits for you. In cloud sessions running only 2 agents at once, the measured standard run took about 2.5 hours and the deep run about 4; see [Where to run it](#where-to-run-it).
 
-**Measured runs**, both in cloud sessions on 2026-09-29:
+**Measured runs**, all in cloud sessions (quick and standard on 2026-09-29, deep on 2026-09-30):
 
-| | Quick: Alcubierre drives | Standard: the problem of time |
-|---|---|---|
-| Total at list prices | $28.72 | $38.64 |
-| Agents / main session | $21.92 / $6.79 | $33.23 / $5.41 |
-| Spent re-running agents after interruptions | ~$3.40 (a usage-limit stop and a container restart) | ~$1.80 (a container restart) |
+| | Quick: Alcubierre drives | Standard: the problem of time | Deep: the neutron lifetime puzzle |
+|---|---|---|---|
+| Total at list prices | $28.72 | $38.64 | $83.63 |
+| Agents / main session | $21.92 / $6.79 | $33.23 / $5.41 | $72.37 / $11.25 |
+| Spent re-running agents after interruptions | ~$3.40 (a usage-limit stop and a container restart) | ~$1.80 (a container restart) | none |
 
 Per agent in the standard run:
 - researchers ~$0.45–0.85, source checkers ~$0.10–0.20, the dossier ~$0.95;
@@ -50,7 +50,7 @@ Per agent in the standard run:
 - a calculator built on demand ~$1.80;
 - the slate ~$2.35, refuters ~$0.65–1.05, the Fable judge ~$2.70, the audit ~$0.15.
 
-The deep figures are extrapolated from these runs. `python3 dev/run_costs.py` measures a run from Claude Code's transcripts, per agent.
+Per agent in the deep run (7 lenses, a full 8-candidate slate, 61 agent runs): falsifiers ~$0.70–1.70 each ($25.58 for 24), crux advocates ~$0.70–0.90, math checks ~$1.10–2.05, calculators ~$1.60, the Fable judge at max ~$5.70. `python3 dev/run_costs.py` measures a run from Claude Code's transcripts, per agent.
 
 **What the fixes bought.** Before the toolkit fixes and the no-polling rule, a smoke test of the constraints lens cost ~$12.70 over 64 turns (see [`examples/`](examples/smoke-test-constraints-lens/)). Most of that went on waiting for slow calculations and on re-reading a context that grew to 394k tokens. In the measured run, the same lens cost ~$2.50.
 
@@ -342,15 +342,16 @@ runs/                    one directory per investigation
 
 ### Known limitations of v1
 
-- **Two runs so far.** A quick run on the Alcubierre question completed end to end on 2026-09-29.
+- **Three runs so far.** A quick run on the Alcubierre question completed end to end on 2026-09-29.
   - It exposed one blocker, now fixed. Claude Code refused the judge's write to `report.md`, because it blocks subagents from writing files named `report*.md`. The judge now returns the report as text, and the main session saves it.
   - A standard run on the problem of time followed. It exercised the math checks, the foundations type, a calculator built on demand, and the returned report, with no refusals.
+  - A deep run on the neutron lifetime puzzle (2026-09-30) exercised the anomaly type, two calculators, the stop after the slate and the crux round, with no failed agents.
 - **What the smoke test fixed.** The constraints lens produced a sound, calculation-backed analysis (see [`examples/`](examples/smoke-test-constraints-lens/)). It also exposed problems, now fixed:
   - a toolkit bug that passed the weak energy condition where it fails;
   - quoting search summaries as if they were source text;
   - an agent that could run out of turns before writing its file;
   - an agent that killed its own shell with `pkill -f`.
-- **Deep runs are unmeasured.** Their cost and time are extrapolated from one quick and one standard run.
+- **Each depth has been measured only once.** The cost and time ranges rest on one run per depth.
 - **A turn-capped workflow agent's return value is undocumented.** The scripts treat a missing or `ok: false` result as a failure. Check `/workflows` on the first real run, and read the run's `journal.jsonl` if a result looks empty.
 - **Agents are told, not forced, to stay in their own run's folder.** Material from earlier runs reaches them through `prior/`, but no hook stops an agent from opening another run's files. The dossier's source notes count the claims carried from earlier runs, and the auditor traces every report claim to this run's evidence.
 - **Search summaries are weak evidence.** Where WebFetch can't reach papers, claims rest on INSPIRE abstracts and search summaries. The auditor flags report claims that rest only on summaries.
