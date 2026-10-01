@@ -275,3 +275,19 @@ All values are current unless marked. "Ours" means computed in `calc/quantitativ
 - **Fringe excluded from evidence:** Glenn 2025 and the Astrum Drive claims appear only in §5 as fringe.
 - **Missing facets:** none. All five brief facets and their checks are present.
 - **Carried from earlier runs:** 0 claims carry a PRIOR line. The two prior runs (2026-09-29-alcubierre-negative-energy and 2026-09-29-warp-bubble-shapes) were used as leads only. The quantitative facet states that every claim was re-found in its source this run. Engineering cites the shell mass as an "earlier-run lead", but the theory and quantitative facets verified it independently (RT-11, RQ-01). Carried and re-verified: 0 of 0.
+
+## User-supplied
+Added by the main session at the dossier checkpoint (2026-10-01) from material the user supplied; each item is marked [user]. Read a supplied file with `python3 .claude/skills/conundrum/scripts/fetch_text.py runs/2026-10-01-warp-drive-without-negative-energy/user/<file> --grep "<phrase>"`.
+
+- [U-01] [user] **Tajmar, Neunzig & Weikert, "High-accuracy thrust measurements of the EMDrive and elimination of false-positive effects", CEAS Space Journal 14, 31–44 (2022; published online 27 Jul 2021), doi 10.1007/s12567-021-00385-1.**
+  - File: `runs/2026-10-01-warp-drive-without-negative-energy/user/tajmar2021_emdrive_s12567-021-00385-1.pdf`, the published version (14 pp.), open access under CC BY 4.0 (p. 13). ACCESS: full-text. STATUS: peer-reviewed.
+  - It fills §6's PAPER TO REQUEST for this DOI, and upgrades D-17's EmDrive item (RE-09) from an abstract to full text.
+  - Sensitivity: the balance reaches "a noise level below the photon thrust threshold of 3.3 nN/W" (p. 2), and with averaging "sub-nN resolution could be obtained as required" (p. 7).
+  - Result, Table 1 (p. 4), rows "This work": thrust-to-power ratios "< 0.003", "< 0.002", "< 0.003" and "< 0.003" µN/W for four cavity modes between 1857 and 1984 MHz at cavity powers of 3–7 W, against the table's "Photon thrust 0.0033" µN/W. The same table lists White et al. [3] (NASA Eagleworks) at "≈1.2" µN/W.
+  - Abstract (p. 1): "Our data limit any anomalous thrust to below the force equivalent from classical radiation for a given amount of power. This provides strong limits to all proposed theories and rules out previous test results by at least two orders of magnitude."
+  - Bears on D-17 and on the engineering lens's nearest-experiment table: a demonstrated nN-class thrust balance for propellantless-thrust claims. It tests no premise of a warp spacetime directly.
+
+- [U-02] [user] **Barzegar, Buchert & Vigneron, "General formalism, classification, and demystification of the current warp-drive spacetimes", arXiv:2602.16495v1 (18 Feb 2026), preprint, 33 pp.**
+  - Link supplied by the user: https://arxiv.org/html/2602.16495v1 (PDF: https://arxiv.org/pdf/2602.16495). Not saved locally; read it with `fetch_text.py https://arxiv.org/pdf/2602.16495 --grep "<phrase>"`. Its arXiv page lists only v1 as of 1 Oct 2026.
+  - It is the paper the researchers already read in full: the source of RC-05, RC-15, RF-11, RF-17, RF-18 and RQ-17, and so of D-31 (Error 18, App. B: the 2024 shell "is not a solution to Einstein's equations"), D-32 (Error 8, ADM mass), D-58 (Theorems IV.32–33) and D-62 (Theorem IV.19). It is not one of the four papers §6 asks for.
+  - Still unchecked in it (D-31): Error 13 (that "constant velocity" has no meaning without distinguishing uⁱ and u_i) and the criticism of the construction's asymptotic flatness. A lens or refuter that relies on either should read the passage itself.
