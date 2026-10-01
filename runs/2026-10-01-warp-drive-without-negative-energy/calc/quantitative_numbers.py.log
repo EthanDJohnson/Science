@@ -1,0 +1,79 @@
+# math_run log
+command:  python3 runs/2026-10-01-warp-drive-without-negative-energy/calc/quantitative_numbers.py
+started:  2026-10-01T04:37:59Z
+duration: 5.9 s
+exit:     0
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+constants: c=299792458 m/s G=6.6743e-11 lP=1.616e-35 m c^4/G=1.21e+44 N
+
+=== 1. Fuchs et al. 2024 shell: R1=10 m, R2=20 m, M=4.49e27 kg, v_warp=0.04c
+M/M_J = 2.3656 ; M/Msun = 2.257e-03 ; Mc^2 = 4.035e+44 J
+shell volume = 2.932e+04 m^3 ; mean mass density M/V = 1.531e+23 kg/m^3 = 1.376e+40 J/m^3 ; x nuclear = 6.66e+05
+Schwarzschild radius 2GM/c^2 = 6.669 m ; 2GM/(c^2 R2) = 0.3334 ; 2GM/(c^2 R1)= 0.6669 ; Buchdahl limit 8/9 = 0.8889
+hydrostatic pressure scale G M rho/R2 = 2.29e+39 Pa ; /(rho c^2) = 0.167
+0.04c = 1.199e+07 m/s ; KE of shell if boosted (1/2 M v^2) = 3.228e+41 J = 0.0008 M c^2
+KE of 1e5 kg payload at 0.04c = 7.19e+18 J ; ratio shell/payload = 4.49e+22
+Time-rate shift inside Earth-mass shell R=10 m (B&M 2021 quote 4e-4): GM/(c^2 R)=4.435e-04
+OUR scaling at fixed compactness and v/c, payload radius R1=10 m: R2=20 m, M=4.490e+27 kg = 2.37 M_J = 2.257e-03 Msun, mean rho=1.531e+23 kg/m^3
+OUR scaling at fixed compactness and v/c, payload radius R1=100 m: R2=200 m, M=4.490e+28 kg = 23.66 M_J = 2.257e-02 Msun, mean rho=1.531e+21 kg/m^3
+Mc^2 / world primary energy (6.2e20 J/yr, ~620 EJ, to be sourced) = 6.51e+23 yr
+Mc^2 relative to Sun's... Msun c^2 = 1.788e+47 J
+Fig.4 axis text read: density scale 1e39 J/m^3 (0..15) -> up to ~1.5e40 J/m^3 = 1.67e+23 kg/m^3 (axis-read, low confidence)
+
+=== 2. Fell-Heisenberg 2021 example (rho_max=3.2e26 kg/m^3, Etot=9.25e43 J)
+Etot/c^2 = 1.029e+27 kg = 0.5423 M_J = 5.174e-04 Msun ; E_sun(1.78e47 J quoted) ratio = 5.20e-04
+2GM/c^2 for Etot/c^2 = 1.529 m
+rho_max / nuclear = 1.39e+09
+c^2/(8 pi G) = 5.358e+25 kg/m ; rho_max/(that) = 5.972 m^-2  => if curvature scale ~1/L^2 with L=1 m, implied
+FH central-region radius parameter r=6 (length unit not stated); if unit=1 m: 2GM/(c^2 *6 m)=0.255
+
+=== 3. Alcubierre Eulerian energy, R=100 m, wall Delta=1 m, v in units of c
+v=1c: numerical E_geo=-555.56 m ; analytic -(v^2R^2/(18 Delta))=-555.56 m ; E = -6.724e+46 J = -7.481e+29 kg = -0.376 Msun = -394 MJ
+v=10c: numerical E_geo=-55556 m ; analytic -(v^2R^2/(18 Delta))=-55556 m ; E = -6.724e+48 J = -7.481e+31 kg = -37.6 Msun = -3.94e+04 MJ
+linear-ramp wall (Pfenning-Ford style): E = -(v^2/12)(R^2/Delta) ; v=10, Delta=1: -1.122e+32 kg = 56.4 Msun
+QI-limited wall Delta=100 v lP=1.616e-33 m (PF 1997 convention, alpha=1/10), v=1c: |E| linear ramp = 6.943e+62 kg = 3.491e+32 Msun
+QI-limited wall Delta=100 v lP=1.616e-32 m (PF 1997 convention, alpha=1/10), v=10c: |E| linear ramp = 6.943e+63 kg = 3.491e+33 Msun
+thick-wall floor, linear ramp -> |E| = (v^2 R/12) c^4/G ; R=100, v=10: 1.122e+30 kg = 0.564 Msun
+Bobrick-Martire: optimal shape f=min(r0/r,1) ~ factor 3 less; flatten by 10 -> 10x less (as quoted). v=10,R=100,Delta=1 case /3 = -12.5 Msun
+
+=== 4. Natario zero-expansion shift, same profile, E = -(1/16pi) K_ij K^ij (flat 3-metric, unit lapse), v=1c, R=100 m, Delta=1 m
+max |div X| on grid = 2.046e-14 (should be ~0)
+Natario E_geo (v=1) = -4.4455e+06 m ; E = -5.38e+50 J = -5.986e+33 kg = -3.01e+03 Msun
+Alcubierre same profile E_geo = -555.56 m ; ratio Natario/Alcubierre = 8001.923
+Natario at v=10c: -3.01e+05 Msun (E ~ v^2)
+
+=== 5. Lentz 2021 proceedings scaling: E_tot ~ C v^2 R^2 / w, R=100 m, w=1 m -> (few) x 1e-1 Msun v^2
+few=2: v=1c: 2.00e-01 Msun = 3.98e+29 kg ; v=10c: 2.00e+01 Msun = 3.98e+31 kg
+few=3: v=1c: 3.00e-01 Msun = 5.97e+29 kg ; v=10c: 3.00e+01 Msun = 5.97e+31 kg
+few=5: v=1c: 5.00e-01 Msun = 9.94e+29 kg ; v=10c: 5.00e+01 Msun = 9.95e+31 kg
+Alcubierre tanh same R,w (E=-v^2R^2/(18 w)) v=1: 0.376 Msun
+Etot ~ v^2 R^2/w check: R=10 m -> /100; R=100 m, w=0.1 m -> x10
+
+=== 6. Trip: 1e5 kg payload, 4.37 ly, rocket comparison (rocket_tools.py)
+1 g photon rocket, accelerate half/brake half {'profile': 'accelerate to the midpoint, then brake', 'ship_time_s': 113051748.145, 'earth_time_s': 189424581.6434, 'ship_years': 3.5824, 'earth_years': 6.0025, 'peak_beta': 0.9517, 'peak_gamma': 3.2556, 'rapidity_change': 3.6981, 'coast_distance_ly': 0.0, 'mass_ratio': 40.37, 'propellant_per_kg_payload': 39.37, 'propellant_energy_per_kg_payload_J': 3.5384034211441275e+18}
+  initial mass for 1e5 kg payload (mass ratio 40.4) = 4.037e+06 kg ; propellant mass-energy = 3.538e+23 J
+photon-rocket mass ratio for single accelerate to beta=0.1: 1.106 (stop too: squared 1.222)
+photon-rocket mass ratio for single accelerate to beta=0.5: 1.732 (stop too: squared 3.000)
+1e5 kg rest energy = 8.988e+21 J; at cruise beta=0.1 coast to 4.37 ly takes 43.7 yr (flat-space)
+Warp-drive reference (Alcubierre tanh, R=10 m payload bubble, Delta=1 m, v=4.37c ~ 1 yr trip) : E = 1.429e+29 kg = 7.183e-02 Msun
+Same but R=100 m: 7.183e+00 Msun
+2024 shell mass / (1e5 kg payload) = 4.49e+22 ; 2024 shell Mc^2 vs photon-rocket propellant energy (1 g round trip) = 1.14e+21
+
+=== 7. Reference energies
+Planck length = 1.6163e-35 m (from hbar,G,c)
+Msun c^2 = 1.788e+47 J ; MJ c^2 = 1.706e+44 J ; world primary energy ~6.2e20 J/yr (to be sourced)
+Msun c^2 / world yearly energy = 2.88e+26 yr
+
+=== 4b. Natario scaling and convergence (our calculation)
+R=100 m Delta=1 m: Natario E_geo(v=1)=-4.4455e+06 m ; Alcubierre -555.56 m ; ratio 8002 ; (R/Delta)^2=1e+04 ; E*Delta^3/R^4 = -0.04446
+R=100 m Delta=2 m: Natario E_geo(v=1)=-5.5611e+05 m ; Alcubierre -277.78 m ; ratio 2002 ; (R/Delta)^2=2500 ; E*Delta^3/R^4 = -0.04449
+R=100 m Delta=4 m: Natario E_geo(v=1)=-69720 m ; Alcubierre -138.89 m ; ratio 502 ; (R/Delta)^2=625 ; E*Delta^3/R^4 = -0.04462
+R=50 m Delta=1 m: Natario E_geo(v=1)=-2.7805e+05 m ; Alcubierre -138.89 m ; ratio 2002 ; (R/Delta)^2=2500 ; E*Delta^3/R^4 = -0.04449
+R=100 m Delta=20 m: Natario E_geo(v=1)=-610.91 m ; Alcubierre -27.778 m ; ratio 21.99 ; (R/Delta)^2=25 ; E*Delta^3/R^4 = -0.04887
+convergence R=100,Delta=1: dr=Delta/8,nth=721: -4.44555e+06 ; dr=Delta/16,nth=1441: -4.44555e+06
+
+--- stderr ---
+
