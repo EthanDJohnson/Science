@@ -1,0 +1,21 @@
+# math_run log
+command:  python3 runs/2026-09-30-neutron-lifetime-beam-bottle/math/statistician/M-STATISTICIAN-12.py
+started:  2026-09-30T18:06:37Z
+duration: 0.6 s
+exit:     1
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   4 PASS, 1 FAIL, 0 UNDECIDED
+
+--- stdout ---
+PASS 0.0436190706220000 == 0.0436190706220000: symbolic
+nu=2: p2 0.0436 (lens 0.044); density ratio t/Gauss at z: 998; tail ratio 11929
+PASS 0.0440000000000000 == 0.0440000000000000: symbolic
+nu=3: p2 0.0190 (lens 0.019); density ratio t/Gauss at z: 627; tail ratio 5190
+PASS 0.0190000000000000 == 0.0190000000000000: symbolic
+nu=4: p2 0.0098 (lens 0.010); density ratio t/Gauss at z: 416; tail ratio 2682
+FAIL 0.00980000000000000 == 0.0100000000000000: numeric, constants; counterexample (no symbols) = -; lhs = 0.0098, rhs = 0.01
+PASS lim nu->oo of (1 + x**2/nu)**(-nu/2 - 1/2) == exp(-x**2/2): symbolic limit exp(-x**2/2)
+SUMMARY: 4 pass, 1 fail, 0 undecided
+
+--- stderr ---
+

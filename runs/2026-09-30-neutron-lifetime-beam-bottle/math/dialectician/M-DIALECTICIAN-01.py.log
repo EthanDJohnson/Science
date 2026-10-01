@@ -1,0 +1,39 @@
+# math_run log
+command:  python3 runs/2026-09-30-neutron-lifetime-beam-bottle/math/dialectician/M-DIALECTICIAN-01.py
+started:  2026-09-30T18:27:45Z
+duration: 0.5 s
+exit:     1
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   10 PASS, 2 FAIL, 0 UNDECIDED
+
+--- stdout ---
+S = 2.2949; inflated stat = 3.901 s
+  S (dimensionless): mine = 2.29492 , lens = 2.29 
+PASS 2.2949219304078006  == 2.29 : within 0.00262009; 2.29492 vs 2.29 (SI)
+  inflated stat: mine = 3.90137 s, lens = 3.9 s
+PASS 3.9013672816932607 s == 3.9 s: within 0.00153846; 3.90137 vs 3.9 (SI)
+quoted: J-PARC total +4.346/-3.981 s; vs BL1 2.146 sigma; vs UCNtau 0.142 sigma (upper side, correct), 0.155 sigma (lower side)
+inflated: J-PARC total +5.588/-5.309 s; vs BL1 1.743 sigma; vs UCNtau 0.111 sigma (upper side, correct), 0.117 sigma (lower side)
+  J-PARC vs BL1, quoted: mine = 2.14599 , lens = 2.15 
+PASS 2.1459876881973807  == 2.15 : within 0.0027907; 2.14599 vs 2.15 (SI)
+  J-PARC vs UCNtau, quoted (facing side): mine = 0.14236 , lens = 0.16 
+FAIL 0.14236031254972906  == 0.16 : relative tolerance 0.0375; 0.14236 vs 0.16 (SI)
+  inflated J-PARC totals, upper: mine = 5.58755 s, lens = 5.59 s
+PASS 5.587545674682818 s == 5.59 s: within 0.00107335; 5.58755 vs 5.59 (SI)
+  inflated J-PARC totals, lower: mine = 5.30855 s, lens = 5.31 s
+PASS 5.308546568192339 s == 5.31 s: within 0.00112994; 5.30855 vs 5.31 (SI)
+  J-PARC vs BL1, inflated: mine = 1.74346 , lens = 1.74 
+PASS 1.7434581619682028  == 1.74 : within 0.00344828; 1.74346 vs 1.74 (SI)
+  J-PARC vs UCNtau, inflated (facing side): mine = 0.110824 , lens = 0.12 
+FAIL 0.11082395060894037  == 0.12 : relative tolerance 0.05; 0.110824 vs 0.12 (SI)
+PASS lim s->oo of d/sqrt(s**2 + t**2) == 0: symbolic limit 0
+PASS (887.7 s - 877.2 s)/(4.9 s) has the dimension of dimensionless: dimensional analysis
+stat-only mean 877.490 s, chi2 = 19.556/3, S = 2.553
+  stat-only chi2: mine = 19.5564 , lens = 19.6 
+PASS 19.556384528996368  == 19.6 : within 0.00306122; 19.5564 vs 19.6 (SI)
+  stat-only S: mine = 2.55319 , lens = 2.55 
+PASS 2.5531930681009594  == 2.55 : within 0.00235294; 2.55319 vs 2.55 (SI)
+SUMMARY: 10 pass, 2 fail, 0 undecided
+
+--- stderr ---
+

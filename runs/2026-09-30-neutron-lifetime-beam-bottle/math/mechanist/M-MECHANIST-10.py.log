@@ -1,0 +1,24 @@
+# math_run log
+command:  python3 runs/2026-09-30-neutron-lifetime-beam-bottle/math/mechanist/M-MECHANIST-10.py
+started:  2026-09-30T18:20:01Z
+duration: 0.7 s
+exit:     1
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   3 PASS, 1 FAIL, 0 UNDECIDED
+
+--- stdout ---
+PASS -1 + (-2*p*(1 - p) + 1)/(1 - p) is negative: numeric at 50 points, p in [1e-09, 0.499]
+PASS lim p->0 of (-1 + (-2*p*(1 - p) + 1)/(1 - p))/p == -1: symbolic limit -1
+Dm = 260 neV, theta0 = 1e-4, bore a = 0.05 m: crossing at z = -0.218 m, dB/dz = 6.6 T/m, beam shift = -19.13 s
+Dm = 260 neV, theta0 = 1e-4, bore a = 0.1 m: crossing at z = -0.166 m, dB/dz = 5.0 T/m, beam shift = -24.65 s
+Dm = 260 neV, theta0 = 1e-4, bore a = 0.15 m: crossing at z = -0.140 m, dB/dz = 4.9 T/m, beam shift = -25.13 s
+PASS -24.651867103220706 is negative: symbolic, constant
+FAIL -24.651867103220706 s == -9 s: relative tolerance 0.5; -24.6519 vs -9 (SI)
+Dm = 200.0 neV, theta0 = 1e-4: shift = -4.09 s
+Dm = 230.0 neV, theta0 = 1e-4: shift = -8.06 s
+Dm = 260.0 neV, theta0 = 1e-4: shift = -24.65 s
+Dm = 275.0 neV, theta0 = 1e-4: shift = 20.07 s
+SUMMARY: 3 pass, 1 fail, 0 undecided
+
+--- stderr ---
+

@@ -1,0 +1,49 @@
+# math_run log
+command:  python3 runs/2026-09-30-neutron-lifetime-beam-bottle/calc/falsifier-C2-2_bounds.py
+started:  2026-09-30T19:04:36Z
+duration: 0.0 s
+exit:     0
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+== 1. Storage-free bound: J-PARC (+) SM tau_beta versus the proton beam ==
+  SM[PERKEO III ] 878.53+-0.88: J-PARC(+)SM = 878.48 +- 0.86 s (internal chi2 0.09); proton beam - this = 9.49 s = 4.29 sigma; BL1: 3.83 sigma
+  SM[A route    ] 878.73+-0.83: J-PARC(+)SM = 878.68 +- 0.82 s (internal chi2 0.12); proton beam - this = 9.29 s = 4.23 sigma; BL1: 3.77 sigma
+  SM[PDG lambda ] 879.68+-1.61: J-PARC(+)SM = 879.38 +- 1.51 s (internal chi2 0.29); proton beam - this = 8.59 s = 3.38 sigma; BL1: 3.07 sigma
+  SM[a route    ] 887.24+-2.94: J-PARC(+)SM = 884.09 +- 2.44 s (internal chi2 3.66); proton beam - this = 3.88 s = 1.22 sigma; BL1: 1.09 sigma
+  SM[aSPECT 2024] 889.60+-3.20: J-PARC(+)SM = 885.25 +- 2.58 s (internal chi2 5.27); proton beam - this = 2.72 s = 0.83 sigma; BL1: 0.72 sigma
+
+== 2. Rival worlds with the storage-free data {J-PARC, SM} held fixed ==
+   C2-world: common tau from {proton beam, J-PARC, SM}; storage free (loss fitted)
+   C1-world: common tau from {storage, J-PARC, SM}; proton beam free (offset fitted)
+  SM[A route   ] C2: tau=879.96 s chi2=18.02/2 dof p=1.22e-04 (3.84 sigma) | C1: tau=878.40 s chi2=0.27/2 dof p=0.874 | profile LR C1:C2 = 7.14e+03
+  SM[PDG lambda] C2: tau=882.42 s chi2=11.74/2 dof p=2.83e-03 (2.99 sigma) | C1: tau=878.40 s chi2=0.74/2 dof p=0.690 | profile LR C1:C2 = 244
+  SM[a route   ] C2: tau=886.37 s chi2=5.15/2 dof p=7.63e-02 (1.77 sigma) | C1: tau=878.50 s chi2=9.10/2 dof p=0.011 | profile LR C1:C2 = 0.138
+
+== 3. Is one loss rate 'common' to material and magnetic traps? ==
+  material (scaled)  tau=880.03+-0.70 s needs loss 1.016e-05 +- 9.0e-07 s^-1 (1/r = 9.842e+04 s)
+  magnetic           tau=877.82+-0.27 s needs loss 1.302e-05 +- 3.5e-07 s^-1 (1/r = 7.680e+04 s)
+  Gravitrap 2018     tau=881.50+-0.92 s needs loss 8.266e-06 +- 1.2e-06 s^-1 (1/r = 1.210e+05 s)
+  UCNtau 2025        tau=877.82+-0.30 s needs loss 1.302e-05 +- 3.9e-07 s^-1 (1/r = 7.680e+04 s)
+  Ezhov 2018         tau=878.30+-1.89 s needs loss 1.240e-05 +- 2.4e-06 s^-1 (1/r = 8.065e+04 s)
+  Serebrov 2005      tau=878.50+-0.76 s needs loss 1.214e-05 +- 9.9e-07 s^-1 (1/r = 8.237e+04 s)
+  MAMBO II 2010      tau=880.70+-1.77 s needs loss 9.296e-06 +- 2.3e-06 s^-1 (1/r = 1.076e+05 s)
+  Steyerl 2012       tau=882.50+-2.05 s needs loss 6.980e-06 +- 2.6e-06 s^-1 (1/r = 1.433e+05 s)
+  Arzumanov 2015     tau=880.20+-1.20 s needs loss 9.941e-06 +- 1.5e-06 s^-1 (1/r = 1.006e+05 s)
+  material - magnetic rate difference = -2.861e-06 +- 9.7e-07 s^-1 = 2.95 sigma; ratio material/magnetic = 0.780
+  (the material-magnetic split is independent of tau_true; it does not discriminate C2 from C1)
+
+== 4. What C2 needs from lambda: required lambda and distance from PERKEO III ==
+  tau_beta = 887.97 s needs |lambda| = 1.26821; PERKEO III is 14.7 sigma (lambda error only) away
+  tau_beta = 887.7 s needs |lambda| = 1.26844; PERKEO III is 14.3 sigma (lambda error only) away
+
+== 5. Magnitude of the combined non-storage penalty ==
+  J-PARC vs proton beam 2.24 sigma; A-route SM vs proton beam 4.20 sigma; (the proper joint figure is section 1, which accounts for the shared proton-beam error)
+  J-PARC inflated (+5.59 s) (+) A route = 878.70 +- 0.82 s; proton beam at 4.22 sigma
+  J-PARC inflated (+) PDG-lambda route = 879.49 +- 1.55 s; proton beam at 3.31 sigma
+  SM A route alone vs proton beam: 4.20 sigma
+  SM PDG lambda alone vs proton beam: 3.19 sigma
+
+--- stderr ---
+

@@ -1,0 +1,26 @@
+# math_run log
+command:  python3 runs/2026-09-30-neutron-lifetime-beam-bottle/math/statistician/M-STATISTICIAN-03.py
+started:  2026-09-30T18:03:52Z
+duration: 0.7 s
+exit:     0
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   8 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+PASS lim p->0 of 1 - (1 - p)**k == 0: symbolic limit 0
+PASS series of 1 - (1 - p)**k about p = 0 to order 2 == k*p: symbolic: k*p
+PASS p == p: symbolic
+k=3: 4.396   (lens: 4.40)
+PASS 4.40000000000000 == 4.40000000000000: symbolic
+k=5: 4.284   (lens: 4.28)
+PASS 4.28000000000000 == 4.28000000000000: symbolic
+k=10: 4.127   (lens: 4.13)
+PASS 4.13000000000000 == 4.13000000000000: symbolic
+material/magnetic k=5: 2.414   (lens: 2.41)
+PASS 2.41000000000000 == 2.41000000000000: symbolic
+PERKEO III/aSPECT k=3: 3.185   (lens: 3.18)
+PASS 3.18000000000000 == 3.18000000000000: symbolic
+SUMMARY: 8 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

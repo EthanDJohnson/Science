@@ -1,0 +1,51 @@
+# math_run log
+command:  python3 runs/2026-09-30-neutron-lifetime-beam-bottle/calc/falsifier-C6-2_bounds.py
+started:  2026-09-30T19:42:10Z
+duration: 0.0 s
+exit:     0
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+=== 1. Required n* population (Koch-Hummel eq. 10) ===
+  dtau_e =         20 s -> n*/n(0) = 0.9985  (n* fraction 49.9632%)
+  dtau_e =         50 s -> n*/n(0) = 0.2603  (n* fraction 20.6531%)
+  dtau_e =        100 s -> n*/n(0) = 0.1221  (n* fraction 10.8830%)
+  dtau_e =      1e+03 s -> n*/n(0) = 0.02135  (n* fraction 2.0900%)
+  dtau_e =      1e+04 s -> n*/n(0) = 0.01226  (n* fraction 1.2107%)
+  dtau_e =      1e+09 s -> n*/n(0) = 0.01126  (n* fraction 1.1130%)
+  beta-stable n* limit: fraction >= dtau/tau_b = 1.1130%
+
+=== 2. J-PARC electron-counting beam under n* (t_beam << tau_gamma) ===
+  J-PARC sigma facing prediction (upper side) = 4.346 s
+  z(pred BL1 887.7 vs J-PARC)       = 2.145 sigma
+  z(pred beam 887.97 vs J-PARC)     = 2.243 sigma
+  z(J-PARC vs UCNtau 877.82)        = -0.142 sigma
+  likelihood ratio J-PARC: storage-value vs beam-value = 20.84 : 1
+
+=== 3. Escape via tau_gamma ~ t_beam (J-PARC neutrons older than BL1's) ===
+  suppress to 0.1: dt(J-PARC - BL1) =   10 ms -> tau_gamma <=   4.34 ms
+  suppress to 0.1: dt(J-PARC - BL1) =   20 ms -> tau_gamma <=   8.69 ms
+  suppress to 0.1: dt(J-PARC - BL1) =   50 ms -> tau_gamma <=  21.71 ms
+  suppress to 0.4: dt(J-PARC - BL1) =   10 ms -> tau_gamma <=  10.91 ms
+  suppress to 0.4: dt(J-PARC - BL1) =   20 ms -> tau_gamma <=  21.83 ms
+  suppress to 0.4: dt(J-PARC - BL1) =   50 ms -> tau_gamma <=  54.57 ms
+  t_BL1 =  20 ms, tau_gamma =    5 ms -> needed n* fraction at production (beta-stable n*) = 0.606 
+  t_BL1 =  20 ms, tau_gamma =   10 ms -> needed n* fraction at production (beta-stable n*) = 0.082 
+  t_BL1 =  20 ms, tau_gamma =   20 ms -> needed n* fraction at production (beta-stable n*) = 0.0302 
+  t_BL1 =  50 ms, tau_gamma =    5 ms -> needed n* fraction at production (beta-stable n*) = 244 (>1: impossible)
+  t_BL1 =  50 ms, tau_gamma =   10 ms -> needed n* fraction at production (beta-stable n*) = 1.65 (>1: impossible)
+  t_BL1 =  50 ms, tau_gamma =   20 ms -> needed n* fraction at production (beta-stable n*) = 0.135 
+  within BL1 (tau_gamma=10 ms, mean t=30 ms): n* ratio slow(t=45ms)/fast(t=15ms) = 0.0498 -> strongly velocity-dependent shift
+
+=== 4. Field variant (SM Zeeman) ===
+  B = 4.6 T: |mu_n|B/Q = 3.548e-13; 5x/needed(1.14e-2) shortfall = 6.43e+09
+  B = 5.0 T: |mu_n|B/Q = 3.856e-13; 5x/needed(1.14e-2) shortfall = 5.91e+09
+
+=== 5. Remaining n* window (equal-fraction assumption) ===
+  lower edge: tau_gamma >> t_beam ~ 2e-2 s (K-H hierarchy; else BL1 is velocity-dependent)
+  upper edge: tau_gamma <= 139 s (UCNtau reanalysis, 95% CL)
+  window spans 3.84 decades, all of which predict J-PARC ~ 888 s
+
+--- stderr ---
+

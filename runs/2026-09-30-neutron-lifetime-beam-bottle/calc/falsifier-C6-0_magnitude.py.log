@@ -1,0 +1,56 @@
+# math_run log
+command:  python3 runs/2026-09-30-neutron-lifetime-beam-bottle/calc/falsifier-C6-0_magnitude.py
+started:  2026-09-30T19:37:35Z
+duration: 0.3 s
+exit:     0
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+== 1. Required n* fraction ==
+tau_g = 877.82 s, tau_beam(BL1) = 887.7 s, dtau = 9.88 s
+tau_e/tau_g = 2.778: exact n_e/n = 1.7390e-02 (check tau = 887.700 s); KH Eq.10 n_e/n_g = 6.3714e-03; exact/KH = 2.778
+tau_e/tau_g = 25: exact n_e/n = 1.1594e-02 (check tau = 887.700 s); KH Eq.10 n_e/n_g = 4.6918e-04; exact/KH = 25.000
+tau_e/tau_g = 1e+06: exact n_e/n = 1.1130e-02 (check tau = 887.700 s); KH Eq.10 n_e/n_g = 1.1255e-08; exact/KH = 1000000.000
+Model-independent minimum (tau_e -> inf): n_e/n = dtau/tau_beam = 1.1130e-02
+KH quoted n_e/n_n = 5.5e-3 for Gamma_e = 9/25 Gamma_g
+
+== 2. Time since production of decaying neutrons ==
+NIST: vT = 812.1 m/s, L = 68.0 m; density-weighted <t> = 94.5 ms; median t = 77.0 ms; 10-90% t range = 47.4-154.9 ms
+J-PARC: lambda = 2 A, v = 1978 m/s, t = 10.1 ms (L = 20.0 m)
+J-PARC: lambda = 5 A, v = 791 m/s, t = 25.3 ms (L = 20.0 m)
+J-PARC: lambda = 8 A, v = 495 m/s, t = 40.4 ms (L = 20.0 m)
+
+== 3. J-PARC prediction given the BL1 shift, equal birth fraction f0 ==
+tau_e/tau_g=2.78 tau_gamma= 0.03 s: f0=0.1863, f(BL1)=0.0174, f(J-PARC)=0.0837, J-PARC predicted 927.5 s vs 877.2: 11.56 sigma (J-PARC err), 10.27 sigma (with BL1 err)
+tau_e/tau_g=2.78 tau_gamma= 0.10 s: f0=0.0396, f(BL1)=0.0174, f(J-PARC)=0.0309, J-PARC predicted 895.5 s vs 877.2: 4.21 sigma (J-PARC err), 3.74 sigma (with BL1 err)
+tau_e/tau_g=2.78 tau_gamma= 0.30 s: f0=0.0234, f(BL1)=0.0174, f(J-PARC)=0.0215, J-PARC predicted 890.1 s vs 877.2: 2.96 sigma (J-PARC err), 2.63 sigma (with BL1 err)
+tau_e/tau_g=2.78 tau_gamma= 1.00 s: f0=0.0191, f(BL1)=0.0174, f(J-PARC)=0.0186, J-PARC predicted 888.4 s vs 877.2: 2.57 sigma (J-PARC err), 2.29 sigma (with BL1 err)
+tau_e/tau_g=2.78 tau_gamma=10.00 s: f0=0.0176, f(BL1)=0.0174, f(J-PARC)=0.0175, J-PARC predicted 887.8 s vs 877.2: 2.43 sigma (J-PARC err), 2.16 sigma (with BL1 err)
+tau_e/tau_g=1e+06 tau_gamma= 0.03 s: f0=0.1192, f(BL1)=0.0111, f(J-PARC)=0.0536, J-PARC predicted 927.5 s vs 877.2: 11.56 sigma (J-PARC err), 10.27 sigma (with BL1 err)
+tau_e/tau_g=1e+06 tau_gamma= 0.10 s: f0=0.0254, f(BL1)=0.0111, f(J-PARC)=0.0198, J-PARC predicted 895.5 s vs 877.2: 4.21 sigma (J-PARC err), 3.74 sigma (with BL1 err)
+tau_e/tau_g=1e+06 tau_gamma= 0.30 s: f0=0.0150, f(BL1)=0.0111, f(J-PARC)=0.0138, J-PARC predicted 890.1 s vs 877.2: 2.96 sigma (J-PARC err), 2.63 sigma (with BL1 err)
+tau_e/tau_g=1e+06 tau_gamma= 1.00 s: f0=0.0122, f(BL1)=0.0111, f(J-PARC)=0.0119, J-PARC predicted 888.4 s vs 877.2: 2.57 sigma (J-PARC err), 2.29 sigma (with BL1 err)
+tau_e/tau_g=1e+06 tau_gamma=10.00 s: f0=0.0112, f(BL1)=0.0111, f(J-PARC)=0.0112, J-PARC predicted 887.8 s vs 877.2: 2.43 sigma (J-PARC err), 2.16 sigma (with BL1 err)
+Scale factor sqrt(15.8/3) = 2.295; floor prediction 887.8 s vs 877.2 s with inflated error 9.98 s: 1.06 sigma; with BL1 err too: 1.04 sigma
+
+== 4. Storage-side bias vs tau_gamma (UCNtau-like) ==
+t_load=150 s tau_gamma=  5.0 s: n* at hold start 1.67e-15, bottle bias +0.000 s
+t_load=150 s tau_gamma= 10.0 s: n* at hold start 5.45e-09, bottle bias +0.000 s
+t_load=150 s tau_gamma= 20.0 s: n* at hold start 9.84e-06, bottle bias +0.000 s
+t_load=150 s tau_gamma= 30.0 s: n* at hold start 1.20e-04, bottle bias +0.001 s
+t_load=150 s tau_gamma= 50.0 s: n* at hold start 8.86e-04, bottle bias +0.017 s
+t_load=150 s tau_gamma=100.0 s: n* at hold start 3.97e-03, bottle bias +0.183 s
+t_load=300 s tau_gamma=  5.0 s: n* at hold start 1.56e-28, bottle bias +0.000 s
+t_load=300 s tau_gamma= 10.0 s: n* at hold start 1.67e-15, bottle bias +0.000 s
+t_load=300 s tau_gamma= 20.0 s: n* at hold start 5.45e-09, bottle bias +0.000 s
+t_load=300 s tau_gamma= 30.0 s: n* at hold start 8.08e-07, bottle bias +0.000 s
+t_load=300 s tau_gamma= 50.0 s: n* at hold start 4.41e-05, bottle bias +0.001 s
+t_load=300 s tau_gamma=100.0 s: n* at hold start 8.86e-04, bottle bias +0.041 s
+
+== 5. Field variant ==
+B = 4.6 T: |mu_n|B = 277.4 neV, ratio to Q = 3.546e-13; needed 1.13e-2 -> shortfall 3.19e+10 (x/5 with Gamma~Q^5: 6.37e+09)
+B = 5.0 T: |mu_n|B = 301.5 neV, ratio to Q = 3.854e-13; needed 1.13e-2 -> shortfall 2.93e+10 (x/5 with Gamma~Q^5: 5.86e+09)
+
+--- stderr ---
+

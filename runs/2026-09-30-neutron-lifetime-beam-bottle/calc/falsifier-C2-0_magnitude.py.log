@@ -1,0 +1,56 @@
+# math_run log
+command:  python3 runs/2026-09-30-neutron-lifetime-beam-bottle/calc/falsifier-C2-0_magnitude.py
+started:  2026-09-30T19:00:18Z
+duration: 0.5 s
+exit:     0
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+== 1. Required extra loss rate per storage experiment ==
+expt                tau  lam(BL1) s^-1   +-indep  +-beam(common)  shift s x own sigma
+Serebrov05       878.50     1.1797e-05  9.87e-07        2.86e-06    -9.20        12.1
+Pichlmaier10     880.70     8.9537e-06  2.28e-06        2.86e-06    -7.00         4.0
+Steyerl12        882.50     6.6378e-06  2.63e-06        2.86e-06    -5.20         2.5
+Arzumanov15      880.20     9.5987e-06  1.55e-06        2.86e-06    -7.50         6.2
+Gravitrap18      881.50     7.9232e-06  1.19e-06        2.86e-06    -6.20         6.7
+Ezhov18          878.30     1.2056e-05  2.45e-06        2.86e-06    -9.40         5.0
+UCNtau25         877.82     1.2679e-05  3.73e-07        2.86e-06    -9.88        34.4
+
+== 2. One common loss rate for all 7 storage results ==
+best common lambda = 1.1942e-05 s^-1 (+- 3.2e-07 indep, +- 2.9e-06 from BL1)
+chi2 = 23.46 for 6 dof (p = 0.0028)
+C1 analogue (common tau 878.38 s): chi2 = 23.33 for 6 dof -> heterogeneity is shared, not a C2-specific cost
+class mat: required lambda = 9.8063e-06 +- 6.3e-07 (indep) s^-1
+class mag: required lambda = 1.2665e-05 +- 3.7e-07 (indep) s^-1
+range of required rates: 6.638e-06 .. 1.268e-05 s^-1, max/min = 1.91
+
+== 3. UCNtau loss-type budget (Gonzalez 2021 Table II, s) vs needed shift ==
+needed upward correction to UCNtau: 10.15 s (proton mean), 9.88 s (BL1)
+  Depolarization (+0.07 one-sided)                  0.07 s  =  0.69% of gap; gap =  145.0 x line
+  Uncleaned UCN (+0.11)                             0.11 s  =  1.08% of gap; gap =   92.3 x line
+  Heated UCN (+0.08)                                0.08 s  =  0.79% of gap; gap =  126.9 x line
+  Residual gas: 3 sigma above applied (3*0.06)      0.18 s  =  1.77% of gap; gap =   56.4 x line
+  linear sum of all loss-type lines at limits: 0.44 s = 4.3% of the gap
+  total sys +0.20 s (Musedinovic 2025): gap = 50.7 x
+  depolarisation bound 1.0e-7 s^-1 vs needed 1.302e-05: ratio 130
+  gas: applied correction 0.11 s <-> 1.427e-07 s^-1; needed/applied = 91x; with 15% pressure uncertainty that is 602 sigma in pressure (if cross sections fixed)
+  fraction of stored UCN removed by the unknown channel in 1000 s: 1.29%
+  fraction of stored UCN removed by the unknown channel in 1400 s: 1.81%
+  fraction of stored UCN removed by the unknown channel in 1550 s: 2.00%
+
+== 4. Class-by-class shift under C2 (agent = common storage loss only) ==
+proton beam        observed-888 =   +0.00 s; C2 agent supplies   +0.00 s (    0% of it); residual  +0.00 s (0.00 sigma)
+J-PARC e-beam      observed-888 =  -10.77 s; C2 agent supplies   +0.00 s (   -0% of it); residual -10.77 s (2.24 sigma)
+material bottles   observed-888 =   -7.94 s; C2 agent supplies   -7.94 s (  100% of it); residual  +0.00 s (0.00 sigma)
+magnetic traps     observed-888 =  -10.15 s; C2 agent supplies  -10.15 s (  100% of it); residual  +0.00 s (0.00 sigma)
+  J-PARC: C2's agent supplies 0 s of the needed -10.77 s; separate artefact required.
+
+== 5. Two-parameter class fits (proton, J-PARC, material, magnetic) ==
+C2 best: chi2 = 13.70 (tau = 886.03 s, lambda = 1.018e-05 s^-1), 2 dof
+C1 best: chi2 = 8.72 (tau = 878.10 s, beam bias = 9.87 s), 2 dof
+delta chi2 (C2 - C1) = 4.98; likelihood ratio C1:C2 = 12.1
+  C2 tau is pulled below BL1 to 886.03 s by J-PARC
+
+--- stderr ---
+

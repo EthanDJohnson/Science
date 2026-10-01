@@ -1,0 +1,66 @@
+# math_run log
+command:  python3 runs/2026-09-30-neutron-lifetime-beam-bottle/calc/lens-mechanist_required_sizes.py
+started:  2026-09-30T17:47:44Z
+duration: 0.0 s
+exit:     0
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+proton-beam mean (BL1 + Sussex-ILL lead): 887.97 +- 2.04 s
+BL1 alone: 887.70 +- 2.25 s
+beam mean vs UCNtau: dtau = 10.15 s, fraction = 1.143 %, dGamma = 1.302e-05 s^-1
+BL1 vs UCNtau: dtau = 9.88 s, fraction = 1.113 %, dGamma = 1.268e-05 s^-1
+beam mean vs Gravitrap: dtau = 6.47 s, fraction = 0.728 %, dGamma = 8.261e-06 s^-1
+BL1 vs Gravitrap: dtau = 6.20 s, fraction = 0.698 %, dGamma = 7.923e-06 s^-1
+
+REFERENCE for this lens: required fractional shift f = 1.143 % (dtau = 10.15 s)
+
+[Proton beam] tau_meas/tau_true = (eps_p,assumed/eps_p,true) * (eps_0,true/eps_0,assumed)
+  unrecognised proton loss fraction needed: 1.14 %  (proton-efficiency overestimated)
+  OR neutron-monitor efficiency underestimated by 1.16 % (eps_0,true/eps_0,assumed = 1.0116)
+  dtau / fluence correction unc (2013) (0.5 s) = 20.3
+  dtau / systematics unassociated with fluence (2013) (1.7 s) = 6.0
+  dtau / trap nonlinearity correction (size) (5.3 s) = 1.9
+  dtau / trap nonlinearity unc (0.8 s) = 12.7
+  dtau / absorption by 6Li correction (size) (5.4 s) = 1.9
+  dtau / beam halo unc (1.0 s) = 10.1
+  dtau / proton backscatter unc (0.4 s) = 25.4
+  dtau / Si scattering unc (0.5 s) = 20.3
+  dtau / BL1 total sys (2013) (1.9 s) = 5.3
+  dtau / BL1 total (2013) (2.247220505424423 s) = 4.5
+  2013 Alpha-Gamma fluence re-calibration moved tau by +1.4 s = 0.158 % (sign: away from bottles)
+
+[Proton beam: residual-gas loss]  loss prob = n * sigma * v * t_store
+  proton speed at 300 eV: 2.397e+05 m/s
+  cycle 10 ms (mean store 5.0 ms), sigma=1e-20 m^2: n_H2 needed = 9.53e+14 m^-3 -> p(300 K) = 3.95e-06 Pa = 3.95e-08 mbar; p(77 K) = 1.01e-06 Pa
+  cycle 10 ms (mean store 5.0 ms), sigma=1e-19 m^2: n_H2 needed = 9.53e+13 m^-3 -> p(300 K) = 3.95e-07 Pa = 3.95e-09 mbar; p(77 K) = 1.01e-07 Pa
+  cycle 5 ms (mean store 2.5 ms), sigma=1e-20 m^2: n_H2 needed = 1.91e+15 m^-3 -> p(300 K) = 7.90e-06 Pa = 7.90e-08 mbar; p(77 K) = 2.03e-06 Pa
+  cycle 5 ms (mean store 2.5 ms), sigma=1e-19 m^2: n_H2 needed = 1.91e+14 m^-3 -> p(300 K) = 7.90e-07 Pa = 7.90e-09 mbar; p(77 K) = 2.03e-07 Pa
+  If loss = 1.13% at 10 ms cycle, at 5 ms cycle loss = 0.56%:
+  predicted tau(10 ms) - tau(5 ms) = 5.10 s
+  Caylor 2025 H2 estimate ~0.3% loss -> dtau = 2.66 s = 26% of gap
+
+[Bottle] extra loss rate needed = 1.302e-05 s^-1 (time constant 7.683e+04 s = 0.89 d)
+  N2 (sigma~20 b, v~475 m/s): n needed = 1.37e+19 m^-3 -> p(300 K) = 5.68e-02 Pa = 5.68e-04 mbar
+  He (sigma~0.8 b, v~1250 m/s): n needed = 1.30e+20 m^-3 -> p(300 K) = 5.39e-01 Pa = 5.39e-03 mbar
+  H2 (sigma~160 b, v~1770 m/s): n needed = 4.60e+17 m^-3 -> p(300 K) = 1.90e-03 Pa = 1.90e-05 mbar
+  magnetic trap: spin-flip probability per second needed = 1.30e-05; per 1000 s hold = 1.293e-02
+  material bottle, collision rate 5 /s: extra loss per bounce needed = 2.60e-06
+  material bottle, collision rate 20 /s: extra loss per bounce needed = 6.51e-07
+  material bottle, collision rate 50 /s: extra loss per bounce needed = 2.60e-07
+
+[J-PARC] needed upward shift to reach proton beam = 10.8 s = 1.23 % of S_beta
+  observed background: 4.9-5.4% of S_beta at 100 kPa vs 1.2-1.3% MC; 3.1-3.3% at 50 kPa vs 0.65-0.67% [D-25]
+  excess (obs - MC) at 100 kPa ~ 3.6-4.2 %, at 50 kPa ~ 2.4-2.6 %
+
+[SM] tau_beta from lambda, GS2023 with Vud 0.97361(32) [U-01 pairing]
+  PERKEO III: tau_beta = 878.50 +- 0.88 s; Br_X(UCNtau) = 0.077 +- 0.106 %, 95% upper 0.251 %
+     proton beam 888.0 s vs tau_beta: 4.26 sigma
+  aSPECT 2024: tau_beta = 889.58 +- 3.20 s; Br_X(UCNtau) = 1.322 +- 0.356 %, 95% upper 1.908 %
+     proton beam 888.0 s vs tau_beta: -0.42 sigma
+  PDG 2024: tau_beta = 879.65 +- 1.61 s; Br_X(UCNtau) = 0.209 +- 0.185 %, 95% upper 0.513 %
+     proton beam 888.0 s vs tau_beta: 3.20 sigma
+
+--- stderr ---
+

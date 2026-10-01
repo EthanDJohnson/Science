@@ -1,0 +1,48 @@
+# math_run log
+command:  python3 runs/2026-09-30-neutron-lifetime-beam-bottle/math/constraints/M-CONSTRAINTS-07.py
+started:  2026-09-30T18:35:43Z
+duration: 0.7 s
+exit:     0
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   18 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+   S_n(9Be) MeV: got 1.66454, lens 1.66454
+PASS 1.6645370999999995 == 1.66454: within 3.6046e-05; 1.66454 vs 1.66454 (SI)
+   9Be -> 2a + n MeV: got 1.5727, lens 1.5727
+PASS 1.5726963000000014 == 1.5727: within 3.8151e-05; 1.5727 vs 1.5727 (SI)
+   S_n(11Be) MeV: got 0.501638, lens 0.50164
+PASS 0.5016381000000038 == 0.50164: within 0.000119608; 0.501638 vs 0.50164 (SI)
+   F-G lower edge (FG print 937.900): got 937.901, lens 937.9
+PASS 937.9008829 == 937.9: within 1.59932e-06; 937.901 vs 937.9 (SI)
+   3-body lower edge: got 937.993, lens 937.993
+PASS 937.9927237 == 937.993: within 6.39664e-07; 937.993 vs 937.993 (SI)
+   tightening keV: got 91.8408, lens 92
+PASS 91.84079999999994 == 92: within 0.00652174; 91.8408 vs 92 (SI)
+   chi stability: got 938.783, lens 938.783
+PASS 938.78309 == 938.783: within 6.39125e-07; 938.783 vs 938.783 (SI)
+   e+e- upper: got 938.543, lens 938.543
+PASS 938.54342 == 938.543: within 6.39289e-07; 938.543 vs 938.543 (SI)
+   11Be open below: got 939.064, lens 939.064
+PASS 939.0637819 == 939.064: within 6.38934e-07; 939.064 vs 939.064 (SI)
+   proton stability: got 937.761, lens 937.761
+PASS 937.7610900000001 == 937.761: within 6.39822e-07; 937.761 vs 937.761 (SI)
+   E_gamma min: got 0.782004, lens 0.782
+PASS 0.7820042961076402 == 0.782: within 0.000767263; 0.782004 vs 0.782 (SI)
+   E_gamma max: got 1.57138, lens 1.571
+PASS 1.57138006719737 == 1.571: within 0.000381922; 1.57138 vs 1.571 (SI)
+   e+e- width keV: got 550.696, lens 551
+PASS 550.6962999999132 == 551: within 0.00181488; 550.696 vs 551 (SI)
+   PERKEO gap lower m_chi: got 938.511, lens 938.511
+PASS 938.5114199999999 == 938.511: within 6.39311e-07; 938.511 vs 938.511 (SI)
+   gap fraction (narrowed): got 0.0581083, lens 0.058
+PASS 0.058108253133360516 == 0.058: within 0.0103448; 0.0581083 vs 0.058 (SI)
+   gap fraction (F-G): got 0.0498026, lens 0.05
+PASS 0.049802571711430085 == 0.05: within 0.012; 0.0498026 vs 0.05 (SI)
+PASS series of (M**2 - (M - d)**2)/(2*M) about d = 0 to order 3 == d - d**2/(2*M): symbolic: d - d**2/(2*M)
+PASS (-m**2 + mn**2)/(2*mn) == (-m + mn)*(m + mn)/(2*mn): symbolic
+   note: chi+phi variant window reaches 939.565 MeV > 11Be threshold 939.064 MeV, so 11Be -> 10Be + chi + phi is closed for m_chi + m_phi in (939.064, 939.565) MeV
+SUMMARY: 18 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

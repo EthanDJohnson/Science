@@ -1,0 +1,46 @@
+# Audit of report.md
+status: final
+| # | Report claim | Traced to | Status |
+|---|---|---|---|
+| 1 | Proton-beam mean 887.97 ± 2.04 s, BL1 82% of weight; storage 878.32 ± 0.43 s (S 1.85) | calc/lens-statistician_combination.py.log (887.966 ± 2.038; 878.321 ± 0.434; 0.823); M-STATISTICIAN-01 verified; M-DECOMPOSER-01 corrected 85% to 82% | supported |
+| 2 | Gap 9.65 ± 2.08 s, 4.63σ; 1.09%; 1.24e-5 s⁻¹; global 4.1–4.4σ for 3–10 partitions | combination.py.log sections 2, 7, 8; M-STATISTICIAN-02/-03 verified | supported |
+| 3 | Max odds 8000:1 against fluctuation | log section 9 gives 7969:1; M-STATISTICIAN-13 gives 7999; rounding only | supported |
+| 4 | Four classes: within 8.4/7, between 38.0/3 (5.55σ) | combination.py.log section 4; M-STATISTICIAN-04 verified | supported |
+| 5 | J-PARC 877.2 +4.35/−3.98 s; 0.26σ from storage, 2.24σ from beam, 1.81σ inflated; χ² 15.8/3 | log section 2; M-STATISTICIAN-05, M-CONSTRAINTS-11 verified. Input D-23/D-24 is a single preprint | weak (single preprint input; the arithmetic is verified) |
+| 6 | SM τ_β 878.70 ± 0.83 s (A route), 887.21 ± 2.93 s (a route), aSPECT 889.58 ± 3.20 s | M-CONSTRAINTS-02 verified; M-STATISTICIAN-11 agrees within 0.03 s | supported |
+| 7 | λ split: PERKEO III vs aSPECT 3.49σ; A-group χ² 1.51/2 | M-STATISTICIAN-10, M-CONSTRAINTS-02, M-EXAMINER-05 | supported |
+| 8 | First-row CKM sum 0.99898(87) (−1.2σ) with storage; 0.98842(251) (−4.6σ) with BL1 | M-CONSTRAINTS-04 verified | supported |
+| 9 | Br_X 95% UL 0.25% (PERKEO III), 0.30% (world λ + J-PARC); needed 1.09% at 7.2σ | M-CONSTRAINTS-03; falsifier-C3-2_bounds.py.log section 6 (0.297%, 7.28σ / 7.16σ). The PERKEO III figure is 0.204% in the C3-2 log and 0.25% in M-CONSTRAINTS-03 because of different τ_t and gap inputs | supported |
+| 10 | C3: J-PARC 2.2–2.4σ against, LR 5–12:1; three β-asymmetry λ each exclude needed λ at 3.0–4.4σ; 2.4σ conditional on aSPECT | C3-2 log section 3 (2.44σ); C3-1 log (4.43/3.39/3.01σ); M-STATISTICIAN-06 (12:1, 5:1). The "2.4σ conditional" figure is from the C3 cruxes and was not re-traced | supported |
+| 11 | C3 neutron-star collapse to 0.69–0.70 M☉; escape threshold EOS-dependent | M-CONSTRAINTS-09 verified for collapse; threshold marked unverified, and the report says so | supported |
+| 12 | M-CONSTRAINTS-08 corrected the mixing rate; τ_H 1.1–17× below bound | M-CONSTRAINTS-08 refuted, corrected prefactor 1/(128π); the "1.1–17×" is taken from the check. McKeen's formula was not checked against its source | supported (inputs from literature) |
+| 13 | C1 fitted shift 1.10 ± 0.23% with χ² 0.08/1 | χ² 0.08/1 matches the combination log; 1.09–1.10% gap traced. The ±0.23% was not located in a log and is a minor number | weak (χ² and gap supported; ±0.23% not traced) |
+| 14 | C1-1: fluence monitor 0.058% ↦ 0.51 s (19× short); H₂ worst case < 0.5 s; detection 0.64 s | falsifier-C1-1_named_bounds.py.log (0.51 s, 19.2; 0.5 s, 19.8; 0.64 s, 15.4). The Yue 2018 and Caylor 2025 inputs are from papers | supported |
+| 15 | Caylor 2025: H₂⁺ detected within 1.5% of protons | dossier item from the critiques/engineering research; not re-opened by me | weak (single paper; not re-traced in this audit) |
+| 16 | A4 about 0.14, A2-other about 0.10, "unidentified" about 0.38 of C1's 0.62 | Judge credences; they sum correctly (0.38 + 0.14 + 0.10 = 0.62). Byrne 2019/2022 support is abstract-only, and the report says so | supported (credence) |
+| 17 | ⁶Li absorption +5.4 s / trap nonlinearity −5.3 s; 2× error gives 55%, sign error 112% | M-MECHANIST-03 (1.88 and 1.92 ratios, 5.3 s sign flip moves τ by 10.6 s); 10.6/9.65 = 110%, about the stated 112% (10.6/9.46 gives 112% against the 9.88 gap) | supported |
+| 18 | C7: doubling BL1 error puts it 2.19σ from UCNτ | M-DIALECTICIAN-08 (2.193σ) verified | supported |
+| 19 | C7-1: gaps single-outlier-dominated in 85–90% of heavy-tail draws | falsifier-C7-1 log (0.85 at ν=2, 0.90 at ν=4). The log also shows the observed single largest share is only 36.6% (BL1), which the report does not mention | supported (selective) |
+| 20 | C8: uniform 1.1% proton loss changes aSPECT's a by 0.000% (2 PASS) | falsifier-C8-2_bounds.py.log (da/a +0.000%, 2 PASS, 0 FAIL) | supported |
+| 21 | C8: Δχ² = 5.3 for proton-counting vs rest over beam vs bottle | combination.py.log section 5 (5.32, LR 14.3); M-STATISTICIAN-04 | supported |
+| 22 | aSPECT 2024 reanalysis raised detector losses 35% with no effect on the result; only T₀ tuned to ±1 eV fits | C8-0/C8-1 verdicts. The C8-2 log shows the 100 eV cutoff shifts a by 34.5%, consistent with the tuning claim. The aSPECT reanalysis rests on the Beck 2024 paper; not opened here | weak (aSPECT detail not re-traced) |
+| 23 | C2: 49–195× too small; 130–140× depolarisation; material 0.98e-5 vs magnetic 1.27e-5 s⁻¹ (2.95σ) | M-CONSTRAINTS-12 (49×); M-MECHANIST-06 (130.2); combination.py.log (2.95σ). The 0.98e-5/1.27e-5 split and the "195×" upper end were not re-traced | weak (two sub-numbers not re-traced) |
+| 24 | C2: 888 s excluded at 4.2σ (A route), 3.4σ (PDG λ); profile LR C1:C2 7100:1, 244:1, 0.14:1 | falsifier-C2-2 log (7.14e3, 244, 0.138; chi2 gives 3.84σ and 2.99σ). The log shows C2-vs-SM at 3.84σ (A route) and 2.99σ (PDG), not 4.2σ and 3.4σ. The 4.2σ and 3.4σ figures are beam-minus-τ_β tensions (C3-1 log 4.23σ; the 3.4σ is UCNA-only), a different quantity | weak (LRs supported; the σ figures match a different test than the C2-2 χ²) |
+| 25 | C4: SNS regeneration 2.5×10⁴–1.4×10⁷ times above limit; predicted ≥ 9×10⁻⁴ | falsifier-C4-0 log (minimum 9.25e-4, 3.7e4×; maximum 1.37e7×). The lower end of 2.5×10⁴ is not shown in the lines I read (the 278–310 neV rows give ≥ 3.7e4); it may come from 320 neV | supported (range end not fully seen) |
+| 26 | C4: limits 2.5e-8 (2022), 3.1e-10 (2024); BL1 field map used | dossier D-62; Broussard 2022 and Gonzalez 2024 not opened by the auditor | weak (search-summary level; not re-traced) |
+| 27 | C6: field variant short by 3×10¹⁰ (6×10⁹ with Q⁵) | M-MECHANIST-13: 3.2e10 and 6.4e9; the report correctly notes the refuted candidate factor | supported |
+| 28 | C6: J-PARC neutrons 10–40 ms old vs BL1 47–155 ms; J-PARC ≥ 887.8 s, 2.4σ against | falsifier-C6-0/-1 logs (not re-opened); 2.4σ matches C3-2 log section 3 (2.44σ) | weak (ages not re-traced) |
+| 29 | C5: 0.084% charge-to-mass match, τ_X ≲ 0.5–1 ms, limits ≥ 1.6×10²⁵ yr, 10⁷–10²³ yr | C5-0/-1/-2 verdicts and logs; not re-opened; no math check row for them | weak (preprint Veselský 2025 and not re-traced) |
+| 30 | Deciding: Nab Δλ/|λ| = 0.04%, σ_λ ≈ 0.0005, upgraded Nov 2025, no a value | dossier D-107 (Nab proceedings; Δa/a = 10⁻³ variant not re-grepped) | weak (proceedings-level) |
+| 31 | Nab PERKEO-like result gives τ_β 878.50 ± 0.84 s, 4.3σ below proton pole; aSPECT-like sits 12.7σ from A route | M-CONSTRAINTS-05 (Nab 0.84 s, 12.7σ, 3.5σ); 4.3σ below proton pole is 3.8–4.3σ in that check | supported |
+| 32 | LiNA/UCNProBe ~1 s: 888 s is 8.9σ from storage pole; 878 s at most 4.4σ from BL1 | M-STATISTICIAN-14 (8.87, 4.25 at 1 s; cap 4.40); M-EXAMINER-11 refuted the "≥ 5σ" claim and the report uses the corrected value. LiNA and UCNProBe precisions are search-summary targets | weak (targets are search-summary) |
+| 33 | 5σ on SM route needs σ_λ ≤ 0.00156 (0.12%); PERKEO III already meets it | M-STATISTICIAN-14 (0.00156); M-CONSTRAINTS-05 gives 0.00165; the 0.12% follows. PERKEO III's σ_λ was not checked against the threshold | supported |
+| 34 | Precision ≤ 1.93 s for 5σ vs storage pole; vs BL1 pole capped 4.4σ | combination.py.log section 10; M-STATISTICIAN-14; M-EXAMINER-11 | supported |
+| 35 | Uniform-prior base rate: 0/7 and 0/12 give 0.07–0.11 (Laplace) | M-EMPIRICIST-10 verified (0.1111, 0.0714); exchangeability not a math question | supported |
+| 36 | Bailey base rate: 4.6σ two-method gap is 1-in-25 to 1-in-100 | analyses/statistician.md line 106 (1-in-25 to 1-in-100); Student-t tails M-STATISTICIAN-12 (0.044 to 0.010) | supported (heuristic, from Bailey 2017) |
+| 37 | Sussex–ILL entered from PDG listing; Ezhov from search summary | The report itself flags these; Sussex–ILL alone 2.24σ, Ezhov not relied on for numbers | weak (as disclosed) |
+| 38 | Probabilities: 0.62+0.14+0.05+0.04+0.04+0.02+0.01+0.01+0.07 = 1.00 | candidates are exclusive by construction; sum checked = 1.00 | supported |
+| 39 | Math-check statuses: M-CONSTRAINTS-14 unverified; -08, M-EXAMINER-10/-11/-12, M-EMPIRICIST-11, M-MECHANIST-13, M-DECOMPOSER-01 refuted | math/*.md: matches; the math files have no other refuted rows | supported |
+| 40 | "C1 A-gen roughly 60:40 over BL1-specific"; Sussex–ILL agreement favours a method-generic error | judge/lens inference (dialectician/statistician); no calc. Sussex–ILL is itself a low-weight result (2.24σ, PDG-listed) | weak (judgement resting on a single PDG-listed result) |
+
+## Summary: 40 claims checked, 13 flagged weak, 0 unsupported, 0 contradicted; most serious: claim 24, where the report's "3.8–4.2σ" and "4.2σ / 3.4σ" exclusion of 888 s comes from the beam-minus-τ_β tension, while the C2-2 log's own χ² figures for the same test are 3.84σ and 2.99σ. The probabilities sum to 1.00 and the statistical core (claims 1–8) is fully verified by the math checks.

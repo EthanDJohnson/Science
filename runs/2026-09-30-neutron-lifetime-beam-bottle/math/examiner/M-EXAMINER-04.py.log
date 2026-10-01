@@ -1,0 +1,43 @@
+# math_run log
+command:  python3 runs/2026-09-30-neutron-lifetime-beam-bottle/math/examiner/M-EXAMINER-04.py
+started:  2026-09-30T18:21:25Z
+duration: 0.5 s
+exit:     0
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   14 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+gap 9.88 s, fraction 0.01113, rate 1.2679e-05 s^-1, T 7.8871e+04 s = 0.913 d
+  fraction (%): mine = 1.11299   lens = 1.113 
+PASS 1.112988622282307 == 1.113: within 0.000449281; 1.11299 vs 1.113 (SI)
+  rate: mine = 1.2679e-05 1/s  lens = 1.268e-05 1/s
+PASS 1.2679007339571908e-05 1/s == 1.268e-05 1/s: within 0.000394361; 1.2679e-05 vs 1.268e-05 (SI)
+  time constant: mine = 78870.5 s  lens = 78900.0 s
+PASS 78870.52773279362 s == 78900.0 s: within 0.000633777; 78870.5 vs 78900 (SI)
+  days: mine = 0.912853   lens = 0.91 
+PASS 0.912853330240667 == 0.91: within 0.00549505; 0.912853 vs 0.91 (SI)
+  gap / BL1 total: mine = 4.39654   lens = 4.4 
+PASS 4.396542295761048 == 4.4: within 0.00113648; 4.39654 vs 4.4 (SI)
+  gap / BL1 sys 1.9: mine = 5.2   lens = 5.2 
+PASS 5.1999999999999975 == 5.2: within 0.000961635; 5.2 vs 5.2 (SI)
+  gap / 1.7 s line: mine = 5.81176   lens = 5.81 
+PASS 5.81176470588235 == 5.81: within 0.000860671; 5.81176 vs 5.81 (SI)
+  gap / bound-state Br 4e-6: mine = 2750   lens = 2750 
+PASS 2750.0 == 2750: within 0.000181836; 2750 vs 2750 (SI)
+  exact: fraction/4e-6 = 2782
+  5 sigma precision gap/5: mine = 1.976 s  lens = 1.98 s
+PASS 1.975999999999999 s == 1.98 s: within 0.00252551; 1.976 vs 1.98 (SI)
+  3 sigma precision gap/3: mine = 3.29333 s  lens = 3.29 s
+PASS 3.2933333333333317 s == 3.29 s: within 0.00151991; 3.29333 vs 3.29 (SI)
+  n=3, vs UCNtau pole (+-0.29 s): needed sigma = 3.281 s
+  n=3, vs BL1 pole (+-2.25 s): needed sigma = 2.407 s
+  n=5, vs UCNtau pole (+-0.29 s): needed sigma = 1.955 s
+  n=5, vs BL1 pole (+-2.25 s): needed sigma = nan s
+PASS -1/b + 1/a == (-a + b)/(a*b): symbolic
+PASS -a/b + 1 == (-a + b)/b: symbolic
+PASS 1/(877.82 s) - 1/(887.7 s) has the dimension of 1/s: dimensional analysis
+PASS 1/(1/(877.82 s) - 1/(887.7 s)) == 78870 s: within 0.0002; 78870.5 vs 78870 (SI)
+SUMMARY: 14 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

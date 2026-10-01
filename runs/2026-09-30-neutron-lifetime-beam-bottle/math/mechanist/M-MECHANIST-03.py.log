@@ -1,0 +1,35 @@
+# math_run log
+command:  python3 runs/2026-09-30-neutron-lifetime-beam-bottle/math/mechanist/M-MECHANIST-03.py
+started:  2026-09-30T18:16:48Z
+duration: 0.5 s
+exit:     0
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   12 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+fluence 2013 unc: 10.15/0.5 = 20.300 (lens 20)
+PASS 20.299999999999955 == 20: within 0.03; 20.3 vs 20 (SI)
+non-fluence lump: 10.15/1.7 = 5.971 (lens 6)
+PASS 5.970588235294104 == 6: within 0.03; 5.97059 vs 6 (SI)
+nonlinearity unc: 10.15/0.8 = 12.687 (lens 12.7)
+PASS 12.687499999999972 == 12.7: within 0.03; 12.6875 vs 12.7 (SI)
+halo unc: 10.15/1.0 = 10.150 (lens 10)
+PASS 10.149999999999977 == 10: within 0.03; 10.15 vs 10 (SI)
+backscatter: 10.15/0.4 = 25.375 (lens 25)
+PASS 25.374999999999943 == 25: within 0.03; 25.375 vs 25 (SI)
+Si scattering: 10.15/0.5 = 20.300 (lens 20)
+PASS 20.299999999999955 == 20: within 0.03; 20.3 vs 20 (SI)
+nonlinearity correction: 10.15/5.3 = 1.915 (lens 1.9)
+PASS 1.9150943396226372 == 1.9: within 0.03; 1.91509 vs 1.9 (SI)
+6Li absorption correction: 10.15/5.4 = 1.880 (lens 1.9)
+PASS 1.8796296296296253 == 1.9: within 0.03; 1.87963 vs 1.9 (SI)
+sign flip of nonlinearity: 10.6 s; of absorption: 10.8 s
+PASS 10.6 s == 10.6 s: within 1e-06; 10.6 vs 10.6 (SI)
+recalibration: 1.4/886.3 = 0.158 %
+PASS 0.0015796005867087894 == 0.0016: within 0.02; 0.0015796 vs 0.0016 (SI)
+PASS 0.0005632533513574405 == 0.00056: within 0.02; 0.000563253 vs 0.00056 (SI)
+PASS k == k: symbolic
+SUMMARY: 12 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

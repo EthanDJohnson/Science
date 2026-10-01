@@ -1,0 +1,22 @@
+# math_run log
+command:  python3 runs/2026-09-30-neutron-lifetime-beam-bottle/math/mechanist/M-MECHANIST-02.py
+started:  2026-09-30T18:16:47Z
+duration: 0.5 s
+exit:     0
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   6 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+PASS L*N_a*e_p/(N_p*e_0*v_0) == L*N_a*e_p/(N_p*e_0*v_0): symbolic
+PASS -L*N_a*e_p/(N_p*e_0*v_0) == -L*N_a*e_p/(N_p*e_0*v_0): symbolic
+PASS a == a: symbolic
+PASS lim f->0 of (-1 + 1/(1 - f))/f == 1: symbolic limit 1
+eps0_true/eps0_assumed needed = 1.011563 -> +1.156 %
+proton loss fraction needed = 1.1431 %
+PASS 0.011562734957052623 == 0.0116: within 0.005; 0.0115627 vs 0.0116 (SI)
+PASS 0.011430566347962134 == 0.01143: within 0.001; 0.0114306 vs 0.01143 (SI)
+BL1-alone: eps0 +1.126 %, loss 1.113 %
+SUMMARY: 6 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

@@ -1,0 +1,54 @@
+# math_run log
+command:  python3 runs/2026-09-30-neutron-lifetime-beam-bottle/calc/crux-C3_deciding.py
+started:  2026-09-30T20:06:54Z
+duration: 0.0 s
+exit:     0
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+== 1. Symmetry of the lambda conflict ==
+PERKEO III vs aSPECT 2024: 3.49 sigma -> at least one side carries an unidentified error
+C1 world needs aSPECT off by 3.56 of its own errors
+C3 world (aSPECT right) needs PERKEO III off by 17.2 of its own errors
+
+== 2. Total chi2 on the same data set, each model with 2 free parameters ==
+C1: tau = 878.57 +- 0.37 s, chi2 = 13.90 (8 data, 2 params, 6 dof); p = 3.07e-02
+C3: tau_beta = 880.16 +- 0.67 s, chi2 = 29.10 (6 dof); p = 5.84e-05; Br_X = 0.209 %
+Delta chi2 (C3 - C1) = 15.19
+route-choice form: C1 (A route, aSPECT dropped) chi2 = 1.65/4 ; C3 (a route, A group dropped) chi2 = 5.96/1
+   cost of dropping: C1 drops 1 experiment (aSPECT, 3.48 sigma from its fit); C3 drops 3 (A group)
+   A group tau_beta = 878.79 +- 0.74 s (internal chi2 1.27/2); vs C3 tau_beta 886.91: 11.04 sigma (point)
+
+== 3. Deciding tests ==
+C3 tau_beta prediction: beam alone 887.97 +- 2.04; beam + aSPECT 888.44 +- 1.72 s
+LiNA sigma = 1.0 s:
+  reads C3 value 887.97 -> 8.9 sigma from storage pole (C1, C5, C8)
+  reads 878.32 -> 4.2 sigma from C3 (beam error), 5.1 sigma (beam+aSPECT)
+  reads 878.32 with BL2 at 888 +- 1 s -> 6.8 sigma from C3
+LiNA sigma = 0.5 s:
+  reads C3 value 887.97 -> 14.6 sigma from storage pole (C1, C5, C8)
+  reads 878.32 -> 4.6 sigma from C3 (beam error), 5.6 sigma (beam+aSPECT)
+  reads 878.32 with BL2 at 888 +- 1 s -> 8.7 sigma from C3
+UCNProBe difference sigma = 1.0 s:
+  reads D = 9.65 -> 9.7 sigma from D = 0 (C1, C5, C6, C8)
+  reads D = 0 -> 4.2 sigma from C3 (gap error 2.08 s), 6.5 sigma with BL2 at 1 s
+  vs C7 (D up to ~4 s): D = 9.65 reading is 5.7 sigma above C7's upper edge
+UCNProBe difference sigma = 1.5 s:
+  reads D = 9.65 -> 6.4 sigma from D = 0 (C1, C5, C6, C8)
+  reads D = 0 -> 3.8 sigma from C3 (gap error 2.08 s), 5.2 sigma with BL2 at 1 s
+  vs C7 (D up to ~4 s): D = 9.65 reading is 3.8 sigma above C7's upper edge
+UCNProBe difference sigma = 2.0 s:
+  reads D = 9.65 -> 4.8 sigma from D = 0 (C1, C5, C6, C8)
+  reads D = 0 -> 3.3 sigma from C3 (gap error 2.08 s), 4.2 sigma with BL2 at 1 s
+  vs C7 (D up to ~4 s): D = 9.65 reading is 2.8 sigma above C7's upper edge
+Nab sigma_lambda = 0.00051
+  Nab reads PERKEO-like 1.27641 -> 4.45 sigma from C3's need
+  Nab reads C3-like 1.26812 -> 10.9 sigma from the A route (C1, C6)
+  Nab reads C3-like 1.26812 -> -0.48 sigma from aSPECT (C2, C5, C8 need the same)
+C2 required losses differ by 4.76e-06 s^-1 between Gravitrap and UCNtau -> 3.67 s in tau
+tauSPECT (0.3 s) vs UCNtau (0.30 s): difference sigma = 0.42 s; a 3.7 s trap-specific split = 8.6 sigma; C3 predicts 0
+observed material - magnetic split 2.21 s (M-STATISTICIAN-09) is unexplained by C3 (predicts 0)
+
+--- stderr ---
+

@@ -1,0 +1,37 @@
+# math_run log
+command:  python3 runs/2026-09-30-neutron-lifetime-beam-bottle/math/decomposer/M-DECOMPOSER-04.py
+started:  2026-09-30T18:24:13Z
+duration: 1.1 s
+exit:     0
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   17 PASS, 1 FAIL, 0 UNDECIDED
+
+--- stdout ---
+pooled: 878.517, chi2 45.287/9, J-PARC sigma 4.163
+PASS pooled chi2: got 45.2872, lens 45.3, tol 0.05
+beam(incl JP) vs bottle: within 28.800, between 16.488/1, z 4.060
+PASS beam(incl JP) vs bottle between: got 16.4876, lens 16.5, tol 0.05
+PASS beam(incl JP) vs bottle within: got 28.7996, lens 28.8, tol 0.05
+PASS beam(incl JP) vs bottle decomposition identity: got 16.4876, lens 16.487643838377185, tol 1e-06
+proton vs rest: within 23.485, between 21.802/1, z 4.669
+PASS proton vs rest between: got 21.8018, lens 21.8, tol 0.05
+PASS proton vs rest within: got 23.4855, lens 23.5, tol 0.05
+PASS proton vs rest decomposition identity: got 21.8018, lens 21.801767590030256, tol 1e-06
+BL1 vs rest: within 28.389, between 16.899/1, z 4.111
+PASS BL1 vs rest between: got 16.8986, lens 16.9, tol 0.05
+PASS BL1 vs rest decomposition identity: got 16.8986, lens 16.898608129807677, tol 1e-06
+4 classes: within 8.333, between 36.954/3, z 5.462
+FAIL 4 classes between: got 36.9541, lens 36.9, tol 0.05
+PASS 4 classes within: got 8.3331, lens 8.3, tol 0.05
+PASS 4 classes decomposition identity: got 36.9541, lens 36.954123104532385, tol 1e-06
+4-class within p = 0.215; between z = 5.462
+PASS 4-class within p: got 0.214701, lens 0.22, tol 0.01
+PASS 4-class between z: got 5.4621, lens 5.46, tol 0.02
+PASS beam/bottle between z: got 4.0605, lens 4.06, tol 0.01
+PASS proton/rest between z: got 4.66924, lens 4.67, tol 0.01
+PASS Delta chi2 proton/rest minus beam/bottle: got 5.31412, lens 5.3, tol 0.05
+PASS w1*(x1 - (w1*x1 + w2*x2 + w3*x3)/(w1 + w2 + w3))**2 + w2*(x2 - (w1*x1 + w2*x2 + w3*x3)/(w1 + w2 + w3))**2 + w3*(x3 - (w1*x1 + w2*x2 + w3*x3)/(w1 + w2 + w3))**2 == w1*(x1 - (w1*x1 + w2*x2)/(w1 + w2))**2 + w2*(x2 - (w1*x1 + w2*x2)/(w1 + w2))**2 + w3*(x3 - (w1*x1 + w2*x2 + w3*x3)/(w1 + w2 + w3))**2 + (w1 + w2)*(-(w1*x1 + w2*x2 + w3*x3)/(w1 + w2 + w3) + (w1*x1 + w2*x2)/(w1 + w2))**2: symbolic
+SUMMARY: 1 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

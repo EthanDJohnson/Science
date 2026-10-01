@@ -1,0 +1,46 @@
+# math_run log
+command:  python3 runs/2026-09-30-neutron-lifetime-beam-bottle/calc/falsifier-C4-0_magnitude.py
+started:  2026-09-30T19:15:26Z
+duration: 15.4 s
+exit:     0
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+|mu_n| = 60.3077 neV/T; |mu_n|*4.6 T = 277.42 neV; |mu_n|*4.79 T = 288.9 neV; |mu_n|*6.63 T = 399.8 neV
+required tau_beam/tau_beta = 1.01126  (shift 9.88 s)
+SNS model w = 0.05 m: hump offset d = 0.071 m, peak at z = 0.068 m, B(0) = 4.790 T, B(peak) = 6.630 T, max |dB/dz| = 79.2 T/m
+SNS model w = 0.10 m: hump offset d = 0.141 m, peak at z = 0.135 m, B(0) = 4.790 T, B(peak) = 6.630 T, max |dB/dz| = 39.6 T/m
+SNS model w = 0.20 m: hump offset d = 0.283 m, peak at z = 0.271 m, B(0) = 4.790 T, B(peak) = 6.630 T, max |dB/dz| = 19.8 T/m
+
+Delta_m | theta0 needed (BL1) | P_trap | P_det | tau ratio || SNS p_regen for w = 0.05/0.10/0.20 m | min ratio to limit
+ 278.0 neV | 4.834e-04 | 1.1132e-02 | 4.67e-07 | 1.01126 || 9.25e-04 / 3.48e-03 / 1.25e-02 | x3.70e+04
+ 280.0 neV | 1.654e-03 | 1.1135e-02 | 5.47e-06 | 1.01126 || 7.40e-02 / 1.76e-01 / 3.18e-01 | x2.96e+06
+ 283.0 neV | 3.297e-03 | 1.1151e-02 | 2.17e-05 | 1.01126 || 3.12e-01 / 4.23e-01 / 4.70e-01 | x1.25e+07
+ 286.0 neV | 4.893e-03 | 1.1177e-02 | 4.79e-05 | 1.01126 || 3.41e-01 / 3.66e-01 / 3.68e-01 | x1.37e+07
+ 289.5 neV | 6.713e-03 | 1.1219e-02 | 9.01e-05 | 1.01126 || 8.88e-02 / 8.84e-02 / 8.84e-02 | x3.54e+06
+ 292.0 neV | 7.988e-03 | 1.1256e-02 | 1.28e-04 | 1.01126 || 2.47e-02 / 2.46e-02 / 2.46e-02 | x9.83e+05
+ 296.0 neV | 9.988e-03 | 1.1327e-02 | 1.99e-04 | 1.01126 || 6.65e-03 / 6.65e-03 / 6.65e-03 | x2.66e+05
+ 300.0 neV | 1.194e-02 | 1.1412e-02 | 2.85e-04 | 1.01126 || 3.18e-03 / 3.18e-03 / 3.18e-03 | x1.27e+05
+ 310.0 neV | 1.666e-02 | 1.1678e-02 | 5.55e-04 | 1.01126 || 1.30e-03 / 1.30e-03 / 1.30e-03 | x5.22e+04
+
+spot check Delta_m = 280 neV, theta0 = 1.654e-03, v = 1000 m/s, s = +1, w = 0.10 m:
+  analytic (LZ + adiabatic) P1 = 0.5862; numeric P1 at absorber = 0.5340, mean over last 2 cm = 0.5847
+  eps = 0.463 neV, tau_nn' = 1.421e-06 s
+
+SNS cap if equal passages: P <= 1.58e-04; beam shift <= 0.139 s vs gap 9.88 s (1.41% of it)
+smallest predicted SNS regeneration over the C4 window and profiles = 9.25e-04 = 3.7e+04 x the 95% CL limit
+
+B4C: Fermi potential V = 199 neV; n absorption rate G = 1.85e+07 1/s
+  Delta_m 280 neV, s=+1: delta_mat = -208 neV, n' absorption 91.9 1/s; survival through 0.1 m at 1000 m/s = 0.9909
+  Delta_m 280 neV, s=+1: delta_mat = -208 neV, n' absorption 91.9 1/s; survival through 1.0 m at 1000 m/s = 0.9122
+  Delta_m 280 neV, s=-1: delta_mat = +370 neV, n' absorption 29.1 1/s; survival through 0.1 m at 1000 m/s = 0.9971
+  Delta_m 280 neV, s=-1: delta_mat = +370 neV, n' absorption 29.1 1/s; survival through 1.0 m at 1000 m/s = 0.9713
+  Delta_m 300 neV, s=+1: delta_mat = -188 neV, n' absorption 6734.0 1/s; survival through 0.1 m at 1000 m/s = 0.5100
+  Delta_m 300 neV, s=+1: delta_mat = -188 neV, n' absorption 6734.0 1/s; survival through 1.0 m at 1000 m/s = 0.0012
+  Delta_m 300 neV, s=-1: delta_mat = +390 neV, n' absorption 1567.7 1/s; survival through 0.1 m at 1000 m/s = 0.8549
+  Delta_m 300 neV, s=-1: delta_mat = +390 neV, n' absorption 1567.7 1/s; survival through 1.0 m at 1000 m/s = 0.2085
+attenuation needed to hide the smallest predicted signal: factor 3.7e+04 = e^10.5
+
+--- stderr ---
+

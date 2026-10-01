@@ -1,0 +1,48 @@
+# math_run log
+command:  python3 runs/2026-09-30-neutron-lifetime-beam-bottle/calc/falsifier-C3-1_lambda_experiments.py
+started:  2026-09-30T19:08:57Z
+duration: 0.0 s
+exit:     0
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+K = dtau/d|lambda| = 1142.7 s
+
+Per-experiment tau_beta and tension with C3's requirement tau_beta = proton-beam value
+  PERKEO III   tau_beta =   878.50 +-  0.88 s  z(beam - tau_beta) = +4.26 sigma   Br_X = +0.020 +- 0.112 %
+  UCNA 2018    tau_beta =   877.60 +-  2.36 s  z(beam - tau_beta) = +3.32 sigma   Br_X = -0.082 +- 0.274 %
+  PERKEO II    tau_beta =   880.34 +-  1.63 s  z(beam - tau_beta) = +2.92 sigma   Br_X = +0.229 +- 0.191 %
+  aSPECT 2024  tau_beta =   889.48 +-  3.14 s  z(beam - tau_beta) = -0.40 sigma   Br_X = +1.255 +- 0.352 %
+  aCORN        tau_beta =   874.85 +-  7.11 s  z(beam - tau_beta) = +1.77 sigma   Br_X = -0.396 +- 0.818 %
+
+C3 needs |lambda| = 1.26812 +- 0.00179 (from beam 887.97 +- 2.04 s)
+  PERKEO III   |lambda| - needed = +0.00829  -> +4.43 sigma
+  UCNA 2018    |lambda| - needed = +0.00908  -> +3.39 sigma
+  PERKEO II    |lambda| - needed = +0.00668  -> +3.01 sigma
+  aSPECT 2024  |lambda| - needed = -0.00132  -> -0.41 sigma
+  aCORN        |lambda| - needed = +0.01148  -> +1.78 sigma
+
+A-route subset ['UCNA 2018', 'PERKEO II']: tau_beta = 879.46 +- 1.34 s (chi2 0.91/1); beam - tau_beta = 3.49 sigma
+
+A-route subset ['UCNA 2018', 'PERKEO II', 'PERKEO III']: tau_beta = 878.79 +- 0.74 s (chi2 1.27/2); beam - tau_beta = 4.23 sigma
+
+A-route subset ['UCNA 2018']: tau_beta = 877.60 +- 2.36 s (chi2 0.00/0); beam - tau_beta = 3.32 sigma
+
+J-PARC 2024 vs C3 prediction (= beam): 2.24 sigma (upper J error used)
+J-PARC with its error inflated by S=2.29: 1.06 sigma
+
+C3 fit [all five lambda] + beam + J-PARC: tau_beta = 880.17 +- 0.67 s, chi2 = 29.20/6, p = nan(dof1 only), Br_X = 0.210 %
+   p(chi2 >= 29.20 | 6 dof) = 5.57e-05
+
+C3 fit [A group only (PIII, PII, UCNA)] + beam + J-PARC: tau_beta = 879.78 +- 0.68 s, chi2 = 19.55/4, p = nan(dof1 only), Br_X = 0.166 %
+   p(chi2 >= 19.55 | 4 dof) = 0.000612
+
+C3 fit [a route only (aSPECT)] + beam + J-PARC: tau_beta = 886.91 +- 1.59 s, chi2 = 5.92/2, p = nan(dof1 only), Br_X = 0.969 %
+   p(chi2 >= 5.92 | 2 dof) = 0.0518
+
+C3 fit [no lambda] + beam + J-PARC: tau_beta = 886.03 +- 1.85 s, chi2 = 5.02/1, p = 0.025(dof1 only), Br_X = 0.870 %
+   p(chi2 >= 5.02 | 1 dof) = 0.025
+
+--- stderr ---
+

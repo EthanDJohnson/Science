@@ -1,0 +1,28 @@
+# math_run log
+command:  python3 runs/2026-09-30-neutron-lifetime-beam-bottle/math/examiner/M-EXAMINER-09.py
+started:  2026-09-30T18:22:40Z
+duration: 0.4 s
+exit:     0
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   3 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+  Grav: w = 1.176 s^-2 (7.1%)
+  Ser05: w = 1.724 s^-2 (10.4%)
+  MAMBO: w = 0.319 s^-2 (1.9%)
+  Steyerl: w = 0.238 s^-2 (1.4%)
+  Arz: w = 0.694 s^-2 (4.2%)
+  UCNtau: w = 12.103 s^-2 (73.2%)
+  Ezhov: w = 0.281 s^-2 (1.7%)
+total 16.54 s^-2; UCNtau share 0.732; with sigma=0.29: 11.89 / 16.32
+  UCNtau weight (lens 11.9 with 0.29 s): mine = 11.8906 s^-2  lens = 11.9 s^-2
+PASS 11.890606420927469 s^-2 == 11.9 s^-2: within 0.0042021; 11.8906 vs 11.9 (SI)
+  total weight: mine = 16.5358 s^-2  lens = 16.3 s^-2
+PASS 16.53584478189925 s^-2 == 16.3 s^-2: within 0.0184067; 16.5358 vs 16.3 (SI)
+  share (lens ~73% / three-quarters): mine = 0.731918   lens = 0.73 
+PASS 0.7319175156945121 == 0.73: within 0.0137; 0.731918 vs 0.73 (SI)
+bottle mean 878.384 +- 0.246 s
+SUMMARY: 3 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

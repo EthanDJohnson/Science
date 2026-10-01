@@ -1,0 +1,37 @@
+# math_run log
+command:  python3 runs/2026-09-30-neutron-lifetime-beam-bottle/math/statistician/M-STATISTICIAN-11.py
+started:  2026-09-30T18:06:48Z
+duration: 0.6 s
+exit:     1
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   16 PASS, 1 FAIL, 0 UNDECIDED
+
+--- stdout ---
+K_eff calibrated from GS2023 (s): 4903.065502240971  alt 5024.7/1.02479: 4903.150889450521
+PASS -6*K*lam/(V**2*(3*lam**2 + 1)**2) == -6*K*lam/(V**2*(3*lam**2 + 1)**2): symbolic
+PASS -2*K/(V**3*(3*lam**2 + 1)) == -2*K/(V**3*(3*lam**2 + 1)): symbolic
+PASS lim lam->0 of K/V**2 == K/V**2: symbolic limit K/V**2
+PASS 4903 s / (0.97361^2 * 5.8877) has the dimension of s: dimensional analysis
+PERKEO III: tau 878.53 +- 0.88 s (Vud 0.58, lam 0.64; alt-K 878.54)  lens 878.50 +- 0.88; z_beam 4.25 z_stor 0.21; Br 0.0002 +- 0.0011; UL95 0.0021; need 0.0109 at 9.51 sigma
+PASS 0.025497062538079263 < 0.0600000000000000: symbolic, constant
+PASS 0.880000000000000 == 0.880000000000000: symbolic
+A route: tau 878.73 +- 0.83 s (Vud 0.58, lam 0.57; alt-K 878.75)  lens 878.70 +- 0.83; z_beam 4.19 z_stor 0.44; Br 0.0005 +- 0.0011; UL95 0.0022; need 0.0109 at 9.72 sigma
+PASS 0.031226347566757795 < 0.0600000000000000: symbolic, constant
+PASS 0.830000000000000 == 0.830000000000000: symbolic
+aSPECT24: tau 889.60 +- 3.20 s (Vud 0.58, lam 3.14; alt-K 889.62)  lens 889.58 +- 3.20; z_beam 0.43 z_stor 3.50; Br 0.0127 +- 0.0036; UL95 0.0186; need 0.0109 at -0.51 sigma
+PASS 0.023980412969081044 < 0.0600000000000000: symbolic, constant
+PASS 3.20000000000000 == 3.20000000000000: symbolic
+a route: tau 887.24 +- 2.94 s (Vud 0.58, lam 2.87; alt-K 887.25)  lens 887.21 +- 2.93; z_beam 0.20 z_stor 3.00; Br 0.0101 +- 0.0033; UL95 0.0155; need 0.0109 at 0.25 sigma
+PASS 0.026004677639434703 < 0.0600000000000000: symbolic, constant
+FAIL 2.94000000000000 == 2.93000000000000: numeric, constants; counterexample (no symbols) = -; lhs = 2.94, rhs = 2.93
+a swapped: tau 888.77 +- 2.93 s (Vud 0.58, lam 2.87; alt-K 888.78)  lens 888.74 +- 2.93; z_beam 0.22 z_stor 3.52; Br 0.0118 +- 0.0033; UL95 0.0172; need 0.0109 at -0.27 sigma
+PASS 0.0272177308636401 < 0.0600000000000000: symbolic, constant
+PASS 2.93000000000000 == 2.93000000000000: symbolic
+PDG24: tau 879.68 +- 1.61 s (Vud 0.58, lam 1.49; alt-K 879.70)  lens 879.65 +- 1.61; z_beam 3.19 z_stor 0.82; Br 0.0015 +- 0.0019; UL95 0.0047; need 0.0109 at 4.93 sigma
+PASS 0.03073853985392816 < 0.0600000000000000: symbolic, constant
+PASS 1.61000000000000 == 1.61000000000000: symbolic
+PASS 877.75 s * 0.97404^2 * 5.88767 == 4903.1 s: within 0.0002; 4903.07 vs 4903.1 (SI)
+SUMMARY: 16 pass, 1 fail, 0 undecided
+
+--- stderr ---
+

@@ -1,0 +1,80 @@
+# math_run log
+command:  python3 runs/2026-09-30-neutron-lifetime-beam-bottle/math/constraints/M-CONSTRAINTS-02.py
+started:  2026-09-30T18:33:45Z
+duration: 0.5 s
+exit:     0
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   35 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+PASS -6*K*lam/(V**2*(3*lam**2 + 1)**2) == -6*K*lam/(V**2*(3*lam**2 + 1)**2): symbolic
+PASS -2*K/(V**3*(3*lam**2 + 1)) == -2*K/(V**3*(3*lam**2 + 1)): symbolic
+PASS lim lam->0 of K/(V**2*(3*lam**2 + 1)) == K/V**2: symbolic limit K/V**2
+PASS 1 s / 1 has the dimension of time: dimensional analysis
+   tau_beta PERKEO III: got 878.499, lens 878.5
+PASS 878.4988339794076 == 878.5: within 6.82982e-05; 878.499 vs 878.5 (SI)
+   sigma PERKEO III: got 0.881028, lens 0.88
+PASS 0.8810277859276213 == 0.88: within 0.00681818; 0.881028 vs 0.88 (SI)
+   tau_beta UCNA: got 877.597, lens 877.6
+PASS 877.5967340648144 == 877.6: within 6.83683e-05; 877.597 vs 877.6 (SI)
+   sigma UCNA: got 2.3616, lens 2.36
+PASS 2.3615973562860177 == 2.36: within 0.00254237; 2.3616 vs 2.36 (SI)
+   tau_beta PERKEO II: got 880.341, lens 880.34
+PASS 880.341307039006 == 880.34: within 6.81555e-05; 880.341 vs 880.34 (SI)
+   sigma PERKEO II: got 1.63086, lens 1.63
+PASS 1.6308627805355416 == 1.63: within 0.00368098; 1.63086 vs 1.63 (SI)
+   tau_beta PDG 2024: got 879.654, lens 879.65
+PASS 879.6540403953624 == 879.65: within 6.82089e-05; 879.654 vs 879.65 (SI)
+   sigma PDG 2024: got 1.60792, lens 1.61
+PASS 1.6079157732985163 == 1.61: within 0.00372671; 1.60792 vs 1.61 (SI)
+   tau_beta aSPECT 2020: got 888.531, lens 888.53
+PASS 888.5312312010267 == 888.53: within 6.75273e-05; 888.531 vs 888.53 (SI)
+   sigma aSPECT 2020: got 3.30829, lens 3.31
+PASS 3.308288096589917 == 3.31: within 0.00181269; 3.30829 vs 3.31 (SI)
+   tau_beta aSPECT 2024: got 889.577, lens 889.58
+PASS 889.5769810999585 == 889.58: within 6.74476e-05; 889.577 vs 889.58 (SI)
+   sigma aSPECT 2024: got 3.19946, lens 3.2
+PASS 3.1994620384020136 == 3.2: within 0.001875; 3.19946 vs 3.2 (SI)
+   tau_beta aCORN: got 874.864, lens 874.86
+PASS 874.8641068514204 == 874.86: within 6.85824e-05; 874.864 vs 874.86 (SI)
+   sigma aCORN: got 7.0699, lens 7.07
+PASS 7.069902474443822 == 7.07: within 0.000848656; 7.0699 vs 7.07 (SI)
+   A-group lambda: got 1.27623, lens 1.27623
+PASS 1.2762299689508634 == 1.27623: within 4.70135e-06; 1.27623 vs 1.27623 (SI)
+   A-group sigma: got 0.000497815, lens 0.0005
+PASS 0.0004978149151365617 == 0.0005: within 0.012; 0.000497815 vs 0.0005 (SI)
+   A-group chi2: got 1.51281, lens 1.51
+PASS 1.5128149978515542 == 1.51: within 0.00397351; 1.51281 vs 1.51 (SI)
+   a-group lambda: got 1.26884, lens 1.26884
+PASS 1.2688404985786135 == 1.26884: within 4.72873e-06; 1.26884 vs 1.26884 (SI)
+   a-group sigma: got 0.00247545, lens 0.00248
+PASS 0.0024754539571357355 == 0.00248: within 0.00241935; 0.00247545 vs 0.00248 (SI)
+   a-group chi2: got 3.58277, lens 3.58
+PASS 3.582768423354553 == 3.58: within 0.00167598; 3.58277 vs 3.58 (SI)
+   tau_beta A group: got 878.705, lens 878.7
+PASS 878.704592512637 == 878.7: within 6.82827e-05; 878.705 vs 878.7 (SI)
+   sigma A: got 0.832799, lens 0.83
+PASS 0.8327992212764093 == 0.83: within 0.00722892; 0.832799 vs 0.83 (SI)
+   tau_beta a group: got 887.208, lens 887.21
+PASS 887.2084995898637 == 887.21: within 6.76277e-05; 887.208 vs 887.21 (SI)
+   sigma a: got 2.93286, lens 2.93
+PASS 2.9328630609942263 == 2.93: within 0.00204778; 2.93286 vs 2.93 (SI)
+   between-group chi2: got 8.56445, lens 8.56
+PASS 8.564446419705849 == 8.56: within 0.000700935; 8.56445 vs 8.56 (SI)
+   PERKEO III vs aSPECT 2024 sigma: got 3.48559, lens 3.5
+PASS 3.4855923551609553 == 3.5: within 0.0142857; 3.48559 vs 3.5 (SI)
+   dtau/dlam (scaled to lens tau 878.50): got -1142.72, lens -1142.7
+PASS -1142.7202964153655 == -1142.7: within 5.25072e-05; -1142.72 vs -1142.7 (SI)
+   dtau/dVud (scaled): got -1804.62, lens -1804.6
+PASS -1804.6240281016012 == -1804.6: within 3.32484e-05; -1804.62 vs -1804.6 (SI)
+   1 s <-> dlam: got 0.000875106, lens 0.000875
+PASS 0.000875105947119795 == 0.000875: within 0.000571429; 0.000875106 vs 0.000875 (SI)
+   1 s <-> dVud: got 0.000554133, lens 0.00055
+PASS 0.0005541327787481286 == 0.00055: within 0.00909091; 0.000554133 vs 0.00055 (SI)
+   0.0096 split in tau: got 10.9815, lens 10.98
+PASS 10.98152747290676 == 10.98: within 0.000546448; 10.9815 vs 10.98 (SI)
+   exact nonlinear split tau(aSPECT24) - tau(PERKEO III) = 11.08 s
+SUMMARY: 35 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

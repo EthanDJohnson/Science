@@ -1,0 +1,30 @@
+# math_run log
+command:  python3 runs/2026-09-30-neutron-lifetime-beam-bottle/math/examiner/M-EXAMINER-06.py
+started:  2026-09-30T18:23:18Z
+duration: 0.6 s
+exit:     0
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   7 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+PERKEO III (sym UCNtau error): tau_beta 878.50 +- 0.88 s; Br_X = 0.077 +- 0.105 %; UL95 0.250 %
+PERKEO III (upper side UCNtau error): tau_beta 878.50 +- 0.88 s; Br_X = 0.077 +- 0.106 %; UL95 0.251 %
+  PERKEO III Br_X (%): mine = 0.077272   lens = 0.077 
+PASS 0.07727204102621066 == 0.077: within 0.0779299; 0.077272 vs 0.077 (SI)
+  PERKEO III sigma (%): mine = 0.105545   lens = 0.106 
+PASS 0.10554519172652965 == 0.106: within 0.0566094; 0.105545 vs 0.106 (SI)
+  UL95 (%): mine = 0.250894   lens = 0.25 
+PASS 0.25089388141635194 == 0.25: within 0.0240024; 0.250894 vs 0.25 (SI)
+aSPECT 2024 (sym UCNtau error): tau_beta 889.58 +- 3.20 s; Br_X = 1.322 +- 0.356 %; UL95 1.908 %
+aSPECT 2024 (upper side UCNtau error): tau_beta 889.58 +- 3.20 s; Br_X = 1.322 +- 0.356 %; UL95 1.908 %
+  aSPECT 2024 Br_X (%): mine = 1.32164   lens = 1.32 
+PASS 1.321637289380062 == 1.32: within 0.015153; 1.32164 vs 1.32 (SI)
+  aSPECT 2024 sigma (%): mine = 0.356428   lens = 0.36 
+PASS 0.35642841130169867 == 0.36: within 0.0166683; 0.356428 vs 0.36 (SI)
+Br needed by the gap = 1.113 %
+PASS -a/b + 1 == (-a + b)/b: symbolic
+PASS lim a->3 of 1 - a/3 == 0: symbolic limit 0
+SUMMARY: 7 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

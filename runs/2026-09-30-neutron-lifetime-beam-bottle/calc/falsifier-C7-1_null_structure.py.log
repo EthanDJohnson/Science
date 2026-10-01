@@ -1,0 +1,67 @@
+# math_run log
+command:  python3 runs/2026-09-30-neutron-lifetime-beam-bottle/calc/falsifier-C7-1_null_structure.py
+started:  2026-09-30T19:47:17Z
+duration: 26.4 s
+exit:     0
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+=== (1) Where the chi^2 sits (common mean of all 11) ===
+common mean 878.441 s, total chi2 46.33/10
+  BL1 Yue13           887.70 +- 2.25  pull +4.12  chi2 share 36.6%
+  Sussex-ILL Byrne96  889.20 +- 4.84  pull +2.22  chi2 share 10.7%
+  Serebrov05          878.50 +- 0.76  pull +0.08  chi2 share  0.0%
+  Pichlmaier10        880.70 +- 1.77  pull +1.28  chi2 share  3.5%
+  Steyerl12           882.50 +- 2.05  pull +1.98  chi2 share  8.4%
+  Arzumanov15         880.20 +- 1.20  pull +1.47  chi2 share  4.6%
+  Serebrov18          881.50 +- 0.92  pull +3.32  chi2 share 23.8%
+  Musedinovic25       877.82 +- 0.29  pull -2.16  chi2 share 10.1%
+  Pattie18            877.70 +- 0.76  pull -0.97  chi2 share  2.0%
+  Ezhov18             878.30 +- 1.89  pull -0.07  chi2 share  0.0%
+  J-PARC24            877.20 +- 4.16  pull -0.30  chi2 share  0.2%
+BL1 - UCNtau = 9.88 s; least-squares allocation puts 98.4% (9.72 s) on BL1, 1.6% (0.16 s) on UCNtau
+  i.e. BL1 pull 4.33 sigma, UCNtau pull 0.55 sigma
+  if UCNtau carried half the gap (4.94 s): UCNtau pull 17.2 sigma vs BL1 2.2 sigma
+
+=== (2) The null's own listed shifts applied as corrections ===
+baseline proton - storage: 9.65 +- 2.08 s = 4.63 sigma (storage S 1.85)
+  BL1 -3, material -2   : gap   7.63 +- 2.05 s = 3.72 sigma  (change -2.01 s)
+  BL1 -6, material -2   : gap   5.17 +- 2.05 s = 2.51 sigma  (change -4.48 s)
+  J-PARC +-5 only       : gap   9.65 +- 2.08 s = 4.63 sigma  (change +0.00 s)
+  material -2 only      : gap  10.10 +- 2.05 s = 4.92 sigma  (change +0.45 s)
+  BL1 -3 only           : gap   7.18 +- 2.08 s = 3.44 sigma  (change -2.47 s)
+  BL1 -6 only           : gap   4.71 +- 2.08 s = 2.26 sigma  (change -4.94 s)
+observed proton-rest gap decomposition (s), rest mean as zero:
+  BL1 Yue13           +7.721
+  Sussex-ILL Byrne96  +1.929
+  Serebrov05          -0.017
+  Pichlmaier10        -0.042
+  Steyerl12           -0.054
+  Arzumanov15         -0.071
+  Serebrov18          -0.205
+  Musedinovic25       +0.327
+  Pattie18            +0.058
+  Ezhov18             +0.000
+  J-PARC24            +0.004
+  total 9.650 s; largest single term BL1 Yue13 = 80.0%
+
+observed 4-class within 8.36/7, between 37.97/3; proton-vs-rest z 4.70
+
+=== (3) Diffuse-inflation null: all sigmas x k, Gaussian ===
+k = 2.152
+   Gaussian x2.15: P(one experiment supplies >=50% of the proton-rest gap | z>=obs) = 0.99
+Gaussian x2.15: P(between>=obs)=4.21e-02  P(within<=obs)=0.030  P(joint)=1.28e-03  P(z_proton-rest>=obs, one-sided)=1.45e-02  n(z>=obs)=28957  P(one experiment carries >=50% of chi2 | z>=obs)=0.24
+
+=== (4) Heavy-tail null: Student-t, unit scale, independent per experiment ===
+   Student-t nu=2: P(one experiment supplies >=50% of the proton-rest gap | z>=obs) = 1.00
+Student-t nu=2: P(between>=obs)=9.69e-02  P(within<=obs)=0.207  P(joint)=6.92e-03  P(z_proton-rest>=obs, one-sided)=2.35e-02  n(z>=obs)=46917  P(one experiment carries >=50% of chi2 | z>=obs)=0.85
+   Student-t nu=3: P(one experiment supplies >=50% of the proton-rest gap | z>=obs) = 1.00
+Student-t nu=3: P(between>=obs)=2.71e-02  P(within<=obs)=0.321  P(joint)=3.81e-03  P(z_proton-rest>=obs, one-sided)=8.56e-03  n(z>=obs)=17121  P(one experiment carries >=50% of chi2 | z>=obs)=0.88
+   Student-t nu=4: P(one experiment supplies >=50% of the proton-rest gap | z>=obs) = 1.00
+Student-t nu=4: P(between>=obs)=9.72e-03  P(within<=obs)=0.397  P(joint)=1.97e-03  P(z_proton-rest>=obs, one-sided)=3.94e-03  n(z>=obs)=7884  P(one experiment carries >=50% of chi2 | z>=obs)=0.90
+
+Observed: share of chi2 carried by the single largest contributor: 36.6% (BL1 Yue13)
+
+--- stderr ---
+

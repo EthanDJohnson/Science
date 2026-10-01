@@ -1,0 +1,30 @@
+# math_run log
+command:  python3 runs/2026-09-30-neutron-lifetime-beam-bottle/math/dialectician/M-DIALECTICIAN-03.py
+started:  2026-09-30T18:28:57Z
+duration: 2.3 s
+exit:     0
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   5 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+W0 = 2.53099 (no recoil), rel Fermi: <m_e/E_e> = 0.65528, f = 1.69234
+W0 = 2.53099 (no recoil), nonrel Fermi: <m_e/E_e> = 0.65527, f = 1.69166
+W0 = 2.53099 (no recoil), no Fermi: <m_e/E_e> = 0.65402, f = 1.63610
+W0 = 2.52952 (recoil endpoint), rel Fermi: <m_e/E_e> = 0.65550, f = 1.68594
+W0 = 2.52952 (recoil endpoint), nonrel Fermi: <m_e/E_e> = 0.65550, f = 1.68527
+W0 = 2.52952 (recoil endpoint), no Fermi: <m_e/E_e> = 0.65424, f = 1.62989
+  <m/E>, Fermi on (rel, recoil endpoint): mine = 0.6555 , lens = 0.6553 
+PASS 0.6555002430856112  == 0.6553 : within 0.000915611; 0.6555 vs 0.6553 (SI)
+  <m/E>, Fermi off (recoil endpoint): mine = 0.654239 , lens = 0.654 
+PASS 0.6542393659063125  == 0.654 : within 0.000917431; 0.654239 vs 0.654 (SI)
+W0 -> 1 limit: <1/W> = 0.999967
+  W0->1 limit: mine = 0.999967 , lens = 1.0 
+PASS 0.9999666676767391  == 1.0 : within 0.001; 0.999967 vs 1 (SI)
+symbolic no-Fermi <1/W> at W0=2.5287: 0.654364; quadrature 0.654364
+  symbolic vs quadrature: mine = 0.654364 , lens = 0.6543637953331392 
+PASS 0.6543637953331392  == 0.6543637953331392 : within 1e-08; 0.654364 vs 0.654364 (SI)
+PASS 0.511 MeV / (1.0 MeV) has the dimension of dimensionless: dimensional analysis
+SUMMARY: 5 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

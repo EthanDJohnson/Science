@@ -1,0 +1,106 @@
+# math_run log
+command:  python3 runs/2026-09-30-neutron-lifetime-beam-bottle/calc/lens-examiner_premises.py
+started:  2026-09-30T17:48:57Z
+duration: 0.0 s
+exit:     0
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+Inputs (value, symmetric total error) [s]:
+  BL1                        887.70 +- 2.25
+  SussexILL(unverified)      889.20 +- 4.84
+  J-PARC                     877.20 +- 4.16
+  J-PARC inflated            877.20 +- 5.45
+  UCNtau                     877.82 +- 0.29
+  Gravitrap                  881.50 +- 0.92
+  Ezhov                      878.30 +- 1.89
+  MAMBOII                    880.70 +- 1.77
+  Steyerl                    882.50 +- 2.05
+  Arzumanov                  880.20 +- 1.20
+  Serebrov05                 878.50 +- 0.76
+  J-PARC internal scale factor sqrt(15.8/3) = 2.295
+
+== Partition: P1 beam(BL1,SILL,JPARC) vs bottle(all)
+   beam                         mean   885.88 +- 1.83 s  chi2 5.47/2
+   bottle                       mean   878.38 +- 0.25 s  chi2 23.33/6
+   within chi2 = 28.80/8 (p=0.000344); between chi2 = 16.49/1 (p=4.89e-05, z=4.06)
+   pooled 878.52 +- 0.24 s chi2 45.29/9 S=2.24
+
+== Partition: P2 proton-counting (=strong field) vs rest
+   proton-counting              mean   887.97 +- 2.04 s  chi2 0.08/1
+   rest                         mean   878.38 +- 0.25 s  chi2 23.41/7
+   within chi2 = 23.49/8 (p=0.00279); between chi2 = 21.80/1 (p=3.02e-06, z=4.67)
+   pooled 878.52 +- 0.24 s chi2 45.29/9 S=2.24
+
+== Partition: P2b as P2, J-PARC error inflated by internal S
+   proton-counting              mean   887.97 +- 2.04 s  chi2 0.08/1
+   rest                         mean   878.38 +- 0.25 s  chi2 23.37/7
+   within chi2 = 23.45/8 (p=0.00283); between chi2 = 21.79/1 (p=3.04e-06, z=4.67)
+   pooled 878.52 +- 0.24 s chi2 45.25/9 S=2.24
+
+== Partition: P4 BL1 alone vs everything else (SILL dropped)
+   BL1                          mean   887.70 +- 2.25 s  chi2 0.00/0
+   rest                         mean   878.38 +- 0.25 s  chi2 23.41/7
+   within chi2 = 23.41/7 (p=0.00145); between chi2 = 17.00/1 (p=3.74e-05, z=4.12)
+   pooled 878.49 +- 0.24 s chi2 40.41/8 S=2.25
+
+== Partition: P5 four classes
+   proton beam                  mean   887.97 +- 2.04 s  chi2 0.08/1
+   electron beam                mean   877.20 +- 4.16 s  chi2 0.00/0
+   material                     mean   880.03 +- 0.49 s  chi2 8.19/4
+   magnetic                     mean   877.83 +- 0.28 s  chi2 0.06/1
+   within chi2 = 8.33/6 (p=0.215); between chi2 = 36.95/3 (p=4.71e-08, z=5.46)
+   pooled 878.52 +- 0.24 s chi2 45.29/9 S=2.24
+
+== Partition: P6 material vs magnetic
+   material                     mean   880.03 +- 0.49 s  chi2 8.19/4
+   magnetic                     mean   877.83 +- 0.28 s  chi2 0.06/1
+   within chi2 = 8.25/5 (p=0.143); between chi2 = 15.07/1 (p=0.000103, z=3.88)
+   pooled 878.38 +- 0.25 s chi2 23.33/6 S=1.97
+
+== Partition: P6b modern material (Gravitrap,MAMBO,Arz) vs magnetic
+   material                     mean   880.97 +- 0.68 s  chi2 0.77/2
+   magnetic                     mean   877.83 +- 0.28 s  chi2 0.06/1
+   within chi2 = 0.83/3 (p=0.843); between chi2 = 18.35/1 (p=1.83e-05, z=4.28)
+   pooled 878.30 +- 0.26 s chi2 19.18/4 S=2.19
+
+== J-PARC discrimination
+  [as quoted] J-PARC-BL1 -10.50 s, z=2.15; J-PARC-UCNtau z=0.14; J-PARC-Gravitrap z=0.97; likelihood ratio bottle:beam = 9.9
+  [stat inflated by S] J-PARC-BL1 -10.50 s, z=1.74; J-PARC-UCNtau z=0.11; J-PARC-Gravitrap z=0.76; likelihood ratio bottle:beam = 4.5
+  per-condition (stat only): 870.9(3.5) 868.3(4.0) 868.2(7.7) 884.8(2.4)
+  three low conditions: 869.61 +- 2.49 (stat) s; outlier 884.8(2.4) -> tension with BL1 z=0.64 (sys ~3.1 s symmetrised)
+
+== Required sizes
+  missing rate 1/UCNtau - 1/BL1 = 1.268e-05 s^-1 ; time constant 7.887e+04 s = 0.91 d
+  fractional gap 1 - UCNtau/BL1 = 1.1130%
+  gap / BL1 total error = 4.40; gap / BL1 sys = 5.20; gap / BL1 'unassociated' 1.7 s = 5.81
+  Gravitrap - UCNtau = 3.68 s -> extra loss in UCNtau relative to Gravitrap 4.76e-06 s^-1
+
+== SM tau_beta (rc GS2023, Vud 0.97361(32))
+  PERKEO III   tau_beta = 878.50 +- 0.88 s ; z vs BL1 3.81, z vs UCNtau 0.73
+  UCNA         tau_beta = 877.60 +- 2.36 s ; z vs BL1 3.10, z vs UCNtau 0.09
+  PERKEO II    tau_beta = 880.34 +- 1.35 s ; z vs BL1 2.81, z vs UCNtau 1.83
+  PDG2024 avg  tau_beta = 879.65 +- 1.61 s ; z vs BL1 2.91, z vs UCNtau 1.12
+  aSPECT 2024  tau_beta = 889.58 +- 3.20 s ; z vs BL1 0.48, z vs UCNtau 3.66
+  aCORN        tau_beta = 874.86 +- 7.07 s ; z vs BL1 1.73, z vs UCNtau 0.42
+  lambda implied by BL1 = 1.2684167476743742
+  lambda implied by UCNtau = 1.2770046864840954
+  PERKEO III vs aSPECT 2024 lambda tension z=3.49
+  Br_X (UCNtau vs PERKEO III SM) = 0.0773% +- 0.1055%; 95% upper 0.2509%
+  Br_X (UCNtau vs aSPECT-2024 SM) = 1.3217% +- 0.3564%
+  Vud needed for BL1 with PERKEO III: 0.96855 +- 0.00128; shift from 0.97361 = -0.00506
+  Vud shift that would close the 0+ row deficit (-0.00166): +0.00085 -> changes SM tau_beta by -1.54 s (toward shorter)
+
+== Precision a future test needs (gap delta = BL1 - UCNtau)
+  total sigma on a single new result to discriminate 9.88 s at 3 sigma: 3.29 s
+  total sigma on a single new result to discriminate 9.88 s at 5 sigma: 1.98 s
+
+== Look-elsewhere over partitions and Bayes-factor bounds
+  P2 proton-counting vs rest: local p=3.01e-06 (z=4.67); Sidak x5 partitions -> p=1.51e-05, z=4.33; min Bayes factor {'sellke': 0.00010408638905925097, 'gaussian': 1.8376277343296646e-05, 'max_odds_against_null': 9607.40409037297}
+  P1 beam vs bottle: local p=4.91e-05 (z=4.06); Sidak x5 partitions -> p=2.45e-04, z=3.67; min Bayes factor {'sellke': 0.0013235576897564414, 'gaussian': 0.000263409685041805, 'max_odds_against_null': 755.5394130073909}
+  P4 BL1 vs rest: local p=3.79e-05 (z=4.12); Sidak x5 partitions -> p=1.89e-04, z=3.73; min Bayes factor {'sellke': 0.0010485121287988662, 'gaussian': 0.00020608950360827944, 'max_odds_against_null': 953.732410463921}
+  P6 material vs magnetic: local p=1.04e-04 (z=3.88); Sidak x5 partitions -> p=5.22e-04, z=3.47; min Bayes factor {'sellke': 0.002602823549285963, 'gaussian': 0.0005382432297832624, 'max_odds_against_null': 384.19815291525686}
+
+--- stderr ---
+

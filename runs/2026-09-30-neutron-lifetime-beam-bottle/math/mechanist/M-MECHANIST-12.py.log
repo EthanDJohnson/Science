@@ -1,0 +1,37 @@
+# math_run log
+command:  python3 runs/2026-09-30-neutron-lifetime-beam-bottle/math/mechanist/M-MECHANIST-12.py
+started:  2026-09-30T18:20:02Z
+duration: 0.7 s
+exit:     1
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   18 PASS, 2 FAIL, 0 UNDECIDED
+
+--- stdout ---
+K first principles = 4902.92 s; K from GS2023 point = 4903.07 s
+PASS 6.582119569e-25 GeV*s / (1.1663788e-5 GeV^-2)^2 / (0.51099895e-3 GeV)^5 has the dimension of s: dimensional analysis
+PASS 4902.9178552563435 s == 4903.065502240971 s: within 0.0005; 4902.92 vs 4903.07 (SI)
+PASS -6*K*lambda/(V**2*(3*lambda**2 + 1)**2) == -6*K*lambda/(V**2*(3*lambda**2 + 1)**2): symbolic
+PASS -2*K/(V**3*(3*lambda**2 + 1)) == -2*K/(V**3*(3*lambda**2 + 1)): symbolic
+PASS lim lambda->0 of K/(V**2*(3*lambda**2 + 1)) == K/V**2: symbolic limit K/V**2
+PERKEO III: tau_beta = 878.53 +- 0.86 s (lens (878.5, 0.88)); Br_X = 0.080 +- 0.103 %, 95% UL 0.25 %; beam above by 4.27 sigma; with K_a: 878.50 s
+PASS 878.5254970625381 s == 878.5 s: within 0.0001; 878.525 vs 878.5 (SI)
+FAIL 0.8609958642880938 s == 0.88 s: relative tolerance 0.02; 0.860996 vs 0.88 (SI)
+PDG 2024: tau_beta = 879.68 +- 1.60 s (lens (879.65, 1.61)); Br_X = 0.212 +- 0.184 %, 95% UL 0.51 %; beam above by 3.20 sigma; with K_a: 879.65 s
+PASS 879.6807385398539 s == 879.65 s: within 0.0001; 879.681 vs 879.65 (SI)
+PASS 1.597062905650521 s == 1.61 s: within 0.02; 1.59706 vs 1.61 (SI)
+aSPECT 2024: tau_beta = 889.60 +- 3.19 s (lens (889.58, 3.2)); Br_X = 1.325 +- 0.356 %, 95% UL 1.91 %; beam above by -0.43 sigma; with K_a: 889.58 s
+PASS 889.6039804129691 s == 889.58 s: within 0.0001; 889.604 vs 889.58 (SI)
+PASS 3.194098454086796 s == 3.2 s: within 0.02; 3.1941 vs 3.2 (SI)
+PASS 0.0008030467697259791 == 0.00077: within 0.1; 0.000803047 vs 0.00077 (SI)
+FAIL 0.001032474280084311 == 0.00106: relative tolerance 0.02; 0.00103247 vs 0.00106 (SI)
+PASS 0.0025013158062300667 == 0.0025: within 0.03; 0.00250132 vs 0.0025 (SI)
+PASS 4.265323482071142 == 4.3: within 0.02; 4.26532 vs 4.3 (SI)
+PASS 0.0021152430175320758 == 0.0021: within 0.1; 0.00211524 vs 0.0021 (SI)
+PASS 0.005143245824632126 == 0.0051: within 0.05; 0.00514325 vs 0.0051 (SI)
+PASS 3.1995070619318624 == 3.2: within 0.02; 3.19951 vs 3.2 (SI)
+PASS 0.013246321590758559 == 0.0132: within 0.01; 0.0132463 vs 0.0132 (SI)
+PASS 0.003557615481497137 == 0.0036: within 0.03; 0.00355762 vs 0.0036 (SI)
+SUMMARY: 18 pass, 2 fail, 0 undecided
+
+--- stderr ---
+

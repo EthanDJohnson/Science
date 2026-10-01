@@ -1,0 +1,20 @@
+# math_run log
+command:  python3 runs/2026-09-30-neutron-lifetime-beam-bottle/calc/lens-decomposer_fierz.py
+started:  2026-09-30T17:59:23Z
+duration: 5.9 s
+exit:     0
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+W0 (endpoint total energy / m_e) = 2.52952
+<m_e/E> with Fermi=None: 0.6542
+<m_e/E> with Fermi=nonrel: 0.6555
+<m_e/E> with Fermi=rel: 0.6555
+A-route SM (b=0)                  : tau_beta = 878.70 +- 0.83 s (b part 0.00 s); vs BL1 887.7(2.25): -3.75 sigma; vs UCNtau 877.82(0.29): +1.00 sigma
+aSPECT SM (b=0)                   : tau_beta = 889.58 +- 3.20 s (b part 0.00 s); vs BL1 887.7(2.25): +0.48 sigma; vs UCNtau 877.82(0.29): +3.66 sigma
+combined PIII+aSPECT with Fierz   : tau_beta = 893.70 +- 4.18 s (b part 3.85 s); vs BL1 887.7(2.25): +1.26 sigma; vs UCNtau 877.82(0.29): +3.79 sigma
+Note: a Fierz b changes Gamma_total for every method alike; it cannot make beam and bottle differ.
+
+--- stderr ---
+

@@ -1,0 +1,98 @@
+# math_run log
+command:  python3 runs/2026-09-30-neutron-lifetime-beam-bottle/calc/lens-constraints_consistency.py
+started:  2026-09-30T18:15:58Z
+duration: 0.4 s
+exit:     0
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+=== 1. J-PARC 2024 verdict ===
+  J-PARC vs BL1        : diff = -10.50 s, sigma = 4.89 s, z = 2.15
+  J-PARC vs UCNtau     : diff = -0.62 s, sigma = 4.36 s, z = 0.14
+  J-PARC vs Gravitrap  : diff = -4.30 s, sigma = 4.44 s, z = 0.97
+  J-PARC vs SM A route : diff = -1.50 s, sigma = 4.42 s, z = 0.34
+  J-PARC vs SM a route : diff = -10.01 s, sigma = 5.24 s, z = 1.91
+  J-PARC internal chi2/dof = 15.8/3 -> S = 2.29; stat 1.7 -> 3.90 s; total +5.59/-5.31 s
+    scaled J-PARC vs BL1: z = 1.74
+    scaled J-PARC vs UCNtau: z = 0.11
+  likelihood ratio L(J-PARC = storage value)/L(J-PARC = proton-beam value), as quoted: 11.1
+  likelihood ratio L(J-PARC = storage value)/L(J-PARC = proton-beam value), stat scaled by S: 4.9
+  -> favours candidates in which an electron-counting beam reads the storage value (proton-counting systematic,
+     strong-field n->n', electron-always new physics) over those in which it reads the proton-beam value
+     (bottle systematic, dark decay with no electron).
+
+=== 2. Required size of each systematic vs its published budget ===
+  gap BL1 - UCNtau = 9.88 s = 1.113% of tau_beam; as a rate 1/877.82 - 1/887.7 = 1.2679e-05 s^-1
+  BL1: needed shift / quoted sys (1.9 s) = 5.2; / total (2.25 s) = 4.4
+    6LiF areal density (2005; replaced 2013)  : unc 2.2 s -> needed =   4.5 sigma of the item; no correction applied
+    6Li cross section (2005; replaced)        : unc 1.2 s -> needed =   8.2 sigma of the item; no correction applied
+    n-detector solid angle                    : unc 1.0 s -> needed =   9.9 sigma of the item; no correction applied
+    absorption by 6Li                         : unc 0.8 s -> needed =  12.3 sigma of the item; correction +5.4 s -> needed = 1.8x the correction
+    beam halo                                 : unc 1.0 s -> needed =   9.9 sigma of the item; correction -1.0 s -> needed = 9.9x the correction
+    trap nonlinearity                         : unc 0.8 s -> needed =  12.3 sigma of the item; correction -5.3 s -> needed = 1.9x the correction
+    proton backscatter                        : unc 0.4 s -> needed =  24.7 sigma of the item; no correction applied
+    Si scattering                             : unc 0.5 s -> needed =  19.8 sigma of the item; correction -0.2 s -> needed = 49.4x the correction
+    2013 fluence correction                   : unc 0.5 s -> needed =  19.8 sigma of the item; correction +1.4 s -> needed = 7.1x the correction
+    2013 6Li deposit mass change              : unc 0.9 s -> needed =  11.0 sigma of the item; no correction applied
+    2013 'unassociated with fluence' line     : unc 1.7 s -> needed =   5.8 sigma of the item; no correction applied
+  proton-loss equivalent: an unrecorded proton loss fraction f raises tau_beam by f*tau: need f = 1.11%
+    Caylor 2025 H2 charge-exchange estimate ~0.3% [D-17] -> 2.7 s = 27% of the gap if wholly uncorrected
+  neutron-fluence equivalent: fluence over-counted by 1.11% (i.e. 6Li efficiency too high by that fraction)
+  Bottle: unaccounted loss needed in UCNtau = 1.268e-05 s^-1; UCNtau sys (+0.20 s) as rate = 2.60e-07 s^-1 -> 49x the budget
+          in Gravitrap = 7.923e-06 s^-1; Gravitrap sys 0.6 s = 7.72e-07 s^-1 -> 10x
+          a single common loss must differ by 38% between the magnetic and material traps (UCNtau vs Gravitrap), i.e. 4.76e-06 s^-1
+  material-bottle mean 880.03 +- 0.70 s (chi2 8.2/4); magnetic mean 877.83 +- 0.29 s
+
+=== 3. Strong-field n -> n' (Berezhiani) requirement vs the SNS regeneration limit ===
+  needed conversion in the trap (P_det ~ 0): P_trap = 0.0111
+  SNS regeneration p < 2.5e-8 [D-62]; if both passages equal P: P < 1.58e-04 -> needed/allowed = 70
+  Berezhiani worked example (dm = 280 neV, theta0 = 1e-3, 4.6 T, v = 1000 m/s): P_trap = 0.0043, P_det = 0.0000, tau_beam/tau_beta = 1.00433 (needs 1.01126)
+  same parameters, 6.6 T solenoid: P_det-like passage = 0.1669; regeneration ~ P^2 = 2.79e-02 vs limit 2.5e-8 -> ratio 1.1e+06 (geometry of the SNS magnets NOT modelled)
+
+=== 4. chi^2 ledger: each candidate's prediction pattern, fit by linear least squares ===
+  Parametrisation: tau = the value read by classes WITHOUT an offset (for P and V: the storage/total value;
+  for B, B2, D: the proton-beam/true tau_beta value). SM tau_beta is attached to the offset-free classes, which is
+  where each candidate places it: P -> storage value; B, D, V -> beam value (V: tau_beta = proton-beam value).
+  --- no SM input ---
+    N  null: one tau, no offsets                                       tau = 878.55 s, offsets [] s, chi2 =  44.88/9 (p = 9.73e-07)
+    P  proton-beam systematic / strong-field n-n' (pbeam offset)       tau = 878.41 s, offsets [+9.56] s, chi2 =  23.22/8 (p = 0.00309)
+    B  bottle systematic, common to all traps (mag+mat offset)         tau = 886.02 s, offsets [-7.61] s, chi2 =  28.17/8 (p = 0.000443)
+    B2 bottle systematic, separate material and magnetic offsets       tau = 886.02 s, offsets [-8.19, -5.99] s, chi2 =  13.36/7 (p = 0.0638)
+    D  dark decay, no electron (bottles = tau_beta(1-Br))              tau = 886.02 s, offsets [-7.61] s, chi2 =  28.17/8 (p = 0.000443)
+    V  electron-always, proton-less branch (Veselsky)                  tau = 878.41 s, offsets [+9.56] s, chi2 =  23.22/8 (p = 0.00309)
+  --- SM A route 878.70(83) ---
+    N  null: one tau, no offsets                                       tau = 878.56 s, offsets [] s, chi2 =  44.91/10 (p = 2.26e-06)
+    P  proton-beam systematic / strong-field n-n' (pbeam offset)       tau = 878.43 s, offsets [+9.53] s, chi2 =  23.33/9 (p = 0.00549)
+    B  bottle systematic, common to all traps (mag+mat offset)         tau = 879.93 s, offsets [-1.52] s, chi2 =  41.27/9 (p = 4.46e-06)
+    B2 bottle systematic, separate material and magnetic offsets       tau = 879.93 s, offsets [-2.10, +0.10] s, chi2 =  26.47/8 (p = 0.000874)
+    D  dark decay, no electron (bottles = tau_beta(1-Br))              tau = 879.93 s, offsets [-1.52] s, chi2 =  41.27/9 (p = 4.46e-06)
+    V  electron-always, proton-less branch (Veselsky)                  tau = 878.41 s, offsets [+1.61] s, chi2 =  40.94/9 (p = 5.12e-06)
+  --- SM a route 887.21(293) ---
+    N  null: one tau, no offsets                                       tau = 878.61 s, offsets [] s, chi2 =  53.55/10 (p = 5.89e-08)
+    P  proton-beam systematic / strong-field n-n' (pbeam offset)       tau = 878.47 s, offsets [+9.49] s, chi2 =  32.18/9 (p = 0.000186)
+    B  bottle systematic, common to all traps (mag+mat offset)         tau = 886.36 s, offsets [-7.95] s, chi2 =  28.29/9 (p = 0.000854)
+    B2 bottle systematic, separate material and magnetic offsets       tau = 886.36 s, offsets [-8.53, -6.33] s, chi2 =  13.48/8 (p = 0.0964)
+    D  dark decay, no electron (bottles = tau_beta(1-Br))              tau = 886.36 s, offsets [-7.95] s, chi2 =  28.29/9 (p = 0.000854)
+    V  electron-always, proton-less branch (Veselsky)                  tau = 878.41 s, offsets [+9.31] s, chi2 =  23.26/9 (p = 0.00563)
+  (* Sussex-ILL is a brief lead, not verified in the dossier [D-22]; rerun without it:)
+    N  null: one tau, no offsets                                       chi2 =  40.03/8 (p = 3.17e-06) without Sussex-ILL, no SM
+    P  proton-beam systematic / strong-field n-n' (pbeam offset)       chi2 =  23.14/7 (p = 0.00161) without Sussex-ILL, no SM
+    B  bottle systematic, common to all traps (mag+mat offset)         chi2 =  27.67/7 (p = 0.000253) without Sussex-ILL, no SM
+    B2 bottle systematic, separate material and magnetic offsets       chi2 =  12.86/6 (p = 0.0453) without Sussex-ILL, no SM
+    D  dark decay, no electron (bottles = tau_beta(1-Br))              chi2 =  27.67/7 (p = 0.000253) without Sussex-ILL, no SM
+    V  electron-always, proton-less branch (Veselsky)                  chi2 =  23.14/7 (p = 0.00161) without Sussex-ILL, no SM
+
+=== 5. Separation power of the running/planned measurements (sharp predictions 877.82 s vs 887.7 s) ===
+  LiNA (J-PARC upgrade) ~1 s [D-102]  : sharp z =   9.9; if it reads ~878: z vs BL1 =  4.0; if ~888: z vs UCNtau =   9.5
+  UCNProBe 2 s [D-106]                : sharp z =   4.9; if it reads ~878: z vs BL1 =  3.3; if ~888: z vs UCNtau =   4.9
+  UCNProBe 1 s                        : sharp z =   9.9; if it reads ~878: z vs BL1 =  4.0; if ~888: z vs UCNtau =   9.5
+  BL2 <1 s [D-100]                    : sharp z =   9.9; if it reads ~878: z vs BL1 =  4.0; if ~888: z vs UCNtau =   9.5
+  BL3 0.3 s [D-101]                   : sharp z =  32.9; if it reads ~878: z vs BL1 =  4.4; if ~888: z vs UCNtau =  23.4
+  tauSPECT 0.3 s [D-103]              : sharp z =  32.9; if it reads ~878: z vs BL1 =  4.4; if ~888: z vs UCNtau =  23.4
+  Nab lambda at 0.04%: sigma(tau_beta) = 0.84 s
+    if Nab ~ PERKEO III (tau_beta 878.50): z vs BL1 = 3.8; vs UCNtau = 0.8
+    if Nab ~ aSPECT 2024 (tau_beta 889.58): z vs UCNtau = 13.2; vs BL1 = 0.8
+
+--- stderr ---
+

@@ -1,0 +1,28 @@
+# math_run log
+command:  python3 runs/2026-09-30-neutron-lifetime-beam-bottle/math/mechanist/M-MECHANIST-05.py
+started:  2026-09-30T18:17:58Z
+duration: 0.6 s
+exit:     0
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   8 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+required rate = 1.3022e-05 s^-1
+N2: vbar = 476.2 m/s, n = 1.367e+19 m^-3, p = 5.663e-02 Pa = 5.663e-04 mbar (lens 0.0006 mbar)
+PASS 0.0005663391754113421 == 0.0006: within 0.1; 0.000566339 vs 0.0006 (SI)
+H2: vbar = 1775.0 m/s, n = 4.585e+17 m^-3, p = 1.899e-03 Pa = 1.899e-05 mbar (lens 2e-05 mbar)
+PASS 1.8990846299854742e-05 == 2e-05: within 0.1; 1.89908e-05 vs 2e-05 (SI)
+He: vbar = 1259.7 m/s, n = 1.292e+20 m^-3, p = 5.352e-01 Pa = 5.352e-03 mbar (lens 0.005 mbar)
+PASS 0.005351803339023722 == 0.005: within 0.1; 0.0053518 vs 0.005 (SI)
+PASS 1e19 m^-3 * 1e-27 m^2 * 500 m/s has the dimension of Hz: dimensional analysis
+spin-flip loss over 1000 s = 1.294 %
+PASS 0.012937124412346512 == 0.013: within 0.01; 0.0129371 vs 0.013 (SI)
+PASS lim r->0 of (1 - exp(-r*t))/(r*t) == 1: symbolic limit 1
+per-bounce at 50/s = 2.604e-07
+PASS 2.6043075682855715e-07 == 2.6e-07: within 0.01; 2.60431e-07 vs 2.6e-07 (SI)
+per-bounce at 5/s = 2.604e-06
+PASS 2.6043075682855714e-06 == 2.6e-06: within 0.01; 2.60431e-06 vs 2.6e-06 (SI)
+SUMMARY: 8 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

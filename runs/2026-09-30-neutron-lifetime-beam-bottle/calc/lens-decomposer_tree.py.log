@@ -1,0 +1,100 @@
+# math_run log
+command:  python3 runs/2026-09-30-neutron-lifetime-beam-bottle/calc/lens-decomposer_tree.py
+started:  2026-09-30T17:59:18Z
+duration: 0.0 s
+exit:     0
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+=== L1: measurement inputs (s) ===
+  BL1         887.70 +- 2.247220505424423
+  Sussex-ILL  889.20 +- 4.841487374764082
+  J-PARC      877.20 +- (4.346262762420146, 3.981205847478877)
+  UCNtau      877.82 +- 0.2876750752177635
+  Ezhov       878.30 +- 1.886796226411321
+  Gravitrap   881.50 +- 0.9219544457292886
+  Serebrov05  878.50 +- 0.7615773105863908
+  MAMBO II    880.70 +- 1.7691806012954132
+  Steyerl     882.50 +- 2.0518284528683193
+  Arzumanov   880.20 +- 1.2
+
+=== L2: class means (s), PDG scale factor ===
+  proton beam (BL1 only)           mean 887.70 err 2.25 chi2/dof 0.00/0 S 1.00 err_scaled 2.25
+  proton beam (BL1+Sussex-ILL)     mean 887.97 err 2.04 chi2/dof 0.08/1 S 1.00 err_scaled 2.04
+  electron beam (J-PARC, sym)      mean 877.20 err 4.16 chi2/dof 0.00/0 S 1.00 err_scaled 4.16
+  magnetic traps (UCNtau+Ezhov)    mean 877.83 err 0.28 chi2/dof 0.06/1 S 1.00 err_scaled 0.28
+  material bottles (5)             mean 880.03 err 0.49 chi2/dof 8.19/4 S 1.43 err_scaled 0.70
+  all storage (7): mean 878.38 err 0.25 chi2/dof 23.32/6 S 1.97 err_scaled 0.49 p 0.000696
+  material vs magnetic (material err scaled): diff 2.20 s, z 2.91
+
+=== L3: partition tests (grouped chi2, symmetric errors; J-PARC symmetrised as mean of sides) ===
+  P1 beam(BL1,SIL,JP) vs bottle: within 28.79/8 (p 0.000345); between 16.49/1 (z 4.06); pooled chi2 45.28/9
+  P2 proton-counting(BL1,SIL) vs rest(JP+bottles): within 23.48/8 (p 0.0028); between 21.80/1 (z 4.67); pooled chi2 45.28/9
+  P3 BL1 vs rest (incl SIL, JP, bottles): within 28.38/8 (p 0.000407); between 16.90/1 (z 4.11); pooled chi2 45.28/9
+  P4 proton / electron / material / magnetic: within 8.33/6 (p 0.215); between 36.94/3 (z 5.46); pooled chi2 45.28/9
+  P5 strong field(>=4.6 T: BL1,SIL) vs weak (JP, bottles) [same sets as P2]: within 23.48/8 (p 0.0028); between 21.80/1 (z 4.67); pooled chi2 45.28/9
+
+=== L4: headline tensions (s) ===
+  BL1 only vs UCNtau: diff 9.88 +- 2.27, z 4.36;  vs all storage (scaled): diff 9.32 +- 2.30, z 4.05
+  BL1+SIL vs UCNtau: diff 10.15 +- 2.06, z 4.93;  vs all storage (scaled): diff 9.58 +- 2.10, z 4.57
+  fractional gap (BL1+SIL vs UCNtau) = 0.0114; missing rate dGamma = 1.302e-05 s^-1
+  BL1 only vs UCNtau: frac 0.0111; dGamma = 1.268e-05 s^-1
+
+=== L5: J-PARC as discriminator ===
+  J-PARC vs BL1: diff -10.50 +- 4.89, z 2.15
+  J-PARC vs BL1+SIL: diff -10.77 +- 4.80, z 2.24
+  J-PARC vs UCNtau: diff -0.62 +- 4.36, z 0.14
+  quoted internal chi2/dof 15.8/3 -> S = 2.29; stat 1.7 -> 3.90 s; total +5.59/-5.31 s
+  J-PARC (stat scaled by S) vs BL1: z 1.74
+  J-PARC (stat scaled) vs BL1+SIL: z 1.81
+  per-condition stat-only mean 877.49 +- 1.73, chi2 19.56/3 (paper quotes 15.8/3; differences from correlated sys)
+  three mutually consistent conditions only: mean 869.61 +- 2.49 (stat), chi2 0.28/2
+  LR[J-PARC ~ storage : J-PARC ~ proton-beam] (quoted, point predictions 877.82 vs 887.7) = 18.3
+  LR[J-PARC ~ storage : J-PARC ~ proton-beam] (S-scaled, point predictions 877.82 vs 887.7) = 5.8
+  total sigma needed to split 9.9 s at 3 sigma: 3.29 s; at 5 sigma: 1.98 s
+
+=== L6: required systematic sizes vs published budgets ===
+  proton beam: need fractional error 0.0111 (9.9 s) vs BL1 total sys 1.9 s -> 5.2 x sys; vs fluence unc 0.5 s -> 20 x; vs 'unassoc. with fluence' 1.7 s -> 5.8 x
+  bottle: need unidentified loss rate 1.268e-05 s^-1 (time constant 7.887e+04 s = 0.91 d)
+  UCNtau sys ~0.2 s -> equivalent rate 2.60e-07 s^-1; need/budget = 49
+  Gravitrap sys 0.6 s -> rate 7.72e-07 s^-1; need/budget = 16
+  a common bottle loss must be same size in material (Gravitrap 881.5) and magnetic (UCNtau 877.8) traps, which differ by 3.7 s in the opposite sense to the gap direction? Gravitrap is closer to beam by 3.7 s
+
+=== L7: SM arbitration: two self-consistent 'worlds' (GS2023 RC, paired superallowed Vud 0.97361(32)) ===
+  lambda PERKEO III 1.27641(0.00056) -> tau_beta 878.50 +- 0.88 s; z vs BL1 3.81, z vs UCNtau 0.73
+  lambda UCNA       1.27720(0.002) -> tau_beta 877.60 +- 2.36 s; z vs BL1 3.10, z vs UCNtau 0.09
+  lambda PERKEO II  1.27480(0.00132) -> tau_beta 880.34 +- 1.63 s; z vs BL1 2.65, z vs UCNtau 1.52
+  lambda PDG2024    1.27540(0.0013) -> tau_beta 879.65 +- 1.61 s; z vs BL1 2.91, z vs UCNtau 1.12
+  lambda aSPECT2024 1.26680(0.0027) -> tau_beta 889.58 +- 3.20 s; z vs BL1 0.48, z vs UCNtau 3.66
+  lambda aCORN      1.27960(0.0062) -> tau_beta 874.86 +- 7.07 s; z vs BL1 1.73, z vs UCNtau 0.42
+  A-coefficient lambda (PIII, UCNA, PII): 1.27623 +- 0.00050, chi2 1.51/2
+  A-route vs aSPECT2024 lambda: diff 0.00943, z 3.43
+  World A: lambda(A-route), tau = UCNtau; World B: lambda(aSPECT), tau = BL1
+  A                           : Vud 0.97410 +- 0.00037; vs superallowed z 1.01; row sum 0.99919 +- 0.00081 (z -1.00)
+  B                           : Vud 0.97464 +- 0.00212; vs superallowed z 0.48; row sum 1.00024 +- 0.00415 (z 0.06)
+  A-lambda + BL1 tau          : Vud 0.96867 +- 0.00127; vs superallowed z 3.78; row sum 0.98863 +- 0.00249 (z -4.57)
+  aSPECT lambda + UCNtau tau  : Vud 0.98011 +- 0.00174; vs superallowed z 3.67; row sum 1.01093 +- 0.00343 (z 3.18)
+  -> both A and B are internally consistent with superallowed Vud; CKM cannot arbitrate until the A-vs-a lambda split is resolved
+
+=== L8: exotic branch implied under each lambda route ===
+  PERKEO III: Br_X = 0.077 +- 0.106 %, 95% one-sided upper 0.251 %  (needed ~1.11 %)
+  PDG2024   : Br_X = 0.209 +- 0.185 %, 95% one-sided upper 0.513 %  (needed ~1.11 %)
+  aSPECT2024: Br_X = 1.322 +- 0.356 %, 95% one-sided upper 1.908 %  (needed ~1.11 %)
+
+=== L9: lambda precision at which SM prediction alone separates 877.8 vs 887.7 ===
+  3 sigma: sigma_tau_beta <= 3.29 s; Vud+K part 0.61 s; lambda budget 3.24 s -> sigma_lambda <= 0.00283 (rel 0.222 %)
+  5 sigma: sigma_tau_beta <= 1.98 s; Vud+K part 0.61 s; lambda budget 1.88 s -> sigma_lambda <= 0.00164 (rel 0.129 %)
+  (PERKEO III alone already gives sigma_lambda 0.00056; the bottleneck is accuracy: the A-vs-a split of 0.0094 = 10.8 s in tau_beta)
+
+=== L10: leave-one-out robustness of the gap ===
+  without BL1: Sussex-ILL vs UCNtau diff 11.38 +- 4.85, z 2.35
+  without BL1: Sussex-ILL vs all storage (scaled) z 2.22
+  storage without UCNtau: 879.92 +- 0.64 (S 1.34)
+  BL1 vs storage-without-UCNtau: diff 7.78, z 3.33
+  BL1 vs Gravitrap alone: diff 6.20, z 2.55
+  Caylor ~0.3% H2 proton loss (D-17) = 2.7 s vs needed 9.9 s (27% of gap)
+  BL1 trap-nonlinearity correction -5.3 s and 6Li absorption +5.4 s (D-21): a 100% error in either alone = 54% of gap
+
+--- stderr ---
+

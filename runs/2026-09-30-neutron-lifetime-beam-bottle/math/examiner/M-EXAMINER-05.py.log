@@ -1,0 +1,67 @@
+# math_run log
+command:  python3 runs/2026-09-30-neutron-lifetime-beam-bottle/math/examiner/M-EXAMINER-05.py
+started:  2026-09-30T18:23:37Z
+duration: 0.5 s
+exit:     1
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   23 PASS, 1 FAIL, 0 UNDECIDED
+
+--- stdout ---
+route (a) K0 = 5024.46 s (literature 5024.7 / 5024.46 s; ratio 0.99995)
+PASS 1/((1.1663788e-5 GeV^-2)^2 * (0.51099895e-3 GeV)^5) * 6.582119569e-25 GeV*s has the dimension of s: dimensional analysis
+PERKEO III: |lambda| 1.27641(0.00056): (a) 878.50 +- 0.88 s; (b) 878.54 +- 0.88 s [lam 0.64, Vud 0.58, RC 0.18]
+  PERKEO III tau_beta (route a): mine = 878.499 s  lens = 878.5 s
+PASS 878.4990418498754 s == 878.5 s: within 6.83051e-06; 878.499 vs 878.5 (SI)
+  PERKEO III sigma: mine = 0.878972 s  lens = 0.88 s
+PASS 0.8789719483205901 s == 0.88 s: within 0.0113648; 0.878972 vs 0.88 (SI)
+aSPECT 2024: |lambda| 1.2668(0.00270): (a) 889.58 +- 3.20 s; (b) 889.62 +- 3.20 s [lam 3.14, Vud 0.58, RC 0.18]
+  aSPECT 2024 tau_beta (route a): mine = 889.577 s  lens = 889.58 s
+PASS 889.5771915917386 s == 889.58 s: within 6.74543e-06; 889.577 vs 889.58 (SI)
+  aSPECT 2024 sigma: mine = 3.19917 s  lens = 3.2 s
+PASS 3.1991663657218394 s == 3.2 s: within 0.00312531; 3.19917 vs 3.2 (SI)
+UCNA: |lambda| 1.2772(0.00200): (a) 877.60 +- 2.36 s; (b) 877.64 +- 2.36 s [lam 2.28, Vud 0.58, RC 0.18]
+  UCNA tau_beta (route a): mine = 877.597 s  lens = 877.6 s
+PASS 877.5969417218275 s == 877.6 s: within 6.83751e-06; 877.597 vs 877.6 (SI)
+  UCNA sigma: mine = 2.36091 s  lens = 2.36 s
+PASS 2.36091421423842 s == 2.36 s: within 0.00423771; 2.36091 vs 2.36 (SI)
+PERKEO II: |lambda| 1.2748(0.00132): (a) 880.34 +- 1.63 s; (b) 880.38 +- 1.63 s [lam 1.51, Vud 0.58, RC 0.18]
+  PERKEO II tau_beta (route a): mine = 880.342 s  lens = 880.34 s
+PASS 880.3415153454401 s == 880.34 s: within 6.81623e-06; 880.342 vs 880.34 (SI)
+  PERKEO II sigma: mine = 1.62985 s  lens = 1.35 s
+FAIL 1.6298500450400202 s == 1.35 s: relative tolerance 0.00740815; 1.62985 vs 1.35 (SI)
+PDG 2024: |lambda| 1.2754(0.00130): (a) 879.65 +- 1.61 s; (b) 879.70 +- 1.61 s [lam 1.49, Vud 0.58, RC 0.18]
+  PDG 2024 tau_beta (route a): mine = 879.654 s  lens = 879.65 s
+PASS 879.6542485391755 s == 879.65 s: within 6.82158e-06; 879.654 vs 879.65 (SI)
+  PDG 2024 sigma: mine = 1.60687 s  lens = 1.61 s
+PASS 1.6068705598655886 s == 1.61 s: within 0.0062118; 1.60687 vs 1.61 (SI)
+aCORN: |lambda| 1.2796(0.00620): (a) 874.86 +- 7.07 s; (b) 874.91 +- 7.07 s [lam 7.04, Vud 0.58, RC 0.18]
+  aCORN tau_beta (route a): mine = 874.864 s  lens = 874.86 s
+PASS 874.8643138618389 s == 874.86 s: within 6.85893e-06; 874.864 vs 874.86 (SI)
+  aCORN sigma: mine = 7.06996 s  lens = 7.07 s
+PASS 7.069960120113926 s == 7.07 s: within 0.00141457; 7.06996 vs 7.07 (SI)
+  PERKEO III vs BL1: mine = 3.8131   lens = 3.81 
+PASS 3.813095005917785 == 3.81: within 0.0039374; 3.8131 vs 3.81 (SI)
+  PERKEO III vs UCNtau: mine = 0.731839   lens = 0.73 
+PASS 0.7318390583673843 == 0.73: within 0.02055; 0.731839 vs 0.73 (SI)
+  PDG vs BL1: mine = 2.91242   lens = 2.91 
+PASS 2.9124164553887564 == 2.91: within 0.00515515; 2.91242 vs 2.91 (SI)
+  aSPECT vs BL1: mine = 0.480169   lens = 0.48 
+PASS 0.48016937018253425 == 0.48: within 0.0312531; 0.480169 vs 0.48 (SI)
+  aSPECT vs UCNtau: mine = 3.65948   lens = 3.66 
+PASS 3.659482881157567 == 3.66: within 0.00409877; 3.65948 vs 3.66 (SI)
+route (a) PERKEO III tau = 878.50 s -> 3.81 sigma from BL1
+lambda implied by BL1: (b) 1.26845; (a) 1.26842
+  lambda from BL1: mine = 1.26845   lens = 1.2684 
+PASS 1.2684530048805205 == 1.2684: within 4.73084e-05; 1.26845 vs 1.2684 (SI)
+lambda implied by UCNtau: (b) 1.27704; (a) 1.27700
+  lambda from UCNtau: mine = 1.27704   lens = 1.277 
+PASS 1.2770411051954922 == 1.277: within 4.69898e-05; 1.27704 vs 1.277 (SI)
+  PERKEO III vs aSPECT lambda z: mine = 3.48559   lens = 3.49 
+PASS 3.4855923551609553 == 3.49: within 0.00143281; 3.48559 vs 3.49 (SI)
+PASS -6*l/(3*l**2 + 1) == -6*l/(3*l**2 + 1): symbolic
+PASS -2/V == -2/V: symbolic
+PASS lim l->0 of K/(V**2*(3*l**2 + 1)) == K/V**2: symbolic limit K/V**2
+SUMMARY: 23 pass, 1 fail, 0 undecided
+
+--- stderr ---
+

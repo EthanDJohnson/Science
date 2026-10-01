@@ -1,0 +1,77 @@
+# math_run log
+command:  python3 runs/2026-09-30-neutron-lifetime-beam-bottle/calc/falsifier-C7-0_magnitude.py
+started:  2026-09-30T19:46:16Z
+duration: 1.5 s
+exit:     0
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+== 0. Reference ==
+p-beam 887.966 +- 2.038 s; storage 878.321 +- 0.234 (scaled 0.434, S=1.85); gap 9.645 s; sigma 2.084 s (scaled) -> z 4.63
+
+== 1. Where does the gap live? Minimum-chi2 (most probable Gaussian) allocation ==
+storage unscaled  : proton-beam pole carries 98.7% of the gap (9.52 s), storage 1.3% (0.13 s)
+storage S-scaled  : proton-beam pole carries 95.7% of the gap (9.23 s), storage 4.3% (0.42 s)
+  in that allocation BL1 and Sussex each shift 9.52 s = 4.24 sigma_BL1, 1.97 sigma_Sussex; each storage result shifts 0.126 s
+
+== 2. 'None dominates' allocation: every result pulled k of its own sigma toward closing the gap ==
+  BL1     closes 1.849 s per unit k  (57.2% of the closure)
+  Sussex  closes 0.858 s per unit k  (26.5% of the closure)
+  SER05   closes 0.072 s per unit k  (2.2% of the closure)
+  PIC10   closes 0.031 s per unit k  (1.0% of the closure)
+  STE12   closes 0.027 s per unit k  (0.8% of the closure)
+  ARZ15   closes 0.046 s per unit k  (1.4% of the closure)
+  SER18   closes 0.060 s per unit k  (1.8% of the closure)
+  MUS25   closes 0.191 s per unit k  (5.9% of the closure)
+  PAT18   closes 0.072 s per unit k  (2.2% of the closure)
+  EZH18   closes 0.029 s per unit k  (0.9% of the closure)
+  class pbeam     83.7%
+  class material  7.3%
+  class magnetic  9.0%
+  k needed for residual gap = 3 sigma (sigma_gap held at 2.08 s): k = 1.05; BL1 then shifts 2.36 s
+  k needed for residual gap = 2 sigma (sigma_gap held at 2.08 s): k = 1.69; BL1 then shifts 3.81 s
+  k needed for residual gap = 1 sigma (sigma_gap held at 2.08 s): k = 2.34; BL1 then shifts 5.25 s
+  NOTE sign: in this allocation the material bottles must move UP (toward the beam), i.e. they read LOW; C7's shift table says material bottles read HIGH by +2 s
+
+== 3. C7's own shift-by-class (BL1 +3 to +6 s, material +2 s, magnetic 0; J-PARC not in either pole) ==
+  BL1 -3.0 s, material -0.0 s: p-beam 885.50, storage 878.32 (S=1.85), residual gap 7.18 s = 3.44 sigma (p2 5.7e-04); explained 2.47 s of 9.65; BL1 correction = 1.33 sigma_BL1 = 1.6x BL1 sys 1.9 s
+  BL1 -3.0 s, material -2.0 s: p-beam 885.50, storage 877.86 (S=1.10), residual gap 7.63 s = 3.72 sigma (p2 2.0e-04); explained 2.01 s of 9.65; BL1 correction = 1.33 sigma_BL1 = 1.6x BL1 sys 1.9 s
+  BL1 -4.5 s, material -0.0 s: p-beam 884.26, storage 878.32 (S=1.85), residual gap 5.94 s = 2.85 sigma (p2 4.3e-03); explained 3.70 s of 9.65; BL1 correction = 2.00 sigma_BL1 = 2.4x BL1 sys 1.9 s
+  BL1 -4.5 s, material -2.0 s: p-beam 884.26, storage 877.86 (S=1.10), residual gap 6.40 s = 3.11 sigma (p2 1.8e-03); explained 3.25 s of 9.65; BL1 correction = 2.00 sigma_BL1 = 2.4x BL1 sys 1.9 s
+  BL1 -6.0 s, material -0.0 s: p-beam 883.03, storage 878.32 (S=1.85), residual gap 4.71 s = 2.26 sigma (p2 2.4e-02); explained 4.94 s of 9.65; BL1 correction = 2.67 sigma_BL1 = 3.2x BL1 sys 1.9 s
+  BL1 -6.0 s, material -2.0 s: p-beam 883.03, storage 877.86 (S=1.10), residual gap 5.16 s = 2.51 sigma (p2 1.2e-02); explained 4.48 s of 9.65; BL1 correction = 2.67 sigma_BL1 = 3.2x BL1 sys 1.9 s
+  material -2 s alone moves the storage mean by -0.456 s -> gap changes by +0.456 s (wrong sign for closing it)
+  J-PARC: not a member of either pole -> d(gap)/d(J-PARC) = 0 exactly
+  all-beam variant: beam mean 885.88 s, J-PARC weight 0.193; J-PARC reading LOW by 5 s (true higher) would RAISE the beam mean by 0.97 s (widen gap); J-PARC can close this variant's gap only by reading HIGH, i.e. in the direction opposite to its 877.2 s value relative to BL1
+
+== 4. Heavy tails (Student-t, unit scale) robust location over the 10 pole results and all 11 ==
+  nu=2: mu = 878.07 s; pulls: BL1 +4.28, Sussex +2.30, SER05 +0.56, PIC10 +1.49, STE12 +2.16, ARZ15 +1.77, SER18 +3.72, MUS25 -0.88, PAT18 -0.49, EZH18 +0.12, JPARC -0.21
+        |pull|>2: BL1 4.28 (p2=0.050); Sussex 2.30 (p2=0.148); STE12 2.16 (p2=0.164); SER18 3.72 (p2=0.065)
+  nu=3: mu = 878.13 s; pulls: BL1 +4.26, Sussex +2.29, SER05 +0.48, PIC10 +1.45, STE12 +2.13, ARZ15 +1.72, SER18 +3.65, MUS25 -1.08, PAT18 -0.56, EZH18 +0.09, JPARC -0.22
+        |pull|>2: BL1 4.26 (p2=0.024); Sussex 2.29 (p2=0.106); STE12 2.13 (p2=0.123); SER18 3.65 (p2=0.035)
+  nu=4: mu = 878.17 s; pulls: BL1 +4.24, Sussex +2.28, SER05 +0.43, PIC10 +1.43, STE12 +2.11, ARZ15 +1.69, SER18 +3.61, MUS25 -1.23, PAT18 -0.62, EZH18 +0.07, JPARC -0.23
+        |pull|>2: BL1 4.24 (p2=0.013); Sussex 2.28 (p2=0.085); STE12 2.11 (p2=0.103); SER18 3.61 (p2=0.023)
+
+== 5. Concession: chi2 contributions against the one-value fit (all 11) ==
+  BL1      16.97  (36.6%)
+  SER18    11.00  (23.8%)
+  Sussex    4.94  (10.7%)
+  MUS25     4.68  (10.1%)
+  STE12     3.91  (8.4%)
+  ARZ15     2.15  (4.6%)
+  PIC10     1.63  (3.5%)
+  PAT18     0.94  (2.0%)
+  JPARC     0.09  (0.2%)
+  SER05     0.01  (0.0%)
+  EZH18     0.01  (0.0%)
+  total 46.31 / 10 dof (mean 878.442 s)
+  proton-beam pair share of total chi2: 47.3%
+
+== 6. Heavy-tail null: look-elsewhere over 11 results and the joint proton-pair excursion ==
+  nu=2: P(|t|>4.28) one result 0.050; any of 11: 0.434; both proton results high (one-sided) 1.87e-03; x C(11,2)=55 -> <= 0.103
+  nu=3: P(|t|>4.26) one result 0.024; any of 11: 0.232; both proton results high (one-sided) 6.31e-04; x C(11,2)=55 -> <= 0.035
+  nu=4: P(|t|>4.24) one result 0.013; any of 11: 0.137; both proton results high (one-sided) 2.82e-04; x C(11,2)=55 -> <= 0.016
+
+--- stderr ---
+

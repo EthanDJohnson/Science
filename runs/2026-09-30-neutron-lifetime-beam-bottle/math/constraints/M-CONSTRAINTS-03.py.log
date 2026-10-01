@@ -1,0 +1,50 @@
+# math_run log
+command:  python3 runs/2026-09-30-neutron-lifetime-beam-bottle/math/constraints/M-CONSTRAINTS-03.py
+started:  2026-09-30T18:33:46Z
+duration: 0.5 s
+exit:     0
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   20 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+PASS lim tau_b->oo of 1 - tau_t/tau_b == 1: symbolic limit 1
+PASS 0 == 0: symbolic
+PASS series of -tau_t/(d + tau_t) + 1 about d = 0 to order 2 == d/tau_t: symbolic: d/tau_t
+   needed Br (%): got 1.11299, lens 1.113
+PASS 1.112988622282307 == 1.113: within 0.000539084; 1.11299 vs 1.113 (SI)
+   PERKEO III Br (%): got 0.077272, lens 0.077
+PASS 0.07727204102623286 == 0.077: within 0.0779221; 0.077272 vs 0.077 (SI)
+   PERKEO III sigma (%): got 0.105771, lens 0.106
+PASS 0.10577123083109544 == 0.106: within 0.00566038; 0.105771 vs 0.106 (SI)
+   PERKEO III UL95 (%): got 0.251266, lens 0.25
+PASS 0.25126571574338485 == 0.25: within 0.04; 0.251266 vs 0.25 (SI)
+   needed distance PERKEO III (sigma): got 9.79204, lens 9.8
+PASS 9.792044331128142 == 9.8: within 0.0102041; 9.79204 vs 9.8 (SI)
+   A-group UL95 (%): got 0.266066, lens 0.27
+PASS 0.2660663834472587 == 0.27: within 0.037037; 0.266066 vs 0.27 (SI)
+   A-group needed distance: got 10.0683, lens 10
+PASS 10.068326002611206 == 10.0: within 0.025; 10.0683 vs 10 (SI)
+   PDG UL95 (%): got 0.513665, lens 0.51
+PASS 0.5136654115621193 == 0.51: within 0.0196078; 0.513665 vs 0.51 (SI)
+   PDG needed distance: got 4.87562, lens 4.9
+PASS 4.875617186575232 == 4.9: within 0.0122449; 4.87562 vs 4.9 (SI)
+   aSPECT 2024 Br (%): got 1.32164, lens 1.32
+PASS 1.321637289380062 == 1.32: within 0.00757576; 1.32164 vs 1.32 (SI)
+   aSPECT 2024 sigma (%): got 0.356478, lens 0.36
+PASS 0.35647794055595344 == 0.36: within 0.0166667; 0.356478 vs 0.36 (SI)
+   a-group Br (%): got 1.05821, lens 1.06
+PASS 1.0582066779346366 == 1.06: within 0.00943396; 1.05821 vs 1.06 (SI)
+   a-group sigma (%): got 0.328786, lens 0.33
+PASS 0.32878622371931554 == 0.33: within 0.0181818; 0.328786 vs 0.33 (SI)
+   UCNtau vs PERKEO III tau_beta (sigma): got 0.730051, lens 0.7
+PASS 0.7300514301530682 == 0.7: within 0.0857143; 0.730051 vs 0.7 (SI)
+   UCNtau vs A route: got 1.00035, lens 1
+PASS 1.0003512186239036 == 1.0: within 0.06; 1.00035 vs 1 (SI)
+   UCNtau vs a route: got 3.18481, lens 3.2
+PASS 3.1848146408928573 == 3.2: within 0.01875; 3.18481 vs 3.2 (SI)
+   BL1 vs A route: got 3.75345, lens 3.8
+PASS 3.7534485450251593 == 3.8: within 0.0157895; 3.75345 vs 3.8 (SI)
+SUMMARY: 20 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

@@ -1,0 +1,57 @@
+# math_run log
+command:  python3 runs/2026-09-30-neutron-lifetime-beam-bottle/calc/lens-statistician_lambda_sm.py
+started:  2026-09-30T17:39:16Z
+duration: 0.0 s
+exit:     0
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+== 1. lambda by method ==
+-- aCORN=Hassan21
+   A (beta asym)  mean 1.27623 +- 0.00050 chi2 1.51/2
+   a (p recoil)   mean 1.26884 +- 0.00248 chi2 3.58/1
+   within chi2 5.10/3, between chi2 8.56 (z 2.93)
+   tau_beta(A-route) = 878.70 +- 0.83 s  [lambda part 0.57, Vud part 0.58, K part 0.19]
+   tau_beta(a-route) = 887.21 +- 2.93 s  [lambda part 2.87, Vud part 0.58, K part 0.19]
+-- aCORN=Wietfeldt24 (PDG listing)
+   A (beta asym)  mean 1.27623 +- 0.00050 chi2 1.51/2
+   a (p recoil)   mean 1.26752 +- 0.00247 chi2 0.44/1
+   within chi2 1.95/3, between chi2 11.96 (z 3.46)
+   tau_beta(A-route) = 878.70 +- 0.83 s  [lambda part 0.57, Vud part 0.58, K part 0.19]
+   tau_beta(a-route) = 888.74 +- 2.93 s  [lambda part 2.87, Vud part 0.58, K part 0.19]
+PERKEO III vs aSPECT 2024: z 3.49
+
+== 2. SM tau_beta as arbiter ==
+PERKEO III             tau_beta 878.50 +- 0.88 s: vs p-beam z 4.26, vs storage z 0.18; LR(storage-true : pbeam-true) = 8.74e+03
+     Br_X = 1 - tau_storage/tau_beta = 0.0002 +- 0.0011 (95% one-sided UL 0.0020); needed Br for gap = 0.0109 -> z of needed vs measured 9.54
+     Br_X = 1 - tau_magnetic/tau_beta = 0.0008 +- 0.0010 (95% one-sided UL 0.0025); needed Br for gap = 0.0109 -> z of needed vs measured 9.63
+aSPECT 2024            tau_beta 889.58 +- 3.20 s: vs p-beam z 0.42, vs storage z 3.49; LR(storage-true : pbeam-true) = 0.00251
+     Br_X = 1 - tau_storage/tau_beta = 0.0127 +- 0.0036 (95% one-sided UL 0.0185); needed Br for gap = 0.0109 -> z of needed vs measured -0.50
+     Br_X = 1 - tau_magnetic/tau_beta = 0.0132 +- 0.0036 (95% one-sided UL 0.0191); needed Br for gap = 0.0109 -> z of needed vs measured -0.66
+PDG 2024 avg (S=2.7)   tau_beta 879.65 +- 1.61 s: vs p-beam z 3.20, vs storage z 0.80; LR(storage-true : pbeam-true) = 122
+     Br_X = 1 - tau_storage/tau_beta = 0.0015 +- 0.0019 (95% one-sided UL 0.0046); needed Br for gap = 0.0109 -> z of needed vs measured 4.94
+     Br_X = 1 - tau_magnetic/tau_beta = 0.0021 +- 0.0018 (95% one-sided UL 0.0051); needed Br for gap = 0.0109 -> z of needed vs measured 4.74
+
+== 3. UCNtau per-year scatter (D-27) ==
+per-year: mean 877.822 +- 0.218, chi2 6.67/4, p 0.155, S 1.29
+
+== 4. Stability of the gap over time (signal fading?) ==
+CMS 2018 averages [D-33]: gap 8.6 s, z 4.12
+2026 (this calc): gap 9.64 s, z 4.63
+BL1 vs PDG 2026 UCN avg: gap 9.40 s, z 4.12
+
+== 5. J-PARC discriminates dark decay (e-beam = p-beam) from p-count systematic / strong-field n-n' (e-beam = storage) ==
+J-PARC quoted    : z vs p-beam 2.24, vs storage 0.26 -> likelihood ratio (e=storage : e=p-beam) 11.97; posterior from 50:50 = 0.923
+J-PARC stat x2.29: z vs p-beam 1.81, vs storage 0.20 -> likelihood ratio (e=storage : e=p-beam) 5.06; posterior from 50:50 = 0.835
+
+== 6. lambda precision for SM prediction to separate poles ==
+dtau/dlambda = 1143 s; Vud+K part = 0.607 s
+z=3: tau_beta vs storage sigma budget 3.21 s -> lambda sigma <= 0.00274 (0.215% relative)
+z=5: tau_beta vs storage sigma budget 1.93 s -> lambda sigma <= 0.00156 (0.122% relative)
+Nab target dl/l = 0.04% -> sigma_lambda 0.00051 -> tau part 0.58 s
+Nab lambda sigma to separate aSPECT-central from PERKEO III at 3 sigma (vs PERKEO III err): 0.00315
+Nab lambda sigma to separate aSPECT-central from PERKEO III at 5 sigma (vs PERKEO III err): 0.00184
+
+--- stderr ---
+

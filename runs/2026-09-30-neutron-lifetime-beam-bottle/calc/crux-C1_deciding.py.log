@@ -1,0 +1,40 @@
+# math_run log
+command:  python3 runs/2026-09-30-neutron-lifetime-beam-bottle/calc/crux-C1_deciding.py
+started:  2026-09-30T20:03:48Z
+duration: 0.0 s
+exit:     0
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+gap proton pole - storage pole = 9.65 s
+
+UCNProBe: C1 predicts difference 0 s; C2 and C3 predict ~ +gap
+  sigma_diff = 1.0 s: separation = 9.6 sigma
+  sigma_diff = 1.5 s: separation = 6.4 sigma
+  sigma_diff = 2.0 s: separation = 4.8 sigma
+
+LiNA at 1.0 s: reading 888 vs storage pole = 8.87 sigma; reading 878 vs proton pole = 4.25 sigma (vs BL1 3.81 sigma)
+
+Nab sigma_lambda (0.04 %) = 0.00051
+a(PERKEO III lambda) = -0.10687; a(aSPECT lambda) = -0.10402
+Nab sigma_a = 0.00015
+aSPECT-like Nab vs A route: 12.7 sigma
+PERKEO-like Nab vs aSPECT: 3.50 sigma
+dtau/dlambda = 1143 s; lambda part of 0.88 s = 0.64 s; non-lambda (Vud, RC) part = 0.60 s
+tau_beta at aSPECT lambda = 889.58 s; with Nab precision +- 0.84 s
+  aSPECT-like Nab tau_beta vs storage pole: 11.9 sigma
+  PERKEO-like Nab tau_beta = 878.50 +- 0.84 s vs proton pole: 4.3 sigma; vs storage: 0.19 sigma
+
+BL2/BL3 readings vs storage pole (C1) - C7 predicts 880-886 s:
+  sigma 1.0 s, reading 880.0: 1.5 sigma from storage pole
+  sigma 1.0 s, reading 883.0: 4.3 sigma from storage pole
+  sigma 1.0 s, reading 886.0: 7.1 sigma from storage pole
+  sigma 1.0 s, reading 878.32: 1.5 sigma below C7's lower edge 880 s
+  sigma 0.3 s, reading 880.0: 3.2 sigma from storage pole
+  sigma 0.3 s, reading 883.0: 8.9 sigma from storage pole
+  sigma 0.3 s, reading 886.0: 14.6 sigma from storage pole
+  sigma 0.3 s, reading 878.32: 3.2 sigma below C7's lower edge 880 s
+
+--- stderr ---
+

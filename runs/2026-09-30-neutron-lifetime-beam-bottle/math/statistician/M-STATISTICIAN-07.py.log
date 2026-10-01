@@ -1,0 +1,28 @@
+# math_run log
+command:  python3 runs/2026-09-30-neutron-lifetime-beam-bottle/math/statistician/M-STATISTICIAN-07.py
+started:  2026-09-30T18:05:11Z
+duration: 0.7 s
+exit:     1
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   9 PASS, 1 FAIL, 0 UNDECIDED
+
+--- stdout ---
+PASS 878.319141000000 == 878.319141000000: symbolic
+(i) (np.float64(878.3147934555462), 0.2466451534632457, np.float64(23.790240644905154), 1.8435307988788856)
+FAIL 878.315000000000 == 878.316000000000: numeric, constants; counterexample (no symbols) = -; lhs = 878.315, rhs = 878.316
+(ii) (np.float64(878.098322973265), 0.21634230050735975, np.float64(40.89559832532574), 2.417070195958196)
+PASS 878.100000000000 == 878.100000000000: symbolic
+PASS 0.220000000000000 == 0.220000000000000: symbolic
+PASS 2.42000000000000 == 2.42000000000000: symbolic
+(ii) tension 4.689118437673311
+PASS 4.69000000000000 == 4.69000000000000: symbolic
+(iii) (np.float64(887.6357066950054), 2.2402861514508747, np.float64(0.13283740701381508), 1)
+PASS 887.640000000000 == 887.640000000000: symbolic
+PASS 2.24000000000000 == 2.24000000000000: symbolic
+(iii) tension 4.082804899695047
+PASS 4.08000000000000 == 4.08000000000000: symbolic
+PASS lim r->0 of (x1*(r/(r**2*s1*s2 - s1*s2) - 1/(r**2*s1**2 - s1**2)) + x2*(r/(r**2*s1*s2 - s1*s2) - 1/(r**2*s2**2 - s2**2)))/(2*r/(r**2*s1*s2 - s1*s2) - 1/(r**2*s2**2 - s2**2) - 1/(r**2*s1**2 - s1**2)) == (x2/s2**2 + x1/s1**2)/(s2**(-2) + s1**(-2)): symbolic limit (x2/s2**2 + x1/s1**2)/(s2**(-2) + s1**(-2))
+SUMMARY: 9 pass, 1 fail, 0 undecided
+
+--- stderr ---
+

@@ -1,0 +1,26 @@
+# math_run log
+command:  python3 runs/2026-09-30-neutron-lifetime-beam-bottle/math/mechanist/M-MECHANIST-07.py
+started:  2026-09-30T18:18:00Z
+duration: 0.6 s
+exit:     0
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   9 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+shift = -10.77 s, needed background fraction = 1.228 %
+PASS -10.769999999999982 s == -10.8 s: within 0.01; -10.77 vs -10.8 (SI)
+PASS 0.012277701778385719 == 0.0123: within 0.01; 0.0122777 vs 0.0123 (SI)
+PASS lim b->0 of -(-1 + 1/(b + 1))/b == 1: symbolic limit 1
+excess 100 kPa 3.60-4.20 %, 50 kPa 2.43-2.65 %
+PASS 3.6000000000000005 == 3.6: within 0.01; 3.6 vs 3.6 (SI)
+PASS 4.2 == 4.2: within 0.01; 4.2 vs 4.2 (SI)
+PASS 2.43 == 2.4: within 0.02; 2.43 vs 2.4 (SI)
+PASS 2.65 == 2.6: within 0.02; 2.65 vs 2.6 (SI)
+third of 100 kPa excess = 1.20-1.40 %
+needed/excess: 0.29 (of 4.2 %) to 0.51 (of 2.43 %)
+PASS 0.29232623281870757 == 0.3: within 0.05; 0.292326 vs 0.3 (SI)
+PASS 0.5052552172175193 == 0.5: within 0.05; 0.505255 vs 0.5 (SI)
+SUMMARY: 9 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

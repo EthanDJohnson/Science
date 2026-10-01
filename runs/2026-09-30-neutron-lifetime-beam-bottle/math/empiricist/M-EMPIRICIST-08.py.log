@@ -1,0 +1,48 @@
+# math_run log
+command:  python3 runs/2026-09-30-neutron-lifetime-beam-bottle/math/empiricist/M-EMPIRICIST-08.py
+started:  2026-09-30T18:11:43Z
+duration: 0.6 s
+exit:     0
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   16 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+PASS n == n: symbolic
+PASS lim p->0 of sqrt(d**2/n**2 - p**2) == d/n: symbolic limit d/n
+PASS (9.56 s)/((1 s)^2 + (0.25 s)^2)^0.5 has the dimension of dimensionless: dimensional analysis
+gap 9.560 s, storage error 0.252 s
+sigma_max 3 sigma 3.177 s, 5 sigma 1.896 s
+  3 sigma: mine 3.17685, lens 3.18
+PASS 0.0031549542911966585 < 0.00600000000000000: symbolic, constant
+  5 sigma: mine 1.89559, lens 1.9
+PASS 0.0044146022929894106 < 0.00600000000000000: symbolic, constant
+J-PARC 4.16 s: 2.294; at 1 s 9.275; at 2 s 4.743
+  J-PARC: mine 2.29394, lens 2.29
+PASS 0.0039383225529934646 < 0.00600000000000000: symbolic, constant
+  1 s: mine 9.27456, lens 9.3
+PASS 0.0254376986105704 < 0.0600000000000000: symbolic, constant
+  2 s: mine 4.74309, lens 4.7
+PASS 0.04308825069136080 < 0.0600000000000000: symbolic, constant
+BL2 at 878.4 vs BL1: sigma 1 s 3.781, 0.3 s 4.102
+  BL2 1 s vs BL1: mine 3.78099, lens 3.8
+PASS 0.01901232895487281 < 0.0600000000000000: symbolic, constant
+  BL2 0.3 s vs BL1: mine 4.10205, lens 4.1
+PASS 0.0020541499384778561 < 0.0600000000000000: symbolic, constant
+beam class with BL2 at 888 +- 1: 887.993 +- 0.898; vs storage 10.28 sigma
+PASS 10.275151724895517 >= 9: symbolic, constant
+material-magnetic 2.201 s; new bottle 3 sigma 0.672 s, 5 sigma 0.328 s
+  mat-mag diff: mine 2.20085, lens 2.2
+PASS 0.00084849059503522284 < 0.00600000000000000: symbolic, constant
+  new bottle 3 sigma: mine 0.672261, lens 0.67
+PASS 0.002260804791358553 < 0.00600000000000000: symbolic, constant
+  new bottle 5 sigma: mine 0.327859, lens 0.33
+PASS 0.002141375885939718 < 0.00600000000000000: symbolic, constant
+2005 history: 7.20 s, 6.364 sigma (0.8 (+) 0.8), 6.519 sigma (0.8 (+) 0.762), ratio to gap 0.753
+  history sigma: mine 6.36396, lens 6.4
+PASS 0.03603896932103334 < 0.0600000000000000: symbolic, constant
+  history ratio: mine 0.753138, lens 0.75
+PASS 0.003138075313807595 < 0.00600000000000000: symbolic, constant
+SUMMARY: 16 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

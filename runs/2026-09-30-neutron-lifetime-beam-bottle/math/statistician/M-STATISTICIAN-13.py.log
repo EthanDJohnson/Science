@@ -1,0 +1,32 @@
+# math_run log
+command:  python3 runs/2026-09-30-neutron-lifetime-beam-bottle/math/statistician/M-STATISTICIAN-13.py
+started:  2026-09-30T18:06:38Z
+duration: 0.7 s
+exit:     1
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   12 PASS, 1 FAIL, 0 UNDECIDED
+
+--- stdout ---
+PASS lim p->0 of -E*p*log(p) == 0: symbolic limit 0
+PASS lim p->exp(-1) of -E*p*log(p) == 1: symbolic limit 1
+PASS -E*p*log(p) <= 1: numeric at 50 points, p in [1e-09, 0.3678]
+S1: p 3.68e-06, max odds 7999 (lens 8.0e+03), prior needed 0.000125 (lens 1.3e-04)
+PASS 8000.00000000000 == 8000.00000000000: symbolic
+PASS 0.000130000000000000 == 0.000130000000000000: symbolic
+S2: p 0.0251, max odds 3.979 (lens 4), prior needed 0.201 (lens 0.20)
+PASS 4 == 4: symbolic
+PASS 0.200000000000000 == 0.200000000000000: symbolic
+S3: p 0.00318, max odds 20.13 (lens 20), prior needed 0.0473 (lens 0.047)
+PASS 20 == 20: symbolic
+PASS 0.0470000000000000 == 0.0470000000000000: symbolic
+S4: p 0.000483, max odds 99.75 (lens 1e+02), prior needed 0.00993 (lens 0.010)
+PASS 100.000000000000 == 100.000000000000: symbolic
+FAIL 0.00990000000000000 == 0.0100000000000000: numeric, constants; counterexample (no symbols) = -; lhs = 0.0099, rhs = 0.01
+S7: p 0.155, max odds 1.273 (lens 1.3), prior needed 0.44 (lens None)
+PASS 1.30000000000000 == 1.30000000000000: symbolic
+Gaussian bound exp(-z^2/2): 2.2240465416929633e-05
+PASS 0.0000220000000000000 == 0.0000220000000000000: symbolic
+SUMMARY: 12 pass, 1 fail, 0 undecided
+
+--- stderr ---
+

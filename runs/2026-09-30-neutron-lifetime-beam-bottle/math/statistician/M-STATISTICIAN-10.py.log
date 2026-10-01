@@ -1,0 +1,33 @@
+# math_run log
+command:  python3 runs/2026-09-30-neutron-lifetime-beam-bottle/math/statistician/M-STATISTICIAN-10.py
+started:  2026-09-30T18:06:36Z
+duration: 0.5 s
+exit:     0
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   14 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+A: 1.27623 +- 0.00050, chi2 1.51/2  (lens 1.27623 +- 0.00050, 1.51)
+PASS 1.27623000000000 == 1.27623000000000: symbolic
+PASS 0.000500000000000000 == 0.000500000000000000: symbolic
+PASS 1.51000000000000 == 1.51000000000000: symbolic
+a: 1.26884 +- 0.00248, chi2 3.58/1  (lens 1.26884 +- 0.00248, 3.58)
+PASS 1.26884000000000 == 1.26884000000000: symbolic
+PASS 0.00248000000000000 == 0.00248000000000000: symbolic
+PASS 3.58000000000000 == 3.58000000000000: symbolic
+a swapped: 1.26752 +- 0.00247, chi2 0.44/1  (lens 1.26752 +- 0.00247, 0.44)
+PASS 1.26752000000000 == 1.26752000000000: symbolic
+PASS 0.00247000000000000 == 0.00247000000000000: symbolic
+PASS 0.440000000000000 == 0.440000000000000: symbolic
+A vs a: chi2 8.56, z 2.93 (lens 8.56, 2.93)
+PASS 8.56000000000000 == 8.56000000000000: symbolic
+PASS 2.93000000000000 == 2.93000000000000: symbolic
+A vs a swapped: chi2 11.96, z 3.46 (lens 11.96, 3.46)
+PASS 11.9600000000000 == 11.9600000000000: symbolic
+PASS 3.46000000000000 == 3.46000000000000: symbolic
+PERKEO III vs aSPECT 3.4855923551609553
+PASS 3.49000000000000 == 3.49000000000000: symbolic
+SUMMARY: 14 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

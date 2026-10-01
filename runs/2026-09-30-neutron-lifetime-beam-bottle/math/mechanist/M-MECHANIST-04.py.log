@@ -1,0 +1,30 @@
+# math_run log
+command:  python3 runs/2026-09-30-neutron-lifetime-beam-bottle/math/mechanist/M-MECHANIST-04.py
+started:  2026-09-30T18:17:07Z
+duration: 0.8 s
+exit:     0
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   11 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+v(300 eV proton) = 2.3974e+05 m/s
+PASS 239735.26844346832 m/s == 2.4e5 m/s: within 0.01; 239735 vs 240000 (SI)
+PASS 2 * 300 eV / (1.67262192369e-27 kg) == 57472998935.66182 m^2/s^2: within 1e-06; 5.7473e+10 vs 5.7473e+10 (SI)
+PASS T/2 == T/2: symbolic
+PASS lim r->0 of (1 - (1/r - exp(-T*r)/r)/T)/(T*r) == 1/2: symbolic limit 1/2
+sigma=1e-20 m^2: n = 9.536e+14 m^-3, p = 3.950e-06 Pa = 3.950e-08 mbar
+sigma=1e-19 m^2: n = 9.536e+13 m^-3, p = 3.950e-07 Pa = 3.950e-09 mbar
+PASS 3.949756771345226e-06 Pa == 4e-6 Pa: within 0.05; 3.94976e-06 vs 4e-06 (SI)
+PASS 3.949756771345226e-07 Pa == 4e-7 Pa: within 0.05; 3.94976e-07 vs 4e-07 (SI)
+PASS 1e15 m^-3 * 1.380649e-23 J/K * 300 K has the dimension of Pa: dimensional analysis
+split (all 1.143 % at 10 ms cycle) = 5.104 s
+PASS 5.104171787132145 s == 5.1 s: within 0.01; 5.10417 vs 5.1 (SI)
+split if data are an equal mix of 5 and 10 ms and the mix averages 1.143 %: 6.845 s
+Caylor 0.3 % of 887.97 s = 2.664 s = 26.2 % of the gap
+PASS 2.66391 s == 2.7 s: within 0.02; 2.66391 vs 2.7 (SI)
+PASS 0.2624541871921188 == 0.26: within 0.02; 0.262454 vs 0.26 (SI)
+PASS lim e->0 of 1.0/(1 - e) == 1: symbolic limit 1
+SUMMARY: 11 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

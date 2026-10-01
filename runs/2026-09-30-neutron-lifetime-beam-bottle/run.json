@@ -1,0 +1,23 @@
+{
+  "slug": "2026-09-30-neutron-lifetime-beam-bottle",
+  "date": "2026-09-30",
+  "title": "The neutron lifetime puzzle — beam (~888 s) versus bottle (~878 s)",
+  "question": "What explains the neutron lifetime puzzle, where beam experiments that count decay protons give about 888 s but ultracold-neutron bottle experiments give about 878 s? …",
+  "type": "anomaly",
+  "depth": "deep",
+  "status": "complete",
+  "source_checked": true,
+  "bottom_line": "The gap is real, not a chance fluctuation, and it sits almost entirely in one measurement. The most likely cause, at roughly 60%, is an unidentified error in the proton-counting beam method that makes it read about 1.1% too long; the storage value near 878 s is most likely the true lifetime. The biggest reason is that every independent check that neither counts protons nor stores neutrons, namely the electron-counting J-PARC beam and the Standard-Model prediction from the electron-asymmetry coupling gA, lands at 878 s, while the beam side rests on a single 2005 dataset. Nobody has found an effect of the needed size, so about a seventh of the probability goes to several smaller beam-side errors plus bad luck. New physics totals under 10%. Nab's a-coefficient measurement will decide.",
+  "prior": [
+    {
+      "slug": "2026-09-29-problem-of-time-quantum-gravity",
+      "date": "2026-09-29",
+      "mode": "ignore",
+      "same_question": false
+    }
+  ],
+  "trust": "ok",
+  "notes": [],
+  "superseded_by": null,
+  "recorded": "2026-09-30"
+}

@@ -248,6 +248,8 @@ class SkillAndSettings(unittest.TestCase):
         self.assertEqual(fm["disable-model-invocation"], "true")
         self.assertLessEqual(len(fm["description"]), 1536)
         self.assertIn("$ARGUMENTS", body)
+        # Claude Code replaces $0, $1, ... in a skill body with argument words, so "$25" would become one.
+        self.assertIsNone(re.search(r"(?<!\\)\$\d", body), "a literal $ before a digit in SKILL.md")
 
     def test_tool_catalog_matches_the_toolkit(self):
         catalog = (SKILL / "references" / "tools.md").read_text()
@@ -259,6 +261,11 @@ class SkillAndSettings(unittest.TestCase):
         research = workflow_source("conundrum-research")
         self.assertIn("agentType: 'toolsmith'", research)
         self.assertIn("/tools/", research)
+
+    def test_promoted_calculators_point_at_the_toolkit(self):
+        for path in (SKILL / "scripts").glob("*.py"):
+            stale = re.findall(r"runs/\d{4}-\d\d-\d\d-[\w-]+/tools", path.read_text())
+            self.assertEqual(stale, [], f"{path.name} still points at a run folder")
 
     def test_turn_budget_hook_is_registered(self):
         hooks = json.loads((CLAUDE / "settings.json").read_text())["hooks"]

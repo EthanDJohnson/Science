@@ -1,0 +1,24 @@
+# math_run log
+command:  python3 runs/2026-09-30-neutron-lifetime-beam-bottle/calc/lens-statistician_heavytail.py
+started:  2026-09-30T17:41:07Z
+duration: 1.4 s
+exit:     0
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+p-beam vs storage z=4.63: Gaussian p2 3.66e-06; t(nu=2) p2 0.044; t(nu=3) p2 0.019; t(nu=4) p2 0.010
+BL1 vs storage z=4.10: Gaussian p2 4.13e-05; t(nu=2) p2 0.055; t(nu=3) p2 0.026; t(nu=4) p2 0.015
+Serebrov18 vs Musedinovic25 z=3.80: Gaussian p2 1.45e-04; t(nu=2) p2 0.063; t(nu=3) p2 0.032; t(nu=4) p2 0.019
+material vs magnetic z=2.95: Gaussian p2 3.18e-03; t(nu=2) p2 0.098; t(nu=3) p2 0.060; t(nu=4) p2 0.042
+J-PARC vs p-beam z=2.24: Gaussian p2 2.51e-02; t(nu=2) p2 0.154; t(nu=3) p2 0.111; t(nu=4) p2 0.089
+PERKEO III vs aSPECT 2024 z=3.49: Gaussian p2 4.83e-04; t(nu=2) p2 0.073; t(nu=3) p2 0.040; t(nu=4) p2 0.025
+material vs magnetic, ~5 post-hoc splits of storage: local z 2.95 -> global p 0.0158, z 2.41; Sellke max odds 20.1:1, prior needed for 50% 0.047
+lambda A-route vs a-route, ~3 splits of lambda data: local z 3.49 -> global p 0.00145, z 3.18; Sellke max odds 99.7:1, prior needed for 50% 0.010
+J-PARC vs p-beam (pre-stated test): local z 2.24 -> global p 0.0251, z 2.24; Sellke max odds 4.0:1, prior needed for 50% 0.201
+nu=2: density ratio t/Gauss at z=4.63: 998
+nu=3: density ratio t/Gauss at z=4.63: 627
+nu=4: density ratio t/Gauss at z=4.63: 416
+
+--- stderr ---
+

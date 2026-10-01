@@ -1,0 +1,49 @@
+# math_run log
+command:  python3 runs/2026-09-30-neutron-lifetime-beam-bottle/calc/lens-mechanist_nnprime_jparc.py
+started:  2026-09-30T17:48:42Z
+duration: 40.9 s
+exit:     0
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+[A1] Proton-trap beam, Berezhiani geometry (0.6 m solenoid, 4.6 T), velocity-averaged
+  dm=200 neV theta0=1e-04: B_res=3.32 T  P_trap=1.219e-03 P_det=2.428e-03  tau_beam/tau_beta=0.99879  (shift -1.06 s)
+  dm=200 neV theta0=3e-04: B_res=3.32 T  P_trap=1.085e-02 P_det=2.112e-02  tau_beam/tau_beta=0.98962  (shift -9.11 s)
+  dm=200 neV theta0=1e-03: B_res=3.32 T  P_trap=1.065e-01 P_det=1.620e-01  tau_beam/tau_beta=0.93790  (shift -54.51 s)
+  dm=260 neV theta0=1e-04: B_res=4.31 T  P_trap=1.073e-02 P_det=2.095e-02  tau_beam/tau_beta=0.98967  (shift -9.07 s)
+  dm=260 neV theta0=3e-04: B_res=4.31 T  P_trap=8.756e-02 P_det=1.406e-01  tau_beam/tau_beta=0.94181  (shift -51.08 s)
+  dm=260 neV theta0=1e-03: B_res=4.31 T  P_trap=4.240e-01 P_det=1.196e-01  tau_beam/tau_beta=1.52841  (shift +463.84 s)
+  dm=280 neV theta0=1e-04: B_res=4.64 T  P_trap=4.429e-05 P_det=2.000e-08  tau_beam/tau_beta=1.00004  (shift +0.04 s)
+  dm=280 neV theta0=3e-04: B_res=4.64 T  P_trap=3.977e-04 P_det=1.800e-07  tau_beam/tau_beta=1.00040  (shift +0.35 s)
+  dm=280 neV theta0=1e-03: B_res=4.64 T  P_trap=4.309e-03 P_det=2.000e-06  tau_beam/tau_beta=1.00433  (shift +3.80 s)
+  dm=300 neV theta0=1e-04: B_res=4.97 T  P_trap=8.584e-07 P_det=2.000e-08  tau_beam/tau_beta=1.00000  (shift +0.00 s)
+  dm=300 neV theta0=3e-04: B_res=4.97 T  P_trap=7.726e-06 P_det=1.800e-07  tau_beam/tau_beta=1.00001  (shift +0.01 s)
+  dm=300 neV theta0=1e-03: B_res=4.97 T  P_trap=8.580e-05 P_det=2.000e-06  tau_beam/tau_beta=1.00008  (shift +0.07 s)
+  theta0 needed for +1.143% at dm=280 neV: 1.658e-03; P_trap=1.131e-02, P_det=5.496e-06, tau_nn'=1.418e-06 s
+
+[A2] SNS regeneration test (P1*P2, same model, ASSUMING each passage converts about as much as the trap)
+  predicted regeneration ~ P^2 = 1.28e-04 vs limit 2.5e-8 -> ratio 5.1e+03
+  max per-passage P allowed = 1.58e-04 -> max beam shift ~ 0.0158 % = 0.14 s
+
+[A3] Other measurement classes in the same model (theta0 above, dm = 280 neV)
+  J-PARC-type beam at 0.0 T: time-averaged P = 5.50e-06 -> shift 0.0048 s
+  J-PARC-type beam at 0.6 T: time-averaged P = 5.78e-06 -> shift 0.0051 s
+  material bottle B=0.0 T, 5 bounces/s: loss/bounce=5.50e-06, rate=2.75e-05 s^-1, apparent tau=857.32 s (before size extrapolation)
+  material bottle B=0.0 T, 50 bounces/s: loss/bounce=5.50e-06, rate=2.75e-04 s^-1, apparent tau=707.34 s (before size extrapolation)
+  material bottle B=1e-06 T, 5 bounces/s: loss/bounce=5.50e-06, rate=2.75e-05 s^-1, apparent tau=857.32 s (before size extrapolation)
+  material bottle B=1e-06 T, 50 bounces/s: loss/bounce=5.50e-06, rate=2.75e-04 s^-1, apparent tau=707.34 s (before size extrapolation)
+  magnetic trap (B < B_res = 4.64 T): no resonance crossing; no projecting walls -> loss ~0 in this model
+
+[B] J-PARC per-condition values (stat only, and stat (+) mean of the two unlabelled columns)
+  stat only: 100 kPa 869.8+-2.6; 50 kPa 883.3+-2.3; diff 13.6+-3.5 s (3.9 sigma)
+     linear extrapolation to 0 kPa: 896.9 +- 5.3 s (ASSUMES bias proportional to pressure)
+     old SFC 870.4+-3.2; new SFC 880.4+-2.1
+  stat+sys(approx): 100 kPa 869.4+-4.4; 50 kPa 882.0+-3.7; diff 12.6+-5.7 s (2.2 sigma)
+     linear extrapolation to 0 kPa: 894.6 +- 8.6 s (ASSUMES bias proportional to pressure)
+     old SFC 869.9+-5.4; new SFC 879.3+-3.3
+
+  J-PARC 877.2 vs 887.97 (beam): 2.24 sigma; vs UCNtau 877.82: 0.16 sigma
+
+--- stderr ---
+

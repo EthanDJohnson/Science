@@ -1,0 +1,61 @@
+# math_run log
+command:  python3 runs/2026-09-30-neutron-lifetime-beam-bottle/calc/falsifier-C3-2_bounds.py
+started:  2026-09-30T19:14:40Z
+duration: 1.2 s
+exit:     0
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+=== 1. World lambda average (aSPECT 2020 superseded by 2024; PDG-style scale factor) ===
+|lambda| = 1.27594 +- 0.00049 (unscaled), chi2 = 13.66/4, S = 1.85, scaled sigma = 0.00090
+
+=== 2. Non-proton tau_beta routes vs the C3 requirement (tau_beta = beam value) ===
+C3 needs tau_beta = proton-beam class 887.97 +- 2.04 s; needed Br_X vs storage = 1.087% ; vs UCNtau = 1.143%
+[PERKEO III alone] tau_beta(SM) = 878.50 +- 0.88 s; Br_X = 0.020 +- 0.112% ; 95% UL = 0.204% ; needed value at 9.56 sigma ; SM vs beam 4.26 sigma
+[world avg, scaled] tau_beta(SM) = 879.03 +- 1.20 s; Br_X = 0.081 +- 0.145% ; 95% UL = 0.319% ; needed value at 6.95 sigma ; SM vs beam 3.78 sigma
+[world avg, S inflated x2 more (S*2)] tau_beta(SM) = 879.03 +- 2.15 s; Br_X = 0.081 +- 0.249% ; 95% UL = 0.491% ; needed value at 4.03 sigma ; SM vs beam 3.01 sigma
+[aSPECT 2024 alone (C3 escape C-a)] tau_beta(SM) = 889.58 +- 3.20 s; Br_X = 1.265 +- 0.358% ; 95% UL = 1.855% ; needed value at -0.50 sigma ; SM vs beam -0.42 sigma
+
+=== 3. J-PARC (electron counting) as an independent tau_beta measurement ===
+[as quoted] Br_X(J-PARC) = -0.128 +- 0.499% (upper-side err); 95% UL 0.692%; needed 1.087% at 2.44 sigma ; J-PARC vs beam 2.24 sigma
+[stat scaled S=2.29] Br_X(J-PARC) = -0.128 +- 0.639% (upper-side err); 95% UL 0.923%; needed 1.087% at 1.90 sigma ; J-PARC vs beam 1.81 sigma
+
+=== 4. Joint C3 goodness of fit: three tau_beta measurements (beam, J-PARC, SM) must agree ===
+   (storage then fixes tau_n and Br_X; 2 dof test of the C3 pattern)
+[PERKEO III alone | J-PARC quoted] common tau_beta = 879.89 +- 0.80 s ; chi2 = 18.56/2 ; p = 9.31e-05 ; ~3.91 sigma ; implied Br_X = 0.179%
+[PERKEO III alone | J-PARC scaled] common tau_beta = 879.93 +- 0.80 s ; chi2 = 18.41/2 ; p = 1.00e-04 ; ~3.89 sigma ; implied Br_X = 0.183%
+[world avg, scaled | J-PARC quoted] common tau_beta = 881.10 +- 1.00 s ; chi2 = 15.13/2 ; p = 5.19e-04 ; ~3.47 sigma ; implied Br_X = 0.316%
+[world avg, scaled | J-PARC scaled] common tau_beta = 881.19 +- 1.02 s ; chi2 = 14.80/2 ; p = 6.11e-04 ; ~3.43 sigma ; implied Br_X = 0.325%
+[world avg, S inflated x2 more (S*2) | J-PARC quoted] common tau_beta = 883.06 +- 1.40 s ; chi2 = 11.12/2 ; p = 3.86e-03 ; ~2.89 sigma ; implied Br_X = 0.537%
+[world avg, S inflated x2 more (S*2) | J-PARC scaled] common tau_beta = 883.31 +- 1.43 s ; chi2 = 10.37/2 ; p = 5.60e-03 ; ~2.77 sigma ; implied Br_X = 0.565%
+[aSPECT 2024 alone (C3 escape C-a) | J-PARC quoted] common tau_beta = 886.91 +- 1.60 s ; chi2 = 5.96/2 ; p = 5.09e-02 ; ~1.95 sigma ; implied Br_X = 0.969%
+[aSPECT 2024 alone (C3 escape C-a) | J-PARC scaled] common tau_beta = 887.46 +- 1.64 s ; chi2 = 3.88/2 ; p = 1.44e-01 ; ~1.46 sigma ; implied Br_X = 1.030%
+
+=== 5. Same pattern for C1 (proton beam biased; tau_beta = tau_n): storage, J-PARC, SM must agree ===
+[C1 | PERKEO III alone] chi2 = 0.10/2 ; p = 9.50e-01
+[C1 | world avg, scaled] chi2 = 0.39/2 ; p = 8.23e-01
+[C1 | aSPECT 2024 alone (C3 escape C-a)] chi2 = 12.25/2 ; p = 2.19e-03
+
+=== 6. Combined non-proton exclusion of Br_X = needed (Stouffer, independent J-PARC + SM route) ===
+[PERKEO III alone | J-PARC quoted] non-proton tau_beta = 878.45 +- 0.86 s (internal chi2 0.09/1); Br_X = 0.015 +- 0.110% ; 95% UL 0.195% ; needed 1.087% at 9.77 sigma
+[PERKEO III alone | J-PARC scaled] non-proton tau_beta = 878.47 +- 0.87 s (internal chi2 0.05/1); Br_X = 0.017 +- 0.110% ; 95% UL 0.199% ; needed 1.087% at 9.68 sigma
+[world avg, scaled | J-PARC quoted] non-proton tau_beta = 878.90 +- 1.15 s (internal chi2 0.17/1); Br_X = 0.066 +- 0.140% ; 95% UL 0.297% ; needed 1.087% at 7.28 sigma
+[world avg, scaled | J-PARC scaled] non-proton tau_beta = 878.95 +- 1.17 s (internal chi2 0.10/1); Br_X = 0.072 +- 0.142% ; 95% UL 0.305% ; needed 1.087% at 7.16 sigma
+[world avg, S inflated x2 more (S*2) | J-PARC quoted] non-proton tau_beta = 878.67 +- 1.93 s (internal chi2 0.14/1); Br_X = 0.040 +- 0.225% ; 95% UL 0.410% ; needed 1.087% at 4.66 sigma
+[world avg, S inflated x2 more (S*2) | J-PARC scaled] non-proton tau_beta = 878.80 +- 2.01 s (internal chi2 0.09/1); Br_X = 0.054 +- 0.233% ; 95% UL 0.438% ; needed 1.087% at 4.42 sigma
+[aSPECT 2024 alone (C3 escape C-a) | J-PARC quoted] non-proton tau_beta = 885.23 +- 2.58 s (internal chi2 5.26/1); Br_X = 0.780 +- 0.293% ; 95% UL 1.262% ; needed 1.087% at 1.05 sigma
+[aSPECT 2024 alone (C3 escape C-a) | J-PARC scaled] non-proton tau_beta = 886.52 +- 2.78 s (internal chi2 3.70/1); Br_X = 0.925 +- 0.314% ; 95% UL 1.441% ; needed 1.087% at 0.52 sigma
+
+=== 7. Vud shift toward unitarity (Cabibbo deficit) moves the bound which way? ===
+Vud = 0.97361: tau_beta(world lambda) = 879.03 s ; Br_X = 0.081%
+Vud = 0.97411: tau_beta(world lambda) = 878.13 s ; Br_X = -0.022%
+Vud = 0.97451: tau_beta(world lambda) = 877.41 s ; Br_X = -0.104%
+
+=== 8. Fierz escape C-b: couplings needed for b_n = -0.0158 vs LHC (SMEFT) bounds ===
+b_n needed = -0.0158
+tensor only: eps_T = 3.070e-03  -> 2.36 x LHC 90% bound 1.3e-3
+scalar only: eps_S = -4.517e-02  -> 7.79 x LHC 90% bound 5.8e-3
+
+--- stderr ---
+

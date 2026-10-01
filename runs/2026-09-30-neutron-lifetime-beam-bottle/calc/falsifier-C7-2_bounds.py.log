@@ -1,0 +1,51 @@
+# math_run log
+command:  python3 runs/2026-09-30-neutron-lifetime-beam-bottle/calc/falsifier-C7-2_bounds.py
+started:  2026-09-30T19:49:20Z
+duration: 0.0 s
+exit:     0
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+== 1. Reference gap (proton beam - all storage) ==
+proton beam 887.966 +- 2.038 s; storage 878.321 +- 0.234 s (S=1.853); gap 9.645 +- 2.084 s, z=4.63
+
+== 2. Linear response of the gap to a bias b (s) in each class ==
+dGap/db: BL1 +0.823, Sussex-ILL +0.177, material (all 5, common bias) -0.228, magnetic -0.772, J-PARC +0.000
+=> a bias that makes material bottles read LONG reduces the gap; J-PARC is not an input to the gap at all.
+
+== 3. C7's own shift table applied (BL1 +3..+6 s, material +2 s, magnetic 0, J-PARC +-5 s) ==
+BL1 bias +3.0 s, material +2 s: explained +2.01 s (BL1 +2.47, material -0.46, J-PARC +0.00); residual 7.63 s = 3.66 sigma_gap (p1 1.25e-04)
+   share of gap carried by the proton-counting side incl. its fluctuation: 105%; by material/J-PARC: -5%
+BL1 bias +6.0 s, material +2 s: explained +4.48 s (BL1 +4.94, material -0.46, J-PARC +0.00); residual 5.16 s = 2.48 sigma_gap (p1 6.60e-03)
+   share of gap carried by the proton-counting side incl. its fluctuation: 105%; by material/J-PARC: -5%
+
+== 4. Independent anchors (exclude BL1, Sussex-ILL and material bottles) ==
+magnetic + J-PARC + SM A-route: 877.895 +- 0.253 s, chi2 1.15/4
+J-PARC + SM A-route only (no storage at all): 878.643 +- 0.814 s
+  BL1            offset from anchor  +9.80 s, 4.34 sigma
+  Sussex-ILL     offset from anchor +11.30 s, 2.33 sigma
+  material mean  offset from anchor  +2.14 s, 2.86 sigma
+  magnetic mean  offset from anchor  -0.08 s, 0.22 sigma
+  J-PARC         offset from anchor  -0.70 s, 0.17 sigma
+  SM a-route     offset from anchor  +9.31 s, 3.17 sigma
+  BL1 vs (J-PARC + SM A-route) only: +9.06 s, 3.79 sigma
+
+== 5. Does inflating J-PARC's error help? all-beam (BL1+Sussex+J-PARC) vs storage ==
+J-PARC error x1.000: beam mean 885.88 +- 1.83 s, gap 7.56 s, z 4.02
+J-PARC error x2.295: beam mean 887.50 +- 1.99 s, gap 9.18 s, z 4.50
+J-PARC error x4.000: beam mean 887.81 +- 2.02 s, gap 9.49 s, z 4.58
+
+== 6. Same-sign structure under a uniform inflation S (C7's 'diffuse underestimation') ==
+S=1.00: z(BL1,Sussex,a-route) = 4.36, 2.33, 3.18; one-sided p = 6.41e-06, 9.77e-03, 7.39e-04; joint 4.63e-11
+S=1.50: z(BL1,Sussex,a-route) = 2.91, 1.56, 2.12; one-sided p = 1.81e-03, 5.98e-02, 1.70e-02; joint 1.85e-06
+S=2.00: z(BL1,Sussex,a-route) = 2.18, 1.17, 1.59; one-sided p = 1.46e-02, 1.22e-01, 5.60e-02; joint 9.91e-05
+S=2.35: z(BL1,Sussex,a-route) = 1.86, 0.99, 1.35; one-sided p = 3.17e-02, 1.60e-01, 8.81e-02; joint 4.47e-04
+
+== 7. 'Either SM route' under C7's truth (magnetic ~ 0 => tau ~ anchor) ==
+A route vs anchor 0.93 sigma; a route vs anchor 3.17 sigma
+=> if magnetic traps read true (C7), the a route cannot be right; C7 must add an aSPECT underestimate of
+   9.3 s-equivalent in tau_beta, same sign as BL1's excess.
+
+--- stderr ---
+

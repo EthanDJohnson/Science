@@ -1,0 +1,29 @@
+# math_run log
+command:  python3 runs/2026-09-30-neutron-lifetime-beam-bottle/math/statistician/M-STATISTICIAN-06.py
+started:  2026-09-30T18:05:10Z
+duration: 0.7 s
+exit:     1
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   9 PASS, 1 FAIL, 0 UNDECIDED
+
+--- stdout ---
+J-PARC quoted: profile LR 11.96 (lens 12), marginal 13.15, strict-point 20.80, posterior(even) 0.923 (lens 0.92)
+PASS 12 == 12: symbolic
+PASS 0.920000000000000 == 0.920000000000000: symbolic
+J-PARC inflated: profile LR 5.04 (lens 5), marginal 5.35, strict-point 6.27, posterior(even) 0.835 (lens 0.84)
+PASS 5 == 5: symbolic
+FAIL 0.830000000000000 == 0.840000000000000: numeric, constants; counterexample (no symbols) = -; lhs = 0.83, rhs = 0.84
+PERKEO III: zS 0.18 zB -4.26 profile LR 8707 (lens 8700.0), marginal 1.97e+04
+PASS 8700.00000000000 == 8700.00000000000: symbolic
+aSPECT24: zS 3.49 zB 0.43 profile LR 0.002505 (lens 0.0025), marginal 0.002943
+PASS 0.00250000000000000 == 0.00250000000000000: symbolic
+PDG: zS 0.80 zB -3.20 profile LR 122.3 (lens 122), marginal 190.5
+PASS 120.000000000000 == 120.000000000000: symbolic
+PASS lim b->a of sqrt(b**2 + 1)/sqrt(a**2 + 1) == 1: symbolic limit 1
+J-PARC stat->0: vs proton pole 2.237849320104256 vs storage pole 2.5230848911370587
+PASS 2.237849320104256 < 3: symbolic, constant
+PASS 2.5230848911370587 < 3: symbolic, constant
+SUMMARY: 9 pass, 1 fail, 0 undecided
+
+--- stderr ---
+
