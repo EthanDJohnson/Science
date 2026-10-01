@@ -17,7 +17,9 @@
     }
   ],
   "trust": "ok",
-  "notes": [],
+  "notes": [
+    "2026-10-01: Scorable prediction (report.md, What would change this verdict). Nab's a coefficient decides: a PERKEO-like result raises C1, an unidentified proton-counting-beam error, from 0.62 toward 0.75-0.8 and drops the 888 s world below 0.03; an aSPECT-like result drops C1 below about 0.2, with C2, C3 and C8's sharp form sharing most of the rest. LiNA or UCNProBe at 1.5 s or better: 878 s drops C2 and C3 below 0.01 each, with C1 plus C7 near 0.85; 888 s puts C3 (or C2, if UCNProBe agrees) in the lead."
+  ],
   "superseded_by": null,
   "recorded": "2026-09-30"
 }
