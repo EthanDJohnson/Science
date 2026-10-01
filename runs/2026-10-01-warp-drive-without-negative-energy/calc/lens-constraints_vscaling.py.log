@@ -1,0 +1,38 @@
+# math_run log
+command:  python3 runs/2026-10-01-warp-drive-without-negative-energy/calc/lens-constraints_vscaling.py
+started:  2026-10-01T21:43:10Z
+duration: 16.3 s
+exit:     0
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+NAT paper-like R = 1 m, Delta = 0.25 m: max FD err/|T| at v=1: 7.23e-07; A leak into T_0i 3.27e-09; B leak into rho,S 5.10e-10; v=2 prediction vs direct FD: median rel diff 2.05e-09, 95th pct 2.20e-08
+   v =   0.1: violations {'nec': 312, 'wec': 312, 'sec': 312, 'dec': 312} of 312; types {'IV (sampled)': 310, 'I': 2}; worst NEC (sampled) -9.1825e-01 1/m^2; Eulerian rho < 0 at 312
+   v =   0.5: violations {'nec': 312, 'wec': 312, 'sec': 312, 'dec': 312} of 312; types {'IV (sampled)': 302, 'I': 10}; worst NEC (sampled) -4.8016e+00 1/m^2; Eulerian rho < 0 at 312
+   v =   1.0: violations {'nec': 312, 'wec': 312, 'sec': 312, 'dec': 312} of 312; types {'IV (sampled)': 230, 'I': 82}; worst NEC (sampled) -1.1150e+01 1/m^2; Eulerian rho < 0 at 312
+   v =   2.0: violations {'nec': 312, 'wec': 312, 'sec': 312, 'dec': 312} of 312; types {'IV (sampled)': 196, 'I': 116}; worst NEC (sampled) -3.5034e+01 1/m^2; Eulerian rho < 0 at 312
+   v =  10.0: violations {'nec': 312, 'wec': 312, 'sec': 312, 'dec': 312} of 312; types {'IV (sampled)': 114, 'I': 198}; worst NEC (sampled) -6.8449e+02 1/m^2; Eulerian rho < 0 at 312
+NAT reference R = 100 m, Delta = 1 m: max FD err/|T| at v=1: 5.72e-02; A leak into T_0i 6.79e-08; B leak into rho,S 8.15e-06; v=2 prediction vs direct FD: median rel diff 1.69e-08, 95th pct 1.73e-06
+   v =   0.1: violations {'nec': 312, 'wec': 312, 'sec': 312, 'dec': 312} of 312; types {'IV (sampled)': 248, 'I': 64}; worst NEC (sampled) -2.4754e+00 1/m^2; Eulerian rho < 0 at 312
+   v =   0.5: violations {'nec': 312, 'wec': 312, 'sec': 312, 'dec': 312} of 312; types {'IV (sampled)': 156, 'I': 156}; worst NEC (sampled) -5.5295e+01 1/m^2; Eulerian rho < 0 at 312
+   v =   1.0: violations {'nec': 312, 'wec': 312, 'sec': 312, 'dec': 312} of 312; types {'IV (sampled)': 120, 'I': 192}; worst NEC (sampled) -2.1789e+02 1/m^2; Eulerian rho < 0 at 312
+   v =   2.0: violations {'nec': 312, 'wec': 312, 'sec': 312, 'dec': 312} of 312; types {'IV (sampled)': 102, 'I': 210}; worst NEC (sampled) -8.6495e+02 1/m^2; Eulerian rho < 0 at 312
+   v =  10.0: violations {'nec': 312, 'wec': 312, 'sec': 312, 'dec': 312} of 312; types {'IV (sampled)': 52, 'I': 260}; worst NEC (sampled) -2.1492e+04 1/m^2; Eulerian rho < 0 at 312
+IRR paper-like R = 1 m, Delta = 0.25 m: max FD err/|T| at v=1: 4.79e-06; A leak into T_0i 1.04e-09; B leak into rho,S 1.00e+00; v=2 prediction vs direct FD: median rel diff 6.39e-09, 95th pct 1.87e-07
+   v =   0.1: violations {'nec': 288, 'wec': 304, 'sec': 288, 'dec': 312} of 312; types {'I': 312}; worst NEC (sampled) -3.9254e-01 1/m^2; Eulerian rho < 0 at 172
+   v =   0.5: violations {'nec': 288, 'wec': 304, 'sec': 288, 'dec': 312} of 312; types {'I': 312}; worst NEC (sampled) -9.8136e+00 1/m^2; Eulerian rho < 0 at 172
+   v =   1.0: violations {'nec': 288, 'wec': 304, 'sec': 288, 'dec': 312} of 312; types {'I': 312}; worst NEC (sampled) -3.9254e+01 1/m^2; Eulerian rho < 0 at 172
+   v =   2.0: violations {'nec': 288, 'wec': 304, 'sec': 288, 'dec': 312} of 312; types {'I': 312}; worst NEC (sampled) -1.5702e+02 1/m^2; Eulerian rho < 0 at 172
+   v =  10.0: violations {'nec': 288, 'wec': 304, 'sec': 288, 'dec': 312} of 312; types {'I': 312}; worst NEC (sampled) -3.9254e+03 1/m^2; Eulerian rho < 0 at 172
+IRR reference R = 100 m, Delta = 1 m: max FD err/|T| at v=1: 1.96e-01; A leak into T_0i 1.95e-08; B leak into rho,S 1.00e+00; v=2 prediction vs direct FD: median rel diff 1.47e-07, 95th pct 1.44e-05
+   v =   0.1: violations {'nec': 284, 'wec': 300, 'sec': 284, 'dec': 312} of 312; types {'I': 312}; worst NEC (sampled) -1.2176e+01 1/m^2; Eulerian rho < 0 at 168
+   v =   0.5: violations {'nec': 284, 'wec': 300, 'sec': 284, 'dec': 312} of 312; types {'I': 312}; worst NEC (sampled) -3.0442e+02 1/m^2; Eulerian rho < 0 at 168
+   v =   1.0: violations {'nec': 284, 'wec': 300, 'sec': 284, 'dec': 312} of 312; types {'I': 312}; worst NEC (sampled) -1.2177e+03 1/m^2; Eulerian rho < 0 at 168
+   v =   2.0: violations {'nec': 284, 'wec': 300, 'sec': 284, 'dec': 312} of 312; types {'I': 312}; worst NEC (sampled) -4.8707e+03 1/m^2; Eulerian rho < 0 at 168
+   v =  10.0: violations {'nec': 284, 'wec': 300, 'sec': 284, 'dec': 312} of 312; types {'I': 312}; worst NEC (sampled) -1.2177e+05 1/m^2; Eulerian rho < 0 at 168
+
+--- stderr ---
+/home/user/Science/runs/2026-10-01-warp-drive-without-negative-energy/calc/lens-constraints_natario_irrot.py:39: RuntimeWarning: overflow encountered in square
+  fp = s * (1 / np.cosh(s * (r + R)) ** 2 - 1 / np.cosh(s * (r - R)) ** 2) / (2 * T)
+

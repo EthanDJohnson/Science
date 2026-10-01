@@ -1,0 +1,52 @@
+# math_run log
+command:  python3 runs/2026-10-01-warp-drive-without-negative-energy/calc/lens-constraints_shell.py
+started:  2026-10-01T21:44:45Z
+duration: 29.7 s
+exit:     0
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+wall points: 416 (r in [9.0, 24] m, 13 angles to the x axis, 2 azimuths)
+beta_warp = 0.00, h = 0.1 m: unconverged 27, skipped 0; robust violations {'nec': 0, 'wec': 0, 'sec': 0, 'dec': 4}; strict {'nec': 4, 'wec': 4, 'sec': 4, 'dec': 4}; types {'I': 394, 'vacuum (within FD error)': 22}; worst nec_min -1.007e-12 1/m^2 at (0.0, -16.54, 17.39, 0.0); min Eulerian rho -4.740e-14 1/m^2  [1.1s]
+beta_warp = 0.00, h = 0.05 m: unconverged 32, skipped 0; robust violations {'nec': 4, 'wec': 4, 'sec': 4, 'dec': 9}; strict {'nec': 8, 'wec': 8, 'sec': 8, 'dec': 9}; types {'I': 399, 'vacuum (within FD error)': 17}; worst nec_min -1.024e-12 1/m^2 at (0.0, -16.54, 17.39, 0.0); min Eulerian rho -3.635e-14 1/m^2  [1.1s]
+beta_warp = 0.02, h = 0.1 m: unconverged 27, skipped 0; robust violations {'nec': 0, 'wec': 0, 'sec': 0, 'dec': 4}; strict {'nec': 4, 'wec': 4, 'sec': 4, 'dec': 4}; types {'I': 394, 'vacuum (within FD error)': 22}; worst nec_min -1.007e-12 1/m^2 at (0.0, -16.54, 17.39, 0.0); min Eulerian rho -4.740e-14 1/m^2  [1.1s]
+beta_warp = 0.02, h = 0.05 m: unconverged 32, skipped 0; robust violations {'nec': 4, 'wec': 4, 'sec': 4, 'dec': 9}; strict {'nec': 8, 'wec': 8, 'sec': 8, 'dec': 9}; types {'I': 399, 'vacuum (within FD error)': 17}; worst nec_min -1.024e-12 1/m^2 at (0.0, -16.54, 17.39, 0.0); min Eulerian rho -3.635e-14 1/m^2  [1.1s]
+   worst-NEC point detail: type I, rho_rest -8.001983216386276e-16, pressures [3.1577461136719062e-12, -1.0466145168681517e-12, 7.393447776247931e-13], err 4.04e-14, rho_E -8.0064e-16 1/m^2 = -9.690e+28 J/m^3
+beta_warp = 0.04, h = 0.1 m: unconverged 27, skipped 0; robust violations {'nec': 34, 'wec': 34, 'sec': 34, 'dec': 38}; strict {'nec': 38, 'wec': 38, 'sec': 38, 'dec': 38}; types {'I': 360, 'IV (sampled)': 34, 'vacuum (within FD error)': 22}; worst nec_min -7.532e-05 1/m^2 at (0.0, -0.0, 12.0, 0.0); min Eulerian rho -4.740e-14 1/m^2  [1.1s]
+beta_warp = 0.04, h = 0.05 m: unconverged 32, skipped 0; robust violations {'nec': 38, 'wec': 38, 'sec': 38, 'dec': 43}; strict {'nec': 42, 'wec': 42, 'sec': 42, 'dec': 43}; types {'I': 365, 'IV (sampled)': 34, 'vacuum (within FD error)': 17}; worst nec_min -7.532e-05 1/m^2 at (0.0, -0.0, 12.0, 0.0); min Eulerian rho -3.635e-14 1/m^2  [1.1s]
+   worst-NEC point detail: type IV (sampled), rho_rest None, pressures None, err 5.30e-11, rho_E 1.1123e-04 1/m^2 = 1.346e+40 J/m^3
+beta_warp = 0.08, h = 0.1 m: unconverged 27, skipped 0; robust violations {'nec': 72, 'wec': 72, 'sec': 72, 'dec': 80}; strict {'nec': 76, 'wec': 76, 'sec': 76, 'dec': 80}; types {'I': 318, 'IV (sampled)': 76, 'vacuum (within FD error)': 22}; worst nec_min -2.876e-04 1/m^2 at (0.0, -0.0, 12.0, 0.0); min Eulerian rho -4.740e-14 1/m^2  [1.1s]
+beta_warp = 0.08, h = 0.05 m: unconverged 32, skipped 0; robust violations {'nec': 76, 'wec': 76, 'sec': 76, 'dec': 85}; strict {'nec': 80, 'wec': 80, 'sec': 80, 'dec': 85}; types {'I': 323, 'IV (sampled)': 76, 'vacuum (within FD error)': 17}; worst nec_min -2.876e-04 1/m^2 at (0.0, -0.0, 12.0, 0.0); min Eulerian rho -3.635e-14 1/m^2  [1.1s]
+beta_warp = 0.15, h = 0.1 m: unconverged 27, skipped 0; robust violations {'nec': 150, 'wec': 150, 'sec': 150, 'dec': 154}; strict {'nec': 154, 'wec': 154, 'sec': 154, 'dec': 154}; types {'I': 244, 'IV (sampled)': 150, 'vacuum (within FD error)': 22}; worst nec_min -6.959e-04 1/m^2 at (0.0, -0.0, 12.0, 0.0); min Eulerian rho -4.740e-14 1/m^2  [1.2s]
+beta_warp = 0.15, h = 0.05 m: unconverged 32, skipped 0; robust violations {'nec': 154, 'wec': 154, 'sec': 154, 'dec': 159}; strict {'nec': 158, 'wec': 158, 'sec': 158, 'dec': 159}; types {'I': 249, 'IV (sampled)': 150, 'vacuum (within FD error)': 17}; worst nec_min -6.959e-04 1/m^2 at (0.0, -0.0, 12.0, 0.0); min Eulerian rho -3.635e-14 1/m^2  [1.2s]
+beta_warp = 0.25, h = 0.1 m: unconverged 27, skipped 0; robust violations {'nec': 184, 'wec': 184, 'sec': 184, 'dec': 190}; strict {'nec': 188, 'wec': 188, 'sec': 188, 'dec': 190}; types {'I': 206, 'IV (sampled)': 188, 'vacuum (within FD error)': 22}; worst nec_min -1.335e-03 1/m^2 at (0.0, -0.0, 12.0, 0.0); min Eulerian rho -4.740e-14 1/m^2  [1.1s]
+beta_warp = 0.25, h = 0.05 m: unconverged 32, skipped 0; robust violations {'nec': 188, 'wec': 188, 'sec': 188, 'dec': 195}; strict {'nec': 192, 'wec': 192, 'sec': 192, 'dec': 195}; types {'I': 211, 'IV (sampled)': 188, 'vacuum (within FD error)': 17}; worst nec_min -1.335e-03 1/m^2 at (0.0, -0.0, 12.0, 0.0); min Eulerian rho -3.635e-14 1/m^2  [1.2s]
+beta_warp = 0.40, h = 0.1 m: unconverged 27, skipped 0; robust violations {'nec': 214, 'wec': 214, 'sec': 214, 'dec': 218}; strict {'nec': 218, 'wec': 218, 'sec': 218, 'dec': 218}; types {'I': 180, 'IV (sampled)': 214, 'vacuum (within FD error)': 22}; worst nec_min -2.327e-03 1/m^2 at (0.0, -0.0, 12.0, 0.0); min Eulerian rho -4.740e-14 1/m^2  [1.1s]
+beta_warp = 0.40, h = 0.05 m: unconverged 32, skipped 0; robust violations {'nec': 218, 'wec': 218, 'sec': 218, 'dec': 223}; strict {'nec': 222, 'wec': 222, 'sec': 222, 'dec': 223}; types {'I': 185, 'IV (sampled)': 214, 'vacuum (within FD error)': 17}; worst nec_min -2.327e-03 1/m^2 at (0.0, -0.0, 12.0, 0.0); min Eulerian rho -3.635e-14 1/m^2  [1.1s]
+--- dense scan of r in [10, 20] m (shift transition), 25 angles, h = 0.05 m ---
+beta_warp = 0.02: 850 pts, unconverged 0; robust {'nec': 0, 'wec': 0, 'sec': 0, 'dec': 0}; strict {'nec': 0, 'wec': 0, 'sec': 0, 'dec': 0}; marginal {'nec': 0, 'wec': 0, 'sec': 0, 'dec': 0}; types {'I': 850}; worst nec_min 2.228e-05
+beta_warp = 0.04: 850 pts, unconverged 0; robust {'nec': 100, 'wec': 100, 'sec': 100, 'dec': 104}; strict {'nec': 100, 'wec': 100, 'sec': 100, 'dec': 104}; marginal {'nec': 0, 'wec': 0, 'sec': 0, 'dec': 0}; types {'I': 742, 'IV (sampled)': 108}; worst nec_min -7.996e-05
+beta_warp = 0.08: 850 pts, unconverged 0; robust {'nec': 264, 'wec': 264, 'sec': 264, 'dec': 266}; strict {'nec': 264, 'wec': 264, 'sec': 264, 'dec': 266}; marginal {'nec': 0, 'wec': 0, 'sec': 0, 'dec': 0}; types {'I': 580, 'IV (sampled)': 270}; worst nec_min -2.980e-04
+beta_warp = 0.15: 850 pts, unconverged 0; robust {'nec': 544, 'wec': 544, 'sec': 544, 'dec': 544}; strict {'nec': 544, 'wec': 544, 'sec': 544, 'dec': 544}; marginal {'nec': 0, 'wec': 0, 'sec': 0, 'dec': 0}; types {'I': 304, 'IV (sampled)': 546}; worst nec_min -7.175e-04
+--- Eulerian slice energy (axisymmetric quadrature about the x axis) ---
+beta = 0.0: n_r = 130, n_th = 24: E_total = 3.74433e+00 m = 5.0421e+27 kg (2.6565 M_J); E- = -5.983e+17 kg; E+ = 5.0421e+27 kg; M_ADM = 4.5114e+27 kg; E_total/M_ADM = 1.1176
+beta = 0.0: n_r = 195, n_th = 36: E_total = 3.74285e+00 m = 5.0401e+27 kg (2.6555 M_J); E- = -1.957e+18 kg; E+ = 5.0401e+27 kg; M_ADM = 4.5114e+27 kg; E_total/M_ADM = 1.1172
+beta = 0.02: n_r = 130, n_th = 24: E_total = 3.74266e+00 m = 5.0398e+27 kg (2.6553 M_J); E- = -5.983e+17 kg; E+ = 5.0398e+27 kg; M_ADM = 4.5114e+27 kg; E_total/M_ADM = 1.1171
+beta = 0.02: n_r = 195, n_th = 36: E_total = 3.74117e+00 m = 5.0378e+27 kg (2.6543 M_J); E- = -1.957e+18 kg; E+ = 5.0378e+27 kg; M_ADM = 4.5114e+27 kg; E_total/M_ADM = 1.1167
+--- light along the x axis through the centre (L = 2000 m each side) ---
+beta = 0.00: interior light speeds +x 0.7611 c, -x 0.7611 c; one-way delay vs flat: +x 271.27 ns, -x 271.27 ns; difference (-x) - (+x) = 0.00 ns
+beta = 0.02: interior light speeds +x 0.7814 c, -x 0.7414 c; one-way delay vs flat: +x 267.88 ns, -x 274.75 ns; difference (-x) - (+x) = 6.86 ns
+beta = 0.04: interior light speeds +x 0.8022 c, -x 0.7222 c; one-way delay vs flat: +x 264.58 ns, -x 278.30 ns; difference (-x) - (+x) = 13.72 ns
+beta = 0.10: interior light speeds +x 0.8677 c, -x 0.6677 c; one-way delay vs flat: +x 255.16 ns, -x 289.47 ns; difference (-x) - (+x) = 34.31 ns
+beta = 0.20: interior light speeds +x 0.9870 c, -x 0.5870 c; one-way delay vs flat: +x 241.08 ns, -x 309.70 ns; difference (-x) - (+x) = 68.62 ns
+beta = 0.25: interior light speeds +x 1.0511 c, -x 0.5511 c; one-way delay vs flat: +x 234.77 ns, -x 320.54 ns; difference (-x) - (+x) = 85.77 ns
+beta = 0.30: interior light speeds +x 1.1181 c, -x 0.5181 c; one-way delay vs flat: +x 228.91 ns, -x 331.83 ns; difference (-x) - (+x) = 102.92 ns
+   L = 1000.0: beta 0.04 delays +x 233.445 ns, -x 247.168 ns, difference 13.723 ns
+   L = 4000.0: beta 0.04 delays +x 295.639 ns, -x 309.362 ns, difference 13.723 ns
+interior static lapse e^a = 0.7611; interior forward light speed exceeds c only if beta_warp > (1 - e^2a)/2 = 0.2103
+S(r >= R2) = 0.0, so the exterior is exact Schwarzschild with zero shift: K_ij = 0 there, P_ADM = 0 and M_ADM = 4.5114e+27 kg independent of beta_warp
+Andreasson/Buchdahl cap at R2 = 20 m: M < (8/9) R2 c^2/(2G) = 1.1970e+28 kg = 6.306 M_J (published shell at 2GM/(c^2 R2) = 0.333)
+
+--- stderr ---
+

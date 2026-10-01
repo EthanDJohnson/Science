@@ -1,0 +1,34 @@
+# math_run log
+command:  python3 runs/2026-10-01-warp-drive-without-negative-energy/calc/lens-constraints_fdcheck.py
+started:  2026-10-01T21:41:55Z
+duration: 5.3 s
+exit:     0
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+NAT reference h=0.04/sigma: points 312 unconverged 29 robust {'nec': 32, 'wec': 32, 'sec': 32, 'dec': 32} strict {'nec': 32, 'wec': 32, 'sec': 32, 'dec': 32} types {'vacuum (within FD error)': 280, 'I': 32} worst nec_min -6.5040e+03
+NAT reference h=0.02/sigma: points 312 unconverged 47 robust {'nec': 58, 'wec': 58, 'sec': 58, 'dec': 58} strict {'nec': 58, 'wec': 58, 'sec': 58, 'dec': 58} types {'vacuum (within FD error)': 254, 'I': 58} worst nec_min -2.1492e+04
+NAT reference h=0.01/sigma: points 312 unconverged 77 robust {'nec': 104, 'wec': 104, 'sec': 104, 'dec': 104} strict {'nec': 104, 'wec': 104, 'sec': 104, 'dec': 104} types {'IV (sampled)': 12, 'vacuum (within FD error)': 208, 'I': 92} worst nec_min -2.1492e+04
+NAT reference h=0.005/sigma: points 312 unconverged 112 robust {'nec': 164, 'wec': 164, 'sec': 164, 'dec': 164} strict {'nec': 164, 'wec': 164, 'sec': 164, 'dec': 164} types {'IV (sampled)': 12, 'I': 152, 'vacuum (within FD error)': 148} worst nec_min -2.1492e+04
+   sample point [  0.           3.00364032   0.         100.09130565]: type vacuum (within FD error) err 1.731e+03 max|T| 6.512e+00 nec True rho_E -4.6879e+00
+NAT reference scaled by 1/100 h=0.04/sigma: points 312 unconverged 29 robust {'nec': 32, 'wec': 32, 'sec': 32, 'dec': 32} strict {'nec': 32, 'wec': 32, 'sec': 32, 'dec': 32} types {'vacuum (within FD error)': 280, 'I': 32} worst nec_min -6.5040e+07
+NAT reference scaled by 1/100 h=0.02/sigma: points 312 unconverged 47 robust {'nec': 58, 'wec': 58, 'sec': 58, 'dec': 58} strict {'nec': 58, 'wec': 58, 'sec': 58, 'dec': 58} types {'vacuum (within FD error)': 254, 'I': 58} worst nec_min -2.1492e+08
+NAT reference scaled by 1/100 h=0.01/sigma: points 312 unconverged 77 robust {'nec': 104, 'wec': 104, 'sec': 104, 'dec': 104} strict {'nec': 104, 'wec': 104, 'sec': 104, 'dec': 104} types {'IV (sampled)': 12, 'vacuum (within FD error)': 208, 'I': 92} worst nec_min -2.1492e+08
+NAT reference scaled by 1/100 h=0.005/sigma: points 312 unconverged 112 robust {'nec': 164, 'wec': 164, 'sec': 164, 'dec': 164} strict {'nec': 164, 'wec': 164, 'sec': 164, 'dec': 164} types {'IV (sampled)': 12, 'I': 152, 'vacuum (within FD error)': 148} worst nec_min -2.1492e+08
+   sample point [0.         0.0300364  0.         1.00091306]: type vacuum (within FD error) err 1.731e+07 max|T| 6.512e+04 nec True rho_E -4.6879e+04
+IRR reference h=0.04/sigma: points 312 unconverged 17 robust {'nec': 32, 'wec': 32, 'sec': 32, 'dec': 32} strict {'nec': 32, 'wec': 32, 'sec': 32, 'dec': 32} types {'vacuum (within FD error)': 280, 'I': 32} worst nec_min -7.8941e+01
+IRR reference h=0.02/sigma: points 312 unconverged 26 robust {'nec': 50, 'wec': 50, 'sec': 50, 'dec': 50} strict {'nec': 50, 'wec': 50, 'sec': 50, 'dec': 50} types {'vacuum (within FD error)': 262, 'I': 50} worst nec_min -3.1703e+03
+IRR reference h=0.01/sigma: points 312 unconverged 50 robust {'nec': 82, 'wec': 82, 'sec': 82, 'dec': 82} strict {'nec': 82, 'wec': 82, 'sec': 82, 'dec': 82} types {'I': 82, 'vacuum (within FD error)': 230} worst nec_min -3.1702e+03
+IRR reference h=0.005/sigma: points 312 unconverged 92 robust {'nec': 140, 'wec': 140, 'sec': 140, 'dec': 140} strict {'nec': 140, 'wec': 140, 'sec': 140, 'dec': 140} types {'I': 140, 'vacuum (within FD error)': 172} worst nec_min -1.1869e+04
+   sample point [  0.           3.00364032   0.         100.09130565]: type vacuum (within FD error) err 1.523e+11 max|T| 3.550e+05 nec True rho_E -7.1535e+02
+IRR reference scaled by 1/100 h=0.04/sigma: points 312 unconverged 17 robust {'nec': 32, 'wec': 32, 'sec': 32, 'dec': 32} strict {'nec': 32, 'wec': 32, 'sec': 32, 'dec': 32} types {'vacuum (within FD error)': 280, 'I': 32} worst nec_min -7.8941e+05
+IRR reference scaled by 1/100 h=0.02/sigma: points 312 unconverged 26 robust {'nec': 50, 'wec': 50, 'sec': 50, 'dec': 50} strict {'nec': 50, 'wec': 50, 'sec': 50, 'dec': 50} types {'vacuum (within FD error)': 262, 'I': 50} worst nec_min -3.1703e+07
+IRR reference scaled by 1/100 h=0.01/sigma: points 312 unconverged 50 robust {'nec': 82, 'wec': 82, 'sec': 82, 'dec': 82} strict {'nec': 82, 'wec': 82, 'sec': 82, 'dec': 82} types {'I': 82, 'vacuum (within FD error)': 230} worst nec_min -3.1702e+07
+IRR reference scaled by 1/100 h=0.005/sigma: points 312 unconverged 92 robust {'nec': 140, 'wec': 140, 'sec': 140, 'dec': 140} strict {'nec': 140, 'wec': 140, 'sec': 140, 'dec': 140} types {'I': 140, 'vacuum (within FD error)': 172} worst nec_min -1.1869e+08
+   sample point [0.         0.0300364  0.         1.00091306]: type vacuum (within FD error) err 1.523e+15 max|T| 3.550e+09 nec True rho_E -7.1382e+06
+
+--- stderr ---
+/home/user/Science/runs/2026-10-01-warp-drive-without-negative-energy/calc/lens-constraints_natario_irrot.py:39: RuntimeWarning: overflow encountered in square
+  fp = s * (1 / np.cosh(s * (r + R)) ** 2 - 1 / np.cosh(s * (r - R)) ** 2) / (2 * T)
+

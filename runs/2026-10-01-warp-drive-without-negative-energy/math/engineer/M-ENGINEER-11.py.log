@@ -1,0 +1,26 @@
+# math_run log
+command:  python3 runs/2026-10-01-warp-drive-without-negative-energy/math/engineer/M-ENGINEER-11.py
+started:  2026-10-01T22:30:13Z
+duration: 0.5 s
+exit:     0
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   7 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+  interior dipole integral 87.9645943005142 vs 4 pi R z/3 = 87.9645943005142
+PASS 87.9645943005142072479429771192 == 28*pi: numeric at 48 points, constants
+  lens estimate 2Gm omega/(c^2 R) (rad/s): ours = 1.48523e-20, lens = 1.5e-20, rel diff = 0.00985, rtol = 0.02
+PASS 0.009845297450844837 <= 0.0200000000000000: symbolic, constant
+  thin-shell Lense-Thirring 4Gm omega/(3c^2R) = 9.9e-21 rad/s, gap 5.31
+  gap to GINGERINO 2e-15 rad/s: ours = 5.12924, lens = 5.1, |diff| = 0.0292, tol = 0.05
+PASS 0.029235682198096136 <= 0.0500000000000000: symbolic, constant
+PASS 0.17609125905568127 <= 0.300000000000000: symbolic, constant
+  counterflow beta = 4.95e-29; single stream m u/R: 9.91e-29
+PASS 0.30502638946204164 <= 0.500000000000000: symbolic, constant
+  orders short of 0.02: ours = 26.6061, lens = 26, |diff| = 0.606, tol = 0.7
+PASS 0.6060563851260241 <= 0.700000000000000: symbolic, constant
+PASS G*1 kg*(1/s)/(c^2*1 m) has the dimension of 1/s: dimensional analysis
+SUMMARY: 7 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

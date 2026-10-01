@@ -1,0 +1,43 @@
+# math_run log
+command:  python3 runs/2026-10-01-warp-drive-without-negative-energy/math/engineer/M-ENGINEER-07.py
+started:  2026-10-01T22:30:11Z
+duration: 0.5 s
+exit:     0
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   16 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+PASS exp(2*atanh(v)) == (v + 1)/(1 - v): numeric at 50 points, v in [0.001, 0.99]
+PASS lim v->0 of (v + 1)/(1 - v) == 1: symbolic limit 1
+  photon start+stop ratio at 0.04c: ours = 1.08333, lens = 1.083, |diff| = 0.000333, tol = 0.001
+PASS 0.00033333333333351867 <= 0.00100000000000000: symbolic, constant
+  rocket_tools ratio^2: ours = 1.08333, lens = 1.0833, |diff| = 3.33e-05, tol = 0.001
+PASS 0.00003333333333332966 <= 0.00100000000000000: symbolic, constant
+  shell propellant energy (J): ours = 3.37857e+43, lens = 3.4e+43, rel diff = 0.0063, rtol = 0.02
+PASS 0.006302791352502113 <= 0.0200000000000000: symbolic, constant
+  in world-years: ours = 5.72639e+22, lens = 5.7e+22, rel diff = 0.00463, rtol = 0.02
+PASS 0.004629946298392085 <= 0.0200000000000000: symbolic, constant
+  orders over one world-year: ours = 22.7579, lens = 22.75, |diff| = 0.00788, tol = 0.02
+PASS 0.007880975263798717 <= 0.0200000000000000: symbolic, constant
+  payload-alone energy (J): ours = 7.48963e+20, lens = 7.5e+20, rel diff = 0.00138, rtol = 0.01
+PASS 0.001383134736867464 <= 0.0100000000000000: symbolic, constant
+  payload-alone world-years: ours = 1.26943, lens = 1.3, |diff| = 0.0306, tol = 0.05
+PASS 0.030571781445170476 <= 0.0500000000000000: symbolic, constant
+  coast time (yr): ours = 109.25, lens = 109, |diff| = 0.25, tol = 0.5
+PASS 0.250000000000000 <= 0.500000000000000: symbolic, constant
+  1 g ship time (yr): ours = 3.58239, lens = 3.58, |diff| = 0.00239, tol = 0.01
+PASS 0.0023937227478327827 <= 0.0100000000000000: symbolic, constant
+  1 g Earth time (yr): ours = 6.0025, lens = 6, |diff| = 0.0025, tol = 0.01
+PASS 0.0025027772524701675 <= 0.0100000000000000: symbolic, constant
+  1 g mass ratio: ours = 40.37, lens = 40.4, |diff| = 0.03, tol = 0.2
+PASS 0.029952351236708807 <= 0.200000000000000: symbolic, constant
+  rocket_tools trip: {'profile': 'accelerate to the midpoint, then brake', 'ship_time_s': 113051748.14498702, 'earth_time_s': 189424581.64342254, 'ship_years': 3.582393722747833, 'earth_years': 6.00250277725247, 'peak_beta': 0.9516558449006334, 'peak_gamma': 3.2555651770846086, 'rapidity_change': 3.698088115165448, 'coast_distance_ly': 0.0, 'mass_ratio': 40.37004764876329, 'propellant_per_kg_payload': 39.37004764876329, 'propellant_energy_per_kg_payload_J': 3.5384034211441275e+18}
+  1 g propellant energy (J): ours = 3.5384e+23, lens = 3.5e+23, rel diff = 0.011, rtol = 0.02
+PASS 0.010972406041179328 <= 0.0200000000000000: symbolic, constant
+  shell/payload bill ratio (orders): ours = 22.6543, lens = 22.65, |diff| = 0.00427, tol = 0.01
+PASS 0.004272827097711485 <= 0.0100000000000000: symbolic, constant
+PASS 4.37 ly/(0.04 c) == 109.25 yr: within 0.001; 3.44767e+09 vs 3.44767e+09 (SI)
+SUMMARY: 16 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

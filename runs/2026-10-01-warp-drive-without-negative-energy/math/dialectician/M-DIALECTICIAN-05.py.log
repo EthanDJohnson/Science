@@ -1,0 +1,27 @@
+# math_run log
+command:  python3 runs/2026-10-01-warp-drive-without-negative-energy/math/dialectician/M-DIALECTICIAN-05.py
+started:  2026-10-01T22:12:33Z
+duration: 1.9 s
+exit:     0
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   9 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+m = 3.33435 m, 2m/R2 = 0.33343, rho0 = 1.13717e-04 1/m^2
+alpha(R2) = 0.81643; alpha_in TOV = 0.76072 (n/2: 0.7607177); pressure-free = 0.76860
+P(R1)/rho = 0.07324
+PASS G*4.49e27 kg/c^2 == 3.334 m: within 0.0005; 3.33435 vs 3.334 (SI)
+PASS 0.33343459608342807 == 0.333: within 0.002; 0.333435 vs 0.333 (SI)
+PASS 0.8164345680558681 == 0.816: within 0.001; 0.816435 vs 0.816 (SI)
+PASS 0.760717682847248 == 0.761: within 0.001; 0.760718 vs 0.761 (SI)
+PASS 0.7686007525187892 == 0.769: within 0.001; 0.768601 vs 0.769 (SI)
+PASS 0.07324252671514976 == 0.073: within 0.01; 0.0732425 vs 0.073 (SI)
+tiny-mass limit alpha_in = 0.9999999952260399
+PASS 0.9999999952260399 == 1: within 1e-06; 1 vs 1 (SI)
+weak field: 1 - alpha_in = 4.774032e-05, Newtonian Phi_c = 4.773960e-05
+PASS 4.774031923771016e-05 == 4.773960173004856e-05: within 0.001; 4.77403e-05 vs 4.77396e-05 (SI)
+PASS G*1 kg/c^2 has the dimension of m: dimensional analysis
+SUMMARY: 9 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

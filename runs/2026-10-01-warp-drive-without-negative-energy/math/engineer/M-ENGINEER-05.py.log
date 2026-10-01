@@ -1,0 +1,37 @@
+# math_run log
+command:  python3 runs/2026-10-01-warp-drive-without-negative-energy/math/engineer/M-ENGINEER-05.py
+started:  2026-10-01T22:30:10Z
+duration: 0.5 s
+exit:     1
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   13 PASS, 1 FAIL, 0 UNDECIDED
+
+--- stdout ---
+PASS sin(theta)/sqrt(R**2 - 2*R*r*cos(theta) + r**2) == sin(theta)/sqrt(R**2 - 2*R*r*cos(theta) + r**2): symbolic
+PASS 2*pi*R**2*(-(R - r)/(R*r) + (R + r)/(R*r)) == 4*pi*R: symbolic
+PASS 2*pi*R**2*(-(-R + r)/(R*r) + (R + r)/(R*r)) == 4*pi*R**2/r: symbolic
+  numeric Int dA/|x-x'| at r=3, R=7: 87.9645943005142 vs 4 pi R = 87.9645943005142
+PASS 87.9645943005142072479429771192 == 28*pi: numeric at 48 points, constants
+  numeric dipole integral at r=30, R=7: 11.1747614241024 vs 4 pi R^4/(3 r^2) = 11.1747614241024
+PASS 11.1747614241023605075042723911 == 2401*pi/675: numeric at 48 points, constants
+PASS 4*G_g*M*R**2*omega/(3*c_c**3*r**2) == 4*G_g*M*R**2*omega/(3*c_c**3*r**2): symbolic
+PASS lim R2->R1 of 4*G_g*P*(-1/R2 + 1/R1)/c_c**3 == 0: symbolic limit 0
+PASS 4*G*(1 kg m/s)/(c^3*1 m) has the dimension of dimensionless: dimensional analysis
+  P per stream = 4.037e+34 kg m/s; cP = 1.21e+43 J; 2cP = 2.421e+43 J
+  cP (one stream) vs lens E_flow (J): ours = 1.21026e+43, lens = 1.2e+43, rel diff = 0.00855, rtol = 0.02
+PASS 0.008546303615171835 <= 0.0200000000000000: symbolic, constant
+  cP/c^2 (kg): ours = 1.34659e+26, lens = 1.35e+26, rel diff = 0.00253, rtol = 0.01
+PASS 0.002525243333252658 <= 0.0100000000000000: symbolic, constant
+  cP/(M c^2): ours = 0.0299909, lens = 0.03, rel diff = 0.000304, rtol = 0.02
+PASS 0.0003036959910104331 <= 0.0200000000000000: symbolic, constant
+  two-stream minimum 2cP (J) vs lens 1.2e43: ours = 2.42051e+43, lens = 1.2e+43, rel diff = 1.02, rtol = 0.02
+FAIL 1.0170926072303437 <= 0.0200000000000000: numeric, constant; counterexample value = 0.9970926072; value 0.9970926072
+  mass per stream at u = 10 km/s (kg): ours = 4.03698e+30, lens = 4e+30, rel diff = 0.00924, rtol = 0.02
+PASS 0.009244505692506788 <= 0.0200000000000000: symbolic, constant
+  mass per stream at beta = 1e-6, u = 10 km/s (kg): ours = 2.01849e+26, lens = 2e+26, rel diff = 0.00924, rtol = 0.02
+PASS 0.009244505692506788 <= 0.0200000000000000: symbolic, constant
+  if all of M = 4.49e27 kg counterflows (half each way), u = 2P/M = 1.798e+07 m/s = 0.0600 c (lens: about 0.03c)
+SUMMARY: 13 pass, 1 fail, 0 undecided
+
+--- stderr ---
+

@@ -1,0 +1,24 @@
+# math_run log
+command:  python3 runs/2026-10-01-warp-drive-without-negative-energy/math/dialectician/M-DIALECTICIAN-08.py
+started:  2026-10-01T22:19:02Z
+duration: 282.4 s
+exit:     0
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   8 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+PASS -Derivative(B(x, y, z), (y, 2)) - Derivative(B(x, y, z), (z, 2)) == -Derivative(B(x, y, z), (y, 2)) - Derivative(B(x, y, z), (z, 2)): symbolic
+PASS Derivative(B(x, y, z), x, y) == Derivative(B(x, y, z), x, y): symbolic
+PASS 0 == 0: symbolic
+Rb = 0.0: net int j_x/b = 6.4248e-34, int |j_x|/b = 16.740102 m, net/total = 3.838e-35
+PASS 6.424781923854294603553926E-34 == 0: numeric at 48 points, constants
+Rb = 1.0: net int j_x/b = 6.485e-34, int |j_x|/b = 20.296009 m, net/total = 3.1952e-35
+PASS 6.484967234616395723961926E-34 == 0: numeric at 48 points, constants
+Rb = 2.0: net int j_x/b = 6.4097e-34, int |j_x|/b = 26.317719 m, net/total = 2.4355e-35
+PASS 6.409735596163769323451927E-34 == 0: numeric at 48 points, constants
+PASS 2*r**2*Derivative(S(r), (r, 2))/3 + 4*r*Derivative(S(r), r)/3 == 2*r**2*Derivative(S(r), (r, 2))/3 + 4*r*Derivative(S(r), r)/3: symbolic
+PASS 1/m^2 * c^4/G / c has the dimension of kg/(m^2*s): dimensional analysis
+SUMMARY: 8 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

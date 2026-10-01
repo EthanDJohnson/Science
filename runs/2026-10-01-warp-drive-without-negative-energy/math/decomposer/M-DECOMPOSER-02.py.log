@@ -1,0 +1,18 @@
+# math_run log
+command:  python3 runs/2026-10-01-warp-drive-without-negative-energy/math/decomposer/M-DECOMPOSER-02.py
+started:  2026-10-01T21:37:59Z
+duration: 0.3 s
+exit:     0
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   5 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+PASS Pm/(Pm + d) <= 1: numeric at 49 points, Pm in [0, 10], d in [0, 10]
+PASS lim d->0 of Pm/(Pm + d) == 1: symbolic limit 1
+PASS -Pm <= 0: symbolic, Pm in [0, 10]
+PASS (1 kg m/s) * (3e8 m/s) / (1 J) has the dimension of dimensionless: dimensional analysis
+PASS (1 kg m/s) * (3e8 m/s)^2 / (1 J) has the dimension of m/s: dimensional analysis
+SUMMARY: 5 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

@@ -1,0 +1,27 @@
+# math_run log
+command:  python3 runs/2026-10-01-warp-drive-without-negative-energy/math/mechanist/M-MECHANIST-01.py
+started:  2026-10-01T21:51:00Z
+duration: 3.5 s
+exit:     1
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   7 PASS, 3 FAIL, 0 UNDECIDED
+
+--- stdout ---
+j_x (raw, at y-plane) = b0*(r*sin(theta)**2*Derivative(F(r), (r, 2)) - sin(theta)**2*Derivative(F(r), r) + 2*Derivative(F(r), r))/(16*pi*r)
+FAIL b0*(r**2*sin(theta)**2 - 1)*exp(-r**2)/(4*pi) == -b0*(2*(2*r**2 - 1)*exp(-r**2)*sin(theta)**2 - 2*(cos(theta)**2 + 1)*exp(-r**2))/(16*pi): numeric, b0 in [0.01, 1], r in [0.1, 5], theta in [0, 3.1]; counterexample b0 = 0.505, r = 2.55, theta = 1.55; lhs = 0.0003314512875, rhs = -0.0003314512875
+FAIL b0*r**2*(3*r**4*sin(theta)**2 - r**4 - sin(theta)**2 - 1)/(2*pi*(r**4 + 1)**3) == -b0*(4*r**2*(8*r**4/(r**4 + 1) - 3)*sin(theta)**2/(r**4 + 1)**2 - 4*r**2*(cos(theta)**2 + 1)/(r**4 + 1)**2)/(16*pi): numeric, b0 in [0.01, 1], r in [0.1, 5], theta in [0, 3.1]; counterexample b0 = 0.505, r = 2.55, theta = 1.55; lhs = 0.0005318196468, rhs = -0.0005318196468
+FAIL b0*(4*r**3*sin(theta)**2*cos(r) + 12*r**2*sin(r)*sin(theta)**2 - 9*r*sin(theta)**2*cos(r) - 12*r*cos(r) + 9*sin(r)*sin(theta)**2 - 18*sin(r))*exp(-r**2/3)/(144*pi*r) == -b0*((4*r*sin(r)/3 + 2*(2*r**2 - 3)*cos(r)/9 - cos(r))*exp(-r**2/3)*sin(theta)**2 + (-2*r*exp(-r**2/3)*cos(r)/3 - exp(-r**2/3)*sin(r))*(cos(theta)**2 + 1)/r)/(16*pi): numeric, b0 in [0.01, 1], r in [0.1, 5], theta in [0, 3.1]; counterexample b0 = 0.505, r = 2.55, theta = 1.55; lhs = 0.001397363866, rhs = -0.001397363866
+R_tt linear = 0 ; R linear = 0
+angular integrals: 8*pi/3 16*pi/3
+PASS 8*pi/3 == 8*pi/3: symbolic
+PASS 16*pi/3 == 16*pi/3: symbolic
+PASS r**2*(8*pi*Derivative(g(r), (r, 2))/3 + 16*pi*Derivative(g(r), r)/(3*r)) == 8*pi*(r**2*Derivative(g(r), (r, 2)) + 2*r*Derivative(g(r), r))/3: symbolic
+total of r^2 f'' + 2 r f' over wall (smoothstep): 0
+PASS 0 == 0: symbolic
+PASS lim b0->0 of -b0*(2*sin(t)**2 + (3*cos(t)**2 + 3)/r)/(16*pi) == 0: symbolic limit 0
+PASS 1 / (1 m) / (1 m) has the dimension of 1/m^2: dimensional analysis
+PASS (6.674e-11 m^3/(kg*s^2)) * (1 J/m^3) / (2.998e8 m/s)^4 has the dimension of 1/m^2: dimensional analysis
+SUMMARY: 7 pass, 3 fail, 0 undecided
+
+--- stderr ---
+

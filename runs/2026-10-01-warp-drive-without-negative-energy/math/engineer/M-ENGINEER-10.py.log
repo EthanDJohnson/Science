@@ -1,0 +1,23 @@
+# math_run log
+command:  python3 runs/2026-10-01-warp-drive-without-negative-energy/math/engineer/M-ENGINEER-10.py
+started:  2026-10-01T22:30:13Z
+duration: 0.3 s
+exit:     0
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   5 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+  torque gap (minimum noise): ours = 0.845098, lens = 0.85, |diff| = 0.0049, tol = 0.01
+PASS 0.004901959985743165 <= 0.0100000000000000: symbolic, constant
+  torque gap at 10 mHz (2e-12): 1.30 orders
+  1 sigma force over 1e6 s (N): ours = 3e-15, lens = 3e-15, rel diff = 2.22e-16, rtol = 1e-06
+PASS 2.220446049250313E-16 <= 0.00000100000000000000: symbolic, constant
+  force gap vs 5e-16 N: ours = 0.778151, lens = 0.78, |diff| = 0.00185, tol = 0.01
+PASS 0.0018487496163563932 <= 0.0100000000000000: symbolic, constant
+  with sqrt(2) one-sided convention: 0.93; vs 2e-16 N ('few' low end): 1.18
+PASS 1 N/Hz^0.5 / (1 s)^0.5 has the dimension of N: dimensional analysis
+PASS 3e-12 N/Hz^0.5 / (1e6 s)^0.5 == 3e-15 N: within 1e-06; 3e-15 vs 3e-15 (SI)
+SUMMARY: 5 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

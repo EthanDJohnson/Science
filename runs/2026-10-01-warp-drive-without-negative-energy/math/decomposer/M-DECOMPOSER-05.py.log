@@ -1,0 +1,34 @@
+# math_run log
+command:  python3 runs/2026-10-01-warp-drive-without-negative-energy/math/decomposer/M-DECOMPOSER-05.py
+started:  2026-10-01T21:37:48Z
+duration: 2.7 s
+exit:     0
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   10 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+cavity A = e^(2a) = 0.5793 (tool rebuild, smoothed)
+beta = 0.0: +x excess = 240.11 ns (claim 240.0)
+PASS 240.10543677776758 ns == 240.0 ns: within 0.01; 2.40105e-07 vs 2.4e-07 (SI)
+beta = 0.02: +x excess = 236.72 ns (claim 236.6)
+PASS 236.7164486272588 ns == 236.6 ns: within 0.01; 2.36716e-07 vs 2.366e-07 (SI)
+beta = 0.04: +x excess = 233.41 ns (claim 233.3)
+PASS 233.41105991442916 ns == 233.3 ns: within 0.01; 2.33411e-07 vs 2.333e-07 (SI)
+beta = 0.4: +x excess = 187.27 ns (claim 187.2)
+PASS 187.26947411065058 ns == 187.2 ns: within 0.01; 1.87269e-07 vs 1.872e-07 (SI)
+beta = 0.95: +x excess = 150.87 ns (claim 150.8)
+PASS 150.86727857905555 ns == 150.8 ns: within 0.01; 1.50867e-07 vs 1.508e-07 (SI)
+beta = 0.02: co/counter difference = 6.862 ns (claim 6.86)
+PASS 6.861656761542093 ns == 6.86 ns: within 0.01; 6.86166e-09 vs 6.86e-09 (SI)
+beta = 0.04: co/counter difference = 13.723 ns (claim 13.72)
+PASS 13.723313523084215 ns == 13.72 ns: within 0.01; 1.37233e-08 vs 1.372e-08 (SI)
+D = 1e+02 m: difference at beta=0.02 = 6.862 ns; +x excess beta=0 134.4 ns
+PASS 6.861656761542093 ns == 6.86 ns: within 0.01; 6.86166e-09 vs 6.86e-09 (SI)
+D = 1e+05 m: difference at beta=0.02 = 6.862 ns; +x excess beta=0 446.3 ns
+PASS 6.861656761542122 ns == 6.86 ns: within 0.01; 6.86166e-09 vs 6.86e-09 (SI)
+beta needed for 7.6 ns difference = 0.0222
+PASS 0.02215208444291804 == 0.022: within 0.02; 0.0221521 vs 0.022 (SI)
+SUMMARY: 10 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

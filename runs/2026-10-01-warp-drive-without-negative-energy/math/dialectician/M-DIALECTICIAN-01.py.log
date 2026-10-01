@@ -1,0 +1,25 @@
+# math_run log
+command:  python3 runs/2026-10-01-warp-drive-without-negative-energy/math/dialectician/M-DIALECTICIAN-01.py
+started:  2026-10-01T22:03:54Z
+duration: 206.8 s
+exit:     0
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   7 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+generic identity residual: 0
+PASS 2*Derivative(phi(x, y, z), (x, 2))*Derivative(phi(x, y, z), (y, 2)) + 2*Derivative(phi(x, y, z), (x, 2))*Derivative(phi(x, y, z), (z, 2)) + 2*Derivative(phi(x, y, z), (y, 2))*Derivative(phi(x, y, z), (z, 2)) - 2*Derivative(phi(x, y, z), x, y)**2 - 2*Derivative(phi(x, y, z), x, z)**2 - 2*Derivative(phi(x, y, z), y, z)**2 == 2*Derivative(phi(x, y, z), (x, 2))*Derivative(phi(x, y, z), (y, 2)) + 2*Derivative(phi(x, y, z), (x, 2))*Derivative(phi(x, y, z), (z, 2)) + 2*Derivative(phi(x, y, z), (y, 2))*Derivative(phi(x, y, z), (z, 2)) - 2*Derivative(phi(x, y, z), x, y)**2 - 2*Derivative(phi(x, y, z), x, z)**2 - 2*Derivative(phi(x, y, z), y, z)**2: symbolic
+test 0 sign 1: rhoE(4D) = -0.0527566982199840, claim = -0.0527566982199840
+PASS (-900*x**2 + 540*x*y*z + 300*y**2 - 81*z**4 - 100*z**2)/(1800*pi) == (-8*x**2 - 4*y**2 - 18*z**4/25 - 8*z**2/9 + (2*y + 2*(9*x*z + 5*y)/15)**2 - 4*(9*x*z + 5*y)**2/225)/(16*pi): symbolic
+test 0 sign -1: rhoE(4D) = -0.0527566982199840, claim = -0.0527566982199840
+PASS (-900*x**2 + 540*x*y*z + 300*y**2 - 81*z**4 - 100*z**2)/(1800*pi) == (-8*x**2 - 4*y**2 - 18*z**4/25 - 8*z**2/9 + (2*y + 2*(9*x*z + 5*y)/15)**2 - 4*(9*x*z + 5*y)**2/225)/(16*pi): symbolic
+test 1 sign 1: rhoE(4D) = -0.0956967239710306, claim = -0.0956967239710306
+PASS (-9*a**2*x**4 - 12*a**2*x*y*z - 4*a**2*y**2 - 6*a*x**2*z + 4*a*x*y - x**2 - y**2 - z**2)/(8*pi) == (-36*a**2*x**2*y**2 - 4*a**2*z**2 - 2*y**2 - 2*(3*a*x**2 + z)**2 - 2*(-2*a*y + x)**2 + (6*a*x*y - 2*a*z)**2)/(16*pi): symbolic
+test 1 sign -1: rhoE(4D) = -0.0956967239710306, claim = -0.0956967239710306
+PASS (-9*a**2*x**4 - 12*a**2*x*y*z - 4*a**2*y**2 - 6*a*x**2*z + 4*a*x*y - x**2 - y**2 - z**2)/(8*pi) == (-36*a**2*x**2*y**2 - 4*a**2*z**2 - 2*y**2 - 2*(3*a*x**2 + z)**2 - 2*(-2*a*y + x)**2 + (6*a*x*y - 2*a*z)**2)/(16*pi): symbolic
+PASS lim eps->0 of -8*x**2 + 24*y*z == -8*x**2 + 24*y*z: symbolic limit -8*x**2 + 24*y*z
+PASS (1/m^2) * c^4 / G has the dimension of J/m^3: dimensional analysis
+SUMMARY: 7 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

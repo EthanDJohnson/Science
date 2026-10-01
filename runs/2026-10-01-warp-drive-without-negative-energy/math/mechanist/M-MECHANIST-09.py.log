@@ -1,0 +1,22 @@
+# math_run log
+command:  python3 runs/2026-10-01-warp-drive-without-negative-energy/math/mechanist/M-MECHANIST-09.py
+started:  2026-10-01T21:54:38Z
+duration: 0.3 s
+exit:     0
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   6 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+v=0.04: t_ext = 109.250 yr; N t = 83.139 yr; N t / gamma = 83.073 yr
+PASS 109.25 yr == 109.2 yr: within 0.0005; 3.44767e+09 vs 3.44609e+09 (SI)
+PASS 83.07271197413506 yr == 83.1 yr: within 0.002; 2.62158e+09 vs 2.62244e+09 (SI)
+v=0.02: t_ext = 218.500 yr; N t = 166.279 yr; N t / gamma = 166.245 yr
+PASS 218.5 yr == 218.5 yr: within 0.0005; 6.89534e+09 vs 6.89534e+09 (SI)
+PASS 166.24524097376474 yr == 166.3 yr: within 0.002; 5.2463e+09 vs 5.24803e+09 (SI)
+photon rocket 1 g: phi = 1.8490, tau = 3.582 yr
+PASS 113051748.14498702 s == 3.58 yr: within 0.003; 1.13052e+08 vs 1.12976e+08 (SI)
+PASS lim N_l->1 of N_l*d/v == d/v: symbolic limit d/v
+SUMMARY: 6 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

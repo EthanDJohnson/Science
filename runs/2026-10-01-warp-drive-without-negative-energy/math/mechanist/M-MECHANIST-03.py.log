@@ -1,0 +1,24 @@
+# math_run log
+command:  python3 runs/2026-10-01-warp-drive-without-negative-energy/math/mechanist/M-MECHANIST-03.py
+started:  2026-10-01T21:53:18Z
+duration: 1.9 s
+exit:     0
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   8 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+M_ADM = 4.5114e+27 kg; GM/c^2 = 3.3503 m
+beta=0.02: P+ = 6.7579e+34, P- = -6.7579e+34 kg m/s; net/P+ = 2.45e-07; P+/(M_ADM c) = 0.0500
+PASS 6.757943764719643e+34 kg*m/s == 6.8e34 kg*m/s: within 0.03; 6.75794e+34 vs 6.8e+34 (SI)
+PASS 0.04996643603312376 m/m == 0.05 m/m: within 0.03; 0.0499664 vs 0.05 (SI)
+PASS 0.0 == 0: symbolic
+beta=0.04: P+ = 1.3516e+35, P- = -1.3516e+35 kg m/s; net/P+ = 2.45e-07; P+/(M_ADM c) = 0.0999
+PASS 1.3515887529439287e+35 kg*m/s == 1.35e35 kg*m/s: within 0.03; 1.35159e+35 vs 1.35e+35 (SI)
+PASS 0.09993287206624751 m/m == 0.1 m/m: within 0.03; 0.0999329 vs 0.1 (SI)
+PASS 0.0 == 0: symbolic
+PASS 2.00000000000000 == 2.00000000000000: symbolic
+PASS (1 m) * (2.998e8 m/s)^3 / (6.674e-11 m^3/(kg*s^2)) has the dimension of kg*m/s: dimensional analysis
+SUMMARY: 8 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

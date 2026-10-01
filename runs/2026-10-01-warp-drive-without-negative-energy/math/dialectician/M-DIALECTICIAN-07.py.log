@@ -1,0 +1,21 @@
+# math_run log
+command:  python3 runs/2026-10-01-warp-drive-without-negative-energy/math/dialectician/M-DIALECTICIAN-07.py
+started:  2026-10-01T22:12:36Z
+duration: 2.1 s
+exit:     0
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   5 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+null coordinate speeds: [alpha - b]
+PASS 2*L*b/((alpha - b)*(alpha + b)) == 2*L*b/(alpha**2 - b**2): symbolic
+PASS lim b->0 of -L/(alpha + b) + L/(alpha - b) == 0: symbolic limit 0
+alpha = 0.76072: delta t = 4.6145 ns (Killing time); static-observer proper time = 3.5103 ns
+alpha = 0.76860: delta t = 4.5202 ns (Killing time); static-observer proper time = 3.4743 ns
+PASS 2*20 m*0.02/(0.760717682847248^2 - 0.02^2)/c == 4.6 ns: within 0.01; 4.61448e-09 vs 4.6e-09 (SI)
+PASS 2*20 m*0.02/(0.7686007525187892^2 - 0.02^2)/c == 4.5 ns: within 0.01; 4.52024e-09 vs 4.5e-09 (SI)
+PASS 2*20 m*0.02/c has the dimension of s: dimensional analysis
+SUMMARY: 5 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

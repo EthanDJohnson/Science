@@ -1,0 +1,23 @@
+# math_run log
+command:  python3 runs/2026-10-01-warp-drive-without-negative-energy/math/decomposer/M-DECOMPOSER-08.py
+started:  2026-10-01T21:38:36Z
+duration: 5.5 s
+exit:     0
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   4 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+beta = 0.0: points 114, NEC/WEC/SEC/DEC violations {'nec': 0, 'wec': 0, 'sec': 0, 'dec': 0}, types {'I': 114}, worst nec_min (2.3923931892949326e-06, (0.0, 4.898587196589413e-16, 0.0, 8.0)), min Eulerian rho 2.392e-06 m^-2, unconverged 0
+beta = 0.02: points 114, NEC/WEC/SEC/DEC violations {'nec': 0, 'wec': 0, 'sec': 0, 'dec': 0}, types {'I': 114}, worst nec_min (2.298340690593164e-06, (0.0, 5.656854249492381, 0.0, 5.65685424949238)), min Eulerian rho 2.392e-06 m^-2, unconverged 0
+beta = 0.04: points 114, NEC/WEC/SEC/DEC violations {'nec': 17, 'wec': 17, 'sec': 17, 'dec': 17}, types {'I': 97, 'IV (sampled)': 17}, worst nec_min (-7.909295909122371e-05, (0.0, 7.500961644777539e-16, 0.0, 12.25)), min Eulerian rho 2.392e-06 m^-2, unconverged 0
+PASS 0 == 0: symbolic
+beta=0.04 NEC violated: True
+PASS 1 == 1: symbolic
+PASS 7.909295909122371e-05 == 7.9e-5: within 0.15; 7.9093e-05 vs 7.9e-05 (SI)
+first NEC failure on our lines: beta in [0.02453, 0.02457] (claim 0.0246)
+PASS 0.02455078125 == 0.0246: within 0.05; 0.0245508 vs 0.0246 (SI)
+h = 0.025 m recheck at beta = 0.02457 : {'nec': 1, 'wec': 1, 'sec': 1, 'dec': 1} ; at 0.02453 : {'nec': 0, 'wec': 0, 'sec': 0, 'dec': 1}
+SUMMARY: 4 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

@@ -1,0 +1,17 @@
+# math_run log
+command:  python3 runs/2026-10-01-warp-drive-without-negative-energy/math/mechanist/M-MECHANIST-02.py
+started:  2026-10-01T21:53:27Z
+duration: 0.6 s
+exit:     0
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   3 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+PASS 0 == 0: symbolic
+P_x (weak boosted mass, first order in v) = M*v
+PASS M*v == M*v: symbolic
+PASS lim v->0 of M*v == 0: symbolic limit 0
+SUMMARY: 3 pass, 0 fail, 0 undecided
+
+--- stderr ---
+
