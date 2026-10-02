@@ -1,0 +1,30 @@
+# math_run log
+command:  python3 runs/2026-10-01-warp-drive-without-negative-energy/math/examiner/M-EXAMINER-03.py
+started:  2026-10-01T21:45:47Z
+duration: 1.8 s
+exit:     0
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   13 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+R=15.0 m v=0.04 sigma=2.0/m: forward gain 1.20082 m (4.0055 ns); backward loss 1.19922 m (4.0002 ns); co-minus-counter 2.40003 m (8.0056 ns); 4Rv = 2.4000 m
+R=15.0 m v=0.04 sigma=0.5/m: forward gain 1.20327 m (4.0137 ns); backward loss 1.19686 m (3.9923 ns); co-minus-counter 2.40013 m (8.0060 ns); 4Rv = 2.4000 m
+R=100.0 m v=0.5 sigma=2.0/m: forward gain 100.17329 m (334.1421 ns); backward loss 99.89863 m (333.2260 ns); co-minus-counter 200.07192 m (667.3681 ns); 4Rv = 200.0000 m
+R=100.0 m v=0.5 sigma=0.5/m: forward gain 100.69315 m (335.8762 ns); backward loss 99.59453 m (332.2116 ns); co-minus-counter 200.28768 m (668.0878 ns); 4Rv = 200.0000 m
+PASS forward gain R=15, v=0.04, s=2: 1.20082 vs 1.2008 (tol 0.0002)
+PASS backward loss R=15, v=0.04, s=2: 1.19922 vs 1.1992 (tol 0.0002)
+PASS co-minus-counter R=15, v=0.04, s=2 [m]: 2.40003 vs 2.4 (tol 0.0002)
+PASS co-minus-counter R=15, v=0.04, s=2 [ns]: 8.00565 vs 8.006 (tol 0.002)
+PASS co-minus-counter R=15, v=0.04, s=0.5 [ns]: 8.00597 vs 8.006 (tol 0.002)
+PASS co-minus-counter R=100, v=0.5, s=2 [m]: 200.07192 vs 200.07 (tol 0.02)
+PASS co-minus-counter R=100, v=0.5, s=2 [ns]: 667.36809 vs 667.4 (tol 0.1)
+PASS 2*R*v == 2*R*v: symbolic
+PASS 4*R*v == 4*R*v: symbolic
+PASS lim v->0 of 4*R*v == 0: symbolic limit 0
+PASS 2.4 m / c == 8.006 ns: within 0.001; 8.00554e-09 vs 8.006e-09 (SI)
+PASS 200.07 m / c == 667.4 ns: within 0.001; 6.67362e-07 vs 6.674e-07 (SI)
+PASS 2.4 m / c has the dimension of time: dimensional analysis
+SUMMARY: 6 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

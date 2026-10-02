@@ -1,0 +1,23 @@
+# math_run log
+command:  python3 runs/2026-10-01-warp-drive-without-negative-energy/calc/lens-idealizer_jcheck.py
+started:  2026-10-01T21:29:07Z
+duration: 0.7 s
+exit:     0
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+point (0.3, -0.2, 0.5) component x: dG_0x/deps|0 =  2.051584e-01   (1/2)curlcurl/eps =  2.051584e-01
+point (0.3, -0.2, 0.5) component y: dG_0y/deps|0 = -1.367723e-01   (1/2)curlcurl/eps = -1.367723e-01
+point (0.3, -0.2, 0.5) component z: dG_0z/deps|0 =  1.189919e+00   (1/2)curlcurl/eps =  1.189919e+00
+point (0.7, 0.1, -0.4) component x: dG_0x/deps|0 = -2.894367e-01   (1/2)curlcurl/eps = -2.894367e-01
+point (0.7, 0.1, -0.4) component y: dG_0y/deps|0 = -4.134811e-02   (1/2)curlcurl/eps = -4.134811e-02
+point (0.7, 0.1, -0.4) component z: dG_0z/deps|0 =  5.168513e-01   (1/2)curlcurl/eps =  5.168513e-01
+point (0.0, 0.9, 0.2) component x: dG_0x/deps|0 =  0.000000e+00   (1/2)curlcurl/eps =  0.000000e+00
+point (0.0, 0.9, 0.2) component y: dG_0y/deps|0 =  1.538694e-01   (1/2)curlcurl/eps =  1.538694e-01
+point (0.0, 0.9, 0.2) component z: dG_0z/deps|0 =  1.624177e-01   (1/2)curlcurl/eps =  1.624177e-01
+Eulerian rho at eps-linear order (should be 0): 0.0
+Eulerian rho second order coefficient at (0.3,-0.2,0.5): -0.0024190212662444444
+
+--- stderr ---
+

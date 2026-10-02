@@ -1,0 +1,111 @@
+# math_run log
+command:  python3 runs/2026-10-01-warp-drive-without-negative-energy/calc/lens-engineer_build_gaps.py
+started:  2026-10-01T21:30:00Z
+duration: 0.3 s
+exit:     0
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+== Demonstrated / reference ==
+  ISS_mass_kg = 4.197e+05
+  world_energy_J_per_yr = 5.922e+20
+  static_pressure_Pa = 1e+12
+  nanodiamond_yield_Pa = 4.6e+11
+  PSP_speed_c = 0.000641
+  osmium_density = 2.26e+04
+  nuclear saturation density (0.16 fm^-3 x m_n) = 2.680e+17 kg/m^3; rho c^2 = 2.409e+34 Pa
+
+== A. Fuchs 2024 shell, rebuilt (warp_shell.py, default smoothing spans = ours) ==
+-- published R1=10,R2=20 m: M_ADM = 4.5114e+27 kg = 2.377 M_J = 2.269e-03 M_sun
+   compactness 2GM/(c^2 R2) = 0.335; max 2Gm/(c^2 r) = 0.315
+   peak eps = 1.376e+40 J/m^3 (rho = 1.531e+23 kg/m^3); peak p_r = 9.566e+38 Pa; p_t in [-1.213e+38, 3.868e+39] Pa
+   zero-shift shell ECs (exact type I): NEC=holds, WEC=holds, SEC=holds, DEC=holds; max |p|/eps = 0.597
+   static lapse at centre = 0.7611 (interior clock rate vs infinity)
+   GAPS (log10 required/demonstrated):
+     mass vs ISS                  :  22.03
+     Mc^2 vs world energy per year:  23.83  (Mc^2 = 4.035e+44 J)
+     peak density vs osmium       :  18.83
+     peak density vs nuclear sat. :   5.76
+     peak stress vs 1 TPa static  :  27.59
+     peak stress vs nanodiamond   :  27.92
+     peak stress vs rho_nuc c^2   :   5.21
+-- scaled x10 (payload R1=100 m, ours): M_ADM = 4.5114e+28 kg = 23.768 M_J = 2.269e-02 M_sun
+   compactness 2GM/(c^2 R2) = 0.335; max 2Gm/(c^2 r) = 0.315
+   peak eps = 1.376e+38 J/m^3 (rho = 1.531e+21 kg/m^3); peak p_r = 9.566e+36 Pa; p_t in [-1.213e+36, 3.868e+37] Pa
+   zero-shift shell ECs (exact type I): NEC=holds, WEC=holds, SEC=holds, DEC=holds; max |p|/eps = 0.597
+   static lapse at centre = 0.7611 (interior clock rate vs infinity)
+   GAPS (log10 required/demonstrated):
+     mass vs ISS                  :  23.03
+     Mc^2 vs world energy per year:  24.83  (Mc^2 = 4.035e+45 J)
+     peak density vs osmium       :  16.83
+     peak density vs nuclear sat. :   3.76
+     peak stress vs 1 TPa static  :  25.59
+     peak stress vs nanodiamond   :  25.92
+     peak stress vs rho_nuc c^2   :   3.21
+   speed 0.02c vs Parker Solar Probe: 1.49; 0.04c: 1.80
+
+== B. Scaling at fixed compactness C = 2GM/(c^2 R2) = 1/3, R1 = R2/2 (ours) ==
+  R2 =       20 m: M = 4.489e+27 kg (2.257e-03 M_sun), mean rho = 1.531e+23 kg/m^3
+  R2 =      200 m: M = 4.489e+28 kg (2.257e-02 M_sun), mean rho = 1.531e+21 kg/m^3
+  R2 =     2000 m: M = 4.489e+29 kg (2.257e-01 M_sun), mean rho = 1.531e+19 kg/m^3
+  R2 =    20000 m: M = 4.489e+30 kg (2.257e+00 M_sun), mean rho = 1.531e+17 kg/m^3
+  mean density = nuclear saturation (2.68e+17) at R2 = 1.512e+04 m, M = 3.393e+30 kg = 1.706e+00 M_sun
+  mean density = osmium (2.26e+04) at R2 = 5.205e+10 m, M = 1.168e+37 kg = 5.873e+06 M_sun
+  law: M = C c^2 R2/(2G) ∝ R2 ; rho_mean ∝ C/R2^2 ; stress ~ rho c^2 x O(C) ∝ C^2/R2^2 (Newtonian G M rho/R)
+
+== B2. Weak-field gravitomagnetic counterflow estimate (OURS, order of magnitude) ==
+  Linearised GR: a mass current with momentum P on a shell of radius R gives a uniform interior
+  h_0i = 4 G P/(c^3 R). Counterflowing +P at R1 and -P at R2 gives interior beta = (4G P/c^3)(1/R1 - 1/R2)
+  with zero net exterior momentum. Momentum is bounded by energy: c P <= E_flow (DEC, u -> c).
+  beta=0.02, R1=10, R2=20 m: E_flow,min = 1.210e+43 J = 1.347e+26 kg-equiv = 7.095e-02 M_J; at u=0.1c needs mass 1.347e+27 kg; at u=10 km/s needs 4.037e+30 kg
+  beta=0.04, R1=10, R2=20 m: E_flow,min = 2.421e+43 J = 2.693e+26 kg-equiv = 1.419e-01 M_J; at u=0.1c needs mass 2.693e+27 kg; at u=10 km/s needs 8.074e+30 kg
+  beta=0.02, R1=100, R2=200 m: E_flow,min = 1.210e+44 J = 1.347e+27 kg-equiv = 7.095e-01 M_J; at u=0.1c needs mass 1.347e+28 kg; at u=10 km/s needs 4.037e+31 kg
+  beta=1e-06, R1=10, R2=20 m: E_flow,min = 6.051e+38 J = 6.733e+21 kg-equiv = 3.547e-06 M_J; at u=0.1c needs mass 6.733e+22 kg; at u=10 km/s needs 2.018e+26 kg
+  published shell: E_flow,min / (M c^2) = 0.030  -> effective counterflow speed ~ 0.030 c if half the mass flows each way
+  law: beta ~ (2G E_flow/(c^4 R1)) for R2 = 2 R1, i.e. beta ~ compactness x (u/c). Gap shrinks linearly in beta and R1.
+
+== C. Trip: 1e5 kg payload to alpha Cen (4.37 ly) ==
+  v=0.02c photon rocket start+stop: mass ratio 1.0408; shell+payload: propellant 1.833e+26 kg, energy 1.647e+43 J = 2.781e+22 world-years; gap vs 1 world-year 22.44
+  v=0.02c photon rocket start+stop: mass ratio 1.0408; payload alone: propellant 4.082e+03 kg, energy 3.668e+20 J = 6.195e-01 world-years; gap vs 1 world-year -0.21
+  Le radiative steering m_i/m_f = e^(3L), L = 2 artanh(v) = 0.0400: ratio 1.1275 vs photon rocket 1.0408
+  coast time at 0.02c: 218.5 yr (flat space, acceleration time neglected)
+  v=0.04c photon rocket start+stop: mass ratio 1.0833; shell+payload: propellant 3.742e+26 kg, energy 3.363e+43 J = 5.679e+22 world-years; gap vs 1 world-year 22.75
+  v=0.04c photon rocket start+stop: mass ratio 1.0833; payload alone: propellant 8.333e+03 kg, energy 7.490e+20 J = 1.265e+00 world-years; gap vs 1 world-year 0.10
+  Le radiative steering m_i/m_f = e^(3L), L = 2 artanh(v) = 0.0800: ratio 1.2714 vs photon rocket 1.0833
+  coast time at 0.04c: 109.2 yr (flat space, acceleration time neglected)
+  1 g photon rocket, payload only: ship 3.58 yr, Earth 6.00 yr, peak beta 0.952, mass ratio 40.37, propellant energy 3.538e+23 J
+  shell/payload mass ratio = 4.49e+22 (log10 22.65)
+
+== D. Superluminal options: negative energy required vs demonstrated (Casimir) ==
+  Alcubierre R=100 m, Delta=1 m, v=1.0c: peak |rho| ~ 1.204e+42 J/m^3
+  Alcubierre R=100 m, Delta=1 m, v=10.0c: peak |rho| ~ 1.204e+44 J/m^3
+  Casimir parallel-plate energy density at a = 0.1 um: -4.334e+00 J/m^3; a 1 m^2 cavity holds -4.334e-07 J (hypothetical area)
+  density gap (v=10c): 43.44 orders; (v=1c): 41.44
+  Alcubierre v=10c tanh [D-28]: |E| = 6.723e+48 J; gap vs 1 m^2 Casimir cavity 55.2; vs world-year 28.1
+  Alcubierre v=1c tanh [D-28]: |E| = 6.723e+46 J; gap vs 1 m^2 Casimir cavity 53.2; vs world-year 26.1
+  Natario v=1c [D-34]: |E| = 5.393e+50 J; gap vs 1 m^2 Casimir cavity 57.1; vs world-year 30.0
+  Rodal E- at v=c [D-36]: |E| = 1.330e+44 J; gap vs 1 m^2 Casimir cavity 50.5; vs world-year 23.4
+  Alcubierre at QI-limited wall v=10c [D-29]: |E| = 6.201e+80 J; gap vs 1 m^2 Casimir cavity 87.2; vs world-year 60.0
+  Lentz v=10c, R=100 m, w=1 m, 20 M_sun [D-30a]: E = 3.58e+48 J; gap vs NIF 8.6 MJ [D-47] 41.6; vs world-year 27.8
+  Lentz v=10c, R=100 m, w=1 m, 50 M_sun [D-30a]: E = 8.94e+48 J; gap vs NIF 8.6 MJ [D-47] 42.0; vs world-year 28.2
+  QI-limited wall 1.6e-32 m vs LHC probe scale hbar c/13.6 TeV = 1.45e-20 m: 12.0 orders; vs 1 angstrom tolerance 21.8
+  scaling: Alcubierre |E| ∝ v^2 R^2/Delta ; Natario ∝ v^2 R^4/Delta^3 [D-28, D-34]
+
+== E. Experiments: predicted effect vs demonstrated sensitivity ==
+  Archimedes: signal ~5e-16 N; prototype 3e-12 N/rtHz -> sigma over 1e+06 s = 3.0e-15 N; gap 0.78 orders; torque need 1e-13 vs 7e-13 N m/rtHz: 0.85
+  lab rotor m=1e+04 kg, R=1.0 m, rim 1e+03 m/s: Omega_LT ~ 1.49e-20 rad/s vs GINGERINO 2e-15 rad/s: gap 5.1 orders
+  same mass as counterflow: interior beta ~ 9.91e-29; Sagnac-like delay over 1 m ~ 3.31e-37 s vs Fuchs shell 7.6e-9 s
+  Fuchs observable: 7.6 ns needs the full 2.4 M_J shell; gap to lab beta: 26.3 orders in beta
+  Tajmar balance: limit < 0.003 uN/W vs photon 0.0033 uN/W; Eagleworks claim 1.2 uN/W excluded by 2.60 orders
+  GW memory from shell boost (KE 3.23e+41 J) at 1e+03 pc: h ~ 3.5e-22
+  GW memory from shell boost (KE 3.23e+41 J) at 1e+06 pc: h ~ 3.5e-25
+
+== F. Assembly binding energy (Newtonian order of magnitude) and smoothing sensitivity ==
+  G M^2 / R_mean(15 m) = 8.97e+43 J = 0.22 M c^2 released as heat on assembly; = 1.51e+23 world-years
+  span_P = 0.5 m: peak p_t = 7.157e+39 Pa, min p_t = -1.622e+38 Pa, max|p|/eps = 1.152, DEC FAILS
+  span_P = 1.0 m: peak p_t = 3.868e+39 Pa, min p_t = -1.213e+38 Pa, max|p|/eps = 0.597, DEC holds
+  span_P = 2.0 m: peak p_t = 2.224e+39 Pa, min p_t = -6.595e+37 Pa, max|p|/eps = 0.321, DEC holds
+
+--- stderr ---
+

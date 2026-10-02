@@ -1,0 +1,25 @@
+# math_run log
+command:  python3 runs/2026-10-01-warp-drive-without-negative-energy/math/constraints/M-CONSTRAINTS-08.py
+started:  2026-10-01T22:37:19Z
+duration: 0.4 s
+exit:     0
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   8 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+PASS 2*G*4.49e27 kg/(c^2 * 20 m) == 0.3334: within 0.002; 0.333435 vs 0.3334 (SI)
+PASS 4*c^2*20 m/(9*G) == 1.197e28 kg: within 0.002; 1.19697e+28 vs 1.197e+28 (SI)
+PASS 4*c^2*20 m/(9*G) == 6.31 Mjup: within 0.003; 1.19697e+28 vs 1.19772e+28 (SI)
+PASS 0.07317776945345804 == 0.073: within 0.01; 0.0731778 vs 0.073 (SI)
+PASS 0.07155826144096347 == 0.0716: within 0.002; 0.0715583 vs 0.0716 (SI)
+cap at C = 8/9, constant ratio 0.066: beta = 0.0587
+cap at C = 8/9, linear fit: beta = 0.0457
+cap at C = 8/9, last-two-points slope: beta = 0.0442
+cap at C = 8/9, quadratic fit: beta = 0.0419
+PASS 0.058666666666666666 == 0.0587: within 0.002; 0.0586667 vs 0.0587 (SI)
+PASS 0.04565805229732529 == 0.0457: within 0.02; 0.0456581 vs 0.0457 (SI)
+PASS G*1 kg/(c^2 * 1 m) has the dimension of dimensionless: dimensional analysis
+SUMMARY: 8 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

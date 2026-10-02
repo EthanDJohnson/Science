@@ -1,0 +1,55 @@
+# math_run log
+command:  python3 runs/2026-10-01-warp-drive-without-negative-energy/calc/lens-decomposer_transit_time.py
+started:  2026-10-01T21:07:35Z
+duration: 1.5 s
+exit:     0
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+=== Fuchs et al. 2024 shell, M = 2.365 M_J, R1 = 10 m, R2 = 20 m ===
+M = 4.4888e+27 kg; 2GM/c^2 = 6.667 m; 2GM/(c^2 R2) = 0.333
+beta_warp = 0.00  D =      100 m  cavity e2a = 0.5794  excess(+x) =    134.33 ns  excess(-x) =    134.33 ns  (-x) - (+x) =    0.00 ns
+beta_warp = 0.00  D =     1000 m  cavity e2a = 0.5794  excess(+x) =    240.03 ns  excess(-x) =    240.03 ns  (-x) - (+x) =    0.00 ns
+beta_warp = 0.00  D =   100000 m  cavity e2a = 0.5794  excess(+x) =    446.13 ns  excess(-x) =    446.13 ns  (-x) - (+x) =    0.00 ns
+beta_warp = 0.02  D =      100 m  cavity e2a = 0.5794  excess(+x) =    130.94 ns  excess(-x) =    137.80 ns  (-x) - (+x) =    6.86 ns
+beta_warp = 0.02  D =     1000 m  cavity e2a = 0.5794  excess(+x) =    236.64 ns  excess(-x) =    243.50 ns  (-x) - (+x) =    6.86 ns
+beta_warp = 0.02  D =   100000 m  cavity e2a = 0.5794  excess(+x) =    442.74 ns  excess(-x) =    449.60 ns  (-x) - (+x) =    6.86 ns
+beta_warp = 0.04  D =      100 m  cavity e2a = 0.5794  excess(+x) =    127.64 ns  excess(-x) =    141.36 ns  (-x) - (+x) =   13.72 ns
+beta_warp = 0.04  D =     1000 m  cavity e2a = 0.5794  excess(+x) =    233.33 ns  excess(-x) =    247.06 ns  (-x) - (+x) =   13.72 ns
+beta_warp = 0.04  D =   100000 m  cavity e2a = 0.5794  excess(+x) =    439.43 ns  excess(-x) =    453.15 ns  (-x) - (+x) =   13.72 ns
+beta_warp = 0.10  D =      100 m  cavity e2a = 0.5794  excess(+x) =    118.22 ns  excess(-x) =    152.52 ns  (-x) - (+x) =   34.30 ns
+beta_warp = 0.10  D =     1000 m  cavity e2a = 0.5794  excess(+x) =    223.92 ns  excess(-x) =    258.22 ns  (-x) - (+x) =   34.30 ns
+beta_warp = 0.10  D =   100000 m  cavity e2a = 0.5794  excess(+x) =    430.02 ns  excess(-x) =    464.32 ns  (-x) - (+x) =   34.30 ns
+beta_warp = 0.20  D =      100 m  cavity e2a = 0.5794  excess(+x) =    104.15 ns  excess(-x) =    172.75 ns  (-x) - (+x) =   68.60 ns
+beta_warp = 0.20  D =     1000 m  cavity e2a = 0.5794  excess(+x) =    209.84 ns  excess(-x) =    278.45 ns  (-x) - (+x) =   68.60 ns
+beta_warp = 0.20  D =   100000 m  cavity e2a = 0.5794  excess(+x) =    415.94 ns  excess(-x) =    484.54 ns  (-x) - (+x) =   68.60 ns
+beta_warp = 0.30  D =      100 m  cavity e2a = 0.5794  excess(+x) =     91.97 ns  excess(-x) =    194.88 ns  (-x) - (+x) =  102.91 ns
+beta_warp = 0.30  D =     1000 m  cavity e2a = 0.5794  excess(+x) =    197.67 ns  excess(-x) =    300.57 ns  (-x) - (+x) =  102.91 ns
+beta_warp = 0.30  D =   100000 m  cavity e2a = 0.5794  excess(+x) =    403.77 ns  excess(-x) =    506.67 ns  (-x) - (+x) =  102.91 ns
+beta_warp = 0.40  D =      100 m  cavity e2a = 0.5794  excess(+x) =     81.50 ns  excess(-x) =    218.71 ns  (-x) - (+x) =  137.21 ns
+beta_warp = 0.40  D =     1000 m  cavity e2a = 0.5794  excess(+x) =    187.20 ns  excess(-x) =    324.41 ns  (-x) - (+x) =  137.21 ns
+beta_warp = 0.40  D =   100000 m  cavity e2a = 0.5794  excess(+x) =    393.30 ns  excess(-x) =    530.50 ns  (-x) - (+x) =  137.21 ns
+
+Cavity-only advance criterion (flat cavity, lapse^2 = e2a, shift beta): advance per metre in cavity needs beta > (1 - e2a)/2 = 0.2103
+At beta_warp = 0.95: excess(+x, D=1e3 m) = 150.80 ns
+No net advance on the +x straight path for beta_warp up to 0.95 (D = 1e3 m).
+
+=== Linearized cross-check (weak field, thin shell at R, dust) ===
+R = 15.0 m, D = 1e+03 m: weak-field Shapiro excess = 231.3 ns
+R = 15.0 m, D = 1e+05 m: weak-field Shapiro excess = 436.1 ns
+beta = 0.02, L = 20.0 m: first-order shift saving beta*L/c = 1.33 ns; two-way (Sagnac) difference 2*beta*L/c = 2.67 ns
+beta = 0.02, L = 40.0 m: first-order shift saving beta*L/c = 2.67 ns; two-way (Sagnac) difference 2*beta*L/c = 5.34 ns
+beta = 0.04, L = 20.0 m: first-order shift saving beta*L/c = 2.67 ns; two-way (Sagnac) difference 2*beta*L/c = 5.34 ns
+beta = 0.04, L = 40.0 m: first-order shift saving beta*L/c = 5.34 ns; two-way (Sagnac) difference 2*beta*L/c = 10.67 ns
+L_eff implied by Fuchs Table 1 (7.6 ns at 0.04c) if 7.6 ns = 2*beta*L/c: 28.5 m
+L_eff if 7.6 ns = beta*L/c: 57.0 m
+
+=== Lower-compactness shells (same R1, R2), beta_warp = 0.04 ===
+M = 0.01 x 2.365 M_J: excess(+x) =    -1.87 ns  excess(-x) =     6.17 ns
+M = 0.10 x 2.365 M_J: excess(+x) =    16.89 ns  excess(-x) =    25.25 ns
+M = 0.50 x 2.365 M_J: excess(+x) =   105.70 ns  excess(-x) =   115.84 ns
+M = 1.00 x 2.365 M_J: excess(+x) =   233.33 ns  excess(-x) =   247.06 ns
+
+--- stderr ---
+

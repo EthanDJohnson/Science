@@ -1,0 +1,29 @@
+# math_run log
+command:  python3 runs/2026-10-01-warp-drive-without-negative-energy/math/engineer/M-ENGINEER-01.py
+started:  2026-10-01T22:27:12Z
+duration: 0.4 s
+exit:     0
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   10 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+  compactness 2GM/(c^2 R2): ours = 0.334994, lens = 0.335, rel diff = 1.76e-05, rtol = 0.003
+PASS 0.000017642567334386072 <= 0.00300000000000000: symbolic, constant
+PASS 2*G*4.511e27 kg/(c^2*20 m) == 0.335: within 0.003; 0.334994 vs 0.335 (SI)
+PASS 2*G*1 kg/(c^2*1 m) has the dimension of dimensionless: dimensional analysis
+  M_ADM in Jupiter masses: ours = 2.37656, lens = 2.38, rel diff = 0.00144, rtol = 0.003
+PASS 0.0014445075861881929 <= 0.00300000000000000: symbolic, constant
+  published M in Jupiter masses: ours = 2.3655, lens = 2.365, rel diff = 0.000211, rtol = 0.003
+PASS 0.0002107793851791051 <= 0.00300000000000000: symbolic, constant
+  mean density of the published shell (kg/m^3): ours = 1.5313e+23, lens = 1.53e+23, rel diff = 0.000848, rtol = 0.005
+PASS 0.0008483116002944158 <= 0.00500000000000000: symbolic, constant
+  eps = 1.38e40 J/m^3 divided by c^2 (kg/m^3): ours = 1.53546e+23, lens = 1.53e+23, rel diff = 0.00357, rtol = 0.005
+PASS 0.00356671722483215 <= 0.00500000000000000: symbolic, constant
+  rho_mean c^2 vs lens peak eps (J/m^3): ours = 1.37626e+40, lens = 1.38e+40, rel diff = 0.00271, rtol = 0.005
+PASS 0.002708744299587007 <= 0.00500000000000000: symbolic, constant
+PASS 1.38e40 J/m^3 / c^2 == 1.535e23 kg/m^3: within 0.003; 1.53546e+23 vs 1.535e+23 (SI)
+PASS lim r->oo of 2*g*m/(k**2*r) == 0: symbolic limit 0
+SUMMARY: 10 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

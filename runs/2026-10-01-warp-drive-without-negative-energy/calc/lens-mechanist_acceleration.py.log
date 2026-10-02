@@ -1,0 +1,57 @@
+# math_run log
+command:  python3 runs/2026-10-01-warp-drive-without-negative-energy/calc/lens-mechanist_acceleration.py
+started:  2026-10-01T21:19:59Z
+duration: 4.1 s
+exit:     0
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+A0 symbolic check of closed-form j_x (should be ~0): 0.0
+A  beta_int=0.02: P_total=9.462e+28 kg m/s (geo 2.344e-07 m); P_+=6.758e+34, P_-=-6.758e+34 kg m/s; P_+/(M_ADM c)=4.998e-02
+   two-layer harmonic-gauge equivalent P = 4.037e+34 kg m/s; P/(M_ADM c) = 2.985e-02; counter-stream speed if each layer holds M/2: u = 0.060 c
+A  beta_int=0.04: P_total=1.892e+29 kg m/s (geo 4.687e-07 m); P_+=1.352e+35, P_-=-1.352e+35 kg m/s; P_+/(M_ADM c)=9.995e-02
+   two-layer harmonic-gauge equivalent P = 8.074e+34 kg m/s; P/(M_ADM c) = 5.971e-02; counter-stream speed if each layer holds M/2: u = 0.119 c
+B  Fuchs shell: C1=2GM/(c^2 R1)=0.670, C2=0.335; linear cap beta_cc,max = C1 - C2 = 0.335 (units of c)
+   R2/R1=1.1: with C2=8/9, C1=0.98, cap C1-C2=0.09 (linear theory far outside validity if >~0.1)
+   R2/R1=2.0: with C2=8/9, C1=1.78, cap C1-C2=0.89 (linear theory far outside validity if >~0.1)
+   R2/R1=10.0: with C2=8/9, C1=8.89, cap C1-C2=8.00 (linear theory far outside validity if >~0.1)
+C  linear drag fraction kappa=4GM/(c^2 R) at R=10 m: 1.34 (>~0.1 means linear theory fails)
+C  linear drag fraction kappa=4GM/(c^2 R) at R=20 m: 0.67 (>~0.1 means linear theory fails)
+   M=1e-06 M_J, R=10.0 m: kappa=5.638e-07
+   M=0.001 M_J, R=10.0 m: kappa=5.638e-04
+   M=1.0 M_J, R=100.0 m: kappa=5.638e-02
+D  ideal photon (or beamed-GW) rocket, start then stop, final mass fixed
+   v=0.02c shell+payload : momentum to supply 2.705e+34 kg m/s; mass ratio 1.0408; exhaust energy 1.655e+43 J = 1.841e+26 kg = 9.700e-02 M_J; = 2.79e+22 world-years (592.2 EJ/yr)
+   v=0.02c payload alone : momentum to supply 5.997e+11 kg m/s; mass ratio 1.0408; exhaust energy 3.668e+20 J = 4.082e+03 kg = 2.150e-24 M_J; = 6.19e-01 world-years (592.2 EJ/yr)
+   ratio shell/payload exhaust energy = 4.511e+22
+   shell kinetic energy (gamma-1)Mc^2 at 0.02c = 8.110e+40 J
+   v=0.04c shell+payload : momentum to supply 5.413e+34 kg m/s; mass ratio 1.0833; exhaust energy 3.378e+43 J = 3.759e+26 kg = 1.980e-01 M_J; = 5.70e+22 world-years (592.2 EJ/yr)
+   v=0.04c payload alone : momentum to supply 1.200e+12 kg m/s; mass ratio 1.0833; exhaust energy 7.490e+20 J = 8.333e+03 kg = 4.391e-24 M_J; = 1.26e+00 world-years (592.2 EJ/yr)
+   ratio shell/payload exhaust energy = 4.511e+22
+   shell kinetic energy (gamma-1)Mc^2 at 0.04c = 3.247e+41 J
+   v=0.1c shell+payload : momentum to supply 1.359e+35 kg m/s; mass ratio 1.2222; exhaust energy 9.009e+43 J = 1.002e+27 kg = 5.281e-01 M_J; = 1.52e+23 world-years (592.2 EJ/yr)
+   v=0.1c payload alone : momentum to supply 3.013e+12 kg m/s; mass ratio 1.2222; exhaust energy 1.997e+21 J = 2.222e+04 kg = 1.171e-23 M_J; = 3.37e+00 world-years (592.2 EJ/yr)
+   ratio shell/payload exhaust energy = 4.511e+22
+   shell kinetic energy (gamma-1)Mc^2 at 0.1c = 2.042e+42 J
+E  coast 0.02c to alpha Cen: exterior time 218.5 yr; passenger proper time with lapse 0.761: 166.3 yr (without shell 218.5 yr)
+E  coast 0.04c to alpha Cen: exterior time 109.2 yr; passenger proper time with lapse 0.761: 83.1 yr (without shell 109.2 yr)
+E  payload kicked to 0.0263 c relative to shell crosses R1=10 m in 1.27 microseconds
+E  shell recoil if a 1e5 kg payload gains 0.0263 c: 1.746e-16 m/s
+F  linear |T^0x|_max/eps per unit beta_int: worst 1.856e+01 at r=12.207 m (rho there 1.514e+23 kg/m^3); any momentum where rho<=0: True
+   => beta_int at which |T^0x| = eps somewhere (crude linear DEC-type cap for this density profile): 0.054 c
+   at r=15 m: ratio per unit beta 4.666e+00; at beta=0.02 -> 9.331e-02
+   ramp to beta=0.04 over c*tau=1e+01 m (tau=3.34e-08 s): S_ramp/eps at r=15 m = 2.799e-01
+   ramp to beta=0.04 over c*tau=1e+03 m (tau=3.34e-06 s): S_ramp/eps at r=15 m = 2.799e-03
+   ramp to beta=0.04 over c*tau=3e+08 m (tau=1.00e+00 s): S_ramp/eps at r=15 m = 9.330e-09
+F  photon-pushed shell at 1 g: exhaust power 1.326e+37 W = 3.46e+10 L_sun; time to 0.04c 14.2 days
+   payload alone at 1 g: 2.940e+14 W
+F  momentum-without-density points: r in [0.0594, 6.5518] m, n=922, max |T^0x| per unit beta there = 4.760e-14 geo (vs peak nan)
+   density support: rho>0 for r in [6.5578, 23.4452] m; shift gradient support [0.0594, 19.7446] m
+G  lab induction drag kappa=4GM/(c^2R): M=1e+03 kg, R=1.0 m -> 2.97e-24
+G  lab induction drag kappa=4GM/(c^2R): M=1e+06 kg, R=10.0 m -> 2.97e-22
+G  beamed-GW (or photon) self-propulsion to 0.04c: radiated fraction one leg 0.0392, start+stop 0.0769 of initial mass; for M_ADM: 3.470e+26 kg = 3.118e+43 J
+G  superkick 15,000 km/s = 0.0500 c
+
+--- stderr ---
+

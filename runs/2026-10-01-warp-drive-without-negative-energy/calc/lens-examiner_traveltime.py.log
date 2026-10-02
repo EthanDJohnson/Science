@@ -1,0 +1,49 @@
+# math_run log
+command:  python3 runs/2026-10-01-warp-drive-without-negative-energy/calc/lens-examiner_traveltime.py
+started:  2026-10-01T21:09:05Z
+duration: 4.2 s
+exit:     0
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+=== Part A: Alcubierre, tanh wall f(r) = [tanh(s(r+R)) - tanh(s(r-R))]/(2 tanh(sR)) ===
+Fuchs Table-1 comparator R=15 m, v=0.04 (s=2/m assumed): forward advance = 1.2008 m (4.005 ns); backward advance = -1.1992 m (-4.000 ns); co-minus-counter = 2.4000 m = 8.006 ns; analytic 2Rv = 1.2000 m, 4Rv = 2.4000 m = 8.006 ns
+same, softer wall s=0.5/m: forward advance = 1.2033 m (4.014 ns); backward advance = -1.1969 m (-3.992 ns); co-minus-counter = 2.4001 m = 8.006 ns; analytic 2Rv = 1.2000 m, 4Rv = 2.4000 m = 8.006 ns
+R=100 m, Delta=1 m, v=0.5: forward advance = 100.1733 m (334.142 ns); backward advance = -99.8986 m (-333.226 ns); co-minus-counter = 200.0719 m = 667.368 ns; analytic 2Rv = 100.0000 m, 4Rv = 200.0000 m = 667.128 ns
+
+Superluminal reference case R = 100 m, Delta = 1 m (s = 2/m), v = 10:
+  Payload at centre: dx/dt = v f(0) = 10.000000; proper time = coordinate time (N=1).
+  Alpha Cen D = 4.37 ly: payload arrival 0.437 yr vs exterior light 4.370 yr -> genuine time advance IF the bubble already exists along the path.
+  Comoving Killing-vector norm -1 + v^2(1-f)^2 changes sign at r = 99.4507 m (f = 0.9000 = 1 - 1/v);
+  for r > 99.451 m (whole exterior) the comoving Killing vector is spacelike: horizon/ergoregion relative to the payload.
+  Exterior-frame shift at centre |b| = 10.00 > N = 1, yet the centre is flat: '|b| > N' alone is gauge-dependent.
+  v = 0.04: max v(1-f) = 0.04 < 1 -> no comoving Killing horizon
+  v = 0.5: max v(1-f) = 0.50 < 1 -> no comoving Killing horizon
+  v = 0.99: max v(1-f) = 0.99 < 1 -> no comoving Killing horizon
+  Forward-emitted light from the payload stalls at r = 99.4507 m (front horizon); backward light leaves.
+
+=== Part B: idealized thin-shell warp shell (Schwarzschild exterior, flat interior) ===
+M = 4.490e+27 kg -> GM/c^2 = 3.3342 m, 2GM/c^2 = 6.6684 m
+  R_s =  10.0 m: N_in = 0.5772; interior redshift delay (no shift) = 14.650 m (48.87 ns); exterior Shapiro-log term to r = 1e+02 m on each side = 44.448 m (148.26 ns)
+  R_s =  10.0 m: N_in = 0.5772; interior redshift delay (no shift) = 14.650 m (48.87 ns); exterior Shapiro-log term to r = 1e+04 m on each side = 106.777 m (356.17 ns)
+     interior shift b = 0.0400: forward interior crossing 32.404 m vs flat 20.0 m -> net DELAY 12.404 m before exterior log terms; co-minus-counter = 4.826 m = 16.10 ns (Fuchs: 7.6 ns)
+     interior shift b = 0.0231: forward interior crossing 33.317 m vs flat 20.0 m -> net DELAY 13.317 m before exterior log terms; co-minus-counter = 2.776 m = 9.26 ns (Fuchs: 7.6 ns)
+     minimum interior coordinate shift for ANY forward advance (ignoring exterior delay): b > 1 - N_in = 0.4228 = 10.6 x the published 0.04
+  R_s =  14.2 m: N_in = 0.7283; interior redshift delay (no shift) = 10.596 m (35.34 ns); exterior Shapiro-log term to r = 1e+02 m on each side = 33.569 m (111.98 ns)
+  R_s =  14.2 m: N_in = 0.7283; interior redshift delay (no shift) = 10.596 m (35.34 ns); exterior Shapiro-log term to r = 1e+04 m on each side = 95.899 m (319.88 ns)
+     interior shift b = 0.0400: forward interior crossing 36.966 m vs flat 28.4 m -> net DELAY 8.566 m before exterior log terms; co-minus-counter = 4.297 m = 14.33 ns (Fuchs: 7.6 ns)
+     interior shift b = 0.0291: forward interior crossing 37.496 m vs flat 28.4 m -> net DELAY 9.096 m before exterior log terms; co-minus-counter = 3.125 m = 10.42 ns (Fuchs: 7.6 ns)
+     minimum interior coordinate shift for ANY forward advance (ignoring exterior delay): b > 1 - N_in = 0.2717 = 6.8 x the published 0.04
+  R_s =  20.0 m: N_in = 0.8164; interior redshift delay (no shift) = 8.993 m (30.00 ns); exterior Shapiro-log term to r = 1e+02 m on each side = 25.954 m (86.57 ns)
+  R_s =  20.0 m: N_in = 0.8164; interior redshift delay (no shift) = 8.993 m (30.00 ns); exterior Shapiro-log term to r = 1e+04 m on each side = 88.283 m (294.48 ns)
+     interior shift b = 0.0400: forward interior crossing 46.705 m vs flat 40.0 m -> net DELAY 6.705 m before exterior log terms; co-minus-counter = 4.812 m = 16.05 ns (Fuchs: 7.6 ns)
+     interior shift b = 0.0327: forward interior crossing 47.109 m vs flat 40.0 m -> net DELAY 7.109 m before exterior log terms; co-minus-counter = 3.926 m = 13.09 ns (Fuchs: 7.6 ns)
+     minimum interior coordinate shift for ANY forward advance (ignoring exterior delay): b > 1 - N_in = 0.1836 = 4.6 x the published 0.04
+
+=== Part C: Fell-Heisenberg static interior shift 1.26 (length unit assumed 1 m, r = 6) ===
+  forward stream crossing the interior (diameter 12.0 m) at coordinate speed 1+1.26 gains 6.690 m (22.32 ns) on flat-space light; static region, so nothing is carried: a local time advance only,
+  which Olum / Gao-Wald tie to NEC failure (conceded by the authors).
+
+--- stderr ---
+

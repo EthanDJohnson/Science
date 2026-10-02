@@ -1,0 +1,41 @@
+{
+  "slug": "2026-10-01-warp-drive-without-negative-energy",
+  "date": "2026-10-01",
+  "title": "Can any warp drive move a payload without negative energy?",
+  "question": "Can any warp-drive spacetime move a payload faster than light, or at all, without negative energy? Weigh the Alcubierre and Natário metrics against the positive-energy and subluminal solutions proposed since 2020 (Lentz, Fell–Heisenberg, Bobrick–Martire, and the 2024 constant-velocity \"physical war…",
+  "type": "feasibility",
+  "depth": "deep",
+  "status": "complete",
+  "source_checked": true,
+  "bottom_line": "No. Under established physics no warp spacetime carries a payload faster than light without negative energy, meaning a violation of the null energy condition (non-negative energy along every light ray). For the Alcubierre, Natário, Lentz and Fell–Heisenberg family this is a theorem, confirmed here by direct calculation; for massive positive-energy shells the allowed internal \"shift\" stays 3 to 80 times below what even interior superluminality needs. Confidence about 94%. The 2024 positive-energy shell does pass all four energy conditions at its published setting, but it is a coasting Jupiter-mass shell, not a drive: it moves only as any massive vehicle does, and its one invariant \"warp\" signature is a 7-nanosecond light-timing asymmetry. Building it lies 22–28 orders of magnitude beyond demonstrated capability.",
+  "prior": [
+    {
+      "slug": "2026-09-29-alcubierre-negative-energy",
+      "date": "2026-09-29",
+      "mode": "leads",
+      "same_question": false
+    },
+    {
+      "slug": "2026-09-29-warp-bubble-shapes",
+      "date": "2026-09-29",
+      "mode": "leads",
+      "same_question": false
+    },
+    {
+      "slug": "2026-09-29-problem-of-time-quantum-gravity",
+      "date": "2026-09-29",
+      "mode": "ignore",
+      "same_question": false
+    },
+    {
+      "slug": "2026-09-30-neutron-lifetime-beam-bottle",
+      "date": "2026-09-30",
+      "mode": "ignore",
+      "same_question": false
+    }
+  ],
+  "trust": "ok",
+  "notes": [],
+  "superseded_by": null,
+  "recorded": "2026-10-02"
+}

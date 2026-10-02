@@ -1,0 +1,24 @@
+# math_run log
+command:  python3 runs/2026-10-01-warp-drive-without-negative-energy/math/engineer/M-ENGINEER-13.py
+started:  2026-10-01T22:30:14Z
+duration: 0.4 s
+exit:     0
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   8 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+PASS M*v**2*sin(theta)**2/2 == M*v**2*sin(theta)**2/2: symbolic
+PASS 0 == 0: symbolic
+PASS lim v->0 of M*v**2*sin(theta)**2/2 == 0: symbolic limit 0
+  KE at 0.04c (J): ours = 3.24732e+41, lens = 3.2e+41, rel diff = 0.0148, rtol = 0.03
+PASS 0.01478906219126852 <= 0.0300000000000000: symbolic, constant
+  h at 1 kpc: ours = 3.4782e-22, lens = 3.5e-22, rel diff = 0.00623, rtol = 0.03
+PASS 0.006227638047607509 <= 0.0300000000000000: symbolic, constant
+  h at 1 Mpc: ours = 3.4782e-25, lens = 3.5e-25, rel diff = 0.00623, rtol = 0.03
+PASS 0.006227638047607509 <= 0.0300000000000000: symbolic, constant
+PASS G*1 J/(c^4*1 m) has the dimension of dimensionless: dimensional analysis
+PASS 4*G*3.24e41 J/(c^4*1 kpc) == 3.5e-22: within 0.02; 3.47038e-22 vs 3.5e-22 (SI)
+SUMMARY: 8 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

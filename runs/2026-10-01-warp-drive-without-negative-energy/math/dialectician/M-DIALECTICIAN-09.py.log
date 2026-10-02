@@ -1,0 +1,33 @@
+# math_run log
+command:  python3 runs/2026-10-01-warp-drive-without-negative-energy/math/dialectician/M-DIALECTICIAN-09.py
+started:  2026-10-01T22:18:53Z
+duration: 8.1 s
+exit:     0
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   14 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+PASS -Derivative(B(x, y, z), (y, 2)) - Derivative(B(x, y, z), (z, 2)) == -Derivative(B(x, y, z), (y, 2)) - Derivative(B(x, y, z), (z, 2)): symbolic
+PASS Derivative(B(x, y, z), x, y) == Derivative(B(x, y, z), x, y): symbolic
+PASS 0 == 0: symbolic
+rho = 1.13717e-04 1/m^2, rho*Delta^2 = 0.01137
+PASS 0.011371663749541525 == 0.0114: within 0.005; 0.0113717 vs 0.0114 (SI)
+Rb = 0.0: max|j|/b = 2.0883e-03, max|j_x|/b = 2.0883e-03 1/m^2; |j|/rho at b=0.02: 0.367; caps NEC 0.0272 - DEC 0.0545  (lens 0.027-0.054); j_x-only caps 0.0272-0.0545
+PASS 0.05445475256807854 == 0.054: within 0.1; 0.0544548 vs 0.054 (SI)
+PASS 0.02722737628403927 == 0.027: within 0.1; 0.0272274 vs 0.027 (SI)
+Rb = 1.0: max|j|/b = 3.2138e-03, max|j_x|/b = 3.2138e-03 1/m^2; |j|/rho at b=0.02: 0.565; caps NEC 0.0177 - DEC 0.0354  (lens 0.018-0.035); j_x-only caps 0.0177-0.0354
+PASS 0.035383478614153356 == 0.035: within 0.1; 0.0353835 vs 0.035 (SI)
+PASS 0.017691739307076678 == 0.018: within 0.1; 0.0176917 vs 0.018 (SI)
+Rb = 2.0: max|j|/b = 5.6348e-03, max|j_x|/b = 5.6348e-03 1/m^2; |j|/rho at b=0.02: 0.991; caps NEC 0.0101 - DEC 0.0202  (lens 0.01-0.02); j_x-only caps 0.0101-0.0202
+PASS 0.020181095065427087 == 0.02: within 0.1; 0.0201811 vs 0.02 (SI)
+PASS 0.010090547532713543 == 0.01: within 0.1; 0.0100905 vs 0.01 (SI)
+x10 scaling: cap 0.05445 vs 0.05445; rho*Delta^2 0.01137
+PASS 0.05445475256807854 == 0.05445475256807854: within 1e-06; 0.0544548 vs 0.0544548 (SI)
+Buchdahl rho*Delta^2 = 2/(21*pi) = 0.0303152 ; cap scaled: 0.14516857300808567
+PASS 0.03031522725559911 == 0.03: within 0.05; 0.0303152 vs 0.03 (SI)
+PASS 0.14516857300808567 == 0.15: within 0.06; 0.145169 vs 0.15 (SI)
+PASS (1/m^2) * c^4/G has the dimension of J/m^3: dimensional analysis
+SUMMARY: 14 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

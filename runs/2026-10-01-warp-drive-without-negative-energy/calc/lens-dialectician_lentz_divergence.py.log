@@ -1,0 +1,20 @@
+# math_run log
+command:  python3 runs/2026-10-01-warp-drive-without-negative-energy/calc/lens-dialectician_lentz_divergence.py
+started:  2026-10-01T21:21:14Z
+duration: 1.0 s
+exit:     0
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+Identity 16*pi*rho_E - div F == 0 : True
+1D h integrals: n=1.253314, a=int h h''=-1.253314, b=int h'^2=1.253314 (a = -b expected)
+[(a) smooth] [g']=+0.000, [g'']=+0.000: 16pi*bulk = +3.552714e-15, 16pi*sheet = -0.000000e+00, total = +3.553e-15
+[(b) C1, jump in g'' only] [g']=+0.000, [g'']=+2.000: 16pi*bulk = -1.385558e-13, 16pi*sheet = -0.000000e+00, total = -1.386e-13
+[(c) C0 kink, k=1/2] [g']=+1.000, [g'']=+0.000: 16pi*bulk = +6.283185e+00, 16pi*sheet = -6.283185e+00, total = -2.665e-15
+[(c) C0 kink, k=-1/2] [g']=-1.000, [g'']=+0.000: 16pi*bulk = -6.283185e+00, 16pi*sheet = +6.283185e+00, total = +3.135e-13
+[(c) C0 kink, k=2] [g']=+4.000, [g'']=+0.000: 16pi*bulk = +2.513274e+01, 16pi*sheet = -2.513274e+01, total = +1.066e-14
+Reading: a positive bulk Eulerian energy (case c with the sign of g(0)[g'] that makes bulk > 0) is always cancelled by a negative Eulerian sheet of equal size on the kink plane; for C1 potentials the bulk alone integrates to zero.
+
+--- stderr ---
+

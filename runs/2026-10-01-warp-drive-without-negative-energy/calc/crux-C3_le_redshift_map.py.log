@@ -1,0 +1,23 @@
+# math_run log
+command:  python3 runs/2026-10-01-warp-drive-without-negative-energy/calc/crux-C3_le_redshift_map.py
+started:  2026-10-02T04:15:00Z
+duration: 0.0 s
+exit:     0
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+2m/R0=0.0000: s=1.00000; slope d(1-m_f/m_i)/dC = 2.999996; 3s = 3.000000; slope per unit L=sC: 2.999996 (exterior e^-3L slope = 3)
+2m/R0=0.3350: s=0.81548; slope d(1-m_f/m_i)/dC = 2.446424; 3s = 2.446426; slope per unit L=sC: 2.999997 (exterior e^-3L slope = 3)
+2m/R0=0.6670: s=0.57706; slope d(1-m_f/m_i)/dC = 1.731185; 3s = 1.731185; slope per unit L=sC: 3.000000 (exterior e^-3L slope = 3)
+2m/R0=0.8889: s=0.33333; slope d(1-m_f/m_i)/dC = 1.000002; 3s = 1.000000; slope per unit L=sC: 3.000005 (exterior e^-3L slope = 3)
+2m/R0=0.9500: s=0.22361; slope d(1-m_f/m_i)/dC = 0.670822; 3s = 0.670820; slope per unit L=sC: 3.000009 (exterior e^-3L slope = 3)
+threshold 3s=1 -> 2m/R0 = 1 - s^2 = 0.888889 (8/9 = 0.888889)
+refuter point 2m/R0=0.95, C=0.04: Cor3.4 bound 0.97023; e^-C 0.96079 (beats in C: True)
+  mapped exterior rapidity L = sC = 0.00894; photon rocket e^-L = 0.99110; e^-3L = 0.97352; Cor3.4 worse than photon rocket in L: True
+max over grid of Cor3.4(C=L/s)/e^-L = 0.998002 at 2m/R0=0.000, L=0.001 (<1 means never beats photon rocket in exterior rapidity)
+2024 shell 2m/R=0.335: one leg L=0.04002; photon e^-L=0.96077; Cor3.4 at C=L/s: 0.88532; e^-3L=0.88686
+2024 shell 2m/R=0.667: one leg L=0.04002; photon e^-L=0.96077; Cor3.4 at C=L/s: 0.88074; e^-3L=0.88686
+
+--- stderr ---
+

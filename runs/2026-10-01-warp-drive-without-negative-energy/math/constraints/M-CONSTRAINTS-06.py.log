@@ -1,0 +1,33 @@
+# math_run log
+command:  python3 runs/2026-10-01-warp-drive-without-negative-energy/math/constraints/M-CONSTRAINTS-06.py
+started:  2026-10-01T22:34:49Z
+duration: 1.4 s
+exit:     0
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   8 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+beta=0.0000 h=0.05: min NEC +6.513e-05 m^-2 at [14. 14.  0.], rho_E there 6.569e-05, fails 0/98
+beta=0.0000 h=0.025: min NEC +6.513e-05 m^-2 at [14. 14.  0.], rho_E there 6.570e-05, fails 0/98
+beta=0.0200 h=0.05: min NEC +1.999e-05 m^-2 at [ 0.  12.2  0. ], rho_E there 1.123e-04, fails 0/98
+beta=0.0200 h=0.025: min NEC +1.991e-05 m^-2 at [ 0.  12.2  0. ], rho_E there 1.124e-04, fails 0/98
+beta=0.0235 h=0.05: min NEC +2.003e-06 m^-2 at [ 0.  12.2  0. ], rho_E there 1.123e-04, fails 0/98
+beta=0.0235 h=0.025: min NEC +1.904e-06 m^-2 at [ 0.  12.2  0. ], rho_E there 1.123e-04, fails 0/98
+beta=0.0250 h=0.05: min NEC -5.751e-06 m^-2 at [ 0.  12.2  0. ], rho_E there 1.123e-04, fails 3/98
+beta=0.0250 h=0.025: min NEC -5.857e-06 m^-2 at [ 0.  12.2  0. ], rho_E there 1.123e-04, fails 3/98
+beta=0.0300 h=0.05: min NEC -3.179e-05 m^-2 at [ 0.  12.2  0. ], rho_E there 1.123e-04, fails 6/98
+beta=0.0300 h=0.025: min NEC -3.192e-05 m^-2 at [ 0.  12.2  0. ], rho_E there 1.123e-04, fails 6/98
+beta=0.0400 h=0.05: min NEC -8.477e-05 m^-2 at [ 0.  12.2  0. ], rho_E there 1.122e-04, fails 19/98
+beta=0.0400 h=0.025: min NEC -8.494e-05 m^-2 at [ 0.  12.2  0. ], rho_E there 1.122e-04, fails 19/98
+PASS 0.000019991163004653695 is nonnegative: symbolic, constant
+PASS -0.00008476808079283271 is negative: symbolic, constant
+PASS 0.000019907774909674823 is nonnegative: symbolic, constant
+PASS -0.00008494198778380667 is negative: symbolic, constant
+PASS -8.494198778380667e-05 == -8.0e-5: within 0.1; -8.4942e-05 vs -8e-05 (SI)
+PASS 12.199999999999992 == 12: within 0.05; 12.2 vs 12 (SI)
+PASS 0.00011223098080896177 == 1.11e-4: within 0.03; 0.000112231 vs 0.000111 (SI)
+PASS 1.0020515622077015 == 1: within 0.02; 1.00205 vs 1 (SI)
+SUMMARY: 8 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

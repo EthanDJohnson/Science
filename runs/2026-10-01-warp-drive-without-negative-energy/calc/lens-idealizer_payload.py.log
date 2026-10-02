@@ -1,0 +1,34 @@
+# math_run log
+command:  python3 runs/2026-10-01-warp-drive-without-negative-energy/calc/lens-idealizer_payload.py
+started:  2026-10-01T21:32:17Z
+duration: 2.6 s
+exit:     0
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+=== 1. Cavity kinematics in the paper's comoving frame ===
+  beta_warp=0.02: g00 = -0.579317 (payload clock rate sqrt(-g00) = 0.761129, same as the unshifted shell), g0x = -0.0200, N = 0.761391
+     cavity Eulerian observers move at 0.0263 c relative to the cavity walls; they reach the wall within ~2.54 microseconds
+  beta_warp=0.04: g00 = -0.579317 (payload clock rate sqrt(-g00) = 0.761129, same as the unshifted shell), g0x = -0.0400, N = 0.762179
+     cavity Eulerian observers move at 0.0525 c relative to the cavity walls; they reach the wall within ~1.27 microseconds
+  unshifted shell: g00 = -0.579317  -> identical g00: no proper-time gain for the payload
+
+=== 2. Net momentum of the shift currents (linear, geometric units) ===
+  int T_0z dV / beta = 9.370e-07 m  vs  int |T_0z| dV / beta = 1.298e+01 m  (ratio 7.2e-08: net zero)
+  => the 'warp' carries no net momentum; moving the payload means moving the whole mass M.
+
+=== 3. Start-and-stop budget at 0.04 c (photon rocket, ideal) ===
+  shell + payload (M = 4.49e27 kg): momentum per burn = 5.389e+34 kg m/s; start+stop mass ratio = 1.0833; propellant = 3.742e+26 kg (1.971e-01 M_J)
+  payload alone (1e5 kg): momentum per burn = 1.200e+12 kg m/s; start+stop mass ratio = 1.0833; propellant = 8.333e+03 kg (4.391e-24 M_J)
+  ratio of propellant needs = 4.49e+22
+
+=== 4. Naive weak-field linear dragging of interior frames by an accelerated shell (ours) ===
+  4GM/(c^2 R) at R = 10 m: 1.334  (>~1 means linear theory fails; strong dragging)
+  4GM/(c^2 R) at R = 20 m: 0.667  (>~1 means linear theory fails; strong dragging)
+  4GM/(c^2 R) at R = 100 m: 0.133  (>~1 means linear theory fails; strong dragging)
+  A fraction ~4GM/(c^2 R) of the shell's acceleration is felt as free fall inside: a property of
+  any massive shell, shift or not.
+
+--- stderr ---
+

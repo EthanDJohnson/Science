@@ -1,0 +1,19 @@
+# math_run log
+command:  python3 runs/2026-10-01-warp-drive-without-negative-energy/math/examiner/M-EXAMINER-06.py
+started:  2026-10-01T21:47:19Z
+duration: 2.0 s
+exit:     0
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   5 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+Phi'(r) from G_rr: (4*pi*p_r*r**3 + m(r))/(r*(r - 2*m(r)))
+PASS (-mm - 4*pi*p_r*rr**3)/(rr*(2*mm - rr)) == (mm + 4*pi*p_r*rr**3)/(rr*(-2*mm + rr)): symbolic
+PASS (27*pi*mm**3/25 + mm)/(3*mm**2) is positive: symbolic, mm in [0.1, 10]
+PASS M/(rr**2*(-2*M/rr + 1)) == M/(rr*(-2*M + rr)): symbolic
+PASS lim mm->0 of mm/(rr*(-2*mm + rr)) == 0: symbolic limit 0
+PASS 1/3 - 36*pi is negative: symbolic, constant
+SUMMARY: 5 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

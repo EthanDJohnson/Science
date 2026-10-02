@@ -1,0 +1,36 @@
+# math_run log
+command:  python3 runs/2026-10-01-warp-drive-without-negative-energy/calc/crux-C1_margins.py
+started:  2026-10-02T04:12:13Z
+duration: 0.0 s
+exit:     0
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+1. C7 law test: k = (beta_NEC/C)/(Delta/R2), Delta = R2 - R1, R2 = 20 m
+   R1= 10.0 m  C=0.3334  Delta/R2=0.500  beta_NEC/C=0.0743  k=0.149  req/ach=8.5
+   R1= 10.0 m  C=0.1000  Delta/R2=0.500  beta_NEC/C=0.0806  k=0.161  req/ach=7.9
+   R1= 10.0 m  C=0.6000  Delta/R2=0.500  beta_NEC/C=0.0613  k=0.123  req/ach=10.0
+   R1= 16.0 m  C=0.3334  Delta/R2=0.200  beta_NEC/C=0.0224  k=0.112  req/ach=24.6
+   R1=  5.0 m  C=0.3334  Delta/R2=0.750  beta_NEC/C=0.1349  k=0.180  req/ach=5.1
+   R1=  2.0 m  C=0.3334  Delta/R2=0.900  beta_NEC/C=0.1727  k=0.192  req/ach=4.09
+   R1=  1.0 m  C=0.3334  Delta/R2=0.950  beta_NEC/C=0.1830  k=0.193  req/ach=3.88
+   R1=  0.5 m  C=0.3334  Delta/R2=0.975  beta_NEC/C=0.1871  k=0.192  req/ach=3.81
+   R1=  2.0 m  C=0.8000  Delta/R2=0.900  beta_NEC/C=0.0951  k=0.106  req/ach=6.36
+   R1=  2.0 m  C=0.8500  Delta/R2=0.900  beta_NEC/C=0.0758  k=0.084  req/ach=7.7
+   R1=  0.5 m  C=0.0100  Delta/R2=0.975  beta_NEC/C=0.2222  k=0.228  req/ach=3.38
+   R1=  0.5 m  C=0.1000  Delta/R2=0.975  beta_NEC/C=0.2102  k=0.216  req/ach=3.53
+   at C=0.333: k ranges 0.112-0.193 (C7 linear-theory k = 0.18-0.37)
+   thin wall (Delta/R2=0.2) k = 0.112; thick (0.975) k = 0.192
+2. Thin-shell necessary threshold beta_int = C/2 against cap r*C
+   cap ratio 0.07: required/achievable = 7.14
+   cap ratio 0.08: required/achievable = 6.25
+   cap ratio 0.09: required/achievable = 5.56
+   scanned-family floor (refuter 2): 3.38
+3. Linear dragging coefficient kappa = 4GM/(c^2 R)
+   R = 20 m: kappa = 0.670
+   R = 10 m: kappa = 1.340
+   NEC-capped shift beta_crit = 0.0239 (M-CONSTRAINTS-13): first-order shift correction scale to kappa ~ beta = 2.4 % of kappa (assumption)
+
+--- stderr ---
+

@@ -1,0 +1,67 @@
+# math_run log
+command:  python3 runs/2026-10-01-warp-drive-without-negative-energy/calc/falsifier-C2-2_stress_ratio.py
+started:  2026-10-02T03:23:04Z
+duration: 0.7 s
+exit:     0
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+=== A. Published shell (M = 4.49e27 kg, R1 = 10 m, R2 = 20 m), toolkit default smoothing ===
+compactness C = 2GM/(c^2 R2) = 0.3334
+  peak_aniso  = 0.5393
+  peak_abs    = 0.5966
+  mean_aniso  = 0.02275
+  virial      = 0.1429
+  DEC_min     = 1.255e-10
+  pt_max      = 3.868e+39
+  eps_peak    = 1.376e+40
+
+=== B. Scale invariance at fixed C (M, R1, R2 all x L) ===
+  L =    1e+00: R2 = 2.000e+01 m, eps_peak = 1.376e+40 Pa, peak_aniso = 0.5393, mean_aniso = 0.0228, virial = 0.1429
+  L =    1e+01: R2 = 2.000e+02 m, eps_peak = 1.376e+38 Pa, peak_aniso = 0.5393, mean_aniso = 0.0228, virial = 0.1429
+  L =    1e+03: R2 = 2.000e+04 m, eps_peak = 1.376e+34 Pa, peak_aniso = 0.5393, mean_aniso = 0.0228, virial = 0.1429
+  L =    1e+06: R2 = 2.000e+07 m, eps_peak = 1.376e+28 Pa, peak_aniso = 0.5393, mean_aniso = 0.0228, virial = 0.1429
+
+=== C. Compactness sweep at R1 = 10 m, R2 = 20 m (default smoothing) ===
+  C =  0.0001: peak_aniso = 1.0574e-04 (1.057 C), mean_aniso = 4.4834e-06 (0.045 C), virial = 2.8623e-05
+  C =   0.001: peak_aniso = 1.0584e-03 (1.058 C), mean_aniso = 4.4876e-05 (0.045 C), virial = 2.8648e-04
+  C =    0.01: peak_aniso = 1.0684e-02 (1.068 C), mean_aniso = 4.5296e-04 (0.045 C), virial = 2.8906e-03
+  C =    0.05: peak_aniso = 5.5763e-02 (1.115 C), mean_aniso = 2.3631e-03 (0.047 C), virial = 1.5056e-02
+  C =     0.1: peak_aniso = 1.1799e-01 (1.180 C), mean_aniso = 4.9971e-03 (0.050 C), virial = 3.1771e-02
+  C =     0.2: peak_aniso = 2.6689e-01 (1.334 C), mean_aniso = 1.1288e-02 (0.056 C), virial = 7.1428e-02
+  C =  0.3333: peak_aniso = 5.3903e-01 (1.617 C), mean_aniso = 2.2740e-02 (0.068 C), virial = 1.4280e-01
+  C =     0.5: peak_aniso = 1.1017e+00 (2.203 C), mean_aniso = 4.6208e-02 (0.092 C), virial = 2.8641e-01
+  weak-field coefficients: peak_aniso ~ 1.057 C, mean_aniso ~ 0.045 C
+
+=== D. Edge-smoothing span (span_P; span_rho = 1.72 span_P), published M, R1, R2 ===
+  span_P = 0.30 m: max|p|/eps = 1.897, DEC_min/eps_peak = -0.3587, DEC FAILS
+  span_P = 0.40 m: max|p|/eps = 1.428, DEC_min/eps_peak = -0.1684, DEC FAILS
+  span_P = 0.50 m: max|p|/eps = 1.152, DEC_min/eps_peak = -0.0581, DEC FAILS
+  span_P = 0.60 m: max|p|/eps = 0.968, DEC_min/eps_peak = +0.0000, DEC holds
+  span_P = 0.70 m: max|p|/eps = 0.836, DEC_min/eps_peak = +0.0000, DEC holds
+  span_P = 0.80 m: max|p|/eps = 0.736, DEC_min/eps_peak = +0.0000, DEC holds
+  span_P = 1.00 m: max|p|/eps = 0.597, DEC_min/eps_peak = +0.0000, DEC holds
+  span_P = 1.50 m: max|p|/eps = 0.411, DEC_min/eps_peak = +0.0000, DEC holds
+  span_P = 2.00 m: max|p|/eps = 0.321, DEC_min/eps_peak = +0.0000, DEC holds
+
+=== E. Strength / energy-density of known matter (dimensionless, scale-free) ===
+  NS outer crust at drip (118Kr, 4.3e14 kg/m^3): mu = 1.641e+27 Pa, mu/eps = 4.247e-05, v_T = 6.517e-03 c
+  NS inner crust, illustrative (Z = 40, A_cell = 1000, 8e16 kg/m^3): mu = 1.245e+29 Pa, mu/eps = 1.732e-05, v_T = 4.162e-03 c
+  graphene, intrinsic 130 GPa, 2267 kg/m^3 [D-44, search-summary]: sigma_max/eps = 6.380e-10
+  nanodiamond yield 460 GPa, 3510 kg/m^3 [D-44]: sigma_max/eps = 1.458e-09
+  1 TPa static (DAC) taken over diamond 3510 kg/m^3 [D-44]: sigma_max/eps = 3.170e-09
+  NS crust breaking stress 0.1 mu, NS outer crust at drip (118Kr, 4.3e14 kg/m^3): sigma_max/eps = 4.247e-06
+  NS crust breaking stress 0.1 mu, NS inner crust, illustrative (Z = 40, A_cell = 1000, 8e16 kg/m^3): sigma_max/eps = 1.732e-06
+
+=== F. Gaps: required (published shell) vs best capacity, in orders of magnitude ===
+  peak |p_t - p_r|/eps = 5.393e-01: gap vs NS crust 5.10 orders; vs graphene 8.93 orders
+  mean anisotropy = 2.275e-02: gap vs NS crust 3.73 orders; vs graphene 7.55 orders
+
+=== G. Shift cap reachable if the matter's strength ratio is the limit ===
+  NS crust (best known, not self-bound): C_allowed = 4.02e-06 -> beta_cap ~ 3.21e-07 c = 9.632e+01 m/s (mean-load basis: C = 9.47e-05, beta ~ 2.272e+03 m/s)
+  graphene (best self-bound): C_allowed = 6.03e-10 -> beta_cap ~ 4.83e-11 c = 1.447e-02 m/s (mean-load basis: C = 1.42e-08, beta ~ 3.413e-01 m/s)
+  published shell needs beta_cap 0.0239 c = 7.165e+06 m/s at C = 0.333
+
+--- stderr ---
+

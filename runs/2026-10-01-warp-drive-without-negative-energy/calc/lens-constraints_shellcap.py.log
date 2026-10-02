@@ -1,0 +1,32 @@
+# math_run log
+command:  python3 runs/2026-10-01-warp-drive-without-negative-energy/calc/lens-constraints_shellcap.py
+started:  2026-10-01T21:46:32Z
+duration: 198.9 s
+exit:     0
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+published shell M = 4.49e27 kg, R1 = 10 m, R2 = 20 m, Rb = 0, default smoothing:
+  beta 0.020: NEC violations 0/630, DEC 0, unconverged 0
+  beta 0.025: NEC violations 3/630, DEC 3, unconverged 0
+  beta 0.030: NEC violations 22/630, DEC 24, unconverged 0
+  beta 0.035: NEC violations 46/630, DEC 46, unconverged 0
+  beta 0.040: NEC violations 69/630, DEC 69, unconverged 0
+  beta_crit in [0.0242, 0.0246]  [26s]
+  h check at beta = 0.03 and 0.033:  [(22, 24, 0), (22, 24, 0), (22, 24, 0), (31, 35, 0), (31, 35, 0), (31, 35, 0)]
+sensitivity to compactness (same R1, R2):
+  M = 0.25 x published (2GM/c^2R2 = 0.083): beta_crit in [0.0066, 0.0070]; beta_crit/compactness = 0.0820
+  M = 0.50 x published (2GM/c^2R2 = 0.167): beta_crit in [0.0129, 0.0133]; beta_crit/compactness = 0.0785
+  M = 1.00 x published (2GM/c^2R2 = 0.333): beta_crit in [0.0242, 0.0246]; beta_crit/compactness = 0.0732
+  M = 1.50 x published (2GM/c^2R2 = 0.500): beta_crit in [0.0328, 0.0332]; beta_crit/compactness = 0.0660
+sensitivity to the transition buffer Rb and the smoothing span (published M):
+  Rb = 1.0 m: beta_crit in [0.0160, 0.0164]
+  Rb = 2.0 m: beta_crit in [0.0098, 0.0102]
+  span_P = 0.5 m: beta_crit in [0.0246, 0.0250]
+  span_P = 2.0 m: beta_crit in [0.0219, 0.0223]
+scale invariance: (M, R1, R2) x 10 (payload radius 100 m):
+  M = 4.49e28 kg, R1 = 100 m, R2 = 200 m: beta_crit in [0.0242, 0.0246]  [199s total]
+
+--- stderr ---
+

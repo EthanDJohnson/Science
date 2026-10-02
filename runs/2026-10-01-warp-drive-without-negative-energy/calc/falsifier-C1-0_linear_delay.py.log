@@ -1,0 +1,28 @@
+# math_run log
+command:  python3 runs/2026-10-01-warp-drive-without-negative-energy/calc/falsifier-C1-0_linear_delay.py
+started:  2026-10-02T03:13:38Z
+duration: 1.9 s
+exit:     0
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+=== Part 1: linear one-way delay through a counter-streaming shell (geometric, m) ===
+M_geo = 3.3496 m (M = 4.511e+27 kg)
+D = 1e+03 m: minimum +x delay over (f1, u1) = 6.5895e+01 m = 219.797 ns at f1 = 0.010, u1 = 0.123, u2 = -0.001; -x delay 219.949 ns; interior linear shift beta = 0.001
+   same shell with no streams (beta = 0): +x delay 235.014 ns
+D = 1e+05 m: minimum +x delay over (f1, u1) = 1.2760e+02 m = 425.626 ns at f1 = 0.010, u1 = 0.067, u2 = -0.001; -x delay 425.709 ns; interior linear shift beta = 0.000
+   same shell with no streams (beta = 0): +x delay 440.826 ns
+beta = 0.02: P_geo = 0.1000 m, u1 = 0.0597; +x delay 234.00 ns, -x 237.70 ns (linear, thin shells, D = 1e3 m)
+beta = 0.04: P_geo = 0.2000 m, u1 = 0.1194; +x delay 234.67 ns, -x 242.06 ns (linear, thin shells, D = 1e3 m)
+Analytic: every term E_i (1 -+ u_i)^2 * 2(1+ln(D/R_i)) >= 0; the +x delay vanishes only if all the
+mass-energy moves at u = +1 (null dust along the ray), where zero net momentum is impossible.
+
+=== Part 2: free payload through a unit-lapse shift region (1+1, geometric) ===
+interior coordinate velocities with E = 1 (payload from rest at infinity): [X, (X**3 - X)/(X**2 + 1)]
+Killing energy of a payload at rest relative to the shell inside: E = sqrt(1 - X**2) ; at X = 0.04: 0.9991996797437437
+Exterior (X = 0) with E = 1: v = 0. A payload from rest drifts with the Eulerian flow (v = X) inside
+and leaves at rest: the shift gives no net velocity relative to the exterior.
+
+--- stderr ---
+

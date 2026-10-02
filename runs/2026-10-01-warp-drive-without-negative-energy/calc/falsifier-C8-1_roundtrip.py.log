@@ -1,0 +1,18 @@
+# math_run log
+command:  python3 runs/2026-10-01-warp-drive-without-negative-energy/calc/falsifier-C8-1_roundtrip.py
+started:  2026-10-02T04:07:37Z
+duration: 0.0 s
+exit:     0
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+Light round trip (Earth clock): 8.740 yr
+v_out=0.10 c: outbound  43.700 yr (one-way advance -39.330 yr, never >0); tube round trip  43.700 yr; round-trip advance over light -34.960 yr
+v_out=0.50 c: outbound   8.740 yr (one-way advance -4.370 yr, never >0); tube round trip   8.740 yr; round-trip advance over light +0.000 yr
+v_out=0.90 c: outbound   4.856 yr (one-way advance -0.486 yr, never >0); tube round trip   4.856 yr; round-trip advance over light +3.884 yr
+v_out=0.99 c: outbound   4.414 yr (one-way advance -0.044 yr, never >0); tube round trip   4.414 yr; round-trip advance over light +4.326 yr
+Round-trip advance exists iff v_out > 0.5 c (D/v_out < 2D/c).
+
+--- stderr ---
+

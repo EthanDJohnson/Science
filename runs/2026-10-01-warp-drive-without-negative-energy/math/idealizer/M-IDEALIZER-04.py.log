@@ -1,0 +1,42 @@
+# math_run log
+command:  python3 runs/2026-10-01-warp-drive-without-negative-energy/math/idealizer/M-IDEALIZER-04.py
+started:  2026-10-01T22:21:00Z
+duration: 50.7 s
+exit:     0
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   24 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+PASS 0 == 0: symbolic
+PASS 0 == 0: symbolic
+PASS 0 == 0: symbolic
+PASS 0 == 0: symbolic
+PASS 0 == 0: symbolic
+PASS 0 == 0: symbolic
+PASS 0 == 0: symbolic
+PASS 0 == 0: symbolic
+point {x: 0.3, y: -1.1, z: 0.7}: rho_E series coeffs 0.000e+00, 0.000e+00, -0.095780; (K^2-KK)/16pi = -0.095780
+PASS 0 == 0: symbolic
+PASS 0 == 0: symbolic
+PASS -0.09578043947109692 == -0.09578043947109695: within 1e-09; -0.0957804 vs -0.0957804 (SI)
+point {x: 1.3, y: 0.4, z: -0.9}: rho_E series coeffs 0.000e+00, 0.000e+00, -0.115914; (K^2-KK)/16pi = -0.115914
+PASS 0 == 0: symbolic
+PASS 0 == 0: symbolic
+PASS -0.11591353977222192 == -0.11591353977222174: within 1e-09; -0.115914 vs -0.115914 (SI)
+point {x: -0.6, y: 0.8, z: 1.5}: rho_E series coeffs 0.000e+00, 0.000e+00, -0.207164; (K^2-KK)/16pi = -0.207164
+PASS 0 == 0: symbolic
+PASS 0 == 0: symbolic
+PASS -0.2071640316755657 == -0.20716403167556557: within 1e-09; -0.207164 vs -0.207164 (SI)
+PASS 0 == 0: symbolic
+PASS 0 == 0: symbolic
+PASS 0 == 0: symbolic
+PASS 0 == 0: symbolic
+for w = S(r) z: K^2 - K_ij K^ij = (-x**2/2 - y**2/2)*Subs(Derivative(S(_xi_1), _xi_1), _xi_1, sqrt(x**2 + y**2 + z**2))**2/(x**2 + y**2 + z**2)  = -(1/2)(d_x S^2 + d_y S^2) <= 0
+for w = (x,y,z): K^2 - K_ij K^ij = 6
+PASS 0 == 0: symbolic
+PASS 0 == 0: symbolic
+PASS 0 == 0: symbolic
+SUMMARY: 24 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

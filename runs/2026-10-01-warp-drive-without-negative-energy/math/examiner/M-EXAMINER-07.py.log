@@ -1,0 +1,23 @@
+# math_run log
+command:  python3 runs/2026-10-01-warp-drive-without-negative-energy/math/examiner/M-EXAMINER-07.py
+started:  2026-10-01T21:47:31Z
+duration: 0.3 s
+exit:     0
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   8 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+a = g0 m/s^2: midpoint rapidity 1.8490, mass ratio 40.370, propellant energy 3.5384e+23 J, Mc^2/Ep = 1.140e+21
+PASS photon-rocket mass ratio (g0) 40.37 vs claimed 40.4
+a = 9.81 m/s^2: midpoint rapidity 1.8493, mass ratio 40.390, propellant energy 3.5402e+23 J, Mc^2/Ep = 1.140e+21
+PASS photon-rocket mass ratio (9.81) 40.39 vs claimed 40.4
+PASS series of exp(x) - 1 about x = 0 to order 2 == x: symbolic: x
+PASS 4.49e27 kg * c^2 == 4.035e44 J: within 0.001; 4.03541e+44 vs 4.035e+44 (SI)
+PASS 39.4 * 1e5 kg * c^2 == 3.54e23 J: within 0.002; 3.5411e+23 vs 3.54e+23 (SI)
+PASS 4.49e27 kg * c^2 has the dimension of energy: dimensional analysis
+PASS 4.035e44 J / (3.54e23 J) == 1.14e21 J / (1 J): within 0.005; 1.13983e+21 vs 1.14e+21 (SI)
+PASS 4.49e27 kg / (1e5 kg) == 4.49e22 kg / (1 kg): within 1e-06; 4.49e+22 vs 4.49e+22 (SI)
+SUMMARY: 6 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

@@ -1,0 +1,23 @@
+# math_run log
+command:  python3 runs/2026-10-01-warp-drive-without-negative-energy/math/decomposer/M-DECOMPOSER-07.py
+started:  2026-10-01T21:38:02Z
+duration: 3.2 s
+exit:     0
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   5 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+M = 0.001 x: first advance at beta = 0.00207 (claim 0.0021); cavity A = 0.99957, local (1-A)/2 = 0.00021
+PASS 0.0020741525585293687 == 0.0021: within 0.05; 0.00207415 vs 0.0021 (SI)
+M = 0.01 x: first advance at beta = 0.02087 (claim 0.021); cavity A = 0.99571, local (1-A)/2 = 0.00214
+PASS 0.020868728297413854 == 0.021: within 0.05; 0.0208687 vs 0.021 (SI)
+M = 0.1 x: first advance at beta = 0.22479 (claim 0.225); cavity A = 0.95717, local (1-A)/2 = 0.02141
+PASS 0.2247858488992997 == 0.225: within 0.05; 0.224786 vs 0.225 (SI)
+M = 0.5 x: no advance up to beta = 0.95 (excess 39.6 ns); claim None
+PASS 1 == 1: symbolic
+M = 1.0 x: no advance up to beta = 0.95 (excess 150.9 ns); claim None
+PASS 1 == 1: symbolic
+SUMMARY: 5 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

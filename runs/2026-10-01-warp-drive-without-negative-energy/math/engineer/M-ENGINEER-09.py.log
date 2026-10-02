@@ -1,0 +1,59 @@
+# math_run log
+command:  python3 runs/2026-10-01-warp-drive-without-negative-energy/math/engineer/M-ENGINEER-09.py
+started:  2026-10-01T22:30:12Z
+duration: 0.5 s
+exit:     0
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   24 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+  Casimir |u| at 0.1 um (J/m^3): ours = 4.33375, lens = 4.3, |diff| = 0.0338, tol = 0.05
+PASS 0.03375257482584537 <= 0.0500000000000000: symbolic, constant
+PASS pi^2*hbar*c/(720*(0.1 um)^4) == 4.33 J/m^3: within 0.01; 4.33375 vs 4.33 (SI)
+PASS lim a->oo of pi**2*h*k/(720*a**4) == 0: symbolic limit 0
+  max |f'| = 1.000000 1/m (expected 1/Delta = 1.0)
+  peak |rho| at v = 1c (J/m^3): ours = 1.20386e+42, lens = 1.2e+42, rel diff = 0.00322, rtol = 0.02
+PASS 0.003219559733838251 <= 0.0200000000000000: symbolic, constant
+  density gap at v = 1c: ours = 41.4437, lens = 41.4, |diff| = 0.0437, tol = 0.05
+PASS 0.043713124346659527 <= 0.0500000000000000: symbolic, constant
+  peak |rho| at v = 10c (J/m^3): ours = 1.20386e+44, lens = 1.2e+44, rel diff = 0.00322, rtol = 0.02
+PASS 0.003219559733838029 <= 0.0200000000000000: symbolic, constant
+  density gap at v = 10c: ours = 43.4437, lens = 43.4, |diff| = 0.0437, tol = 0.05
+PASS 0.043713124346659527 <= 0.0500000000000000: symbolic, constant
+PASS c^4/G/(1 m^2) has the dimension of J/m^3: dimensional analysis
+  Alcubierre 10c total (J), from D-28 closed form: ours = 6.72364e+48, lens = 6.72e+48, rel diff = 0.000542, rtol = 0.01
+PASS 0.0005419678721942933 <= 0.0100000000000000: symbolic, constant
+  gap Alcubierre 10c vs 1 m^2 cavity: ours = 55.1905, lens = 55.2, |diff| = 0.00949, tol = 0.05
+PASS 0.009494839639430097 <= 0.0500000000000000: symbolic, constant
+  gap Natario 1c (5.38e50 J): ours = 57.0939, lens = 57.1, |diff| = 0.00608, tol = 0.05
+PASS 0.006081837026869152 <= 0.0500000000000000: symbolic, constant
+  gap Rodal (1.3e44 J): ours = 50.4771, lens = 50.5, |diff| = 0.0229, tol = 0.05
+PASS 0.02292076038641966 <= 0.0500000000000000: symbolic, constant
+  QI wall at 10c (m): ours = 1.61626e-32, lens = 1.6e-32, rel diff = 0.0102, rtol = 0.02
+PASS 0.010159389955343823 <= 0.0200000000000000: symbolic, constant
+  QI-wall total: tanh scaling 4.16e+80 J (gap 86.98); linear-ramp D-29 6.9e63 kg = 6.2e+80 J (gap 87.16)
+  QI gap (linear-ramp D-29 value): ours = 87.1556, lens = 87.2, |diff| = 0.0444, tol = 0.05
+PASS 0.04437361610014534 <= 0.0500000000000000: symbolic, constant
+  QI gap (tanh convention, same as the 55.2 row): ours = 86.9822, lens = 87.2, |diff| = 0.218, tol = 0.25
+PASS 0.21776941758376722 <= 0.250000000000000: symbolic, constant
+  Alcubierre 10c vs world-year: 28.06 orders
+PASS 28.05651726141168 >= 23: symbolic, constant
+PASS 28.05651726141168 <= 30: symbolic, constant
+  Natario 1c vs world-year: 29.96 orders
+PASS 29.959930264024244 >= 23: symbolic, constant
+PASS 29.959930264024244 <= 30.0500000000000: symbolic, constant
+  Rodal vs world-year: 23.34 orders
+PASS 23.343091340664692 >= 23: symbolic, constant
+PASS 23.343091340664692 <= 30: symbolic, constant
+  QI wall vs world-year: ours = 60.0216, lens = 60, |diff| = 0.0216, tol = 0.1
+PASS 0.021638484950969428 <= 0.100000000000000: symbolic, constant
+  QI wall vs LHC 1.45e-20 m: ours = 11.9529, lens = 12, |diff| = 0.0471, tol = 0.05
+PASS 0.04714188560617849 <= 0.0500000000000000: symbolic, constant
+  QI wall vs 1 Angstrom: ours = 21.7915, lens = 21.8, |diff| = 0.00851, tol = 0.05
+PASS 0.008509887841153585 <= 0.0500000000000000: symbolic, constant
+SUMMARY: 24 pass, 0 fail, 0 undecided
+
+--- stderr ---
+/home/user/Science/runs/2026-10-01-warp-drive-without-negative-energy/math/engineer/M-ENGINEER-09.py:26: RuntimeWarning: overflow encountered in square
+  fp = (s / np.cosh(s * (r + R))**2 - s / np.cosh(s * (r - R))**2) / (2 * np.tanh(s * R))
+

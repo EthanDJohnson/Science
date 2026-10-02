@@ -1,0 +1,32 @@
+# math_run log
+command:  python3 runs/2026-10-01-warp-drive-without-negative-energy/calc/lens-dialectician_shell_kinematics.py
+started:  2026-10-01T21:19:54Z
+duration: 8.5 s
+exit:     0
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+geometric mass m = GM/c^2 = 3.3340 m; 2m/R2 = 0.3334; 2m/R1 = 0.6668
+mean geometric density rho = 1.1371e-04 m^-2  (SI 1.531e+23 kg/m^3)
+residual mass at R1 (should be ~0): 4.788e-16 m
+TOV pressure left at R1 (Fuchs smooth this away): P(R1) = 8.327e-06 m^-2 = 0.073 rho
+cavity lapse alpha_in: TOV 0.7607; pressure-free 0.7686; alpha(R2) = 0.8165
+[TOV] u_i=0 passenger speed relative to static (Killing) observers v_loc = b/alpha = 0.0263 c
+[TOV] extra clock deficit of a payload held at rest in the shell: 1 - sqrt(1-(b/alpha)^2) = 3.456e-04  (= 1.091e+04 s per year of its own time, approx)
+[TOV] Sagnac-type co/counter light-time difference across cavity diameter 20.0 m: 4.61 ns
+[P=0] u_i=0 passenger speed relative to static (Killing) observers v_loc = b/alpha = 0.0260 c
+[P=0] extra clock deficit of a payload held at rest in the shell: 1 - sqrt(1-(b/alpha)^2) = 3.386e-04  (= 1.069e+04 s per year of its own time, approx)
+[P=0] Sagnac-type co/counter light-time difference across cavity diameter 20.0 m: 4.52 ns
+u_i=0 passenger crosses cavity diameter 2R1 = 20.0 m at coordinate speed b = 0.02 c in 3.34 us (Killing time)
+Rb=0.0 m: net P_x = -9.375e-07 m (geometric) vs total |P| = 3.348e-01 m -> ratio -2.80e-06
+   max|j_x| = 4.177e-05 m^-2 = 0.367 rho at b=0.02;  crude caps b_max ~ 0.027 (NEC scale) to 0.054 (DEC scale)
+Rb=1.0 m: net P_x = -9.375e-07 m (geometric) vs total |P| = 4.059e-01 m -> ratio -2.31e-06
+   max|j_x| = 6.428e-05 m^-2 = 0.565 rho at b=0.02;  crude caps b_max ~ 0.018 (NEC scale) to 0.035 (DEC scale)
+Rb=2.0 m: net P_x = -9.375e-07 m (geometric) vs total |P| = 5.264e-01 m -> ratio -1.78e-06
+   max|j_x| = 1.127e-04 m^-2 = 0.991 rho at b=0.02;  crude caps b_max ~ 0.010 (NEC scale) to 0.020 (DEC scale)
+scale x1: rho*Delta^2 = 1.1371e-02 (dimensionless; b_cap scales with this at fixed shape)
+scale x10: rho*Delta^2 = 1.1371e-02 (dimensionless; b_cap scales with this at fixed shape)
+
+--- stderr ---
+

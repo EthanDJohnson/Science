@@ -1,0 +1,30 @@
+# math_run log
+command:  python3 runs/2026-10-01-warp-drive-without-negative-energy/calc/falsifier-C8-0_krasnikov_return.py
+started:  2026-10-02T04:04:28Z
+duration: 2.8 s
+exit:     0
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+=== Part 1: Krasnikov tube light cones and timing ===
+outside (k=1): null dx/dt = [-1, 1]
+inside (k=delta-1): null dx/dt = [1, -1/(delta - 1)]
+l_I = -(1-delta)d_t - d_x: g(l,l) = 0; g(d_t, l) = -delta/2  (<0 => future-directed for delta>0)
+So inside the tube a future-directed photon moving toward -x has dt/dx = (1-delta): t DEcreases by (1-delta)*D over a return of length D.
+delta=0.1: D=4.37 ly; arrive B at t=4.370 yr; home at t=0.4370 yr; light round trip 2D = 8.74 yr; return-leg advance over light from B = 8.303 yr
+delta=0.01: D=4.37 ly; arrive B at t=4.370 yr; home at t=0.0437 yr; light round trip 2D = 8.74 yr; return-leg advance over light from B = 8.696 yr
+
+=== Part 2: NEC/WEC in the 4D steady-state tube wall ===
+scan along y in wall, rho in [7,13] m, delta=0.01, sigma=2/m, rho_max=10 m:
+ points 61 skipped 0
+ violations {'nec': 55, 'wec': 60, 'sec': 55, 'dec': 61}
+ worst {'nec_min': (-0.3228228347345819, (0.0, 0.0, np.float64(8.7), 0.0)), 'wec_min': (-16.18629310279842, (0.0, 0.0, np.float64(8.7), 0.0)), 'sec_min': (-15.892853204198817, (0.0, 0.0, np.float64(8.7), 0.0))}
+ T_ab k^a k^b for k = d_t + d_y at (rho): [(9.0, '-9.600e-02'), (9.5, '4.497e-02'), (10.0, '1.560e-01'), (10.5, '6.641e-02'), (11.0, '1.119e-02')]
+ static-observer energy density T_tt (m^-2): [(9.0, '-2.033e-01'), (9.5, '-8.288e-02'), (10.0, '1.091e-01'), (10.5, '6.238e-02'), (11.0, '1.088e-02')]
+ params {'delta': 0.01, 'sigma': 4.0, 'rho_max': 10.0} violations {'nec': 111, 'wec': 119, 'sec': 114, 'dec': 120} nec_min (-1.2526770076239409, (0.0, 0.0, np.float64(9.35), 0.0))
+ params {'delta': 0.5, 'sigma': 2.0, 'rho_max': 10.0} violations {'nec': 117, 'wec': 119, 'sec': 117, 'dec': 121} nec_min (-0.16095503459025284, (0.0, 0.0, np.float64(9.5), 0.0))
+ control delta=2 (flat): violations {'nec': 0, 'wec': 0, 'sec': 0, 'dec': 0} nec_min (0.0, (0.0, 0.0, np.float64(7.0), 0.0))
+
+--- stderr ---
+

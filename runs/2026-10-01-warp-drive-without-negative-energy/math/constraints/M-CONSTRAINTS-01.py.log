@@ -1,0 +1,28 @@
+# math_run log
+command:  python3 runs/2026-10-01-warp-drive-without-negative-energy/math/constraints/M-CONSTRAINTS-01.py
+started:  2026-10-01T22:27:24Z
+duration: 4.2 s
+exit:     0
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   11 PASS, 0 FAIL, 1 UNDECIDED
+
+--- stdout ---
+UNDECIDED (-v**2*y**2*Subs(Derivative(F(_xi_1), _xi_1), _xi_1, sqrt(x**2 + y**2 + z**2))**2/(2*(x**2 + y**2 + z**2)) - v**2*z**2*Subs(Derivative(F(_xi_1), _xi_1), _xi_1, sqrt(x**2 + y**2 + z**2))**2/(2*(x**2 + y**2 + z**2)))/(16*pi) == -v**2*(4 - 2*sqrt(x**2 + y**2 + z**2))**2*(y**2 + z**2)*exp(-2*(sqrt(x**2 + y**2 + z**2) - 2)**2)/(32*pi*(x**2 + y**2 + z**2)): can't be evaluated numerically (PrintMethodNotImplementedError)
+4D route -0.014136039660520294 own formula -0.014136039660527476
+PASS -0.014136039660520294 == -0.014136039660527476: within 1e-08; -0.014136 vs -0.014136 (SI)
+paper-like E (m) = -0.2233419999567599620660879974  reference E (m) = -55556.0034264353152158501276511
+PASS -0.22334199995675996 m == -0.22334 m: within 0.0002; -0.223342 vs -0.22334 (SI)
+PASS -55556.003426435316 m == -5.5556e4 m: within 0.0002; -55556 vs -55556 (SI)
+ratio at R*s = 16, 200, 2000: -1.0012596368493636 -1.0000080616758356 -1.0000000806167584
+PASS -1.0000000806167584 == -1: within 0.001; -1 vs -1 (SI)
+PASS Integral(sech(x)**4, (x, -oo, oo)) == 4/3: numeric at 48 points, constants
+PASS lim D->0 of R**2*v**2/18 == R**2*v**2/18: symbolic limit R**2*v**2/18
+PASS 55556.003426435316 m * c^4/G == 6.72e48 J: within 0.002; 6.7237e+48 vs 6.72e+48 (SI)
+PASS 55556.003426435316 m * c^2/G == 7.48e31 kg: within 0.002; 7.48112e+31 vs 7.48e+31 (SI)
+PASS 55556.003426435316 m * c^2/G == 37.6 Msun: within 0.002; 7.48112e+31 vs 7.47642e+31 (SI)
+PASS 0.22334199995675996 m * c^2/G == 3.01e26 kg: within 0.002; 3.0075e+26 vs 3.01e+26 (SI)
+PASS 1 m * c^4/G has the dimension of J: dimensional analysis
+SUMMARY: 11 pass, 0 fail, 1 undecided
+
+--- stderr ---
+

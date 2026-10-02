@@ -1,0 +1,43 @@
+# math_run log
+command:  python3 runs/2026-10-01-warp-drive-without-negative-energy/calc/falsifier-C6-2_loophole_scale.py
+started:  2026-10-02T03:52:51Z
+duration: 0.4 s
+exit:     0
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+=== (a) de Sitter branch: recession > c across a local vacuum-energy region ===
+compactness 2GM/(c^2 d) of de Sitter region of radius d: H**2*d**2/c**2
+at the threshold H d = c this is: 1
+observed Lambda: H_Lambda = 1.820e-18 s^-1, recession reaches c at d = c/H = 1.647e+26 m = 1.741e+10 ly
+10 m bubble : H_req = 2.998e+07 s^-1, rho_vac = 1.607e+24 kg/m^3 (6.989e+06 x nuclear), energy density = 1.445e+41 J/m^3, M_inside = 6.733e+27 kg = 3.386e-03 Msun, R_s/d = 1.000
+1 AU        : H_req = 2.004e-03 s^-1, rho_vac = 7.182e+03 kg/m^3 (3.123e-14 x nuclear), energy density = 6.455e+20 J/m^3, M_inside = 1.007e+38 kg = 5.065e+07 Msun, R_s/d = 1.000
+1 ly        : H_req = 3.169e-08 s^-1, rho_vac = 1.796e-06 kg/m^3 (7.808e-24 x nuclear), energy density = 1.614e+11 J/m^3, M_inside = 6.370e+42 kg = 3.203e+12 Msun, R_s/d = 1.000
+4.37 ly     : H_req = 7.251e-09 s^-1, rho_vac = 9.404e-08 kg/m^3 (4.089e-25 x nuclear), energy density = 8.452e+09 J/m^3, M_inside = 2.784e+43 kg = 1.400e+13 Msun, R_s/d = 1.000
+record laser intensity 1e23 W/cm^2 -> energy density 3.336e+18 J/m^3
+10 m de Sitter bubble needs 4.331e+22 times that energy density
+
+=== (b) distributional / thin-shell branch ===
+R =   10 m: surface density sigma = 3.573e+24 kg/m^2; wall thickness at nuclear density = 1.553e+07 m; at Planck density = 6.931e-73 m (l_P = 1.616e-35 m)
+R =   15 m: surface density sigma = 1.588e+24 kg/m^2; wall thickness at nuclear density = 6.904e+06 m; at Planck density = 3.081e-73 m (l_P = 1.616e-35 m)
+R =   20 m: surface density sigma = 8.933e+23 kg/m^2; wall thickness at nuclear density = 3.884e+06 m; at Planck density = 1.733e-73 m (l_P = 1.616e-35 m)
+published 10 m-thick Fuchs wall: mean density = 1.531e+23 kg/m^3 = 6.658e+05 x nuclear
+a delta-function wall has rho -> infinity; any wall of thickness >= l_P is smooth, so
+the smooth-metric hypotheses (no singularities, completeness) of Olum and Gao-Wald hold for it.
+
+=== (c) generic-condition branch: matter on the path makes it generic ===
+R_ab k^a k^b for perfect fluid (geo): 8*pi*E**2*(p + rho) > 0 whenever rho + p > 0
+so a fastest path must cross no matter with rho+p>0 anywhere; a payload cavity bounded by a matter wall
+forces any departure->cavity->destination path to cross the wall worldtube.
+source radius    10 m, compactness 1e-06: M = 6.733e+21 kg = 3.386e-09 Msun
+source radius    10 m, compactness 0.1: M = 6.733e+26 kg = 3.386e-04 Msun
+source radius    10 m, compactness 0.33: M = 2.222e+27 kg = 1.117e-03 Msun
+source radius   100 m, compactness 1e-06: M = 6.733e+22 kg = 3.386e-08 Msun
+source radius   100 m, compactness 0.1: M = 6.733e+27 kg = 3.386e-03 Msun
+source radius   100 m, compactness 0.33: M = 2.222e+28 kg = 1.117e-02 Msun
+a 1e12 kg structure at 10 m has compactness 1.485e-16: deep linear regime, where NEC => Shapiro delay
+Shapiro delay (sign +) past the Fuchs mass, b = 20 m, r1 = r2 = 1 AU: 1.042e-06 s
+
+--- stderr ---
+

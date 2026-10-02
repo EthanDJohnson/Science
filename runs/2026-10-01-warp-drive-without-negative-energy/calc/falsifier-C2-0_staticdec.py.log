@@ -1,0 +1,56 @@
+# math_run log
+command:  python3 runs/2026-10-01-warp-drive-without-negative-energy/calc/falsifier-C2-0_staticdec.py
+started:  2026-10-02T03:17:57Z
+duration: 4.4 s
+exit:     0
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+--- Delta/R2 = 0.5 (R1 = 10.0 m) ---
+C = 0.1667: static max|p|/eps = 0.236 at r = 9.71 m (N=16001: 0.237); p_t there 6.334e+38 Pa, p_r 6.238e+37 Pa; DEC holds at zero shift
+C = 0.3334: static max|p|/eps = 0.597 at r = 9.71 m (N=16001: 0.599); p_t there 3.205e+39 Pa, p_r 3.157e+38 Pa; DEC holds at zero shift
+C = 0.4000: static max|p|/eps = 0.801 at r = 9.71 m (N=16001: 0.803); p_t there 5.160e+39 Pa, p_r 5.083e+38 Pa; DEC holds at zero shift
+C = 0.4500: static max|p|/eps = 0.989 at r = 9.71 m (N=16001: 0.993); p_t there 7.172e+39 Pa, p_r 7.064e+38 Pa; DEC holds at zero shift
+C = 0.5000: static max|p|/eps = 1.219 at r = 9.71 m (N=16001: 1.223); p_t there 9.820e+39 Pa, p_r 9.674e+38 Pa; DEC FAILS at zero shift
+C = 0.6000: static max|p|/eps = 1.875 at r = 9.71 m (N=16001: 1.882); p_t there 1.813e+40 Pa, p_r 1.786e+39 Pa; DEC FAILS at zero shift
+C = 0.7000: static max|p|/eps = 3.067 at r = 9.71 m (N=16001: 3.078); p_t there 3.459e+40 Pa, p_r 3.408e+39 Pa; DEC FAILS at zero shift
+C = 0.8000: static max|p|/eps = 5.991 at r = 9.71 m (N=16001: 6.012); p_t there 7.679e+40 Pa, p_r 7.527e+39 Pa; DEC FAILS at zero shift
+C = 0.8500: static max|p|/eps = 10.113 at r = 9.71 m (N=16001: 10.148); p_t there 1.377e+41 Pa, p_r 1.350e+40 Pa; DEC FAILS at zero shift
+C_DEC (zero shift, Delta/R2 = 0.5) = 0.4526
+--- Delta/R2 = 0.25 (R1 = 15.0 m) ---
+C = 0.1667: static max|p|/eps = 0.317 at r = 14.81 m (N=16001: 0.319); p_t there 1.198e+39 Pa, p_r 3.842e+37 Pa; DEC holds at zero shift
+C = 0.3334: static max|p|/eps = 0.795 at r = 14.81 m (N=16001: 0.799); p_t there 6.002e+39 Pa, p_r 1.926e+38 Pa; DEC holds at zero shift
+C = 0.4000: static max|p|/eps = 1.061 at r = 14.81 m (N=16001: 1.065); p_t there 9.604e+39 Pa, p_r 3.082e+38 Pa; DEC FAILS at zero shift
+C = 0.4500: static max|p|/eps = 1.303 at r = 14.81 m (N=16001: 1.308); p_t there 1.327e+40 Pa, p_r 4.257e+38 Pa; DEC FAILS at zero shift
+C = 0.5000: static max|p|/eps = 1.593 at r = 14.81 m (N=16001: 1.599); p_t there 1.802e+40 Pa, p_r 5.783e+38 Pa; DEC FAILS at zero shift
+C = 0.6000: static max|p|/eps = 2.392 at r = 14.81 m (N=16001: 2.402); p_t there 3.247e+40 Pa, p_r 1.042e+39 Pa; DEC FAILS at zero shift
+C = 0.7000: static max|p|/eps = 3.733 at r = 14.81 m (N=16001: 3.749); p_t there 5.914e+40 Pa, p_r 1.898e+39 Pa; DEC FAILS at zero shift
+C = 0.8000: static max|p|/eps = 6.503 at r = 14.81 m (N=16001: 6.530); p_t there 1.166e+41 Pa, p_r 3.703e+39 Pa; DEC FAILS at zero shift
+C = 0.8500: static max|p|/eps = 9.463 at r = 14.81 m (N=16001: 9.502); p_t there 1.802e+41 Pa, p_r 5.726e+39 Pa; DEC FAILS at zero shift
+C_DEC (zero shift, Delta/R2 = 0.25) = 0.3859
+--- Delta/R2 = 0.125 (R1 = 17.5 m) ---
+C = 0.1667: static max|p|/eps = 0.349 at r = 17.40 m (N=16001: 0.352); p_t there 2.252e+39 Pa, p_r 3.092e+37 Pa; DEC holds at zero shift
+C = 0.3334: static max|p|/eps = 0.868 at r = 17.40 m (N=16001: 0.876); p_t there 1.122e+40 Pa, p_r 1.540e+38 Pa; DEC holds at zero shift
+C = 0.4000: static max|p|/eps = 1.154 at r = 17.40 m (N=16001: 1.163); p_t there 1.788e+40 Pa, p_r 2.455e+38 Pa; DEC FAILS at zero shift
+C = 0.4500: static max|p|/eps = 1.412 at r = 17.40 m (N=16001: 1.423); p_t there 2.461e+40 Pa, p_r 3.380e+38 Pa; DEC FAILS at zero shift
+C = 0.5000: static max|p|/eps = 1.718 at r = 17.40 m (N=16001: 1.733); p_t there 3.328e+40 Pa, p_r 4.571e+38 Pa; DEC FAILS at zero shift
+C = 0.6000: static max|p|/eps = 2.548 at r = 17.40 m (N=16001: 2.569); p_t there 5.922e+40 Pa, p_r 8.134e+38 Pa; DEC FAILS at zero shift
+C = 0.7000: static max|p|/eps = 3.891 at r = 17.40 m (N=16001: 3.922); p_t there 1.055e+41 Pa, p_r 1.449e+39 Pa; DEC FAILS at zero shift
+C = 0.8000: static max|p|/eps = 6.468 at r = 17.40 m (N=16001: 6.521); p_t there 2.004e+41 Pa, p_r 2.753e+39 Pa; DEC FAILS at zero shift
+C = 0.8500: static max|p|/eps = 8.959 at r = 17.40 m (N=16001: 9.032); p_t there 2.950e+41 Pa, p_r 4.052e+39 Pa; DEC FAILS at zero shift
+C_DEC (zero shift, Delta/R2 = 0.125) = 0.3658
+--- Delta/R2 = 0.075 (R1 = 18.5 m) ---
+C = 0.1667: static max|p|/eps = 0.356 at r = 18.43 m (N=16001: 0.364); p_t there 3.564e+39 Pa, p_r 2.760e+37 Pa; DEC holds at zero shift
+C = 0.3334: static max|p|/eps = 0.884 at r = 18.43 m (N=16001: 0.903); p_t there 1.771e+40 Pa, p_r 1.371e+38 Pa; DEC holds at zero shift
+C = 0.4000: static max|p|/eps = 1.173 at r = 18.43 m (N=16001: 1.199); p_t there 2.818e+40 Pa, p_r 2.182e+38 Pa; DEC FAILS at zero shift
+C = 0.4500: static max|p|/eps = 1.433 at r = 18.43 m (N=16001: 1.464); p_t there 3.873e+40 Pa, p_r 3.000e+38 Pa; DEC FAILS at zero shift
+C = 0.5000: static max|p|/eps = 1.742 at r = 18.43 m (N=16001: 1.779); p_t there 5.230e+40 Pa, p_r 4.050e+38 Pa; DEC FAILS at zero shift
+C = 0.6000: static max|p|/eps = 2.570 at r = 18.43 m (N=16001: 2.625); p_t there 9.260e+40 Pa, p_r 7.171e+38 Pa; DEC FAILS at zero shift
+C = 0.7000: static max|p|/eps = 3.892 at r = 18.43 m (N=16001: 3.975); p_t there 1.636e+41 Pa, p_r 1.267e+39 Pa; DEC FAILS at zero shift
+C = 0.8000: static max|p|/eps = 6.364 at r = 18.43 m (N=16001: 6.500); p_t there 3.057e+41 Pa, p_r 2.368e+39 Pa; DEC FAILS at zero shift
+C = 0.8500: static max|p|/eps = 8.673 at r = 18.43 m (N=16001: 8.859); p_t there 4.427e+41 Pa, p_r 3.429e+39 Pa; DEC FAILS at zero shift
+C_DEC (zero shift, Delta/R2 = 0.075) = 0.3617
+
+--- stderr ---
+

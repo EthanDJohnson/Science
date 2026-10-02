@@ -1,0 +1,19 @@
+# math_run log
+command:  python3 runs/2026-10-01-warp-drive-without-negative-energy/calc/falsifier-C7-1_counterflow_floor.py
+started:  2026-10-02T04:03:00Z
+duration: 0.4 s
+exit:     0
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+rebuild profile (P_plus, M-MECHANIST-03): P per sign = 6.758e+34 kg m/s; E_flow >= 2cP = 4.052e+43 J = 0.0999 M_ADM c^2
+thin sheets at R1,R2 (M-ENGINEER-05): P per sign = 4.040e+34 kg m/s; E_flow >= 2cP = 2.422e+43 J = 0.0597 M_ADM c^2
+M_ADM c^2 = 4.0543e+44 J
+d(xi_flat) all zero in cavity: True
+xi.xi = -N**2 + b**2 (constant => static observers are geodesic: a = grad ln|xi| = 0)
+Eulerian speed relative to static (Killing) observers: b/N
+numeric at N=0.7607, b=0.02: 0.02629157355067701
+
+--- stderr ---
+

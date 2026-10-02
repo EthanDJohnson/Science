@@ -1,0 +1,46 @@
+# math_run log
+command:  python3 runs/2026-10-01-warp-drive-without-negative-energy/calc/lens-idealizer_thinshell.py
+started:  2026-10-01T21:29:06Z
+duration: 1.0 s
+exit:     0
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+=== (a) Induced metric on r = R from inside, uniform shift beta along z ===
+h_ab (t,theta,phi) = Matrix([[-N**2 + beta**2, -R*beta*sin(theta), 0], [-R*beta*sin(theta), R**2, 0], [0, 0, R**2*sin(theta)**2]])
+h_t,theta - d/dtheta(beta R cos theta) = 0
+lambda that removes cross term = beta/(N**2 - beta**2)
+h_ab in (tau,theta,phi) = Matrix([[-N**2 + beta**2, 0, 0], [0, R**2*(N**2 - beta**2*cos(theta)**2)/(N**2 - beta**2), 0], [0, 0, R**2*sin(theta)**2]])
+2-metric of the shell's spatial section seen from inside: Matrix([[R**2*(N**2 - beta**2*cos(theta)**2)/(N**2 - beta**2), 0], [0, R**2*sin(theta)**2]])
+Gaussian curvature K(theta) = N**2*(N**2 - beta**2)/(R**2*(N**2 - beta**2*cos(theta)**2)**2) ; numeric check of closed form (should be ~0): [2.7755575615628914e-16, -2.7755575615628914e-17, 5.551115123125783e-17, 2.7755575615628914e-17]
+K(pole) = N**2/(R**2*(N**2 - beta**2))  K(equator) = (N**2 - beta**2)/(N**2*R**2)  (round sphere would give 1/R^2 everywhere)
+non-roundness parameter beta^2/(N^2-beta^2) = beta^2/N^2 * gamma^2 ; e.g.
+  N=1.0, beta=0.02: eps = 4.0016e-04, axis ratio (meridian elongation) gamma = 1.000200
+  N=1.0, beta=0.04: eps = 1.6026e-03, axis ratio (meridian elongation) gamma = 1.000801
+  N=0.6, beta=0.04: eps = 4.4643e-03, axis ratio (meridian elongation) gamma = 1.002230
+  N=1.0, beta=0.5: eps = 3.3333e-01, axis ratio (meridian elongation) gamma = 1.154701
+=> Israel's first condition (round exterior tube) FAILS at O(beta^2) unless the cavity is
+   built prolate (Lorentz-elongated); at O(beta) the mismatch is removed purely by the
+   time relabelling t = tau + beta R cos(theta)/(N^2-beta^2), i.e. by gauge.
+
+=== (b) Static thin shell (no shift): Israel surface energy and pressure ===
+sigma = (1 - sqrt(-2*M/R + 1))/(4*pi*R) ; p = (-M - sqrt(R)*sqrt(-2*M + R) + R)/(8*pi*R**(3/2)*sqrt(-2*M + R))
+DEC (p <= sigma) holds for 2M/R <= 0.960000000000000  (exact 24/25 = 0.96 )
+  2M/R = 0.0667: R*sigma = 0.00270, R*p = 0.00002, p/sigma = 0.0088
+  2M/R = 0.333: R*sigma = 0.01459, R*p = 0.00082, p/sigma = 0.0561
+  2M/R = 0.667: R*sigma = 0.03366, R*p = 0.00617, p/sigma = 0.1832
+  2M/R = 0.96: R*sigma = 0.06366, R*p = 0.06366, p/sigma = 1.0000
+NEC/WEC hold for all 2M/R < 1 (sigma > 0, p > 0); SEC holds. Surface momentum S_tA = 0.
+
+=== (c) Gauge-invariant content: Sagnac loop / Killing twist ===
+interior chord contribution to oint g_0i/(-g_00) dx^i = 2*R*beta/(N**2 - beta**2)
+time jump needed at the two shell crossings (theta=0 and pi) by the Israel matching: 2*R*beta/(N**2 - beta**2)
+=> they are equal: with the junction done as Israel requires, the loop integral, i.e. the
+   Sagnac delay and the twist of the Killing vector d/dt, VANISH for a thin shell.
+   A uniform interior shift around a thin shell is a coordinate artefact (plus an O(beta^2)
+   shape change). Any physical gravitomagnetic flux must live inside a wall of finite
+   thickness, where it needs momentum currents (see lens-idealizer_thickwall.py).
+
+--- stderr ---
+

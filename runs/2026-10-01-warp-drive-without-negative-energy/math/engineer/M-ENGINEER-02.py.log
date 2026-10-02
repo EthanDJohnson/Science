@@ -1,0 +1,44 @@
+# math_run log
+command:  python3 runs/2026-10-01-warp-drive-without-negative-energy/math/engineer/M-ENGINEER-02.py
+started:  2026-10-01T22:27:19Z
+duration: 0.9 s
+exit:     0
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   13 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+Unsmoothed (sharp) shell:
+  P'(R1) = 1.008e+39 Pa, centre lapse = 0.76067, M_ADM = 4.491e+27 kg
+span_P = 0.5 m, dr = 0.004 m: lapse0 = 0.76075, M_ADM = 4.4967e+27 kg, C = 0.3339, peak eps = 1.376e+40, peak p_r = 9.869e+38, p_t in [-1.649e+38, 7.223e+39], max|p|/eps = 1.162, DEC-bad samples = 0
+span_P = 0.5 m, dr = 0.002 m: lapse0 = 0.76080, M_ADM = 4.4957e+27 kg, C = 0.3339, peak eps = 1.376e+40, peak p_r = 9.868e+38, p_t in [-1.652e+38, 7.197e+39], max|p|/eps = 1.158, DEC-bad samples = 0
+span_P = 1.0 m, dr = 0.004 m: lapse0 = 0.76112, M_ADM = 4.511e+27 kg, C = 0.3350, peak eps = 1.376e+40, peak p_r = 9.567e+38, p_t in [-1.206e+38, 3.867e+39], max|p|/eps = 0.597, DEC-bad samples = 0
+span_P = 1.0 m, dr = 0.002 m: lapse0 = 0.76117, M_ADM = 4.51e+27 kg, C = 0.3349, peak eps = 1.376e+40, peak p_r = 9.568e+38, p_t in [-1.217e+38, 3.874e+39], max|p|/eps = 0.598, DEC-bad samples = 0
+span_P = 2.0 m, dr = 0.004 m: lapse0 = 0.76234, M_ADM = 4.568e+27 kg, C = 0.3392, peak eps = 1.366e+40, peak p_r = 8.84e+38, p_t in [-6.46e+37, 2.219e+39], max|p|/eps = 0.320, DEC-bad samples = 0
+span_P = 2.0 m, dr = 0.002 m: lapse0 = 0.76239, M_ADM = 4.567e+27 kg, C = 0.3392, peak eps = 1.366e+40, peak p_r = 8.841e+38, p_t in [-6.522e+37, 2.221e+39], max|p|/eps = 0.320, DEC-bad samples = 0
+  centre lapse, span 1 m: ours = 0.761172, lens = 0.761, rel diff = 0.000226, rtol = 0.003
+PASS 0.00022625382529395388 <= 0.00300000000000000: symbolic, constant
+  peak p_r, span 1 m (Pa): ours = 9.56764e+38, lens = 9.6e+38, rel diff = 0.00337, rtol = 0.05
+PASS 0.0033709446133297627 <= 0.0500000000000000: symbolic, constant
+  peak p_t, span 1 m (Pa): ours = 3.87422e+39, lens = 3.9e+39, rel diff = 0.00661, rtol = 0.1
+PASS 0.006610589054641847 <= 0.100000000000000: symbolic, constant
+  min p_t, span 1 m (Pa): ours = -1.21744e+38, lens = -1.2e+38, rel diff = 0.0145, rtol = 0.25
+PASS 0.014532381970146835 <= 0.250000000000000: symbolic, constant
+  peak eps, span 1 m (J/m^3): ours = 1.37626e+40, lens = 1.38e+40, rel diff = 0.00271, rtol = 0.01
+PASS 0.002708744299586674 <= 0.0100000000000000: symbolic, constant
+  max |p|/eps, span 1 m: ours = 0.597879, lens = 0.6, |diff| = 0.00212, tol = 0.05
+PASS 0.002120661019149872 <= 0.0500000000000000: symbolic, constant
+  max |p|/eps, span 0.5 m: ours = 1.15799, lens = 1.15, |diff| = 0.00799, tol = 0.1
+PASS 0.007994282834229871 <= 0.100000000000000: symbolic, constant
+PASS 1.1579942828342298 > 1: symbolic, constant
+  max |p|/eps, span 2 m: ours = 0.319983, lens = 0.32, |diff| = 1.67e-05, tol = 0.05
+PASS 0.0000167478978579938 <= 0.0500000000000000: symbolic, constant
+  1 - lapse0 (fractional ageing saving): ours = 0.238828, lens = 0.24, |diff| = 0.00117, tol = 0.01
+PASS 0.0011721791610487253 <= 0.0100000000000000: symbolic, constant
+  weak-field centre lapse - 1 vs Phi(0)/c^2: ours = -2.14394e-08, lens = -2.14351e-08, rel diff = 0.0002, rtol = 0.001
+PASS 0.000200009269423429 <= 0.00100000000000000: symbolic, constant
+PASS G*1 kg/(1 m)/c^2 has the dimension of dimensionless: dimensional analysis
+PASS G*(1 kg/m^3)^2*(1 m)^2 has the dimension of Pa: dimensional analysis
+SUMMARY: 13 pass, 0 fail, 0 undecided
+
+--- stderr ---
+
