@@ -1,0 +1,23 @@
+# math_run log
+command:  python3 runs/2026-10-01-warp-drive-without-negative-energy/calc/falsifier-C2-0_capvsthickness.py
+started:  2026-10-02T03:17:09Z
+duration: 21.6 s
+exit:     0
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+Part 1: fixed compactness, varying wall thickness
+C = 0.3334, R1 =  10.0 m, Delta = 10.0 m: beta_crit(NEC) = 0.02383; beta_crit/C = 0.0715; k = beta_crit/(C Delta/R2) = 0.143; zero-shift min NEC +3.60e-05 m^-2; static max|p|/eps = 0.597
+C = 0.3334, R1 =  15.0 m, Delta =  5.0 m: beta_crit(NEC) = 0.00945; beta_crit/C = 0.0284; k = beta_crit/(C Delta/R2) = 0.113; zero-shift min NEC +5.45e-05 m^-2; static max|p|/eps = 0.795
+C = 0.3334, R1 =  17.5 m, Delta =  2.5 m: beta_crit(NEC) = 0.00414; beta_crit/C = 0.0124; k = beta_crit/(C Delta/R2) = 0.099; zero-shift min NEC +9.62e-05 m^-2; static max|p|/eps = 0.868
+C = 0.3334, R1 =  18.5 m, Delta =  1.5 m: beta_crit(NEC) = 0.00242; beta_crit/C = 0.0073; k = beta_crit/(C Delta/R2) = 0.097; zero-shift min NEC +1.55e-04 m^-2; static max|p|/eps = 0.884
+Part 2: fixed Delta/R2 = 0.5 (R1 = 10, R2 = 20 m), varying compactness
+M = 1.123e+27 kg, C = 0.0834: beta_crit(NEC) = 0.00664; beta_crit/C = 0.0797; static max|p|/eps = 0.107
+M = 2.245e+27 kg, C = 0.1667: beta_crit(NEC) = 0.01273; beta_crit/C = 0.0764; static max|p|/eps = 0.236
+M = 4.490e+27 kg, C = 0.3334: beta_crit(NEC) = 0.02383; beta_crit/C = 0.0715; static max|p|/eps = 0.597
+M = 6.735e+27 kg, C = 0.5001: beta_crit(NEC) = 0.03227; beta_crit/C = 0.0645; static max|p|/eps = 1.219
+M = 8.980e+27 kg, C = 0.6668: beta_crit(NEC) = 0.03680; beta_crit/C = 0.0552; static max|p|/eps = 2.575
+
+--- stderr ---
+

@@ -1,0 +1,51 @@
+# math_run log
+command:  python3 runs/2026-10-01-warp-drive-without-negative-energy/calc/falsifier-C4-2_gshield_scale.py
+started:  2026-10-02T03:38:17Z
+duration: 0.5 s
+exit:     0
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+== A. Thin-shell (Israel) static shell: dominant energy condition p <= sigma ==
+DEC boundary R/M = 2.083333 (25/12 = 2.083333); compactness 2M/R = 0.9600 (24/25 = 0.96)
+  C=0.335: p/sigma = 0.057  (DEC holds if <= 1)
+  C=0.670: p/sigma = 0.185  (DEC holds if <= 1)
+  C=0.889: p/sigma = 0.500  (DEC holds if <= 1)
+  C=0.960: p/sigma = 1.000  (DEC holds if <= 1)
+  C=0.990: p/sigma = 2.250  (DEC holds if <= 1)
+
+== B. Strong-field dragging proxy: Brill-Cohen rotational shell, omega/Omega = 4a(2-a)/((1+a)(3-a)), a = M/(2 r_iso) ==
+   (proxy only: Pfister et al. 2005 report linear dragging 'compares favourably' with rotational; kappa=1 only at R=2M)
+  check weak field C=1e-4: kappa_BC=6.6668e-05 vs Thirring 4M/(3R)=2C/3=6.6667e-05
+  check C->1: kappa_BC(0.999999)=0.999997
+  C=0.335: kappa_BC = 0.242; felt fraction 1-kappa = 0.758; g-shield gain 1/(1-kappa) = 1.32
+  C=0.670: kappa_BC = 0.539; felt fraction 1-kappa = 0.461; g-shield gain 1/(1-kappa) = 2.17
+  C=0.889: kappa_BC = 0.800; felt fraction 1-kappa = 0.200; g-shield gain 1/(1-kappa) = 5.00
+  C=0.960: kappa_BC = 0.914; felt fraction 1-kappa = 0.086; g-shield gain 1/(1-kappa) = 11.67
+  linear-theory coefficient used by C4 for comparison: kappa_lin = 2C = 0.67 (C=0.335), 1.34 (C=0.67)
+
+== C. alpha Cen trip, crew felt limit 1 g; shell acceleration A = g/f where f = felt fraction ==
+  1 g rocket (payload feels A)  : A=     1 g, peak rapidity 1.849, crew time 3.582 yr, Earth time 6.002 yr, photon-rocket mass ratio 4.037e+01; exhaust energy shell+payload 1.596e+46 J = 8.93e-02 M_sun; payload-only 3.538e+23 J
+  f=0.5                         : A=     2 g, peak rapidity 2.392, crew time 2.317 yr, Earth time 5.250 yr, photon-rocket mass ratio 1.195e+02; exhaust energy shell+payload 4.803e+46 J = 2.69e-01 M_sun; payload-only 1.065e+24 J
+  f=0.2                         : A=     5 g, peak rapidity 3.199, crew time 1.240 yr, Earth time 4.742 yr, photon-rocket mass ratio 6.009e+02; exhaust energy shell+payload 2.432e+47 J = 1.36e+00 M_sun; payload-only 5.392e+24 J
+  f=0.1                         : A=    10 g, peak rapidity 3.852, crew time 0.746 yr, Earth time 4.560 yr, photon-rocket mass ratio 2.217e+03; exhaust energy shell+payload 8.986e+47 J = 5.03e+00 M_sun; payload-only 1.992e+25 J
+  f=0.01                        : A=   100 g, peak rapidity 6.116, crew time 0.118 yr, Earth time 4.389 yr, photon-rocket mass ratio 2.053e+05; exhaust energy shell+payload 8.323e+49 J = 4.66e+02 M_sun; payload-only 1.845e+27 J
+  crew-time saving of f=0.1 over a 1 g rocket: 2.84 yr; Earth-time floor 4.37 yr
+  photon push power at A = 10 g for the shell: P = M A c = 1.326e+38 W = 3.46e+11 L_sun
+
+== D. Same mass used as an exterior gravity tow (payload in free fall beside the pushed mass) ==
+  A=    1 g: tow distance d = sqrt(GM/A) = 1.752e+08 m (> R2 = 20 m: True); felt (free fall) ~ 0; tidal stretch over 2.0 m = 2.24e-07 m/s^2 = 2.28e-08 g
+  A=   10 g: tow distance d = sqrt(GM/A) = 5.541e+07 m (> R2 = 20 m: True); felt (free fall) ~ 0; tidal stretch over 2.0 m = 7.08e-06 m/s^2 = 7.22e-07 g
+  A=  100 g: tow distance d = sqrt(GM/A) = 1.752e+07 m (> R2 = 20 m: True); felt (free fall) ~ 0; tidal stretch over 2.0 m = 2.24e-04 m/s^2 = 2.28e-05 g
+  A= 1000 g: tow distance d = sqrt(GM/A) = 5.541e+06 m (> R2 = 20 m: True); felt (free fall) ~ 0; tidal stretch over 2.0 m = 7.08e-03 m/s^2 = 7.22e-04 g
+  ordinary-density tow body for A=10 g: radius 1.552e+07 m, mass 3.540e+26 kg = 7.848e-02 x the C4 shell mass; tidal 2.53e-05 m/s^2
+  ordinary-density tow body for A=100 g: radius 1.552e+08 m, mass 3.540e+29 kg = 7.848e+01 x the C4 shell mass; tidal 2.53e-05 m/s^2
+
+== E. Pusher contact pressure vs shell's own static stress (is the push the binding stress?) ==
+  A=1 g: M A /(4 pi R2^2) = 8.80e+24 Pa; shell static p_t max 3.87e39 Pa (toolkit, M-CONSTRAINTS-12); ratio 2.3e-15; vs 1 TPa material: 8.8e+12x
+  A=10 g: M A /(4 pi R2^2) = 8.80e+25 Pa; shell static p_t max 3.87e39 Pa (toolkit, M-CONSTRAINTS-12); ratio 2.3e-14; vs 1 TPa material: 8.8e+13x
+  A=100 g: M A /(4 pi R2^2) = 8.80e+26 Pa; shell static p_t max 3.87e39 Pa (toolkit, M-CONSTRAINTS-12); ratio 2.3e-13; vs 1 TPa material: 8.8e+14x
+
+--- stderr ---
+

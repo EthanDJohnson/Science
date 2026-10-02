@@ -1,0 +1,35 @@
+# math_run log
+command:  python3 runs/2026-10-01-warp-drive-without-negative-energy/calc/falsifier-C5-1_c0_divergence.py
+started:  2026-10-02T03:42:16Z
+duration: 3.5 s
+exit:     0
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+--- Case A: phi C^2, third derivative jumps on x=0 and y=0 (rho_E C^0) ---
+  jump in g^(0) at 0: 0
+  jump in g^(1) at 0: 0
+  jump in g^(2) at 0: 0
+  jump in g^(3) at 0: 9
+  quadrant x- y-: integral of 16*pi*rho_E = -2.28097759797
+  quadrant x- y+: integral of 16*pi*rho_E = -2.55046720347
+  quadrant x+ y-: integral of 16*pi*rho_E = -2.55046720347
+  quadrant x+ y+: integral of 16*pi*rho_E = 7.38191200491
+  TOTAL integral of 16*pi*rho_E over R^3 = -2.36658e-30
+--- Case B: phi C^1, second derivative jumps (rho_E discontinuous) ---
+  jump in g^(0) at 0: 0
+  jump in g^(1) at 0: 0
+  jump in g^(2) at 0: 4
+  jump in g^(3) at 0: 0
+  quadrant x- y-: integral of 16*pi*rho_E = -2.28097759797
+  quadrant x- y+: integral of 16*pi*rho_E = -4.1567951488
+  quadrant x+ y-: integral of 16*pi*rho_E = -4.1567951488
+  quadrant x+ y+: integral of 16*pi*rho_E = 10.5945678956
+  TOTAL integral of 16*pi*rho_E over R^3 = 4.73317e-30
+Conclusion check: quadrant pieces are nonzero (see above) yet the total is 0 to working precision,
+so a C^0 (or even discontinuous) rho_E does not evade int rho_E = 0; positivity
+everywhere would force rho_E = 0 almost everywhere.
+
+--- stderr ---
+

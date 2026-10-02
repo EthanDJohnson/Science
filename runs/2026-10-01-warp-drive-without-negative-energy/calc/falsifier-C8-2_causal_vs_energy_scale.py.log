@@ -1,0 +1,31 @@
+# math_run log
+command:  python3 runs/2026-10-01-warp-drive-without-negative-energy/calc/falsifier-C8-2_causal_vs_energy_scale.py
+started:  2026-10-02T04:09:57Z
+duration: 0.0 s
+exit:     0
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+D = 4.134e+16 m (4.37 ly)
+delta=0.5: Earth-clock return t_E = 2.1848 yr; light round trip 2D/c = 8.74 yr; light from B at departure (t=D/c) reaches A at 8.74 yr -> return leg advance = 6.555 yr
+delta=0.1: Earth-clock return t_E = 0.4370 yr; light round trip 2D/c = 8.74 yr; light from B at departure (t=D/c) reaches A at 8.74 yr -> return leg advance = 8.302 yr
+delta=0.01: Earth-clock return t_E = 0.0437 yr; light round trip 2D/c = 8.74 yr; light from B at departure (t=D/c) reaches A at 8.74 yr -> return leg advance = 8.696 yr
+alpha=1.0, QI eps=100 lP: |E|/c^2 = 3.446e+76 kg = 1.732e+46 Msun = 1.732e+34 Mgal
+alpha=1.0, eps=1 m (QI ignored): |E|/c^2 = 5.568e+43 kg = 2.799e+13 Msun = 2.799e+01 Mgal
+alpha=0.01, QI eps=100 lP: |E|/c^2 = 3.446e+74 kg = 1.732e+44 Msun = 1.732e+32 Mgal
+alpha=0.01, eps=1 m (QI ignored): |E|/c^2 = 5.568e+41 kg = 2.799e+11 Msun = 2.799e-01 Mgal
+check 1 m tube, alpha=1, eps=100 lP: 3.830e+67 m_P (E-R quote ~1e68 m_P with 1 m = 1e35 lP)
+Hubble-volume critical-density mass c^3/(2 G H0) = 9.202e+52 kg
+alpha=0.01 QI tube / Hubble-volume mass = 3.744e+21 (log10 21.6)
+outbound at 0.1c: trip 43.7 yr; KE = 4.528e+19 J (7.55e-02 world-years); photon rocket accel+stop fuel energy = 1.997e+21 J (3.33e+00 world-years)
+outbound at 0.5c: trip 8.7 yr; KE = 1.390e+21 J (2.32e+00 world-years); photon rocket accel+stop fuel energy = 1.798e+22 J (3.00e+01 world-years)
+outbound at 0.99c: trip 4.4 yr; KE = 5.473e+22 J (9.12e+01 world-years); photon rocket accel+stop fuel energy = 1.780e+24 J (2.97e+03 world-years)
+gap: negative-energy requirement (alpha=0.01, QI wall) 3.097e+91 J vs causal-access leg 1.997e+21 J -> 70.2 orders of magnitude
+near-c outbound (0.99c, needed for a short Earth-clock round trip): 1.780e+24 J -> gap 67.2 orders
+outbound 0.1c, delta=0.1: depart B at 43.70 yr, return to A at 39.76 yr, light from B arrives 48.07 yr -> return-leg advance 8.30 yr
+outbound 0.1c, delta=0.01: depart B at 43.70 yr, return to A at 39.37 yr, light from B arrives 48.07 yr -> return-leg advance 8.70 yr
+even with eps = 1 m (QI ignored), alpha=0.01: 5.004e+58 J -> 37.4 orders above the outbound leg
+
+--- stderr ---
+

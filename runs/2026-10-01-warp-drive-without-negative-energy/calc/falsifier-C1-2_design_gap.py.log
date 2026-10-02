@@ -1,0 +1,24 @@
+# math_run log
+command:  python3 runs/2026-10-01-warp-drive-without-negative-energy/calc/falsifier-C1-2_design_gap.py
+started:  2026-10-02T03:14:37Z
+duration: 25.5 s
+exit:     0
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+R1[m] R2[m] | C=2GM/c^2R2 | M[kg] | lapse e^a(0) | beta_int=(1-e^2a)/2 | beta_NEC (sampled upper bound) | beta_NEC/C | required/achievable | runtime
+ 10.0  20.0 | 0.3334 | 4.490e+27 | 0.7612 | 0.2103 | 0.0248 | 0.0743 | 8.5 | 5s
+ 10.0  20.0 | 0.1000 | 1.347e+27 | 0.9338 | 0.0640 | 0.0081 | 0.0806 | 7.9 | 4s
+ 10.0  20.0 | 0.6000 | 8.080e+27 | 0.5158 | 0.3670 | 0.0368 | 0.0613 | 10.0 | 3s
+  5.0  20.0 | 0.3334 | 4.490e+27 | 0.7364 | 0.2288 | 0.0450 | 0.1349 | 5.1 | 3s
+  2.0  20.0 | 0.3334 | 4.490e+27 | 0.7274 | 0.2355 | 0.0576 | 0.1727 | 4.1 | 3s
+ 16.0  20.0 | 0.3334 | 4.490e+27 | 0.7950 | 0.1840 | 0.0075 | 0.0224 | 24.6 | 3s
+  5.0  20.0 | 0.7000 | 9.426e+27 | 0.3463 | 0.4401 | 0.0681 | 0.0973 | 6.5 | 3s
+
+thin-shell analytic (interior lapse sqrt(1-C)): beta_int = C/2; with the run's NEC cap ratio beta_NEC/C ~ 0.07-0.09 the required/achievable factor is 0.5/0.09 = 5.6 to 0.5/0.07 = 7.1
+Buchdahl end (C = 8/9): thin-shell beta_int = 0.444 vs generous cap 0.08 -> factor 5.6
+smallest required/achievable factor among sampled designs: 4.09
+
+--- stderr ---
+

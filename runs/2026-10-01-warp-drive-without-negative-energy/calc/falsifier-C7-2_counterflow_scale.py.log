@@ -1,0 +1,46 @@
+# math_run log
+command:  python3 runs/2026-10-01-warp-drive-without-negative-energy/calc/falsifier-C7-2_counterflow_scale.py
+started:  2026-10-02T04:00:44Z
+duration: 0.0 s
+exit:     0
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+rebuild: M_ADM = 4.5105e+27 kg = 2.376 MJup; C = 2GM/(c^2 R2) = 0.3350
+Mc^2 = 4.054e+44 J
+
+[1] two-sheet (minimum-P) geometry
+  P per stream = 4.037e+34 kg m/s ; DEC floor E_flow >= 2cP = 2.421e+43 J = 0.0597 Mc^2
+  whole-mass counterflow speed u = 2P/(Mc) = 0.0597 c
+
+[2] Fuchs eq.(28) sigmoid profile, P+ = 6.758e34 kg m/s per sign (M-MECHANIST-03)
+  ratio P+/P_two-sheet = 1.674
+  DEC floor E_flow >= 2cP+ = 4.052e+43 J = 0.1000 Mc^2
+  whole-mass counterflow speed u = 2P+/(Mc) = 0.1000 c
+  counterflow KE at u = 0.060 c: (gamma-1) M c^2 = 7.246e+41 J = 1.79e-03 Mc^2
+  counterflow KE at u = 0.100 c: (gamma-1) M c^2 = 2.040e+42 J = 5.03e-03 Mc^2
+
+[4] linear counterflow beta/C = (u gamma) (R2/R1 - 1) at fixed geometry R2/R1 = 2
+  NEC cap of the rebuild profile: beta_crit = 0.02386, beta_crit/C = 0.0712
+  u = 0.072 c: beta = 0.0240, beta/C = 0.072, x NEC-cap = 1.01  (linear; invalid as beta -> O(N))
+  u = 0.100 c: beta = 0.0337, beta/C = 0.101, x NEC-cap = 1.41  (linear; invalid as beta -> O(N))
+  u = 0.300 c: beta = 0.1053, beta/C = 0.314, x NEC-cap = 4.41  (linear; invalid as beta -> O(N))
+  u = 0.500 c: beta = 0.1934, beta/C = 0.577, x NEC-cap = 8.11  (linear; invalid as beta -> O(N))
+
+[5] beta/C at fixed u = 0.06 c for other aspect ratios (linear two-sheet law)
+  R2/R1 =  1.05: beta/C = 0.0030; inner-sheet local 2G(M/2)/(c^2 R1) = 0.176 at C = 0.335
+  R2/R1 =  1.20: beta/C = 0.0120; inner-sheet local 2G(M/2)/(c^2 R1) = 0.201 at C = 0.335
+  R2/R1 =  2.00: beta/C = 0.0600; inner-sheet local 2G(M/2)/(c^2 R1) = 0.335 at C = 0.335
+  R2/R1 =  5.00: beta/C = 0.2400; inner-sheet local 2G(M/2)/(c^2 R1) = 0.837 at C = 0.335
+  R2/R1 = 10.00: beta/C = 0.5400; inner-sheet local 2G(M/2)/(c^2 R1) = 1.675 at C = 0.335  (exceeds Buchdahl 8/9)
+
+[6] photon-rocket start-and-stop propellant (ideal)
+  v = 0.026 c: ratio 1.05339; shell+payload propellant 2.408e+26 kg ; payload alone 5.339e+03 kg ; cost ratio 4.51e+22
+  v = 0.04 c: ratio 1.08333; shell+payload propellant 3.759e+26 kg ; payload alone 8.333e+03 kg ; cost ratio 4.51e+22
+  counterflow set-up energy (u = 0.100 c) / payload-alone photon-rocket energy at 0.04c: 2.72e+21
+  rho u^2 at u = 0.060 c: 4.906e+37 Pa ; vs rebuild p_t,max 3.866e39 Pa: 1.269e-02
+  rho u^2 at u = 0.100 c: 1.375e+38 Pa ; vs rebuild p_t,max 3.866e39 Pa: 3.556e-02
+
+--- stderr ---
+

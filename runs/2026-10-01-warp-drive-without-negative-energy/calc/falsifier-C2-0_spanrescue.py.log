@@ -1,0 +1,18 @@
+# math_run log
+command:  python3 runs/2026-10-01-warp-drive-without-negative-energy/calc/falsifier-C2-0_spanrescue.py
+started:  2026-10-02T03:18:21Z
+duration: 1.2 s
+exit:     0
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+C = 0.3334: bulk P(R1)/eps = 0.073, R1 hoop sheet R1 P(R1)/2 = 5.040e+39 N/m; smoothed max|p|/eps:  s=0.5: 1.152  s=1.0: 0.597  s=2.0: 0.321  s=3.0: 0.228  s=4.0: 0.182
+C = 0.5000: bulk P(R1)/eps = 0.150, R1 hoop sheet R1 P(R1)/2 = 1.549e+40 N/m; smoothed max|p|/eps:  s=0.5: 2.358  s=1.0: 1.219  s=2.0: 0.652  s=3.0: 0.462  s=4.0: 0.368
+C = 0.6000: bulk P(R1)/eps = 0.232, R1 hoop sheet R1 P(R1)/2 = 2.868e+40 N/m; smoothed max|p|/eps:  s=0.5: 3.633  s=1.0: 1.875  s=2.0: 1.001  s=3.0: 0.706  s=4.0: 0.562
+C = 0.7000: bulk P(R1)/eps = 0.380, R1 hoop sheet R1 P(R1)/2 = 5.492e+40 N/m; smoothed max|p|/eps:  s=0.5: 5.953  s=1.0: 3.067  s=2.0: 1.631  s=3.0: 1.146  s=4.0: 0.908
+C = 0.8000: bulk P(R1)/eps = 0.748, R1 hoop sheet R1 P(R1)/2 = 1.235e+41 N/m; smoothed max|p|/eps:  s=0.5: 11.671  s=1.0: 5.991  s=2.0: 3.161  s=3.0: 2.204  s=4.0: 1.733
+C = 0.8500: bulk P(R1)/eps = 1.273, R1 hoop sheet R1 P(R1)/2 = 2.233e+41 N/m; smoothed max|p|/eps:  s=0.5: 19.786  s=1.0: 10.113  s=2.0: 5.286  s=3.0: 3.652  s=4.0: 2.846
+
+--- stderr ---
+

@@ -1,0 +1,33 @@
+# math_run log
+command:  python3 runs/2026-10-01-warp-drive-without-negative-energy/calc/falsifier-C3-1_le_center_bound.py
+started:  2026-10-02T03:29:03Z
+duration: 0.0 s
+exit:     0
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   2 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+threshold compactness 2m/R0 where s = 1/3: 0.8888888888888888
+2m/R0=0.000 C=0.04: Le bound m_f/m_i <= 0.88692; photon e^-C = 0.96079; costlier than photon rocket
+2m/R0=0.000 C=0.08: Le bound m_f/m_i <= 0.78663; photon e^-C = 0.92312; costlier than photon rocket
+2m/R0=0.000 C=0.30: Le bound m_f/m_i <= 0.40657; photon e^-C = 0.74082; costlier than photon rocket
+2m/R0=0.600 C=0.04: Le bound m_f/m_i <= 0.92496; photon e^-C = 0.96079; costlier than photon rocket
+2m/R0=0.600 C=0.08: Le bound m_f/m_i <= 0.85215; photon e^-C = 0.92312; costlier than photon rocket
+2m/R0=0.600 C=0.30: Le bound m_f/m_i <= 0.51219; photon e^-C = 0.74082; costlier than photon rocket
+2m/R0=0.889 C=0.04: Le bound m_f/m_i <= 0.95778; photon e^-C = 0.96079; costlier than photon rocket
+2m/R0=0.889 C=0.08: Le bound m_f/m_i <= 0.91174; photon e^-C = 0.92312; costlier than photon rocket
+2m/R0=0.889 C=0.30: Le bound m_f/m_i <= 0.63188; photon e^-C = 0.74082; costlier than photon rocket
+2m/R0=0.900 C=0.04: Le bound m_f/m_i <= 0.95969; photon e^-C = 0.96079; costlier than photon rocket
+2m/R0=0.900 C=0.08: Le bound m_f/m_i <= 0.91530; photon e^-C = 0.92312; costlier than photon rocket
+2m/R0=0.900 C=0.30: Le bound m_f/m_i <= 0.63987; photon e^-C = 0.74082; costlier than photon rocket
+2m/R0=0.950 C=0.04: Le bound m_f/m_i <= 0.97023; photon e^-C = 0.96079; cheaper than photon rocket allowed
+2m/R0=0.950 C=0.08: Le bound m_f/m_i <= 0.93513; photon e^-C = 0.92312; cheaper than photon rocket allowed
+2m/R0=0.950 C=0.30: Le bound m_f/m_i <= 0.68639; photon e^-C = 0.74082; costlier than photon rocket
+2m/R0=0.959 C=0.04: Le bound m_f/m_i <= 0.97266; photon e^-C = 0.96079; cheaper than photon rocket allowed
+2m/R0=0.959 C=0.08: Le bound m_f/m_i <= 0.93974; photon e^-C = 0.92312; cheaper than photon rocket allowed
+2m/R0=0.959 C=0.30: Le bound m_f/m_i <= 0.69770; photon e^-C = 0.74082; costlier than photon rocket
+PASS Le centre bound beats photon rocket only above 2m/R0 = 8/9 at small C
+PASS weak-field limit gives e^-3C
+
+--- stderr ---
+

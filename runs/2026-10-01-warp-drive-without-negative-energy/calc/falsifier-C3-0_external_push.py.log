@@ -1,0 +1,45 @@
+# math_run log
+command:  python3 runs/2026-10-01-warp-drive-without-negative-energy/calc/falsifier-C3-0_external_push.py
+started:  2026-10-02T03:26:11Z
+duration: 0.1 s
+exit:     0
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+=== v = 0.04 c ===
+(a) photon rocket start+stop: mass ratio 1.08333; exhaust energy 3.3786e+43 J = 5.705e+22 world-years
+    kinetic energy per leg (gamma-1)Mc^2 = 3.2473e+41 J; start+stop without recovery 2KE = 6.4946e+41 J
+    ratio photon-rocket exhaust / 2KE = 52.02
+(b) isolated, massive reaction mass k=0.1 M per leg: energy released per leg 3.4527e+42 J (x2 = 6.9054e+42 J, 0.2044 of photon-rocket exhaust); one-leg mass ratio 1.1085 vs photon-rocket one-leg 1.04083
+(b) isolated, massive reaction mass k=1 M per leg: energy released per leg 6.4946e+41 J (x2 = 1.2989e+42 J, 0.0384 of photon-rocket exhaust); one-leg mass ratio 2.0016 vs photon-rocket one-leg 1.04083
+(b) isolated, massive reaction mass k=10 M per leg: energy released per leg 3.5722e+41 J (x2 = 7.1444e+41 J, 0.0211 of photon-rocket exhaust); one-leg mass ratio 11.0009 vs photon-rocket one-leg 1.04083
+(b) isolated, massive reaction mass k=1000 M per leg: energy released per leg 3.2506e+41 J (x2 = 6.5011e+41 J, 0.0192 of photon-rocket exhaust); one-leg mass ratio 1001.0008 vs photon-rocket one-leg 1.04083
+(c) perfect-mirror sail, single bounce, per leg: beam energy 8.2774e+42 J = 0.02042 Mc^2; x2 = 1.6555e+43 J = 0.490 of photon-rocket exhaust; shell mass ratio 1
+    small-v check: Mc^2 (v/2 + v^2/4) = 8.2707e+42 J
+(d) N-bounce recycling / mass driver floor -> 2KE = 6.4946e+41 J = 1.097e+21 world-years; shell mass ratio 1
+    payload-alone 2KE = 1.4397e+19 J; shell/payload bill ratio = 4.5110e+22 (mechanism-independent)
+    momentum per leg gamma M v = 5.4138e+34 kg m/s
+
+=== v = 0.0239 c ===
+(a) photon rocket start+stop: mass ratio 1.04897; exhaust energy 1.9854e+43 J = 3.353e+22 world-years
+    kinetic energy per leg (gamma-1)Mc^2 = 1.1584e+41 J; start+stop without recovery 2KE = 2.3168e+41 J
+    ratio photon-rocket exhaust / 2KE = 85.69
+(b) isolated, massive reaction mass k=0.1 M per leg: energy released per leg 1.2583e+42 J (x2 = 2.5167e+42 J, 0.1268 of photon-rocket exhaust); one-leg mass ratio 1.1031 vs photon-rocket one-leg 1.02419
+(b) isolated, massive reaction mass k=1 M per leg: energy released per leg 2.3168e+41 J (x2 = 4.6337e+41 J, 0.0233 of photon-rocket exhaust); one-leg mass ratio 2.0006 vs photon-rocket one-leg 1.02419
+(b) isolated, massive reaction mass k=10 M per leg: energy released per leg 1.2743e+41 J (x2 = 2.5486e+41 J, 0.0128 of photon-rocket exhaust); one-leg mass ratio 11.0003 vs photon-rocket one-leg 1.02419
+(b) isolated, massive reaction mass k=1000 M per leg: energy released per leg 1.1596e+41 J (x2 = 2.3192e+41 J, 0.0117 of photon-rocket exhaust); one-leg mass ratio 1001.0003 vs photon-rocket one-leg 1.02419
+(c) perfect-mirror sail, single bounce, per leg: beam energy 4.9042e+42 J = 0.01210 Mc^2; x2 = 9.8084e+42 J = 0.494 of photon-rocket exhaust; shell mass ratio 1
+    small-v check: Mc^2 (v/2 + v^2/4) = 4.9028e+42 J
+(d) N-bounce recycling / mass driver floor -> 2KE = 2.3168e+41 J = 3.912e+20 world-years; shell mass ratio 1
+    payload-alone 2KE = 5.1360e+18 J; shell/payload bill ratio = 4.5110e+22 (mechanism-independent)
+    momentum per leg gamma M v = 3.2331e+34 kg m/s
+
+check e^atanh(v) = 1.040833, sqrt((1+v)/(1-v)) = 1.040833
+check e^atanh(v) = 1.024193, sqrt((1+v)/(1-v)) = 1.024193
+v=0.001: per-leg photon exhaust/KE = 2001.00, 2/v = 2000.00
+v=0.01: per-leg photon exhaust/KE = 200.99, 2/v = 200.00
+v=0.04: per-leg photon exhaust/KE = 50.98, 2/v = 50.00
+
+--- stderr ---
+

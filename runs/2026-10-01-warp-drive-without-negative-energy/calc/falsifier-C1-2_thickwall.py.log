@@ -1,0 +1,26 @@
+# math_run log
+command:  python3 runs/2026-10-01-warp-drive-without-negative-energy/calc/falsifier-C1-2_thickwall.py
+started:  2026-10-02T03:15:26Z
+duration: 37.7 s
+exit:     0
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+R1[m] R2[m] | C | interior lapse | beta_int | beta_NEC | ratio | factor
+-- convergence at R1 = 2 m, C = 0.3334 --
+ 2.00  20.0 | 0.333 | lapse 0.7274 | beta_int 0.2355 | beta_NEC 0.0576 | beta_NEC/C 0.1727 | required/achievable 4.09 (n=40, h=0.005 wall) [3s]
+ 2.00  20.0 | 0.333 | lapse 0.7274 | beta_int 0.2355 | beta_NEC 0.0576 | beta_NEC/C 0.1727 | required/achievable 4.09 (n=80) [6s]
+ 2.00  20.0 | 0.333 | lapse 0.7274 | beta_int 0.2355 | beta_NEC 0.0576 | beta_NEC/C 0.1727 | required/achievable 4.09 (h halved) [3s]
+ 2.00  20.0 | 0.333 | lapse 0.7274 | beta_int 0.2355 | beta_NEC 0.0576 | beta_NEC/C 0.1727 | required/achievable 4.09 (5 angles) [8s]
+-- cavity shrinking, C = 0.3334 --
+ 1.00  20.0 | 0.333 | lapse 0.7256 | beta_int 0.2368 | beta_NEC 0.0610 | beta_NEC/C 0.1830 | required/achievable 3.88  [3s]
+ 0.50  20.0 | 0.333 | lapse 0.7246 | beta_int 0.2375 | beta_NEC 0.0624 | beta_NEC/C 0.1871 | required/achievable 3.81  [4s]
+-- thick wall toward Buchdahl --
+ 2.00  20.0 | 0.600 | lapse 0.4546 | beta_int 0.3967 | beta_NEC 0.0829 | beta_NEC/C 0.1381 | required/achievable 4.79  [3s]
+ 2.00  20.0 | 0.800 | lapse 0.1802 | beta_int 0.4838 | beta_NEC 0.0760 | beta_NEC/C 0.0951 | required/achievable 6.36  [3s]
+ 2.00  20.0 | 0.850 | lapse 0.0891 | beta_int 0.4960 | beta_NEC 0.0644 | beta_NEC/C 0.0758 | required/achievable 7.70  [3s]
+smallest required/achievable factor in part 2: 3.81
+
+--- stderr ---
+

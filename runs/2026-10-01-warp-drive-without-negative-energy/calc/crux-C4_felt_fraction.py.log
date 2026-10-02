@@ -1,0 +1,39 @@
+# math_run log
+command:  python3 runs/2026-10-01-warp-drive-without-negative-energy/calc/crux-C4_felt_fraction.py
+started:  2026-10-02T04:15:37Z
+duration: 0.0 s
+exit:     0
+versions: python 3.11.15, sympy 1.14.0, mpmath 1.3.0, numpy 2.4.6, scipy 1.17.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+Weak-field check: C=1e-4 kappa_BC=6.666806e-05 vs Thirring 2C/3=6.666667e-05
+Horizon check: C=1 kappa_BC=1.0000
+
+F = 1 - kappa (felt fraction) by model
+C        1-C        (1-C/2)^2  1-BC       1-2C       1-11C/6    N^2       
+0.3333   0.667      0.694      0.760      0.333      0.389      0.579     
+0.3350   0.665      0.693      0.758      0.330      0.386      -         
+0.6667   0.333      0.444      0.464      -0.333     -0.222     -         
+0.8889   0.111      0.309      0.200      -0.778     -0.630     -         
+0.9600   0.040      0.270      0.086      -0.920     -0.760     -         
+0.9796   0.020      0.260      0.048      -0.959     -0.796     -         
+
+Published shell nonlinear band: F = 0.579 to 0.758; gain 1/F = 1.32 to 1.73
+Gap from no-drag (F=1) to band top: 0.242; band width: 0.179
+Precision needed to separate F_band from F=1 at 3 sigma: sigma_F <= 0.081
+Precision needed to separate the nonlinear models from each other at 2 sigma: sigma_F <= 0.045
+C=0.9600: F range 0.040 to 0.270 (best gain 25x)
+C=0.9796: F range 0.020 to 0.260 (best gain 49x)
+A=   1 g, L=10 m, equal felt F=0.579: tow mass 1.752e+14 kg at d=34.5 m (L/d=0.29, linear tide rough); shell/tow = 2.57e+13; tug must fit inside d -> density >= 1.02e+09 kg/m^3
+A=   1 g, L=10 m, equal felt F=0.758: tow mass 1.022e+14 kg at d=26.4 m (L/d=0.38, linear tide rough); shell/tow = 4.41e+13; tug must fit inside d -> density >= 1.33e+09 kg/m^3
+A=  10 g, L=10 m, equal felt F=0.579: tow mass 1.752e+15 kg at d=34.5 m (L/d=0.29, linear tide rough); shell/tow = 2.57e+12; tug must fit inside d -> density >= 1.02e+10 kg/m^3
+A=  10 g, L=10 m, equal felt F=0.758: tow mass 1.022e+15 kg at d=26.4 m (L/d=0.38, linear tide rough); shell/tow = 4.41e+12; tug must fit inside d -> density >= 1.33e+10 kg/m^3
+
+Tow size constraint (tug radius <= d): surface gravity >= A
+C4-0 tractor M=5.877e+18 kg at d=2000 m needs density >= 1.75e+08 kg/m^3
+Osmium-density tug at A=10 g: min mass 3.540e+26 kg (r=1.552e+07 m, d=1.552e+07 m); shell/tug = 12.7; tide over 10 m = 1.26e-04 m/s^2 = 1.29e-06 of A
+Shell mean density 1.53e+23 kg/m^3 [D-22] vs C4-0 tractor floor: ratio 8.7e+14
+
+--- stderr ---
+
