@@ -21,9 +21,10 @@ Reference files, all in `.claude/skills/conundrum/references/`:
 
 ## 0. Preflight
 
-Run `python3 .claude/skills/conundrum/scripts/check_env.py`.
+Run `python3 .claude/skills/conundrum/scripts/check_env.py --install`, with the Bash tool's timeout at 600000 ms. Don't ask first: the user wants missing packages installed without a question. It has pip install whichever of its fixed list is missing or broken (sympy, mpmath, numpy, scipy, and pypdf with cffi) and nothing else. A fresh cloud container usually needs them; a machine that has them gets nothing installed.
+- **Installed:** say in one line what it installed.
+- **Install failed:** an `ACTION:` line means a required package is still missing. Show the user the reason it gives and ask how to proceed: the physics calculations depend on these packages, and agents' scripts often use scipy. A `NOTE:` that only pypdf failed is no reason to stop: say that agents can then quote abstracts and web pages but not PDFs, and continue.
 - **Few agents at once:** if it notes that only a few agents run at once, mention it. The time estimates below assume 2 at once, as in the measured runs; a machine with more CPUs runs faster.
-- **Required package missing:** ask whether to install it (`pip install sympy numpy scipy`) before continuing. The physics calculations depend on it, and agents' scripts often use scipy.
 - **Literature sources blocked:** tell the user in one line that research will lean on search summaries and INSPIRE abstracts, which the pipeline marks and weighs down. Continue unless they want to fix network access first.
 
 Then check that WebFetch itself can read papers: WebFetch `https://arxiv.org/abs/gr-qc/0009013` and ask for the title.
@@ -78,7 +79,7 @@ Then check that WebFetch itself can read papers: WebFetch `https://arxiv.org/abs
 
 ## 2. Research
 
-Call the Workflow tool with `name: "conundrum-research"` and `args: {slug, depth, type, tools, prior}`. `type` is the question type from step 1; `tools` holds the confirmed calculators as `[{name, purpose}]`, and `prior` the brief's leads and update runs as `[{slug, mode}]`; leave either out if it is empty. Append `research <runId>` to `runs/<slug>/workflow-runs.txt` as soon as the launch returns: a relaunch needs the run ID (see "If something fails"). The workflow runs in the background, so wait for its completion notification. If the result lists `missing` or `unchecked` facets, mention them at the checkpoint.
+Call the Workflow tool with `name: "conundrum-research"` and `args: {slug, depth, type, tools, prior}`. `type` is the question type from step 1; `tools` holds the confirmed calculators as `[{name, purpose}]`, and `prior` the brief's leads and update runs as `[{slug, mode}]`; leave either out if it is empty. Append `research <runId>` to `runs/<slug>/workflow-runs.txt` as soon as the launch returns: a relaunch needs the run ID (see "If something fails"). Every launch gets its own line, relaunches included, with the run ID that launch returned; resuming always uses the last line for its stage. The workflow runs in the background, so wait for its completion notification. If the result lists `missing` or `unchecked` facets, mention them at the checkpoint.
 
 **In a cloud session, offer to commit and push `runs/<slug>/` now,** and again after step 4. The container is reclaimed after inactivity and unpushed files are lost, while a workflow's saved results survive, so a later relaunch would trust agents whose files no longer exist.
 
@@ -116,7 +117,7 @@ Then:
 
 Call the Workflow tool with `name: "conundrum-analyze"` and `args: {slug, depth, type, lenses}`, adding `stopAfter: "slate"` if the user took that offer, and wait for completion. Append `analyze <runId>` to `runs/<slug>/workflow-runs.txt` as soon as the launch returns.
 
-**If the result says `stoppedAfter: "slate"`,** show the user `runs/<slug>/candidates.md`: its exclusivity line, each candidate's claim and decisive test, and for an anomaly its prediction matrix. Ask whether to continue. Then relaunch with the same args without `stopAfter`, plus `resumeFromRunId`: the lenses, math checks and slate come back from saved results. If the user wants the slate changed, also pass their request as `slateNote`: the lenses and math checks are replayed, and only the slate is rebuilt. Resuming works only in this session.
+**If the result says `stoppedAfter: "slate"`,** show the user `runs/<slug>/candidates.md`: its exclusivity line, each candidate's claim and decisive test, and for an anomaly its prediction matrix. Ask whether to continue. Then relaunch with the same args without `stopAfter`, plus `resumeFromRunId` from the last `analyze` line, and append the relaunch's own run ID as a new `analyze` line: if this relaunch is interrupted too, resuming from the earlier ID would rerun everything after the slate. The lenses, math checks and slate come back from saved results. If the user wants the slate changed, also pass their request as `slateNote`: the lenses and math checks are replayed, and only the slate is rebuilt. Resuming works only in this session.
 
 **If any agents failed,** that is, if `lensesFailed`, `mathFailed`, `refutersFailed`, `cruxFailed` or `unexamined` is non-empty, or `audit` is null, tell the user which, before presenting anything, and offer a relaunch with `resumeFromRunId`. It reruns the first failed agent and every agent after it, and an agent whose file is marked `status: final` returns it unchanged. If `audit` is null, don't present audit flags: `audit.md` may be missing, unfinished, or the audit of an earlier report.
 

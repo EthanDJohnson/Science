@@ -16,7 +16,7 @@ The design, and the review of the Gemini proposal it started from, are in [`docs
 
 1. **Requirements**
    - Claude Code with dynamic workflows. They're available on paid plans; on Pro, turn them on under Dynamic workflows in `/config`.
-   - Python 3.10+ with `pip install sympy numpy scipy pypdf cffi`. `pypdf` lets agents quote PDFs verbatim. `cffi` is there because some system Python packages (a broken `cryptography`) otherwise make `pypdf` crash on import; the preflight reports this.
+   - Python 3.10+ with pip. The preflight installs sympy, mpmath, numpy, scipy, pypdf and cffi when they're missing, without asking. `pypdf` lets agents quote PDFs verbatim. `cffi` is there because some system Python packages (a broken `cryptography`) otherwise make `pypdf` crash on import; the preflight spots this and installs `cffi`.
 2. **Start a new Claude Code session in this repo.** Claude Code loads the skill, agents and workflows at session start.
 3. **Run the skill:**
    ```
@@ -77,10 +77,9 @@ The stages hand over through files, so they can also change machines. For exampl
 1. **Get the code and a current Claude Code.** Clone the repo, or `git pull` in your copy, and stay on `main`. Run `claude update`: a workflow waits out a usage limit only from version 2.1.271.
 2. **Install and check the Python side:**
    ```
-   pip install sympy numpy scipy pypdf cffi
-   python3 .claude/skills/conundrum/scripts/check_env.py
+   python3 .claude/skills/conundrum/scripts/check_env.py --install
    ```
-   The preflight should show every package working, the literature sources reachable, and at least 5 agents at once.
+   It installs whichever of sympy, mpmath, numpy, scipy, pypdf and cffi is missing, and nothing else. It should then show every package working, the literature sources reachable, and at least 5 agents at once. If pip refuses because the operating system manages your Python (Homebrew, or a recent Debian or Ubuntu), make a virtual environment (`python3 -m venv .venv`), activate it, and start Claude Code from that shell.
 3. **Turn on the sandbox (recommended).** Agents write Python scripts and run them, and `.claude/settings.json` pre-approves that, so on your computer those scripts run as you. In the sandbox, shell commands:
    - can write only inside the project and temp folders, and never into `.claude/skills`, `agents`, `hooks` or `workflows`, the settings files or `.git` hooks;
    - reach only allowed hosts. A command that needs a new host asks you first; in auto mode, Claude names the hosts on the command instead;
@@ -251,7 +250,7 @@ Agents never write straight into the toolkit; promotion is a step you see.
 1. Click the cloud button showing the environment name (e.g. **Default**) above the message box.
 2. Hover over the environment and click its gear icon.
 3. Set **Network access** to **Custom**, paste the list below, and tick **Also include default list of common package managers** (PyPI).
-4. Add `pip install sympy numpy scipy pypdf cffi` to **Setup script**; new sessions run it.
+4. Optionally, add `pip install sympy numpy scipy pypdf cffi` to **Setup script**, so new sessions start with the packages. Otherwise the preflight installs them at the start of each run; that took 15 seconds in a test.
 
 ```
 arxiv.org
@@ -292,7 +291,7 @@ www.semanticscholar.org
 `.claude/settings.json` pre-approves only what the agents need to avoid a prompt storm:
 - `WebSearch`;
 - `WebFetch` on any domain;
-- running Python scripts under the skill's `scripts/` and under `runs/`;
+- running Python scripts under the skill's `scripts/` and under `runs/`. That covers the preflight's `check_env.py --install`, which has pip install only the packages on its fixed list that are missing;
 - creating and writing files under `runs/`.
 
 It also registers two hooks: the turn-budget hook above, and the pipeline guard.
