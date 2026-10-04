@@ -101,7 +101,7 @@ class PriorRuns(unittest.TestCase):
     def test_leads_copies_evidence_but_never_conclusions(self):
         copied = pr.import_run(self.runs, self.done.name, self.new.name, "leads", TODAY)
         dst = self.new / "prior" / self.done.name
-        self.assertEqual(sorted(map(str, copied)),
+        self.assertEqual(sorted(p.as_posix() for p in copied),
                          ["brief.md", "dossier.md", "research/theory.check.md", "research/theory.md"])
         for gone in ("report.md", "audit.md", "candidates.md", "analyses", "verdicts", "cruxes", "calc"):
             self.assertFalse((dst / gone).exists(), gone)
