@@ -75,6 +75,8 @@ The stages hand over through files, so they can also change machines. For exampl
 ### Your first local run
 
 1. **Get the code and a current Claude Code.** Clone the repo, or `git pull` in your copy, and stay on `main`. Run `claude update`: a workflow waits out a usage limit only from version 2.1.271.
+
+   **On Windows**, Git's default `core.autocrlf=true` checks files out with CRLF line endings, and the Workflow tool won't launch a workflow script that has them ("script contains control characters that would be hidden in the approval dialog"). The repo's `.gitattributes` now forces LF, so a new clone is fine. A clone from before it keeps its CRLF files after `git pull`: with no uncommitted changes, run `git rm -r --cached -q .` and then `git reset --hard` once to check them out again.
 2. **Install and check the Python side:**
    ```
    python3 .claude/skills/conundrum/scripts/check_env.py --install
