@@ -1,0 +1,17 @@
+# Check text files out with LF line endings on every platform, whatever core.autocrlf says.
+# Git for Windows defaults to core.autocrlf=true, which checks files out with CRLF: the Workflow
+# tool then refuses to launch .claude/workflows/*.js ("script contains control characters that
+# would be hidden in the approval dialog"), and workflows.test.mjs can't parse them.
+* text=auto eol=lf
+
+# Files whose line endings matter: always text, never left to auto-detection.
+*.js text eol=lf
+*.mjs text eol=lf
+*.py text eol=lf
+*.md text eol=lf
+
+# cmd.exe misreads batch files with LF line endings.
+*.bat text eol=crlf
+*.cmd text eol=crlf
+
+*.pdf binary
