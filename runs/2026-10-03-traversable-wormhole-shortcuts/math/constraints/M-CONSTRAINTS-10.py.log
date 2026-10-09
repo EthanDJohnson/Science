@@ -1,0 +1,27 @@
+# math_run log
+command:  python3 runs\2026-10-03-traversable-wormhole-shortcuts\math\constraints\M-CONSTRAINTS-10.py
+started:  2026-10-08T12:22:16Z
+duration: 0.7 s
+exit:     0
+versions: python 3.14.6, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.2, scipy 1.18.0
+counts:   12 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+PASS sqrt(pi)*l_P*q/g == sqrt(pi)*l_P*q/g: symbolic
+PASS sqrt(2)*sqrt(pi)*l_P*sqrt(q)/g == sqrt(2)*sqrt(pi)*l_P*sqrt(q)/g: symbolic
+PASS -1.0 + 0.564230800251142*sqrt(pi) < 0.00100000000000000: symbolic, constant
+r_e = 1.5e+07 m: q = 1.585e+41, l_B = 5.328e-14 m, tau0/l_B = 2.82e+18
+PASS 0.0028392219174468874 < 0.0100000000000000: symbolic, constant
+PASS 0.0051924807304786335 < 0.0100000000000000: symbolic, constant
+PASS 2.815568892028092E+18 > 100000.000000000: symbolic, constant
+r_e = 2e-19 m: q = 2.114e+15, l_B = 6.152e-27 m, tau0/l_B = 3.25e+05
+PASS 0.006657547397625119 < 0.0100000000000000: symbolic, constant
+PASS 0.00779187371393983 < 0.0100000000000000: symbolic, constant
+PASS 325113.89154687105 > 100000.000000000: symbolic, constant
+PASS 2 == 2: symbolic
+PASS 1/2 == 1/2: symbolic
+PASS l_P has the dimension of m: dimensional analysis
+SUMMARY: 12 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

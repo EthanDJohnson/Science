@@ -1,0 +1,25 @@
+# math_run log
+command:  python3 runs\2026-10-03-traversable-wormhole-shortcuts\math\idealizer\M-IDEALIZER-08.py
+started:  2026-10-08T12:11:16Z
+duration: 1.7 s
+exit:     0
+versions: python 3.14.6, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.2, scipy 1.18.0
+counts:   9 PASS, 0 FAIL, 1 UNDECIDED
+
+--- stdout ---
+critical points: [16*r_e**3/(G*N*q)]
+PASS 16*r_e**3/(G*N*q) == 16*r_e**3/(G*N*q): symbolic
+PASS G**3*N**4*q**4/(32768*r_e**9) is positive: symbolic, G in [0.1, 10], N in [0.1, 10], q in [0.1, 10], r_e in [0.1, 10]
+PASS -G*N**2*q**2/(256*r_e**3) == -G*N**2*q**2/(256*r_e**3): symbolic
+PASS G**2*N**2*q**2/(256*r_e**4) == G**2*N**2*q**2/(256*r_e**4): symbolic
+PASS lim q->0 of -G*N**2*q**2/(256*r_e**3) == 0: symbolic limit 0
+UNDECIDED lim q->0 of 16*r_e**3/(G*N*q) == oo: symbolic limit oo
+PASS (1 m)^3 * c^4 / (G * (1 m)^2) has the dimension of energy: dimensional analysis
+PASS hbar * c / (1 m) has the dimension of energy: dimensional analysis
+PASS 1.5e7 m * c^2 / G == 2.02e34 kg: within 0.002; 2.01989e+34 vs 2.02e+34 (SI)
+(r_e/ell)^2 = 2.5e-25
+PASS 2.5e-25 * 1.5e7 m * c^2 / G == 5.05e9 kg: within 0.003; 5.04972e+09 vs 5.05e+09 (SI)
+SUMMARY: 9 pass, 0 fail, 1 undecided
+
+--- stderr ---
+

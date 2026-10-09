@@ -1,0 +1,24 @@
+# math_run log
+command:  python3 runs\2026-10-03-traversable-wormhole-shortcuts\math\idealizer\M-IDEALIZER-04.py
+started:  2026-10-08T12:07:39Z
+duration: 5.7 s
+exit:     0
+versions: python 3.14.6, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.2, scipy 1.18.0
+counts:   8 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+rho(l) = -b0**2/(8*pi*(b0**4 + 2*b0**2*l**2 + l**4))
+PASS -b0**2/(8*pi*(b0**4 + 2*b0**2*l**2 + l**4)) == -b0**2/(8*pi*(b0**2 + l**2)**2): symbolic
+mass-function measure, both sheets: -b0
+proper-volume measure, both sheets: -pi*b0/2
+PASS -b0 == -b0: symbolic
+PASS -pi*b0/2 == -pi*b0/2: symbolic
+PASS -sqrt(-2*M/a + 1)/(2*pi*a) == -sqrt(-2*M/a + 1)/(2*pi*a): symbolic
+PASS lim M->0 of -2*a*sqrt(-2*M/a + 1) == -2*a: symbolic limit -2*a
+PASS 1 m * c^2 / G has the dimension of mass: dimensional analysis
+PASS 1 m * c^2 / G == 1.347e27 kg: within 0.001; 1.34659e+27 vs 1.347e+27 (SI)
+PASS 2 m * c^2 / G == 2.69e27 kg: within 0.002; 2.69318e+27 vs 2.69e+27 (SI)
+SUMMARY: 8 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

@@ -1,0 +1,39 @@
+# math_run log
+command:  python3 runs\2026-10-03-traversable-wormhole-shortcuts\calc\crux-C7_alignment.py
+started:  2026-10-08T13:22:14Z
+duration: 1.3 s
+exit:     0
+versions: python 3.14.6, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.2, scipy 1.18.0
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+(1) centraliser of rotations about e inside SO(3)
+  random R tested: 20000; largest axis angle among commuting R: 0 deg
+  smallest |[R,Q_e]| among R with axis > 1 deg from e: 0.00481 (nonzero => not axisymmetric)
+  midplane mirror R=diag(1,-1,-1): |[R,Q_e]| = 0, axis angle to e = 0 deg
+  twist by 40 deg about e: |[R,Q_e]| = 0, axis angle to e = 0 deg
+  half-turn about axis perpendicular to e: |[R,Q_e]| = 1.89, axis angle to e = 90 deg
+(2) ungoverned one-way-shortcut band (d/c)(1 - cos alpha), MM T_thru = pi*ell, ell = 3000 ly
+  d = 1000 ly: Delta_s = 8424.8 yr, Delta_CTC = 10424.8 yr, window = 2000 yr
+    alpha =  0.10 deg: band = 0.00152 yr (7.62e-07 of window)
+    alpha =  1.00 deg: band = 0.152 yr (7.62e-05 of window)
+    alpha =  2.56 deg: band = 0.998 yr (0.000499 of window)
+    alpha =  5.00 deg: band = 3.81 yr (0.0019 of window)
+    alpha = 10.00 deg: band = 15.2 yr (0.0076 of window)
+    alpha = 30.00 deg: band = 134 yr (0.067 of window)
+    alpha = 90.00 deg: band = 1e+03 yr (0.5 of window)
+  d = 3000 ly: Delta_s = 6424.8 yr, Delta_CTC = 12424.8 yr, window = 6000 yr
+    alpha =  0.10 deg: band = 0.00457 yr (7.62e-07 of window)
+    alpha =  1.00 deg: band = 0.457 yr (7.62e-05 of window)
+    alpha =  2.56 deg: band = 2.99 yr (0.000499 of window)
+    alpha =  5.00 deg: band = 11.4 yr (0.0019 of window)
+    alpha = 10.00 deg: band = 45.6 yr (0.0076 of window)
+    alpha = 30.00 deg: band = 402 yr (0.067 of window)
+    alpha = 90.00 deg: band = 3e+03 yr (0.5 of window)
+  misalignment giving a 1 yr band at d = 1000 ly: alpha = 2.56 deg
+(3) Shapiro delay of the exterior path, MM mouths (2 x 4GM/c^3 x ln(2d/r_e))
+  4GM/c^3 = 0.198 s; estimate = 11 s = 3.5e-07 yr
+  fractional change of the 2d/c = 2000 yr window: 1.75e-10
+
+--- stderr ---
+

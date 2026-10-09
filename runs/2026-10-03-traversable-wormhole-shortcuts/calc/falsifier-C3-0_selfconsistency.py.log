@@ -1,0 +1,42 @@
+# math_run log
+command:  python3 runs\2026-10-03-traversable-wormhole-shortcuts\calc\falsifier-C3-0_selfconsistency.py
+started:  2026-10-08T12:38:55Z
+duration: 3.5 s
+exit:     0
+versions: python 3.14.6, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.2, scipy 1.18.0
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+Step 1: integrand (r'/r)^2 = l**2/(b0**2 + l**2)**2
+Step 1: Int (r'/r)^2 dl = pi/(2*b0)  (geometric, 1/m)
+Step 1: 8*pi*ANEC =  -pi/b0 ; ANEC = -1/(8*b0)  (geometric, per unit E; matches -E/(8 b0))
+Step 1: numeric Int at b0=1 m: 1.570796326795 vs pi/2 = 1.570796326795
+
+Step 2: R_max = sqrt(8 alpha eta N) l_P ; ratio R_max / l_sp = sqrt(8 alpha eta)
+  alpha=3.518e-05 [1/(2880 pi^2) (curved-space anomaly/Page-type coefficient)], eta= 1: R_max/l_sp = 1.678e-02
+  alpha=3.518e-05 [1/(2880 pi^2) (curved-space anomaly/Page-type coefficient)], eta=10: R_max/l_sp = 5.305e-02
+  alpha=7.036e-05 [1/(1440 pi^2)], eta= 1: R_max/l_sp = 2.373e-02
+  alpha=7.036e-05 [1/(1440 pi^2)], eta=10: R_max/l_sp = 7.503e-02
+  alpha=6.854e-03 [pi^2/1440 (scalar Casimir, plates)], eta= 1: R_max/l_sp = 2.342e-01
+  alpha=6.854e-03 [pi^2/1440 (scalar Casimir, plates)], eta=10: R_max/l_sp = 7.405e-01
+  alpha=1.371e-02 [pi^2/720 (EM Casimir, plates; generous)], eta= 1: R_max/l_sp = 3.312e-01
+  alpha=1.371e-02 [pi^2/720 (EM Casimir, plates; generous)], eta=10: R_max/l_sp = 1.047e+00
+
+Step 2b: N needed for a self-consistent single-scale throat of radius R
+  R = 1.616e-35 m: N >= 9.119e-01 species (alpha=0.0137, eta=10); species length sqrt(N) l_P = 1.543e-35 m = 0.955 R
+  R = 1.000e-19 m: N >= 3.491e+31 species (alpha=0.0137, eta=10); species length sqrt(N) l_P = 9.549e-20 m = 0.955 R
+  R = 1.000e-15 m: N >= 3.491e+39 species (alpha=0.0137, eta=10); species length sqrt(N) l_P = 9.549e-16 m = 0.955 R
+  R = 1.000e-03 m: N >= 3.491e+63 species (alpha=0.0137, eta=10); species length sqrt(N) l_P = 9.549e-04 m = 0.955 R
+  R = 1.000e+00 m: N >= 3.491e+69 species (alpha=0.0137, eta=10); species length sqrt(N) l_P = 9.549e-01 m = 0.955 R
+  R = 1.500e+07 m: N >= 7.854e+83 species (alpha=0.0137, eta=10); species length sqrt(N) l_P = 1.432e+07 m = 0.955 R
+
+Step 2c: N = 1 (single field), most generous alpha, eta:
+  R_max = 1.693e-35 m = 1.047 l_P
+
+Step 3: for R ~ l_sp, signal quantum must fit: lambda <= R, E_sig >= hbar c / R
+  N=1e+00: R=1.616e-35 m, E_sig >= 1.956e+09 J, throat mass scale 2.176e-08 kg, E_sig/(M c^2) = 1.000e+00 (= 1/N)
+  N=1e+40: R=1.616e-15 m, E_sig >= 1.956e-11 J, throat mass scale 2.176e+12 kg, E_sig/(M c^2) = 1.000e-40 (= 1/N)
+  N=1e+69: R=5.111e-01 m, E_sig >= 6.186e-26 J, throat mass scale 6.882e+26 kg, E_sig/(M c^2) = 1.000e-69 (= 1/N)
+
+--- stderr ---
+

@@ -1,0 +1,46 @@
+# math_run log
+command:  python3 runs\2026-10-03-traversable-wormhole-shortcuts\calc\falsifier-C7-0_gluing_threshold.py
+started:  2026-10-08T12:46:57Z
+duration: 4.2 s
+exit:     0
+versions: python 3.14.6, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.2, scipy 1.18.0
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+== 1. Orientable gluings: every R = -M with det M = -1 lies in SO(3) and has a fixed axis ==
+random orientable gluings with a fixed direction: 200/200
+midplane-mirror gluing M = P: R = -P = [ 1. -1. -1.] axis = [1. 0. 0.] (along e: aligned)
+point-reflection gluing M = -I: R = I (every direction fixed: aligned)
+translation gluing M = +I (det +1, NON-orientable): R = -I, no fixed direction
+
+== 2. Brute-force achronality threshold vs formula tau_a = d|e.n| (d = 1) ==
+|e.n|=0.287 tau=+0.137 best inf margin=+0.1500 formula achronal=True brute=True
+|e.n|=0.287 tau=+0.437 best inf margin=-0.1500 formula achronal=False brute=False
+|e.n|=0.221 tau=+0.071 best inf margin=+0.1500 formula achronal=True brute=True
+|e.n|=0.221 tau=+0.371 best inf margin=-0.1500 formula achronal=False brute=False
+|e.n|=0.675 tau=+0.525 best inf margin=+0.1500 formula achronal=True brute=True
+|e.n|=0.675 tau=+0.825 best inf margin=-0.1500 formula achronal=False brute=False
+|e.n|=0.371 tau=+0.221 best inf margin=+0.1500 formula achronal=True brute=True
+|e.n|=0.371 tau=+0.521 best inf margin=-0.1500 formula achronal=False brute=False
+mismatches formula vs brute force: 0/24
+
+== 3. Non-orientable translation gluing R = -I: best margin for tau in window (-d, d) ==
+tau=+0.90d best inf margin=-19999999.9000 (achronal iff >= 0)
+tau=+0.00d best inf margin=-19999999.0000 (achronal iff >= 0)
+tau=-0.50d best inf margin=-19999998.5000 (achronal iff >= 0)
+tau=-0.95d best inf margin=-19999998.0500 (achronal iff >= 0)
+
+== 4. MM numbers: thresholds in yr (T_thru = pi*3000 ly/c, d = 1000 ly) ==
+T_thru = 9424.8 yr; Delta_s = 8424.8 yr; Delta_CTC = 10424.8 yr; window = 2000.0 yr
+axis at  0 deg to e: barrier (achronal) lag Delta_a = 8424.8 yr; unconstrained shortcut band Delta_a - Delta_s = 0.0 yr; lead over CTC = 2000.0 yr
+axis at 30 deg to e: barrier (achronal) lag Delta_a = 8558.8 yr; unconstrained shortcut band Delta_a - Delta_s = 134.0 yr; lead over CTC = 1866.0 yr
+axis at 60 deg to e: barrier (achronal) lag Delta_a = 8924.8 yr; unconstrained shortcut band Delta_a - Delta_s = 500.0 yr; lead over CTC = 1500.0 yr
+axis at 90 deg to e: barrier (achronal) lag Delta_a = 9424.8 yr; unconstrained shortcut band Delta_a - Delta_s = 1000.0 yr; lead over CTC = 1000.0 yr
+Haar fraction of rotation axes within 5 deg of the separation: 0.0038 (analytic 1-cos5 = 0.0038)
+mean |e.n| over Haar rotations: 0.495 (analytic 0.5) -> mean band 505 yr
+
+== 5. Loop check (cycle weights) for the thresholds, random cases ==
+threshold mismatches: 0
+
+--- stderr ---
+

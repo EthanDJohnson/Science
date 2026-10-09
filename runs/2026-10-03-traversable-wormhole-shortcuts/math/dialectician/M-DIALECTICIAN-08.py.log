@@ -1,0 +1,26 @@
+# math_run log
+command:  python3 runs\2026-10-03-traversable-wormhole-shortcuts\math\dialectician\M-DIALECTICIAN-08.py
+started:  2026-10-08T12:09:02Z
+duration: 1.5 s
+exit:     0
+versions: python 3.14.6, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.2, scipy 1.18.0
+counts:   9 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+l_P = 1.61625502392855e-35 m;  m_P = 2.176434342051127e-08 kg
+PASS 75.28 * (hbar*G/c^3)^0.5 == 1.2e-33 m: within 0.02; 1.21672e-33 vs 1.2e-33 (SI)
+PASS 498.4 * (hbar*G/c^3)^0.5 == 8.1e-33 m: within 0.01; 8.05542e-33 vs 8.1e-33 (SI)
+Ford-Roman l_P/(2 f^2) at f=0.01: 5000.0 l_P = 8.081275119642749e-32 m
+PASS (hbar*G/c^3)^0.5 / (2 * 0.01^2) == 8.1e-32 m: within 0.01; 8.08128e-32 vs 8.1e-32 (SI)
+largest throat / bound = 0.09967999999999999
+PASS 0.0997000000000000 == 0.0997000000000000: symbolic
+PASS 0.2 * (hbar*c/G)^0.5 == 4.35e-9 kg: within 0.005; 4.35287e-09 vs 4.35e-09 (SI)
+PASS 0.2 * (hbar*c/G)^0.5 / (9.1093837015e-31 kg) == 4.78e21: within 0.01; 4.77844e+21 vs 4.78e+21 (SI)
+PASS (9.1093837015e-31 kg / (hbar*c/G)^0.5)^2 == 1.75e-45: within 0.01; 1.75181e-45 vs 1.75e-45 (SI)
+PASS (9.1093837015e-31 kg / (hbar*c/G)^0.5)^2 has the dimension of dimensionless: dimensional analysis
+sqrt(alpha) = 0.08542454313193604
+PASS 0.0850000000000000 == 0.0850000000000000: symbolic
+SUMMARY: 9 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

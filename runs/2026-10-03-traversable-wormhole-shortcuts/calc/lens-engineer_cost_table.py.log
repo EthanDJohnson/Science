@@ -1,0 +1,90 @@
+# math_run log
+command:  python3 runs\2026-10-03-traversable-wormhole-shortcuts\calc\lens-engineer_cost_table.py
+started:  2026-10-08T11:59:32Z
+duration: 0.1 s
+exit:     0
+versions: python 3.14.6, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.2, scipy 1.18.0
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+
+=== Demonstrated anchors ===
+Casimir at 0.2 um: |u| = 2.709e-01 J/m^3, P = 8.126e-01 Pa, |E/A| = 5.417e-08 J/m^2
+Casimir at 10 nm (ideal, unmeasured): |u| = 4.334e+04 J/m^3
+B: 45.5 T DC, 1200 T destructive; T_min = 3.8e-11 K; world energy = 5.920e+20 J/yr (= 6.587e+03 kg c^2/yr)
+lP = 1.6163e-35 m, EP = 1.9561e+09 J, MP = 2.1764e-08 kg
+
+=== 1. Ellis/Morris-Thorne throat: required vs Casimir ===
+qubit (b0=1 um)                |rho|=4.82e+54 J/m^3  gap vs Casimir(0.2um)=55.2  vs ideal 10nm=50.0 orders; |Omega|=2.69e+21 kg; FR band<=1.48e-23 m (vs 0.2um gap: 16.1 orders thinner; vs 1e-10 m atom: 12.8)
+1 kg (b0=0.1 m)                |rho|=4.82e+44 J/m^3  gap vs Casimir(0.2um)=45.2  vs ideal 10nm=40.0 orders; |Omega|=2.69e+26 kg; FR band<=6.89e-22 m (vs 0.2um gap: 14.5 orders thinner; vs 1e-10 m atom: 11.2)
+human (b0=1 m)                 |rho|=4.82e+42 J/m^3  gap vs Casimir(0.2um)=43.2  vs ideal 10nm=38.0 orders; |Omega|=2.69e+27 kg; FR band<=1.48e-21 m (vs 0.2um gap: 14.1 orders thinner; vs 1e-10 m atom: 10.8)
+human, MM tidal (b0=1.5e7 m)   |rho|=2.14e+28 J/m^3  gap vs Casimir(0.2um)=28.9  vs ideal 10nm=23.7 orders; |Omega|=4.04e+34 kg; FR band<=3.66e-19 m (vs 0.2um gap: 11.7 orders thinner; vs 1e-10 m atom: 8.4)
+Scaling |rho| ~ b0^-2: equals Casimir |u|(0.2um) only at b0 = 4.22e+21 m = 4.46e+05 ly
+Scaling band ~ b0^(1/3): band reaches 0.2 um only at b0 = 2.45e+42 m (observable-universe radius ~4.4e26 m): 15.7 orders larger
+band reaches atomic 1e-10 m at b0 = 3.06e+32 m
+Plate area at 0.2 um to hold |Omega| c^2 for b0=1 m: 4.47e+51 m^2 (Earth surface 5.1e14 m^2: 36.9 orders)
+
+=== 2. Visser thin shell, flat-space limit ===
+qubit a=1 um     |sigma|=1.93e+49 J/m^2 gap vs Casimir |E/A|(0.2um)=56.6 orders; |m_shell|=2.69e+21 kg
+1 kg a=0.1 m     |sigma|=1.93e+44 J/m^2 gap vs Casimir |E/A|(0.2um)=51.6 orders; |m_shell|=2.69e+26 kg
+human a=1 m      |sigma|=1.93e+43 J/m^2 gap vs Casimir |E/A|(0.2um)=50.6 orders; |m_shell|=2.69e+27 kg
+Scaling sigma ~ 1/a: equals Casimir areal energy only at a = 3.56e+50 m (23.9 orders beyond observable universe)
+
+=== 3. MMP, Standard-Model embedding (r_e << 1/TeV) ===
+1/TeV = 1.973e-19 m
+g=0.06 N_eff= 1 r_e=1.97e-19 m: q=4.13e+14, ell=1.139e+00 m, |E_min|=7.17e-13 J = 4.48e-03 GeV, T_req<3.20e-04 K, M=2.66e+08 kg/mouth, B_h=1.76e+37 T, ell/(q^3 lP)=1.0e-09
+g=0.06 N_eff=54 r_e=1.97e-19 m: q=4.13e+14, ell=2.109e-02 m, |E_min|=2.09e-09 J = 1.31e+01 GeV, T_req<1.73e-02 K, M=2.66e+08 kg/mouth, B_h=1.76e+37 T, ell/(q^3 lP)=1.8e-11
+g=0.30 N_eff= 1 r_e=1.97e-19 m: q=2.07e+15, ell=2.277e-01 m, |E_min|=1.79e-11 J = 1.12e-01 GeV, T_req<1.60e-03 K, M=2.66e+08 kg/mouth, B_h=1.76e+37 T, ell/(q^3 lP)=1.6e-12
+g=0.30 N_eff=54 r_e=1.97e-19 m: q=2.07e+15, ell=4.217e-03 m, |E_min|=5.23e-08 J = 3.26e+02 GeV, T_req<8.64e-02 K, M=2.66e+08 kg/mouth, B_h=1.76e+37 T, ell/(q^3 lP)=3.0e-14
+Formation mass-energy (2 mouths) = 4.78e+25 J = 8.07e+04 yr of world primary energy (gap 4.9 orders vs 1 yr)
+Pair-creation exponent at 1200 T: 6.88e+66 ; at 45.5 T: 1.81e+68 ; at B_h: 4.683e+32 (S_BH=4.683e+32). Field gap B_h/1200 T = 34.2 orders
+Payload: 1 kg c^2 = 8.99e+16 J vs |E_min|(g=0.06,N=54) = 2.09e-09 J: gap 25.6 orders; size gap 0.1 m / 1/TeV = 17.7 orders
+Mouth mass in GeV/c^2: 1.49e+35 (vs MoEDAL monopole exclusion 75 GeV: 33.3 orders)
+Flux units needed (monopole-equivalents): 4.13e+14 ; demonstrated: 0
+
+=== 4. Widened MMP / Maldacena-Milekhin human scale ===
+pure MMP, N=1, g=0.06, r_e=1.5e7 m: |E_min|=9.43e-39 J (cf. 1 photon of 1 meV = 1.6e-22 J); M=2.02e+34 kg = 1.02e+04 Msun; B_h=2.32e+11 T (gap vs 45.5 T: 9.7, vs 1200 T: 8.3 orders)
+1 kg, r_e=0.1 m            N_eff needed (with g^2 N = 1) >= 2.29e+44 ; vs SM 54: 42.6 orders; vs MM cap 1e32: 12.4 orders
+human 70 kg, r_e=1.5e7 m   N_eff needed (with g^2 N = 1) >= 2.40e+54 ; vs SM 54: 52.6 orders; vs MM cap 1e32: 22.4 orders
+ship 1e3 kg, r_e=1.5e7 m   N_eff needed (with g^2 N = 1) >= 3.43e+55 ; vs SM 54: 53.8 orders; vs MM cap 1e32: 23.5 orders
+(MM 2020 quote their own requirement N_f > 1e52 for the 1e3 kg ship; my scaling differs by the factor above -> order-of-magnitude only)
+MM formation mass-energy 2 mouths = 3.63e+51 J = 6.13e+30 yr world energy (30.8 orders)
+MM pair-creation exponent at 1200 T: 5.23e+92 ; S_BH = 2.71e+84
+CMB seen boosted by gamma^2=4.0e+24: 2.725 K -> 9.39e+20 eV per photon. Ambient T for <1 eV: 2.90e-21 K (gap vs CMB 21.0 orders, vs 38 pK lab 10.1 orders)
+Dark sector T < 1e-26 eV = 1.16e-22 K (gap vs 38 pK lab: 11.5 orders)
+Cosmic expansion cools CMB to 2.9e-21 K (photon <1 eV) after ~8.46e+11 yr (Lambda-dominated, H_L=1.81e-18 /s)
+Cosmic expansion cools CMB to 1.2e-22 K (1e-26 eV) after ~9.03e+11 yr (Lambda-dominated, H_L=1.81e-18 /s)
+de Sitter floor T_dS = 2.20e-30 K
+
+=== 5. FGM 2019 (charged pair + cosmic string, Hartle-Hawking state) ===
+Schwarzschild-formula mass with T_H = T_CMB: 4.50e+22 kg (Moon 7.35e22 kg); smaller holes are hotter than the CMB
+M=4.50e+22 kg, d=1e3 GM/c^2=3.34e-02 m: string tension mu c^2 = F = 2.42e+38 N, G mu/c^2 = 2.00e-06
+M=1.99e+30 kg, d=1e3 GM/c^2=1.48e+06 m: string tension mu c^2 = F = 2.42e+38 N, G mu/c^2 = 2.00e-06
+
+=== 6. Einstein-Dirac-Maxwell: q/mu < 1 (Planck units) requirement ===
+electron  Gaussian q=Qf*sqrt(alpha)    q/mu = 2.04e+21 (gap 21.3 orders); mass needed for q/mu<1: 1.04e+18 GeV
+electron  HL q=Qf*sqrt(4 pi alpha)     q/mu = 7.24e+21 (gap 21.9 orders); mass needed for q/mu<1: 3.70e+18 GeV
+top quark Gaussian q=Qf*sqrt(alpha)    q/mu = 4.03e+15 (gap 15.6 orders); mass needed for q/mu<1: 6.95e+17 GeV
+top quark HL q=Qf*sqrt(4 pi alpha)     q/mu = 1.43e+16 (gap 16.2 orders); mass needed for q/mu<1: 2.46e+18 GeV
+Kain static throat 75-500 lP = 1.2e-33 to 8.1e-33 m
+
+=== 7. Quantum-processor analogue (sparse SYK teleportation) ===
+Sycamore: F < 1/2 of noiseless at 164 gates -> effective error per gate >= 4.23e-03
+N= 20 Majoranas, k=4, 10 Trotter steps: ~3.2e+04 two-qubit gates (2.3 orders above 164); error/gate needed <= 2.2e-05 (2.3 orders below Sycamore effective)
+N= 50 Majoranas, k=4, 10 Trotter steps: ~2.0e+05 two-qubit gates (3.1 orders above 164); error/gate needed <= 3.5e-06 (3.1 orders below Sycamore effective)
+N=100 Majoranas, k=4, 10 Trotter steps: ~8.0e+05 two-qubit gates (3.7 orders above 164); error/gate needed <= 8.7e-07 (3.7 orders below Sycamore effective)
+qubit                  degrees of freedom ~ 1.0e+00; gap vs 1 teleported qubit: 0.0 orders
+1 kg water (atoms)     degrees of freedom ~ 1.0e+26; gap vs 1 teleported qubit: 26.0 orders
+70 kg human (atoms)    degrees of freedom ~ 7.0e+27; gap vs 1 teleported qubit: 27.8 orders
+Bekenstein bound for 1 kg in R=0.1 m: 2.58e+42 bits
+
+=== 8. Nearest tests: required vs achieved ===
+S2 orbit: need 1e-6 m/s^2, achieved 4e-4 (gap 2.6), projected 2e-5 (gap 1.3)
+EHT nominal resolution lambda/D = 1.02e-10 rad = 21.1 uas
+1e4 Msun at 1 kpc                shadow diam: extremal RN 0.790 uas vs Schwarzschild 1.026 uas (RN/S = 0.770); gap to resolution 1.4 orders
+1e4 Msun at 10 kpc               shadow diam: extremal RN 0.079 uas vs Schwarzschild 0.103 uas (RN/S = 0.770); gap to resolution 2.4 orders
+Sgr A* (4.3e6 Msun, 8.28 kpc)    shadow diam: extremal RN 41.009 uas vs Schwarzschild 53.273 uas (RN/S = 0.770); gap to resolution -0.3 orders
+MM echo delay ~ pi ell/c = 9.4e3 yr = 2.97e+11 s vs ~2 yr observing run: 3.7 orders
+
+--- stderr ---
+

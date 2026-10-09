@@ -1,0 +1,27 @@
+# math_run log
+command:  python3 runs\2026-10-03-traversable-wormhole-shortcuts\math\constraints\M-CONSTRAINTS-01.py
+started:  2026-10-08T12:17:10Z
+duration: 2.9 s
+exit:     0
+versions: python 3.14.6, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.2, scipy 1.18.0
+counts:   11 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+rho = -b0**2/(8*pi*(b0**2 + l**2)**2)  p_l = -b0**2/(8*pi*(b0**2 + l**2)**2)  p_t = b0**2/(8*pi*(b0**2 + l**2)**2)
+PASS -1/(8*pi*b0**2) == -1/(8*pi*b0**2): symbolic
+PASS -1/(8*pi*b0**2) == -1/(8*pi*b0**2): symbolic
+PASS 1/(8*pi*b0**2) == 1/(8*pi*b0**2): symbolic
+PASS -b0**2/(4*pi*(b0**2 + l**2)**2) == -b0**2/(4*pi*(b0**2 + l**2)**2): symbolic
+PASS 0 == 0: symbolic
+PASS -1/(4*pi*(l**2 + 1)**2) is negative: symbolic, l in [-50, 50]
+ANEC = -En/(8*b0)
+PASS -En/(8*b0) == -En/(8*b0): symbolic
+PASS lim b0->oo of -En/(8*b0) == 0: symbolic limit 0
+Kretschmann = 12*b0**4/(b0**4 + 2*b0**2*l**2 + l**4)**2
+PASS 12/b0**4 == 12/b0**4: symbolic
+PASS -0.0795774715 * c^4/G / (1 m)^2 == -9.63e42 J/m^3: within 0.002; -9.63091e+42 vs -9.63e+42 (SI)
+PASS -0.125 / (1 m) * c^4/G == -1.513e43 J/m^2: within 0.002; -1.51282e+43 vs -1.513e+43 (SI)
+SUMMARY: 11 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

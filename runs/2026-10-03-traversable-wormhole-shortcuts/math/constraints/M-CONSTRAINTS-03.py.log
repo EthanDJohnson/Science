@@ -1,0 +1,26 @@
+# math_run log
+command:  python3 runs\2026-10-03-traversable-wormhole-shortcuts\math\constraints\M-CONSTRAINTS-03.py
+started:  2026-10-08T12:19:30Z
+duration: 2.7 s
+exit:     0
+versions: python 3.14.6, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.2, scipy 1.18.0
+counts:   9 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+rho = alpha*r0**2/(8*pi*r**4)  p_r = r0*(-alpha*r + alpha*r0 - r)/(8*pi*r**4)
+PASS alpha*r0**2/(8*pi*r**4) == alpha*r0**2/(8*pi*r**4): symbolic
+PASS r0*(-alpha*r + alpha*r0 - r)/(8*pi*r**4) == -r0*(alpha*(1 - r0/r) + 1)/(8*pi*r**3): symbolic
+PASS 1/(16*pi*r**4) is positive: symbolic, r in [1, 10]
+PASS (alpha - 1)/(8*pi*r0**2) == (alpha - 1)/(8*pi*r0**2): symbolic
+throat rho+p_r (alpha=0.5, r0=1) = -0.0198943678864869
+PASS 0.000283020779551901 < 0.00500000000000000: symbolic, constant
+PASS alpha == alpha: symbolic
+PASS lim alpha->0 of alpha == 0: symbolic limit 0
+PASS r0*(alpha + 1)/2 == r0*(alpha + 1)/2: symbolic
+fr check at r=2: -0.008121841679517459457352792 -0.008121841679517459457352792
+ANEC = -0.094568863
+PASS 0.0003291446941469849 < 0.00500000000000000: symbolic, constant
+SUMMARY: 9 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

@@ -1,0 +1,84 @@
+# math_run log
+command:  python3 runs\2026-10-03-traversable-wormhole-shortcuts\calc\falsifier-C6-1_thinshell_realign.py
+started:  2026-10-08T12:51:35Z
+duration: 156.5 s
+exit:     0
+versions: python 3.14.6, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.2, scipy 1.18.0
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+Model: flat exterior, d = 1, c = 1; thin-shell mouths radius a; tau = interior light-time (units of d/c)
+Hit-point minimisation: Fibonacci grid (spacing 0.0388 rad) + pattern-search refinement to 1e-11 rad
+
+=== mouth radius a = 0.050 d, tau = L = 0.50 d (shortcut: T_thru/T_ext = 0.50 in point limit) ===
+
+Case: aligned R = I (G = -I) | det G = -1
+  best v = [ 9.999e-01 -6.000e-04 -1.480e-02], hit normal n = [-9.999e-01  6.000e-04  1.480e-02], |n.v| = 1.0000
+  asymptotic margin tau - (Q0-P0).v = -0.59989 d (negative => achronal at large separation)
+  realigned-line threshold: achronal for tau <= 1.09989 d
+  full pair check (15+15 points, s up to 1e3 d; margin 0 = the line itself, null-related): sup margin = +0.00000 d at pair ('in', 0.001, 'out', 1000.0)
+  verdict: ACHRONAL complete throat line exists
+
+Case: R = 10 deg about z (perp to e) | det G = -1
+  best v = [ 9.999e-01 -6.000e-04 -1.480e-02], hit normal n = [-0.996   0.0878  0.0148], |n.v| = 0.9962
+  asymptotic margin tau - (Q0-P0).v = -0.59951 d (negative => achronal at large separation)
+  realigned-line threshold: achronal for tau <= 1.09951 d
+  full pair check (15+15 points, s up to 1e3 d; margin 0 = the line itself, null-related): sup margin = +0.00000 d at pair ('in', 0.001, 'out', 1000.0)
+  verdict: ACHRONAL complete throat line exists
+
+Case: R = 180 deg about z (perp to e) | det G = -1
+  best v = [ 0.9942 -0.0098  0.1072], hit normal n = [ 0.  0. -1.], |n.v| = 0.1072
+  asymptotic margin tau - (Q0-P0).v = -0.50491 d (negative => achronal at large separation)
+  realigned-line threshold: achronal for tau <= 1.00491 d
+  full pair check (15+15 points, s up to 1e3 d; margin 0 = the line itself, null-related): sup margin = +0.00000 d at pair ('in', 0.0084, 'out', 1000.0)
+  verdict: ACHRONAL complete throat line exists
+
+Case: R = 90 deg about z (perp to e) | det G = -1
+  best v = [ 9.999e-01 -6.000e-04 -1.480e-02], hit normal n = [-0.7065  0.7074  0.0209], |n.v| = 0.7072
+  asymptotic margin tau - (Q0-P0).v = -0.57061 d (negative => achronal at large separation)
+  realigned-line threshold: achronal for tau <= 1.07061 d
+  full pair check (15+15 points, s up to 1e3 d; margin 0 = the line itself, null-related): sup margin = +0.00000 d at pair ('in', 0.0084, 'out', 1000.0)
+  verdict: ACHRONAL complete throat line exists
+
+Case: non-orientable translation gluing G = +I (idealizer 'mirror', radial m = -n) | det G = +1
+  no direction v admits a realigned through-ray (v_out = v) except grazing incidence; valid directions = 0
+
+=== mouth radius a = 0.010 d, tau = L = 0.50 d (shortcut: T_thru/T_ext = 0.50 in point limit) ===
+
+Case: aligned R = I (G = -I) | det G = -1
+  best v = [ 9.999e-01 -6.000e-04 -1.480e-02], hit normal n = [-9.999e-01  6.000e-04  1.480e-02], |n.v| = 1.0000
+  asymptotic margin tau - (Q0-P0).v = -0.51989 d (negative => achronal at large separation)
+  realigned-line threshold: achronal for tau <= 1.01989 d
+  full pair check (15+15 points, s up to 1e3 d; margin 0 = the line itself, null-related): sup margin = +0.00000 d at pair ('in', 119.3777, 'out', 1000.0)
+  verdict: ACHRONAL complete throat line exists
+
+Case: R = 10 deg about z (perp to e) | det G = -1
+  best v = [ 9.999e-01 -6.000e-04 -1.480e-02], hit normal n = [-0.996   0.0878  0.0148], |n.v| = 0.9962
+  asymptotic margin tau - (Q0-P0).v = -0.51981 d (negative => achronal at large separation)
+  realigned-line threshold: achronal for tau <= 1.01981 d
+  full pair check (15+15 points, s up to 1e3 d; margin 0 = the line itself, null-related): sup margin = +0.00000 d at pair ('in', 119.3777, 'out', 1000.0)
+  verdict: ACHRONAL complete throat line exists
+
+Case: R = 180 deg about z (perp to e) | det G = -1
+  best v = [ 9.999e-01 -6.000e-04 -1.480e-02], hit normal n = [0. 0. 1.], |n.v| = 0.0148
+  asymptotic margin tau - (Q0-P0).v = -0.50019 d (negative => achronal at large separation)
+  realigned-line threshold: achronal for tau <= 1.00019 d
+  full pair check (15+15 points, s up to 1e3 d; margin 0 = the line itself, null-related): sup margin = +0.00000 d at pair ('in', 0.001, 'out', 1000.0)
+  verdict: ACHRONAL complete throat line exists
+
+Case: R = 90 deg about z (perp to e) | det G = -1
+  best v = [ 9.999e-01 -6.000e-04 -1.480e-02], hit normal n = [-0.7065  0.7074  0.0209], |n.v| = 0.7072
+  asymptotic margin tau - (Q0-P0).v = -0.51403 d (negative => achronal at large separation)
+  realigned-line threshold: achronal for tau <= 1.01403 d
+  full pair check (15+15 points, s up to 1e3 d; margin 0 = the line itself, null-related): sup margin = +0.00000 d at pair ('in', 1000.0, 'out', 1000.0)
+  verdict: ACHRONAL complete throat line exists
+
+Case: non-orientable translation gluing G = +I (idealizer 'mirror', radial m = -n) | det G = +1
+  no direction v admits a realigned through-ray (v_out = v) except grazing incidence; valid directions = 0
+
+Analytic check R=180deg (k perp e): threshold sqrt(d^2+4a^2) = 1.00499 d at a = 0.05
+
+Analytic check R=180deg (k perp e): threshold sqrt(d^2+4a^2) = 1.00020 d at a = 0.01
+
+--- stderr ---
+

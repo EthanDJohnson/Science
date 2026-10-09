@@ -1,0 +1,26 @@
+# math_run log
+command:  python3 runs\2026-10-03-traversable-wormhole-shortcuts\math\decomposer\M-DECOMPOSER-04.py
+started:  2026-10-08T12:02:00Z
+duration: 0.8 s
+exit:     0
+versions: python 3.14.6, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.2, scipy 1.18.0
+counts:   11 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+PASS series of 1 - sqrt(1 - v**2/c**2) about v = 0 to order 4 == v**2/(2*c**2): symbolic: v**2/(2*c**2)
+PASS series of -1 + 1/sqrt(1 - v**2/c**2) about v = 0 to order 4 == v**2/(2*c**2): symbolic: v**2/(2*c**2)
+beta=0.1: gamma=1.005038, lag fraction=0.005013, trip for shortcut lag=1.6807e+06 yr, trip for CTC lag=2.0797e+06 yr, distance covered=1.681e+05 ly
+PASS 1680732.6192147676 yr == 1.68e6 yr: within 0.005; 5.30399e+13 vs 5.30168e+13 (SI)
+PASS (1.005037815259212 - 1) * 2e+34 kg * c^2 == 9.1e48 J: within 0.022; 9.05553e+48 vs 9.1e+48 (SI)
+PASS (1.005037815259212 - 1) * 2e+34 kg * c^2 has the dimension of energy: dimensional analysis
+PASS (1.005037815259212 - 1) * 2e+34 kg * c^2 / (Msun * c^2) == 50.7: within 0.01; 50.6718 vs 50.7 (SI)
+beta=0.9: gamma=2.294157, lag fraction=0.564110, trip for shortcut lag=1.4935e+04 yr, trip for CTC lag=1.8480e+04 yr, distance covered=1.344e+04 ly
+PASS 14934.633995118045 yr == 1.49e4 yr: within 0.005; 4.71301e+11 vs 4.70208e+11 (SI)
+PASS (2.294157338705618 - 1) * 2e+34 kg * c^2 == 2.3e51 J: within 0.022; 2.32626e+51 vs 2.3e+51 (SI)
+PASS (2.294157338705618 - 1) * 2e+34 kg * c^2 has the dimension of energy: dimensional analysis
+PASS (2.294157338705618 - 1) * 2e+34 kg * c^2 / (Msun * c^2) == 13000.0: within 0.01; 13017 vs 13000 (SI)
+PASS 16849.55592153876 yr == 1.69e4 yr: within 0.005; 5.31732e+11 vs 5.33323e+11 (SI)
+SUMMARY: 11 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

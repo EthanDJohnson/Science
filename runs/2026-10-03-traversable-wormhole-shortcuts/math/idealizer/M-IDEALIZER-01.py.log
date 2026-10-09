@@ -1,0 +1,39 @@
+# math_run log
+command:  python3 runs\2026-10-03-traversable-wormhole-shortcuts\math\idealizer\M-IDEALIZER-01.py
+started:  2026-10-08T12:05:47Z
+duration: 5.3 s
+exit:     0
+versions: python 3.14.6, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.2, scipy 1.18.0
+counts:   7 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+PASS lim S->oo of L + S - sqrt(b**2 + (S + a)**2) == L - a: symbolic limit L - a
+PASS -(S + a)/sqrt(b**2 + (S + a)**2) + 1 >= 0: numeric at 50 points, S in [0, 1000], a in [-10, 10], b in [0, 10]
+PASS L - a == L - a: symbolic
+PASS L/d == L/d: symbolic
+PASS 1 m / c has the dimension of time: dimensional analysis
+aligned L/d=0.0: sup margin +0.0000 m -> achronal
+aligned L/d=0.5: sup margin +0.0000 m -> achronal
+aligned L/d=0.99: sup margin +0.0000 m -> achronal
+aligned L/d=1.0: sup margin +0.0000 m -> achronal
+aligned L/d=1.01: sup margin +0.0100 m -> chronal
+aligned L/d=3.0: sup margin +2.0000 m -> chronal
+aligned L/d=10.0: sup margin +9.0000 m -> chronal
+psi=0 deg, L=0.950, threshold d cos psi=+1.000: sup margin +0.0000 -> chronal=False, predicted=False
+psi=0 deg, L=1.050, threshold d cos psi=+1.000: sup margin +0.0500 -> chronal=True, predicted=True
+psi=30 deg, L=0.816, threshold d cos psi=+0.866: sup margin +0.0000 -> chronal=False, predicted=False
+psi=30 deg, L=0.916, threshold d cos psi=+0.866: sup margin +0.0500 -> chronal=True, predicted=True
+psi=60 deg, L=0.450, threshold d cos psi=+0.500: sup margin +0.0000 -> chronal=False, predicted=False
+psi=60 deg, L=0.550, threshold d cos psi=+0.500: sup margin +0.0500 -> chronal=True, predicted=True
+psi=89 deg, L=0.000, threshold d cos psi=+0.017: sup margin +0.0000 -> chronal=False, predicted=False
+psi=89 deg, L=0.067, threshold d cos psi=+0.017: sup margin +0.0500 -> chronal=True, predicted=True
+psi=100 deg, L=0.000, threshold d cos psi=-0.174: sup margin +0.3472 -> chronal=True, predicted=True
+psi=120 deg, L=0.000, threshold d cos psi=-0.500: sup margin +1.0000 -> chronal=True, predicted=True
+off-axis switch at L = d cos psi: True
+PASS 1 is positive: symbolic, constant
+random aligned configurations agreeing with (L > D.n <=> chronal): 60/60
+PASS 1 is positive: symbolic, constant
+SUMMARY: 14 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

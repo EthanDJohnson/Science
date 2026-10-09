@@ -1,0 +1,19 @@
+# math_run log
+command:  python3 runs\2026-10-03-traversable-wormhole-shortcuts\math\idealizer\M-IDEALIZER-10.py
+started:  2026-10-08T12:11:21Z
+duration: 1.7 s
+exit:     0
+versions: python 3.14.6, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.2, scipy 1.18.0
+counts:   5 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+PASS pi/g**2 == pi/g**2: symbolic
+PASS N**2*g**2/(256*pi*r_e) == N**2*g**2/(256*pi*r_e): symbolic
+PASS N**2*g**2/(256*pi*r_e) < N/(256*pi*r_e): numeric at 50 points, N in [1, 10000], g in [0.001, 0.0099], r_e in [0.1, 10]
+PASS 1 kg * c * 1 m / hbar has the dimension of dimensionless: dimensional analysis
+256 pi m c r_e / hbar = 3.429e+55
+PASS 804.247719318987 * 1e3 kg * c * 1.5e7 m / hbar == 3.4e55: within 0.02; 3.42946e+55 vs 3.4e+55 (SI)
+SUMMARY: 5 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

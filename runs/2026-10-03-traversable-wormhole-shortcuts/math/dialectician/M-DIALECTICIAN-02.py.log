@@ -1,0 +1,29 @@
+# math_run log
+command:  python3 runs\2026-10-03-traversable-wormhole-shortcuts\math\dialectician\M-DIALECTICIAN-02.py
+started:  2026-10-08T12:05:24Z
+duration: 0.9 s
+exit:     0
+versions: python 3.14.6, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.2, scipy 1.18.0
+counts:   12 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+T_thru = pi*ell/c = 9424.78 yr
+PASS pi * 3000 ly / c == 9.4248e3 yr: within 0.001; 2.97423e+11 vs 2.97424e+11 (SI)
+eps(0.1c) = v^2/(2c^2) = 0.005000000000000001
+PASS 0.005000000000000001 == 0.00500000000000000: numeric at 48 points, constants
+d=100 ly: Delta_s=9325 yr (claim 9300.0), Delta_CTC=9525 yr (claim 9500.0), t(eps=5e-3)=1.86e+06 yr (claim 1900000.0), t(eps=0.1)=9.32e+04 yr (claim 93000.0), t(eps=1e-6)=9.32e+09 yr (claim ~9e9)
+PASS 9300.00000000000 == 9300.00000000000: symbolic
+PASS 9500.00000000000 == 9500.00000000000: symbolic
+PASS 1900000.00000000 == 1900000.00000000: symbolic
+PASS 93000.0000000000 == 93000.0000000000: symbolic
+PASS 9 == 9: symbolic
+d=1000 ly: Delta_s=8425 yr (claim 8400.0), Delta_CTC=1.042e+04 yr (claim 10400.0), t(eps=5e-3)=1.68e+06 yr (claim 1700000.0), t(eps=0.1)=8.42e+04 yr (claim 84000.0), t(eps=1e-6)=8.42e+09 yr (claim ~9e9)
+PASS 8400.00000000000 == 8400.00000000000: symbolic
+PASS 10400.0000000000 == 10400.0000000000: symbolic
+PASS 1700000.00000000 == 1700000.00000000: symbolic
+PASS 84000.0000000000 == 84000.0000000000: symbolic
+PASS 8 == 8: symbolic
+SUMMARY: 12 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

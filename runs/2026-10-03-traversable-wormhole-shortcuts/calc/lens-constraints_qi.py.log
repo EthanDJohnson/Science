@@ -1,0 +1,40 @@
+# math_run log
+command:  python3 runs\2026-10-03-traversable-wormhole-shortcuts\calc\lens-constraints_qi.py
+started:  2026-10-08T12:06:36Z
+duration: 0.8 s
+exit:     0
+versions: python 3.14.6, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.2, scipy 1.18.0
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+l_P = 1.6163e-35 m
+=== 1. Single-scale throat bound (static geodesic observer at an Ellis throat) ===
+f=0.01: b0_max(Ford-Roman) = 4.8860e+03 l_P = 7.8971e-32 m; b0_max(Fewster-Eveson) = 1.8323e+03 l_P = 2.9614e-32 m; check rho/bound at b0_max = 1.000000
+f=0.1: b0_max(Ford-Roman) = 4.8860e+01 l_P = 7.8971e-34 m; b0_max(Fewster-Eveson) = 1.8323e+01 l_P = 2.9614e-34 m; check rho/bound at b0_max = 1.000000
+lorentzian_average of a constant -1.0: -1.0
+b0 = 1 m: required rho = -4.8155e+42 J/m^3; FR bound at tau0 = f b0/c = 3.336e-11 s: -3.0031e-20 J/m^3; ratio = 1.603e+62
+b0 = 1.5e+07 m: required rho = -2.1402e+28 J/m^3; FR bound at tau0 = f b0/c = 5.003e-04 s: -5.9320e-49 J/m^3; ratio = 3.608e+76
+
+=== 2. Thin-band bound ===
+r0 = 1 m: Delta_max (FR constant) = 1.841e-21 m = 1.139e+14 l_P; dossier Q-21 form = 1.484e-21 m; ratio Delta/r0 = 1.841e-21
+r0 = 1.5e7 m (MM tidal minimum): Delta_max (FR constant) = 4.539e-19 m = 2.809e+16 l_P; dossier Q-21 form = 3.659e-19 m; ratio Delta/r0 = 3.026e-26
+r0 = 1 ly: Delta_max (FR constant) = 3.893e-16 m = 2.409e+19 l_P; dossier Q-21 form = 3.138e-16 m; ratio Delta/r0 = 4.115e-32
+
+=== 3. Species count needed to saturate the QI with N free fields (f = 0.01, single scale) ===
+N_min = 4.1888e-08 (b0/l_P)^2  (Ford-Roman constant)
+b0 = 1e-18 m: N_min = 1.603e+26
+b0 = 2e-16 m: N_min = 6.414e+30
+b0 = 1 m: N_min = 1.603e+62
+b0 = 1.5e7 m: N_min = 3.608e+76
+TeV cutoff, N < 1e32: largest throat with N <= Nmax: b0 <= 7.897e-16 m
+
+=== 4. Magnetic length in MMP/MM throats vs QI sampling time ===
+g4=0.1, r_e=1.50e+07 m: q = 5.236e+40, l_B = 9.270e-14 m = 5735788800087280320512.000 l_P; tau0 = 0.01 r_e = 1.50e+05 m >> l_B: True
+g4=0.1, r_e=2.00e-19 m: q = 6.981e+14, l_B = 1.070e-26 m = 662311841.549 l_P; tau0 = 0.01 r_e = 2.00e-21 m >> l_B: True
+g4=0.30282212, r_e=1.50e+07 m: q = 1.586e+41, l_B = 5.327e-14 m = 3296092217735991787520.000 l_P; tau0 = 0.01 r_e = 1.50e+05 m >> l_B: True
+g4=0.30282212, r_e=2.00e-19 m: q = 2.114e+15, l_B = 6.151e-27 m = 380599945.837 l_P; tau0 = 0.01 r_e = 2.00e-21 m >> l_B: True
+g4=1.0, r_e=1.50e+07 m: q = 5.236e+41, l_B = 2.932e-14 m = 1813815678595999989760.000 l_P; tau0 = 0.01 r_e = 1.50e+05 m >> l_B: True
+g4=1.0, r_e=2.00e-19 m: q = 6.981e+15, l_B = 3.385e-27 m = 209441394.060 l_P; tau0 = 0.01 r_e = 2.00e-21 m >> l_B: True
+
+--- stderr ---
+

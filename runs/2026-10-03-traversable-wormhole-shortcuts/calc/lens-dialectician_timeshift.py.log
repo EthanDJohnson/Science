@@ -1,0 +1,56 @@
+# math_run log
+command:  python3 runs\2026-10-03-traversable-wormhole-shortcuts\calc\lens-dialectician_timeshift.py
+started:  2026-10-08T11:59:02Z
+duration: 1.6 s
+exit:     0
+versions: python 3.14.6, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.2, scipy 1.18.0
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+=== Part A: thresholds for MM-type long wormhole (SI / years) ===
+ell = 3e+03 ly ; T_thru = pi*ell/c = 9425 yr  (Q-06 quotes 9.4e3 yr)
+
+ d = 100 ly: T_thru/T_ext = 94.2; shortcut onset Delta_s = 9325 yr; CTC onset Delta_CTC = 9525 yr; shortcut window width = 2d = 200 yr
+   eps = 1.0e-06 (Galactic potential difference ~1e-6): time to shortcut = 9.32e+09 yr, to CTC = 9.52e+09 yr
+   eps = 5.0e-05 (mouth orbiting at 0.01c (v^2/2c^2)): time to shortcut = 1.86e+08 yr, to CTC = 1.9e+08 yr
+   eps = 5.0e-03 (mouth orbiting at 0.1c): time to shortcut = 1.86e+06 yr, to CTC = 1.9e+06 yr
+   eps = 1.0e-01 (mouth parked at ~5 r_s of a massive BH (0.1 redshift)): time to shortcut = 9.32e+04 yr, to CTC = 9.52e+04 yr
+
+ d = 1e+03 ly: T_thru/T_ext = 9.42; shortcut onset Delta_s = 8425 yr; CTC onset Delta_CTC = 1.042e+04 yr; shortcut window width = 2d = 2e+03 yr
+   eps = 1.0e-06 (Galactic potential difference ~1e-6): time to shortcut = 8.42e+09 yr, to CTC = 1.04e+10 yr
+   eps = 5.0e-05 (mouth orbiting at 0.01c (v^2/2c^2)): time to shortcut = 1.68e+08 yr, to CTC = 2.08e+08 yr
+   eps = 5.0e-03 (mouth orbiting at 0.1c): time to shortcut = 1.68e+06 yr, to CTC = 2.08e+06 yr
+   eps = 1.0e-01 (mouth parked at ~5 r_s of a massive BH (0.1 redshift)): time to shortcut = 8.42e+04 yr, to CTC = 1.04e+05 yr
+
+ d = 3e+03 ly: T_thru/T_ext = 3.14; shortcut onset Delta_s = 6425 yr; CTC onset Delta_CTC = 1.242e+04 yr; shortcut window width = 2d = 6e+03 yr
+   eps = 1.0e-06 (Galactic potential difference ~1e-6): time to shortcut = 6.42e+09 yr, to CTC = 1.24e+10 yr
+   eps = 5.0e-05 (mouth orbiting at 0.01c (v^2/2c^2)): time to shortcut = 1.28e+08 yr, to CTC = 2.48e+08 yr
+   eps = 5.0e-03 (mouth orbiting at 0.1c): time to shortcut = 1.28e+06 yr, to CTC = 2.48e+06 yr
+   eps = 1.0e-01 (mouth parked at ~5 r_s of a massive BH (0.1 redshift)): time to shortcut = 6.42e+04 yr, to CTC = 1.24e+05 yr
+
+=== Part B: twisted-circle Casimir, closed form vs explicit boost (c_CFT = 1) ===
+ L=1.0, Delta=0.0: closed T++=-0.261799, T--=-0.261799 | boost T++/T--: -0.261799, -0.261799  (ordering depends on boost sign; set equal) ; T_tt=-0.523599
+ L=1.0, Delta=0.3: closed T++=-0.154911, T--=-0.534284 | boost T++/T--: -0.154911, -0.534284  (ordering depends on boost sign; set equal) ; T_tt=-0.689195
+ L=1.0, Delta=0.9: closed T++=-0.0725206, T--=-26.1799 | boost T++/T--: -0.0725206, -26.1799  (ordering depends on boost sign; set equal) ; T_tt=-26.2525
+ L=1.0, Delta=0.99: closed T++=-0.0661093, T--=-2617.99 | boost T++/T--: -0.0661093, -2617.99  (ordering depends on boost sign; set equal) ; T_tt=-2618.06
+ Ratio of the enhanced chirality at the shortcut onset to its Delta=0 value: (L/(L-Delta_s))^2, L = T_thru + d, L-Delta_s = 2d
+   MM d = ell: ((T_thru+d)/(2d))^2 = 4.288
+   MM d = ell/3: ((T_thru+d)/(2d))^2 = 27.17
+   MM d = ell/30: ((T_thru+d)/(2d))^2 = 2268
+
+=== Part C: toy MMP energetics with twist ===
+ delta=0: min at x = 0.99999, e = -0.500000 (expect 1, -0.5 i.e. E_min = -G q^2/(256 r_e^3))
+ |E_min|/M_e = (r_e/l0)^2 -> for gamma = 2e12: 2.5e-25 (dossier Q-05: 2.5e-25)
+ delta = 0.00: local min -> (1.0, -0.5, None)
+ delta = 0.05: local min -> (np.float64(0.9768009164511426), np.float64(-0.5078004064158601), (np.float64(0.084328300646315), np.float64(32.70220809913164)))
+ delta = 0.10: local min -> (np.float64(0.8959928345928025), np.float64(-0.5358507546820789), (np.float64(0.22069934851211748), np.float64(2.153497421452317)))
+ delta = 0.20: local min -> None
+ delta = 0.30: local min -> None
+ delta = 0.40: local min -> None
+ delta = 0.50: local min -> None
+ delta_c (metastable minimum disappears) = 0.1495 (Delta_c / l0)
+ just below delta_c: x_min = 0.6021, so (x_min - delta)/x_min = 0.7517
+ Beyond delta_c the toy energy decreases monotonically as l -> Delta+ (loop becomes null): e -> -infinity, i.e. the Casimir sector pulls the loop toward the chronology horizon.
+
+--- stderr ---
+

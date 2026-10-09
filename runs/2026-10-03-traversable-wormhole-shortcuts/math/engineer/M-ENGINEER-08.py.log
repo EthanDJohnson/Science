@@ -1,0 +1,27 @@
+# math_run log
+command:  python3 runs\2026-10-03-traversable-wormhole-shortcuts\math\engineer\M-ENGINEER-08.py
+started:  2026-10-08T12:13:26Z
+duration: 1.3 s
+exit:     0
+versions: python 3.14.6, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.2, scipy 1.18.0
+counts:   10 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+PASS 256*pi*m*r == 256*pi*m*r: symbolic
+PASS 256*pi*(0.1 m)*(1 kg)*c^2/(hbar*c) has the dimension of dimensionless: dimensional analysis
+PASS 256*pi*(0.1 m)*(1 kg)*c^2/(hbar*c) == 2.29e44 m/m: within 0.005; 2.28631e+44 vs 2.29e+44 (SI)
+PASS 256*pi*(1.5e7 m)*(70 kg)*c^2/(hbar*c) == 2.40e54 m/m: within 0.005; 2.40062e+54 vs 2.4e+54 (SI)
+PASS 256*pi*(1.5e7 m)*(1000 kg)*c^2/(hbar*c) == 3.43e55 m/m: within 0.005; 3.42946e+55 vs 3.43e+55 (SI)
+PASS 256*pi*(1e7 m)*(1000 kg)*c^2/(hbar*c) == 2.29e55 m/m: within 0.005; 2.28631e+55 vs 2.29e+55 (SI)
+PASS (1e7 m)*(1000 kg)*c^2/(hbar*c) == 2.84e52 m/m: within 0.005; 2.84279e+52 vs 2.84e+52 (SI)
+1 kg: 12.4 orders above the 1e32 cap
+human: 22.4 orders above the 1e32 cap
+ship: 23.5 orders above the 1e32 cap
+PASS hbar*c/(256*pi*1.5e7 m) == 2.62e-36 J: within 0.005; 2.62069e-36 vs 2.62e-36 (SI)
+Lens value 9e-39 J would need g^2 = 0.00343420916390041
+PASS 0.06^2*hbar*c/(256*pi*1.5e7 m) == 9e-39 J: within 0.06; 9.43449e-39 vs 9e-39 (SI)
+PASS hbar*c/(256*pi*1.5e7 m)/(1 meV) == 1.64e-14 m/m: within 0.05; 1.63571e-14 vs 1.64e-14 (SI)
+SUMMARY: 10 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

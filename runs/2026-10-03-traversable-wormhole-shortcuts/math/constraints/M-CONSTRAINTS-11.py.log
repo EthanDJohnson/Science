@@ -1,0 +1,32 @@
+# math_run log
+command:  python3 runs\2026-10-03-traversable-wormhole-shortcuts\math\constraints\M-CONSTRAINTS-11.py
+started:  2026-10-08T12:22:17Z
+duration: 2.1 s
+exit:     0
+versions: python 3.14.6, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.2, scipy 1.18.0
+counts:   18 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+PASS -2 == -2: symbolic
+PASS 0 == 0: symbolic
+PASS 0 == 0: symbolic
+PASS 0 == 0: symbolic
+PASS 0 == 0: symbolic
+PASS 0 == 0: symbolic
+PASS 0 == 0: symbolic
+PASS phi0 == phi0: symbolic
+PASS 2*phi0 is positive: symbolic, phi0 in [0.1, 10]
+PASS 0 == 0: symbolic
+PASS 0 == 0: symbolic
+T_kk = -phi0*sin(s)**4/(4*pi*G)
+PASS -phi0*sin(s)**4/(4*pi*G) == -phi0*sin(s)**4/(4*pi*G): symbolic
+PASS -phi0*sin(s)**4/(4*pi*G) is negative: numeric at 50 points, G in [0.1, 10], phi0 in [0.1, 10], s in [0.01, 3.13]
+PASS -phi0/(8*G) == -phi0/(8*G): symbolic
+PASS pi*phi0/2 == pi*phi0/2: symbolic
+PASS -phi0/(8*G) == -phi0/(8*G): symbolic
+PASS -phi0/(8*G) == -phi0/(8*G): symbolic
+PASS lim phi0->0 of -phi0/(8*G) == 0: symbolic limit 0
+SUMMARY: 18 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

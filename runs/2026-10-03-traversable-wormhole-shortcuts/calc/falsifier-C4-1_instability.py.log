@@ -1,0 +1,49 @@
+# math_run log
+command:  python3 runs\2026-10-03-traversable-wormhole-shortcuts\calc\falsifier-C4-1_instability.py
+started:  2026-10-08T12:41:35Z
+duration: 0.0 s
+exit:     0
+versions: python 3.14.6, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.2, scipy 1.18.0
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+== 1. e-folding time of the Ellis unstable mode (Gonzalez et al. T = 0.846) ==
+b0 = 1.000e+00 m : tau_e = 2.822e-09 s
+b0 = 5.050e+02 m : tau_e = 1.425e-06 s
+b0 = 4.500e+03 m : tau_e = 1.270e-05 s
+b0 = 1.000e+07 m : tau_e = 2.822e-02 s
+
+== 2. Lifetime of an unattended static throat seeded only by Planck-scale fluctuations ==
+b0 = 1.000e+00 m : N = ln(b0/lP) = 80.1 e-folds -> lifetime ~ 2.261e-07 s = 67.8 b0/c
+b0 = 5.050e+02 m : N = ln(b0/lP) = 86.3 e-folds -> lifetime ~ 1.230e-04 s = 73.0 b0/c
+b0 = 4.500e+03 m : N = ln(b0/lP) = 88.5 e-folds -> lifetime ~ 1.124e-03 s = 74.9 b0/c
+
+== 3. Payload seed and e-folds used during the crossing ==
+C4 sub-hyp (a): b0=505 m, 10 km/s, transit 0.16 s (C4 text)
+   e-folds during transit = 1.123e+05 ; e-folds before O(1) growth from payload seed (m=70.0 kg) = 64.4 ; amplification exp(N_used) overflows (>1e300)
+C4 sub-hyp (a): b0=4.5 km, 10 km/s, transit 1.4 s (C4 text)
+   e-folds during transit = 1.102e+05 ; e-folds before O(1) growth from payload seed (m=70.0 kg) = 66.6 ; amplification exp(N_used) overflows (>1e300)
+C4 Ellis b0=1 m, T_thru=6.64e-8 s (observers at 10 m)
+   e-folds during transit = 2.353e+01 ; e-folds before O(1) growth from payload seed (m=1.0 kg) = 62.5 ; amplification exp(N_used) = 1.66e+10
+
+== 4. Tidal-limited human crossing of an Ellis throat (1 g over 2 m): e-folds vs speed ==
+v = 3.336e-05 c : b0 >= 4.516e+03 m, crossing 2b0/v = 9.032e-01 s, e-folds used = 7.087e+04, payload seed allows 66.6 -> throat collapses first
+v = 1.000e-03 c : b0 >= 1.354e+05 m, crossing 2b0/v = 9.032e-01 s, e-folds used = 2.364e+03, payload seed allows 70.0 -> throat collapses first
+v = 1.000e-02 c : b0 >= 1.354e+06 m, crossing 2b0/v = 9.032e-01 s, e-folds used = 2.364e+02, payload seed allows 72.3 -> throat collapses first
+v = 3.000e-02 c : b0 >= 4.063e+06 m, crossing 2b0/v = 9.036e-01 s, e-folds used = 7.880e+01, payload seed allows 73.4 -> throat collapses first
+v = 1.000e-01 c : b0 >= 1.361e+07 m, crossing 2b0/v = 9.078e-01 s, e-folds used = 2.364e+01, payload seed allows 74.6 -> passes
+v = 5.000e-01 c : b0 >= 7.817e+07 m, crossing 2b0/v = 1.043e+00 s, e-folds used = 4.728e+00, payload seed allows 76.4 -> passes
+v = 9.000e-01 c : b0 >= 2.795e+08 m, crossing 2b0/v = 2.072e+00 s, e-folds used = 2.627e+00, payload seed allows 77.7 -> passes
+v = 9.900e-01 c : b0 >= 9.501e+08 m, crossing 2b0/v = 6.403e+00 s, e-folds used = 2.388e+00, payload seed allows 78.9 -> passes
+   (e-folds used = 2/(0.846 v/c) = 2.364 c/v, independent of b0)
+   minimum speed for a 70 kg payload at b0 ~ 1e7 m: v > 0.032 c (order of magnitude)
+
+== 5. Phantom-EFT cutoff (Cline, Jeon & Moore: Lambda < 3 MeV) vs throat energy-density scale ==
+b0 = 1.000e+00 m : |rho| = 4.815e+42 J/m^3, rho^(1/4) = 2.192e+10 eV, rho/Lambda^4 = 2.851e+15
+b0 = 1.000e+03 m : |rho| = 4.815e+36 J/m^3, rho^(1/4) = 6.932e+08 eV, rho/Lambda^4 = 2.851e+09
+b0 = 1.000e+07 m : |rho| = 4.815e+28 J/m^3, rho^(1/4) = 6.932e+06 eV, rho/Lambda^4 = 2.851e+01
+b0 = 1.000e+08 m : |rho| = 4.815e+26 J/m^3, rho^(1/4) = 2.192e+06 eV, rho/Lambda^4 = 2.851e-01
+b0 at which rho^(1/4) = 3 MeV : 5.340e+07 m ; cutoff length hbar c / Lambda = 6.578e-14 m
+
+--- stderr ---
+

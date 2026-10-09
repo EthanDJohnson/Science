@@ -1,0 +1,41 @@
+# math_run log
+command:  python3 runs\2026-10-03-traversable-wormhole-shortcuts\calc\lens-constraints_perturbative.py
+started:  2026-10-08T12:07:30Z
+duration: 3.6 s
+exit:     0
+versions: python 3.14.6, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.2, scipy 1.18.0
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+=== 1. JT / Maldacena-Qi: static global AdS2 wormhole ===
+vacuum check, phi = cos t / sin s: T = Matrix([[0, 0], [0, 0]]) ; box phi - 2 phi = 0
+static dilaton: box phi - 2 phi = 0 (0 => traceless matter)
+trace g^ab T_ab = 0
+T_kk(s) = -phi0*sin(s)**4/(4*pi*G)
+ANEC = int T_kk d lambda over s in (0, pi) = -phi0/(8*G)
+in terms of phi_r = phi0 pi/2: -phi_r/(4*pi*G)
+numeric check (phi0 = G = 1): -0.125000000000000  vs closed form -0.125000000000000
+conformal-coordinate integral int T_{++} dx^+ = -phi0/(8*G) = -phi_r/(4*pi*G) (phi_r form)
+throat value phi(pi/2) = phi0 ; T_kk sign at throat: -1
+
+=== 2. MMP energy minimisation (Q-10), hbar = c = 1 ===
+dE/dl = 0 at l = [16*r_e**3/(G_N*q)] ; E_min = -G_N*q**2/(256*r_e**3) ; d2E/dl2 > 0: G_N**3*q**4/(32768*r_e**9)
+
+=== 3. 2D Casimir ANEC on a circle (c species, light-length L), hbar = c = 1 ===
+per loop: int T_kk dlambda = -pi*c/(3*L) ; total energy E0 = -pi*c/(6*L)
+E0 with c = q on L = pi l: -q/(6*l)  vs MMP Casimir term -q/(8 l): ratio 4/3
+complete null line wrapping the circle n times: ANEC = -n pi c/(3 L) -> -infinity; the line returns to its own spatial point, so it is chronal.
+
+=== 4. Achronality margins, one-sided constructions ===
+MM worked example: pi l / c = 9.4247e+03 yr (pi r_e/c = 0.1571 s traveller).
+  d = 1 ly: T_thru - T_ext = 9.4237e+03 yr > 0 -> throat geodesic chronal (exterior timelike curve links entry and exit events); T_thru/T_ext = 9424.778
+  d = 100 ly: T_thru - T_ext = 9.3247e+03 yr > 0 -> throat geodesic chronal (exterior timelike curve links entry and exit events); T_thru/T_ext = 94.248
+  d = 1000 ly: T_thru - T_ext = 8.4248e+03 yr > 0 -> throat geodesic chronal (exterior timelike curve links entry and exit events); T_thru/T_ext = 9.425
+  d = 2990 ly: T_thru - T_ext = 6.4348e+03 yr > 0 -> throat geodesic chronal (exterior timelike curve links entry and exit events); T_thru/T_ext = 3.152
+FGM 2019: t_min = d + logs > d -> T_thru - T_ext = logs > 0 -> chronal (marginal).
+Classical one-sided MT/Ellis with throat length l_thr and mouth separation d: chronal iff l_thr > d (static, Phi ~ 0).
+  l_thr = 2 m, d = 1000 m: T_thru - T_ext = -3.329e-06 s -> achronal candidate (shortcut)
+  l_thr = 1000 m, d = 1 m: T_thru - T_ext = 3.332e-06 s -> chronal (long)
+
+--- stderr ---
+

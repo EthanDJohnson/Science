@@ -1,0 +1,29 @@
+# math_run log
+command:  python3 runs\2026-10-03-traversable-wormhole-shortcuts\calc\crux-C4_stability_windows.py
+started:  2026-10-08T13:21:36Z
+duration: 0.1 s
+exit:     0
+versions: python 3.14.6, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.2, scipy 1.18.0
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+== Ghost-scalar e-folds during a crossing (independent of b0) ==
+v = 1.000e+04 m/s (3.34e-05 c): N = pi c/(0.846 v) = 1.113e+05 e-folds
+v = 8.994e+06 m/s (0.03 c): N = pi c/(0.846 v) = 123.8 e-folds
+v = 1.499e+07 m/s (0.05 c): N = pi c/(0.846 v) = 74.27 e-folds
+v = 2.998e+07 m/s (0.1 c): N = pi c/(0.846 v) = 37.13 e-folds
+v = 2.698e+08 m/s (0.9 c): N = pi c/(0.846 v) = 4.126 e-folds
+== Minimum crossing speed for seed budgets ==
+ln(1/delta) = 58: v_min = 0.0640 c
+ln(1/delta) = 70: v_min = 0.0530 c
+ln(1/delta) = 80: v_min = 0.0464 c
+== C7 thresholds for C4's Ellis b0 = 1 m designer shortcut ==
+d = 1 km: T_ext = 3.3356e-06 s, Delta_s = -3.2692e-06 s (negative => shortcut already at Delta = 0), Delta_CTC = 3.4020e-06 s
+d = 1 AU: T_ext = 4.9900e+02 s, Delta_s = -4.9900e+02 s (negative => shortcut already at Delta = 0), Delta_CTC = 4.9900e+02 s
+d = 1 ly: T_ext = 3.1558e+07 s, Delta_s = -3.1558e+07 s (negative => shortcut already at Delta = 0), Delta_CTC = 3.1558e+07 s
+== Drift time to Delta_CTC (1 ly) for relative mouth speed v ==
+v = 3.000e+04 m/s: drift rate = 5.007e-09 s/s, time to Delta_CTC = 1.997e+08 yr
+v = 2.200e+05 m/s: drift rate = 2.693e-07 s/s, time to Delta_CTC = 3.714e+06 yr
+
+--- stderr ---
+

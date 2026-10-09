@@ -1,0 +1,59 @@
+# math_run log
+command:  python3 runs\2026-10-03-traversable-wormhole-shortcuts\calc\falsifier-C8-2_scale.py
+started:  2026-10-08T12:54:03Z
+duration: 0.0 s
+exit:     0
+versions: python 3.14.6, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.2, scipy 1.18.0
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+== 1. Payload quanta ==
+m c R / hbar for 1 kg, 1 m: 2.843e+42 quanta (dimensionless)
+70 kg, 1 m: 1.990e+44 quanta
+
+== 2. Gate count: sourced per-step scaling vs lens model ==
+N =  20: sourced-scaling n_g = 2.129e+04; lens 2kN^2 n_T = 3.200e+04; ratio lens/sourced = 1.50 (+0.18 orders)
+N =  24: sourced-scaling n_g = 3.066e+04; lens 2kN^2 n_T = 4.608e+04; ratio lens/sourced = 1.50 (+0.18 orders)
+N =  50: sourced-scaling n_g = 1.331e+05; lens 2kN^2 n_T = 2.000e+05; ratio lens/sourced = 1.50 (+0.18 orders)
+N = 100: sourced-scaling n_g = 5.323e+05; lens 2kN^2 n_T = 8.000e+05; ratio lens/sourced = 1.50 (+0.18 orders)
+
+== 3. Required vs achieved error per gate ==
+achieved 2022 Sycamore (lens, F=1/2 at 164 gates): 4.23e-03
+achieved 2025 trapped-ion effective (Granet et al.): 2.20e-03
+achieved 2025 trapped-ion component benchmark: 1.00e-03
+-- circuit fidelity target F = 0.5
+   N =  20 (sourced): eps_req = 3.26e-05; gap (orders) vs [2022, 2025 eff, 2025 comp] = [2.11, 1.83, 1.49]
+   N =  20 (lens   ): eps_req = 2.17e-05; gap (orders) vs [2022, 2025 eff, 2025 comp] = [2.29, 2.01, 1.66]
+   N =  24 (sourced): eps_req = 2.26e-05; gap (orders) vs [2022, 2025 eff, 2025 comp] = [2.27, 1.99, 1.65]
+   N =  24 (lens   ): eps_req = 1.50e-05; gap (orders) vs [2022, 2025 eff, 2025 comp] = [2.45, 2.17, 1.82]
+   N =  50 (sourced): eps_req = 5.21e-06; gap (orders) vs [2022, 2025 eff, 2025 comp] = [2.91, 2.63, 2.28]
+   N =  50 (lens   ): eps_req = 3.47e-06; gap (orders) vs [2022, 2025 eff, 2025 comp] = [3.09, 2.80, 2.46]
+   N = 100 (sourced): eps_req = 1.30e-06; gap (orders) vs [2022, 2025 eff, 2025 comp] = [3.51, 3.23, 2.89]
+   N = 100 (lens   ): eps_req = 8.66e-07; gap (orders) vs [2022, 2025 eff, 2025 comp] = [3.69, 3.40, 3.06]
+-- circuit fidelity target F = 0.05
+   N =  20 (sourced): eps_req = 1.41e-04; gap (orders) vs [2022, 2025 eff, 2025 comp] = [1.48, 1.19, 0.85]
+   N =  20 (lens   ): eps_req = 9.36e-05; gap (orders) vs [2022, 2025 eff, 2025 comp] = [1.65, 1.37, 1.03]
+   N =  24 (sourced): eps_req = 9.77e-05; gap (orders) vs [2022, 2025 eff, 2025 comp] = [1.64, 1.35, 1.01]
+   N =  24 (lens   ): eps_req = 6.50e-05; gap (orders) vs [2022, 2025 eff, 2025 comp] = [1.81, 1.53, 1.19]
+   N =  50 (sourced): eps_req = 2.25e-05; gap (orders) vs [2022, 2025 eff, 2025 comp] = [2.27, 1.99, 1.65]
+   N =  50 (lens   ): eps_req = 1.50e-05; gap (orders) vs [2022, 2025 eff, 2025 comp] = [2.45, 2.17, 1.82]
+   N = 100 (sourced): eps_req = 5.63e-06; gap (orders) vs [2022, 2025 eff, 2025 comp] = [2.88, 2.59, 2.25]
+   N = 100 (lens   ): eps_req = 3.74e-06; gap (orders) vs [2022, 2025 eff, 2025 comp] = [3.05, 2.77, 2.43]
+
+== 4. Maldacena-Qi: wormhole transfer vs bare coupling ==
+exponent (1-2D)/(2(1-D)) at D = 1/4: 0.3333
+E_gap exponent 1/(2-2D) = 0.6667 (MQ eq. 5.77 says mu^(2/3))
+
+== 5. Decisive-test lever arm: scrambling time ~ ln N ==
+ln(100)/ln(20) = 1.537; difference ln N2 - ln N1 = 1.609 (units of 1/lambda_L)
+ln(24)/ln(8) = 1.528; difference ln N2 - ln N1 = 1.099 (units of 1/lambda_L)
+ln(100)/ln(24) = 1.449; difference ln N2 - ln N1 = 1.427 (units of 1/lambda_L)
+
+mu/J = 1e-01: du/du0 ~ 4.642e-01  (wormhole route faster by ~2.2x, up to an O(1) prefactor)
+mu/J = 1e-02: du/du0 ~ 2.154e-01  (wormhole route faster by ~4.6x, up to an O(1) prefactor)
+mu/J = 1e-03: du/du0 ~ 1.000e-01  (wormhole route faster by ~10.0x, up to an O(1) prefactor)
+mu/J = 1e-04: du/du0 ~ 4.642e-02  (wormhole route faster by ~21.5x, up to an O(1) prefactor)
+mu/J = 1e-06: du/du0 ~ 1.000e-02  (wormhole route faster by ~100.0x, up to an O(1) prefactor)
+
+--- stderr ---
+

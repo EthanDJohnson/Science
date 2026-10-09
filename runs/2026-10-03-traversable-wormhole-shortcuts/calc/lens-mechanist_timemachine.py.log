@@ -1,0 +1,73 @@
+# math_run log
+command:  python3 runs\2026-10-03-traversable-wormhole-shortcuts\calc\lens-mechanist_timemachine.py
+started:  2026-10-08T11:57:54Z
+duration: 20.1 s
+exit:     0
+versions: python 3.14.6, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.2, scipy 1.18.0
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+=== A. Thresholds (exterior-synchronised time) ===
+MM: T_w=9.4e+03 yr, D/c=1 yr -> Delta_sc=9399 yr, Delta_ctc=9401 yr
+MM: T_w=9.4e+03 yr, D/c=100 yr -> Delta_sc=9300 yr, Delta_ctc=9500 yr
+MM: T_w=9.4e+03 yr, D/c=1e+03 yr -> Delta_sc=8400 yr, Delta_ctc=1.04e+04 yr
+MM: T_w=9.4e+03 yr, D/c=3e+03 yr -> Delta_sc=6400 yr, Delta_ctc=1.24e+04 yr
+short throat (T_w=0), D=1 m: already shortcut; Delta_ctc = D/c = 3.336e-09 s = 1.057e-16 yr
+short throat (T_w=0), D=1 AU: already shortcut; Delta_ctc = D/c = 499 s = 1.581e-05 yr
+short throat (T_w=0), D=1 ly: already shortcut; Delta_ctc = D/c = 3.156e+07 s = 1 yr
+
+=== B. Mouth motion (MTY kinematics) ===
+beta=0.01: lag rate 1-1/gamma = 5.0001e-05; gamma-1 = 5.0004e-05
+beta=0.1: lag rate 1-1/gamma = 5.0126e-03; gamma-1 = 5.0378e-03
+beta=0.5: lag rate 1-1/gamma = 1.3397e-01; gamma-1 = 1.5470e-01
+beta=0.9: lag rate 1-1/gamma = 5.6411e-01; gamma-1 = 1.2942e+00
+beta=0.99: lag rate 1-1/gamma = 8.5893e-01; gamma-1 = 6.0888e+00
+short throat D=1 ly, beta=0.1: coordinate time of motion T = 199.5 yr
+short throat D=1 ly, beta=0.9: coordinate time of motion T = 1.773 yr
+short throat D=1 m, beta=0.1: T = 6.655e-07 s
+MM mouth, D=1e3 ly, beta=0.1: T_sc = 1.676e+06 yr, T_ctc = 2.075e+06 yr; kinetic energy per leg (gamma-1)Mc^2 = 9.056e+48 J = 50.7 Msun c^2
+MM mouth, D=1e3 ly, beta=0.5: T_sc = 6.27e+04 yr, T_ctc = 7.763e+04 yr; kinetic energy per leg (gamma-1)Mc^2 = 2.781e+50 J = 1.56e+03 Msun c^2
+MM mouth, D=1e3 ly, beta=0.9: T_sc = 1.489e+04 yr, T_ctc = 1.844e+04 yr; kinetic energy per leg (gamma-1)Mc^2 = 2.326e+51 J = 1.3e+04 Msun c^2
+MM, beta=0.1, out-and-back max excursion = 1.04e+05 ly (vs l ~ 3e3 ly)
+MM mouth on circle R=1e3 ly at 0.1c: a = 9.500e-05 m/s^2, force = 1.900e+30 N; mutual gravity of other mouth at R: 1.491e-14 m/s^2
+
+=== C. Gravitational time dilation (Frolov-Novikov type) ===
+Sgr A*: GM/c^2 = 6.3511e+09 m
+Earth surface vs far (static): phi=6.9611e-10, lag rate=6.9611e-10
+neutron star surface 1.4 Msun, 12 km (static): phi=1.7232e-01, lag rate=1.9045e-01
+Sgr A* ISCO r=6GM/c^2 (orbit): phi=1.6667e-01, lag rate=2.9289e-01
+Sgr A* r=0.01 pc (orbit): phi=2.0582e-05, lag rate=3.0874e-05
+Sgr A* r=1 pc (orbit): phi=2.0582e-07, lag rate=3.0874e-07
+short throat, D = 8 kpc (D/c = 2.609e+04 yr), mouth at 0.01 pc of Sgr A*: T_ctc = 8.451e+08 yr
+flat rotation curve 1 vs 8 kpc: delta phi = 1.1198e-06; D/c = 2.283e+04 yr; T_ctc = 2.039e+10 yr
+short throat D=1 AU, mouth on Earth surface vs free space: T_ctc = 2.272e+04 yr
+MM, mouth at Sgr A* ISCO, D=1e3 ly: T_sc = 2.868e+04 yr, T_ctc = 3.551e+04 yr
+
+=== D. 2D twisted-loop Casimir (symbolic) ===
+T_kk (one null direction) = -pi*c_central/(3*(Delta + L)**2)
+T_kk (other null direction) = -pi*c_central/(3*(Delta - L)**2)
+Delta->0 limit: -pi*c_central/(3*L**2) -pi*c_central/(3*L**2)
+kappa = (T_++ + T_--)/(2 T_kk(Delta=0)) = L**2*(Delta**2 + L**2)/((Delta - L)**2*(Delta + L)**2)
+MM D=1 ly at Delta_sc: closing-direction enhancement (L/(L-Delta))^2 = 2.209e+07; kappa_total = 1.105e+07
+MM D=100 ly at Delta_sc: closing-direction enhancement (L/(L-Delta))^2 = 2256; kappa_total = 1128
+MM D=1000 ly at Delta_sc: closing-direction enhancement (L/(L-Delta))^2 = 27.04; kappa_total = 13.67
+MM D=3000 ly at Delta_sc: closing-direction enhancement (L/(L-Delta))^2 = 4.271; kappa_total = 2.353
+
+=== E. Toy feedback: MMP energetics with Casimir coefficient scaled by kappa ===
+T_w0 = 9400.0 yr, D/c = 1000.0 yr
+Delta=    0 yr: equilibrium T_w roots = ['9400 (long)']
+Delta= 2000 yr: equilibrium T_w roots = ['1995 (shortcut)', '8130 (long)']
+Delta= 4000 yr: equilibrium T_w roots = none
+Delta= 5000 yr: equilibrium T_w roots = none
+Delta= 6000 yr: equilibrium T_w roots = none
+Delta= 7000 yr: equilibrium T_w roots = none
+Delta= 8000 yr: equilibrium T_w roots = none
+Delta= 8400 yr: equilibrium T_w roots = none
+
+=== F. Toy fold location: largest Delta with a 'long' equilibrium ===
+D/c=100 yr: long branch exists up to Delta ~ 2320 yr (T_w there = 6083 yr); no-feedback shortcut threshold T_w0 - D = 9300 yr; fold/threshold = 0.249
+D/c=1000 yr: long branch exists up to Delta ~ 2690 yr (T_w there = 5658 yr); no-feedback shortcut threshold T_w0 - D = 8400 yr; fold/threshold = 0.32
+D/c=3000 yr: long branch exists up to Delta ~ 3330 yr (T_w there = 6372 yr); no-feedback shortcut threshold T_w0 - D = 6400 yr; fold/threshold = 0.52
+
+--- stderr ---
+

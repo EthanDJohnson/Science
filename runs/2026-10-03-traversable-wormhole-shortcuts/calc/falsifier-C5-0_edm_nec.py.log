@@ -1,0 +1,25 @@
+# math_run log
+command:  python3 runs\2026-10-03-traversable-wormhole-shortcuts\calc\falsifier-C5-0_edm_nec.py
+started:  2026-10-08T12:41:17Z
+duration: 3.8 s
+exit:     0
+versions: python 3.14.6, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.2, scipy 1.18.0
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+1. G_ab k^a k^b (radial null, arbitrary Phi(l), r(l)) = 2*(Derivative(Phi(l), l)*Derivative(r(l), l) - Derivative(r(l), (l, 2)))/r(l)
+   in symbols (rp=r', rpp=r'', Phip=Phi'): 2*Phip*rp/r(l) - 2*rpp/r(l)
+   at a throat (r'=0): -2*rpp/r(l)  -> 8 pi T_kk; sign for r''>0, r>0: NEGATIVE
+   identity G_kk = 2 Phi' r'/r - 2 r''/r : True
+2. Maxwell energy density (static observer) = P**2/(8*pi*r(l)**4) + E(l)**2/(8*pi) (>= 0)
+   Maxwell T_kk along radial null rays = 0
+   Maxwell T_kk along tangential null = P**2/(4*pi*r(l)**4) + E(l)**2/(4*pi) (>= 0)
+3. => 8 pi T^Dirac_kk(throat) = G_kk - 8 pi T^EM_kk = -2 r''/r_0 - 0 < 0 for every flare-out throat,
+   any fermion number, mass, charge, frequency, symmetric or asymmetric: Dirac sector violates NEC.
+4. sample asymmetric throat: r' = 0 at l = -0.28769259 m, r0 = 1.256558 m
+   direct radial ANEC (Dirac sector = total, E=1) over |l|<200 m: -0.117639424583 m^-1
+   direct radial ANEC (Dirac sector = total, E=1) over |l|<400 m: -0.117638830361 m^-1
+   by-parts value -(1/4pi) int e^{-Phi}(r'/r)^2 dl over R: -0.117638631216 m^-1 (strictly negative)
+
+--- stderr ---
+

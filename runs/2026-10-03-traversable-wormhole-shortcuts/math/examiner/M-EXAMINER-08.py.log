@@ -1,0 +1,21 @@
+# math_run log
+command:  python3 runs\2026-10-03-traversable-wormhole-shortcuts\math\examiner\M-EXAMINER-08.py
+started:  2026-10-08T12:03:35Z
+duration: 0.7 s
+exit:     0
+versions: python 3.14.6, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.2, scipy 1.18.0
+counts:   5 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+PASS log(x**6) == 6*log(x): symbolic
+PASS lim x->oo of log(x)/x == 0: symbolic limit 0
+ln(100) = 4.6052 (lens 4.6)
+PASS 4.605170185988092 == 4.6: within 0.004; 4.60517 vs 4.6 (SI)
+ln(1e+10) = 23.0259 (lens 23.0)
+PASS 23.025850929940457 == 23.0: within 0.004; 23.0259 vs 23 (SI)
+ln(1e+60) = 138.1551 (lens 138.0)
+PASS 138.15510557964274 == 138.0: within 0.004; 138.155 vs 138 (SI)
+SUMMARY: 5 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

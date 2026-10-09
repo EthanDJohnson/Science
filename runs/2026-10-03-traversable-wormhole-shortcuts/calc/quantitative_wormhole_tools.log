@@ -1,0 +1,36 @@
+c^4/G (N) = 1.2102555643382063e+44  Planck length (m) = 1.61625502392855e-35
+
+Ellis b0=1.0 m: anec dict keys: ['anec_geom_per_m', 'anec_by_parts', 'boundary_term', 'anec_J_per_m2', 'E', 'agree']
+{'anec_geom_per_m': -0.125, 'anec_by_parts': -0.125, 'boundary_term': 0.0, 'anec_J_per_m2': -1.5128194554227579e+43, 'E': 1.0, 'agree': True}
+  analytic rho+p_l at throat (J/m^3 = Pa): -4.815453886722423e+42   [ -1/(8 pi b0^2) * c^4/G ]
+  I = -1/(8 b0) per unit E -> J/m^2 via c^4/G: -1.5128194554227579e+43
+
+Ellis b0=1000.0 m: anec dict keys: ['anec_geom_per_m', 'anec_by_parts', 'boundary_term', 'anec_J_per_m2', 'E', 'agree']
+{'anec_geom_per_m': -0.000125, 'anec_by_parts': -0.000125, 'boundary_term': 0.0, 'anec_J_per_m2': -1.512819455422758e+40, 'E': 1.0, 'agree': True}
+  analytic rho+p_l at throat (J/m^3 = Pa): -4.815453886722423e+36   [ -1/(8 pi b0^2) * c^4/G ]
+  I = -1/(8 b0) per unit E -> J/m^2 via c^4/G: -1.5128194554227579e+40
+MT b=r0^2/r r0=1 m: stress {'rho': -0.039788719857483494, 'p_r': -0.039788719857483494, 'p_t': 0.039788719857483494, 'units': '1/m^2 (geometric)', 'rho_J_m3': -4.8154519605413487e+42, 'p_r_Pa': -4.8154519605413487e+42, 'p_t_Pa': 4.8154519605413487e+42} anec {'anec_geom_per_m': -0.125, 'anec_by_parts': -0.125, 'boundary_term': 0.0, 'anec_J_per_m2': -1.5128194554227579e+43, 'E': 1.0, 'agree': True} vkd {'omega_rho_plus_pr_m': -2.0, 'omega_kg': -2.693181843000218e+27, 'int_rho_dV_m': -1.0, 'int_rho_dV_kg': -1.346590921500109e+27}
+Ellis b0=1 stress l=0: {'rho': -0.039788735772973836, 'p_l': -0.039788735772973836, 'p_t': 0.039788735772973836, 'units': '1/m^2 (geometric)', 'rho_J_m3': -4.815453886722423e+42, 'p_l_Pa': -4.815453886722423e+42, 'p_t_Pa': 4.815453886722423e+42} {'nec': False, 'wec': False, 'sec': False, 'dec': False, 'rho_plus_pl': -0.07957747154594767, 'rho_plus_pt': 0.0}
+Ellis transit 1 km each side v=0.01: {'proper_length_m': 2000.0, 't_coord_s': 0.0006671281903963041, 'tau_traveller_s': 0.0006670948331528323, 'v': 0.01}
+Ellis transit light 1 km each side: {'proper_length_m': 2000.0, 't_coord_s': 6.671281903963041e-06, 'tau_traveller_s': 0.0, 'v': 1.0}
+
+MT r0=1 m methods: ['anec', 'b', 'energy_conditions', 'phi', 'proper_length', 'r0', 'stress', 'transit', 'vkd']
+
+M_sun geometric (m): 1476.6250380501249
+thin shell M=1Msun a=5906.5 m: surface {'sigma': -1.9053506580832145e-05, 'P': 1.4290129935624106e-05, 'units': '1/m (geometric)', 'sigma_J_m2': -2.3059612359606736e+39, 'P_N_m': 1.729470926970505e+39} mass_kg -1.1248144826790866e+31 anec {'anec_geom_per_m': -2.6945727417377835e-05, 'anec_J_per_m2': -3.2611216542022094e+39, 'E': 1.0}
+   ec {'nec': False, 'wec': False, 'sec': False, 'dec': False, 'nec_radial': False, 'nec_surface': False, 'wec_surface': False, 'sec_surface': False, 'dec_surface': False, 'sigma_plus_P': -4.763376645208039e-06, 'sigma_plus_2P': 9.526753290416067e-06}
+thin shell M=1Msun a=4429.9 m: surface {'sigma': -2.0742830637244495e-05, 'P': 2.07428306372445e-05, 'units': '1/m (geometric)', 'sigma_J_m2': -2.510412619885017e+39, 'P_N_m': 2.5104126198850177e+39} mass_kg -6.888053844640972e+30 anec {'anec_geom_per_m': -3.592763655650378e-05, 'anec_J_per_m2': -4.348162205602946e+39, 'E': 1.0}
+   ec {'nec': False, 'wec': False, 'sec': False, 'dec': False, 'nec_radial': False, 'nec_surface': True, 'wec_surface': False, 'sec_surface': True, 'dec_surface': False, 'sigma_plus_P': 3.3881317890172014e-21, 'sigma_plus_2P': 2.0742830637244502e-05}
+thin shell M=1Msun a=10000.0 m: surface {'sigma': -1.3360249278373106e-05, 'P': 8.079924462657449e-06, 'units': '1/m (geometric)', 'sigma_J_m2': -1.6169316030096557e+39, 'P_N_m': 9.77877354036357e+38} mass_kg -2.2607893965125297e+31 anec {'anec_geom_per_m': -1.5915494309189534e-05, 'anec_J_per_m2': -1.9261815546889692e+39, 'E': 1.0}
+   ec {'nec': False, 'wec': False, 'sec': False, 'dec': False, 'nec_radial': False, 'nec_surface': False, 'wec_surface': False, 'sec_surface': False, 'dec_surface': False, 'sigma_plus_P': -5.280324815715657e-06, 'sigma_plus_2P': 2.7995996469417914e-06}
+
+1e4 lp = 1.6162550239285498e-31 m
+r0 <~ lp/(2 f^2) with f=0.01: = 8.081275119642749e-32 m  ( 5000.0 lp)
+FR a0 bound r0=1 m, f=0.01: 1.4835764457542677e-21 m = 91790987424015.11 lp
+r0=1 ly: 3.1377452920257965e-16 m 1.9413676960452915e+19 lp
+r0=1e5 ly: 1.4564123510188002e-14 m 9.011030619900391e+20 lp
+
+Lorentzian FR coefficient 3/(32 pi^2) = 0.009498860966469166  FE 27/(2048 pi^2) = 0.0013357773234097265  ratio = 0.140625  9/64 = 0.140625
+Fewster-Eveson Lorentzian bound, tau0=1e-15 s: rho >= -5.228e-03 J/m^3 (|rho|c^-2 = 5.817e-20 kg/m^3)
+Fewster-Eveson Lorentzian bound, tau0=1e-09 s: rho >= -5.228e-27 J/m^3 (|rho|c^-2 = 5.817e-44 kg/m^3)
+Fewster-Eveson Lorentzian bound, tau0=1.0 s: rho >= -5.228e-63 J/m^3 (|rho|c^-2 = 5.817e-80 kg/m^3)

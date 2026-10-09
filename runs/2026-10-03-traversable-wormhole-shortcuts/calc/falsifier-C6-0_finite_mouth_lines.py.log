@@ -1,0 +1,78 @@
+# math_run log
+command:  python3 runs\2026-10-03-traversable-wormhole-shortcuts\calc\falsifier-C6-0_finite_mouth_lines.py
+started:  2026-10-08T12:47:29Z
+duration: 4.5 s
+exit:     0
+versions: python 3.14.6, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.2, scipy 1.18.0
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+=== 1. Ellis through-ray: winding and transit excess (b0 = 1, geometric) ===
+b = 0.00 b0: dphi = 0.000000 rad (elliptic) vs 0.000000 rad (quadrature); tau = 0.000000 b0
+b = 0.30 b0: dphi = 0.964829 rad (elliptic) vs 0.964829 rad (quadrature); tau = 0.146430 b0
+b = 0.60 b0: dphi = 2.100905 rad (elliptic) vs 2.100905 rad (quadrature); tau = 0.665341 b0
+b = 0.90 b0: dphi = 4.104988 rad (elliptic) vs 4.104988 rad (quadrature); tau = 2.217704 b0
+winding pi (needed for mirror gluing O = -I): b_pi = 0.792726 b0, tau(b_pi) = 1.397377 b0  [L = 0]
+
+=== 2. Point-mouth counterexamples of M-DECOMPOSER-08 / M-IDEALIZER-02, re-done with finite mouths ===
+d =     20 b0, L = 0.0 d, rotated 10 deg about z (perp D)               : T_thru/T_ext(radial) = 0.00; best advance of a through-line = +19.9933 b0 at e.Dhat = 0.9999, winding   10.0 deg (|e_out - e| = 3.7e-16) -> ACHRONAL LINE EXISTS
+d =     20 b0, L = 0.0 d, rotated 180 deg about z (perp D)              : T_thru/T_ext(radial) = 0.00; best advance of a through-line = +18.6626 b0 at e.Dhat = 0.9966, winding  170.7 deg (|e_out - e| = 2.0e-16) -> ACHRONAL LINE EXISTS
+d =     20 b0, L = 0.0 d, mirror O = -I (Visser natural identification) : T_thru/T_ext(radial) = 0.00; best advance of a through-line = +18.6007 b0 at e.Dhat = 0.9999, winding  180.0 deg (|e_out - e| = 1.2e-16) -> ACHRONAL LINE EXISTS
+d =     20 b0, L = 0.0 d, aligned O = I                                 : T_thru/T_ext(radial) = 0.00; best advance of a through-line = +19.9981 b0 at e.Dhat = 0.9999, winding    0.0 deg (|e_out - e| = 0.0e+00) -> ACHRONAL LINE EXISTS
+d =     20 b0, L = 0.5 d, rotated 10 deg about z (perp D)               : T_thru/T_ext(radial) = 0.50; best advance of a through-line = +9.9970 b0 at e.Dhat = 0.9999, winding   10.0 deg (|e_out - e| = 3.7e-16) -> ACHRONAL LINE EXISTS
+d =     20 b0, L = 0.5 d, rotated 180 deg about z (perp D)              : T_thru/T_ext(radial) = 0.50; best advance of a through-line = +9.6315 b0 at e.Dhat = 0.9999, winding  178.9 deg (|e_out - e| = 2.9e-15) -> ACHRONAL LINE EXISTS
+d =     20 b0, L = 0.5 d, mirror O = -I (Visser natural identification) : T_thru/T_ext(radial) = 0.50; best advance of a through-line = +9.6272 b0 at e.Dhat = 0.9999, winding  180.0 deg (|e_out - e| = 1.2e-16) -> ACHRONAL LINE EXISTS
+d =     20 b0, L = 0.5 d, aligned O = I                                 : T_thru/T_ext(radial) = 0.50; best advance of a through-line = +9.9981 b0 at e.Dhat = 0.9999, winding    0.0 deg (|e_out - e| = 0.0e+00) -> ACHRONAL LINE EXISTS
+d =     20 b0, L = 0.9 d, rotated 10 deg about z (perp D)               : T_thru/T_ext(radial) = 0.90; best advance of a through-line = +1.9974 b0 at e.Dhat = 0.9999, winding   10.0 deg (|e_out - e| = 3.7e-16) -> ACHRONAL LINE EXISTS
+d =     20 b0, L = 0.9 d, rotated 180 deg about z (perp D)              : T_thru/T_ext(radial) = 0.90; best advance of a through-line = +1.7686 b0 at e.Dhat = 0.9999, winding  178.9 deg (|e_out - e| = 2.9e-15) -> ACHRONAL LINE EXISTS
+d =     20 b0, L = 0.9 d, mirror O = -I (Visser natural identification) : T_thru/T_ext(radial) = 0.90; best advance of a through-line = +1.7659 b0 at e.Dhat = 0.9999, winding  180.0 deg (|e_out - e| = 1.2e-16) -> ACHRONAL LINE EXISTS
+d =     20 b0, L = 0.9 d, aligned O = I                                 : T_thru/T_ext(radial) = 0.90; best advance of a through-line = +1.9981 b0 at e.Dhat = 0.9999, winding    0.0 deg (|e_out - e| = 0.0e+00) -> ACHRONAL LINE EXISTS
+d =    100 b0, L = 0.0 d, rotated 10 deg about z (perp D)               : T_thru/T_ext(radial) = 0.00; best advance of a through-line = +99.9858 b0 at e.Dhat = 0.9999, winding   10.0 deg (|e_out - e| = 3.7e-16) -> ACHRONAL LINE EXISTS
+d =    100 b0, L = 0.0 d, rotated 180 deg about z (perp D)              : T_thru/T_ext(radial) = 0.00; best advance of a through-line = +98.6079 b0 at e.Dhat = 0.9999, winding  178.9 deg (|e_out - e| = 2.9e-15) -> ACHRONAL LINE EXISTS
+d =    100 b0, L = 0.0 d, mirror O = -I (Visser natural identification) : T_thru/T_ext(radial) = 0.00; best advance of a through-line = +98.5933 b0 at e.Dhat = 0.9999, winding  180.0 deg (|e_out - e| = 1.2e-16) -> ACHRONAL LINE EXISTS
+d =    100 b0, L = 0.0 d, aligned O = I                                 : T_thru/T_ext(radial) = 0.00; best advance of a through-line = +99.9906 b0 at e.Dhat = 0.9999, winding    0.0 deg (|e_out - e| = 0.0e+00) -> ACHRONAL LINE EXISTS
+d =    100 b0, L = 0.5 d, rotated 10 deg about z (perp D)               : T_thru/T_ext(radial) = 0.50; best advance of a through-line = +49.9903 b0 at e.Dhat = 0.9999, winding   10.0 deg (|e_out - e| = 3.7e-16) -> ACHRONAL LINE EXISTS
+d =    100 b0, L = 0.5 d, rotated 180 deg about z (perp D)              : T_thru/T_ext(radial) = 0.50; best advance of a through-line = +49.8989 b0 at e.Dhat = 0.9999, winding  178.9 deg (|e_out - e| = 2.9e-15) -> ACHRONAL LINE EXISTS
+d =    100 b0, L = 0.5 d, mirror O = -I (Visser natural identification) : T_thru/T_ext(radial) = 0.50; best advance of a through-line = +49.8978 b0 at e.Dhat = 0.9999, winding  180.0 deg (|e_out - e| = 1.2e-16) -> ACHRONAL LINE EXISTS
+d =    100 b0, L = 0.5 d, aligned O = I                                 : T_thru/T_ext(radial) = 0.50; best advance of a through-line = +49.9906 b0 at e.Dhat = 0.9999, winding    0.0 deg (|e_out - e| = 0.0e+00) -> ACHRONAL LINE EXISTS
+d =    100 b0, L = 0.9 d, rotated 10 deg about z (perp D)               : T_thru/T_ext(radial) = 0.90; best advance of a through-line = +9.9905 b0 at e.Dhat = 0.9999, winding   10.0 deg (|e_out - e| = 3.7e-16) -> ACHRONAL LINE EXISTS
+d =    100 b0, L = 0.9 d, rotated 180 deg about z (perp D)              : T_thru/T_ext(radial) = 0.90; best advance of a through-line = +9.9383 b0 at e.Dhat = 0.9999, winding  178.9 deg (|e_out - e| = 2.9e-15) -> ACHRONAL LINE EXISTS
+d =    100 b0, L = 0.9 d, mirror O = -I (Visser natural identification) : T_thru/T_ext(radial) = 0.90; best advance of a through-line = +9.9377 b0 at e.Dhat = 0.9999, winding  180.0 deg (|e_out - e| = 1.2e-16) -> ACHRONAL LINE EXISTS
+d =    100 b0, L = 0.9 d, aligned O = I                                 : T_thru/T_ext(radial) = 0.90; best advance of a through-line = +9.9906 b0 at e.Dhat = 0.9999, winding    0.0 deg (|e_out - e| = 0.0e+00) -> ACHRONAL LINE EXISTS
+d =   1000 b0, L = 0.0 d, rotated 10 deg about z (perp D)               : T_thru/T_ext(radial) = 0.00; best advance of a through-line = +999.9014 b0 at e.Dhat = 0.9999, winding   10.0 deg (|e_out - e| = 3.7e-16) -> ACHRONAL LINE EXISTS
+d =   1000 b0, L = 0.0 d, rotated 180 deg about z (perp D)              : T_thru/T_ext(radial) = 0.00; best advance of a through-line = +998.5236 b0 at e.Dhat = 0.9999, winding  178.9 deg (|e_out - e| = 2.9e-15) -> ACHRONAL LINE EXISTS
+d =   1000 b0, L = 0.0 d, mirror O = -I (Visser natural identification) : T_thru/T_ext(radial) = 0.00; best advance of a through-line = +998.5089 b0 at e.Dhat = 0.9999, winding  180.0 deg (|e_out - e| = 1.2e-16) -> ACHRONAL LINE EXISTS
+d =   1000 b0, L = 0.0 d, aligned O = I                                 : T_thru/T_ext(radial) = 0.00; best advance of a through-line = +999.9063 b0 at e.Dhat = 0.9999, winding    0.0 deg (|e_out - e| = 0.0e+00) -> ACHRONAL LINE EXISTS
+d =   1000 b0, L = 0.5 d, rotated 10 deg about z (perp D)               : T_thru/T_ext(radial) = 0.50; best advance of a through-line = +499.9063 b0 at e.Dhat = 0.9999, winding   10.0 deg (|e_out - e| = 3.7e-16) -> ACHRONAL LINE EXISTS
+d =   1000 b0, L = 0.5 d, rotated 180 deg about z (perp D)              : T_thru/T_ext(radial) = 0.50; best advance of a through-line = +499.8966 b0 at e.Dhat = 0.9999, winding  178.9 deg (|e_out - e| = 2.9e-15) -> ACHRONAL LINE EXISTS
+d =   1000 b0, L = 0.5 d, mirror O = -I (Visser natural identification) : T_thru/T_ext(radial) = 0.50; best advance of a through-line = +499.8965 b0 at e.Dhat = 0.9999, winding  180.0 deg (|e_out - e| = 1.2e-16) -> ACHRONAL LINE EXISTS
+d =   1000 b0, L = 0.5 d, aligned O = I                                 : T_thru/T_ext(radial) = 0.50; best advance of a through-line = +499.9063 b0 at e.Dhat = 0.9999, winding    0.0 deg (|e_out - e| = 0.0e+00) -> ACHRONAL LINE EXISTS
+d =   1000 b0, L = 0.9 d, rotated 10 deg about z (perp D)               : T_thru/T_ext(radial) = 0.90; best advance of a through-line = +99.9063 b0 at e.Dhat = 0.9999, winding   10.0 deg (|e_out - e| = 3.7e-16) -> ACHRONAL LINE EXISTS
+d =   1000 b0, L = 0.9 d, rotated 180 deg about z (perp D)              : T_thru/T_ext(radial) = 0.90; best advance of a through-line = +99.9009 b0 at e.Dhat = 0.9999, winding  178.9 deg (|e_out - e| = 2.9e-15) -> ACHRONAL LINE EXISTS
+d =   1000 b0, L = 0.9 d, mirror O = -I (Visser natural identification) : T_thru/T_ext(radial) = 0.90; best advance of a through-line = +99.9008 b0 at e.Dhat = 0.9999, winding  180.0 deg (|e_out - e| = 1.2e-16) -> ACHRONAL LINE EXISTS
+d =   1000 b0, L = 0.9 d, aligned O = I                                 : T_thru/T_ext(radial) = 0.90; best advance of a through-line = +99.9063 b0 at e.Dhat = 0.9999, winding    0.0 deg (|e_out - e| = 0.0e+00) -> ACHRONAL LINE EXISTS
+
+=== 3. Residual window: worst-case (winding pi) delay penalty delta(L) = tau(b_pi; L) - L ===
+A misaligned shortcut escapes the line argument only if d - L < delta (any orientation needs winding <= pi).
+L =      0.0 b0: b_pi = 0.79273 b0, delta = 1.39738 b0  (long-throat estimate pi^2 b0^2/(2L) = nan b0)
+L =      1.0 b0: b_pi = 0.64357 b0, delta = 1.09618 b0  (long-throat estimate pi^2 b0^2/(2L) = 4.93480 b0)
+L =      3.0 b0: b_pi = 0.46682 b0, delta = 0.76712 b0  (long-throat estimate pi^2 b0^2/(2L) = 1.64493 b0)
+L =     10.0 b0: b_pi = 0.23324 b0, delta = 0.37089 b0  (long-throat estimate pi^2 b0^2/(2L) = 0.49348 b0)
+L =     30.0 b0: b_pi = 0.09439 b0, delta = 0.14858 b0  (long-throat estimate pi^2 b0^2/(2L) = 0.16449 b0)
+L =    100.0 b0: b_pi = 0.03045 b0, delta = 0.04783 b0  (long-throat estimate pi^2 b0^2/(2L) = 0.04935 b0)
+L =   1000.0 b0: b_pi = 0.00313 b0, delta = 0.00492 b0  (long-throat estimate pi^2 b0^2/(2L) = 0.00493 b0)
+L =  10000.0 b0: b_pi = 0.00031 b0, delta = 0.00049 b0  (long-throat estimate pi^2 b0^2/(2L) = 0.00049 b0)
+
+=== 4. Scale of the window against the mouth-size ambiguity of 'shortcut' ===
+thin (L = 0) Ellis mouths: delta = 1.3974 b0; facing-surface vs centre exterior separation differs by 2 b0 = 2.0000 b0
+ratio delta / (2 b0) = 0.6987
+MM-like r_e = 1.5e7 m, d = 1 ly: worst-case escape window (L -> 0) = 2.096e+07 m of 9.460e+15 m, fraction 2.22e-09
+b0 = 1 m, d = 1 km: worst-case escape window (L -> 0) = 1.397e+00 m of 1.000e+03 m, fraction 1.40e-03
+
+=== 5. Null energy on the restored line (Ellis source, geometric units, E = 1) ===
+b = 0.00000 b0: integral G_kk dlambda = -3.141593 /b0 ; ANEC = integral T_kk dlambda = -0.125000 /b0 (negative)
+b = 0.79273 b0: integral G_kk dlambda = -2.261282 /b0 ; ANEC = integral T_kk dlambda = -0.089974 /b0 (negative)
+radial check: -E/(8 b0) from M-IDEALIZER-05 = -0.125
+
+--- stderr ---
+

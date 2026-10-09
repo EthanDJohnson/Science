@@ -1,0 +1,34 @@
+# math_run log
+command:  python3 runs\2026-10-03-traversable-wormhole-shortcuts\calc\lens-constraints_budgets.py
+started:  2026-10-08T12:09:50Z
+duration: 1.4 s
+exit:     0
+versions: python 3.14.6, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.2, scipy 1.18.0
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+=== 1. MM environment temperature ===
+l = 2.838e+19 m: hbar c/(k_B l) = 8.068e-23 K (6.95e-27 eV); with 1/(2 pi): 1.284e-23 K; CMB 2.725 K is 3.38e+22 times hotter
+
+=== 2. Standard-Model-scale MMP ===
+q = 2.114e+15; throat length l = 16 r_e^3/(l_P^2 q) = 2.318e-01 m; external transit pi l / c = 2.429e-09 s
+E_min = -5.701e+14 1/m = -1.802e-11 J = -1.125e+02 MeV
+extremal mouth mass r_e c^2/G = 2.693e+08 kg each; required T < hbar c/(k_B l) = 9.880e-03 K
+lowest-Landau-level check: q = 2.11e+15 >> 1; ratio l/r_e = 1.159e+18 (long throat)
+
+=== 3. Payload energy budgets ===
+SM-scale MMP: |E_bin| = 1.802e-11 J; payload 1 kg rest energy 8.988e+16 J; |E_bin|/(m c^2) = 2.005e-28
+SM-scale MMP: |E_bin| = 1.802e-11 J; payload 70 kg rest energy 6.291e+18 J; |E_bin|/(m c^2) = 2.865e-30
+   largest single quantum allowed ~ |E_bin| = 1.125e+08 eV
+MM worked RS II (Q-02): |E_bin| = 4.500e+26 J; payload 1 kg rest energy 8.988e+16 J; |E_bin|/(m c^2) = 5.007e+09
+MM worked RS II (Q-02): |E_bin| = 4.500e+26 J; payload 70 kg rest energy 6.291e+18 J; |E_bin|/(m c^2) = 7.153e+07
+   largest single quantum allowed ~ |E_bin| = 2.809e+45 eV
+
+=== 4. Visser cube wormhole: edge line mass ===
+conical excess = 3.1416 rad; mu = -1.6832e+26 kg/m per edge (-0.1250 geometric, dimensionless)
+cube side 1 m: 12 edges total line mass = -2.0199e+27 kg (compare spherical thin shell of radius 0.5 m: -1.3466e+27 kg)
+cube side 1000 m: 12 edges total line mass = -2.0199e+30 kg (compare spherical thin shell of radius 500 m: -1.3466e+30 kg)
+face-centred radial null ray: T_kk = 0 on flat faces (Visser 1989 eq. 2.4 with infinite radii) -> ANEC = 0 exactly; R_kk = 0 and Weyl = 0 along it -> null generic condition fails on that ray
+
+--- stderr ---
+

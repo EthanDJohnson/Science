@@ -1,0 +1,55 @@
+# math_run log
+command:  python3 runs\2026-10-03-traversable-wormhole-shortcuts\calc\lens-idealizer_cost.py
+started:  2026-10-08T11:58:27Z
+duration: 2.2 s
+exit:     0
+versions: python 3.14.6, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.2, scipy 1.18.0
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+=== 1. Universal mass scale of a throat of areal radius r: r c^2/G (SI) ===
+ r =     1e-12 m: r c^2/G = 1.347e+15 kg | Ellis int rho dV (both sheets) = -1.347e+15 kg | flat thin-shell mass 4 pi a^2 sigma = -2.693e+15 kg (= -2.000 a)
+ r =     1e-06 m: r c^2/G = 1.347e+21 kg | Ellis int rho dV (both sheets) = -1.347e+21 kg | flat thin-shell mass 4 pi a^2 sigma = -2.693e+21 kg (= -2.000 a)
+ r =         1 m: r c^2/G = 1.347e+27 kg | Ellis int rho dV (both sheets) = -1.347e+27 kg | flat thin-shell mass 4 pi a^2 sigma = -2.693e+27 kg (= -2.000 a)
+ r =     1e+03 m: r c^2/G = 1.347e+30 kg | Ellis int rho dV (both sheets) = -1.347e+30 kg | flat thin-shell mass 4 pi a^2 sigma = -2.693e+30 kg (= -2.000 a)
+ r =   1.5e+07 m: r c^2/G = 2.020e+34 kg | Ellis int rho dV (both sheets) = -2.020e+34 kg | flat thin-shell mass 4 pi a^2 sigma = -4.040e+34 kg (= -2.000 a)
+ Ellis b0 = 1 m ANEC along radial null geodesic: -0.125000 /m (closed form -1/8 = -0.125); agree by parts: True
+
+=== 2. Tidal size limit for a traveller crossing an Ellis throat at local speed v ===
+ gr_tensors: R^theta_l theta l = -b0**2/(b0**2 + l**2)**2; at l=0: -1/b0**2; R^theta_t theta t = 0
+ boosted radial observer: transverse tidal |da| = gamma^2 v^2 |R_thl(0)| xi = gamma^2 v^2 xi / b0^2 (geometric)
+ => b0 >= gamma (v) sqrt(xi / a_max)   [v in m/s, xi body length m, a_max m/s^2]
+  MM criterion: 0.5 m, 20 g: v = 3.34e-05 c -> b0 >= 5.049e+02 m, exotic |int rho dV| = b0 c^2/G >= 6.799e+29 kg = 0.342 Msun; crossing time ~ pi b0/v = 0.159 s
+  MM criterion: 0.5 m, 20 g: v = 0.00334 c -> b0 >= 5.049e+04 m, exotic |int rho dV| = b0 c^2/G >= 6.799e+31 kg = 34.2 Msun; crossing time ~ pi b0/v = 0.159 s
+  MM criterion: 0.5 m, 20 g: v = 0.1 c -> b0 >= 1.521e+06 m, exotic |int rho dV| = b0 c^2/G >= 2.049e+33 kg = 1.03e+03 Msun; crossing time ~ pi b0/v = 0.159 s
+  MM criterion: 0.5 m, 20 g: v = 0.9 c -> b0 >= 3.125e+07 m, exotic |int rho dV| = b0 c^2/G >= 4.209e+34 kg = 2.12e+04 Msun; crossing time ~ pi b0/v = 0.364 s
+  MM criterion: 0.5 m, 20 g: v = 0.999 c -> b0 >= 3.382e+08 m, exotic |int rho dV| = b0 c^2/G >= 4.554e+35 kg = 2.29e+05 Msun; crossing time ~ pi b0/v = 3.55 s
+  MT-like: 2 m, 1 g: v = 3.34e-05 c -> b0 >= 4.516e+03 m, exotic |int rho dV| = b0 c^2/G >= 6.081e+30 kg = 3.06 Msun; crossing time ~ pi b0/v = 1.42 s
+  MT-like: 2 m, 1 g: v = 0.00334 c -> b0 >= 4.516e+05 m, exotic |int rho dV| = b0 c^2/G >= 6.081e+32 kg = 306 Msun; crossing time ~ pi b0/v = 1.42 s
+  MT-like: 2 m, 1 g: v = 0.1 c -> b0 >= 1.361e+07 m, exotic |int rho dV| = b0 c^2/G >= 1.832e+34 kg = 9.21e+03 Msun; crossing time ~ pi b0/v = 1.43 s
+  MT-like: 2 m, 1 g: v = 0.9 c -> b0 >= 2.795e+08 m, exotic |int rho dV| = b0 c^2/G >= 3.764e+35 kg = 1.89e+05 Msun; crossing time ~ pi b0/v = 3.25 s
+  MT-like: 2 m, 1 g: v = 0.999 c -> b0 >= 3.025e+09 m, exotic |int rho dV| = b0 c^2/G >= 4.074e+36 kg = 2.05e+06 Msun; crossing time ~ pi b0/v = 31.7 s
+ ultra-relativistic limit (gamma v -> c, the MM case): b0 >= c sqrt(xi/a_max): 1.514e+07 m (MM), 1.354e+08 m (MT-like)
+
+=== 3. Casimir-balanced long throat (MMP eqs 5.30-5.31 form, N flavours assumed multiplicative), hbar=c=1 ===
+ ell* = 16*r_e**3/(G*N*q); E_min = -G*N**2*q**2/(256*r_e**3); |E_min|/M - (r_e/ell*)^2 = 0  (0 => |E_neg| = M (r_e/ell)^2)
+ MM check: gamma = ell/r_e ~ 2e+12 -> (r_e/ell)^2 = 2.50e-25 (Q-05 quotes |E_bin|/M_e ~ 2.5e-25); M_e = 2.020e+34 kg -> |E_neg| ~ 5.05e+09 kg (Q-02 quotes ~5e9 kg)
+
+=== 4. Payload cap m <= |E_neg| = M (r_e/ell)^2  =>  ell <= r_e sqrt(M/m); no-shortcut needs pi ell > d ===
+  1 kg, r_e = 1.5e+07 m (M = 2.02e+34 kg): ell_max = 2.13e+24 m = 2.25e+08 ly; max consistent mouth separation d < pi ell_max = 7.08e+08 ly; external transit pi ell_max/c = 7.08e+08 yr; proper ~ pi r_e/c = 0.157 s
+  1 kg, r_e = 1.36e+08 m (M = 1.83e+35 kg): ell_max = 5.82e+25 m = 6.15e+09 ly; max consistent mouth separation d < pi ell_max = 1.93e+10 ly; external transit pi ell_max/c = 1.93e+10 yr; proper ~ pi r_e/c = 1.425 s
+  human 70 kg, r_e = 1.5e+07 m (M = 2.02e+34 kg): ell_max = 2.55e+23 m = 2.69e+07 ly; max consistent mouth separation d < pi ell_max = 8.46e+07 ly; external transit pi ell_max/c = 8.46e+07 yr; proper ~ pi r_e/c = 0.157 s
+  human 70 kg, r_e = 1.36e+08 m (M = 1.83e+35 kg): ell_max = 6.96e+24 m = 7.35e+08 ly; max consistent mouth separation d < pi ell_max = 2.31e+09 ly; external transit pi ell_max/c = 2.31e+09 yr; proper ~ pi r_e/c = 1.425 s
+  MM ship 1e3 kg, r_e = 1.5e+07 m (M = 2.02e+34 kg): ell_max = 6.74e+22 m = 7.13e+06 ly; max consistent mouth separation d < pi ell_max = 2.24e+07 ly; external transit pi ell_max/c = 2.24e+07 yr; proper ~ pi r_e/c = 0.157 s
+  MM ship 1e3 kg, r_e = 1.36e+08 m (M = 1.83e+35 kg): ell_max = 1.84e+24 m = 1.95e+08 ly; max consistent mouth separation d < pi ell_max = 6.11e+08 ly; external transit pi ell_max/c = 6.11e+08 yr; proper ~ pi r_e/c = 1.425 s
+
+=== 5. Species requirement in the same model (rough; charge normalisation kappa = r_e^2/(G q^2) = pi/g^2, g^2 N < 1) ===
+  m = 1000 kg, r_e = 1.5e7 m: m r_e/(hbar/c) = 4.26e+52; N >= 256 pi m r_e = 3.4e+55 (MM quote N_f > 1e52 [Q-03]; UV-cutoff bound N < 1e32 [K-22])
+
+=== 6. Signal (one quantum) through a classical exotic throat: r >= wavelength ===
+  wavelength 1e-12 m -> throat >= 1e-12 m -> |negative mass| ~ r c^2/G = 1.35e+15 kg; r/l_P = 6.19e+22
+  wavelength 1e-06 m -> throat >= 1e-06 m -> |negative mass| ~ r c^2/G = 1.35e+21 kg; r/l_P = 6.19e+28
+  wavelength 0.3 m -> throat >= 0.3 m -> |negative mass| ~ r c^2/G = 4.04e+26 kg; r/l_P = 1.86e+34
+
+--- stderr ---
+

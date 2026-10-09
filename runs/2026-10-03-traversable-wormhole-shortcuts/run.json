@@ -1,0 +1,47 @@
+{
+  "slug": "2026-10-03-traversable-wormhole-shortcuts",
+  "date": "2026-10-03",
+  "title": "Traversable wormholes: shortcuts, negative energy, and what holds them open",
+  "question": "Can a traversable wormhole carry a payload, or even a signal, between two distant points sooner than light travelling between them through the surrounding space, and can one be held open at all without negative energy? …",
+  "type": "feasibility",
+  "depth": "deep",
+  "status": "complete",
+  "source_checked": true,
+  "bottom_line": "No. In established physics no known traversable wormhole delivers a signal, let alone a payload, before light travelling around it, and every throat needs negative null energy: that second part is a theorem of general relativity, and the newer \"ordinary matter\" designs take their negative energy from the quantum vacuum of ordinary fields. Those designs are real solutions, but deliberately long: the human-scale one takes 9,400 years seen from outside against 0.16 seconds for the traveller. Shortcuts exist only on paper, with hypothetical phantom matter. Nothing passes a kilogram within a century; the cheapest real-universe design needs magnetic monopoles, never observed, and fields 10³⁴ times the laboratory record. The 2022 \"wormhole on a chip\" tested a teleportation signature, not spacetime. Confidence about 0.9.",
+  "prior": [
+    {
+      "slug": "2026-10-01-warp-drive-without-negative-energy",
+      "date": "2026-10-01",
+      "mode": "update",
+      "same_question": false
+    },
+    {
+      "slug": "2026-09-29-alcubierre-negative-energy",
+      "date": "2026-09-29",
+      "mode": "ignore",
+      "same_question": false
+    },
+    {
+      "slug": "2026-09-29-warp-bubble-shapes",
+      "date": "2026-09-29",
+      "mode": "ignore",
+      "same_question": false
+    },
+    {
+      "slug": "2026-09-29-problem-of-time-quantum-gravity",
+      "date": "2026-09-29",
+      "mode": "ignore",
+      "same_question": false
+    },
+    {
+      "slug": "2026-09-30-neutron-lifetime-beam-bottle",
+      "date": "2026-09-30",
+      "mode": "ignore",
+      "same_question": false
+    }
+  ],
+  "trust": "ok",
+  "notes": [],
+  "superseded_by": null,
+  "recorded": "2026-10-08"
+}
