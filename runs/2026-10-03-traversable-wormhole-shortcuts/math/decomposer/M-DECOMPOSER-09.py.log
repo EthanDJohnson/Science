@@ -1,0 +1,20 @@
+# math_run log
+command:  python3 runs\2026-10-03-traversable-wormhole-shortcuts\math\decomposer\M-DECOMPOSER-09.py
+started:  2026-10-08T12:08:50Z
+duration: 1.7 s
+exit:     1
+versions: python 3.14.6, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.2, scipy 1.18.0
+counts:   5 PASS, 1 FAIL, 0 UNDECIDED
+
+--- stdout ---
+PASS c*sqrt(size)/sqrt(a) == c*sqrt(size)/sqrt(a): symbolic
+PASS c * (0.5 m / (20 * 9.8 m/s^2))^0.5 has the dimension of length: dimensional analysis
+PASS c * (0.5 m / (20 * 9.8 m/s^2))^0.5 == 1.5e7 m: within 0.02; 1.51418e+07 vs 1.5e+07 (SI)
+PASS c * (0.5 m / (1 * 9.8 m/s^2))^0.5 == 6.8e7 m: within 0.01; 6.77162e+07 vs 6.8e+07 (SI)
+PASS c * (2 m / (1 * 9.8 m/s^2))^0.5 == 1.354e8 m: within 0.002; 1.35432e+08 vs 1.354e+08 (SI)
+ratio 1 g/2 m vs 20 g/0.5 m: 8.94427190999916 ; ratio 1 g/0.5 m vs 20 g/0.5 m: 4.47213595499958
+FAIL 8.94427190999916 == 4.5: relative tolerance 0.1; 8.94427 vs 4.5 (SI)
+SUMMARY: 5 pass, 1 fail, 0 undecided
+
+--- stderr ---
+

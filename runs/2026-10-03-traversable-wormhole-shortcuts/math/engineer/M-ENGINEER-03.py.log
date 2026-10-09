@@ -1,0 +1,30 @@
+# math_run log
+command:  python3 runs\2026-10-03-traversable-wormhole-shortcuts\math\engineer\M-ENGINEER-03.py
+started:  2026-10-08T12:08:28Z
+duration: 1.5 s
+exit:     0
+versions: python 3.14.6, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.2, scipy 1.18.0
+counts:   10 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+PASS 1/3 == 1/3: symbolic
+PASS lP**(2/3)*r0**(1/3)/(2*f**(4/3)) == lP**(2/3)*r0**(1/3)/(2*f**(4/3)): symbolic
+PASS lim r0->oo of lP**(2/3)/(2*f**(4/3)*r0**(2/3)) == 0: symbolic limit 0
+PASS (1 m/(8*0.01^4*l_P))^(1/3)*l_P has the dimension of length: dimensional analysis
+r0 = 1e-06 m: band = 1.484e-23 m, log10(1e-10 m/band) = 12.8
+r0 = 0.1 m: band = 6.886e-22 m, log10(1e-10 m/band) = 11.2
+r0 = 1 m: band = 1.484e-21 m, log10(1e-10 m/band) = 10.8
+r0 = 1.5e+07 m: band = 3.659e-19 m, log10(1e-10 m/band) = 8.4
+r0 = 4.215e+21 m: band = 2.396e-14 m, log10(1e-10 m/band) = 3.6
+PASS (1 m/(8*0.01^4*l_P))^(1/3)*l_P == 1.5e-21 m: within 0.02; 1.48358e-21 vs 1.5e-21 (SI)
+PASS (1 um/(8*0.01^4*l_P))^(1/3)*l_P == 1.5e-23 m: within 0.02; 1.48358e-23 vs 1.5e-23 (SI)
+PASS (0.1 m/(8*0.01^4*l_P))^(1/3)*l_P == 6.9e-22 m: within 0.02; 6.88615e-22 vs 6.9e-22 (SI)
+PASS (1.5e7 m/(8*0.01^4*l_P))^(1/3)*l_P == 3.7e-19 m: within 0.02; 3.65881e-19 vs 3.7e-19 (SI)
+band = 0.2 um at r0 = 2.450e+42 m; band = 1e-10 m at r0 = 3.062e+32 m
+0.2 um radius / observable-universe radius 4.4e26 m: 15.75 orders
+PASS 2.449966794981036e+42 m == 2.5e42 m: within 0.06; 2.44997e+42 vs 2.5e+42 (SI)
+PASS 3.0624584937262948e+32 m == 3e32 m: within 0.06; 3.06246e+32 vs 3e+32 (SI)
+SUMMARY: 10 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

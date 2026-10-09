@@ -1,0 +1,25 @@
+# math_run log
+command:  python3 runs\2026-10-03-traversable-wormhole-shortcuts\math\engineer\M-ENGINEER-12.py
+started:  2026-10-08T12:13:25Z
+duration: 1.0 s
+exit:     0
+versions: python 3.14.6, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.2, scipy 1.18.0
+counts:   7 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+m_P = 1.22089e+19 GeV
+electron Gaussian: q/mu = 2.041e+21 (log 21.31); m needed > 1.043e+18 GeV
+electron HL: q/mu = 7.235e+21 (log 21.86); m needed > 3.697e+18 GeV
+top Gaussian: q/mu = 4.028e+15 (log 15.61); m needed > 6.953e+17 GeV
+top HL: q/mu = 1.428e+16 (log 16.15); m needed > 2.465e+18 GeV
+PASS 2.0409823037135095e+21 m/m == 2.0e21 m/m: within 0.03; 2.04098e+21 vs 2e+21 (SI)
+PASS 7.235093887694043e+21 m/m == 7.2e21 m/m: within 0.02; 7.23509e+21 vs 7.2e+21 (SI)
+PASS 4028349996779391.5 m/m == 4.0e15 m/m: within 0.02; 4.02835e+15 vs 4e+15 (SI)
+PASS 1.428012892917371e+16 m/m == 1.4e16 m/m: within 0.03; 1.42801e+16 vs 1.4e+16 (SI)
+PASS 6.95293209444123e+17 GeV == 7e17 GeV: within 0.02; 1.11398e+08 vs 1.12152e+08 (SI)
+PASS 3.697125379763074e+18 GeV == 3.7e18 GeV: within 0.02; 5.92345e+08 vs 5.92805e+08 (SI)
+PASS me/(hbar*c/G)^0.5 == 4.185e-23 m/m: within 0.002; 4.18546e-23 vs 4.185e-23 (SI)
+SUMMARY: 7 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

@@ -1,0 +1,29 @@
+# math_run log
+command:  python3 runs\2026-10-03-traversable-wormhole-shortcuts\math\idealizer\M-IDEALIZER-06.py
+started:  2026-10-08T12:11:10Z
+duration: 2.1 s
+exit:     0
+versions: python 3.14.6, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.2, scipy 1.18.0
+counts:   13 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+R^th_t th t = 0 ; R^th_l th l = -b0**2/(b0**2 + l**2)**2 ; R^th_t th l = 0
+PASS 0 == 0: symbolic
+PASS 0 == 0: symbolic
+PASS -1/b0**2 == -1/b0**2: symbolic
+PASS -v**2/(b0**2*(v**2 - 1)) == v**2/(b0**2*(1 - v**2)): symbolic
+PASS -v**2/(b0**2*(v**2 - 1)) is positive: numeric at 50 points, b0 in [0.1, 10], v in [0.01, 0.99]
+PASS lim v->0 of -v**2/(b0**2*(v**2 - 1)) == 0: symbolic limit 0
+xi=0.5 m, a=196 m/s^2: b0_min = 504.9 m, |M| = b0 c^2/G, crossing pi b0/v = 0.159 s
+PASS 504.9049945565294 m == 505.0 m: within 0.01; 504.905 vs 505 (SI)
+PASS 504.9049945565294 m * c^2 / G == 0.34 Msun: within 0.02; 6.799e+29 vs 6.76059e+29 (SI)
+PASS 0.15862058216595873 s == 0.16 s: within 0.03; 0.158621 vs 0.16 (SI)
+xi=2.0 m, a=9.81 m/s^2: b0_min = 4516 m, |M| = b0 c^2/G, crossing pi b0/v = 1.42 s
+PASS 4516.007560030244 m == 4500.0 m: within 0.01; 4516.01 vs 4500 (SI)
+PASS 4516.007560030244 m * c^2 / G == 3.1 Msun: within 0.02; 6.08121e+30 vs 6.16407e+30 (SI)
+PASS 1.4187456174146982 s == 1.4 s: within 0.03; 1.41875 vs 1.4 (SI)
+PASS 1 m/s * 1 s has the dimension of length: dimensional analysis
+SUMMARY: 13 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

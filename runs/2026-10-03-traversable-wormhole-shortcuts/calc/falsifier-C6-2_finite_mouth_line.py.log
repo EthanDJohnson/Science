@@ -1,0 +1,67 @@
+# math_run log
+command:  python3 runs\2026-10-03-traversable-wormhole-shortcuts\calc\falsifier-C6-2_finite_mouth_line.py
+started:  2026-10-08T12:51:58Z
+duration: 99.9 s
+exit:     0
+versions: python 3.14.6, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.2, scipy 1.18.0
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+=== 1. Explicit finite-s margins: via-handle path length minus Euclidean |y-x| (units of d) ===
+negative margin => every minimiser from x_s to y_t threads the throat
+a=0.3    L=0.0   worst margin over 9 gluings at s=t=1e5 d: -0.999999 (bound L-d = -1.000)
+a=0.3    L=0.5   worst margin over 9 gluings at s=t=1e5 d: -0.499999 (bound L-d = -0.500)
+a=0.3    L=0.9   worst margin over 9 gluings at s=t=1e5 d: -0.099999 (bound L-d = -0.100)
+a=0.3    L=0.99  worst margin over 9 gluings at s=t=1e5 d: -0.009999 (bound L-d = -0.010)
+a=0.1    L=0.0   worst margin over 9 gluings at s=t=1e5 d: -1.000000 (bound L-d = -1.000)
+a=0.1    L=0.5   worst margin over 9 gluings at s=t=1e5 d: -0.500000 (bound L-d = -0.500)
+    aligned    s=t=1e1,1e3,1e5: -0.700000, -0.700000, -0.700000
+    rot10      s=t=1e1,1e3,1e5: -0.699231, -0.699239, -0.699239
+    rot180     s=t=1e1,1e3,1e5: +inf, -0.499990, -0.500000
+    mirror     s=t=1e1,1e3,1e5: +inf, -0.499990, -0.500000
+    randO3_0   s=t=1e1,1e3,1e5: -0.622816, -0.623433, -0.623439
+    randO3_1   s=t=1e1,1e3,1e5: -0.628477, -0.629059, -0.629065
+    randO3_2   s=t=1e1,1e3,1e5: -0.640349, -0.640852, -0.640857
+    randO3_3   s=t=1e1,1e3,1e5: -0.651801, -0.652220, -0.652225
+    randO3_4   s=t=1e1,1e3,1e5: -0.579956, -0.580787, -0.580796
+a=0.1    L=0.9   worst margin over 9 gluings at s=t=1e5 d: -0.100000 (bound L-d = -0.100)
+a=0.1    L=0.99  worst margin over 9 gluings at s=t=1e5 d: -0.010000 (bound L-d = -0.010)
+a=0.01   L=0.0   worst margin over 9 gluings at s=t=1e5 d: -1.000000 (bound L-d = -1.000)
+a=0.01   L=0.5   worst margin over 9 gluings at s=t=1e5 d: -0.500000 (bound L-d = -0.500)
+a=0.01   L=0.9   worst margin over 9 gluings at s=t=1e5 d: -0.100000 (bound L-d = -0.100)
+a=0.01   L=0.99  worst margin over 9 gluings at s=t=1e5 d: -0.010000 (bound L-d = -0.010)
+a=0.001  L=0.0   worst margin over 9 gluings at s=t=1e5 d: -1.000000 (bound L-d = -1.000)
+a=0.001  L=0.5   worst margin over 9 gluings at s=t=1e5 d: -0.500000 (bound L-d = -0.500)
+a=0.001  L=0.9   worst margin over 9 gluings at s=t=1e5 d: -0.100000 (bound L-d = -0.100)
+a=0.001  L=0.99  worst margin over 9 gluings at s=t=1e5 d: -0.010000 (bound L-d = -0.010)
+
+=== 2. Asymptotic line threshold L*(G): line exists if L < L*  (a = 0.1 d) ===
+F_G(u;L) = min_{n,m} [a u.(n-m) + sqrt(L^2 + a^2 ang(n, G^T m)^2)], n.u<=0, m.u>=0;
+line iff F_G(u;L) < D.u for some u.  Point-mouth (a=0) threshold from M-DECOMPOSER-08 = d*max|e.nhat| over axes fixed by R.
+  aligned   : L*(a=0.1d) = 1.2000 d   (L* - d = +0.2000 d = +2.000 a);  point-mouth threshold: 1.0
+  rot10     : L*(a=0.1d) = 1.1999 d   (L* - d = +0.1999 d = +1.999 a);  point-mouth threshold: 0.0
+  rot180    : L*(a=0.1d) = 1.1643 d   (L* - d = +0.1643 d = +1.643 a);  point-mouth threshold: 0.0
+  mirror    : L*(a=0.1d) = 1.1643 d   (L* - d = +0.1643 d = +1.643 a);  point-mouth threshold: none (M-IDEALIZER-02: no line even at L=0)
+  randO3_0  : L*(a=0.1d) = 1.1882 d   (L* - d = +0.1882 d = +1.882 a);  point-mouth threshold: axis-dependent, <= d
+  randO3_1  : L*(a=0.1d) = 1.1892 d   (L* - d = +0.1892 d = +1.892 a);  point-mouth threshold: axis-dependent, <= d
+
+=== 3. Smoothness of the minimiser (Snell / tangent continuity at the shell), mirror gluing, a=0.1, L=0.5 ===
+  margin (via handle - |y-x|) = -0.632196 d  (vs tangent-entry bound L-d = -0.500)
+  entry incidence: n.u = -0.9096 (0 = grazing), exit m.u = +0.9096, sphere angle theta = 130.89 deg
+  normal speed: exterior -w.n = 0.90956, interior L/ell = 0.90956
+  tangential speed: exterior |w_t| = 0.41557, interior a*theta/ell = 0.41557; direction cos = +1.00000
+  -> optimum is interior (not grazing) and tangent-continuous: the minimiser is a smooth geodesic, no kink.
+
+=== 4. Point-mouth limit: the same minimisers become kinked (non-geodesic) null curves ===
+  rot10   : forced exit direction for entry along e differs from e by   10.0 deg; the a->0 limit of the lines above enters and exits along e => kink of 10.0 deg at the conical mouth
+  rot180  : forced exit direction for entry along e differs from e by  180.0 deg; the a->0 limit of the lines above enters and exits along e => kink of 180.0 deg at the conical mouth
+  mirror  : forced exit direction for entry along e differs from e by  180.0 deg; the a->0 limit of the lines above enters and exits along e => kink of 180.0 deg at the conical mouth
+
+=== 5. Scale of the residual band L* <= L < d + pi a (surface observers; max exterior wrap d + pi a) ===
+  width: aligned (pi-2) a = 1.14 a; worst misaligned found above (pi-1.643) a = 1.50 a
+  MMP SM throat r_e ~ 2e-19 m   : max time advantage in band (pi-1.643) a / c = 9.997e-28 s
+  Ellis/thin-shell a = 1 m      : max time advantage in band (pi-1.643) a / c = 4.999e-09 s
+  MM 2020 r_e = 1.5e7 m         : max time advantage in band (pi-1.643) a / c = 7.498e-02 s
+
+--- stderr ---
+

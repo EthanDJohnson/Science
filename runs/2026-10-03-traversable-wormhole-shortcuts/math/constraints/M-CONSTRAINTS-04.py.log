@@ -1,0 +1,30 @@
+# math_run log
+command:  python3 runs\2026-10-03-traversable-wormhole-shortcuts\math\constraints\M-CONSTRAINTS-04.py
+started:  2026-10-08T12:19:03Z
+duration: 16.3 s
+exit:     0
+versions: python 3.14.6, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.2, scipy 1.18.0
+counts:   10 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+PASS -1/(4*pi*L*b0) == -1/(4*pi*L*b0): symbolic
+rho at throat = (L - 2*b0)/(8*pi*L*b0**2)
+PASS (L - 2*b0)/(8*pi*L*b0**2) == (1 - 2*b0/L)/(8*pi*b0**2): symbolic
+L=1: ANEC = -0.125  claimed -0.125  asymptote -0.353553
+PASS 0.0 < 0.00500000000000000: symbolic, constant
+L=10: ANEC = -0.07273548  claimed -0.0727  asymptote -0.111803
+PASS 0.00048803315521478175 < 0.00500000000000000: symbolic, constant
+L=100: ANEC = -0.030376033  claimed -0.0304  asymptote -0.0353553
+PASS 0.0007883726248550072 < 0.00500000000000000: symbolic, constant
+L=1000: ANEC = -0.010636194  claimed -0.01064  asymptote -0.0111803
+PASS 0.0003577097095988596 < 0.00500000000000000: symbolic, constant
+L=10000: ANEC = -0.0034794882  claimed -0.00348  asymptote -0.00353553
+PASS 0.0001470595286993493 < 0.00500000000000000: symbolic, constant
+PASS -sqrt(2)/(4*sqrt(L)*sqrt(b0)) == -sqrt(2)/(4*sqrt(L)*sqrt(b0)): symbolic
+L=1e8: I*sqrt(L) = -0.35349657  vs -sqrt2/4 = -0.35355339
+PASS 0.0001607181348869058 < 0.0100000000000000: symbolic, constant
+PASS lim L->oo of -1/(4*pi*L*b0) == 0: symbolic limit 0
+SUMMARY: 10 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

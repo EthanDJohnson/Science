@@ -1,0 +1,20 @@
+# math_run log
+command:  python3 runs\2026-10-03-traversable-wormhole-shortcuts\math\examiner\M-EXAMINER-06.py
+started:  2026-10-08T12:03:33Z
+duration: 0.7 s
+exit:     0
+versions: python 3.14.6, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.2, scipy 1.18.0
+counts:   6 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+PASS 1/G == 1/G: symbolic
+PASS lim v->0 of 2*c**2*(-1 + 1/sqrt(1 - v**2/c**2))/v**2 == 1: symbolic limit 1
+gam = 1892146094516.1602  G_eq = 602288807988.543
+PASS 602288807988.543 == 6.023e11: within 0.001; 6.02289e+11 vs 6.023e+11 (SI)
+PASS (602288807988.543 - 1) * 1 kg * c^2 == 5.41e28 J: within 0.002; 5.4131e+28 vs 5.41e+28 (SI)
+PASS (602288807988.543 - 1) * 70 kg * c^2 == 3.79e30 J: within 0.002; 3.78917e+30 vs 3.79e+30 (SI)
+PASS 1 kg * c^2 has the dimension of J: dimensional analysis
+SUMMARY: 6 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

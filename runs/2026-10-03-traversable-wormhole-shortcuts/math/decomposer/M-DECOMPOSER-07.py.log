@@ -1,0 +1,18 @@
+# math_run log
+command:  python3 runs\2026-10-03-traversable-wormhole-shortcuts\math\decomposer\M-DECOMPOSER-07.py
+started:  2026-10-08T12:08:48Z
+duration: 1.3 s
+exit:     0
+versions: python 3.14.6, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.2, scipy 1.18.0
+counts:   5 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+PASS (1 kg) / (5e9 kg) == 2e-10: within 1e-06; 2e-10 vs 2e-10 (SI)
+PASS (70 kg) / (5e9 kg) == 1.4e-8: within 1e-06; 1.4e-08 vs 1.4e-08 (SI)
+PASS (1e3 kg) / (5e9 kg) == 2e-7: within 1e-06; 2e-07 vs 2e-07 (SI)
+PASS (70 kg) / (5e9 kg) has the dimension of dimensionless: dimensional analysis
+PASS 5e9 kg * c^2 == 4.5e26 J: within 0.01; 4.49378e+26 vs 4.5e+26 (SI)
+SUMMARY: 5 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

@@ -1,0 +1,35 @@
+# math_run log
+command:  python3 runs\2026-10-03-traversable-wormhole-shortcuts\math\engineer\M-ENGINEER-05.py
+started:  2026-10-08T12:08:33Z
+duration: 1.3 s
+exit:     0
+versions: python 3.14.6, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.2, scipy 1.18.0
+counts:   16 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+r_e = 1.9733e-19 m
+g=0.06, N=1: q=4.133e+14, l=1.139 m, |E_min|=7.172e-13 J = 4.476 MeV, T<0.32 mK, l/(q^3 lP)=9.98e-10
+g=0.06, N=54: q=4.133e+14, l=0.02109 m, |E_min|=2.091e-09 J = 1.305e+04 MeV, T<17.3 mK, l/(q^3 lP)=1.85e-11
+g=0.3, N=1: q=2.066e+15, l=0.2277 m, |E_min|=1.793e-11 J = 111.9 MeV, T<1.6 mK, l/(q^3 lP)=1.60e-12
+g=0.3, N=54: q=2.066e+15, l=0.004217 m, |E_min|=5.228e-08 J = 3.263e+05 MeV, T<86.4 mK, l/(q^3 lP)=2.96e-14
+PASS 1.1386931832839258 m == 1.138693183283926 m: within 1e-09; 1.13869 vs 1.13869 (SI)
+PASS 413288095795373.94 m/m == 4.1e14 m/m: within 0.02; 4.13288e+14 vs 4.1e+14 (SI)
+PASS 2066440478976869.8 m/m == 2.1e15 m/m: within 0.02; 2.06644e+15 vs 2.1e+15 (SI)
+PASS (hbar*c/(1 TeV))*c^2/G == 2.66e8 kg: within 0.003; 2.65719e+08 vs 2.66e+08 (SI)
+PASS 1.138693183283926 m == 1.14 m: within 0.01; 1.13869 vs 1.14 (SI)
+PASS 0.021086910801554188 m == 0.021 m: within 0.02; 0.0210869 vs 0.021 (SI)
+PASS 7.171715559584093e-13 J == 7.2e-13 J: within 0.01; 7.17172e-13 vs 7.2e-13 (SI)
+PASS 2.0912722571747217e-09 J == 2.1e-9 J: within 0.01; 2.09127e-09 vs 2.1e-09 (SI)
+PASS 5.228180642936804e-08 J == 5.2e-8 J: within 0.01; 5.22818e-08 vs 5.2e-08 (SI)
+PASS 0.0003200567507486674 K == 0.3 mK: within 0.1; 0.000320057 vs 0.0003 (SI)
+PASS 0.017283064540428033 K == 17 mK: within 0.03; 0.0172831 vs 0.017 (SI)
+PASS 0.08641532270214018 K == 86 mK: within 0.03; 0.0864153 vs 0.086 (SI)
+PASS 9.98017471837062e-10 m/m == 1e-9 m/m: within 0.1; 9.98017e-10 vs 1e-09 (SI)
+PASS hbar*c/(2*pi*1 m*kB) has the dimension of temperature: dimensional analysis
+1 kg gap: 25.63 orders (N=54, g=0.06); 29.10 (N=1); size gap log10(0.1 m/r_e) = 17.70
+PASS 25.63323082971363 m/m == 25.6 m/m: within 0.005; 25.6332 vs 25.6 (SI)
+PASS 17.70481352999873 m/m == 17.7 m/m: within 0.005; 17.7048 vs 17.7 (SI)
+SUMMARY: 16 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

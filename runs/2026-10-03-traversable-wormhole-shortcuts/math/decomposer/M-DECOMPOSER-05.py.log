@@ -1,0 +1,22 @@
+# math_run log
+command:  python3 runs\2026-10-03-traversable-wormhole-shortcuts\math\decomposer\M-DECOMPOSER-05.py
+started:  2026-10-08T12:01:47Z
+duration: 0.9 s
+exit:     0
+versions: python 3.14.6, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.2, scipy 1.18.0
+counts:   9 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+PASS sqrt(R**2 - b0**2) == sqrt(R**2 - b0**2): symbolic
+PASS lim b0->0 of 2*sqrt(R**2 - b0**2) == 2*R: symbolic limit 2*R
+PASS 2 * 9.9498743710662 m / c == 6.6e-8 s: within 0.01; 6.63784e-08 vs 6.6e-08 (SI)
+PASS 2 * 9.9498743710662 m / c has the dimension of time: dimensional analysis
+PASS (2 * 9.9498743710662 m / c) / (1 km / c) == 0.020: within 0.02; 0.0198997 vs 0.02 (SI)
+PASS (2 * 9.9498743710662 m / c) / (1 au / c) == 1.3e-10: within 0.03; 1.33022e-10 vs 1.3e-10 (SI)
+PASS (2 * 9.9498743710662 m / c) / (1 ly / c) == 2.1e-15: within 0.02; 2.10341e-15 vs 2.1e-15 (SI)
+PASS (2 * 9.9498743710662 m) / (1 km - 20 m) == 0.020: within 0.03; 0.0203059 vs 0.02 (SI)
+PASS (2 * 9.9498743710662 m + 1 ly) / c == 1 yr: within 1e-06; 3.15576e+07 vs 3.15576e+07 (SI)
+SUMMARY: 9 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

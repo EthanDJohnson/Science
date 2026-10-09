@@ -1,0 +1,27 @@
+# math_run log
+command:  python3 runs\2026-10-03-traversable-wormhole-shortcuts\math\mechanist\M-MECHANIST-04.py
+started:  2026-10-08T12:06:27Z
+duration: 0.9 s
+exit:     0
+versions: python 3.14.6, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.2, scipy 1.18.0
+counts:   13 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+PASS m/r**3 == m/r**3: symbolic
+PASS -3*m/r + 1 == -3*m/r + 1: symbolic
+PASS series of 1 - sqrt(1 - 3*phi) about phi = 0 to order 2 == 3*phi/2: symbolic: 3*phi/2
+PASS 0.2928932188134524 == 0.293: within 0.002; 0.292893 vs 0.293 (SI)
+PASS 3.086640854577105e-05 == 3.1e-5: within 0.01; 3.08664e-05 vs 3.1e-05 (SI)
+PASS 6.953524422925739e-10 == 7.0e-10: within 0.01; 6.95352e-10 vs 7e-10 (SI)
+PASS (8 kpc / c) / 3.086640854577105e-05 == 8.5e8 yr: within 0.01; 2.66768e+16 vs 2.6824e+16 (SI)
+PASS 8 kpc / c == 2.6e4 yr: within 0.01; 8.23417e+11 vs 8.20498e+11 (SI)
+PASS (1 au / c) / 6.953524422925739e-10 == 2.3e4 yr: within 0.02; 7.17629e+11 vs 7.25825e+11 (SI)
+PASS 8424.77796076938 yr / 0.2928932188134524 == 2.9e4 yr: within 0.02; 9.07723e+11 vs 9.1517e+11 (SI)
+PASS 10424.77796076938 yr / 0.2928932188134524 == 3.6e4 yr: within 0.02; 1.12321e+12 vs 1.13607e+12 (SI)
+PASS 1.1198263219885812e-06 == 1.1e-6: within 0.03; 1.11983e-06 vs 1.1e-06 (SI)
+PASS (7 kpc / c) / 1.1198263219885812e-06 == 2.0e10 yr: within 0.03; 6.43394e+17 vs 6.31152e+17 (SI)
+INFO separation range: 7 kpc -> 2.04e+10 yr, 8 kpc -> 2.33e+10 yr, 9 kpc -> 2.62e+10 yr
+SUMMARY: 13 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

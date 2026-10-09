@@ -1,0 +1,31 @@
+# math_run log
+command:  python3 runs\2026-10-03-traversable-wormhole-shortcuts\calc\falsifier-C5-2_edm_scale.py
+started:  2026-10-08T12:44:45Z
+duration: 0.0 s
+exit:     0
+versions: python 3.14.6, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.2, scipy 1.18.0
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+l_P = 1.6163e-35 m, m_P = 2.1764e-08 kg = 1.2209e+19 GeV, t_P = 5.3912e-44 s
+Kain throats: 1.217e-33 m to 8.055e-33 m
+Throat proton radius 1e-15 m: scale factor lam = 1.24e+17 to 8.22e+17; particles per spinor N = lam^2 = 1.54e+34 to 6.75e+35 (log10 34.2 to 35.8)
+   rescaled fermion mass mu = 5.30e-27 to 3.51e-26 kg (2.97e+00 to 1.97e+01 GeV); q/mu unchanged (scale-invariant)
+Throat 1 cm: scale factor lam = 1.24e+30 to 8.22e+30; particles per spinor N = lam^2 = 1.54e+60 to 6.75e+61 (log10 60.2 to 61.8)
+   rescaled fermion mass mu = 5.30e-40 to 3.51e-39 kg (2.97e-13 to 1.97e-12 GeV); q/mu unchanged (scale-invariant)
+Throat human 2 m: scale factor lam = 2.48e+32 to 1.64e+33; particles per spinor N = lam^2 = 6.16e+64 to 2.70e+66 (log10 64.8 to 66.4)
+   rescaled fermion mass mu = 2.65e-42 to 1.75e-41 kg (1.49e-15 to 9.83e-15 GeV); q/mu unchanged (scale-invariant)
+Pauli: one Dirac mode (n, j, m) holds at most 1 fermion, so N >> 1 in one spinor mode is forbidden; Kain QFT eq.64 R0/l_P = 1/sqrt(Nbar) per singly-occupied mode.
+electron q/mu (Planck units) = 2.041e+21 (Gaussian), 7.235e+21 (HL); needs < 1: gap 21.3 to 21.9 orders
+unit-charge fermion with q/mu < 1 needs m > 1.043e+18 GeV (Gaussian), 3.697e+18 GeV (HL)
+vs LHC sqrt(s) = 13.6 TeV: gap log10 = 13.9 orders (Gaussian)
+vs heaviest known fermion (top, 172.6 GeV): gap log10 = 15.8 orders
+1 kg (10 cm): Schwarzschild radius 1.485e-27 m = 1.84e+05 x largest Kain throat (log10 5.3); size/throat log10 = 31.1
+   payload mass / (2 mu = 8.71e-09 kg) = 1.15e+08 (log10 8.1)
+human 70 kg, 2 m: Schwarzschild radius 1.040e-25 m = 1.29e+07 x largest Kain throat (log10 7.1); size/throat log10 = 32.4
+   payload mass / (2 mu = 8.71e-09 kg) = 8.04e+09 (log10 9.9)
+R0 = 1.217e-33 m: quantum E = hbar c/R0 = 2.598e+07 J = 1.328e-02 m_P c^2; E/(2 mu c^2) = 3.321e-02; crossing time R0/c = 4.06e-42 s
+R0 = 8.055e-33 m: quantum E = hbar c/R0 = 3.925e+06 J = 2.006e-03 m_P c^2; E/(2 mu c^2) = 5.016e-03; crossing time R0/c = 2.69e-41 s
+
+--- stderr ---
+

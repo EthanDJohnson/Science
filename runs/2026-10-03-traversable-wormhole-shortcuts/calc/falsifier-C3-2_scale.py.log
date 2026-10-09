@@ -1,0 +1,65 @@
+# math_run log
+command:  python3 runs\2026-10-03-traversable-wormhole-shortcuts\calc\falsifier-C3-2_scale.py
+started:  2026-10-08T12:39:41Z
+duration: 0.1 s
+exit:     0
+versions: python 3.14.6, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.2, scipy 1.18.0
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+l_P = 1.6163e-35 m, m_P = 2.1764e-08 kg, E_P = 1.9561e+09 J
+
+=== 1. Required ANEC (Ellis) ===
+numeric int T_kk dlambda (geometric, a=1 m) = -0.125000 1/m ; analytic -1/(8a) = -0.125000 1/m
+a = 1.000e+00 m: required |ANEC| = c^4/(8 G a) = 1.5128e+43 J/m^2
+a = 1.000e+03 m: required |ANEC| = c^4/(8 G a) = 1.5128e+40 J/m^2
+a = 1.500e+07 m: required |ANEC| = c^4/(8 G a) = 1.0085e+36 J/m^2
+
+=== 2. Species needed to saturate the QI at single scale a ===
+f = 0.01: N_min = 4.1888e-08 (a/l_P)^2
+   a = 1.0e-30 m: N_min = 1.603e+02
+   a = 1.0e-18 m: N_min = 1.603e+26
+   a = 1.0e+00 m: N_min = 1.603e+62
+   a = 1.5e+07 m: N_min = 3.608e+76
+f = 0.1: N_min = 4.1888e-04 (a/l_P)^2
+   a = 1.0e-30 m: N_min = 1.603e+06
+   a = 1.0e-18 m: N_min = 1.603e+30
+   a = 1.0e+00 m: N_min = 1.603e+66
+   a = 1.5e+07 m: N_min = 3.608e+80
+
+=== 3. Throat size in units of the species cutoff length sqrt(N) l_P ===
+f = 0.01: a_max / (sqrt(N) l_P) = 4.8860e+03; curvature (l_*/a)^2 >= 4.189e-08
+f = 0.1: a_max / (sqrt(N) l_P) = 4.8860e+01; curvature (l_*/a)^2 >= 4.189e-04
+   N = 1e+00, f = 0.01: a_max = 7.897e-32 m
+   N = 1e+00, f = 0.1: a_max = 7.897e-34 m
+   N = 1e+02, f = 0.01: a_max = 7.897e-31 m
+   N = 1e+02, f = 0.1: a_max = 7.897e-33 m
+   N = 1e+32, f = 0.01: a_max = 7.897e-16 m
+   N = 1e+32, f = 0.1: a_max = 7.897e-18 m
+
+=== 4. Energy to self-source O(1) curvature at scale L, and quantum wavelength ===
+L = 1.0e-30 m: E ~ c^4 L/G = 1.210e+14 J (1.347e-03 kg); single-quantum reduced wavelength = 2.612e-40 m = 1.616e-05 l_P; quanta of wavelength L needed = 3.828e+09
+L = 1.0e-15 m: E ~ c^4 L/G = 1.210e+29 J (1.347e+12 kg); single-quantum reduced wavelength = 2.612e-55 m = 1.616e-20 l_P; quanta of wavelength L needed = 3.828e+39
+L = 1.0e+00 m: E ~ c^4 L/G = 1.210e+44 J (1.347e+27 kg); single-quantum reduced wavelength = 2.612e-70 m = 1.616e-35 l_P; quanta of wavelength L needed = 3.828e+69
+L = 1.5e+07 m: E ~ c^4 L/G = 1.815e+51 J (2.020e+34 kg); single-quantum reduced wavelength = 1.742e-77 m = 1.078e-42 l_P; quanta of wavelength L needed = 8.613e+83
+
+=== 5. Payload ceiling m < a_max c^2/(2G) ===
+f = 0.01: m_max = 5.317e-05 sqrt(N) kg
+   N = 1e+02: m_max = 5.317e-04 kg
+   N = 1e+32: m_max = 5.317e+11 kg
+   N needed for m = 1.0 kg: 3.537e+08
+   N needed for m = 70.0 kg: 1.733e+12
+f = 0.1: m_max = 5.317e-07 sqrt(N) kg
+   N = 1e+02: m_max = 5.317e-06 kg
+   N = 1e+32: m_max = 5.317e+09 kg
+   N needed for m = 1.0 kg: 3.537e+12
+   N needed for m = 70.0 kg: 1.733e+16
+N=100, f=0.01 throat a = 7.897e-31 m: one quantum with wavelength a carries 4.003e+04 J = 2.047e-05 E_P; throat mass-energy scale a c^4/(2G) = 4.779e+13 J; ratio = 8.378e-10
+
+=== 6. Thin band for a = 1 m, f = 0.01 ===
+w = 1.841e-21 m = 1.139e+14 l_P; |rho_band| = 2.616e+63 J/m^3 = 5.647e-51 rho_Planck
+negative energy in band = 6.051e+43 J = 6.733e+26 kg; local curvature radius sqrt(c^4/(8 pi G rho)) = 4.290e-11 m
+w / curvature radius = 4.290e-11; w / a = 1.841e-21
+
+--- stderr ---
+

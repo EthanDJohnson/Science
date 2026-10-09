@@ -1,0 +1,29 @@
+# math_run log
+command:  python3 runs\2026-10-03-traversable-wormhole-shortcuts\math\mechanist\M-MECHANIST-05.py
+started:  2026-10-08T12:06:28Z
+duration: 1.4 s
+exit:     1
+versions: python 3.14.6, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.2, scipy 1.18.0
+counts:   12 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+PASS Delta == Delta: symbolic
+PASS L == L: symbolic
+PASS -pi*c_c/(3*Delta**2 + 6*Delta*L + 3*L**2) == -pi*c_c/(3*(Delta + L)**2): symbolic
+PASS -pi*c_c/(3*Delta**2 - 6*Delta*L + 3*L**2) == -pi*c_c/(3*(-Delta + L)**2): symbolic
+CONFIRMED-WRONG lens labelling T_kR = -pi c/(3(L-Delta)^2): status fail, counterexample {'Delta': '0.495', 'L': '5.5', 'c_c': '5.05'}
+PASS lim Delta->0 of -pi*c_c/(3*Delta**2 + 6*Delta*L + 3*L**2) == -pi*c_c/(3*L**2): symbolic limit -pi*c_c/(3*L**2)
+PASS lim Delta->0 of -pi*c_c/(3*Delta**2 - 6*Delta*L + 3*L**2) == -pi*c_c/(3*L**2): symbolic limit -pi*c_c/(3*L**2)
+PASS -L**2*(-Delta**2 - L**2)/(Delta**2 - L**2)**2 == L**2*(Delta**2 + L**2)/((-Delta + L)**2*(Delta + L)**2): symbolic
+PASS lim Delta->L of -pi*L*c_c/(3*Delta**2 + 6*Delta*L + 3*L**2) == -pi*c_c/(12*L): symbolic limit -pi*c_c/(12*L)
+PASS -pi*c_c/(3*Delta**2 + 6*Delta*L + 3*L**2) is negative: symbolic, Delta in [0, 0.99], L in [1, 10], c_c in [0.1, 10]
+INFO MM D/c=1e3 yr: (L/(L-Delta))^2 = 27.17 (other direction); (L/(L+Delta))^2 = 0.3059 (closing direction)
+PASS 27.168998882835744 == 27: within 0.01; 27.169 vs 27 (SI)
+PASS 4.288197427067236 == 4.3: within 0.02; 4.2882 vs 4.3 (SI)
+INFO D/c=3000.0 yr: closing-direction factor (L/(L+Delta))^2 = 0.4345
+PASS 22211322.54143144 == 2.2e7: within 0.02; 2.22113e+07 vs 2.2e+07 (SI)
+INFO D/c=1.0 yr: closing-direction factor (L/(L+Delta))^2 = 0.2501
+SUMMARY: 12 pass, 1 fail, 0 undecided
+
+--- stderr ---
+

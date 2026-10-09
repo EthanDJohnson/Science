@@ -1,0 +1,77 @@
+# math_run log
+command:  python3 runs\2026-10-03-traversable-wormhole-shortcuts\calc\falsifier-C2-2_capacity.py
+started:  2026-10-08T12:36:12Z
+duration: 0.1 s
+exit:     0
+versions: python 3.14.6, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.2, scipy 1.18.0
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+r_e = hbar c/TeV = 1.9733e-19 m, l_P = 1.6163e-35 m
+
+=== 1. Energy budget in units of the throat gap ===
+g=0.06, N=1 (engineer): q = 4.133e+14, l = 1.139e+00 m, pi l/c = 1.193e-08 s
+   |E_min| = 7.172e-13 J = 4.476e+06 eV; E_gap ~ hbar c/l = 2.776e-26 J = 1.733e-07 eV
+   |E_min|/E_gap = 2.583e+13; analytic N q/16 = 2.583e+13 (MMP p.19: 'larger than the gap by a factor of q')
+   LLL channels (q per flavour x N) = 4.133e+14
+=== 2. Quanta and bits in flight per transit, and steady rate ===
+   max steady power through throat P = |E_min|/(pi l/c) = 6.010e-05 W
+   gap-scale quanta in flight (<= channels): 2.583e+13; rate 2.165e+21 /s; bits/quantum if channel index used: log2(channels) = 48.6
+   quanta exiting as electrons (E >= m_e c^2): in flight <= 8.760e+00; rate <= 7.341e+08 /s
+   quanta at the neutrino-mass anchor 0.8 eV: in flight <= 5.595e+06; rate <= 4.689e+14 /s
+   conservative information rate (1 bit per electron, no channel coding) >= 7.341e+08 bit/s
+   payload check: 1 kg c^2 / |E_min| = 1.253e+29; one proton (938.3 MeV) / |E_min| = 2.096e+02
+=== 3. Clock offset needed for a shortcut, and its cost by mouth motion ===
+   v = 1e+00 m/s: time to accumulate Delta = 1.19e-08 s is 2.145e+09 s; mouth KE = 1.329e+08 J (mouth mass 2.657e+08 kg); KE/|E_min| = 1.853e+20
+   v = 1e+03 m/s: time to accumulate Delta = 1.19e-08 s is 2.145e+03 s; mouth KE = 1.329e+14 J (mouth mass 2.657e+08 kg); KE/|E_min| = 1.853e+26
+   v = 1e+05 m/s: time to accumulate Delta = 1.19e-08 s is 2.145e-01 s; mouth KE = 1.329e+18 J (mouth mass 2.657e+08 kg); KE/|E_min| = 1.853e+30
+
+g=0.06, N=54 (engineer): q = 4.133e+14, l = 2.109e-02 m, pi l/c = 2.210e-10 s
+   |E_min| = 2.091e-09 J = 1.305e+10 eV; E_gap ~ hbar c/l = 1.499e-24 J = 9.358e-06 eV
+   |E_min|/E_gap = 1.395e+15; analytic N q/16 = 1.395e+15 (MMP p.19: 'larger than the gap by a factor of q')
+   LLL channels (q per flavour x N) = 2.232e+16
+=== 2. Quanta and bits in flight per transit, and steady rate ===
+   max steady power through throat P = |E_min|/(pi l/c) = 9.464e+00 W
+   gap-scale quanta in flight (<= channels): 1.395e+15; rate 6.312e+24 /s; bits/quantum if channel index used: log2(channels) = 54.3
+   quanta exiting as electrons (E >= m_e c^2): in flight <= 2.554e+04; rate <= 1.156e+14 /s
+   quanta at the neutrino-mass anchor 0.8 eV: in flight <= 1.632e+10; rate <= 7.384e+19 /s
+   conservative information rate (1 bit per electron, no channel coding) >= 1.156e+14 bit/s
+   payload check: 1 kg c^2 / |E_min| = 4.298e+25; one proton (938.3 MeV) / |E_min| = 7.188e-02
+=== 3. Clock offset needed for a shortcut, and its cost by mouth motion ===
+   v = 1e+00 m/s: time to accumulate Delta = 2.21e-10 s is 3.972e+07 s; mouth KE = 1.329e+08 J (mouth mass 2.657e+08 kg); KE/|E_min| = 6.353e+16
+   v = 1e+03 m/s: time to accumulate Delta = 2.21e-10 s is 3.972e+01 s; mouth KE = 1.329e+14 J (mouth mass 2.657e+08 kg); KE/|E_min| = 6.353e+22
+   v = 1e+05 m/s: time to accumulate Delta = 2.21e-10 s is 3.972e-03 s; mouth KE = 1.329e+18 J (mouth mass 2.657e+08 kg); KE/|E_min| = 6.353e+26
+
+g=0.3028, N=1 (constraints): q = 2.086e+15, l = 2.256e-01 m, pi l/c = 2.364e-09 s
+   |E_min| = 1.827e-11 J = 1.140e+08 eV; E_gap ~ hbar c/l = 1.401e-25 J = 8.746e-07 eV
+   |E_min|/E_gap = 1.304e+14; analytic N q/16 = 1.304e+14 (MMP p.19: 'larger than the gap by a factor of q')
+   LLL channels (q per flavour x N) = 2.086e+15
+=== 2. Quanta and bits in flight per transit, and steady rate ===
+   max steady power through throat P = |E_min|/(pi l/c) = 7.727e-03 W
+   gap-scale quanta in flight (<= channels): 1.304e+14; rate 5.514e+22 /s; bits/quantum if channel index used: log2(channels) = 50.9
+   quanta exiting as electrons (E >= m_e c^2): in flight <= 2.231e+02; rate <= 9.438e+10 /s
+   quanta at the neutrino-mass anchor 0.8 eV: in flight <= 1.425e+08; rate <= 6.028e+16 /s
+   conservative information rate (1 bit per electron, no channel coding) >= 9.438e+10 bit/s
+   payload check: 1 kg c^2 / |E_min| = 4.920e+27; one proton (938.3 MeV) / |E_min| = 8.229e+00
+=== 3. Clock offset needed for a shortcut, and its cost by mouth motion ===
+   v = 1e+00 m/s: time to accumulate Delta = 2.36e-09 s is 4.250e+08 s; mouth KE = 1.329e+08 J (mouth mass 2.657e+08 kg); KE/|E_min| = 7.273e+18
+   v = 1e+03 m/s: time to accumulate Delta = 2.36e-09 s is 4.250e+02 s; mouth KE = 1.329e+14 J (mouth mass 2.657e+08 kg); KE/|E_min| = 7.273e+24
+   v = 1e+05 m/s: time to accumulate Delta = 2.36e-09 s is 4.250e-02 s; mouth KE = 1.329e+18 J (mouth mass 2.657e+08 kg); KE/|E_min| = 7.273e+28
+
+=== 4. MMP's own validity window: r_e << d < 1/TeV (MMP p.27). Scan r_e below 1/TeV ===
+   Conditions checked: q >> 1 (LLL, semiclassical) and l >> d with d = 10 r_e (long wormhole).
+   g=0.060 N=1 r_e=1.97e-19 m: q=4.13e+14, l=1.14e+00 m, pi l/c=1.19e-08 s, |E_min|=4.48e+06 eV = 7.17e-13 J, electrons in flight<=8.76e+00, 1 kg c^2/|E_min|=1.25e+29, d=10r_e<=1/TeV & long & q>100: False
+   g=0.060 N=1 r_e=1.97e-20 m: q=4.13e+13, l=1.14e-02 m, pi l/c=1.19e-10 s, |E_min|=4.48e+07 eV = 7.17e-12 J, electrons in flight<=8.76e+01, 1 kg c^2/|E_min|=1.25e+28, d=10r_e<=1/TeV & long & q>100: True
+   g=0.060 N=1 r_e=1.00e-22 m: q=2.09e+11, l=2.92e-07 m, pi l/c=3.06e-15 s, |E_min|=8.83e+09 eV = 1.42e-09 J, electrons in flight<=1.73e+04, 1 kg c^2/|E_min|=6.35e+25, d=10r_e<=1/TeV & long & q>100: True
+   g=0.060 N=1 r_e=1.00e-25 m: q=2.09e+08, l=2.92e-13 m, pi l/c=3.06e-21 s, |E_min|=8.83e+12 eV = 1.42e-06 J, electrons in flight<=1.73e+07, 1 kg c^2/|E_min|=6.35e+22, d=10r_e<=1/TeV & long & q>100: True
+   g=0.060 N=1 r_e=1.00e-28 m: q=2.09e+05, l=2.92e-19 m, pi l/c=3.06e-27 s, |E_min|=8.83e+15 eV = 1.42e-03 J, electrons in flight<=1.73e+10, 1 kg c^2/|E_min|=6.35e+19, d=10r_e<=1/TeV & long & q>100: True
+   g=0.060 N=1 r_e=1.00e-30 m: q=2.09e+03, l=2.92e-23 m, pi l/c=3.06e-31 s, |E_min|=8.83e+17 eV = 1.42e-01 J, electrons in flight<=1.73e+12, 1 kg c^2/|E_min|=6.35e+17, d=10r_e<=1/TeV & long & q>100: True
+   g=0.303 N=1 r_e=1.97e-19 m: q=2.09e+15, l=2.26e-01 m, pi l/c=2.36e-09 s, |E_min|=1.14e+08 eV = 1.83e-11 J, electrons in flight<=2.23e+02, 1 kg c^2/|E_min|=4.92e+27, d=10r_e<=1/TeV & long & q>100: False
+   g=0.303 N=1 r_e=1.97e-20 m: q=2.09e+14, l=2.26e-03 m, pi l/c=2.36e-11 s, |E_min|=1.14e+09 eV = 1.83e-10 J, electrons in flight<=2.23e+03, 1 kg c^2/|E_min|=4.92e+26, d=10r_e<=1/TeV & long & q>100: True
+   g=0.303 N=1 r_e=1.00e-22 m: q=1.06e+12, l=5.79e-08 m, pi l/c=6.07e-16 s, |E_min|=2.25e+11 eV = 3.60e-08 J, electrons in flight<=4.40e+05, 1 kg c^2/|E_min|=2.49e+24, d=10r_e<=1/TeV & long & q>100: True
+   g=0.303 N=1 r_e=1.00e-25 m: q=1.06e+09, l=5.79e-14 m, pi l/c=6.07e-22 s, |E_min|=2.25e+14 eV = 3.60e-05 J, electrons in flight<=4.40e+08, 1 kg c^2/|E_min|=2.49e+21, d=10r_e<=1/TeV & long & q>100: True
+   g=0.303 N=1 r_e=1.00e-28 m: q=1.06e+06, l=5.79e-20 m, pi l/c=6.07e-28 s, |E_min|=2.25e+17 eV = 3.60e-02 J, electrons in flight<=4.40e+11, 1 kg c^2/|E_min|=2.49e+18, d=10r_e<=1/TeV & long & q>100: True
+   g=0.303 N=1 r_e=1.00e-30 m: q=1.06e+04, l=5.79e-24 m, pi l/c=6.07e-32 s, |E_min|=2.25e+19 eV = 3.60e+00 J, electrons in flight<=4.40e+13, 1 kg c^2/|E_min|=2.49e+16, d=10r_e<=1/TeV & long & q>100: True
+
+--- stderr ---
+

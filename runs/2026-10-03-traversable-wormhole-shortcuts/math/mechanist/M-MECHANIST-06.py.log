@@ -1,0 +1,35 @@
+# math_run log
+command:  python3 runs\2026-10-03-traversable-wormhole-shortcuts\math\mechanist\M-MECHANIST-06.py
+started:  2026-10-08T12:16:28Z
+duration: 7.6 s
+exit:     1
+versions: python 3.14.6, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.2, scipy 1.18.0
+counts:   5 PASS, 2 FAIL, 0 UNDECIDED
+
+--- stdout ---
+PASS lim Delta->0 of L**2*(Delta**2 + L**2)/((-Delta + L)**2*(Delta + L)**2) == 1: symbolic limit 1
+INFO d = 100 yr: long branch last seen at Delta = 2331.2 yr (T_w = 5957 yr); roots at Delta = 2333.5: []
+INFO d = 100 yr: fold / Delta_sc = 0.2500; lens: 2300.0 yr, 0.25
+INFO   roots at Delta = 466.2: [452.0, 9356.3]
+INFO   roots at Delta = 1166: [1541.9, 8967.8]
+INFO   roots at Delta = 2098: [3918.3, 7450.0]
+PASS 2331.194490192345 yr == 2300.0 yr: within 0.03; 7.35669e+10 vs 7.25825e+10 (SI)
+PASS 0.25 == 0.25: within 0.03; 0.25 vs 0.25 (SI)
+INFO d = 1000 yr: long branch last seen at Delta = 2702.2 yr (T_w = 5451 yr); roots at Delta = 2704.4: []
+INFO d = 1000 yr: fold / Delta_sc = 0.3208; lens: 2700.0 yr, 0.32
+INFO   roots at Delta = 540.4: [9347.8]
+INFO   roots at Delta = 1351: [665.9, 8912.1]
+INFO   roots at Delta = 2432: [3296.5, 7211.1]
+PASS 2702.2475309167785 yr == 2700.0 yr: within 0.03; 8.52764e+10 vs 8.52055e+10 (SI)
+PASS 0.32075000000000004 == 0.32: within 0.03; 0.32075 vs 0.32 (SI)
+INFO d = 3000 yr: long branch last seen at Delta = 3620.4 yr (T_w = 4395 yr); roots at Delta = 3622: []
+INFO d = 3000 yr: fold / Delta_sc = 0.5635; lens: 3300.0 yr, 0.52
+INFO   roots at Delta = 724.1: [9327.7]
+INFO   roots at Delta = 1810: [8777.3]
+INFO   roots at Delta = 3258: [1670.8, 6632.5]
+FAIL 3620.3623808935454 yr == 3300.0 yr: relative tolerance 0.03; 1.1425e+11 vs 1.0414e+11 (SI)
+FAIL 0.5635 == 0.52: relative tolerance 0.03; 0.5635 vs 0.52 (SI)
+SUMMARY: 5 pass, 2 fail, 0 undecided
+
+--- stderr ---
+

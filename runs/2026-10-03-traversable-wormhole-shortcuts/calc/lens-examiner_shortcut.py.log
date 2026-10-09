@@ -1,0 +1,76 @@
+# math_run log
+command:  python3 runs\2026-10-03-traversable-wormhole-shortcuts\calc\lens-examiner_shortcut.py
+started:  2026-10-08T11:56:17Z
+duration: 1.0 s
+exit:     0
+versions: python 3.14.6, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.2, scipy 1.18.0
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+==============================================================================
+1. Ellis-Bronnikov throat (Phi = 0, r(l) = sqrt(l^2 + b0^2)), b0 = 1 m, as a ONE-SIDED
+   wormhole: mouths a distance D apart in nearly flat ambient space (zero ADM mass, so no
+   O(M) Shapiro term), time shift Delta = 0 (throat identifies equal exterior-synced times).
+   Observers static at areal radius r_obs on the facing sides of the mouths, so the exterior
+   observer-to-observer distance is D - 2 r_obs. Approximation: two-sheet Ellis metric used
+   near each mouth; valid for D >> r_obs.
+  r_obs =     10 m, D = 1.000e+03 m: T_thru = 6.6378e-08 s, T_ext = 3.2689e-06 s, T_thru/T_ext = 2.031e-02, shortcut = True
+  r_obs =     10 m, D = 1.496e+11 m: T_thru = 6.6378e-08 s, T_ext = 4.9900e+02 s, T_thru/T_ext = 1.330e-10, shortcut = True
+  r_obs =     10 m, D = 9.461e+15 m: T_thru = 6.6378e-08 s, T_ext = 3.1558e+07 s, T_thru/T_ext = 2.103e-15, shortcut = True
+    payload at v = 0.1 c (local static frame): t_coord = 6.6378e-07 s, tau_traveller = 6.6046e-07 s, proper length = 19.8997 m
+  r_obs =    100 m, D = 1.000e+03 m: T_thru = 6.6709e-07 s, T_ext = 2.6685e-06 s, T_thru/T_ext = 2.500e-01, shortcut = True
+  r_obs =    100 m, D = 1.496e+11 m: T_thru = 6.6709e-07 s, T_ext = 4.9900e+02 s, T_thru/T_ext = 1.337e-09, shortcut = True
+  r_obs =    100 m, D = 9.461e+15 m: T_thru = 6.6709e-07 s, T_ext = 3.1558e+07 s, T_thru/T_ext = 2.114e-14, shortcut = True
+    payload at v = 0.1 c (local static frame): t_coord = 6.6709e-06 s, tau_traveller = 6.6375e-06 s, proper length = 199.9900 m
+==============================================================================
+2. Schwarzschild thin-shell (Visser) wormhole, M = 1 Msun, a = 10 km, as ONE-SIDED, Delta = 0.
+   Observers static at r_obs = 100 km on the facing sides. T in infinity-clock seconds;
+   static-observer clocks run slow by sqrt(1 - 2M/r_obs), same factor at both mouths, so the
+   ratio is unchanged. Exterior: flat D - 2 r_obs plus weak-field radial Shapiro delay
+   2M ln((D - r_obs)/r_obs) from each mouth's positive ADM mass (approximation).
+  M (geometric) = 1476.67 m; T_thru (infinity clocks) = 6.5209e-04 s; on observer clocks = 6.4239e-04 s; proper length = 1.8749e+05 m
+  D = 1.000e+07 m: T_ext = 3.2780e-02 s (Shapiro part 9.054e-05 s), ratio = 1.989e-02, shortcut = True
+  D = 1.496e+11 m: T_ext = 4.9900e+02 s (Shapiro part 2.801e-04 s), ratio = 1.307e-06, shortcut = True
+  D = 9.461e+15 m: T_ext = 3.1558e+07 s (Shapiro part 4.979e-04 s), ratio = 2.066e-11, shortcut = True
+  payload at v = 0.1 c: t_coord = 6.5209e-03 s, tau = 6.2225e-03 s
+==============================================================================
+3. Maldacena-Milekhin 2020 ('humanly traversable'), metric MM (2.4) outside, (2.7) AdS2xS2 inside,
+   matched with t = l*tau, rho = l (r - r_e)/r_e^2 (my matching; MM state t-rescaling (2.8)).
+  r_e = 1.500e+07 m (0.0500 light-s); l = 2.838e+19 m; gamma = l/r_e = 1.892e+12 (MM: ~2e12)
+  T_thru = pi l / c = 2.9742e+11 s = 9.4248e+03 yr; tau_traveller ~ pi r_e / c = 0.1572 s
+  d =  1.00 l = 3.000e+03 ly: T_ext = d/c = 3.0000e+03 yr; T_thru/T_ext = 3.1416e+00; tau/T_ext = 1.660e-12
+  d =  0.10 l = 3.000e+02 ly: T_ext = d/c = 3.0000e+02 yr; T_thru/T_ext = 3.1416e+01; tau/T_ext = 1.660e-11
+  d =  0.01 l = 3.000e+01 ly: T_ext = d/c = 3.0000e+01 yr; T_thru/T_ext = 3.1416e+02; tau/T_ext = 1.660e-10
+  Proper radial length mouth-to-mouth between static observers at r_obs = 2 r_e = 3.00e+07 m,
+  and coordinate (asymptotic) light time, for several matching points rho_c (result must not
+  depend on rho_c in the overlap 1 << rho_c << gamma):
+    rho_c = 1e+03: L_prop = 8.9886e+08 m = 2.998 light-s; T_thru(light) = 9.42478e+03 yr
+    rho_c = 1e+06: L_prop = 8.9886e+08 m = 2.998 light-s; T_thru(light) = 9.42478e+03 yr
+    rho_c = 1e+09: L_prop = 8.9884e+08 m = 2.998 light-s; T_thru(light) = 9.42478e+03 yr
+  closed form 2 r_e [ln(2 gamma (r_obs - r_e)/r_e) + (r_obs - r_e)/r_e] = 8.9886e+08 m = 2.998 light-s
+  => spatially the throat is 3.17e-11 of l: a spatial 'shortcut' by ~10 orders, yet a temporal detour (ratio >= pi at d = l): the delay is lapse (redshift), not length.
+  Rocket that gives the same proper-time saving through the EXTERIOR at d = l:
+    m =   1.0 kg: gamma_eq = 6.023e+11; kinetic energy (gamma-1) m c^2 = 5.413e+28 J
+    m =  70.0 kg: gamma_eq = 6.023e+11; kinetic energy (gamma-1) m c^2 = 3.789e+30 J
+    (MM binding energy |E_bin| ~ 4.5e+26 J, Q-02; mouth mass ~2.0e34 kg, Q-04)
+  Payload rest energy against MM |E_bin| (conserved Killing energy of a payload at rest far away):
+    m =   1.0 kg: m c^2 = 8.988e+16 J; m c^2/|E_bin| = 2.00e-10; locally boosted energy gamma m c^2 at the throat centre = 1.701e+29 J
+    m =  70.0 kg: m c^2 = 6.291e+18 J; m c^2/|E_bin| = 1.40e-08; locally boosted energy gamma m c^2 at the throat centre = 1.190e+31 J
+==============================================================================
+4. Time shift Delta (directional shortcut) for a one-sided wormhole with static mouths:
+   exterior-synced arrival A->B through throat = T_w + Delta; B->A = T_w - Delta; exterior = D/c.
+   shortcut A->B iff Delta < D/c - T_w;  CTC iff |Delta| > T_w + D/c.
+  Ellis b0=1 m, r_obs=10 m, D=1 ly: T_w = 6.6378e-08 s, D/c = 3.1558e+07 s; shortcut A->B needs Delta < 3.1558e+07 s (1.0000e+00 yr); CTC needs |Delta| > 3.1558e+07 s (1.0000e+00 yr); shortcut-without-CTC window width 2D/c = 2.0000e+00 yr
+  MM, d = l: T_w = 2.9742e+11 s, D/c = 9.4673e+10 s; shortcut A->B needs Delta < -2.0275e+11 s (-6.4248e+03 yr); CTC needs |Delta| > 3.9210e+11 s (1.2425e+04 yr); shortcut-without-CTC window width 2D/c = 6.0000e+03 yr
+  MM, d = 0.01 l: T_w = 2.9742e+11 s, D/c = 9.4673e+08 s; shortcut A->B needs Delta < -2.9648e+11 s (-9.3948e+03 yr); CTC needs |Delta| > 2.9837e+11 s (9.4548e+03 yr); shortcut-without-CTC window width 2D/c = 6.0000e+01 yr
+==============================================================================
+5. Two-sided constructions: earliest arrival relative to the boundary channel (structural).
+   GJW (Q-15): message must be inserted Delta_t ~ R ln(R/(h l_P)) BEFORE the coupling at t = 0
+   and emerges AFTER it; with the coupling off nothing arrives (D-01). So arrival is never
+   earlier than, nor without, the coupling. Illustrative R ln(R/(h l_P)) for h = 1:
+    R/l_P = 1e+02: Delta_t/R = ln(R/l_P) = 4.61
+    R/l_P = 1e+10: Delta_t/R = ln(R/l_P) = 23.03
+    R/l_P = 1e+60: Delta_t/R = ln(R/l_P) = 138.16
+
+--- stderr ---
+

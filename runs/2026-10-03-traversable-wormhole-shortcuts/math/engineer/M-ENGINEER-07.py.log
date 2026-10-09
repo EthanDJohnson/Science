@@ -1,0 +1,24 @@
+# math_run log
+command:  python3 runs\2026-10-03-traversable-wormhole-shortcuts\math\engineer\M-ENGINEER-07.py
+started:  2026-10-08T12:12:32Z
+duration: 1.5 s
+exit:     0
+versions: python 3.14.6, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.2, scipy 1.18.0
+counts:   10 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+PASS 2*(1 m)*c^4/G has the dimension of energy: dimensional analysis
+PASS 2*(hbar*c/(1 TeV))*c^4/G == 4.78e25 J: within 0.003; 4.77632e+25 vs 4.78e+25 (SI)
+PASS 2*(hbar*c/(1 TeV))*c^4/G/(592 EJ/yr) == 8.07e4 yr: within 0.003; 2.5461e+12 vs 2.5467e+12 (SI)
+PASS 592 EJ/c^2 == 6.59e3 kg: within 0.003; 6586.89 vs 6590 (SI)
+PASS (1.5e7 m)*c^2/G == 2.02e34 kg: within 0.003; 2.01989e+34 vs 2.02e+34 (SI)
+PASS (1.5e7 m)*c^2/G/Msun == 1.02e4 m/m: within 0.01; 10158.3 vs 10200 (SI)
+PASS 2*(1.5e7 m)*c^4/G == 3.63e51 J: within 0.003; 3.63077e+51 vs 3.63e+51 (SI)
+PASS 2*(1.5e7 m)*c^4/G/(592 EJ/yr) == 6.1e30 yr: within 0.01; 1.93544e+38 vs 1.92501e+38 (SI)
+log10 years: SM-MMP 4.91, MM 30.79
+PASS 4.906771847131865 m/m == 4.9 m/m: within 0.005; 4.90677 vs 4.9 (SI)
+PASS 30.787676636050694 m/m == 30.8 m/m: within 0.002; 30.7877 vs 30.8 (SI)
+SUMMARY: 10 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

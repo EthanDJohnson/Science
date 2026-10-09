@@ -1,0 +1,21 @@
+# math_run log
+command:  python3 runs\2026-10-03-traversable-wormhole-shortcuts\math\dialectician\M-DIALECTICIAN-05.py
+started:  2026-10-08T12:07:20Z
+duration: 0.9 s
+exit:     0
+versions: python 3.14.6, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.2, scipy 1.18.0
+counts:   5 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+PASS (T + d)**2/(4*d**2) == (T + d)**2/(4*d**2): symbolic
+PASS lim d->T of (T + d)**2/(4*d**2) == 1: symbolic limit 1
+d = ell*1: enhancement = 4.2882 (claim 4.288)
+PASS 4.28800000000000 == 4.28800000000000: symbolic
+d = ell*0.3333: enhancement = 27.169 (claim 27.17)
+PASS 27.1700000000000 == 27.1700000000000: symbolic
+d = ell*0.03333: enhancement = 2268.03 (claim 2268)
+PASS 2268 == 2268: symbolic
+SUMMARY: 5 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

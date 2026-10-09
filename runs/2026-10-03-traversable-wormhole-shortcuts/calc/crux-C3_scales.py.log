@@ -1,0 +1,34 @@
+# math_run log
+command:  python3 runs\2026-10-03-traversable-wormhole-shortcuts\calc\crux-C3_scales.py
+started:  2026-10-08T13:21:35Z
+duration: 0.0 s
+exit:     0
+versions: python 3.14.6, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.2, scipy 1.18.0
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+C3-0 typical-state estimate (R_max/l_sp = sqrt(8 alpha eta)):
+  alpha=1/(2880 pi^2), eta=1: R_max/l_sp = 0.01678; curvature (l_sp/R)^2 = 3553
+  alpha=pi^2/720, eta=10: R_max/l_sp = 1.047; curvature (l_sp/R)^2 = 0.9119
+C3-2 Ford-Roman QI ceiling (a_max/l_*):
+  f=0.01: a_max/l_* = 4886; curvature in cutoff units (l_*/a)^2 = 4.189e-08
+     alpha*eta needed to reach that ceiling in C3-0's form = 2.984e+06
+     ratio to C3-0 case [alpha=1/(2880 pi^2), eta=1]: 8.48e+10
+     ratio to C3-0 case [alpha=pi^2/720, eta=10]: 2.18e+07
+  f=0.1: a_max/l_* = 48.86; curvature in cutoff units (l_*/a)^2 = 0.0004189
+     alpha*eta needed to reach that ceiling in C3-0's form = 298.4
+     ratio to C3-0 case [alpha=1/(2880 pi^2), eta=1]: 8.48e+06
+     ratio to C3-0 case [alpha=pi^2/720, eta=10]: 2.18e+03
+Gap in throat size, QI ceiling (f=0.01) / generous typical estimate: 4666
+Delta_CTC (short throat) at d = 1 m: 3.336e-09 s
+Delta_CTC (short throat) at d = 1 AU: 499 s
+Delta_CTC (short throat) at d = 1 ly: 3.156e+07 s
+C7 window width 2d/c at d = 3e3 ly: 6000 yr
+MM T_thru = pi*ell/c = 9425 yr; Delta_s = 6425 yr; Delta_CTC = 1.242e+04 yr
+FGM2018 shortcut threshold |dV|/ell > 0.4158 at r+/ell = 0.5
+FGM2018 shortcut threshold |dV|/ell > 0.08643 at r+/ell = 1.0
+FGM2018 shortcut threshold |dV|/ell > 0.003735 at r+/ell = 2.0
+FGM2018 shortcut threshold |dV|/ell > 0.0001614 at r+/ell = 3.0
+
+--- stderr ---
+

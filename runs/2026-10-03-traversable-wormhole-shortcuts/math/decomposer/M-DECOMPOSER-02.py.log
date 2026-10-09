@@ -1,0 +1,19 @@
+# math_run log
+command:  python3 runs\2026-10-03-traversable-wormhole-shortcuts\math\decomposer\M-DECOMPOSER-02.py
+started:  2026-10-08T12:01:58Z
+duration: 0.9 s
+exit:     0
+versions: python 3.14.6, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.2, scipy 1.18.0
+counts:   5 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+PASS (d*k + d)/(d*k - d) == (k + 1)/(k - 1): symbolic
+ratio at L = pi d: 1.9339; at L = 10 d: 1.2222
+PASS 1.9338844138485196 == 1.93: within 0.003; 1.93388 vs 1.93 (SI)
+PASS 1.2222222222222223 == 1.22: within 0.003; 1.22222 vs 1.22 (SI)
+PASS lim k->oo of (k + 1)/(k - 1) == 1: symbolic limit 1
+PASS lim k->1 of (k - 1)/(k + 1) == 0: symbolic limit 0
+SUMMARY: 5 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

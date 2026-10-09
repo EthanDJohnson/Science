@@ -1,0 +1,36 @@
+# math_run log
+command:  python3 runs\2026-10-03-traversable-wormhole-shortcuts\math\constraints\M-CONSTRAINTS-05.py
+started:  2026-10-08T12:18:42Z
+duration: 1.3 s
+exit:     0
+versions: python 3.14.6, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.2, scipy 1.18.0
+counts:   21 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+sigma = -sqrt(-2*M + a)/(2*pi*a**(3/2))  P = (-M + a)/(4*pi*a**(3/2)*sqrt(-2*M + a))
+PASS -sqrt(-2*M + a)/(2*pi*a**(3/2)) == -sqrt(-2*M/a + 1)/(2*pi*a): symbolic
+PASS (-M + a)/(4*pi*a**(3/2)*sqrt(-2*M + a)) == (-M/a + 1)/(4*pi*a*sqrt(-2*M/a + 1)): symbolic
+PASS lim M->0 of -sqrt(-2*M + a)/(2*pi*a**(3/2)) == -1/(2*pi*a): symbolic limit -1/(2*pi*a)
+PASS -2*a == -2*a: symbolic
+PASS (3*M - a)/(4*pi*a**(3/2)*sqrt(-2*M + a)) == (3*M/a - 1)/(4*pi*a*sqrt(-2*M/a + 1)): symbolic
+PASS (3 - a)/(4*pi*a**(3/2)*sqrt(a - 2)) is positive: numeric at 50 points, a in [2.01, 2.999]
+PASS (3 - a)/(4*pi*a**(3/2)*sqrt(a - 2)) is negative: numeric at 50 points, a in [3.001, 50]
+PASS -En*sqrt(-2*M + a)/(2*pi*a**(3/2)*sqrt(-2*M/a + 1)) == -En*sqrt(-2*M + a)/(2*pi*a**(3/2)*sqrt(-2*M/a + 1)): symbolic
+PASS -1/(2*3.14159265) / (1 m) * c^4/G == -1.926e43 J/m^2: within 0.002; -1.92618e+43 vs -1.926e+43 (SI)
+PASS 1/(4*3.14159265) / (1 m) * c^4/G == 9.63e42 N/m: within 0.002; 9.63091e+42 vs 9.63e+42 (SI)
+PASS -2 * 1 m * c^2/G == -2.693e27 kg: within 0.002; -2.69318e+27 vs -2.693e+27 (SI)
+PASS -1.9281119962540356e-05 / (1 m) * c^4/G == -2.33e+39 J/m^2: within 0.006; -2.33351e+39 vs -2.33e+39 (SI)
+PASS -3301.7779755761903 m * c^2/G == -4.45e+30 kg: within 0.006; -4.44614e+30 vs -4.45e+30 (SI)
+PASS -2.0743182364207266e-05 / (1 m) * c^4/G == -2.51e+39 J/m^2: within 0.006; -2.51046e+39 vs -2.51e+39 (SI)
+PASS -5115.092444912408 m * c^2/G == -6.89e+30 kg: within 0.006; -6.88794e+30 vs -6.89e+30 (SI)
+PASS -1.905382966267748e-05 / (1 m) * c^4/G == -2.31e+39 J/m^2: within 0.006; -2.306e+39 vs -2.31e+39 (SI)
+PASS -8352.910984800446 m * c^2/G == -1.12e+31 kg: within 0.006; -1.1248e+31 vs -1.12e+31 (SI)
+PASS -1.336029674905114e-05 / (1 m) * c^4/G == -1.62e+39 J/m^2: within 0.006; -1.61694e+39 vs -1.62e+39 (SI)
+PASS -16789.044046639465 m * c^2/G == -2.26e+31 kg: within 0.006; -2.2608e+31 vs -2.26e+31 (SI)
+sigma+P at 2.5M = 9.640559981270175e-06 m^-1
+PASS 9.60000000000000 == 9.60000000000000: symbolic
+PASS -3.592824576547369e-05 / (1 m) * c^4/G == -4.35e39 J/m^2: within 0.003; -4.34824e+39 vs -4.35e+39 (SI)
+SUMMARY: 21 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

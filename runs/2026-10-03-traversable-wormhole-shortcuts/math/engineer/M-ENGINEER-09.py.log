@@ -1,0 +1,25 @@
+# math_run log
+command:  python3 runs\2026-10-03-traversable-wormhole-shortcuts\math\engineer\M-ENGINEER-09.py
+started:  2026-10-08T12:12:37Z
+duration: 1.6 s
+exit:     0
+versions: python 3.14.6, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.2, scipy 1.18.0
+counts:   10 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+PASS pi*G*M**2/(c*hbar) == pi*G*M**2/(c*hbar): symbolic
+PASS sqrt(pi)*M*c**3*sqrt(mu0)/(2*B*sqrt(G)*hbar) == sqrt(pi)*M*c**3*sqrt(mu0)/(2*B*sqrt(G)*hbar): symbolic
+PASS lim B->oo of sqrt(pi)*M*c**3*sqrt(mu0)/(2*B*sqrt(G)*hbar) == 0: symbolic limit 0
+PASS pi*(1 kg)^2*c^3/(hbar*(1 A*m)*(1 T)) has the dimension of dimensionless: dimensional analysis
+PASS pi*(hbar*c/(1 TeV))^2*c^3/(hbar*G) == 4.68e32 m/m: within 0.005; 4.68277e+32 vs 4.68e+32 (SI)
+PASS pi*(1.5e7 m)^2*c^3/(hbar*G) == 2.7e84 m/m: within 0.01; 2.70591e+84 vs 2.7e+84 (SI)
+exponent at 1200 T: SM-MMP 6.880e+66, MM 5.230e+92; MM exponent/S_BH = 10^8.29
+PASS 6.879769141704223e+66 m/m == 6.9e66 m/m: within 0.01; 6.87977e+66 vs 6.9e+66 (SI)
+PASS 5.229722611493595e+92 m/m == 5.2e92 m/m: within 0.01; 5.22972e+92 vs 5.2e+92 (SI)
+PASS 2*(hbar*c/(1 TeV))*c^2/G*c^2/(1 GeV) == 2.98e35 m/m: within 0.005; 2.98115e+35 vs 2.98e+35 (SI)
+PASS (hbar*c/(1 TeV))*c^2/G*c^2/(1 GeV) == 1.49e35 m/m: within 0.005; 1.49057e+35 vs 1.49e+35 (SI)
+log10(1.49e35/75) = 33.3; log10(B_h/1200 T) SM = 34.17
+SUMMARY: 10 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

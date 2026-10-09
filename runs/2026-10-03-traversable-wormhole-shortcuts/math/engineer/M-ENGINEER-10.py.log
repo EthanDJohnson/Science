@@ -1,0 +1,27 @@
+# math_run log
+command:  python3 runs\2026-10-03-traversable-wormhole-shortcuts\math\engineer\M-ENGINEER-10.py
+started:  2026-10-08T12:13:14Z
+duration: 1.4 s
+exit:     0
+versions: python 3.14.6, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.2, scipy 1.18.0
+counts:   12 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+PASS 0 == 0: symbolic
+PASS -1 == -1: symbolic
+PASS e*eps/F + eps*sqrt(-1 + e**2/F)/sqrt(F) == e*eps*(sqrt(-F/e**2 + 1) + 1)/F: symbolic
+PASS lim gamma->oo of (gamma + sqrt(gamma**2 - 1))/gamma == 2: symbolic limit 2
+PASS eps == eps: symbolic
+PASS kB*2.725 K*(2e12)^2 == 9.4e20 eV: within 0.01; 150.491 vs 150.605 (SI)
+PASS 1 eV/(kB*(2e12)^2) == 2.9e-21 K: within 0.01; 2.90113e-21 vs 2.9e-21 (SI)
+PASS 1e-26 eV/kB == 1.16e-22 K: within 0.01; 1.16045e-22 vs 1.16e-22 (SI)
+PASS 1 eV/kB has the dimension of temperature: dimensional analysis
+H_Lambda = 1.8078e-18 1/s; cooling time 8.465e+11 yr; de Sitter T = 2.198e-30 K
+orders: CMB/limit 20.97, 38 pK/limit 10.12, 38 pK/dark 11.52
+PASS 846480561190.6068 yr == 8.5e11 yr: within 0.01; 2.67129e+19 vs 2.6824e+19 (SI)
+PASS 2.1976961472817636e-30 K == 2.2e-30 K: within 0.01; 2.1977e-30 vs 2.2e-30 (SI)
+PASS hbar*67.4 km/s/Mpc*0.685^0.5/(2*pi*kB) == 2.2e-30 K: within 0.01; 2.1977e-30 vs 2.2e-30 (SI)
+SUMMARY: 12 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

@@ -1,0 +1,18 @@
+# math_run log
+command:  python3 runs\2026-10-03-traversable-wormhole-shortcuts\math\constraints\M-CONSTRAINTS-14.py
+started:  2026-10-08T12:22:22Z
+duration: 3.5 s
+exit:     0
+versions: python 3.14.6, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.2, scipy 1.18.0
+counts:   3 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+PASS sqrt(a**2 + r**2*w**2)*exp(-P) >= exp(-P)*Abs(a): numeric at 50 points, P in [-3, 3], a in [-5, 5], r in [0.1, 10], w in [-5, 5]
+Phi=0: radial optical length 10.000000, shortest of 300 trial paths 10.000190
+PASS 0.000190064977951820 >= 0: symbolic, constant
+Phi=-1/r: radial optical length 16.403355, shortest of 300 trial paths 16.403355
+PASS 7.78099717990699E-9 >= 0: symbolic, constant
+SUMMARY: 3 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

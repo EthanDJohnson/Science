@@ -1,0 +1,53 @@
+# Check: engineering
+status: final
+
+| Claim | Verdict | Note |
+|---|---|---|
+| RE-01 | verified | Abstract quote (164 gates, nine qubits, "step towards a program...") matches the Nature page text. Nature 612, 51 is standard. The "no spacetime region created" gloss is the researcher's own inference. |
+| RE-02 | verified | The five-property quote and "run on the Google Sycamore processor" both match the Nature abstract page. |
+| RE-03 | verified | Kobrin et al. (arXiv:2302.07897) say "seven Majorana fermions with five fully-commuting terms". The (i)-(iii) findings match the quoted abstract. |
+| RE-04 | verified | arXiv:2303.15423 contains both the "consistent with Jafferis et al. on key points" sentence and the "counterfactual scenarios outside of the experimentally implemented protocol" sentence. Its argument that adding a non-commuting term preserves size winding was not checked. |
+| RE-05 | verified | Nature page: Matters Arising, 23 July 2025, Nature 643, E17-E19, title and quote match. Paywalled body, so the abstract only. Whether a reply was published is correctly left open. |
+| RE-06 | verified | Byun et al. (arXiv:2604.10090): the "first quantum-hardware realization ... explicitly chaotic Hamiltonian" quote, the N=8 setup and the "mu<0 corresponds to ANEC violation" sentence all match. Preprint. The "Sycamore N=7, five terms" comparison matches the Kobrin description. |
+| RE-07 | verified | The quote is in arXiv:2301.03522 (a secondary discussion paper). It confirms the 72-qubit chip, the 9 "least noisy" qubits and the noise-attenuated signal. The "below 1/2 of noiseless fidelity" statement is that paper's own aside. The "Shapoval/Weinstein type" author label is vague and unverified. The paper's author and quality are unknown, so weight is low-to-medium. |
+| RE-08 | unverifiable | Not fetched in this check. The PRX Quantum 4, 010320 volume and article number were not confirmed. The quote is plausible (arXiv:1911.06314). |
+| RE-09 | unverifiable | The Byun IBM quote is verified, and the 10,000-shot figure is confirmed only for the noiseless-emulation dots. IBM mutual information is plotted up to about 0.025, so "of order 0.01" is a fair reading. The Quanta/Su et al. IBM-Quantinuum claim is a search summary, not checked, and the "10 independent runs" detail was not confirmed. |
+| RE-10 | verified | Takahashi & Asada abstract: n<1e-8 (1e-4) h^3 Mpc^-3 for |M|>1e15 (1e12) Msun, |Omega|<1e-4, and Ellis n<1e-4 h^3 Mpc^-3 for a=10-1e4 pc, all confirmed in full text. NQ=50836 confirmed. The Ellis number is now full-text verified, so confidence is high. The scope note is correct (zero-ADM-mass Ellis lens). |
+| RE-11 | verified | Abe: "gutters" about 4% outside the Einstein-ring crossing, and magnification less than Schwarzschild's, both confirmed. Takahashi & Asada intro confirms a=100-1e7 km for Galactic microlensing and the Yoo et al. n<~1e-9 AU^-3 bound for a~1 cm. The finite-source smearing quote was not re-grepped. |
+| RE-12 | verified | Dai & Stojkovic: 1.5 m/s^2, 4e-4 m/s^2 (2 yr), 2e-5 m/s^2 (20 yr), 1e-6 m/s^2 if the velocity uncertainty is 2 km/s, and the abstract quote all match. |
+| RE-13 | verified | Simonetti et al. abstract: ~4 orders of magnitude better than S2, and a pulsar ~10 orders more sensitive than S2. Journal reference not checked. |
+| RE-14 | verified | All quotes are confirmed in arXiv:2008.06618: "20g ... re>1.5x10^7 m" (eq. 3.26, size 0.5 m), N_f>1e52 with |E_bin|>1e3 kg and re>1e7 m, "tens of thousands of years", the refrigerator sentence, the "much colder than the present universe" wording, and "not given any plausible mechanism". The RS II and 1e52-species characterisation is accurate. Note that the 1e52 requirement is for the massless-fermion version and the paper says it is too large. |
+| RE-15 | verified | I recomputed this by hand and with the script. M=r_e c^2/G=2.02e34 kg. Extremal charge gives g=5.2e32 A m against g_D=3.29e-9 A m, so 1.6e41. B=mu0 g/(4 pi r^2)=2.3e11 T. The extremal-RN mapping is flagged as an assumption in the claim. Fine. |
+| RE-16 | verified | MMP quotes confirmed: "say 1/TeV", N_f=54, proper time ~ r_E ~ q against pi*l ~ q^2 outside, "long wormhole that does not lead to causality violations". 1/TeV is about 2e-19 m (correct). The Standard Model embedding is the paper's claim, not an established result. The published version was not checked. |
+| RE-17 | verified | BKR quotes confirmed: Qe/M>1, "q/mu<1", and the abstract. The semiclassical-approach quote was not re-grepped. |
+| RE-18 | verified | The "never been observed ... formation scenarios are highly disputable" quote matches Konoplya & Zhidenko. The non-smooth-throat quote was not re-grepped. |
+| RE-19 | unverifiable | The 75 GeV, 0.235 nb^-1, Nov 2018 and 1-3 g_D facts are verified in arXiv:2106.11933. The "up to ~3.9 TeV for 1-10 g_D" later-limit claim is a search summary with no source checked. Treat it as unconfirmed. |
+| RE-20 | verified | The O3 quote matches arXiv:2309.01894. The paper also lists reported O1/O2 echo evidence (GW150914 etc.) as disputed. The "2.5 sigma" figure was not confirmed. The scope statement is the researcher's reasoning. |
+| RE-21 | verified | The "within ~10% of Kerr predictions" quote matches. The 47-50 microarcsec Table 1 values and the Ellis-Bronnikov shadow point were not confirmed (grep found no 'microarcsec'). Treat the shadow numbers as unverified. |
+| RE-22 | unverifiable | The two Maclay & Davis quotes match the abstract and intro. The 15 dB and "too small to be directly measurable" statements are search-summary only, and the 1e44 J Jupiter figure is admittedly unverified. Low confidence is appropriate. |
+| RE-23 | unverifiable | The Roy-Lin-Mohideen quote matches. The Mohideen & Roy 1998 "1.6 pN rms, ~1%" figures are search-summary only. The relevance statement is inference. The cited paper is 1999 arXiv, but the claim cites PRD 60, 111101 (published 1999, labelled "2000" in the claim); a minor discrepancy. |
+| RE-24 | unverifiable | This is the author's own TRL judgement and is labelled as such. One weak point: "largest engineered mass ~1e5 kg objects" is not sourced and is questionable, since ships and structures are 1e8 kg or more. The ratio 2e34/1e5 gives 2e29, but a different "largest object" shifts it by a few orders. Qualitative conclusion unaffected. |
+
+## Added 2026-10-08: claims RE-25 to RE-34 (carried from the warp-drive run)
+
+| Claim | Verdict | Note |
+|---|---|---|
+| RE-25 | verified | Checked the arXiv:2411.07379 posting of the PRL paper: "Up to 15 dB squeezing was measured with merely 16 mW of second harmonic pump power" and the 3-8 MHz measurement range are both in the text. 10^-1.5 = 0.032 is correct. The caution that this is a noise variance, not a J/m^3 energy density, is right. The correction to RE-22 (the "three decades" phrase is not in the paper) is sound. |
+| RE-26 | verified | Lough et al. (arXiv:2005.10292): "6.03 +/- 0.02 dB", 6 kHz, medians averaged over 6.3-6.5 kHz, two-month period, factor of four in power. All match. The printed "+/-" is correctly read. I checked the arXiv text, not the PRL page. |
+| RE-27 | verified | Wilson et al. (arXiv:1105.4714): quote matches word for word (a few percent of c, SQUID at ~11 GHz, two-mode squeezing). The note that 0.05c is not in the source is right. |
+| RE-28 | verified | Ikeda (arXiv:2301.02666): quote matches, including "requires only local operations and classical communication". PRApplied 20, 024051 not checked. The "few-qubit" remark is the researcher's own and is flagged as such. |
+| RE-29 | verified | Bressi (quant-ph/0203002): 0.5-3.0 micrometre, 15% matches. Decca (quant-ph/0306136): 6 fN/sqrt(Hz), 0.2-2 micrometre and "better than 1% in the 0.2-0.5 micrometre range" all match the arXiv abstract. The claim says "better than 1% as printed" without the 0.2-0.5 micrometre restriction; the agreement is quoted for that sub-range only. Minor scope gap. |
+| RE-30 | verified | I reran engineering_casimir_anchors.py. It gives P(10 nm)=1.30e5 Pa, P(1 micrometre)=1.3e-3 Pa, u=-4.3e4 and -4.3e-4 J/m^3, tau0(1 m)=4.8e42 Pa, M_eff=6.7e26 kg=0.355 M_J, 6.05e43 J, cavity 1.4e47 m^3 (side 5.2e15 m), ratios 3.7e37 and 3.7e31. All reproduce. Kuhfittig (arXiv:2202.07431) eq. 9 gives ~5e41 dyn/cm^2 for 10 m, as quoted. Presentation slip: the sentence puts the 4.8e40 Pa (r0=10 m) figure next to the 3.7e37 ratio, which belongs to the 4.8e42 Pa (1 m) case. The script is right. The Casimir formulas are textbook results and are not sourced. The M_eff scale is an order-of-magnitude reading, as labelled. |
+| RE-31 | unverifiable | Not reopened. The claim itself flags the 5e-16 N and 4e6 s numbers as not re-verified, and the MDPI and EPJ pages are known to be blocked. Only the abstract-level status (construction and R&D, no vacuum-weight result) is supported. Treat the design numbers as carried and unconfirmed. |
+| RE-32 | verified | NASA page text: "hurtled through the solar atmosphere at a blazing 430,000 miles per hour — faster than any human-made object has ever moved", 24 Dec 2024. 430,000 mph = 192.2 km/s = 6.41e-4 c (script confirms). The "roughly 600 kg" spacecraft mass was not on the NASA page I read and is unsourced. |
+| RE-33 | verified | Maclay & Davis (arXiv:1806.01269): "the QI as given is violated by most of the experimental data, yet all experimental data are consistent with a theoretical model of the optical parametric amplifier (OPA)" matches. Found. Phys. 49, 797 not checked. The "unreplicated" statement is a negative search result, so it rests on the researcher's search only. |
+| RE-34 | unverifiable | A negative search result (INSPIRE since 2026). Not independently rerun. The arXiv IDs 2610.09847 and 2610.05656 were not opened. |
+
+Also relevant to the earlier table: the Gaps note correcting RE-24's "1e5 kg" anchor is appropriate and removes that earlier weakness.
+
+## Summary
+
+- Counts for RE-01 to RE-24 (earlier pass): verified 17, unverifiable 6 (RE-08, RE-09, RE-19, RE-22, RE-23, RE-24), contradicted 0, misattributed 0, status-wrong 0.
+- Counts for RE-25 to RE-34 (this pass): verified 8 (RE-25, RE-26, RE-27, RE-28, RE-29, RE-30, RE-32, RE-33), unverifiable 2 (RE-31, RE-34), contradicted 0, misattributed 0, status-wrong 0.
+- No misattribution or magnitude errors were found in the added claims. The RE-30 numbers reproduce.
+- Most serious weaknesses: RE-31's Archimedes design numbers are unconfirmed, the Quanta/Su and 3.9 TeV items remain search-summary only (RE-09, RE-19), RE-07 rests on a secondary paper, and RE-32's 600 kg mass is unsourced. RE-30 pairs one figure with the wrong ratio in prose.

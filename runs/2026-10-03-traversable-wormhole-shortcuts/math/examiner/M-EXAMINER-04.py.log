@@ -1,0 +1,37 @@
+# math_run log
+command:  python3 runs\2026-10-03-traversable-wormhole-shortcuts\math\examiner\M-EXAMINER-04.py
+started:  2026-10-08T12:03:43Z
+duration: 0.9 s
+exit:     0
+versions: python 3.14.6, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.2, scipy 1.18.0
+counts:   18 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+PASS pi == pi: symbolic
+e=1.5: proper half period = 3.1415926528395, tau elapsed = 3.14159265295805
+PASS 3.141592652839503 == 3.141592653589793: within 1e-08; 3.14159 vs 3.14159 (SI)
+PASS 3.1415926529580536 == 3.141592653589793: within 1e-08; 3.14159 vs 3.14159 (SI)
+e=10.0: proper half period = 3.14159265283951, tau elapsed = 3.14159265353108
+PASS 3.141592652839511 == 3.141592653589793: within 1e-08; 3.14159 vs 3.14159 (SI)
+PASS 3.141592653531082 == 3.141592653589793: within 1e-08; 3.14159 vs 3.14159 (SI)
+e=1000.0: proper half period = 3.14159265283949, tau elapsed = 3.14159265358891
+PASS 3.1415926528394857 == 3.141592653589793: within 1e-08; 3.14159 vs 3.14159 (SI)
+PASS 3.1415926535889143 == 3.141592653589793: within 1e-08; 3.14159 vs 3.14159 (SI)
+e=1000000.0: proper half period = 3.14159265283956, tau elapsed = 3.14159265358965
+PASS 3.141592652839561 == 3.141592653589793: within 1e-08; 3.14159 vs 3.14159 (SI)
+PASS 3.1415926535896532 == 3.141592653589793: within 1e-08; 3.14159 vs 3.14159 (SI)
+PASS lim e_->oo of pi == pi: symbolic limit pi
+gamma = 1892146094516.1602
+PASS 1892146094516.1602 == 1.892e12: within 0.001; 1.89215e+12 vs 1.892e+12 (SI)
+PASS pi * 3000 ly / c == 9.4248e3 yr: within 0.0001; 2.97423e+11 vs 2.97424e+11 (SI)
+PASS pi * 1.5e7 m / c == 0.1572 s: within 0.001; 0.157188 vs 0.1572 (SI)
+PASS 3.141592653589793 == 3.141592653589793: within 0.002; 3.14159 vs 3.14159 (SI)
+PASS 31.41592653589793 == 31.4: within 0.002; 31.4159 vs 31.4 (SI)
+PASS 314.1592653589793 == 314: within 0.002; 314.159 vs 314 (SI)
+tau/T_ext at d = l: 1.6603330275050082e-12
+PASS 1.6603330275050082e-12 == 1.66e-12: within 0.003; 1.66033e-12 vs 1.66e-12 (SI)
+PASS pi * 3000 ly / c has the dimension of s: dimensional analysis
+SUMMARY: 18 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

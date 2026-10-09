@@ -1,0 +1,23 @@
+# math_run log
+command:  python3 runs\2026-10-03-traversable-wormhole-shortcuts\calc\falsifier-C6-1_tube_realign.py
+started:  2026-10-08T13:19:33Z
+duration: 0.2 s
+exit:     0
+versions: python 3.14.6, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.2, scipy 1.18.0
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+Tube throat: proper length L = 0.50 d, flat exterior, c = 1, d = 1
+a = 0.05 d, R = I (aligned): realigned ray |v_out - v| = 0.0e+00; tau_eff = 0.5000 d (cos i = 1.0000), v tilted 0 deg from e; asymptotic margin = -0.6000 d -> negative (achronal candidate)
+a = 0.05 d, R = 10 deg about z (perp e): realigned ray |v_out - v| = 1.6e-15; tau_eff = 0.5001 d (cos i = 0.9999), v tilted 0 deg from e; asymptotic margin = -0.5999 d -> negative (achronal candidate)
+a = 0.05 d, R = 90 deg about z (perp e): realigned ray |v_out - v| = 1.1e-15; tau_eff = 0.5377 d (cos i = 0.9298), v tilted 0 deg from e; asymptotic margin = -0.5552 d -> negative (achronal candidate)
+a = 0.05 d, R = 180 deg about z (perp e): realigned ray |v_out - v| = 3.7e-15; tau_eff = 0.5170 d (cos i = 0.9672), v tilted 0 deg from e; asymptotic margin = -0.5797 d -> negative (achronal candidate)
+a = 0.05 d, non-orientable translation gluing G = +I (R = -I, idealizer mirror): realigned ray |v_out - v| = 4.2e-14; tau_eff = 0.5170 d (cos i = 0.9672), v tilted 0 deg from e; asymptotic margin = -0.5797 d -> negative (achronal candidate)
+a = 0.01 d, R = I (aligned): realigned ray |v_out - v| = 0.0e+00; tau_eff = 0.5000 d (cos i = 1.0000), v tilted 0 deg from e; asymptotic margin = -0.5200 d -> negative (achronal candidate)
+a = 0.01 d, R = 10 deg about z (perp e): realigned ray |v_out - v| = 7.5e-15; tau_eff = 0.5000 d (cos i = 1.0000), v tilted 0 deg from e; asymptotic margin = -0.5200 d -> negative (achronal candidate)
+a = 0.01 d, R = 90 deg about z (perp e): realigned ray |v_out - v| = 1.0e-14; tau_eff = 0.5020 d (cos i = 0.9959), v tilted 0 deg from e; asymptotic margin = -0.5179 d -> negative (achronal candidate)
+a = 0.01 d, R = 180 deg about z (perp e): realigned ray |v_out - v| = 3.3e-13; tau_eff = 0.5009 d (cos i = 0.9982), v tilted 0 deg from e; asymptotic margin = -0.5191 d -> negative (achronal candidate)
+a = 0.01 d, non-orientable translation gluing G = +I (R = -I, idealizer mirror): realigned ray |v_out - v| = 7.3e-13; tau_eff = 0.5009 d (cos i = 0.9982), v tilted 0 deg from e; asymptotic margin = -0.5191 d -> negative (achronal candidate)
+
+--- stderr ---
+

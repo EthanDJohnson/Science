@@ -1,0 +1,27 @@
+# math_run log
+command:  python3 runs\2026-10-03-traversable-wormhole-shortcuts\math\examiner\M-EXAMINER-05.py
+started:  2026-10-08T12:03:31Z
+duration: 1.3 s
+exit:     0
+versions: python 3.14.6, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.2, scipy 1.18.0
+counts:   9 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+PASS r_e*rho == r_e*rho: symbolic
+PASS r_e/rho == r_e/rho: symbolic
+total - target = 2*r_e*(g*asinh(rho_c) - rho_c - log(2**g*rho_c**g))/g
+PASS lim rho_c->oo of 2*(rho_c**2*(-log(rho_c) + asinh(rho_c) - log(2)) - 1)/rho_c**2 == 0: symbolic limit 0
+rho_c=1000: L = 8.9885641e+8 m
+PASS 898856406.9174968 m == 8.9886e8 m: within 0.0001; 8.98856e+08 vs 8.9886e+08 (SI)
+rho_c=1e+06: L = 8.9885638e+8 m
+PASS 898856383.5783495 m == 8.9886e8 m: within 0.0001; 8.98856e+08 vs 8.9886e+08 (SI)
+rho_c=1e+09: L = 8.9884054e+8 m
+PASS 898840544.4208442 m == 8.9886e8 m: within 0.0001; 8.98841e+08 vs 8.9886e+08 (SI)
+closed form: 898856399.4333545 m = 2.9982622159005565 light-s; l / L = 31575890693.59103
+PASS 898856399.4333545 m / c == 2.998 s: within 0.001; 2.99826 vs 2.998 (SI)
+PASS lim r_e->0 of (r_e + x)/x == 1: symbolic limit 1
+PASS 8.9886e8 m / c has the dimension of s: dimensional analysis
+SUMMARY: 9 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

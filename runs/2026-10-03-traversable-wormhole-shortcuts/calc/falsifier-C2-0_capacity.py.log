@@ -1,0 +1,42 @@
+# math_run log
+command:  python3 runs\2026-10-03-traversable-wormhole-shortcuts\calc\falsifier-C2-0_capacity.py
+started:  2026-10-08T12:35:39Z
+duration: 0.7 s
+exit:     0
+versions: python 3.14.6, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.2, scipy 1.18.0
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+ALGEBRA |E_min| * ell (hbar=c=1) = N*q/16   -> at N=1: q/16
+ALGEBRA  ratio |E_min| / (1/ell) = q*N/16 :  True
+ALGEBRA  S(E) chiral CFT = sqrt(3)*sqrt(pi)*sqrt(E)*sqrt(L)*sqrt(c)/3  ; check S^2 = pi c L E/3: True
+ALGEBRA  S at E=|E_min|, c=q/2, L=pi*ell (N=1) = sqrt(6)*pi*q/24 = 0.3206 * q nats
+
+SI  l_P = 1.6163e-35 m ; r_e = hbar c / TeV = 1.9733e-19 m
+SI  [engineer g=0.06, N=1] ell = 1.139e+00 m, |E_min| = 7.162e-13 J = 4.47 MeV, transit pi*ell/c = 1.194e-08 s; E_q = hbar c/ell = 1.732e-07 eV -> N_quanta in throat = 2.581e+13 (q N/16 = 2.581e+13); qubit rate ~ N/transit = 2.162e+21 qubit/s
+SI  [engineer g=0.06, N=1] ell = 1.139e+00 m, |E_min| = 7.162e-13 J = 4.47 MeV, transit pi*ell/c = 1.194e-08 s; E_q = 2 pi hbar c/ell = 1.088e-06 eV -> N_quanta in throat = 4.108e+12 (q N/16 = 2.581e+13); qubit rate ~ N/transit = 3.440e+20 qubit/s
+SI  [engineer g=0.06, N=1] chiral-gas entropy at E=|E_min| (c=q/2, L=pi*ell) = 1.324e+14 nats = 1.910e+14 bits
+SI  [engineer g=0.06, N=1] |E_min| / (1 kg c^2) = 7.968e-30 ; log10 = -29.10
+SI  [engineer g=0.06, N=54] ell = 2.110e-02 m, |E_min| = 2.088e-09 J = 1.3e+04 MeV, transit pi*ell/c = 2.211e-10 s; E_q = hbar c/ell = 9.351e-06 eV -> N_quanta in throat = 1.394e+15 (q N/16 = 1.394e+15); qubit rate ~ N/transit = 6.303e+24 qubit/s
+SI  [engineer g=0.06, N=54] ell = 2.110e-02 m, |E_min| = 2.088e-09 J = 1.3e+04 MeV, transit pi*ell/c = 2.211e-10 s; E_q = 2 pi hbar c/ell = 5.876e-05 eV -> N_quanta in throat = 2.218e+14 (q N/16 = 1.394e+15); qubit rate ~ N/transit = 1.003e+24 qubit/s
+SI  [engineer g=0.06, N=54] chiral-gas entropy at E=|E_min| (c=q/2, L=pi*ell) = 9.731e+14 nats = 1.404e+15 bits
+SI  [engineer g=0.06, N=54] |E_min| / (1 kg c^2) = 2.324e-26 ; log10 = -25.63
+SI  [constraints g=e, N=1] ell = 2.226e-01 m, |E_min| = 1.876e-11 J = 117 MeV, transit pi*ell/c = 2.333e-09 s; E_q = hbar c/ell = 8.864e-07 eV -> N_quanta in throat = 1.321e+14 (q N/16 = 1.321e+14); qubit rate ~ N/transit = 5.664e+22 qubit/s
+SI  [constraints g=e, N=1] ell = 2.226e-01 m, |E_min| = 1.876e-11 J = 117 MeV, transit pi*ell/c = 2.333e-09 s; E_q = 2 pi hbar c/ell = 5.569e-06 eV -> N_quanta in throat = 2.103e+13 (q N/16 = 1.321e+14); qubit rate ~ N/transit = 9.014e+21 qubit/s
+SI  [constraints g=e, N=1] chiral-gas entropy at E=|E_min| (c=q/2, L=pi*ell) = 6.778e+14 nats = 9.779e+14 bits
+SI  [constraints g=e, N=1] |E_min| / (1 kg c^2) = 2.088e-28 ; log10 = -27.68
+
+RESULT: per-transit capacity ~1e12-1e15 qubits, not ~1 qubit; energy cap still ~25-29 orders below 1 kg c^2.
+
+CONSERVATIVE (electron carriers, E >= m_e c^2):
+SI  [engineer g=0.06, N=1] N_e = |E_min|/m_e c^2 = 8.75 electrons in throat at once; <= 433 bits per transit; sustained <= 3.63e+10 bit/s
+SI  [engineer g=0.06, N=54] N_e = |E_min|/m_e c^2 = 2.55e+04 electrons in throat at once; <= 1.26e+06 bits per transit; sustained <= 5.72e+15 bit/s
+SI  [constraints g=e, N=1] N_e = |E_min|/m_e c^2 = 229 electrons in throat at once; <= 1.19e+04 bits per transit; sustained <= 5.1e+12 bit/s
+
+SEPARATION (SM-MMP): d < 1/TeV = 1.973e-19 m, or d < hbar/(m_e c) = 3.862e-13 m
+SI  [engineer g=0.06, N=1] T_ext <= 1.288e-21 s ; T_thru = 1.194e-08 s ; T_thru/T_ext >= 9.270e+12 (d = 1/m_e), 1.814e+19 (d = 1/TeV)
+SI  [engineer g=0.06, N=54] T_ext <= 1.288e-21 s ; T_thru = 2.211e-10 s ; T_thru/T_ext >= 1.717e+11 (d = 1/m_e), 3.360e+17 (d = 1/TeV)
+SI  [constraints g=e, N=1] T_ext <= 1.288e-21 s ; T_thru = 2.333e-09 s ; T_thru/T_ext >= 1.811e+12 (d = 1/m_e), 3.544e+18 (d = 1/TeV)
+
+--- stderr ---
+

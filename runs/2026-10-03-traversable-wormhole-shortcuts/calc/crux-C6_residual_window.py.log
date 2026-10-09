@@ -1,0 +1,25 @@
+# math_run log
+command:  python3 runs\2026-10-03-traversable-wormhole-shortcuts\calc\crux-C6_residual_window.py
+started:  2026-10-08T13:21:44Z
+duration: 2.7 s
+exit:     0
+versions: python 3.14.6, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.2, scipy 1.18.0
+counts:   3 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+1. Hemisphere check: 400 random G in O(3) (200 per det sign); every G has admissible n; largest best-case excess u.(n - Gn) = -1.094e-01 (<= 0 means via-handle <= s+t+L)
+PASS hemisphere
+   mirror +I: admissible n (tol 0.001) exists = True, best excess = 0.0000 (mirror: only n perp u qualifies, excess 0 -> via-handle = s+t+L exactly)
+   aligned -I: admissible n (tol 0.001) exists = True, best excess = -2.0000 (mirror: only n perp u qualifies, excess 0 -> via-handle = s+t+L exactly)
+   rot180 about z, -R: admissible n (tol 0.001) exists = True, best excess = 0.0000 (mirror: only n perp u qualifies, excess 0 -> via-handle = s+t+L exactly)
+2. Thin shell, rot180, a = 0.05 d: sqrt(d^2+4a^2) = 1.00499 d
+PASS threshold>d
+2. Thin shell, rot180, a = 0.01 d: sqrt(d^2+4a^2) = 1.00020 d
+PASS threshold>d
+3. SM-MMP r_e (Q-11): a = 2.00e-19 m; Ellis delta(0) = 9.322e-28 s; observer-wrap band ~1.5a/c = 1.001e-27 s; misalignment-specific widening <= 0.36a/c = 2.402e-28 s
+3. 1 m throat: a = 1.00e+00 m; Ellis delta(0) = 4.661e-09 s; observer-wrap band ~1.5a/c = 5.003e-09 s; misalignment-specific widening <= 0.36a/c = 1.201e-09 s
+3. MM r_e (Q-01): a = 1.50e+07 m; Ellis delta(0) = 6.992e-02 s; observer-wrap band ~1.5a/c = 7.505e-02 s; misalignment-specific widening <= 0.36a/c = 1.801e-02 s
+3b. MM r_e window as fraction of d = 1 ly: 2.216e-09
+
+--- stderr ---
+

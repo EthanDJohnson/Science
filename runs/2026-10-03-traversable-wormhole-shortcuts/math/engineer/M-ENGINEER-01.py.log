@@ -1,0 +1,29 @@
+# math_run log
+command:  python3 runs\2026-10-03-traversable-wormhole-shortcuts\math\engineer\M-ENGINEER-01.py
+started:  2026-10-08T12:08:23Z
+duration: 2.0 s
+exit:     0
+versions: python 3.14.6, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.2, scipy 1.18.0
+counts:   15 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+critical l: [16*r**3/(G*q)]
+PASS 16*r**3/(G*q) == 16*r**3/(G*q): symbolic
+PASS -G*q**2/(256*r**3) == -G*q**2/(256*r**3): symbolic
+PASS G**3*q**4/(32768*r**9) is positive: symbolic, G in [0.1, 10], q in [0.1, 10], r in [0.1, 10]
+PASS 16*pi**(3/2)*lp*q**2/g**3 == 16*pi**(3/2)*lp*q**2/g**3: symbolic
+PASS -g**3/(256*pi**(3/2)*lp*q) == -g**3/(256*pi**(3/2)*lp*q): symbolic
+PASS -g**2/(256*pi*r) == -g**2/(256*pi*r): symbolic
+PASS 0 == 0: symbolic
+PASS lim r->oo of -g**2/(256*pi*r) == 0: symbolic limit 0
+PASS 16*r**3/(G*Nn*q) == 16*r**3/(G*Nn*q): symbolic
+PASS -G*Nn**2*q**2/(256*r**3) == -G*Nn**2*q**2/(256*r**3): symbolic
+PASS -Nn**2*g**2/(256*pi*r) == -Nn**2*g**2/(256*pi*r): symbolic
+PASS -G*q**2/(256*r**3) == -G*q**2/(256*r**3): symbolic
+PASS -Nn*x/(256*pi*r) + Nn/(256*pi*r) is nonnegative: numeric at 50 points, Nn in [1, 1e+06], r in [0.1, 10], x in [1e-06, 1]
+PASS hbar*c/(256*pi*1 m) has the dimension of energy: dimensional analysis
+PASS 0.06^2*hbar*c/(256*pi*(hbar*c/(1 TeV))) == 7.17e-13 J: within 0.005; 7.17172e-13 vs 7.17e-13 (SI)
+SUMMARY: 15 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

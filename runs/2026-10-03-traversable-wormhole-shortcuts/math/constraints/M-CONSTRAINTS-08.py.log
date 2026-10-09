@@ -1,0 +1,27 @@
+# math_run log
+command:  python3 runs\2026-10-03-traversable-wormhole-shortcuts\math\constraints\M-CONSTRAINTS-08.py
+started:  2026-10-08T12:21:08Z
+duration: 1.0 s
+exit:     0
+versions: python 3.14.6, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.2, scipy 1.18.0
+counts:   10 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+PASS 3*l_P**2*r0/(4*pi*f**4) == 3*l_P**2*r0/(4*pi*f**4): symbolic
+PASS lim r0->0 of 6**(1/3)*l_P**(2/3)*r0**(1/3)/(2*pi**(1/3)*f**(4/3)) == 0: symbolic limit 0
+r0 = 1 m: Delta_max = 1.841e-21 m (claimed 1.84e-21)
+PASS 0.00036670361604551475 < 0.0200000000000000: symbolic, constant
+r0 = 1.5e+07 m: Delta_max = 4.539e-19 m (claimed 4.5e-19)
+PASS 0.00877650122612258 < 0.0200000000000000: symbolic, constant
+r0 = 9.4607e+15 m: Delta_max = 3.893e-16 m (claimed 3.9e-16)
+PASS 0.0017939420443048187 < 0.0200000000000000: symbolic, constant
+PASS (3 * 1 m * l_P^2 / (4 * 3.14159265 * 1e-8))^(1/3) == 1.84e-21 m: within 0.003; 1.84067e-21 vs 1.84e-21 (SI)
+coef = 4.188790204786391e-08  b0 at N = 1e32: 7.897062528756538e-16 m
+PASS 0.0002887339411953636 < 0.00200000000000000: symbolic, constant
+PASS 0.0003718318029698467 < 0.00500000000000000: symbolic, constant
+PASS 0.00218722819694431 < 0.0100000000000000: symbolic, constant
+PASS 0.002187228196943987 < 0.0100000000000000: symbolic, constant
+SUMMARY: 10 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

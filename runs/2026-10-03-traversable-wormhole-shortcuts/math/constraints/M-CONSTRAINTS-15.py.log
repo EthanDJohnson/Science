@@ -1,0 +1,20 @@
+# math_run log
+command:  python3 runs\2026-10-03-traversable-wormhole-shortcuts\math\constraints\M-CONSTRAINTS-15.py
+started:  2026-10-08T12:22:44Z
+duration: 0.8 s
+exit:     0
+versions: python 3.14.6, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.2, scipy 1.18.0
+counts:   7 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+PASS 3*pi == 3*pi: symbolic
+PASS -pi == -pi: symbolic
+PASS -c**2/(8*G) == -c**2/(8*G): symbolic
+PASS lim delta->0 of c**2*delta/(8*pi*G) == 0: symbolic limit 0
+PASS -1 * c^2/(8*G) == -1.68e26 kg/m: within 0.003; -1.68324e+26 vs -1.68e+26 (SI)
+PASS -12 * 1 m * c^2/(8*G) == -2.0e27 kg: within 0.02; -2.01989e+27 vs -2e+27 (SI)
+PASS -2 * 0.5 m * c^2/G == -1.35e27 kg: within 0.003; -1.34659e+27 vs -1.35e+27 (SI)
+SUMMARY: 7 pass, 0 fail, 0 undecided
+
+--- stderr ---
+
