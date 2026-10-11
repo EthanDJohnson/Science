@@ -80,6 +80,19 @@ class ElectricFieldRefusals(unittest.TestCase):
         self.assertGreater(r["decay_rate"], 1.1 * r["pair_rate"])
 
 
+class FRWRefusals(unittest.TestCase):
+    def test_refusals(self):
+        bad = [
+            lambda: q.frw_tanh_scale_factor(1.0, 2.0, 0.5),                               # a^2 < 0 in the past
+            lambda: q.frw_omega2([1.0], lambda e: 1.0, -1.0, 0.0),                       # m < 0
+            lambda: q.frw_omega2([1.0], lambda e: -1.0, 1.0, 0.0)(0.0),                  # a <= 0
+            lambda: q.frw_particle_production([0.5], lambda e: 1.0 + 0.1 * e, 1.0, 0.0, -5.0, 5.0),  # still expanding
+        ]
+        for i, fn in enumerate(bad):
+            with self.subTest(case=i), self.assertRaises(ValueError):
+                fn()
+
+
 class CommandLine(unittest.TestCase):
     def test_tanh_cli(self):
         import contextlib

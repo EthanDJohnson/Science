@@ -70,6 +70,13 @@ PART B. Pair production in a homogeneous electric field E(t) along z (charge e, 
     Pairs vs particles: for a charged (complex) field n_k is the number of particles in k, which equals the
     number of antiparticles in -k and the number of pairs in that mode: no factor 1/2.
 
+PART C. Spatially flat FRW, ds^2 = a(eta)^2 (d eta^2 - dx^2), eta = conformal time, k comoving
+-------------------------------------------------------------------------------------------
+    chi = a phi:  chi_k'' + [k^2 + m^2 a^2 + (6 xi - 1) a''/a] chi_k = 0  (xi = 1/6 conformal, 0 minimal),
+    solved by Part A between static in/out regions. Massless + conformal: omega_k = k, nothing is made for any
+    a(eta). |beta_k|^2 is per comoving mode; number densities from number_density_isotropic are per comoving
+    volume (divide by a_out^3), and for this real field pairs = particles/2.
+
 Assumptions and validity range
     Free fields in a classical, prescribed background (no back-reaction); adiabatic in AND out
     regions (omega^2 > 0 and slowly varying at both window ends). Inside the window omega^2 may be
@@ -633,6 +640,73 @@ def lcfa_pairs_per_volume(m: float, eE0: float, tau: float, fermion: bool, n: in
     return float(np.sum(w * pref * eE * eE * np.exp(-PI * m * m / eE)))
 
 
+# ---------------------------------------------------------------- Part C: spatially flat FRW
+def frw_tanh_scale_factor(A: float, B: float, rho: float):
+    """The Birrell-Davies sec. 3.4 universe a(eta)^2 = A + B tanh(rho eta), with analytic a''.
+
+    a' = B rho sech^2/(2a);  a'' = -B rho^2 sech^2 tanh / a - (B rho sech^2)^2/(4 a^3).
+    Quantity: callables (a(eta), a''(eta)) (dimensionless scale factor, a'' in energy^2 with eta in
+        1/energy, conformal time) and a window (eta0, eta1) = +-25/rho.
+    Valid when: A > |B| (a^2 > 0 everywhere), rho > 0."""
+    rho = float(_positive(rho, "rho"))
+    if not A > abs(B):
+        raise ValueError("need A > |B| so that a(eta)^2 > 0")
+
+    def a(eta):
+        return np.sqrt(A + B * np.tanh(rho * eta))
+
+    def a_pp(eta):
+        sh2 = 1.0 / np.cosh(rho * eta) ** 2
+        av = a(eta)
+        return -B * rho * rho * sh2 * np.tanh(rho * eta) / av - (B * rho * sh2) ** 2 / (4 * av ** 3)
+
+    return a, a_pp, (-25.0 / rho, 25.0 / rho)
+
+
+def frw_omega2(k, a, m: float, xi: float, a_pp=None, h: float = None):
+    """Mode frequency of chi = a phi for a scalar of mass m and coupling xi R phi^2/2 in flat FRW, conformal time.
+
+    chi_k'' + omega_k(eta)^2 chi_k = 0,  omega_k^2 = k^2 + m^2 a^2 + (6 xi - 1) a''/a
+    (conformal coupling xi = 1/6 removes the a''/a term, leaving the Birrell & Davies eq. 3.149 form
+    omega^2 = k^2 + m^2 a^2; minimal coupling xi = 0 leaves -a''/a). If a_pp is None, a'' is taken by a
+    5-point finite difference with step h (default 1e-2 in the units of eta): truncation about h^4 a^(6)/90,
+    roundoff about 1e-16 a/h^2; a smaller h makes the a'' noise stall the solver's step doubling.
+    Quantity: a callable eta -> omega_k(eta)^2 over the array of COMOVING wavenumbers k (energy^2, with
+        eta in 1/energy; physical momentum = k/a).
+    Valid when: a(eta) > 0; m >= 0; any real xi; spatially flat FRW (zero spatial curvature)."""
+    k = _arr(k, "k")
+    if m < 0:
+        raise ValueError("m must be >= 0")
+    if not math.isfinite(xi):
+        raise ValueError("xi must be finite")
+    kk, mm, c = k * k, m * m, 6.0 * xi - 1.0
+    if a_pp is None:
+        hh = 1e-2 if h is None else float(h)
+
+        def a_pp(eta):   # noqa: F811  (5-point second derivative)
+            return (-a(eta + 2 * hh) + 16 * a(eta + hh) - 30 * a(eta) + 16 * a(eta - hh) - a(eta - 2 * hh)) / (12 * hh * hh)
+
+    def w2(eta):
+        av = float(a(eta))
+        if not av > 0:
+            raise ValueError(f"a(eta) = {av} <= 0 at eta = {eta}")
+        return kk + mm * av * av + (c * float(a_pp(eta)) / av if c != 0 else 0.0)
+
+    return w2
+
+
+def frw_particle_production(k, a, m: float, xi: float, eta0: float, eta1: float, a_pp=None, **solver) -> dict:
+    """Particles created in flat FRW between adiabatic in (eta0) and out (eta1) regions, per comoving mode.
+
+    Runs bogoliubov_boson on frw_omega2 (keyword arguments go to the solver).
+    Quantity: dict whose "beta2" is the per-mode in-in mean number of particles in comoving mode k (real
+        scalar, dimensionless), with the solver's floor and resolved flags. For the total use
+        number_density_isotropic: particles per COMOVING volume (divide by a_out^3 for per physical
+        volume); pairs = particles/2, since each pair occupies k and -k of one real field.
+    Valid when: a(eta) and a''/a are static at both ends (omega^2 > 0 and adiabatic there), a > 0 throughout."""
+    w2 = frw_omega2(k, a, m, xi, a_pp=a_pp)
+    return bogoliubov_boson(w2, eta0, eta1, **solver)
+
 # ---------------------------------------------------------------- self-test
 def selftest(verbose: bool = True) -> bool:
     """Compare with closed forms and published results. Returns True if all pass."""
@@ -763,6 +837,33 @@ def selftest(verbose: bool = True) -> bool:
         check(f"Sauter total pairs/volume -> int dt Gamma_pairs(E(t)) ({'spinor' if fermion else 'scalar'}, tau=100)",
               sauter_pairs_per_volume(1.0, 0.3, 100.0, fermion), lcfa_pairs_per_volume(1.0, 0.3, 100.0, fermion), 1e-2,
               rel=True)
+
+
+    # C1. The tanh universe through the FRW module (Birrell & Davies sec. 3.4 via arXiv:2204.02786, eq. 3.133
+    #     "a2(eta) = A + B tanh(rho eta)" and eq. 3.140b "|beta_k|2 = sinh2(pi w-/rho) / sinh(pi w1/rho) sinh(pi w2/rho)",
+    #     conformal coupling, eta = conformal time; B&D build it in 1+1 dimensions, where conformal coupling is
+    #     xi = 0; in 3+1 it is xi = 1/6 and the mode equation is the same).
+    a_f, app_f, (e0, e1) = frw_tanh_scale_factor(2.0, 1.0, 0.7)
+    kc = np.linspace(0.05, 3.0, 12)
+    r = frw_particle_production(kc, a_f, 1.0, 1.0 / 6.0, e0, e1, a_pp=app_f)
+    check("FRW tanh universe, conformal coupling: FRW module vs eq. 3.140b, max rel. error",
+          float(np.max(np.abs(r["beta2"] / tanh_model_beta2(kc, 1.0, 2.0, 1.0, 0.7) - 1))), 0.0, 1e-6)
+
+    # C2. Null result: a massless conformally coupled field is conformally invariant, so a conformally flat FRW
+    #     produces nothing (omega_k = k exactly), for any a(eta). Here a lumpy, non-tanh expansion; minimal coupling
+    #     in the same universe does produce particles (the a''/a term).
+    def lumpy(eta):
+        return 1.0 + 0.5 * (1 + np.tanh(0.8 * eta)) + 0.3 * np.exp(-((eta - 1.0) / 0.7) ** 2)
+    r0 = frw_particle_production(kc, lumpy, 0.0, 1.0 / 6.0, -40.0, 40.0)
+    check("FRW null: m = 0, xi = 1/6 gives max |beta_k|^2 = 0 (below 1e-25)", float(r0["beta2"].max() < 1e-25), 1.0, 0)
+    r1 = frw_particle_production(kc, lumpy, 0.0, 0.0, -40.0, 40.0)
+    check("same universe, minimal coupling: production is nonzero and resolved (max |beta|^2 > 1e-4)",
+          float(r1["beta2"].max() > 1e-4 and np.all(r1["resolved"][kc < 1.5])), 1.0, 0)
+    # minimal coupling, tanh universe: analytic a'' and the finite-difference a'' agree
+    ra = frw_particle_production(kc, a_f, 1.0, 0.0, e0, e1, a_pp=app_f)
+    rf = frw_particle_production(kc, a_f, 1.0, 0.0, e0, e1)
+    check("FRW minimal coupling: finite-difference a'' matches analytic a'' (max rel.)",
+          float(np.max(np.abs(rf["beta2"] / ra["beta2"] - 1))), 0.0, 1e-5)
 
     passed = all(results)
     if verbose:
