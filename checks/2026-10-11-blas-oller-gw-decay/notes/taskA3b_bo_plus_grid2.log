@@ -1,0 +1,15 @@
+pattern bo_plus (B&O-literal isotropic real-f shell), physical amplitudes, two grids:
+   grid {'NK': 12, 'NthK': 12, 'nth': 10, 'nph': 32, 'na': 32, 'c_pole': 24}: C = 0.0096986;  C/(3/(25 pi)) = 0.25391   [463 s]
+   K-resolved ratio dC_phys/dK / dC_B&O/dK at the Gauss nodes (K in units of omega_s; s = 4 - K^2):
+      K = 0.0184:  0.2217
+      K = 0.0959:  0.2230
+      K = 0.2301:  0.2284
+      K = 0.4127:  0.2394
+      K = 0.6322:  0.2546
+      K = 0.8748:  0.2710
+      K = 1.1252:  0.2855
+      K = 1.3678:  0.2971
+      K = 1.5873:  0.3071
+      K = 1.7699:  0.3184
+      K = 1.9041:  0.3339
+      K = 1.9816:  0.3551

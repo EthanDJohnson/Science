@@ -1,0 +1,17 @@
+Task B (space-time structure of B&O's coherent state) - script index. Run from any directory with python3 <script>.
+All numbers quoted for Task B are printed by these scripts (units w_s = 1, G = 1 unless SI is stated).
+
+calc/taskB_common.py          helpers: exact position-space free field of a narrow-band spherical (l=0) or quadrupole-pattern
+                              (l=2, m=0) state, split exactly into incoming (h_l^(2)) and outgoing (h_l^(1)) parts.
+calc/taskB_luminosity_check.py  normalisation of the local (kinetic) pair rate: own closed-form sigma vs qft_second_order,
+                              two crossing plane waves vs beams_pair_rate, B&O eq. 14 reproduced, scalar-proxy weight.  (~5 s)
+calc/taskB_field_structure.py (1) the Pauli-Jordan field of B&O's shell vs time (incoming shell, focus, outgoing shell);
+                              focus strength; retarded field of a finite-duration source for contrast.            (~2 min)
+calc/taskB_pj_exact.py        (2a) exact S-matrix total of the shell (B&O kernel and gravity-weight proxy), T_eff of the
+                              2 pi delta(0) -> T step, kinetic in x out estimate and its effective cutoff.         (~20 s)
+calc/taskB_where_grid.py      (2b) exact second-order amplitude on a (t, r) grid with space and time windows:
+                              where/when the S-matrix yield is generated (l = 0 and l = 2).                      (~1 min)
+calc/taskB_ring_coherence.py  coherent ring average of the full gravity amplitude (module) for near-collinear pairs. (~2 min)
+calc/taskB_outgoing.py        (3)+(4) physical outgoing wave: yield beyond r_min (steady and burst), window-shape
+                              robustness, l=2 with near-field terms, gravity factors, GW150914-like numbers.     (~5-8 min)
+Outputs of the last run were captured in the session scratchpad (not part of the record); rerun to reproduce.

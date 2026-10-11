@@ -1,0 +1,11 @@
+(3) physical coherent states, massless scalar (spinor engine; module cross-check on a coarse grid)
+   bo_plus grid {'NK': 8, 'NthK': 8, 'nth': 8, 'nph': 24, 'na': 32}: C = 9.84701135e-04;  C/(7/(450 pi)) = 0.198870   [47 s]
+   bo_plus grid {'NK': 10, 'NthK': 12, 'nth': 8, 'nph': 24, 'na': 32}: C = 9.84728922e-04;  C/(7/(450 pi)) = 0.198875   [124 s]
+   binary grid {'NK': 8, 'NthK': 8, 'nth': 8, 'nph': 24, 'na': 32}: C = 2.34967975e-03;  C/(7/(450 pi)) = 0.474540   [12 s]
+   binary grid {'NK': 12, 'NthK': 12, 'nth': 10, 'nph': 32, 'na': 48}: C = 2.34967976e-03;  C/(7/(450 pi)) = 0.474540   [41 s]
+   linear grid {'NK': 8, 'NthK': 8, 'nth': 8, 'nph': 24, 'na': 32}: C = 1.31524543e-03;  C/(7/(450 pi)) = 0.265626   [10 s]
+   linear grid {'NK': 12, 'NthK': 12, 'nth': 10, 'nph': 32, 'na': 48}: C = 1.31524543e-03;  C/(7/(450 pi)) = 0.265626   [38 s]
+   circ grid {'NK': 4, 'NthK': 4, 'nth': 4, 'nph': 8, 'na': 16}: C = 3.03308580e-34;  C/(7/(450 pi)) = 0.000000   [3 s]
+   B&O model with the linear-quadrupole profile: C = 4.48721895e-03 (C/(7/(450 pi)) = 0.906237)
+   module cross-check, identical coarse grid, bo_plus: spinor 9.567852622087e-04, module 9.567852622038e-04, rel. diff 5.1e-12
+   module cross-check, identical coarse grid, binary: spinor 2.404250210336e-03, module 2.404250210335e-03, rel. diff 9.5e-14

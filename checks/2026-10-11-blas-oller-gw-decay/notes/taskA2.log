@@ -1,0 +1,42 @@
+Per-pair comparison: physical sum_s |M|^2 vs B&O eq.-7 integrand (same pair, same normalisation).
+Columns: photon polar angle theta (from graviton 1); azimuthal average over phi of the physical value;
+min and max over phi; B&O value (phi independent).  Units (8 pi G)^2 = 1 removed.
+
+--- B&O-literal pair (f+ = f- real, module convention = plus/plus aligned)
+   theta= 30: phys <.>_phi = 6.062500  [min 6.004758, max 6.120242]   B&O literal = 6.125000, B&O axis-reading = 6.125000
+   theta= 60: phys <.>_phi = 2.562500  [min 2.042818, max 3.082182]   B&O literal = 3.125000, B&O axis-reading = 3.125000
+   theta= 90: phys <.>_phi = 1.000000  [min 0.076120, max 1.923880]   B&O literal = 2.000000, B&O axis-reading = 2.000000
+   theta=120: phys <.>_phi = 2.562500  [min 2.042818, max 3.082182]   B&O literal = 3.125000, B&O axis-reading = 3.125000
+   int dcos <.>_phi:  physical = 6.400000,  B&O literal = 7.466667 (phys/B&O = 0.857143),  B&O axis-reading = 7.466667 (phys/B&O = 0.857143)
+--- plus (x) plus, aligned
+   theta= 30: phys <.>_phi = 6.062500  [min 6.004758, max 6.120242]   B&O literal = 6.125000, B&O axis-reading = 6.125000
+   theta= 60: phys <.>_phi = 2.562500  [min 2.042818, max 3.082182]   B&O literal = 3.125000, B&O axis-reading = 3.125000
+   theta= 90: phys <.>_phi = 1.000000  [min 0.076120, max 1.923880]   B&O literal = 2.000000, B&O axis-reading = 2.000000
+   theta=120: phys <.>_phi = 2.562500  [min 2.042818, max 3.082182]   B&O literal = 3.125000, B&O axis-reading = 3.125000
+   int dcos <.>_phi:  physical = 6.400000,  B&O literal = 7.466667 (phys/B&O = 0.857143),  B&O axis-reading = 7.466667 (phys/B&O = 0.857143)
+--- plus (x) cross (45 deg)
+   theta= 30: phys <.>_phi = 6.062500  [min 6.004758, max 6.120242]   B&O literal = 6.000000, B&O axis-reading = 6.000000
+   theta= 60: phys <.>_phi = 2.562500  [min 2.042818, max 3.082182]   B&O literal = 2.000000, B&O axis-reading = 2.000000
+   theta= 90: phys <.>_phi = 1.000000  [min 0.076120, max 1.923880]   B&O literal = 0.000000, B&O axis-reading = 0.000000
+   theta=120: phys <.>_phi = 2.562500  [min 2.042818, max 3.082182]   B&O literal = 2.000000, B&O axis-reading = 2.000000
+   int dcos <.>_phi:  physical = 6.400000,  B&O literal = 5.333333 (phys/B&O = 1.200000),  B&O axis-reading = 5.333333 (phys/B&O = 1.200000)
+--- R (x) L  (physical helicities +2, -2)
+   theta= 30: phys <.>_phi = 12.125000  [min 12.125000, max 12.125000]   B&O literal = 0.000000, B&O axis-reading = 12.125000
+   theta= 60: phys <.>_phi = 5.125000  [min 5.125000, max 5.125000]   B&O literal = 0.000000, B&O axis-reading = 5.125000
+   theta= 90: phys <.>_phi = 2.000000  [min 2.000000, max 2.000000]   B&O literal = 0.000000, B&O axis-reading = 2.000000
+   theta=120: phys <.>_phi = 5.125000  [min 5.125000, max 5.125000]   B&O literal = 0.000000, B&O axis-reading = 5.125000
+   int dcos <.>_phi:  physical = 12.800000,  B&O literal = 0.000000 (phys/B&O = n/a (B&O = 0)),  B&O axis-reading = 12.800000 (phys/B&O = 1.000000)
+--- R (x) R  (physical helicities +2, +2)
+   theta= 30: phys <.>_phi = 0.000000  [min 0.000000, max 0.000000]   B&O literal = 12.125000, B&O axis-reading = 0.000000
+   theta= 60: phys <.>_phi = 0.000000  [min 0.000000, max 0.000000]   B&O literal = 5.125000, B&O axis-reading = 0.000000
+   theta= 90: phys <.>_phi = 0.000000  [min 0.000000, max 0.000000]   B&O literal = 2.000000, B&O axis-reading = 0.000000
+   theta=120: phys <.>_phi = 0.000000  [min 0.000000, max 0.000000]   B&O literal = 5.125000, B&O axis-reading = 0.000000
+   int dcos <.>_phi:  physical = 0.000000,  B&O literal = 12.800000 (phys/B&O = 0.000000),  B&O axis-reading = 0.000000 (phys/B&O = n/a (B&O = 0))
+
+Cross-term structure, aligned plus/plus pair: physical - [(t^4+u^4)/s^2]/2 (per (8 pi G)^2), Fourier in phi
+   theta=40: phi-mean of cross term = -3.51e-15;  dominant harmonic cos(8 phi) with amplitude 0.170714;  t^2 u^2/s^2 = 0.170714;  B&O's cross term (1/2) 2 t^2u^2/s^2 = 0.170714
+   theta=75: phi-mean of cross term = -1.53e-15;  dominant harmonic cos(8 phi) with amplitude 0.870513;  t^2 u^2/s^2 = 0.870513;  B&O's cross term (1/2) 2 t^2u^2/s^2 = 0.870513
+   theta=110: phi-mean of cross term = -1.28e-15;  dominant harmonic cos(8 phi) with amplitude 0.779728;  t^2 u^2/s^2 = 0.779728;  B&O's cross term (1/2) 2 t^2u^2/s^2 = 0.779728
+
+spinor closed form vs module for these sums (max rel. diff): 9.3e-15
+exact ratio int(t^4+u^4)/int(t^2+u^2)^2 over dcos = 6/7 = 0.857143

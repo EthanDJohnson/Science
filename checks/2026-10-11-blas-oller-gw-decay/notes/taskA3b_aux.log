@@ -1,0 +1,3 @@
+coarse grid {'NK': 6, 'NthK': 6, 'nth': 6, 'nph': 16, 'na': 32, 'c_pole': 8}:  bo_plus C/(3/(25pi)) = 0.2538535873;  bo_cross = 0.2538535873 (identical: only f_+(k1) f_-(k2) products enter and (-i)(+i) = 1);  circ = 1.134e-30 (exact zero: no opposite-helicity pairs)
+axisymmetry check bo_plus: C(phi_K = 0) = 0.0096964928, C(phi_K = 0.7) = 0.0096956299
+axisymmetry check binary: C(phi_K = 0) = 0.0230893084, C(phi_K = 0.7) = 0.0230893084
