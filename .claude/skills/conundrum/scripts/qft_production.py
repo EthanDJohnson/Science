@@ -31,8 +31,9 @@ PART A. One bosonic mode with a time-dependent frequency
     modes; exact for piecewise-constant omega^2 and uniformly accurate for fast oscillations. The
     error estimate is the step-halving difference of beta; roundoff adds about 4 eps sqrt(N) |alpha|.
     Precision floor: floor(|beta|^2) = delta^2, delta = max(step-halving error, roundoff, window-end
-    mismatch) (the |beta|^2 that pure numerical noise would show; measured about 1e-29..1e-28 for the
-    tanh model, estimated conservatively at about 1e-27). The relative error of |beta|^2 is about
+    mismatch) (the |beta|^2 that pure numerical noise would show: measured 3e-30 .. 7e-28 for the tanh
+    model as the step count grows from 2e3 to 1.3e5, since roundoff accumulates; the estimate is
+    conservative, 2e-27 .. 1e-25; see the 'convergence' subcommand). The relative error of |beta|^2 is about
     2 delta/|beta| + delta^2/|beta|^2; results above flag_rel (default 1%) are flagged resolved=False,
     i.e. |beta|^2 must exceed about 4e4 x floor (strict=True raises ValueError instead).
     Window-end mismatch: starting the zeroth-order vacuum where the adiabaticity parameter is
@@ -122,7 +123,8 @@ Python usage
     q.rates_from_modes(lambda kp: q.schwinger_n_mode(kp, 1.0, 1.0), 1.0, True, 12.0)   # Gamma vs w (units of m)
     q.sauter_n_spinor(0.0, 0.3, 1.0, 0.5, 2.0)                     # exact Sauter occupation per spin
     q.stress_spectral_densities([4.0], "photon")                   # (rho2, rho0) of photon pairs at s = 4 m^2
-    q.born_scalar_general(lambda K0, Kx, Ky, Kz: ..., m=1.0, s_max=80.0, kappa_max=8.0)   # any V~(K)
+    q.born_scalar_general(lambda K0, Kx, Ky, Kz: np.exp(-(K0 - 3)**2/2 - (Kx**2 + Ky**2 + Kz**2)/2),
+                          m=1.0, s_max=80.0, kappa_max=8.0)        # any V~(K): mean number of PAIRS
 
 Command line (from the project root)
     python3 .claude/skills/conundrum/scripts/qft_production.py selftest
