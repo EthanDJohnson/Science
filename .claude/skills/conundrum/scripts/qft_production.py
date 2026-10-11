@@ -51,6 +51,25 @@ PART A. One bosonic mode with a time-dependent frequency
             |beta_k|^2 = sinh^2(pi omega_-/rho) / (sinh(pi omega_in/rho) sinh(pi omega_out/rho));
       * its adiabatic limit rho -> 0:  |beta_k|^2 -> exp(-2 pi min(omega_in, omega_out)/rho).
 
+PART B. Pair production in a homogeneous electric field E(t) along z (charge e, mass m)
+----------------------------------------------------------------------------------------
+    Kinetic momentum p(t) = k_par - e A(t), dp/dt = eE(t); eps_perp^2 = m^2 + k_perp^2; omega^2 = eps_perp^2 + p^2.
+    * Scalar QED: Part A's solver with omega_k(t)^2 = eps_perp^2 + p(t)^2.
+    * Spinor QED: per spin state the Dirac equation reduces exactly to the two-level problem
+      i dc/dt = (p(t) sigma_z + eps_perp sigma_x) c; n_k = probability of ending in the positive-energy
+      adiabatic state when starting in the negative-energy one (constant E: Landau-Zener).
+    * Sauter pulse E0 sech^2(t/tau): exact n_k (Narozhny & Nikishov 1970; Gavrilov & Gitman 1996 eqs. 42-43).
+    * Constant field: n_k = exp(-pi eps_perp^2/(eE)) per mode (and per spin). From the SAME n_k:
+        mean number of pairs per volume per time  Gamma = g eE/(2pi) int d^2k_perp/(2pi)^2 n_k
+            = (eE)^2/(4pi^3) e^{-pi m^2/eE} (spinor, g = 2), (eE)^2/(8pi^3) e^{-pi m^2/eE} (scalar):
+            ONLY the n = 1 term of Schwinger's series (Nikishov; Cohen & McGady 2008);
+        vacuum-decay rate  w = g eE/(2pi) int d^2k_perp/(2pi)^2 [-ln(1 - n_k)] (fermions) or [+ln(1 + n_k)] (bosons)
+            = 2 Im L_eff = (eE)^2/(4pi^3) sum_n n^-2 e^{-n pi m^2/eE} (spinor),
+                           (eE)^2/(8pi^3) sum_n (-1)^{n+1} n^-2 e^{-n pi m^2/eE} (scalar).
+      w > Gamma for fermions, w < Gamma for bosons; they agree only at weak field. Im L_eff alone is w/2.
+    Pairs vs particles: for a charged (complex) field n_k is the number of particles in k, which equals the
+    number of antiparticles in -k and the number of pairs in that mode: no factor 1/2.
+
 Assumptions and validity range
     Free fields in a classical, prescribed background (no back-reaction); adiabatic in AND out
     regions (omega^2 > 0 and slowly varying at both window ends). Inside the window omega^2 may be
@@ -64,10 +83,14 @@ Python usage
     w2, (t0, t1) = q.tanh_model_omega2(k, m=1.0, A=2.0, B=1.0, rho=0.5)
     r = q.bogoliubov_boson(w2, t0, t1)                             # r["beta2"], r["floor"], r["resolved"]
     q.tanh_model_beta2(k, 1.0, 2.0, 1.0, 0.5)                      # closed form
+    q.rates_from_modes(lambda kp: q.schwinger_n_mode(kp, 1.0, 1.0), 1.0, True, 12.0)   # Gamma vs w (units of m)
+    q.sauter_n_spinor(0.0, 0.3, 1.0, 0.5, 2.0)                     # exact Sauter occupation per spin
 
 Command line (from the project root)
     python3 .claude/skills/conundrum/scripts/qft_production.py selftest
     python3 .claude/skills/conundrum/scripts/qft_production.py tanh --m 1 --A 2 --B 1 --rho 0.5 --k 0.5
+    python3 .claude/skills/conundrum/scripts/qft_production.py schwinger --E "1.32e18 V/m"            (electron default)
+    python3 .claude/skills/conundrum/scripts/qft_production.py sauter --E "3e17 V/m" --tau "1e-19 s" --scalar
 """
 from __future__ import annotations
 
@@ -129,6 +152,14 @@ def rate_density_to_SI(r_eV4: float) -> float:
     Quantity: events per unit volume per unit time in m^-3 s^-1 (whatever was counted).
     Valid when: r_eV4 is a rate density in eV^4."""
     return r_eV4 * (E_CHARGE / (HBAR * C)) ** 3 * (E_CHARGE / HBAR)
+
+
+def eE_from_field_SI(E_V_per_m: float) -> float:
+    """Natural-unit field strength eE in eV^2 from E in V/m: eE = e E hbar c / e^2 (Heaviside-Lorentz, hbar = c = 1).
+
+    Quantity: eE in eV^2 (eE = m^2 at the critical field E_c = m^2 c^3/(e hbar) = 1.32e18 V/m for electrons).
+    Valid when: E_V_per_m is a field strength in V/m (any sign; the magnitude is returned)."""
+    return abs(E_V_per_m) * HBAR * C / E_CHARGE
 
 
 # ---------------------------------------------------------------- input checks
@@ -348,6 +379,260 @@ def number_density_isotropic(beta2_of_k, kmax: float, n: int = 64, g: float = 1.
     return float(g / (2 * PI * PI) * np.sum(w * k * k * b2))
 
 
+# ---------------------------------------------------------------- Part B: pair production in an electric field
+def _magnus_two_level(ax_of_t, az_of_t, t0: float, t1: float, n: int, c0: np.ndarray, c1: np.ndarray):
+    """Propagate i dc/dt = (ax sigma_x + az sigma_z) c with n 4th-order Magnus steps (exact SU(2) exponential)."""
+    h = (t1 - t0) / n
+    for j in range(n):
+        t = t0 + j * h
+        x1, z1 = np.asarray(ax_of_t(t + _G1 * h), dtype=float), np.asarray(az_of_t(t + _G1 * h), dtype=float)
+        x2, z2 = np.asarray(ax_of_t(t + _G2 * h), dtype=float), np.asarray(az_of_t(t + _G2 * h), dtype=float)
+        # b = (h/2)(a1 + a2) + (sqrt3 h^2/6)(a2 x a1), a = (ax, 0, az): a2 x a1 = (0, z2 x1 - x2 z1, 0)
+        bx, bz = 0.5 * h * (x1 + x2), 0.5 * h * (z1 + z2)
+        by = (_SQRT3 * h * h / 6.0) * (z2 * x1 - x2 * z1)
+        nb = np.sqrt(bx * bx + by * by + bz * bz)
+        cb = np.cos(nb)
+        sb = np.where(nb < 1e-8, 1.0 - nb * nb / 6.0, np.sin(nb) / np.where(nb < 1e-8, 1.0, nb))
+        # U = cos|b| - i sin|b|/|b| (bx sx + by sy + bz sz)
+        n0 = cb * c0 - 1j * sb * (bz * c0 + (bx - 1j * by) * c1)
+        n1 = cb * c1 - 1j * sb * ((bx + 1j * by) * c0 - bz * c1)
+        c0, c1 = n0, n1
+    return c0, c1
+
+
+def bogoliubov_fermion_efield(p_of_t, eps_perp, t0: float, t1: float, steps: int = 2000, rtol: float = 1e-7,
+                              max_steps: int = 2 ** 16, strict: bool = False, flag_rel: float = 1e-2) -> dict:
+    """Spinor-QED pair occupation for a homogeneous E(t) along z, one spin state, by the two-level reduction.
+
+    For fixed canonical momentum k and either spin, the Dirac equation in a homogeneous electric field reduces
+    to i dc/dt = (p(t) sigma_z + eps_perp sigma_x) c, p(t) = k_par - e A(t) (kinetic momentum along E,
+    dp/dt = eE), eps_perp = sqrt(m^2 + k_perp^2); the instantaneous energies are +-omega = +-sqrt(eps_perp^2 + p^2).
+    Start in the negative-energy adiabatic state at t0; n_k = |<positive-energy adiabatic state at t1|c(t1)>|^2.
+    Constant E gives Landau-Zener, n_k = exp(-pi eps_perp^2/(eE)) (= Schwinger's occupation).
+    p_of_t(t) returns an array over modes (energy); eps_perp is an array (energy).
+
+    Quantity: per-mode, per-spin-state in-in mean number of electrons in mode k (= positrons in -k = pairs
+        in that mode) after the field has switched off, |beta_k|^2 (dimensionless); with error estimate,
+        precision floor of n, relative error and 'resolved' flags as in bogoliubov_boson. Both spin
+        states give the same n_k in a purely electric field (multiply sums by 2).
+    Valid when: E(t) homogeneous (no magnetic field), the field is off at both window ends
+        (|d theta/dt|/omega <= 1e-3, theta the adiabatic mixing angle), eps_perp > 0, t1 > t0."""
+    t0, t1 = float(t0), float(t1)
+    if not (math.isfinite(t0) and math.isfinite(t1)) or t1 <= t0:
+        raise ValueError("need finite t0 < t1")
+    ep = np.atleast_1d(_positive(eps_perp, "eps_perp")).astype(float)
+    p_in = np.atleast_1d(np.asarray(p_of_t(t0), dtype=float)) * np.ones_like(ep)
+    if not np.all(np.isfinite(p_in)):
+        raise ValueError("p(t0) must be finite")
+
+    def theta(t):
+        return np.arctan2(ep, np.asarray(p_of_t(t), dtype=float) * np.ones_like(ep))
+
+    d = 1e-4 * (t1 - t0)
+    eps_end = np.zeros_like(ep)
+    for te in (t0, t1):
+        om = np.sqrt(ep ** 2 + (np.asarray(p_of_t(te), dtype=float) * np.ones_like(ep)) ** 2)
+        eps_end = np.maximum(eps_end, np.abs(theta(te + d) - theta(te - d)) / (2 * d) / om)
+    if np.any(eps_end > 1e-3):
+        raise ValueError(f"window ends are not adiabatic (|d theta/dt|/omega up to {eps_end.max():.3g} > 1e-3): "
+                         "extend the window so the field has switched off")
+    if steps < 2 or max_steps < steps:
+        raise ValueError("need 2 <= steps <= max_steps")
+    th0, th1 = theta(t0), theta(t1)
+    ax = lambda t: ep  # noqa: E731
+    az = lambda t: np.asarray(p_of_t(t), dtype=float) * np.ones_like(ep)  # noqa: E731
+
+    def run(n):
+        c0, c1 = _magnus_two_level(ax, az, t0, t1, n, -np.sin(th0 / 2) + 0j, np.cos(th0 / 2) + 0j)
+        up = np.cos(th1 / 2) * c0 + np.sin(th1 / 2) * c1            # <+|c>, |+> = (cos th/2, sin th/2)
+        dn = -np.sin(th1 / 2) * c0 + np.cos(th1 / 2) * c1
+        return up, dn
+
+    n = int(steps)
+    b1, _ = run(n)
+    while True:
+        b2, a2 = run(2 * n)
+        err = np.abs(np.abs(b2) - np.abs(b1))                       # global phase is irrelevant
+        roundoff = 4.0 * _EPS * math.sqrt(2 * n) * np.ones_like(ep)
+        floor_amp = np.maximum.reduce([err, roundoff, eps_end / 4.0])
+        above = np.abs(b2) > 200 * floor_amp
+        converged = bool(np.all(err[above] <= rtol * np.abs(b2[above]))) if np.any(above) else True
+        if converged or 4 * n > max_steps:
+            break
+        n, b1 = 2 * n, b2
+    nk = np.abs(b2) ** 2
+    floor = floor_amp ** 2
+    with np.errstate(divide="ignore", invalid="ignore"):
+        relerr = np.where(nk > 0, 2 * floor_amp / np.sqrt(nk) + floor / nk, np.inf)
+    resolved = relerr <= flag_rel
+    if strict and not np.all(resolved):
+        raise ValueError(f"{int(np.sum(~resolved))} mode(s) have n_k too close to the precision floor "
+                         f"(floor {floor.min():.3g}..{floor.max():.3g})")
+    return {"n": nk, "floor": floor, "n_relerr": relerr, "resolved": resolved, "steps": 2 * n,
+            "converged": converged, "unitarity_error": np.abs(nk + np.abs(a2) ** 2 - 1.0), "eps_end": eps_end}
+
+
+def sauter_kinetic_momentum(k_par, eE0: float, tau: float):
+    """Kinetic momentum p(t) = k_par + eE0 tau tanh(t/tau) for the Sauter pulse E(t) = E0 sech^2(t/tau).
+
+    (Gauge A_z = -E0 tau tanh(t/tau); dp/dt = eE(t). In -> out, p goes from k_par - eE0 tau to k_par + eE0 tau.)
+    Quantity: a callable t -> p(t) over the array k_par (energy) and a window (t0, t1) = +-20 tau (1/energy).
+    Valid when: eE0 > 0 (energy^2), tau > 0 (1/energy)."""
+    k = _arr(k_par, "k_par")
+    eE0, tau = float(_positive(eE0, "eE0")), float(_positive(tau, "tau"))
+    return (lambda t: k + eE0 * tau * np.tanh(t / tau)), (-20.0 * tau, 20.0 * tau)
+
+
+def _log_cosh(x):
+    x = np.abs(np.asarray(x, dtype=float))
+    return x + np.log1p(np.exp(-2.0 * x)) - math.log(2.0)
+
+
+def _sauter_in_out(k_par, k_perp, m, eE0, tau):
+    k_par, k_perp = _arr(k_par, "k_par"), _arr(k_perp, "k_perp")
+    if m < 0:
+        raise ValueError("m must be >= 0")
+    eE0, tau = float(_positive(eE0, "eE0")), float(_positive(tau, "tau"))
+    e2 = m * m + k_perp ** 2
+    if np.any(e2 <= 0):
+        raise ValueError("need m^2 + k_perp^2 > 0")
+    w_in = np.sqrt(e2 + (k_par - eE0 * tau) ** 2)
+    w_out = np.sqrt(e2 + (k_par + eE0 * tau) ** 2)
+    return w_in, w_out, eE0, tau
+
+
+def sauter_n_scalar(k_par, k_perp, m: float, eE0: float, tau: float):
+    """Exact scalar-QED occupation for the Sauter pulse E(t) = E0 sech^2(t/tau) (Narozhny & Nikishov 1970).
+
+    Gavrilov & Gitman 1996 (PRD 53, 7162) eq. 43; Kim, Lee & Yoon 2008 (arXiv:0807.2696) eq. 68:
+        n_k = [cosh(2 pi lam) + cosh(pi tau (w_out - w_in))] / (2 sinh(pi tau w_in) sinh(pi tau w_out)),
+        lam = sqrt((eE0 tau^2)^2 - 1/4) (cosh(2 pi lam) -> cos(2 pi |lam|) when eE0 tau^2 < 1/2),
+        w_in/out = sqrt(m^2 + k_perp^2 + (k_par -/+ eE0 tau)^2) (k_par = canonical momentum along E).
+    Quantity: per-mode in-in mean number of scalar particles in mode k (= antiparticles in -k = pairs in
+        that mode), dimensionless; complex scalar field, charge e.
+    Valid when: homogeneous Sauter pulse, m^2 + k_perp^2 > 0, eE0 > 0 (energy^2), tau > 0 (1/energy)."""
+    w_in, w_out, eE0, tau = _sauter_in_out(k_par, k_perp, m, eE0, tau)
+    lam2 = (eE0 * tau * tau) ** 2 - 0.25
+    D = PI * tau * np.abs(w_out - w_in)
+    den = math.log(2.0) + _log_sinh(PI * tau * w_in) + _log_sinh(PI * tau * w_out)
+    if lam2 >= 0:
+        num = np.logaddexp(_log_cosh(2 * PI * math.sqrt(lam2)), _log_cosh(D))
+    else:
+        num = _log_cosh(D) + np.log1p(math.cos(2 * PI * math.sqrt(-lam2)) * np.exp(-_log_cosh(D)))
+    return np.exp(num - den)
+
+
+def sauter_n_spinor(k_par, k_perp, m: float, eE0: float, tau: float):
+    """Exact spinor-QED occupation per spin state for the Sauter pulse E(t) = E0 sech^2(t/tau).
+
+    Gavrilov & Gitman 1996 eq. 42 (Narozhny & Nikishov 1970):
+        n_k = sinh[(pi tau/2)(2 eE0 tau + w_in - w_out)] sinh[(pi tau/2)(2 eE0 tau + w_out - w_in)]
+              / (sinh(pi tau w_in) sinh(pi tau w_out)),   w_in/out as in sauter_n_scalar.
+    Quantity: per-mode, per-spin-state in-in mean number of electrons in mode k (= positrons = pairs in
+        that mode), dimensionless; multiply by 2 for both spins.
+    Valid when: homogeneous Sauter pulse, m^2 + k_perp^2 > 0, eE0 > 0 (energy^2), tau > 0 (1/energy)."""
+    w_in, w_out, eE0, tau = _sauter_in_out(k_par, k_perp, m, eE0, tau)
+    a = 2 * eE0 * tau
+    num = _log_sinh(0.5 * PI * tau * (a + w_in - w_out)) + _log_sinh(0.5 * PI * tau * (a + w_out - w_in))
+    return np.exp(num - _log_sinh(PI * tau * w_in) - _log_sinh(PI * tau * w_out))
+
+
+def schwinger_n_mode(k_perp, m: float, eE: float):
+    """Constant-field occupation per mode n_k = exp(-pi (m^2 + k_perp^2)/(eE)) (Landau-Zener form).
+
+    Kim, Lee & Yoon 2008 (arXiv:0807.2696), after eqs. 46 and 51; Cohen & McGady 2008 eq. 20.
+    Quantity: per-mode in-in mean number (per spin state for fermions; same for scalars) of particles
+        in a mode whose kinetic momentum sweeps through k_par = 0 while the field is on; dimensionless.
+    Valid when: E constant over a time T >> sqrt(m^2 + k_perp^2)/(eE) around the crossing; in a pulse,
+        eE0 tau^2 >> 1 and |k_par| << eE0 tau (Sauter)."""
+    kp = _arr(k_perp, "k_perp")
+    if m < 0:
+        raise ValueError("m must be >= 0")
+    eE = float(_positive(eE, "eE"))
+    if np.any(m * m + kp * kp <= 0):
+        raise ValueError("need m^2 + k_perp^2 > 0")
+    return np.exp(-PI * (m * m + kp * kp) / eE)
+
+
+def rates_from_modes(n_of_kperp, eE: float, fermion: bool, kmax: float, n: int = 200) -> dict:
+    """Pair-number rate AND vacuum-decay rate per unit volume, both from the same per-mode occupation n_k.
+
+    In a constant field each k_par mode makes its transition once, at a rate eE/(2 pi) modes per unit
+    length per unit time; summing over k_perp (d^2k/(2pi)^2) and the g spin states (2 for spinors, 1 for scalars):
+        pair-number rate  Gamma = g eE/(2pi) int d^2k_perp/(2pi)^2 n_k              (in-in mean number)
+        vacuum decay      w     = g eE/(2pi) int d^2k_perp/(2pi)^2 [-ln(1 - n_k)]   (fermions)
+                          w     =   eE/(2pi) int d^2k_perp/(2pi)^2 [+ln(1 + n_k)]   (bosons)
+    w = 2 Im L_eff (Schwinger's sum over n); Gamma is only its n = 1 term (Nikishov; Cohen & McGady 2008).
+    Quantity: dict with 'pair_rate' (mean number of PAIRS per unit volume per unit time, energy^4) and
+        'decay_rate' w (vacuum decay: P(vacuum survives) = exp(-w V T), energy^4), plus 'ratio' = w/Gamma.
+    Valid when: constant homogeneous E (eE > 0, energy^2); n_of_kperp(k_perp) returns 0 <= n_k < 1
+        (fermions) or n_k >= 0 (bosons); n_k negligible beyond kmax."""
+    eE = float(_positive(eE, "eE"))
+    if not (kmax > 0 and math.isfinite(kmax)) or n < 8:
+        raise ValueError("need kmax > 0 and n >= 8")
+    k, w = _gauss_legendre(0.0, kmax, n)
+    nk = np.asarray(n_of_kperp(k), dtype=float)
+    if np.any(nk < 0) or (fermion and np.any(nk >= 1)):
+        raise ValueError("occupations must satisfy 0 <= n_k (< 1 for fermions)")
+    g = 2.0 if fermion else 1.0
+    pref = eE / (2 * PI) / (2 * PI)                          # eE/(2pi) x d^2k/(2pi)^2 = k dk/(2pi)
+    pair = g * pref * float(np.sum(w * k * nk))
+    decay = g * pref * float(np.sum(w * k * (-np.log1p(-nk) if fermion else np.log1p(nk))))
+    return {"pair_rate": pair, "decay_rate": decay, "ratio": decay / pair if pair > 0 else float("nan")}
+
+
+def schwinger_closed_forms(m: float, eE: float, fermion: bool) -> dict:
+    """Schwinger closed forms (Cohen & McGady 2008 eqs. 2 and 5; Kim, Lee & Yoon 2008 eqs. 45-46, 50).
+
+    spinor: Gamma = (eE)^2/(4 pi^3) e^{-pi m^2/eE},   w = (eE)^2/(4 pi^3) sum_n n^-2 e^{-n pi m^2/eE}
+    scalar: Gamma = (eE)^2/(8 pi^3) e^{-pi m^2/eE},   w = (eE)^2/(8 pi^3) sum_n (-1)^{n+1} n^-2 e^{-n pi m^2/eE}
+    (sums done exactly with mpmath polylog Li_2). w = 2 Im L_eff; Im L_eff alone is HALF the decay rate.
+    Quantity: dict with 'pair_rate' Gamma (mean number of pairs per unit volume per unit time) and
+        'decay_rate' w (vacuum decay rate per unit volume), both in energy^4, and 'im_L_eff' = w/2.
+    Valid when: constant homogeneous E, m > 0, eE > 0 (energy^2); one-loop (no back-reaction)."""
+    import mpmath as mp
+    m = float(_positive(m, "m"))
+    eE = float(_positive(eE, "eE"))
+    x = mp.e ** (-mp.pi * m * m / eE)
+    pref = eE * eE / (4 * PI ** 3) if fermion else eE * eE / (8 * PI ** 3)
+    li = mp.polylog(2, x) if fermion else -mp.polylog(2, -x)
+    w = float(pref * li)
+    return {"pair_rate": float(pref * x), "decay_rate": w, "im_L_eff": w / 2, "ratio": float(li / x)}
+
+
+def sauter_pairs_per_volume(m: float, eE0: float, tau: float, fermion: bool, n: int = 96) -> float:
+    """Total pairs per unit volume made by a Sauter pulse: g int d^3k/(2pi)^3 n_k with the exact n_k.
+
+    Quantity: mean number of PAIRS per unit volume after the pulse (energy^3; g = 2 spins for spinors,
+        1 for a complex scalar); in-in expectation, not a rate.
+    Valid when: as sauter_n_scalar/sauter_n_spinor, m > 0; the quadrature covers |k_par| <= eE0 tau + R and
+        k_perp <= R, R = 12 (sqrt(eE0) + m + 1/tau); check convergence by changing n."""
+    m = float(_positive(m, "m"))
+    eE0, tau = float(_positive(eE0, "eE0")), float(_positive(tau, "tau"))
+    reach = 12.0 * (math.sqrt(eE0) + m + 1.0 / tau)
+    kz, wz = _gauss_legendre(-eE0 * tau - reach, eE0 * tau + reach, n)
+    kp, wp = _gauss_legendre(0.0, reach, n)
+    KZ, KP = np.meshgrid(kz, kp, indexing="ij")
+    nk = sauter_n_spinor(KZ, KP, m, eE0, tau) if fermion else sauter_n_scalar(KZ, KP, m, eE0, tau)
+    g = 2.0 if fermion else 1.0
+    return float(g * np.einsum("i,j,ij->", wz, wp * kp, nk) / (4 * PI * PI))   # d^3k/(2pi)^3 = dk_z k dk/(4pi^2)
+
+
+def lcfa_pairs_per_volume(m: float, eE0: float, tau: float, fermion: bool, n: int = 400) -> float:
+    """Locally-constant-field estimate int dt Gamma_pairs(E(t)) for the Sauter pulse.
+
+    Quantity: mean number of PAIRS per unit volume (energy^3), integrating the Schwinger pair-number rate
+        (NOT the vacuum-decay rate) over E(t) = E0 sech^2(t/tau).
+    Valid when: eE0 tau^2 >> 1 and m tau >> 1 (field slowly varying on the formation time); relative
+        corrections O(1/(eE0 tau^2))."""
+    m = float(_positive(m, "m"))
+    eE0, tau = float(_positive(eE0, "eE0")), float(_positive(tau, "tau"))
+    t, w = _gauss_legendre(-6 * tau, 6 * tau, n)
+    eE = eE0 / np.cosh(t / tau) ** 2
+    pref = 1 / (4 * PI ** 3) if fermion else 1 / (8 * PI ** 3)
+    return float(np.sum(w * pref * eE * eE * np.exp(-PI * m * m / eE)))
+
+
 # ---------------------------------------------------------------- self-test
 def selftest(verbose: bool = True) -> bool:
     """Compare with closed forms and published results. Returns True if all pass."""
@@ -418,6 +703,67 @@ def selftest(verbose: bool = True) -> bool:
     check("number_density_isotropic: Gaussian test integrand", number_density_isotropic(lambda kk: np.exp(-kk * kk), 12.0),
           1.0 / (8 * PI ** 1.5), 1e-12, rel=True)
 
+
+    # B1/B2. Sauter pulse E(t) = E0 sech^2(t/tau), m = 1: both mode solvers against the exact occupations of
+    #     Gavrilov & Gitman 1996 (hep-th/9603152) eqs. 42-43, quoted: fermions "Np,r = sinh[pi alpha/2 (2eE alpha +
+    #     w- - w+)] sinh[pi alpha/2 (2eE alpha + w+ - w-)] / sinh(pi alpha w+) sinh(pi alpha w-)", scalars
+    #     "Np,r = cosh^2[pi sqrt((eE alpha^2)^2 - 1/4)] + sinh^2[pi alpha/2 (w+ - w-)] / sinh(pi alpha w+) sinh(pi alpha w-)"
+    #     (alpha = tau). (eE0, tau) = (0.2, 1) has eE0 tau^2 < 1/2, the cos branch of the scalar formula.
+    for eE0, tau in ((0.5, 2.0), (0.2, 1.0)):
+        kz = np.linspace(-1.2 * eE0 * tau, 1.2 * eE0 * tau, 9)
+        kp = np.full_like(kz, 0.3)
+        pf, (t0, t1) = sauter_kinetic_momentum(kz, eE0, tau)
+        ep = np.sqrt(1.0 + kp * kp)
+        rb = bogoliubov_boson(lambda t: ep ** 2 + pf(t) ** 2, t0, t1)
+        rf = bogoliubov_fermion_efield(pf, ep, t0, t1)
+        ns, nf = sauter_n_scalar(kz, kp, 1.0, eE0, tau), sauter_n_spinor(kz, kp, 1.0, eE0, tau)
+        check(f"Sauter scalar QED (eE0={eE0}, tau={tau}): boson solver vs GG eq. 43, max rel. error over 9 k_par",
+              float(np.max(np.abs(rb["beta2"] / ns - 1))), 0.0, 1e-6)
+        check(f"Sauter spinor QED (eE0={eE0}, tau={tau}): two-level solver vs GG eq. 42, max rel. error",
+              float(np.max(np.abs(rf["n"] / nf - 1))), 0.0, 1e-6)
+    check("two-level solver: unitarity |<+|c>|^2 + |<-|c>|^2 = 1", float(rf["unitarity_error"].max()), 0.0, 1e-10)
+
+    # B3. Constant-field limit, only where it applies (eE0 tau^2 >> 1, |k_par| << eE0 tau): n_k ->
+    #     exp(-pi (m^2 + k_perp^2)/(eE0)) for both statistics (Kim, Lee & Yoon 2008, arXiv:0807.2696, after eq. 46:
+    #     "Nk = e^-pi(m2+k2perp)/(qE)"). eE0 = 0.3, tau = 100: eE0 tau^2 = 3000; corrections O(1/(eE0 tau^2)).
+    eE0, tau, kp = 0.3, 100.0, 0.3
+    ref = float(schwinger_n_mode(kp, 1.0, eE0))
+    check("Sauter -> Schwinger at k_par = 0 (scalar)", float(sauter_n_scalar(0.0, kp, 1.0, eE0, tau)), ref, 1e-2, rel=True)
+    check("Sauter -> Schwinger at k_par = 0 (spinor)", float(sauter_n_spinor(0.0, kp, 1.0, eE0, tau)), ref, 1e-2, rel=True)
+    check("...but NOT at the edge |k_par| = 1.3 eE0 tau (n_k < 1e-3 x Schwinger: limit does not apply)",
+          float(sauter_n_spinor(1.3 * eE0 * tau, kp, 1.0, eE0, tau) < 1e-3 * ref), 1.0, 0)
+
+    # B4. Schwinger: pair number versus vacuum decay, both from the SAME n_k. Cohen & McGady 2008 (arXiv:0807.1117)
+    #     eq. 5: "Gamma = (qE)^2/4pi^3 exp(-pi m^2/qE) ... Remarkably it does not agree with w: the entire rate is
+    #     given by the first term in the series for w"; eq. 2: "w = (qE)^2/4pi^3 sum 1/n^2 exp(-n pi m^2/qE)".
+    #     Scalar: Kim, Lee & Yoon 2008 eq. 45, "Lsc_eff = ... + i (qE)^2/16pi^3 sum (-1)^(n+1)/n^2 e^(-pi m^2 n/qE)",
+    #     i.e. Im L_sc; the decay rate is 2 Im L (their eq. 25: "2(Im Lsc_eff) = sum_k ln(1 + N_k)").
+    for eE in (1.0, 10.0):
+        x = math.exp(-PI / eE)
+        for fermion in (True, False):
+            r = rates_from_modes(lambda k: schwinger_n_mode(k, 1.0, eE), eE, fermion, 12.0 * math.sqrt(eE))
+            tag = "spinor" if fermion else "scalar"
+            pair_ref = eE * eE / (4 * PI ** 3 if fermion else 8 * PI ** 3) * x
+            if fermion:
+                w_ref = eE * eE / (4 * PI ** 3) * sum(x ** n / n ** 2 for n in range(1, 400))
+            else:   # 2 x Im L_sc from KLY eq. 45, summed explicitly
+                w_ref = 2 * eE * eE / (16 * PI ** 3) * sum((-1) ** (n + 1) * x ** n / n ** 2 for n in range(1, 400))
+            check(f"{tag}, eE = {eE} m^2: pair rate from sum_k n_k = n=1 term", r["pair_rate"], pair_ref, 1e-10, rel=True)
+            check(f"{tag}, eE = {eE} m^2: decay rate from sum_k ln(..n_k) = 2 Im L_eff (all n)", r["decay_rate"], w_ref,
+                  1e-10, rel=True)
+            check(f"{tag}, eE = {eE} m^2: decay/pair - 1 = {r['ratio'] - 1:+.4f} is resolved (|.| > 1e-3)",
+                  float(abs(r["ratio"] - 1) > 1e-3 and (r["ratio"] > 1) == fermion), 1.0, 0)
+            c = schwinger_closed_forms(1.0, eE, fermion)
+            check(f"{tag}, eE = {eE} m^2: mpmath polylog closed form = mode sum", c["decay_rate"], r["decay_rate"], 1e-10,
+                  rel=True)
+
+    # B5. Total pairs per volume of a long Sauter pulse -> locally-constant-field integral of the PAIR rate,
+    #     corrections O(1/(eE0 tau^2)) (measured 5% at tau = 30 and 0.45% at tau = 100, scaling as 1/tau^2).
+    for fermion in (True, False):
+        check(f"Sauter total pairs/volume -> int dt Gamma_pairs(E(t)) ({'spinor' if fermion else 'scalar'}, tau=100)",
+              sauter_pairs_per_volume(1.0, 0.3, 100.0, fermion), lcfa_pairs_per_volume(1.0, 0.3, 100.0, fermion), 1e-2,
+              rel=True)
+
     passed = all(results)
     if verbose:
         print(f"\n{sum(results)}/{len(results)} checks passed")
@@ -444,18 +790,49 @@ def main(argv=None) -> int:
         tp.add_argument(f"--{name}", required=True, help="energy: a number in your natural unit, or e.g. '1 eV'")
     tp.add_argument("--A", type=float, required=True)
     tp.add_argument("--B", type=float, required=True)
+    sp = sub.add_parser("schwinger", help="constant field: pair-number rate vs vacuum-decay rate, from the same n_k")
+    sp.add_argument("--m", default="0.51099895 MeV", help="mass, e.g. '0.511 MeV' (default: electron)")
+    sp.add_argument("--E", required=True, help="field, e.g. '1e18 V/m'")
+    sp.add_argument("--scalar", action="store_true", help="scalar QED instead of spinor QED")
+    pp = sub.add_parser("sauter", help="Sauter pulse E0 sech^2(t/tau): exact pairs per volume vs locally-constant-field")
+    pp.add_argument("--m", default="0.51099895 MeV")
+    pp.add_argument("--E", required=True, help="peak field, e.g. '5e17 V/m'")
+    pp.add_argument("--tau", required=True, help="pulse time scale, e.g. '1e-20 s'")
+    pp.add_argument("--scalar", action="store_true")
     args = ap.parse_args(argv)
     try:
         if args.cmd == "selftest":
             return 0 if selftest() else 1
-        m, rho, k = _energy(args.m), _energy(args.rho), _energy(args.k)
-        w2f, (t0, t1) = tanh_model_omega2([k], m, args.A, args.B, rho)
-        r = bogoliubov_boson(w2f, t0, t1)
-        ref = float(tanh_model_beta2([k], m, args.A, args.B, rho)[0])
-        print(f"omega_in = {r['omega_in'][0]:.6g}, omega_out = {r['omega_out'][0]:.6g} (same unit as m)")
-        print(f"|beta_k|^2 (mean particles in mode k, in-in): solver {r['beta2'][0]:.10g}, closed form {ref:.10g}")
-        print(f"precision floor {r['floor'][0]:.2g}; resolved = {bool(r['resolved'][0])}; steps {r['steps']}")
-    except ValueError as exc:
+        if args.cmd == "tanh":
+            m, rho, k = _energy(args.m), _energy(args.rho), _energy(args.k)
+            w2f, (t0, t1) = tanh_model_omega2([k], m, args.A, args.B, rho)
+            r = bogoliubov_boson(w2f, t0, t1)
+            ref = float(tanh_model_beta2([k], m, args.A, args.B, rho)[0])
+            print(f"omega_in = {r['omega_in'][0]:.6g}, omega_out = {r['omega_out'][0]:.6g} (same unit as m)")
+            print(f"|beta_k|^2 (mean particles in mode k, in-in): solver {r['beta2'][0]:.10g}, closed form {ref:.10g}")
+            print(f"precision floor {r['floor'][0]:.2g}; resolved = {bool(r['resolved'][0])}; steps {r['steps']}")
+            return 0
+        from unit_tools import Q
+        m = _energy(args.m)
+        eE = eE_from_field_SI(Q(args.E).expect("V/m").si)
+        fermion = not args.scalar
+        tag = "spinor" if fermion else "scalar"
+        if args.cmd == "schwinger":
+            r = rates_from_modes(lambda k: schwinger_n_mode(k, m, eE), eE, fermion, 12 * math.sqrt(eE) + 12 * m)
+            c = schwinger_closed_forms(m, eE, fermion)
+            print(f"{tag} QED, m = {m:.6g} eV, eE = {eE:.6g} eV^2 = {eE / m**2:.4g} m^2")
+            print(f"pair-number rate (mean pairs per volume per time) Gamma = {r['pair_rate']:.6g} eV^4 = "
+                  f"{rate_density_to_SI(r['pair_rate']):.6g} m^-3 s^-1  (closed form {c['pair_rate']:.6g} eV^4)")
+            print(f"vacuum-decay rate w = 2 Im L_eff = {r['decay_rate']:.6g} eV^4 = {rate_density_to_SI(r['decay_rate']):.6g}"
+                  f" m^-3 s^-1  (closed form {c['decay_rate']:.6g} eV^4); w/Gamma = {r['ratio']:.6f}")
+        else:
+            tau = time_to_inverse_eV(Q(args.tau).expect("time").si)
+            n = sauter_pairs_per_volume(m, eE, tau, fermion)
+            l = lcfa_pairs_per_volume(m, eE, tau, fermion)
+            print(f"{tag} QED, m = {m:.6g} eV, eE0 = {eE:.6g} eV^2, tau = {tau:.6g} /eV, eE0 tau^2 = {eE * tau * tau:.4g}")
+            print(f"exact pairs per volume {n:.6g} eV^3 = {density_to_SI(n):.6g} m^-3; locally-constant-field "
+                  f"{l:.6g} eV^3 (ratio {n / l if l > 0 else float('nan'):.4g})")
+    except (ValueError, KeyError) as exc:
         print(f"ERROR: {exc}")
         return 1
     return 0

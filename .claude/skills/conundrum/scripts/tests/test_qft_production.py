@@ -59,6 +59,27 @@ class Refusals(unittest.TestCase):
             q.bogoliubov_boson(w2, t0, t1, strict=True)
 
 
+class ElectricFieldRefusals(unittest.TestCase):
+    def test_refusals(self):
+        pf, (t0, t1) = q.sauter_kinetic_momentum([0.0], 0.5, 2.0)
+        bad = [
+            lambda: q.bogoliubov_fermion_efield(pf, [1.0], -1.0, 1.0),        # field still on at the window ends
+            lambda: q.bogoliubov_fermion_efield(pf, [0.0], t0, t1),           # eps_perp = 0
+            lambda: q.sauter_n_scalar(0.0, 0.0, 0.0, 0.5, 2.0),               # m^2 + k_perp^2 = 0
+            lambda: q.sauter_n_spinor(0.0, 0.3, 1.0, -0.5, 2.0),              # eE0 < 0
+            lambda: q.schwinger_n_mode(0.3, 1.0, 0.0),                        # no field
+            lambda: q.schwinger_closed_forms(0.0, 1.0, True),                 # massless: closed forms diverge
+            lambda: q.rates_from_modes(lambda k: np.ones_like(k), 1.0, True, 5.0),   # Pauli: n_k = 1
+        ]
+        for i, fn in enumerate(bad):
+            with self.subTest(case=i), self.assertRaises(ValueError):
+                fn()
+
+    def test_pair_rate_and_decay_rate_differ(self):
+        r = q.rates_from_modes(lambda k: q.schwinger_n_mode(k, 1.0, 10.0), 10.0, True, 40.0)
+        self.assertGreater(r["decay_rate"], 1.1 * r["pair_rate"])
+
+
 class CommandLine(unittest.TestCase):
     def test_tanh_cli(self):
         import contextlib
@@ -68,6 +89,17 @@ class CommandLine(unittest.TestCase):
             code = q.main(["tanh", "--m", "1", "--A", "2", "--B", "1", "--rho", "0.5", "--k", "0.5"])
         self.assertEqual(code, 0)
         self.assertIn("closed form", buf.getvalue())
+
+    def test_schwinger_cli_units(self):
+        import contextlib
+        import io
+        buf = io.StringIO()
+        with contextlib.redirect_stdout(buf):
+            code = q.main(["schwinger", "--E", "1.32e18 V/m"])
+        self.assertEqual(code, 0)
+        self.assertIn("vacuum-decay rate", buf.getvalue())
+        with contextlib.redirect_stdout(io.StringIO()):
+            self.assertEqual(q.main(["schwinger", "--E", "3 J"]), 1)
 
 
 if __name__ == "__main__":
