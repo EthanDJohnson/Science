@@ -77,6 +77,35 @@ PART C. Spatially flat FRW, ds^2 = a(eta)^2 (d eta^2 - dx^2), eta = conformal ti
     a(eta). |beta_k|^2 is per comoving mode; number densities from number_density_isotropic are per comoving
     volume (divide by a_out^3), and for this real field pairs = particles/2.
 
+PART D. First-order (Born, in-in) pair production from a weak classical background, spectral form
+-------------------------------------------------------------------------------------------------
+    Fourier convention V~(K) = int d^4x e^{i K.x} V(x), K.x = K0 t - K.x, metric (+,-,-,-), s = K^2.
+    Positive K0 creates. At first order the mean number of PAIRS is
+        scalar vertex  (L = -(1/2) V phi^2 real, -V|phi|^2 complex):
+            N = int d^4K/(2pi)^4 theta(K0) |V~(K)|^2 rho(s),  rho = beta/(16 pi) (real) or beta/(8 pi) (complex)
+        gravity vertex (g = eta + h, L = -(1/2) h_{mu nu} T^{mu nu}):
+            N = (1/4) int d^4K/(2pi)^4 theta(K0) [rho2(s) X2 + rho0(s) X0],
+            X2 = h~* Pi2 h~,  X0 = |pi^{mu nu} h~_{mu nu}|^2,  pi = eta - K K/s,
+            real scalar: rho2 = s^2 beta^5/(480 pi), rho0 = (s (1 - 6 xi) + 2 m^2)^2 beta/(144 pi);
+            photon:      rho2 = s^2/(40 pi), rho0 = 0  (photon/scalar = 12 = c1/c0 of Redi & Tesi 2026)
+    (|Fourier transform of the background at total momentum K|^2 x two-particle spectral density.) The 6D
+    pair phase space collapses to a 4D integral over K: the background's support decides everything.
+    * Massive pairs need s >= 4 m^2. Every Fourier component of a source-free wave has s = 0, so a plane wave
+      AND a freely propagating finite packet give ZERO at first order (Gibbons 1975 shows the plane-wave
+      result for a massive scalar non-perturbatively). Nonzero first-order yields need timelike support:
+      a source region (V~ = -J~/K^2 off the cone), a profile that is not a vacuum solution (e.g. cut off in
+      time: wave_equation_residual_planar flags it), or a second-order background (e.g. a product of
+      non-collinear waves). Two collinear waves stay on the light cone.
+    * Massless pairs: the collinear phase space at s -> 0+ survives (rho_phi2 -> 1/(16 pi)) but the gravity
+      vertex vanishes there (rho2, rho0 ~ s^2), so plane gravitational waves still give zero. The
+      non-derivative vertex V phi^2 with m = 0 is collinear-singular on null support (the exact plane-wave
+      answer is zero by light-front momentum conservation); those functions refuse it unless s_min > 0.
+    * Entry points: born_*_homogeneous (V(t) or h(t): per unit volume), born_*_planar (V(t, z): per unit
+      transverse area), born_*_general (any V~(K) or h~(K): total). The general ones accept any spectrum
+      with timelike support, e.g. a second-order effective background.
+    * Born is only O(eps^2) exact: the self-test checks it against the exact mode solver at two amplitudes
+      and shows the deviation scaling as eps (scalar, FRW) or eps^2 (Bianchi I).
+
 Assumptions and validity range
     Free fields in a classical, prescribed background (no back-reaction); adiabatic in AND out
     regions (omega^2 > 0 and slowly varying at both window ends). Inside the window omega^2 may be
@@ -92,12 +121,16 @@ Python usage
     q.tanh_model_beta2(k, 1.0, 2.0, 1.0, 0.5)                      # closed form
     q.rates_from_modes(lambda kp: q.schwinger_n_mode(kp, 1.0, 1.0), 1.0, True, 12.0)   # Gamma vs w (units of m)
     q.sauter_n_spinor(0.0, 0.3, 1.0, 0.5, 2.0)                     # exact Sauter occupation per spin
+    q.stress_spectral_densities([4.0], "photon")                   # (rho2, rho0) of photon pairs at s = 4 m^2
+    q.born_scalar_general(lambda K0, Kx, Ky, Kz: ..., m=1.0, s_max=80.0, kappa_max=8.0)   # any V~(K)
 
 Command line (from the project root)
     python3 .claude/skills/conundrum/scripts/qft_production.py selftest
     python3 .claude/skills/conundrum/scripts/qft_production.py tanh --m 1 --A 2 --B 1 --rho 0.5 --k 0.5
     python3 .claude/skills/conundrum/scripts/qft_production.py schwinger --E "1.32e18 V/m"            (electron default)
     python3 .claude/skills/conundrum/scripts/qft_production.py sauter --E "3e17 V/m" --tau "1e-19 s" --scalar
+    python3 .claude/skills/conundrum/scripts/qft_production.py gwpacket --field photon --T 5 20 80
+    python3 .claude/skills/conundrum/scripts/qft_production.py convergence      (slow: precision floor and grid studies)
 """
 from __future__ import annotations
 
@@ -269,7 +302,8 @@ def bogoliubov_boson(omega2, t0: float, t1: float, steps: int = 2000, rtol: floa
         roundoff = 4.0 * _EPS * math.sqrt(2 * n) * np.abs(a2)
         floor_amp = np.maximum.reduce([err, roundoff, eps_end / 4.0])
         above = np.abs(b2) > 200 * floor_amp
-        converged = bool(np.all(err[above] <= rtol * np.abs(b2[above]))) if np.any(above) else True
+        tol_amp = np.maximum(rtol * np.abs(b2), 2 * roundoff)          # no point asking for less than roundoff
+        converged = bool(np.all(err[above] <= tol_amp[above])) if np.any(above) else True
         if converged or 4 * n > max_steps:
             break
         n, b1 = 2 * n, b2
@@ -463,7 +497,8 @@ def bogoliubov_fermion_efield(p_of_t, eps_perp, t0: float, t1: float, steps: int
         roundoff = 4.0 * _EPS * math.sqrt(2 * n) * np.ones_like(ep)
         floor_amp = np.maximum.reduce([err, roundoff, eps_end / 4.0])
         above = np.abs(b2) > 200 * floor_amp
-        converged = bool(np.all(err[above] <= rtol * np.abs(b2[above]))) if np.any(above) else True
+        tol_amp = np.maximum(rtol * np.abs(b2), 2 * roundoff)          # no point asking for less than roundoff
+        converged = bool(np.all(err[above] <= tol_amp[above])) if np.any(above) else True
         if converged or 4 * n > max_steps:
             break
         n, b1 = 2 * n, b2
@@ -707,6 +742,327 @@ def frw_particle_production(k, a, m: float, xi: float, eta0: float, eta1: float,
     w2 = frw_omega2(k, a, m, xi, a_pp=a_pp)
     return bogoliubov_boson(w2, eta0, eta1, **solver)
 
+# ---------------------------------------------------------------- Part D: first-order (Born, in-in) production
+_ETA = np.diag([1.0, -1.0, -1.0, -1.0])     # mostly-minus metric, K^2 = s > 0 timelike
+
+
+def pair_spectral_density_scalar(s, m: float, field: str = "real"):
+    """Two-particle spectral density rho(s) of the operator a background V couples to, for scalar pairs.
+
+    real field,    L_int = -(1/2) V phi^2, O = phi^2/2:  rho = beta/(16 pi) theta(s - 4m^2)
+    complex field, L_int = -V |phi|^2,     O = |phi|^2:   rho = beta/(8 pi)  theta(s - 4m^2)
+    beta = sqrt(1 - 4m^2/s); rho(K) = sum over pair states n of (2pi)^4 delta^4(K - p_n) |<n|O|0>|^2, the
+    identical-particle 1/2 included for the real field (two-body phase space is beta/(8 pi)).
+    Quantity: rho(s), dimensionless, per PAIR state; the Born yield is N_pairs = int d^4K/(2pi)^4 theta(K0)
+        |V~(K)|^2 rho(K^2) (mean number of PAIRS; particles = 2 x pairs).
+    Valid when: s real; m >= 0; returns 0 for s <= 4m^2 (s = 0 exactly gives 0: see the module notes
+        on the collinear massless case)."""
+    s = _arr(s, "s")
+    if m < 0:
+        raise ValueError("m must be >= 0")
+    if field not in ("real", "complex"):
+        raise ValueError("field must be 'real' or 'complex'")
+    th = 4 * m * m
+    with np.errstate(divide="ignore", invalid="ignore"):
+        beta = np.where(s > th, np.sqrt(np.clip(1 - th / np.where(s > 0, s, 1.0), 0, None)), 0.0)
+    return beta / (16 * PI if field == "real" else 8 * PI)
+
+
+def stress_spectral_densities(s, field: str = "scalar", m: float = 0.0, xi: float = 0.0):
+    """Spin-2 and spin-0 spectral densities of T^{mu nu} for pairs of a free field (the gravity vertex).
+
+    rho^{mu nu rho sigma}(K) = sum_pairs (2pi)^4 delta^4(K - p1 - p2) <0|T^{mu nu}|n><n|T^{rho sigma}|0>
+                             = rho2(s) Pi2 + rho0(s) pi^{mu nu} pi^{rho sigma},  pi = eta - K K/s,
+    Pi2 = (pi pi + pi pi)/2 - pi pi/3. Derived from the explicit vertices (checked by quadrature in the self-test):
+      real scalar (mass m, coupling xi R phi^2/2): rho2 = s^2 beta^5/(480 pi),
+                                                    rho0 = (s (1 - 6 xi) + 2 m^2)^2 beta/(144 pi);
+      photon (Maxwell):                             rho2 = s^2/(40 pi) = 12 x the massless scalar's, rho0 = 0.
+    Both vanish like s^2 on the light cone when the field is massless (conformal or not, for rho2).
+    Quantity: (rho2, rho0), dimensionful (energy^4), per PAIR state, identical-particle 1/2 included;
+        the Born yield for g = eta + h is N_pairs = (1/4) int d^4K/(2pi)^4 theta(K0) [rho2 X2 + rho0 X0].
+    Valid when: s real; field 'scalar' (m >= 0, any xi) or 'photon' (m must be 0); zero below threshold."""
+    s = _arr(s, "s")
+    if field == "photon":
+        if m != 0:
+            raise ValueError("photons are massless (m must be 0)")
+        return np.where(s > 0, s * s / (40 * PI), 0.0), np.zeros_like(s)
+    if field != "scalar":
+        raise ValueError("field must be 'scalar' or 'photon'")
+    if m < 0 or not math.isfinite(xi):
+        raise ValueError("need m >= 0 and finite xi")
+    th = 4 * m * m
+    with np.errstate(divide="ignore", invalid="ignore"):
+        beta = np.where(s > th, np.sqrt(np.clip(1 - th / np.where(s > 0, s, 1.0), 0, None)), 0.0)
+    return s * s * beta ** 5 / (480 * PI), (s * (1 - 6 * xi) + 2 * m * m) ** 2 * beta / (144 * PI)
+
+
+def _stress_spectral_numeric(s: float, field: str, m: float = 0.0, xi: float = 0.0, n: int = 24):
+    """(rho2, rho0, max |K_mu t^{mu nu}|) by explicit two-body vertices and angular quadrature in the K rest frame."""
+    E = math.sqrt(s) / 2
+    p = math.sqrt(max(E * E - m * m, 0.0))
+    ct, wct = np.polynomial.legendre.leggauss(n)
+    ph = np.arange(2 * n) * PI / n
+    rho = np.zeros((4, 4, 4, 4))
+    K = np.array([math.sqrt(s), 0, 0, 0])
+    viol = 0.0
+    for c, wc in zip(ct, wct):
+        st = math.sqrt(1 - c * c)
+        for f in ph:
+            nv = np.array([st * math.cos(f), st * math.sin(f), c])
+            p1 = np.concatenate([[E], p * nv])
+            p2 = np.concatenate([[E], -p * nv])
+            ts = []
+            if field == "scalar":
+                pp = p1 @ _ETA @ p2
+                t = -(np.outer(p1, p2) + np.outer(p2, p1)) + np.linalg.inv(_ETA) * (pp + m * m)
+                t = t - 2 * xi * (s * np.linalg.inv(_ETA) - np.outer(K, K))
+                ts.append(t)
+            else:
+                e1 = np.cross(nv, [0.0, 0.0, 1.0] if abs(c) < 0.9 else [1.0, 0.0, 0.0])
+                e1 /= np.linalg.norm(e1)
+                e2 = np.cross(nv, e1)
+                for a in (e1, e2):
+                    for b in (e1, e2):
+                        ea, eb = np.concatenate([[0.0], a]), np.concatenate([[0.0], b])
+                        f1 = np.outer(p1, ea) - np.outer(ea, p1)             # F^{mu nu} up to a common phase
+                        f2 = np.outer(p2, eb) - np.outer(eb, p2)
+                        f1l, f2l = _ETA @ f1 @ _ETA, _ETA @ f2 @ _ETA      # F_{mu nu}
+                        g = np.linalg.inv(_ETA)
+                        # T^{mu nu} = -F^{mu a} F^{nu}_a + (1/4) eta^{mu nu} F^2, bilinear part for two photons
+                        t = -(f1 @ _ETA @ f2.T + f2 @ _ETA @ f1.T) + 0.25 * g * 2 * np.sum(f1l * f2)
+                        ts.append(t)
+            for t in ts:
+                viol = max(viol, float(np.abs(K @ _ETA @ t).max()))
+                rho += (wc * PI / n) * np.einsum("ab,cd->abcd", t, t)
+    rho *= 0.5 * p / (16 * PI * PI * math.sqrt(s))    # identical-particle 1/2 x dPhi2/dOmega = |p|/(16 pi^2 sqrt s)
+    P = np.linalg.inv(_ETA) - np.outer(K, K) / s                             # pi^{mu nu}
+    Pl = _ETA @ P @ _ETA                                                      # pi_{mu nu}
+    Pi2 = 0.5 * (np.einsum("ac,bd->abcd", Pl, Pl) + np.einsum("ad,bc->abcd", Pl, Pl)) - np.einsum("ab,cd->abcd", Pl, Pl) / 3
+    rho2 = float(np.einsum("abcd,abcd->", Pi2, rho)) / 5.0
+    rho0 = float(np.einsum("ab,cd,abcd->", Pl, Pl, rho)) / 9.0
+    return rho2, rho0, viol
+
+
+def _metric_weights(K0, Kx, Ky, Kz, H):
+    """X2 = h* Pi2 h and X0 = |pi^{mu nu} h_{mu nu}|^2 for lower-index h_{mu nu}(K) (shape (..., 4, 4))."""
+    Ku = np.stack([K0, Kx, Ky, Kz], axis=-1)
+    s = K0 * K0 - Kx * Kx - Ky * Ky - Kz * Kz
+    P = np.linalg.inv(_ETA) - Ku[..., :, None] * Ku[..., None, :] / s[..., None, None]
+    H = 0.5 * (H + np.swapaxes(H, -1, -2))
+    PHP = np.einsum("...ar,...rs,...bs->...ab", P, H, P)
+    tr = np.einsum("...ab,...ab->...", P, H)
+    X0 = np.abs(tr) ** 2
+    X2 = np.real(np.einsum("...ab,...ab->...", np.conj(H), PHP)) - X0 / 3.0
+    return X2, X0
+
+
+def _ft_time(f_of_t, t0: float, t1: float, omega: np.ndarray, panels: int = None):
+    """int_t0^t1 f(t) e^{i omega t} dt by composite 16-point Gauss-Legendre (f returns (..., ) or (..., 4, 4))."""
+    if panels is None:
+        panels = int(max(8, math.ceil(2.0 * float(np.max(omega)) * (t1 - t0) / PI)))
+    x, w = np.polynomial.legendre.leggauss(16)
+    edges = np.linspace(t0, t1, panels + 1)
+    t = (0.5 * (edges[1:] - edges[:-1])[:, None] * x[None, :] + 0.5 * (edges[1:] + edges[:-1])[:, None]).ravel()
+    wt = (0.5 * (edges[1:] - edges[:-1])[:, None] * w[None, :]).ravel()
+    f = np.asarray(f_of_t(t))
+    ph = np.exp(1j * np.outer(omega, t)) * wt[None, :]
+    return np.tensordot(ph, f, axes=([1], [0]))
+
+
+def _s_nodes(s_th: float, s_max: float, n: int):
+    """Gauss nodes for int_{s_th}^{s_max} ds with s = s_th + u^2 (smooth across a sqrt threshold)."""
+    u, wu = _gauss_legendre(0.0, math.sqrt(s_max - s_th), n)
+    return s_th + u * u, 2 * u * wu
+
+
+def born_scalar_homogeneous(V_of_t, t0: float, t1: float, m: float, omega_max: float, field: str = "real",
+                            n_omega: int = 200) -> dict:
+    """Born (first-order, in-in) pairs from a spatially homogeneous V(t) coupled as -(1/2) V phi^2 (real) or -V|phi|^2.
+
+    N/Vol = int_{2m}^{omega_max} d Omega/(2 pi) |V~(Omega)|^2 rho(Omega^2),  V~(Omega) = int V(t) e^{i Omega t} dt.
+    (Equivalent to sum_k |beta_k|^2 with beta_k = (1/(2 omega_k)) int V e^{2 i omega_k t} dt at first order.)
+    Quantity: dict with 'pairs_per_volume' (mean number of PAIRS per unit volume, energy^3), 'particles_per_volume'
+        (= 2 x pairs), and the spectrum 'dN_dOmega' (pairs per volume per unit pair energy Omega) on 'omega'.
+    Valid when: |V| << m^2 + k^2 for the relevant modes (first order: compare several amplitudes), V(t) -> 0 at
+        both ends of [t0, t1], and |V~| negligible above omega_max > 2m."""
+    m = float(m)
+    if m < 0 or not omega_max > 2 * m or t1 <= t0:
+        raise ValueError("need m >= 0, omega_max > 2m and t1 > t0")
+    lo = 2 * m
+    om, w = _gauss_legendre(lo, omega_max, n_omega)
+    Vt = _ft_time(V_of_t, t0, t1, om)
+    dN = np.abs(Vt) ** 2 * pair_spectral_density_scalar(om * om, m, field) / (2 * PI)
+    N = float(np.sum(w * dN))
+    return {"pairs_per_volume": N, "particles_per_volume": 2 * N, "omega": om, "dN_dOmega": dN}
+
+
+def born_metric_homogeneous(h_of_t, t0: float, t1: float, omega_max: float, field: str = "scalar", m: float = 0.0,
+                            xi: float = 0.0, n_omega: int = 200) -> dict:
+    """Born pairs of scalars or photons from a homogeneous metric perturbation g = eta + h(t), coupled as -(1/2) h T.
+
+    h_of_t(t_array) returns lower-index h_{mu nu} with shape (len(t), 4, 4), mostly-minus signature. In the rest
+    frame of K = (Omega, 0): X2 = sum_ij |h~_ij|^2 - |sum_i h~_ii|^2/3, X0 = |sum_i h~_ii|^2, and
+    N/Vol = (1/4) int d Omega/(2 pi) [rho2 X2 + rho0 X0] (stress_spectral_densities).
+    Quantity: dict with 'pairs_per_volume' (mean number of PAIRS per unit volume, energy^3), 'particles_per_volume'
+        (= 2 x pairs), 'spin2_part' and 'spin0_part' of the pairs.
+    Valid when: |h| << 1 (first order), h -> 0 at both ends of [t0, t1], negligible spectrum above omega_max > 2m."""
+    if not omega_max > 2 * m or t1 <= t0:
+        raise ValueError("need omega_max > 2m and t1 > t0")
+    om, w = _gauss_legendre(2 * m, omega_max, n_omega)
+    H = _ft_time(h_of_t, t0, t1, om)
+    if H.shape[-2:] != (4, 4):
+        raise ValueError("h_of_t must return shape (len(t), 4, 4)")
+    z = np.zeros_like(om)
+    X2, X0 = _metric_weights(om, z, z, z, H)
+    r2, r0 = stress_spectral_densities(om * om, field, m, xi)
+    p2 = float(np.sum(w * 0.25 * r2 * X2 / (2 * PI)))
+    p0 = float(np.sum(w * 0.25 * r0 * X0 / (2 * PI)))
+    return {"pairs_per_volume": p2 + p0, "particles_per_volume": 2 * (p2 + p0), "spin2_part": p2, "spin0_part": p0}
+
+
+def _check_massless_scalar_vertex(m, s_min):
+    if m == 0 and s_min <= 0:
+        raise ValueError("massless pairs through the non-derivative vertex V phi^2: rho(s -> 0+) = 1/(16 pi) does not "
+                         "vanish, so null (plane-wave) support gives a collinear-singular Born yield, while the exact "
+                         "answer for a plane wave is zero; pass s_min > 0 to integrate only the timelike part")
+
+
+def born_scalar_planar(Vtilde, m: float, s_max: float, y_max: float, field: str = "real", s_min: float = 0.0,
+                       n_s: int = 320, n_y: int = 320) -> dict:
+    """Born pairs per unit transverse area from a planar background V(t, z) (uniform in x, y), scalar vertex.
+
+    Vtilde(K0, Kz) = int dt dz e^{i(K0 t - Kz z)} V(t, z) (arrays in, complex out). With K0 = sqrt(s) cosh y,
+    Kz = sqrt(s) sinh y (dK0 dKz = ds dy/2):  N/A = int ds dy/(2 (2pi)^2) |V~|^2 rho(s), s > max(4m^2, s_min).
+    Only timelike K contributes for massive pairs: a source-free wave (all support on K^2 = 0) gives zero.
+    Quantity: dict with 'pairs_per_area' (mean number of PAIRS per unit transverse area, energy^2) and
+        'particles_per_area' (= 2 x pairs).
+    Valid when: first order in V; |V~| negligible for s > s_max or |y| > y_max; m > 0 (or s_min > 0 for m = 0);
+        Gauss grids resolve V~ (near-light-cone features are narrow in y: check by doubling n_s, n_y and y_max)."""
+    m, s_min = float(m), float(s_min)
+    if m < 0 or s_min < 0:
+        raise ValueError("need m >= 0 and s_min >= 0")
+    _check_massless_scalar_vertex(m, s_min)
+    s_th = max(4 * m * m, s_min)
+    if not s_max > s_th or not y_max > 0:
+        raise ValueError("need s_max > max(4m^2, s_min) and y_max > 0")
+    s, ws = _s_nodes(s_th, s_max, n_s)
+    y, wy = _gauss_legendre(-y_max, y_max, n_y)
+    S, Y = np.meshgrid(s, y, indexing="ij")
+    rs = np.sqrt(S)
+    val = np.abs(np.asarray(Vtilde(rs * np.cosh(Y), rs * np.sinh(Y)))) ** 2 * pair_spectral_density_scalar(S, m, field)
+    N = float(np.einsum("i,j,ij->", ws, wy, val) / (2 * (2 * PI) ** 2))
+    return {"pairs_per_area": N, "particles_per_area": 2 * N}
+
+
+def born_metric_planar(htilde, s_max: float, y_max: float, field: str = "scalar", m: float = 0.0, xi: float = 0.0,
+                       n_s: int = 320, n_y: int = 320) -> dict:
+    """Born pairs per unit transverse area from a planar metric perturbation h_{mu nu}(t, z), gravity vertex.
+
+    htilde(K0, Kz) returns lower-index h~_{mu nu} with shape (..., 4, 4). N/A = (1/4) int ds dy/(2(2pi)^2)
+    [rho2 X2 + rho0 X0], with X2, X0 the covariant projections (any frame). rho2, rho0 vanish as s^2 on the
+    light cone for massless fields, so a plane gravitational wave (null support) gives zero even for massless pairs.
+    Quantity: dict with 'pairs_per_area' (mean number of PAIRS per unit transverse area, energy^2), 'particles_per_area'.
+    Valid when: |h| << 1; spectrum negligible beyond s_max, |y| > y_max; field 'scalar' (m, xi) or 'photon';
+        Gauss grids resolve h~ (check by doubling n_s, n_y and y_max)."""
+    if not s_max > 4 * m * m or not y_max > 0:
+        raise ValueError("need s_max > 4 m^2 and y_max > 0")
+    s, ws = _s_nodes(4 * m * m, s_max, n_s)
+    y, wy = _gauss_legendre(-y_max, y_max, n_y)
+    S, Y = np.meshgrid(s, y, indexing="ij")
+    rs = np.sqrt(S)
+    K0, Kz = rs * np.cosh(Y), rs * np.sinh(Y)
+    H = np.asarray(htilde(K0, Kz))
+    z = np.zeros_like(K0)
+    X2, X0 = _metric_weights(K0, z, z, Kz, H)
+    r2, r0 = stress_spectral_densities(S, field, m, xi)
+    N = float(np.einsum("i,j,ij->", ws, wy, 0.25 * (r2 * X2 + r0 * X0)) / (2 * (2 * PI) ** 2))
+    return {"pairs_per_area": N, "particles_per_area": 2 * N}
+
+
+def _four_nodes(s_th, s_max, kappa_max, n_s, n_k, n_c, n_p):
+    s, ws = _s_nodes(s_th, s_max, n_s)
+    k, wk = _gauss_legendre(0.0, kappa_max, n_k)
+    c, wc = np.polynomial.legendre.leggauss(n_c)
+    p = np.arange(n_p) * 2 * PI / n_p
+    S, Kk, Cc, Pp = np.meshgrid(s, k, c, p, indexing="ij")
+    W = np.einsum("i,j,k->ijk", ws, wk * k * k, wc)[..., None] * (2 * PI / n_p)
+    K0 = np.sqrt(S + Kk * Kk)
+    st = np.sqrt(1 - Cc * Cc)
+    return S, K0, Kk * st * np.cos(Pp), Kk * st * np.sin(Pp), Kk * Cc, W / (2 * K0 * (2 * PI) ** 4)
+
+
+def born_scalar_general(Vtilde4, m: float, s_max: float, kappa_max: float, field: str = "real", s_min: float = 0.0,
+                        n_s: int = 40, n_k: int = 40, n_c: int = 16, n_p: int = 16) -> dict:
+    """Born pairs from a background V(t, x) of ANY space-time profile, scalar vertex, as a 4D spectral integral.
+
+    Vtilde4(K0, Kx, Ky, Kz) = int d^4x e^{i(K0 t - K.x)} V(t, x) (arrays in, complex out); any spectrum, including
+    one with timelike support (a source, a windowed profile, or a second-order background such as a product of waves):
+        N = int d^4K/(2pi)^4 theta(K0) |V~(K)|^2 rho(K^2) = int ds rho(s) int d^3K/((2pi)^4 2 K0) |V~|^2.
+    Quantity: dict with 'pairs' (total mean number of PAIRS, dimensionless; in-in) and 'particles' (= 2 x pairs).
+    Valid when: first order in V; |V~| negligible for s > s_max or |K| > kappa_max; m > 0 (or s_min > 0); the
+        Gauss grids resolve V~ (check by doubling n_s, n_k, n_c, n_p)."""
+    m, s_min = float(m), float(s_min)
+    if m < 0 or s_min < 0:
+        raise ValueError("need m >= 0 and s_min >= 0")
+    _check_massless_scalar_vertex(m, s_min)
+    s_th = max(4 * m * m, s_min)
+    if not s_max > s_th or not kappa_max > 0:
+        raise ValueError("need s_max > max(4m^2, s_min) and kappa_max > 0")
+    S, K0, Kx, Ky, Kz, W = _four_nodes(s_th, s_max, kappa_max, n_s, n_k, n_c, n_p)
+    val = np.abs(np.asarray(Vtilde4(K0, Kx, Ky, Kz))) ** 2 * pair_spectral_density_scalar(S, m, field)
+    N = float(np.sum(W * val))
+    return {"pairs": N, "particles": 2 * N}
+
+
+def born_metric_general(htilde4, s_max: float, kappa_max: float, field: str = "scalar", m: float = 0.0,
+                        xi: float = 0.0, n_s: int = 40, n_k: int = 40, n_c: int = 16, n_p: int = 16) -> dict:
+    """Born pairs from a metric perturbation h_{mu nu}(t, x) of ANY profile (g = eta + h), gravity vertex, 4D.
+
+    htilde4(K0, Kx, Ky, Kz) returns lower-index h~_{mu nu}(K), shape (..., 4, 4). Feed it the Fourier transform
+    of whatever effective background acts at this vertex (for example a second-order product of waves):
+        N = (1/4) int d^4K/(2pi)^4 theta(K0) [rho2(K^2) X2 + rho0(K^2) X0].
+    Quantity: dict with 'pairs' (total mean number of PAIRS, dimensionless; in-in), 'particles' (= 2 x pairs),
+        'spin2_part', 'spin0_part'.
+    Valid when: |h| << 1; spectrum negligible beyond s_max, kappa_max; field 'scalar' (m, xi) or 'photon'; the
+        Gauss grids resolve h~ (check by doubling n_s, n_k, n_c, n_p)."""
+    if not s_max > 4 * m * m or not kappa_max > 0:
+        raise ValueError("need s_max > 4 m^2 and kappa_max > 0")
+    S, K0, Kx, Ky, Kz, W = _four_nodes(4 * m * m, s_max, kappa_max, n_s, n_k, n_c, n_p)
+    X2, X0 = _metric_weights(K0, Kx, Ky, Kz, np.asarray(htilde4(K0, Kx, Ky, Kz)))
+    r2, r0 = stress_spectral_densities(S, field, m, xi)
+    p2, p0 = float(np.sum(W * 0.25 * r2 * X2)), float(np.sum(W * 0.25 * r0 * X0))
+    return {"pairs": p2 + p0, "particles": 2 * (p2 + p0), "spin2_part": p2, "spin0_part": p0}
+
+
+def wave_equation_residual_planar(V_of_tz, t_range, z_range, n: int = 201) -> dict:
+    """Is a planar profile V(t, z) a source-free wave? ||(d_t^2 - d_z^2) V|| / (||d_t^2 V|| + ||d_z^2 V||) on a grid.
+
+    Every Fourier component of a solution of the free wave equation has K^2 = 0, so at first order it makes no
+    massive pairs, and through the gravity vertex no massless ones either. A nonzero first-order yield therefore
+    needs timelike support: a source region, a profile that is not a vacuum solution (e.g. a wave cut off in time),
+    or a second-order background. This check flags the second kind so that a windowing artefact is not mistaken
+    for physics.
+    Quantity: dict with 'residual' (dimensionless ratio, 4th-order finite differences) and 'non_vacuum'
+        (residual > 1e-3).
+    Valid when: V is smooth and resolved by the n x n grid over t_range x z_range."""
+    if n < 9:
+        raise ValueError("need n >= 9")
+    t = np.linspace(*t_range, n)
+    z = np.linspace(*z_range, n)
+    T, Z = np.meshgrid(t, z, indexing="ij")
+    V = np.asarray(V_of_tz(T, Z), dtype=float)
+    ht, hz = t[1] - t[0], z[1] - z[0]
+
+    def d2(A, h, ax):
+        A = np.moveaxis(A, ax, 0)
+        out = (-A[4:] + 16 * A[3:-1] - 30 * A[2:-2] + 16 * A[1:-3] - A[:-4]) / (12 * h * h)
+        return np.moveaxis(out, 0, ax)
+
+    Vtt = d2(V, ht, 0)[:, 2:-2]
+    Vzz = d2(V, hz, 1)[2:-2, :]
+    res = float(np.linalg.norm(Vtt - Vzz) / max(np.linalg.norm(Vtt) + np.linalg.norm(Vzz), 1e-300))
+    return {"residual": res, "non_vacuum": res > 1e-3}
+
 # ---------------------------------------------------------------- self-test
 def selftest(verbose: bool = True) -> bool:
     """Compare with closed forms and published results. Returns True if all pass."""
@@ -865,10 +1221,194 @@ def selftest(verbose: bool = True) -> bool:
     check("FRW minimal coupling: finite-difference a'' matches analytic a'' (max rel.)",
           float(np.max(np.abs(rf["beta2"] / ra["beta2"] - 1))), 0.0, 1e-5)
 
+
+    # D1. Spectral densities from the explicit vertices (angular quadrature of <p1 p2|T^{mu nu}|0>, conservation
+    #     K_mu t^{mu nu} = 0 checked) against the analytic forms in stress_spectral_densities.
+    for s_, fld, m_, xi_ in ((9.0, "scalar", 0.7, 0.0), (9.0, "scalar", 0.7, 0.3), (4.0, "photon", 0.0, 0.0)):
+        r2n, r0n, viol = _stress_spectral_numeric(s_, fld, m_, xi_)
+        r2a, r0a = stress_spectral_densities([s_], fld, m_, xi_)
+        check(f"{fld} (m={m_}, xi={xi_}): rho2, rho0 by explicit vertices = analytic (max rel.; conservation)",
+              max(abs(r2n / r2a[0] - 1), abs(r0n - r0a[0]) / max(abs(r0a[0]), r2a[0]), viol), 0.0, 1e-10)
+    #     Redi & Tesi 2026 (arXiv:2606.28297) eq. 5, "Ndec = 2 Im Gamma_1PI = - cJ/30720pi int d4q/(2pi)4 theta(q2)
+    #     h Pi h", with "c0 = 4/3, c1/2 = 4 and c1 = 16" (conformal scalar, Weyl fermion, gauge field). For a TT h in
+    #     the rest frame h Pi h = -6 s^2 |h|^2, and theta(q^2) covers both light cones (equal for real h), so per
+    #     positive-frequency cone the kernel of N in |h|^2 is 2 x 6 c s^2/30720 pi = c s^2/2560 pi = rho2/4.
+    for fld, cJ in (("scalar", 4.0 / 3.0), ("photon", 16.0)):
+        r2a, _ = stress_spectral_densities([2.0], fld)
+        check(f"{fld}: rho2/4 = c s^2/(2560 pi) with Redi-Tesi c = {cJ:g}", float(r2a[0] / 4), cJ * 4.0 / (2560 * PI), 1e-14,
+              rel=True)
+    check("collinear phase space survives for massless pairs: rho_phi2(s -> 0+) = 1/(16 pi) ...",
+          float(pair_spectral_density_scalar([1e-12], 0.0)[0]), 1 / (16 * PI), 1e-12, rel=True)
+    check("... but the gravity vertex vanishes there: rho2(s -> 0+)/s^2 finite, rho2 -> 0",
+          float(stress_spectral_densities([1e-12], "photon")[0][0]), 0.0, 1e-25)
+
+    # D2. Cross-check with the exact mode solver (Part A) for homogeneous backgrounds, weak field. Born is
+    #     O(eps^2) exact; the next term is O(eps^3) or O(eps^4), so the relative difference must scale with eps.
+    #     f(t) = exp(-t^2/(2 tau^2)), tau = 0.3, m = 1 (units of m).
+    tau_ = 0.3
+    fg = lambda t: np.exp(-t ** 2 / (2 * tau_ ** 2))    # noqa: E731
+    devs = []
+    for eps in (0.05, 0.1):
+        def b2(k, eps=eps):
+            return bogoliubov_boson(lambda t: k * k + 1.0 + eps * fg(t), -12 * tau_, 12 * tau_, rtol=1e-6)["beta2"]
+        ex = number_density_isotropic(b2, 12.0, n=48)
+        bo = born_scalar_homogeneous(lambda t, eps=eps: eps * fg(t), -12 * tau_, 12 * tau_, 1.0, 30.0)["particles_per_volume"]
+        devs.append(abs(ex / bo - 1))
+        check(f"scalar vertex V = eps f(t), eps = {eps} m^2: |exact/Born - 1| <= 0.6 eps", devs[-1], 0.0, 0.6 * eps)
+    check("scalar vertex: deviation halves when eps halves (ratio in [1.6, 2.4])", devs[1] / devs[0], 2.0, 0.4)
+    devs = []
+    for eps in (0.05, 0.1):    # FRW, minimal coupling: a = 1 + eps f(eta), h = 2 eps f eta_{mu nu}: trace channel only
+        b2 = lambda k, eps=eps: frw_particle_production(k, lambda e: 1 + eps * fg(e), 1.0, 0.0, -12 * tau_, 12 * tau_,   # noqa: E731
+                                                        rtol=1e-6)["beta2"]
+        ex = number_density_isotropic(b2, 12.0, n=48)
+
+        def hfrw(t, eps=eps):
+            out = np.zeros((len(t), 4, 4))
+            for i, sg in enumerate((1, -1, -1, -1)):
+                out[:, i, i] = sg * 2 * eps * fg(t)
+            return out
+        bo = born_metric_homogeneous(hfrw, -12 * tau_, 12 * tau_, 30.0, "scalar", 1.0, 0.0)
+        devs.append(abs(ex / bo["particles_per_volume"] - 1))
+        check(f"FRW a = 1 + eps f, minimal coupling, eps = {eps}: gravity-vertex Born (spin 0) vs mode solver, <= 1.5 eps",
+              devs[-1], 0.0, 1.5 * eps)
+    check("FRW: deviation scales with eps (ratio in [1.6, 2.4]); spin-2 part exactly 0", devs[1] / devs[0]
+          + 10 * abs(bo["spin2_part"]) / bo["pairs_per_volume"], 2.0, 0.4)
+    #     Bianchi I, ds^2 = dt^2 - e^{2 eps f} dx^2 - e^{-2 eps f} dy^2 - dz^2 (sqrt(-g) = 1, so the mode equation
+    #     omega^2 = m^2 + kx^2 e^{-2 eps f} + ky^2 e^{2 eps f} + kz^2 is exact); spin-2 channel only. m = 0.5.
+    kk, wk = _gauss_legendre(0, 14.0, 28)
+    cc, wc = _gauss_legendre(0, 1, 6)
+    pp, wp = _gauss_legendre(0, PI / 2, 6)
+    KK, CC, PP = np.meshgrid(kk, cc, pp, indexing="ij")
+    SS = np.sqrt(1 - CC * CC)
+    kx2, ky2, kz2 = ((KK * SS * np.cos(PP)) ** 2).ravel(), ((KK * SS * np.sin(PP)) ** 2).ravel(), ((KK * CC) ** 2).ravel()
+    Wb = (np.einsum("i,j,k->ijk", wk * kk * kk, wc, wp) * 8 / (2 * PI) ** 3).ravel()
+    devs = []
+    for eps in (0.05, 0.1):
+        r = bogoliubov_boson(lambda t, eps=eps: 0.25 + kx2 * math.exp(-2 * eps * fg(t)) + ky2 * math.exp(2 * eps * fg(t)) + kz2,
+                             -12 * tau_, 12 * tau_, rtol=1e-5)
+        ex = float(np.sum(Wb * r["beta2"]))
+
+        def hb(t, eps=eps):
+            out = np.zeros((len(t), 4, 4))
+            out[:, 1, 1], out[:, 2, 2] = -2 * eps * fg(t), 2 * eps * fg(t)
+            return out
+        bo = born_metric_homogeneous(hb, -12 * tau_, 12 * tau_, 40.0, "scalar", 0.5, 0.0)
+        devs.append(abs(ex / bo["particles_per_volume"] - 1))
+        check(f"Bianchi I eps = {eps}: gravity-vertex Born (spin 2, rho2 = s^2 beta^5/480pi) vs exact modes, <= eps^2",
+              devs[-1], 0.0, eps * eps)
+    check("Bianchi I: deviation is O(eps^2) (ratio for eps doubling in [3, 5])", devs[1] / devs[0], 4.0, 1.0)
+
+    # D3. Plane waves and packets, planar (t, z) backgrounds, m = 1 unless stated. A free packet F(t - z) has all its
+    #     support on K^2 = 0; cutting it off in time with W(t) = exp(-t^2/2T^2) makes it NOT a vacuum solution
+    #     (flagged), with timelike support of width 1/T. Exact transform: V~ = W~(K0 - Kz) F~(Kz).
+    sg_, Om_ = 2.0, 4.0
+    Fu = lambda u: np.exp(-u * u / (2 * sg_ ** 2)) * np.cos(Om_ * u)     # noqa: E731
+    Fk = lambda k: math.sqrt(2 * PI) * sg_ / 2 * (np.exp(-(k - Om_) ** 2 * sg_ ** 2 / 2) + np.exp(-(k + Om_) ** 2 * sg_ ** 2 / 2))  # noqa: E731
+    Wk = lambda q_, T: math.sqrt(2 * PI) * T * np.exp(-q_ * q_ * T * T / 2)  # noqa: E731
+    res_free = wave_equation_residual_planar(lambda t, z: Fu(t - z), (-6, 6), (-6, 6))
+    res_win = wave_equation_residual_planar(lambda t, z: Fu(t - z) * np.exp(-t * t / 18.0), (-6, 6), (-6, 6))
+    check("free packet F(t - z): wave-equation residual < 1e-6 (a vacuum solution, not flagged)",
+          float(res_free["residual"] < 1e-6 and not res_free["non_vacuum"]), 1.0, 0)
+    check("same packet cut off in time (T = 3): flagged as not a vacuum solution", float(res_win["non_vacuum"]), 1.0, 0)
+    #     Massive yield of the windowed packet falls like exp(-(2 m^2 T/Kz)^2) (s = (K0 - Kz)(K0 + Kz) >= 4 m^2 needs
+    #     K0 - Kz >= 2 m^2/Kz, a Gaussian tail of W~): measured 4.9e-3, 1.3e-11, 1.2e-28 at T = 1, 10, 20.
+    Ns = [born_scalar_planar(lambda K0, Kz, T=T: Wk(K0 - Kz, T) * Fk(Kz), 1.0, 200.0, 8.0)["pairs_per_area"]
+          for T in (1.0, 10.0, 20.0)]
+    check(f"massive pairs from a time-windowed packet: nonzero at T = 1 ({Ns[0]:.3g}) but -> 0 as T grows "
+          f"(T = 20: {Ns[2]:.2g}): the free packet gives zero", float(Ns[0] > 1e-3 and Ns[1] < 1e-6 * Ns[0]
+                                                                     and Ns[2] < 1e-20 * Ns[0]), 1.0, 0)
+    #     Gravitational plane wave h_xx = -h_yy = F(t - z) W(t): massless pairs keep collinear phase space, but the
+    #     vertex vanishes as s^2, so the yield of the windowed wave falls like 1/T (Gibbons 1975, Commun. Math. Phys.
+    #     45, 191, abstract: "the time varying gravitational field of the wave produces no particles"; the exact
+    #     statement is for a massive scalar, the massless case being its m^2 = 0 limit).
+    def h_plane(T):
+        def h(K0, Kz):
+            out = np.zeros(K0.shape + (4, 4), dtype=complex)
+            amp = Wk(K0 - Kz, T) * Fk(Kz)
+            out[..., 1, 1], out[..., 2, 2] = amp, -amp
+            return out
+        return h
+    for fld in ("scalar", "photon"):
+        N5 = born_metric_planar(h_plane(5.0), 100.0, 8.0, fld)["pairs_per_area"]
+        N20 = born_metric_planar(h_plane(20.0), 100.0, 8.0, fld)["pairs_per_area"]
+        check(f"massless {fld} pairs from a windowed gravitational plane wave: N(T=20)/N(T=5) = 1/4 (vertex ~ s^2)",
+              N20 / N5, 0.25, 0.05)
+    Nm10 = born_metric_planar(h_plane(10.0), 200.0, 8.0, "scalar", 1.0)["pairs_per_area"]
+    Nm20 = born_metric_planar(h_plane(20.0), 200.0, 8.0, "scalar", 1.0)["pairs_per_area"]
+    check(f"massive scalar pairs from the windowed gravitational wave: no phase space as T grows "
+          f"(T = 10: {Nm10:.2g}, T = 20: {Nm20:.2g}; massless at T = 20: {N20:.2g})",
+          float(Nm10 < 1e-10 * N20 and Nm20 < 1e-15 * Nm10), 1.0, 0)
+    #     Timelike support from a SOURCE region: V solves (d_t^2 - d_z^2) V = J for a localized J, so
+    #     V~ = -J~/K^2 off the light cone. J = exp(-t^2/2 - z^2/2): J~ = 2 pi exp(-(K0^2 + Kz^2)/2).
+    Nsrc = born_scalar_planar(lambda K0, Kz: 2 * PI * np.exp(-(K0 * K0 + Kz * Kz) / 2) / (K0 * K0 - Kz * Kz), 1.0, 200.0, 6.0)
+    Nsrc2 = born_scalar_planar(lambda K0, Kz: 2 * PI * np.exp(-(K0 * K0 + Kz * Kz) / 2) / (K0 * K0 - Kz * Kz), 1.0, 200.0, 6.0,
+                               n_s=640, n_y=640)
+    check(f"source region: nonzero, converged yield ({Nsrc['pairs_per_area']:.4g} pairs per unit area)",
+          float(Nsrc["pairs_per_area"] > 1e-6 and abs(Nsrc2["pairs_per_area"] / Nsrc["pairs_per_area"] - 1) < 1e-6), 1.0, 0)
+    #     Second order in the wave: the product of counter-propagating free packets F(t - z) F(t + z) (a stand-in for
+    #     any term quadratic in the wave) has K = k1 + k2 timelike: V~ = (1/2) F~((K0 + Kz)/2) F~((K0 - Kz)/2).
+    #     (Two co-propagating waves stay on the light cone: their product is still a function of t - z.)
+    N2 = born_scalar_planar(lambda K0, Kz: 0.5 * Fk((K0 + Kz) / 2) * Fk((K0 - Kz) / 2), 1.0, 400.0, 6.0)["pairs_per_area"]
+    res2 = wave_equation_residual_planar(lambda t, z: Fu(t - z) * Fu(t + z), (-6, 6), (-6, 6))
+    check(f"second order (counter-propagating product): nonzero ({N2:.4g}), and flagged as sourced, not free",
+          float(N2 > 1e-3 and res2["non_vacuum"]), 1.0, 0)
+    #     Independent check of the planar integrator in light-cone variables a = (K0 + Kz)/2, b = (K0 - Kz)/2:
+    #     s = 4ab, dK0 dKz = 2 da db, so N/A = (1/8 pi^2) int_0^inf int_0^inf da db |F~(a)|^2 |F~(b)|^2 rho(4ab).
+    aa, wa = _gauss_legendre(0.0, 12.0, 400)
+    A_, B_ = np.meshgrid(aa, aa, indexing="ij")
+    lc = float(np.einsum("i,j,ij->", wa, wa, np.abs(Fk(A_)) ** 2 * np.abs(Fk(B_)) ** 2
+                         * pair_spectral_density_scalar(4 * A_ * B_, 1.0))) / (8 * PI * PI)
+    check("planar integrator (s, rapidity) = light-cone double integral for the separable second-order background",
+          N2, lc, 1e-6, rel=True)
+
+    # D4. The general 4D spectral integral against an INDEPENDENT 6D pair-momentum integral (reduced to 3D by
+    #     isotropy): V = exp(-t^2/2T^2 - r^2/2R^2) cos(Om t), real scalar, m = 1, T = R = 1, Om = 3:
+    #     N = (1/2) int d^3p1 d^3p2 / ((2pi)^6 4 E1 E2) |V~(E1 + E2, p1 + p2)|^2.
+    def V4(K0, Kx, Ky, Kz):
+        k2 = Kx * Kx + Ky * Ky + Kz * Kz
+        return (2 * PI) ** 2 * np.exp(-k2 / 2) * 0.5 * (np.exp(-(K0 - 3.0) ** 2 / 2) + np.exp(-(K0 + 3.0) ** 2 / 2))
+    gen = born_scalar_general(V4, 1.0, 80.0, 8.0, n_c=8, n_p=4)["pairs"]
+    p1, w1 = _gauss_legendre(0, 8, 48)
+    c12, w12 = np.polynomial.legendre.leggauss(32)
+    P1, P2, C12 = np.meshgrid(p1, p1, c12, indexing="ij")
+    E1, E2 = np.sqrt(1 + P1 ** 2), np.sqrt(1 + P2 ** 2)
+    Kn = np.sqrt(P1 ** 2 + P2 ** 2 + 2 * P1 * P2 * C12)
+    integrand = np.abs(V4(E1 + E2, Kn, 0 * Kn, 0 * Kn)) ** 2 * P1 ** 2 * P2 ** 2 / (4 * E1 * E2)
+    direct = 0.5 * 4 * PI * 2 * PI * float(np.einsum("i,j,k,ijk->", w1, w1, w12, integrand)) / (2 * PI) ** 6
+    check("general 4D spectral form = direct 6D pair-momentum integral", gen, direct, 1e-6, rel=True)
+    #     ...and the general gravity vertex in every frame: h = 2 eps f(x) eta_{mu nu} with xi = 1/6 couples only through
+    #     the trace, T^mu_mu = -m^2 phi^2, so it must equal the scalar vertex with V = 2 eps m^2 f.
+    def h4(K0, Kx, Ky, Kz):
+        return V4(K0, Kx, Ky, Kz)[..., None, None] * (2 * 0.01) * _ETA
+    gm = born_metric_general(h4, 80.0, 8.0, "scalar", 1.0, 1.0 / 6.0, n_c=8, n_p=4)
+    gs = born_scalar_general(lambda *K: 2 * 0.01 * V4(*K), 1.0, 80.0, 8.0, n_c=8, n_p=4)
+    check("general gravity vertex, conformally flat h, xi = 1/6 = scalar vertex with V = 2 eps m^2 f", gm["pairs"],
+          gs["pairs"], 1e-10, rel=True)
+
     passed = all(results)
     if verbose:
         print(f"\n{sum(results)}/{len(results)} checks passed")
     return passed
+
+
+def _convergence() -> int:
+    """Slow convergence studies (not part of the self-test): mode-solver floor vs steps, Born grids."""
+    k1 = np.array([0.5])
+    print("Mode solver, tanh model k = 0.5, m = 1, A = 2, B = 1: |beta|^2 and floor vs fixed step count")
+    for rho in (0.25, 0.12, 0.07):
+        w2f, (t0, t1) = tanh_model_omega2(k1, 1.0, 2.0, 1.0, rho)
+        ref = float(tanh_model_beta2(k1, 1, 2, 1, rho)[0])
+        for n in (1000, 4000, 16000, 64000):
+            r = bogoliubov_boson(w2f, t0, t1, steps=n, max_steps=2 * n, rtol=1.0)
+            print(f"  rho={rho}: steps {r['steps']:6d}: |beta|^2 = {r['beta2'][0]:.4e} (exact {ref:.4e}), "
+                  f"floor {r['floor'][0]:.1e}, resolved {bool(r['resolved'][0])}")
+    print("Born planar, windowed packet T = 3, m = 1: pairs per area vs (y_max, grid)")
+    Fk = lambda k: math.sqrt(2 * PI) * (np.exp(-(k - 4.0) ** 2 * 2) + np.exp(-(k + 4.0) ** 2 * 2))  # noqa: E731
+    for ym, n in ((6.0, 80), (8.0, 80), (8.0, 160), (8.0, 320), (10.0, 320), (12.0, 640)):
+        N = born_scalar_planar(lambda K0, Kz: math.sqrt(2 * PI) * 3 * np.exp(-(K0 - Kz) ** 2 * 4.5) * Fk(Kz), 1.0, 300.0, ym,
+                               n_s=n, n_y=n)["pairs_per_area"]
+        print(f"  y_max {ym}, n {n}: {N:.8g}")
+    return 0
 
 
 # ---------------------------------------------------------------- command line
@@ -900,10 +1440,36 @@ def main(argv=None) -> int:
     pp.add_argument("--E", required=True, help="peak field, e.g. '5e17 V/m'")
     pp.add_argument("--tau", required=True, help="pulse time scale, e.g. '1e-20 s'")
     pp.add_argument("--scalar", action="store_true")
+    gp = sub.add_parser("gwpacket", help="Born pairs per unit area from a gravitational plane-wave packet cut off in time "
+                                         "(units: the packet's carrier frequency = 4, width 2)")
+    gp.add_argument("--field", default="photon", choices=("photon", "scalar"))
+    gp.add_argument("--m", type=float, default=0.0, help="scalar mass in the same units (photons: 0)")
+    gp.add_argument("--T", type=float, nargs="+", default=[5.0, 20.0, 80.0], help="time-window widths")
+    sub.add_parser("convergence", help="slow studies: mode-solver precision floor vs steps, Born grid convergence")
     args = ap.parse_args(argv)
     try:
         if args.cmd == "selftest":
             return 0 if selftest() else 1
+        if args.cmd == "convergence":
+            return _convergence()
+        if args.cmd == "gwpacket":
+            sg_, Om_ = 2.0, 4.0
+            print(f"h_xx = -h_yy = exp(-u^2/(2*{sg_}^2)) cos({Om_} u) exp(-t^2/(2T^2)), u = t - z: a free packet cut off in time")
+            for T in args.T:
+                res = wave_equation_residual_planar(lambda t, z: np.exp(-(t - z) ** 2 / (2 * sg_ ** 2)) * np.cos(Om_ * (t - z))
+                                                    * np.exp(-t * t / (2 * T * T)), (-3 * T, 3 * T), (-3 * T, 3 * T), 401)
+
+                def h(K0, Kz, T=T):
+                    out = np.zeros(K0.shape + (4, 4), dtype=complex)
+                    amp = (math.sqrt(2 * PI) * T * np.exp(-(K0 - Kz) ** 2 * T * T / 2) * math.sqrt(2 * PI) * sg_ / 2
+                           * (np.exp(-(Kz - Om_) ** 2 * sg_ ** 2 / 2) + np.exp(-(Kz + Om_) ** 2 * sg_ ** 2 / 2)))
+                    out[..., 1, 1], out[..., 2, 2] = amp, -amp
+                    return out
+                N = born_metric_planar(h, 200.0, 8.0, args.field, args.m)["pairs_per_area"]
+                print(f"T = {T:8.3g}: mean pairs per unit transverse area {N:.4g} (natural units); wave-equation residual "
+                      f"{res['residual']:.2g} -> {'NOT a vacuum solution (yield is a windowing effect)' if res['non_vacuum'] else 'vacuum'}")
+            print("A free packet is the T -> infinity limit: the yield goes to zero (like 1/T for massless pairs).")
+            return 0
         if args.cmd == "tanh":
             m, rho, k = _energy(args.m), _energy(args.rho), _energy(args.k)
             w2f, (t0, t1) = tanh_model_omega2([k], m, args.A, args.B, rho)

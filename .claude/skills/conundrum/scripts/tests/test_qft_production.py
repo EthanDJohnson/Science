@@ -93,6 +93,47 @@ class FRWRefusals(unittest.TestCase):
                 fn()
 
 
+class BornRefusals(unittest.TestCase):
+    def test_refusals(self):
+        V = lambda K0, Kz: np.exp(-(K0 * K0 + Kz * Kz))          # noqa: E731
+        h = lambda *K: np.zeros(np.shape(K[0]) + (4, 4))          # noqa: E731
+        bad = [
+            lambda: q.born_scalar_planar(V, 0.0, 10.0, 4.0),                       # massless + phi^2 vertex: collinear
+            lambda: q.born_scalar_general(lambda *K: K[0], 0.0, 10.0, 4.0),        # same, general
+            lambda: q.born_scalar_planar(V, 1.0, 3.0, 4.0),                        # s_max below threshold 4 m^2
+            lambda: q.born_scalar_homogeneous(lambda t: t, -1.0, 1.0, 1.0, 1.5),   # omega_max < 2m
+            lambda: q.born_metric_homogeneous(lambda t: np.zeros(len(t)), -1.0, 1.0, 5.0),   # h not 4x4
+            lambda: q.born_metric_planar(h, 10.0, 4.0, "photon", 1.0),             # massive photon
+            lambda: q.stress_spectral_densities([1.0], "graviton"),
+            lambda: q.pair_spectral_density_scalar([1.0], 1.0, "majorana"),
+            lambda: q.wave_equation_residual_planar(lambda t, z: t, (0, 1), (0, 1), n=5),
+        ]
+        for i, fn in enumerate(bad):
+            with self.subTest(case=i), self.assertRaises(ValueError):
+                fn()
+
+    def test_massless_scalar_vertex_allowed_with_cut(self):
+        r = q.born_scalar_planar(lambda K0, Kz: np.exp(-(K0 * K0 + Kz * Kz)), 0.0, 10.0, 4.0, s_min=0.5)
+        self.assertGreater(r["pairs_per_area"], 0.0)
+
+    def test_metric_weights_are_frame_independent(self):
+        # X2, X0 are Lorentz scalars: boost a timelike K and a generic h along x and compare.
+        rng = np.random.default_rng(1)
+        Hm = rng.normal(size=(4, 4)) + 1j * rng.normal(size=(4, 4))
+        K = np.array([3.0, 0.4, -0.7, 1.1])
+        y = 0.8
+        L = np.eye(4)
+        L[0, 0] = L[1, 1] = np.cosh(y)
+        L[0, 1] = L[1, 0] = np.sinh(y)
+        Kb = L @ K
+        Linv_low = np.linalg.inv(L).T            # h_{mu nu} transforms with the inverse transpose
+        Hb = Linv_low @ Hm @ Linv_low.T
+        a = q._metric_weights(*[np.array([c]) for c in K], Hm[None])
+        b = q._metric_weights(*[np.array([c]) for c in Kb], Hb[None])
+        for u, v in zip(a, b):
+            self.assertAlmostEqual(float(u[0]), float(v[0]), places=9)
+
+
 class CommandLine(unittest.TestCase):
     def test_tanh_cli(self):
         import contextlib
