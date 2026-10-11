@@ -47,6 +47,12 @@ class Docstrings(unittest.TestCase):
         self.assertIn("hbar = c = 1", qm.__doc__)
         self.assertIn("Heaviside-Lorentz", qm.__doc__)
 
+    def test_module_docstring_sections(self):
+        for section in ("Units", "Assumptions and validity", "Python usage", "Command line",
+                        "qft_magnetic.py parallel", "qft_magnetic.py selftest"):
+            with self.subTest(section=section):
+                self.assertIn(section, qm.__doc__)
+
 
 class LandauRefusals(unittest.TestCase):
     def test_refusals(self):
@@ -111,6 +117,22 @@ class FieldRefusals(unittest.TestCase):
             self.assertAlmostEqual(a["pair_rate"] / b["pair_rate"], 1.0, places=10)
             self.assertAlmostEqual(a["decay_rate"] / b["decay_rate"], 1.0, places=10)
 
+    def test_extreme_field_scales_are_rescaled(self):
+        big = qm.field_invariants([1e160, 0, 0], [1e160, 0, 0])            # E.E would overflow
+        self.assertEqual(big["kind"], "parallel-frame")
+        self.assertAlmostEqual(big["eps"] / 1e160, 1.0, places=12)
+        tiny = qm.general_rates([1e-170, 0, 0], [0, 0, 0], 0.0, True)      # E.E would underflow
+        self.assertEqual(tiny["kind"], "electric")
+        self.assertAlmostEqual(tiny["eps"] / 1e-170, 1.0, places=12)
+
+    def test_massless_spinor_clamped_e_dot_b_is_flagged_not_zero(self):
+        g = qm.general_rates([0, 0, 1e-15], [0, 0, 1.0], 0.0, True)         # w = 0 or inf: undetermined
+        self.assertTrue(g["E_dot_B_clamped"])
+        self.assertTrue(math.isnan(g["decay_rate"]))
+        self.assertIn("reason", g)
+        g = qm.general_rates([0, 0, 1e-15], [0, 0, 1.0], 1.0, True)         # massive: exp(-pi m^2/eps) = 0
+        self.assertEqual(g["decay_rate"], 0.0)
+
     def test_magnetic_type_and_null_fields_make_nothing(self):
         for B in ([0, 2.0, 0], [0, 1.0, 0], [0.5, 0, 0]):
             g = qm.general_rates([0, 0, 0] if B[0] else [1.0, 0, 0], B, 1.0, True)
@@ -132,6 +154,20 @@ class TimeDependentRefusals(unittest.TestCase):
         for i, fn in enumerate(bad):
             with self.subTest(case=i), self.assertRaises(ValueError):
                 fn()
+
+
+class SauterQuadrature(unittest.TestCase):
+    def test_short_pulse_k_par_rule_refines_itself(self):
+        # Independent reference: trapezoid on a uniform k_par grid (40001 points over [-400, 400]) times an
+        # explicit Landau sum of qp.sauter_n_*; the old plain 96-node rule was 31% (spinor) / 25% (scalar) off here.
+        for fermion, want in ((True, 2.81458421033e-3), (False, 5.45339799870e-4)):
+            r = qm.landau_sauter_pairs_per_volume(1.0, 1.0, 0.1, 1.0, fermion)
+            self.assertLess(abs(r["pairs_per_volume"] / want - 1), 1e-8)
+            self.assertLessEqual(r["quad_rel_change"], 1e-8)
+
+    def test_unconverged_rule_raises(self):
+        with self.assertRaises(ValueError):
+            qm.landau_sauter_pairs_per_volume(1.0, 1.0, 0.1, 1.0, False, n=16, n_max=32, qtol=1e-12)
 
 
 class SIHelpers(unittest.TestCase):
@@ -156,6 +192,14 @@ class CommandLine(unittest.TestCase):
         code, out = run_cli(["general", "--E", "1e18 V/m", "--B", "4e9 T", "--angle", "90"])
         self.assertEqual(code, 0)
         self.assertIn("kind = magnetic", out)
+
+    def test_sauter_cli_short_pulse_flags_lcfa_and_reports_quadrature(self):
+        code, out = run_cli(["sauter", "--E", "1e18 V/m", "--B", "1e9 T", "--tau", "1e-22 s"])
+        self.assertEqual(code, 0)
+        self.assertIn("NOT valid", out)
+        self.assertIn("k_par rule", out)
+        exact = float(out.split("after the pulse) ")[1].split(" eV^3")[0])
+        self.assertAlmostEqual(exact / 1.73246e14, 1.0, places=4)     # converged value (96 nodes gave 1.19586e14)
 
     def test_bad_units_return_1(self):
         self.assertEqual(run_cli(["parallel", "--E", "1e18 V/m", "--B", "3 J"])[0], 1)

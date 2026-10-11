@@ -91,7 +91,8 @@ PART C. Time-dependent E(t) along a constant B
       spinor:  i dc/dt = (p sigma_z + eps_perp sigma_x) c  -> qft_production.bogoliubov_fermion_efield
       Sauter pulse E0 sech^2(t/tau): Gavrilov & Gitman 1996 eqs. 42-43 (qft_production.sauter_n_*)
       with k_perp = sqrt(eps_perp^2 - m^2).
-    Total pairs per volume: N/V = eB/(2 pi) sum_j g_j int dk_par/(2 pi) n_j(k_par); the locally-constant-
+    Total pairs per volume: N/V = eB/(2 pi) sum_j g_j int dk_par/(2 pi) n_j(k_par), with a k_par rule that
+    doubles its nodes until the total is stable to 1e-8 (short pulses need thousands); the locally-constant-
     field estimate is int dt Gamma(E(t), B) with the coth/csch pair rate.
 
 Assumptions and validity range
@@ -418,18 +419,25 @@ def field_invariants(eE_vec, eB_vec) -> dict:
     eps^2 - eta^2 = E^2 - B^2, eps eta = |E.B| (Dunne 2004 eqs. 1.4-1.6 with a = eps, b = eta); boost
     velocity v along E x B with v/(1 + v^2) = |E x B|/(E^2 + B^2).
     Quantity: dict with 'eps' and 'eta' (e x field strength in the parallel frame, energy^2, >= 0),
-        'E2_minus_B2' and 'E_dot_B' (the invariants, energy^4), 'boost_velocity' (3-vector, units of c;
+        'E2_minus_B2' and 'E_dot_B' (the invariants, energy^4; may be +-inf for |eE| > ~1e154 while eps and
+        eta stay finite), 'E_dot_B_clamped' (bool, see below), 'boost_velocity' (3-vector, units of c;
         None for a null or zero field), and 'kind': 'parallel-frame', 'electric' (E.B = 0, E^2 > B^2:
         pure E after the boost), 'magnetic' (E.B = 0, B^2 > E^2: pure B), 'null' or 'zero'.
     Valid when: constant homogeneous fields; eE_vec, eB_vec are finite 3-vectors (energy^2) in one frame;
-        |E.B| <= 1e-14 (E^2 + B^2) is treated as E.B = 0 (it is below the roundoff of the components)."""
+        |E.B| <= 1e-14 (E^2 + B^2) is treated as E.B = 0 (it is below the roundoff of the components) and
+        flagged by 'E_dot_B_clamped' = True; the vectors are rescaled by their largest component first, so
+        any finite magnitudes work (no overflow of E.E above ~1e154 or underflow below ~1e-162)."""
     E, B = _vec3(eE_vec, "eE_vec"), _vec3(eB_vec, "eB_vec")
+    scale = float(max(np.max(np.abs(E)), np.max(np.abs(B))))
+    if scale == 0.0:
+        return {"eps": 0.0, "eta": 0.0, "E2_minus_B2": 0.0, "E_dot_B": 0.0, "boost_velocity": None, "kind": "zero",
+                "E_dot_B_clamped": False}
+    E, B = E / scale, B / scale       # work with O(1) components; eps, eta scale back linearly, invariants as scale^2
     E2, B2, G = float(E @ E), float(B @ B), float(E @ B)
     S = E2 + B2
-    if S == 0.0:
-        return {"eps": 0.0, "eta": 0.0, "E2_minus_B2": 0.0, "E_dot_B": 0.0, "boost_velocity": None, "kind": "zero"}
+    clamped = False
     if abs(G) <= 1e-14 * S:          # below the roundoff of the components (e.g. cos(90 deg) = 6e-17): E.B = 0
-        G = 0.0
+        clamped, G = G != 0.0, 0.0
     F = 0.5 * (E2 - B2)
     root = math.hypot(F, G)
     if F >= 0:
@@ -448,7 +456,11 @@ def field_invariants(eE_vec, eB_vec) -> dict:
         eps = eta = 0.0
     else:
         kind = "parallel-frame" if G != 0.0 else ("electric" if E2 > B2 else "magnetic")
-    return {"eps": eps, "eta": eta, "E2_minus_B2": E2 - B2, "E_dot_B": G, "boost_velocity": v, "kind": kind}
+    out = {"eps": eps * scale, "eta": eta * scale, "E2_minus_B2": (E2 - B2) * scale * scale,
+           "E_dot_B": G * scale * scale, "boost_velocity": v, "kind": kind, "E_dot_B_clamped": clamped}
+    if not (math.isfinite(out["eps"]) and math.isfinite(out["eta"])):
+        raise ValueError("field strengths overflow the float range; use a larger energy unit")
+    return out
 
 
 def boost_fields(eE_vec, eB_vec, v_vec):
@@ -477,7 +489,9 @@ def general_rates(eE_vec, eB_vec, m: float, fermion: bool, method: str = "closed
     continuous k_perp integral of qft_production.rates_from_modes).
     Quantity: dict with 'pair_rate' (IN-IN mean number of PAIRS per unit volume per unit time) and
         'decay_rate' (IN-OUT vacuum decay rate w = 2 Im L_eff per unit volume), both energy^4 and the same
-        in every frame, plus 'eps', 'eta', 'kind', 'boost_velocity' from field_invariants.
+        in every frame, plus 'eps', 'eta', 'kind', 'boost_velocity', 'E_dot_B_clamped' from field_invariants;
+        decay_rate is NaN (with a 'reason') for m = 0 spinors whose E.B was clamped to 0 with eps = 0,
+        where w jumps from 0 (E.B = 0) to infinity (E.B != 0).
     Valid when: constant homogeneous fields over a region and time much larger than the formation length
         eps_perp/(e eps); m >= 0 (m > 0 when eta = 0 and method = 'modes'); one loop."""
     inv = field_invariants(eE_vec, eB_vec)
@@ -488,6 +502,11 @@ def general_rates(eE_vec, eB_vec, m: float, fermion: bool, method: str = "closed
     if inv["eps"] == 0.0:
         out.update(pair_rate=0.0, decay_rate=0.0, reason="eps = 0 (magnetic-type, null or zero field): "
                    "no frame with an electric field, no pair production")
+        if inv["E_dot_B_clamped"] and m == 0.0 and fermion and inv["eta"] > 0:
+            # Massless spinors: w is infinite for ANY E.B != 0 (lowest level n = 1) but 0 at E.B = 0, so a
+            # roundoff-sized E.B leaves w undetermined; Gamma ~ |E.B|/(4 pi^2) is roundoff-sized and set to 0.
+            out.update(decay_rate=float("nan"), reason="massless spinor with |E.B| <= 1e-14 (E^2 + B^2) treated "
+                       "as 0: w = 0 if E.B = 0 exactly, w = inf for any E.B != 0; give E.B exactly")
         return out
     eps, eta = inv["eps"], inv["eta"]
     if method == "closed":
@@ -548,23 +567,14 @@ def landau_sauter_n(k_par, n: int, m: float, eE0: float, tau: float, eB: float, 
     return qp.sauter_n_spinor(k_par, kp, m, eE0, tau) if fermion else qp.sauter_n_scalar(k_par, kp, m, eE0, tau)
 
 
-def landau_sauter_pairs_per_volume(m: float, eE0: float, tau: float, eB: float, fermion: bool, n: int = 96,
-                                   rtol: float = 1e-15, max_levels: int = 400_000) -> dict:
-    """Total pairs per unit volume made by a Sauter pulse E0 sech^2(t/tau) parallel to a constant B.
-
-    N/V = eB/(2 pi) sum_j g_j int dk_par/(2 pi) n_j(k_par), with the exact per-channel occupations
-    (landau_sauter_n), k_par by n-point Gauss-Legendre over |k_par| <= eE0 tau + R (R = 12 (sqrt(eE0) + m + 1/tau),
-    the same nodes as qft_production.sauter_pairs_per_volume), levels summed in blocks of 256 until a block
-    adds less than rtol of the total.
-    Quantity: dict with 'pairs_per_volume' (IN-IN mean number of PAIRS per unit volume after the pulse,
-        energy^3; not a rate), 'lll_fraction' (share from the lowest Landau level), 'levels' summed.
-    Valid when: as landau_sauter_n with m > 0; levels needed (up to R^2/(2 eB)) <= max_levels: for
-        eB -> 0 use qft_production.sauter_pairs_per_volume (the B-dependence starts at O((eB/eE0)^2))."""
-    m, eE0, tau, eB = _pos(m, "m"), _pos(eE0, "eE0"), _pos(tau, "tau"), _pos(eB, "eB")
-    if n < 16 or not (0 < rtol < 1e-3):
-        raise ValueError("need n >= 16 and 0 < rtol < 1e-3")
+def _landau_sauter_sum(m: float, eE0: float, tau: float, eB: float, fermion: bool, n: int, rtol: float,
+                       max_levels: int):
+    """sum_j g_j int dk_par n_j(k_par) with an n-point sinh-mapped Gauss-Legendre rule in k_par (see
+    landau_sauter_pairs_per_volume); returns (total, lll, levels)."""
     reach = 12.0 * (math.sqrt(eE0) + m + 1.0 / tau)
-    kz, wz = _gl(-eE0 * tau - reach, eE0 * tau + reach, n)
+    s = eE0 * tau + (m if fermion else math.sqrt(m * m + eB))        # plateau half-width + narrowest peak width
+    u, wu = _gl(-math.asinh((eE0 * tau + reach) / s), math.asinh((eE0 * tau + reach) / s), n)
+    kz, wz = s * np.sinh(u), wu * s * np.cosh(u)
     jmax = int(reach * reach / (2.0 * eB)) + 1
     total, lll, j0, chunk = 0.0, 0.0, 0, 256
     while j0 <= jmax:
@@ -586,9 +596,62 @@ def landau_sauter_pairs_per_volume(m: float, eE0: float, tau: float, eB: float, 
         j0 += chunk
         if total > 0 and part < rtol * total:
             break
+    return total, lll, min(j0, jmax + 1)
+
+
+def landau_sauter_pairs_per_volume(m: float, eE0: float, tau: float, eB: float, fermion: bool, n: int = 96,
+                                   rtol: float = 1e-15, max_levels: int = 400_000, qtol: float = 1e-8,
+                                   n_max: int = 6400) -> dict:
+    """Total pairs per unit volume made by a Sauter pulse E0 sech^2(t/tau) parallel to a constant B.
+
+    N/V = eB/(2 pi) sum_j g_j int dk_par/(2 pi) n_j(k_par), with the exact per-channel occupations
+    (landau_sauter_n), k_par over |k_par| <= eE0 tau + R (R = 12 (sqrt(eE0) + m + 1/tau)), levels summed in
+    blocks of 256 until a block adds less than rtol of the total. k_par rule: Gauss-Legendre in u with
+    k_par = s sinh(u), s = eE0 tau + (lowest eps_perp), so nodes are uniform across the plateau of a long
+    pulse and log-spaced in the power-law tails of a short one (n(k_par) has width ~ eps_perp on a range
+    ~ R ~ 12/tau: at m = eE0 = eB = 1, tau = 0.1 a plain 96-node Gauss-Legendre rule on that range was 31% low
+    (spinor) and 25% high (scalar); the mapped rule is within 2e-13 at 96 nodes). The rule is SELF-CHECKING:
+    it starts at n nodes and doubles (n, 2n, 4n, ...) until two successive totals differ by at most qtol
+    (relative), and returns the finer one.
+    Quantity: dict with 'pairs_per_volume' (IN-IN mean number of PAIRS per unit volume after the pulse,
+        energy^3; not a rate), 'lll_fraction' (share from the lowest Landau level), 'levels' summed,
+        'k_par_nodes' (nodes of the accepted rule) and 'quad_rel_change' (relative change from the previous
+        halved rule: an estimate, normally a large over-estimate, of the k_par quadrature error).
+    Valid when: as landau_sauter_n with m > 0; levels needed (up to R^2/(2 eB)) <= max_levels: for
+        eB -> 0 use qft_production.sauter_pairs_per_volume (the B-dependence starts at O((eB/eE0)^2));
+        the k_par rule converges to qtol within n_max nodes, otherwise ValueError (never a silent number)."""
+    m, eE0, tau, eB = _pos(m, "m"), _pos(eE0, "eE0"), _pos(tau, "tau"), _pos(eB, "eB")
+    if n < 16 or not (0 < rtol < 1e-3) or not (0 < qtol < 1e-2) or n_max < 2 * n:
+        raise ValueError("need n >= 16, n_max >= 2 n, 0 < rtol < 1e-3 and 0 < qtol < 1e-2")
+    prev = _landau_sauter_sum(m, eE0, tau, eB, fermion, n, rtol, max_levels)
+    while True:
+        n *= 2
+        cur = _landau_sauter_sum(m, eE0, tau, eB, fermion, n, rtol, max_levels)
+        change = abs(cur[0] - prev[0]) / cur[0] if cur[0] > 0 else (0.0 if prev[0] == 0 else math.inf)
+        if change <= qtol:
+            break
+        if 2 * n > n_max:
+            raise ValueError(f"k_par quadrature not converged: {n // 2} -> {n} nodes changes the total by "
+                             f"{change:.2e} > qtol = {qtol:g}; raise n_max (now {n_max})")
+        prev = cur
+    total, lll, levels = cur
     pref = eB / (2 * PI) / (2 * PI)
     return {"pairs_per_volume": pref * total, "lll_fraction": lll / total if total > 0 else float("nan"),
-            "levels": min(j0, jmax + 1)}
+            "levels": levels, "k_par_nodes": n, "quad_rel_change": change}
+
+
+def _qp_sauter_converged(m: float, eE0: float, tau: float, fermion: bool, n: int = 96, qtol: float = 1e-8,
+                         n_max: int = 3200) -> tuple:
+    """qft_production.sauter_pairs_per_volume (B = 0) with the same node-doubling check; returns (value, nodes)."""
+    prev = qp.sauter_pairs_per_volume(m, eE0, tau, fermion, n=n)
+    while True:
+        n *= 2
+        cur = qp.sauter_pairs_per_volume(m, eE0, tau, fermion, n=n)
+        if abs(cur - prev) <= qtol * abs(cur):
+            return cur, n
+        if 2 * n > n_max:
+            raise ValueError(f"B = 0 Sauter quadrature not converged at {n} nodes (change {abs(cur / prev - 1):.2e})")
+        prev = cur
 
 
 def landau_lcfa_pairs_per_volume(m: float, eE0: float, tau: float, eB: float, fermion: bool,
@@ -598,8 +661,12 @@ def landau_lcfa_pairs_per_volume(m: float, eE0: float, tau: float, eB: float, fe
     Uses the constant parallel-field PAIR rate (Kim & Page eqs. 3-4; NOT the vacuum-decay rate) at each
     instant, composite Gauss-Legendre over |t| <= 6 tau.
     Quantity: mean number of PAIRS per unit volume (energy^3) in the locally-constant-field approximation.
-    Valid when: eE0 tau^2 >> 1 and eps_perp tau >> 1 (slowly varying on the formation time); relative
-        corrections O(1/(eE0 tau^2)) (measured 0.4-0.6% at eE0 tau^2 = 3000); m >= 0, eB >= 0."""
+    Valid when: eE0 tau^2 >> 1 and eps_perp tau >> 1 for every contributing channel (slowly varying on the
+        formation time); relative corrections O(1/(eE0 tau^2)) (measured 0.4-0.6% at eE0 tau^2 = 3000); m >= 0,
+        eB >= 0. Not checked here: outside that range the number is returned but is not the pair yield (at
+        eE0 tau^2 = 0.0046 the exact total is 173 times larger). m = 0 spinor: the lowest channel has
+        eps_perp = 0 and n = 1 on |k_par| < eE0 tau, which the LCFA reproduces in the limit (both give
+        eB eE0 tau/(2 pi^2); measured 0.2% apart at m = 1e-3, eE0 = 0.5, tau = 2); the others need sqrt(2 eB) tau >> 1."""
     m, eE0, tau, eB = _nonneg(m, "m"), _pos(eE0, "eE0"), _pos(tau, "tau"), _nonneg(eB, "eB")
     if m == 0 and eB == 0:
         raise ValueError("m = 0 and eB = 0: use qft_production.lcfa_pairs_per_volume conventions (m > 0)")
@@ -901,16 +968,30 @@ def selftest(verbose: bool = True) -> bool:
 
     # 11. Sauter pulse along B, totals. (a) B -> 0: the Landau sum is a trapezoid/midpoint rule in k_perp^2 with step
     #     2 eB, so its B-dependence is O(eB^2); Richardson (eB = 0.01, 0.005) removes it and must reproduce the
-    #     continuous k_perp integral of qft_production.sauter_pairs_per_volume (same k_par nodes). Measured 2.7e-8
-    #     (O(eB^4) remainder): tolerance 1e-6. (b) Long pulse (eE0 tau^2 = 3000): exact Landau total -> int dt
+    #     continuous k_perp integral of qft_production.sauter_pairs_per_volume. Both sides are converged in k_par
+    #     on DIFFERENT node sets (the module: sinh-mapped rule, 96 -> 192 nodes; the reference: plain Gauss-
+    #     Legendre doubling from 100, accepts 800), so k_par quadrature error cannot cancel (with the old shared
+    #     96 plain nodes both were 1.6e-3 off, which this check could not see). Measured 2.6e-8 (spinor), -2.3e-8 (scalar), the O(eB^4) remainder:
+    #     tolerance 1e-6. (b) Long pulse (eE0 tau^2 = 3000): exact Landau total -> int dt
     #     Gamma(E(t), B) with the coth/csch pair rate; measured 0.38% (spinor), 0.58% (scalar), falling as 1/tau^2
     #     (4.3-6.6% at tau = 30): tolerance 1e-2 as qft_production's B = 0 check.
     worst = 0.0
     for fermion in (True, False):
         a_ = landau_sauter_pairs_per_volume(m, 0.5, 2.0, 0.01, fermion)["pairs_per_volume"]
         b_ = landau_sauter_pairs_per_volume(m, 0.5, 2.0, 0.005, fermion)["pairs_per_volume"]
-        worst = max(worst, abs((4 * b_ - a_) / 3 / qp.sauter_pairs_per_volume(m, 0.5, 2.0, fermion) - 1))
-    check("Sauter || B, eB -> 0 (Richardson) -> qft_production.sauter_pairs_per_volume (max rel. dev.)", worst, 0.0, 1e-6)
+        worst = max(worst, abs((4 * b_ - a_) / 3 / _qp_sauter_converged(m, 0.5, 2.0, fermion, n=100)[0] - 1))
+    check("Sauter || B, eB -> 0 (Richardson) -> qft_production.sauter_pairs_per_volume, separately converged k_par "
+          "nodes (max rel. dev.)", worst, 0.0, 1e-6)
+    # (c) Short pulse (m tau = 0.1): the k_par rule must refine itself (a fixed 96-node rule was 31% / 25% off
+    #     here). Reference at m = eE0 = eB = 1, tau = 0.1, independent of the module's quadrature: trapezoid rule
+    #     on a uniform k_par grid (40001 points over [-400, 400]) times an explicit Landau sum of qp.sauter_n_*
+    #     until a 200-level block adds < 1e-13: 2.81458421033e-3 (spinor), 5.45339799870e-4 (scalar); a reviewer's
+    #     400001-point grid over [-2000, 2000] gave 2.8145842e-3 and 5.453398e-4. Measured agreement 1e-12:
+    #     tolerance 1e-8 (the module accepts at quad_rel_change <= 1e-8).
+    for fermion, want in ((True, 2.81458421033e-3), (False, 5.45339799870e-4)):
+        r = landau_sauter_pairs_per_volume(m, 1.0, 0.1, 1.0, fermion)
+        check(f"Sauter || B short pulse (tau = 0.1/m), {'spinor' if fermion else 'scalar'}: self-refined k_par rule "
+              f"({r['k_par_nodes']} nodes) vs brute-force reference", r["pairs_per_volume"], want, 1e-8, rel=True)
     for fermion in (True, False):
         ex = landau_sauter_pairs_per_volume(m, 0.3, 100.0, 0.3, fermion)["pairs_per_volume"]
         lc = landau_lcfa_pairs_per_volume(m, 0.3, 100.0, 0.3, fermion)
@@ -948,7 +1029,7 @@ def _convergence() -> int:
               f" {r['levels']} levels")
     print("Sauter || B totals: B -> 0 (eE0 = 0.5, tau = 2) and long-pulse ratio to the LCFA (eE0 = 0.3, eB = 0.3)")
     for fermion in (True, False):
-        ref = qp.sauter_pairs_per_volume(m, 0.5, 2.0, fermion)
+        ref = _qp_sauter_converged(m, 0.5, 2.0, fermion, n=100)[0]
         vals = [landau_sauter_pairs_per_volume(m, 0.5, 2.0, e, fermion)["pairs_per_volume"] for e in (0.02, 0.01, 0.005)]
         print(f"  {'spinor' if fermion else 'scalar'}: eB = .02/.01/.005 rel. dev. "
               f"{', '.join(f'{v / ref - 1:+.2e}' for v in vals)}; Richardson {(4 * vals[1] - vals[0]) / 3 / ref - 1:+.2e}, "
@@ -1036,13 +1117,23 @@ def main(argv=None) -> int:
                 raise ValueError("sauter needs E > 0 and B > 0 (B = 0: use qft_production.py sauter)")
             r = landau_sauter_pairs_per_volume(m, eE, tau, eB, fermion)
             lc = landau_lcfa_pairs_per_volume(m, eE, tau, eB, fermion)
+            eps_min = m if fermion else math.sqrt(m * m + eB)          # lowest-channel eps_perp
             print(f"  eE0 tau^2 = {eE * tau * tau:.4g}, m tau = {m * tau:.4g}")
             print(f"  exact pairs per volume (in-in, after the pulse) {r['pairs_per_volume']:.6g} eV^3 = "
                   f"{qp.density_to_SI(r['pairs_per_volume']):.6g} m^-3 (lowest-level share {r['lll_fraction']:.4f}, "
-                  f"{r['levels']} levels)")
-            print(f"  locally-constant-field int dt Gamma(E(t), B): {lc:.6g} eV^3 (exact/LCFA = "
-                  f"{r['pairs_per_volume'] / lc if lc > 0 else float('nan'):.4g})")
-            print(f"  same pulse without B: {qp.sauter_pairs_per_volume(m, eE, tau, fermion):.6g} eV^3")
+                  f"{r['levels']} levels; k_par rule {r['k_par_nodes']} nodes, change from {r['k_par_nodes'] // 2} "
+                  f"nodes {r['quad_rel_change']:.1e})")
+            if eE * tau * tau >= 10 and eps_min * tau >= 10:
+                print(f"  locally-constant-field int dt Gamma(E(t), B): {lc:.6g} eV^3 (exact/LCFA = "
+                      f"{r['pairs_per_volume'] / lc if lc > 0 else float('nan'):.4g})")
+            else:
+                print(f"  locally-constant-field estimate NOT valid here (needs eE0 tau^2 >> 1 and eps_perp tau >> 1; "
+                      f"have {eE * tau * tau:.3g} and {eps_min * tau:.3g}): not shown")
+            try:
+                b0, nb0 = _qp_sauter_converged(m, eE, tau, fermion, qtol=1e-6)
+                print(f"  same pulse without B: {b0:.6g} eV^3 (qft_production.sauter_pairs_per_volume, {nb0} nodes)")
+            except ValueError as exc:
+                print(f"  same pulse without B: not shown ({exc})")
     except (ValueError, KeyError) as exc:
         print(f"ERROR: {exc}")
         return 1

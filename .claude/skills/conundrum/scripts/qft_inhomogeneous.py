@@ -84,7 +84,9 @@ PART C. Numerical scattering solver for any static profile V(z)
     Scalar: qft_production's 4th-order Magnus integrator (exact 2x2 exponential, exact for piecewise-constant
     potentials), started with e^{-i p_L z}/sqrt(2 p_L). Spinor: a 4th-order Magnus integrator for the
     off-diagonal 2-component system above (its Magnus exponent has a real square, so cosh/cos branches as for
-    bosons). Steps double until the step-halving change of |beta| (|c_in|) is below rtol.
+    bosons). Steps double until the step-halving change of |beta| (|c_in|) is below rtol, starting from at least 16 steps
+    across the region where V changes (else two coarse passes on a wide window can both see only the plateaus, i.e. a
+    sharp step, agree, and return a wrong n as converged; a run that max_steps keeps below that floor is unresolved).
     PRECISION (unlike the time-dependent problem there is NO absolute floor): n = 1/|beta|^2 is read off the
     exponentially GROWING solution in the tunnelling region, so its error is RELATIVE,
         n_relerr = 2 delta/|beta| + (delta/|beta|)^2,  delta = max(step-halving change, roundoff
@@ -93,10 +95,13 @@ PART C. Numerical scattering solver for any static profile V(z)
     still on). Modes very close to the edge of the Klein zone (p -> 0) need ever wider windows; rates_numeric admits
     them up to eps_end = 0.5 with that mismatch in their error, and reports the WEIGHTED error of the rates (their
     contribution is small because n ~ p there).
-    Tunnelling numbers far below any absolute double-precision noise (1e-50 in the self-test) are resolved.
+    Tunnelling numbers far below any absolute double-precision noise (1e-50 and ln n = -1012 in the self-test) are
+    resolved: the state is renormalised every 8 steps (and the growth e^r of each hyperbolic Magnus step is factored
+    out analytically), the log of the scale is accumulated, and ln|beta| is returned exactly, so no exponent
+    overflows; below n ~ 1e-308 the 'n' output underflows to 0.0 and 'ln_n' carries the number (the closed forms
+    take log=True for the same reason). A non-finite or under-resolved coarse pass only means "double the steps".
     Precision is lost instead where |beta| is small: bosons with n >> 1 (relative error ~ delta sqrt(1 + n)).
     Results with n_relerr > flag_rel (default 1%) are flagged resolved=False (strict=True raises).
-    Exponents beyond the double range (n < ~1e-600) are refused.
     potential_from_field builds V(z) = -int eE dz from a field profile (Gauss-Legendre per cell, cubic Hermite
     interpolation with the exact derivative -eE, error O(h^4)).
 
@@ -113,8 +118,16 @@ PART D. Rates per unit transverse area: pair number versus vacuum decay, from th
     when eE_max is known) times, on each half of the zone, omega = c - (W/2) cos(pi s) (nodes cluster at the
     zone edges, where n ~ p -> 0 (GG eq. 9.9), and at the midpoint, where the sharp scalar step is singular).
     Locally-constant-field approximation (LCFA): Gamma_A -> int dz Gamma_Schwinger(eE(z)), w_A -> int dz
-    w_Schwinger(eE(z)) for eE0 L^2 >> 1, relative corrections O(1/(eE0 L^2)) (measured: -2.5/(eE0 L^2) for
-    spinors at eE0 = m^2). For the Sauter step this is GG eq. 9.18 (pair number, Psi-function form) and
+    w_Schwinger(eE(z)) when the field varies slowly over the tunnelling length m/eE0 in BOTH senses:
+        gamma = m/(eE0 L) << 1  and  pi m^4/(4 eE0^3 L^2) << 1,  i.e.  eE0 L^2 >> max(1, (m^2/eE0)^2).
+    Expanding the exact omega = 0 exponent, 2 pi L (a - sqrt(a^2 - eps^2)) = pi eps^2/eE0 + pi eps^4/(4 eE0^3 L^2) + ...,
+    the relative correction is about -[(pi/4)(m^2/eE0)^2 + O(m^2/eE0) + O(1)]/(eE0 L^2), and exact/LCFA ~
+    exp(-pi m^4/(4 eE0^3 L^2)) once that exponent is not small. Measured (exact/LCFA - 1) x eE0 L^2 for the Sauter
+    pair rate at eE0 L^2 = 4000 (spinor; scalar): eE0 = 2 m^2: -1.32; -0.54. 1: -2.54; -1.75. 0.5: -6.14; -5.36.
+    0.3: -13.4; -12.6. 0.1: -90.6; -89.8. 0.05: -326; -326 (leading weak-field term -(pi/4)(m^2/eE0)^2 = -314).
+    So the O(1/(eE0 L^2)) coefficients -2.54 (spinor) and -1.75 (scalar) hold ONLY at eE0 = m^2 and grow like
+    (m^2/eE0)^2 in weak fields: at eE0 = 0.1 m^2, eE0 L^2 = 100 (m L = 32) the exact rate is still 62% BELOW the
+    LCFA (exact/LCFA = 0.38). For the Sauter step this is GG eq. 9.18 (pair number, Psi-function form) and
     eq. 9.19 (vacuum decay): Gamma_A = g L (eE0)^2/(2 pi)^3 e^{-x} sqrt(pi) Psi(1/2, -1; x), x = pi m^2/eE0.
     (GG print delta both as sqrt(pi) Psi(1/2, -(d-2)/2; x) and as int dt t^-1/2 (t+1)^-(d-2)/2 e^{-xt}; these differ.
     The Psi form, = int dt t^-1/2 (1+t)^-5/2 e^{-xt} in d = 4, is the LCFA and is what the exact rate approaches;
@@ -245,9 +258,11 @@ def klein_zone(k_perp, m: float, V_left: float, V_right: float) -> dict:
 
     Quantity: dict with 'omega_min', 'omega_max' (energy; NaN where the zone is empty), 'nonempty' (bool)
         and 'k_perp_max' = sqrt((Delta V/2)^2 - m^2) (energy; NaN if Delta V < 2m, then no mode makes pairs).
-    Valid when: m >= 0, V_left != V_right (finite potential energies of the charge at z -> -inf, +inf)."""
+    Valid when: m >= 0, k_perp >= 0, V_left != V_right (finite potential energies of the charge at z -> -inf, +inf)."""
     m = _mass(m)
     kp = _arr(k_perp, "k_perp")
+    if np.any(kp < 0):
+        raise ValueError("k_perp must be >= 0 (it is |k_perp|)")
     VL, VR = float(V_left), float(V_right)
     if not (math.isfinite(VL) and math.isfinite(VR)) or VL == VR:
         raise ValueError("need finite V_left != V_right (a potential step)")
@@ -294,30 +309,33 @@ def _sauter_p(omega, k_perp, m, eE0, L):
     return np.where(inz, pL, 1.0), np.where(inz, pR, 1.0), inz, a, eE0, L
 
 
-def sauter_step_n_spinor(omega, k_perp, m: float, eE0: float, L: float):
+def sauter_step_n_spinor(omega, k_perp, m: float, eE0: float, L: float, log: bool = False):
     """Exact spinor-QED pair number per mode for the Sauter step eE(z) = eE0 sech^2(z/L) (GG 2016 eq. 9.4).
 
     n = sinh(pi L p_L) sinh(pi L p_R) / [sinh(pi L (a + d)) sinh(pi L (a - d))], a = eE0 L, d = (p_L - p_R)/2,
     p_L,R = sqrt((omega -+ a)^2 - m^2 - k_perp^2); evaluated in logs.
     Quantity: per-mode, per-spin-state in-in mean number of electron-positron PAIRS created per unit time-energy
         cell (omega, k_perp) (= tunnelling probability T; 0 <= n <= 1), dimensionless; exactly 0 outside the
-        Klein zone. Multiply by g = 2 for the spin sum; turn into a rate with rates_from_n.
+        Klein zone. Multiply by g = 2 for the spin sum; turn into a rate with rates_from_n. With log=True: ln n
+        (-inf outside the zone), which stays exact where n itself underflows to 0.0 (n < ~1e-308).
     Valid when: static Sauter step, eE0 > 0 (energy^2), L > 0 (1/energy), m >= 0, k_perp >= 0."""
     pL, pR, inz, a, eE0, L = _sauter_p(omega, k_perp, m, eE0, L)
     d = 0.5 * (pL - pR)
     num = _log_sinh(PI * L * pL) + _log_sinh(PI * L * pR)
     den = _log_sinh(PI * L * np.maximum(a + d, 1e-300)) + _log_sinh(PI * L * np.maximum(a - d, 1e-300))
-    return np.where(inz, np.exp(np.minimum(num - den, 0.0)), 0.0)
+    lnn = np.where(inz, np.minimum(num - den, 0.0), -np.inf)
+    return lnn if log else np.exp(lnn)
 
 
-def sauter_step_n_scalar(omega, k_perp, m: float, eE0: float, L: float):
+def sauter_step_n_scalar(omega, k_perp, m: float, eE0: float, L: float, log: bool = False):
     """Exact scalar-QED pair number per mode for the Sauter step eE(z) = eE0 sech^2(z/L) (GG 2016 eq. 9.6).
 
     n = sinh(pi L p_L) sinh(pi L p_R) / [cosh^2(pi lam) + sinh^2(pi L (p_L - p_R)/2)], lam = sqrt((eE0 L^2)^2 - 1/4)
     (cosh^2(pi lam) -> cos^2(pi |lam|) for eE0 L^2 < 1/2); identical to KLY II eq. 25 (sigma = 0). In logs.
     Quantity: per-mode in-in mean number of PAIRS (charged scalar particle + antiparticle) created per unit
         time-energy cell (omega, k_perp) (= T = R - 1, may exceed 1), dimensionless; exactly 0 outside the
-        Klein zone. Complex scalar field: g = 1.
+        Klein zone. Complex scalar field: g = 1. With log=True: ln n (-inf outside the zone; exact where n
+        underflows, n < ~1e-308).
     Valid when: static Sauter step, eE0 > 0 (energy^2), L > 0 (1/energy), m >= 0, k_perp >= 0."""
     pL, pR, inz, a, eE0, L = _sauter_p(omega, k_perp, m, eE0, L)
     num = _log_sinh(PI * L * pL) + _log_sinh(PI * L * pR)
@@ -328,7 +346,8 @@ def sauter_step_n_scalar(omega, k_perp, m: float, eE0: float, L: float):
     else:
         lc = 2.0 * math.log(abs(math.cos(PI * math.sqrt(-lam2))))             # ln cos^2(pi |lam|) (> 0 for eE0 > 0)
     ls = 2.0 * _log_sinh(np.abs(0.5 * PI * L * (pL - pR)))
-    return np.where(inz, np.exp(num - np.logaddexp(lc, ls)), 0.0)
+    lnn = np.where(inz, num - np.logaddexp(lc, ls), -np.inf)
+    return lnn if log else np.exp(lnn)
 
 
 def _klein_step_p(omega, k_perp, m, dV):
@@ -371,18 +390,27 @@ def klein_step_decay_rate_scalar(m: float, dV: float) -> float:
     Quantity: vacuum-decay rate per unit transverse area per unit time, w_A = int d omega/(2pi) d^2k/(2pi)^2 ln(1 + n)
         (= 2 Im L_eff per area; |<0|0>|^2 = exp(-w_A A T)), energy^3. NOT a pair-number rate (that one is infinite
         for the sharp bosonic step).
-    Valid when: m > 0, dV > 0 (energy); returns 0.0 for dV <= 2m (no Klein zone)."""
+    Valid when: m > 0, dV > 0 (energy), any height above threshold (evaluated in mpmath with complete elliptic
+        integrals only; relative accuracy ~1e-15 from dV = 2m(1 + 1e-12) to 1e6 m); returns 0.0 for dV <= 2m (no Klein zone)."""
     import mpmath as mp
     m = _pos(m, "m")
     v = 0.5 * _pos(dV, "dV")
     if v <= m:
         return 0.0
-    al = (v - m) / (v + m)
-    phi = math.asin(al)
-    K, E = mp.ellipk(al * al), mp.ellipe(al * al)                      # mpmath takes the parameter m = modulus^2
-    F1, E1 = mp.ellipf(phi, 1.0 / (al * al)), mp.ellipe(phi, 1.0 / (al * al))
-    br = 0.5 * ((1 - al * al) * K - (1 + al * al) * E) + al / 3.0 * ((1 - al) * (4 + al) * F1 + (1 + 3 * al + al * al) * E1)
-    return float(v ** 3 / (3 * PI ** 2) * (1 + m / v) ** 3 * br)
+    # phi = arcsin(al) puts F(phi, 1/al) and E(phi, 1/al) exactly on their branch point (k sin phi = 1), where rounding
+    # of phi gives a complex value; the reciprocal-modulus identities (mpmath parameter convention, checked at 40
+    # digits) remove it: F(arcsin al | 1/al^2) = al K(al^2), E(arcsin al | 1/al^2) = [E(al^2) - (1 - al^2) K(al^2)]/al.
+    # Near threshold the bracket cancels to ~al^2 relative (2 log10(1/al) digits lost), so the working precision grows.
+    al_f = (v - m) / (v + m)
+    dps = 30 + int(3 * max(0.0, -math.log10(al_f)))
+    with mp.workdps(dps):
+        vv, mm = mp.mpf(v), mp.mpf(m)
+        al = (vv - mm) / (vv + mm)
+        K, E = mp.ellipk(al * al), mp.ellipe(al * al)                  # mpmath takes the parameter m = modulus^2
+        F1, E1 = al * K, (E - (1 - al * al) * K) / al
+        br = (0.5 * ((1 - al * al) * K - (1 + al * al) * E)
+              + al / 3 * ((1 - al) * (4 + al) * F1 + (1 + 3 * al + al * al) * E1))
+        return float(mp.re(vv ** 3 / (3 * mp.pi ** 2) * (1 + mm / vv) ** 3 * br))
 
 
 # ---------------------------------------------------------------- Part C: numerical scattering solver
@@ -438,6 +466,24 @@ def _solver_setup(V, z0, z1, omega, k_perp, m, steps, max_steps, max_eps_end):
     return z0, z1, m, VL, VR, om, kp, ep, piL, piR, pL, pR, inz
 
 
+def _min_steps(V, z0, z1):
+    """Smallest step count that puts >= 16 Magnus steps across the region where V(z) changes (0.5% to 99.5% of its
+    cumulative variation, scanned on 2001 points, taken >= 1/200 of the window). Without it a coarse pair of passes
+    on a window much wider than the field can sample V only on its plateaus, see an effectively sharp step at both
+    resolutions, and 'converge' to the wrong n."""
+    zs = np.linspace(z0, z1, 2001)
+    c = np.concatenate([[0.0], np.cumsum(np.abs(np.diff(np.asarray(V(zs), dtype=float))))])
+    if not c[-1] > 0:
+        return 2
+    i0, i1 = np.searchsorted(c, 0.005 * c[-1]), np.searchsorted(c, 0.995 * c[-1])
+    w = max(zs[min(i1, 2000)] - zs[max(i0 - 1, 0)], (z1 - z0) / 200.0)
+    return int(math.ceil(16.0 * (z1 - z0) / w))
+
+
+def _start_steps(steps, n_min, max_steps):
+    return min(max(int(steps), n_min), max(int(steps), max_steps // 2))
+
+
 def _end_adiabaticity(w2, z0, z1):
     scale = z1 - z0
     return np.maximum(qp._adiabaticity(w2, z0, scale), qp._adiabaticity(w2, z1, scale))
@@ -465,9 +511,12 @@ def _finish(shape, inz, n_in, lnn_in, rel_in, extra_in, eps_in, steps, converged
     return out
 
 
-def _error_model(err, big, eps_end, nsteps, amp):
-    delta = np.maximum.reduce([err, 4.0 * _EPS * math.sqrt(nsteps) * big, 0.25 * eps_end * big])
-    x = delta / amp
+def _error_model(err_rel, ln_other_over_amp, eps_end, nsteps, _unused=0.0):
+    """Relative error of n = 1/|amp|^2 from the relative step-halving change of |amp|, roundoff 4 eps sqrt(N) and the
+    end mismatch eps_end/4, the last two relative to max(|amp|, |other|) (Part C), all as ratios to |amp|."""
+    with np.errstate(over="ignore"):
+        big = np.exp(np.maximum(ln_other_over_amp, 0.0))                     # max(|amp|, |other|)/|amp|
+    x = np.maximum.reduce([err_rel, 4.0 * _EPS * math.sqrt(nsteps) * big, 0.25 * eps_end * big])
     return np.where(x < 1, 2 * x + x * x, np.inf)
 
 
@@ -482,10 +531,12 @@ def klein_mode_scalar(V, z0: float, z1: float, omega, k_perp, m: float, steps: i
     Quantity: dict with 'n' (per-mode in-in mean number of PAIRS created per unit time-energy cell, complex scalar,
         dimensionless; exactly 0 for modes outside the Klein zone, which are not integrated), 'ln_n', 'n_relerr'
         (relative error estimate: there is no absolute floor, see Part C), 'resolved' (n_relerr <= flag_rel),
-        'reflection' R, 'flux_error' = | |alpha|^2 - |beta|^2 - 1 | / |alpha|^2, 'in_klein_zone', 'eps_end', 'steps'.
+        'reflection' R, 'flux_error' = | |alpha|^2 - |beta|^2 - 1 | / |alpha|^2 (computed in scaled form),
+        'in_klein_zone', 'eps_end', 'steps' (final step count), 'converged' (True if every mode met rtol before
+        max_steps). Below n ~ 1e-308 'n' underflows to 0.0 and 'ln_n' is the meaningful output.
     Valid when: V(z) is vectorised, static and constant outside [z0, z1] (end adiabaticity |dp/dz|/p^2 <=
-        max_eps_end <= 0.5, default 1e-3, else ValueError); m >= 0, k_perp >= 0; tunnelling exponent within double
-        range (n > ~1e-600)."""
+        max_eps_end <= 0.5, default 1e-3, else ValueError); m >= 0, k_perp >= 0; any tunnelling exponent (the state
+        is renormalised during the integration, so ln_n stays finite)."""
     z0, z1, m, VL, VR, om, kp, ep, piL, piR, pL, pR, inz = _solver_setup(V, z0, z1, omega, k_perp, m, steps, max_steps,
                                                                           max_eps_end)
     shape = om.shape
@@ -504,37 +555,94 @@ def klein_mode_scalar(V, z0: float, z1: float, omega, k_perp, m: float, steps: i
                          "is still on at z0 or z1 (widen the window), or a mode sits at the edge of the Klein zone")
 
     def run(n):
-        with np.errstate(over="ignore", invalid="ignore"):
-            u, v = qp._magnus_boson(w2, z0, z1, n, pl)
-            beta = np.sqrt(pr / 2.0) * (u - 1j * v / pr)
-            alpha = np.sqrt(pr / 2.0) * (u + 1j * v / pr)
-        if not (np.all(np.isfinite(beta)) and np.all(np.isfinite(alpha))):
-            raise ValueError("overflow: the tunnelling exponent exceeds the double range (n < ~1e-600)")
-        return np.abs(beta), np.abs(alpha)
+        with np.errstate(over="ignore", invalid="ignore", divide="ignore"):
+            u, v, ls = _magnus_scalar(w2, z0, z1, n, pl)
+            lb = np.log(np.abs(np.sqrt(pr / 2.0) * (u - 1j * v / pr))) + ls     # ln|beta|
+            la = np.log(np.abs(np.sqrt(pr / 2.0) * (u + 1j * v / pr))) + ls     # ln|alpha|
+        return lb, la
 
-    n = int(steps)
-    b1, _ = run(n)
+    n_min = _min_steps(V, z0, z1)
+    lb, la, n, converged, err = _refine(run, _start_steps(steps, n_min, max_steps), rtol, max_steps)
+    rel = _error_model(err, la - lb, eps_end, n, 0.0)
+    if n < n_min:                                 # max_steps kept the run below the resolution floor: no verdict
+        rel, converged = np.full_like(rel, np.inf), False
+    with np.errstate(over="ignore", under="ignore"):
+        refl = np.exp(2.0 * (la - lb))
+        flux = np.abs(1.0 - np.exp(2.0 * (lb - la)) - np.exp(-2.0 * la))         # | |a|^2 - |b|^2 - 1 |/|a|^2, scaled
+        nn = np.exp(-2.0 * lb)
+    extra = {"reflection": refl, "flux_error": flux}
+    return _finish(shape, inz, nn, -2.0 * lb, rel, extra, eps_end, n, converged, flag_rel, strict, "n")
+
+
+def _refine(run, n, rtol, max_steps):
+    """Double the step count until the step-halving change of |amplitude| (from ln|amp|) is below rtol.
+
+    run(n) -> (ln|amp|, ln|other|). A non-finite result (an under-resolved pass) counts as unconverged, never as a
+    verdict on n; only if the finest allowed pass is still non-finite is ValueError raised."""
+    l1, _ = run(n)
     while True:
-        b2, a2 = run(2 * n)
-        err = np.abs(b2 - b1)
-        converged = bool(np.all(err <= rtol * b2))
+        l2, o2 = run(2 * n)
+        with np.errstate(over="ignore", invalid="ignore"):
+            err = np.abs(np.expm1(l1 - l2))                                     # = | |amp_1| - |amp_2| | / |amp_2|
+        err = np.where(np.isfinite(err), err, np.inf)
+        finite = bool(np.all(np.isfinite(l2)) and np.all(np.isfinite(o2)))
+        converged = finite and bool(np.all(err <= rtol))
         if converged or 4 * n > max_steps:
             break
-        n, b1 = 2 * n, b2
-    rel = _error_model(err, np.maximum(a2, b2), eps_end, 2 * n, b2)
-    with np.errstate(over="ignore"):
-        refl = (a2 / b2) ** 2
-    extra = {"reflection": refl, "flux_error": np.abs(a2 * a2 - b2 * b2 - 1.0) / (a2 * a2)}
-    return _finish(shape, inz, (1.0 / b2) ** 2, -2.0 * np.log(b2), rel, extra, eps_end, 2 * n, converged,
-                   flag_rel, strict, "n")
+        n, l1 = 2 * n, l2
+    if not finite:
+        raise ValueError(f"non-finite scattering amplitudes even with {2 * n} steps (max_steps = {max_steps}): "
+                         "raise max_steps or narrow the window")
+    return l2, o2, 2 * n, converged, err
+
+
+def _scaled_exp(q, r):
+    """cos/cosh(r) and sin/sinh(r)/r of a 2x2 Magnus exponent with Omega^2 = q 1 (r = sqrt|q|), with the growth e^r of
+    the hyperbolic branch factored out: returns (C, S, ln_scale) with exp(Omega) = e^{ln_scale} (C 1 + S Omega)."""
+    hyp = q > 0
+    rr = np.maximum(r, 1e-300)
+    e2 = np.exp(-2.0 * r)
+    Cf = np.where(hyp, 0.5 * (1.0 + e2), np.cos(r))
+    Sf = np.where(hyp, -0.5 * np.expm1(-2.0 * rr), np.sin(r)) / rr               # sinh(r) e^-r / r, sin(r)/r
+    Sf = np.where(r < 1e-300, 1.0, Sf)
+    return Cf, Sf, np.where(hyp, r, 0.0)
+
+
+def _magnus_scalar(omega2, z0, z1, n, p_in):
+    """qft_production's 4th-order Magnus propagation of (psi, psi') from e^{-i p z}/sqrt(2p) at z0, with the state
+    renormalised every 8 steps and the logarithm of the scale accumulated: returns (u, v, ln_scale), so tunnelling
+    exponents of any size stay finite (the plain integrator overflows beyond e^{709})."""
+    h = (z1 - z0) / n
+    u = np.exp(-1j * p_in * z0) / np.sqrt(2.0 * p_in)
+    v = -1j * p_in * u
+    lsc = np.zeros(np.shape(p_in))
+    for j in range(n):
+        z = z0 + j * h
+        a1 = np.asarray(omega2(z + _G1 * h), dtype=float)
+        a2 = np.asarray(omega2(z + _G2 * h), dtype=float)
+        c = (_SQRT3 * h * h / 12.0) * (a2 - a1)
+        ab = 0.5 * (a1 + a2)
+        q2 = c * c - h * h * ab
+        Cf, Sf, ls = _scaled_exp(q2, np.sqrt(np.abs(q2)))
+        u, v = (Cf + Sf * c) * u + Sf * h * v, -Sf * h * ab * u + (Cf - Sf * c) * v
+        lsc = lsc + ls
+        if j % 8 != 7 and j != n - 1:
+            continue                                  # renormalise every 8 steps (hyperbolic growth already factored out)
+        nrm = np.maximum(np.abs(u), np.abs(v))
+        nrm = np.where(nrm > 0, nrm, 1.0)
+        u, v, lsc = u / nrm, v / nrm, lsc + np.log(nrm)
+    return u, v, lsc
 
 
 def _magnus_spinor(pi_of_z, ep, z0, z1, n, a, b):
     """Propagate a' = i(pi + ep) b, b' = i(pi - ep) a with n 4th-order Magnus steps (exact 2x2 exponential).
 
     Generator A = [[0, x], [y, 0]], x = i(pi + ep), y = i(pi - ep); Omega = (h/2)(A1 + A2) + (sqrt3 h^2/12)[A2, A1]
-    = [[c, X], [Y, -c]] with c = (sqrt3 h^2/6) ep (pi2 - pi1) real and Omega^2 = q 1, q = c^2 - (h^2/4)((pi1+pi2)^2 - 4 ep^2) real."""
+    = [[c, X], [Y, -c]] with c = (sqrt3 h^2/6) ep (pi2 - pi1) real and Omega^2 = q 1, q = c^2 - (h^2/4)((pi1+pi2)^2 - 4 ep^2) real.
+    The state is renormalised every 8 steps (growth e^r of hyperbolic steps factored out analytically): returns
+    (a, b, ln_scale) with the true state = e^{ln_scale} (a, b), finite for tunnelling exponents of any size."""
     h = (z1 - z0) / n
+    lsc = np.zeros(np.shape(ep))
     for j in range(n):
         z = z0 + j * h
         p1, p2 = pi_of_z(z + _G1 * h), pi_of_z(z + _G2 * h)
@@ -543,14 +651,15 @@ def _magnus_spinor(pi_of_z, ep, z0, z1, n, a, b):
         X = 0.5j * h * (s + 2 * ep)
         Y = 0.5j * h * (s - 2 * ep)
         q = c * c - 0.25 * h * h * (s * s - 4 * ep * ep)
-        r = np.sqrt(np.abs(q))
-        small = r < 1e-6
-        rs = np.where(small, 1.0, r)
-        hyp = q > 0
-        Cf = np.where(hyp, np.cosh(r), np.cos(r))
-        Sf = np.where(small, 1.0 + q / 6.0, np.where(hyp, np.sinh(r), np.sin(r)) / rs)
+        Cf, Sf, ls = _scaled_exp(q, np.sqrt(np.abs(q)))
         a, b = (Cf + Sf * c) * a + Sf * X * b, Sf * Y * a + (Cf - Sf * c) * b
-    return a, b
+        lsc = lsc + ls
+        if j % 8 != 7 and j != n - 1:
+            continue                                  # renormalise every 8 steps (hyperbolic growth already factored out)
+        nrm = np.maximum(np.abs(a), np.abs(b))
+        nrm = np.where(nrm > 0, nrm, 1.0)
+        a, b, lsc = a / nrm, b / nrm, lsc + np.log(nrm)
+    return a, b, lsc
 
 
 def klein_mode_spinor(V, z0: float, z1: float, omega, k_perp, m: float, steps: int = 400, rtol: float = 1e-7,
@@ -564,9 +673,11 @@ def klein_mode_spinor(V, z0: float, z1: float, omega, k_perp, m: float, steps: i
     Quantity: dict with 'n' (per-mode, per-spin-state in-in mean number of electron-positron PAIRS per unit
         time-energy cell, 0 <= n <= 1, dimensionless; both spins give the same n, so multiply sums by g = 2; 0 for
         modes outside the Klein zone), 'ln_n', 'n_relerr', 'resolved', 'reflection' R, 'flux_error' =
-        | |c_in|^2 - |c_out|^2 - 1 | / |c_in|^2, 'in_klein_zone', 'eps_end', 'steps'.
+        | |c_in|^2 - |c_out|^2 - 1 | / |c_in|^2 (scaled form), 'in_klein_zone', 'eps_end', 'steps' (final step count),
+        'converged' (every mode met rtol before max_steps). Below n ~ 1e-308 'n' underflows to 0.0: use 'ln_n'.
     Valid when: V(z) is vectorised, static and constant outside [z0, z1] (end adiabaticity <= max_eps_end <= 0.5,
-        default 1e-3, else ValueError); purely electric field along z; m >= 0, k_perp >= 0; n > ~1e-600."""
+        default 1e-3, else ValueError); purely electric field along z; m >= 0, k_perp >= 0; any tunnelling exponent
+        (renormalised integration)."""
     z0, z1, m, VL, VR, om, kp, ep, piL, piR, pL, pR, inz = _solver_setup(V, z0, z1, omega, k_perp, m, steps, max_steps,
                                                                           max_eps_end)
     shape = om.shape
@@ -591,29 +702,25 @@ def klein_mode_spinor(V, z0: float, z1: float, omega, k_perp, m: float, steps: i
     NR = np.sqrt(2 * np.abs(kR))
 
     def run(n):
-        with np.errstate(over="ignore", invalid="ignore"):
-            a, b = _magnus_spinor(lambda z: o - V(z), e, z0, z1, n, a0 + 0j, b0 + 0j)
+        with np.errstate(over="ignore", invalid="ignore", divide="ignore"):
+            a, b, ls = _magnus_spinor(lambda z: o - V(z), e, z0, z1, n, a0 + 0j, b0 + 0j)
             cp = NR * np.exp(-1j * pr * z1) * (a + b / kR) / 2          # coefficient of the unit-flux e^{+i p z} wave
-            cm = NR * np.exp(1j * pr * z1) * (a - b / kR) / 2           # ... and of e^{-i p z}
-        if not (np.all(np.isfinite(cp)) and np.all(np.isfinite(cm))):
-            raise ValueError("overflow: the tunnelling exponent exceeds the double range (n < ~1e-600)")
-        cin = np.where(sR > 0, cm, cp)
-        cout = np.where(sR > 0, cp, cm)
-        return np.abs(cin), np.abs(cout)
+            cm = NR * np.exp(1j * pr * z1) * (a - b / kR) / 2           # ... and of e^{-i p z}  (both / e^{ls})
+            cin = np.log(np.abs(np.where(sR > 0, cm, cp))) + ls
+            cout = np.log(np.abs(np.where(sR > 0, cp, cm))) + ls
+        return cin, cout
 
-    n = int(steps)
-    c1, _ = run(n)
-    while True:
-        c2, o2 = run(2 * n)
-        err = np.abs(c2 - c1)
-        converged = bool(np.all(err <= rtol * c2))
-        if converged or 4 * n > max_steps:
-            break
-        n, c1 = 2 * n, c2
-    rel = _error_model(err, np.maximum(c2, o2), eps_end, 2 * n, c2)
-    extra = {"reflection": (o2 / c2) ** 2, "flux_error": np.abs(c2 * c2 - o2 * o2 - 1.0) / (c2 * c2)}
-    return _finish(shape, inz, (1.0 / c2) ** 2, -2.0 * np.log(c2), rel, extra, eps_end, 2 * n, converged,
-                   flag_rel, strict, "n")
+    n_min = _min_steps(V, z0, z1)
+    lc, lo, n, converged, err = _refine(run, _start_steps(steps, n_min, max_steps), rtol, max_steps)
+    rel = _error_model(err, lo - lc, eps_end, n, 0.0)
+    if n < n_min:                                 # max_steps kept the run below the resolution floor: no verdict
+        rel, converged = np.full_like(rel, np.inf), False
+    with np.errstate(over="ignore", under="ignore"):
+        refl = np.exp(2.0 * (lo - lc))
+        flux = np.abs(1.0 - refl - np.exp(-2.0 * lc))                       # | |c_in|^2 - |c_out|^2 - 1 |/|c_in|^2, scaled
+        nn = np.exp(-2.0 * lc)
+    extra = {"reflection": refl, "flux_error": flux}
+    return _finish(shape, inz, nn, -2.0 * lc, rel, extra, eps_end, n, converged, flag_rel, strict, "n")
 
 
 # ---------------------------------------------------------------- Part D: rates per unit area
@@ -641,6 +748,9 @@ def _klein_nodes(V_left, V_right, m, n_omega, n_k, eE_max=None):
 
 
 def _rates(nk, w, fermion):
+    if not np.all(np.isfinite(nk)):
+        raise ValueError("pair numbers must be finite (a non-finite n, e.g. at p_L = p_R of the sharp scalar step, "
+                         "is not integrable by this rule)")
     if np.any(nk < 0) or (fermion and np.any(nk > 1)):
         raise ValueError("pair numbers must satisfy n >= 0 (and n <= 1 for fermions)")
     g = 2.0 if fermion else 1.0
@@ -661,27 +771,33 @@ def rates_from_n(n_of_mode, V_left: float, V_right: float, m: float, fermion: bo
         'decay_rate' (vacuum-decay exponent rate per area, |<0|0>|^2 = exp(-w_A A T), = 2 Im L_eff per area,
         energy^3), 'im_L_eff' = decay_rate/2, 'ratio' = w_A/Gamma_A, 'zone_empty' (True: Delta V <= 2m, both
         rates exactly 0). g = 2 (spinor; n per spin state), 1 (complex scalar).
-    Valid when: n_of_mode(omega_array, k_perp_array) returns the per-mode pair number (0 <= n, n <= 1 for fermions),
-        integrable over the zone (NOT the sharp scalar step: use klein_step_rates); eE_max (energy^2) = max |eE(z)|
-        if given cuts k_perp^2 at 46 eE_max/pi; check convergence by changing n_omega, n_k."""
+    Valid when: n_of_mode(omega_array, k_perp_array) returns the finite per-mode pair number (0 <= n, n <= 1 for
+        fermions; a NaN or inf n raises ValueError), integrable over the zone (NOT the sharp scalar step: use
+        klein_step_rates); eE_max (finite > 0, energy^2) = max |eE(z)| if given cuts k_perp^2 at 46 eE_max/pi; check
+        convergence by changing n_omega, n_k."""
     m = _mass(m)
     VL, VR = float(V_left), float(V_right)
     if not (math.isfinite(VL) and math.isfinite(VR)) or VL == VR:
         raise ValueError("need finite V_left != V_right")
     if n_omega < 4 or n_k < 4:
         raise ValueError("need n_omega, n_k >= 4")
+    if eE_max is not None:
+        eE_max = _pos(eE_max, "eE_max")
     om, kp, w = _klein_nodes(VL, VR, m, n_omega, n_k, eE_max)
     if len(w) == 0:
         return _rates(np.zeros(0), w, fermion)
     return _rates(np.asarray(n_of_mode(om, kp), dtype=float), w, fermion)
 
 
-def sauter_step_rates(m: float, eE0: float, L: float, fermion: bool, n_omega: int = 48, n_k: int = 48) -> dict:
+def sauter_step_rates(m: float, eE0: float, L: float, fermion: bool, n_omega: int = 48, n_k: int = 48,
+                      flag_rel: float = 1e-2, strict: bool = False) -> dict:
     """Exact pair-number and vacuum-decay rates per unit area of the Sauter step (GG eqs. 9.4/9.6 integrated).
 
     Quantity: as rates_from_n ('pair_rate' = mean PAIRS per unit time per unit transverse area, 'decay_rate' =
         vacuum-decay rate per area, both energy^3; spin-summed for spinors), plus 'quad_relerr' = relative change
-        of the pair rate with 1.5x the nodes, 'dV' = 2 eE0 L and 'eE0L2' = eE0 L^2 (>> 1: locally constant field).
+        of the pair rate with 1.5x the nodes, 'resolved' (quad_relerr <= flag_rel; strict=True raises otherwise),
+        'dV' = 2 eE0 L and 'eE0L2' = eE0 L^2 (the LCFA needs eE0 L^2 >> max(1, (m^2/eE0)^2), see
+        sauter_step_lcfa_closed_form; eE0 L^2 >> 1 alone is NOT enough in weak fields).
     Valid when: static Sauter step, m >= 0, eE0 > 0 (energy^2), L > 0 (1/energy); both rates are exactly 0 for
         eE0 L <= m (step height below 2m)."""
     m = _mass(m)
@@ -690,6 +806,10 @@ def sauter_step_rates(m: float, eE0: float, L: float, fermion: bool, n_omega: in
     r = rates_from_n(nf, eE0 * L, -eE0 * L, m, fermion, n_omega, n_k, eE_max=eE0)
     r2 = rates_from_n(nf, eE0 * L, -eE0 * L, m, fermion, n_omega + n_omega // 2, n_k + n_k // 2, eE_max=eE0)
     r["quad_relerr"] = abs(r2["pair_rate"] / r["pair_rate"] - 1) if r["pair_rate"] > 0 else 0.0
+    r["resolved"] = bool(r["quad_relerr"] <= flag_rel)
+    if strict and not r["resolved"]:
+        raise ValueError(f"Sauter-step rate quadrature unresolved (relative change {r['quad_relerr']:.3g} > {flag_rel:g}): "
+                         "raise n_omega, n_k")
     r["dV"], r["eE0L2"] = 2 * eE0 * L, eE0 * L * L
     return r
 
@@ -756,28 +876,116 @@ def rates_numeric(V, z0: float, z1: float, m: float, fermion: bool, n_omega: int
     return r
 
 
-def lcfa_rates_per_area(eE_of_z, z0: float, z1: float, m: float, fermion: bool, n: int = 400) -> dict:
+def _li2(y):
+    """Dilogarithm Li2(y) for 0 <= y <= 1, vectorised: 60-term series for y <= 1/2 (truncation < 2^-60), else Euler's
+    reflection Li2(y) = pi^2/6 - ln(y) ln(1 - y) - Li2(1 - y)."""
+    y = np.asarray(y, dtype=float)
+    k = np.arange(1, 61, dtype=float)
+
+    def series(t):
+        return (t[:, None] ** k[None, :] / (k * k)[None, :]).sum(axis=1)
+    out = np.empty_like(y)
+    lo = y <= 0.5
+    out[lo] = series(y[lo])
+    t = y[~lo]
+    with np.errstate(divide="ignore", invalid="ignore"):
+        ll = np.where(t < 1.0, np.log(t) * np.log1p(-t), 0.0)
+    out[~lo] = PI * PI / 6.0 - ll - series(1.0 - t)
+    return out
+
+
+def _schwinger_li_ratio(x, fermion):
+    """w/Gamma of a constant field as a function of x = e^{-pi m^2/eE} in (0, 1]: Li2(x)/x (spinor), -Li2(-x)/x =
+    [Li2(x) - Li2(x^2)/2]/x (scalar); the same sums as qft_production.schwinger_closed_forms, vectorised."""
+    x = np.asarray(x, dtype=float)
+    return (_li2(x) if fermion else _li2(x) - 0.5 * _li2(x * x)) / x
+
+
+def _lcfa_integrand(eE_of_z, z, m, g):
+    eE = np.abs(np.asarray(eE_of_z(z), dtype=float))
+    if not np.all(np.isfinite(eE)):
+        raise ValueError("eE(z) must be finite on [z0, z1]")
+    with np.errstate(divide="ignore", under="ignore"):
+        x = np.where(eE > 0, np.exp(-PI * m * m / np.maximum(eE, 1e-300)), 0.0)
+    return g * eE * eE / (8 * PI ** 3) * x, x
+
+
+def lcfa_rates_per_area(eE_of_z, z0: float, z1: float, m: float, fermion: bool, n: int = 400, rtol: float = 1e-9,
+                        strict: bool = False, flag_rel: float = 1e-6) -> dict:
     """Locally-constant-field approximation: int dz of Schwinger's pair-number rate and of his vacuum-decay rate.
 
-    Gamma_A = int dz g (eE)^2/(8 pi^3) e^{-pi m^2/|eE|};  w_A = int dz w_Schwinger(|eE(z)|) (all n, via
-    qft_production.schwinger_closed_forms); Gauss-Legendre with n nodes on [z0, z1].
+    Gamma_A = int dz g (eE)^2/(8 pi^3) e^{-pi m^2/|eE|};  w_A = int dz w_Schwinger(|eE(z)|) (all n; = Gamma integrand x
+    Li2(x)/x, spinor, or -Li2(-x)/x, scalar, x = e^{-pi m^2/|eE|}, as qft_production.schwinger_closed_forms).
+    Quadrature: |eE| is scanned on 4001 points of [z0, z1] and the scan is zoomed (up to 6 times) onto the LIVE support
+    |eE| > pi m^2/700 (outside it e^{-pi m^2/eE} < e^{-700}: nothing to integrate) until that support spans >= 64 scan
+    cells; the live support is then covered by composite 16-point Gauss-Legendre panels, doubled from n/16 panels
+    until the panel-halving change of the pair rate is <= rtol (at most 2^14 panels).
     Quantity: dict with 'pair_rate' (mean PAIRS per unit time per unit transverse area, energy^3) and 'decay_rate'
-        (vacuum-decay rate per area, energy^3) in the LCFA; spin-summed for spinors.
-    Valid when: eE0 L^2 >> 1 and m L >> 1 (the field changes little over the tunnelling length 2m/eE); relative
-        corrections O(1/(eE0 L^2)); it ignores the threshold (nonzero even when the step height is below 2m,
-        where the exact rate is 0); m > 0; field negligible outside [z0, z1]."""
+        (vacuum-decay rate per area, energy^3) in the LCFA, spin-summed for spinors; 'ratio' = w/Gamma; 'quad_relerr'
+        (panel-halving relative change of each rate, the larger), 'resolved' (quad_relerr <= flag_rel; strict=True
+        raises otherwise), 'support' (the live interval integrated), 'panels'.
+    Valid when: the LCFA itself holds: gamma = m/(eE0 L) << 1 AND pi m^4/(4 eE0^3 L^2) << 1, i.e. eE0 L^2 >>
+        max(1, (m^2/eE0)^2) for a field of peak eE0 and width L. The relative correction is about
+        -[(pi/4)(m^2/eE0)^2 + O(m^2/eE0) + O(1)]/(eE0 L^2) (measured for the Sauter step, spinor: -2.54 at
+        eE0 = m^2, -13.4 at 0.3 m^2, -91 at 0.1 m^2, times 1/(eE0 L^2)); NOT simply O(1/(eE0 L^2)) in weak fields,
+        where exact/LCFA ~ exp(-pi m^4/(4 eE0^3 L^2)). It ignores the threshold (nonzero even when the step height is
+        below 2m, where the exact rate is 0). m > 0; eE vectorised, field negligible outside [z0, z1]; the live support
+        (or one of its pieces) is wider than (z1 - z0)/4000, so that the first scan sees it."""
     m = _pos(m, "m")
     z0, z1 = float(z0), float(z1)
-    if not (math.isfinite(z0) and math.isfinite(z1)) or z1 <= z0 or n < 8:
-        raise ValueError("need finite z0 < z1 and n >= 8")
-    z, w = qp._gauss_legendre(z0, z1, int(n))
-    eE = np.abs(np.asarray(eE_of_z(z), dtype=float))
+    if not (math.isfinite(z0) and math.isfinite(z1)) or z1 <= z0 or n < 16:
+        raise ValueError("need finite z0 < z1 and n >= 16")
     g = 2.0 if fermion else 1.0
-    with np.errstate(divide="ignore", over="ignore"):
-        pair = float(np.sum(w * g * eE * eE / (8 * PI ** 3) * np.where(eE > 0, np.exp(-PI * m * m / np.maximum(eE, 1e-300)), 0.0)))
-    live = eE > PI * m * m / 700.0                            # below: e^{-pi m^2/eE} < e^{-700}, contributes nothing
-    dec = float(sum(wi * qp.schwinger_closed_forms(m, float(e), fermion)["decay_rate"] for wi, e in zip(w[live], eE[live])))
-    return {"pair_rate": pair, "decay_rate": dec, "ratio": dec / pair if pair > 0 else float("nan")}
+    thr = PI * m * m / 700.0
+    a, b = z0, z1
+    for _ in range(7):                                              # locate (and zoom onto) the live support
+        zs = np.linspace(a, b, 4001)
+        es = np.abs(np.asarray(eE_of_z(zs), dtype=float))
+        if not np.all(np.isfinite(es)):
+            raise ValueError("eE(z) must be finite on [z0, z1]")
+        idx = np.nonzero(es > thr)[0]
+        if len(idx) == 0:
+            if (a, b) == (z0, z1):
+                return {"pair_rate": 0.0, "decay_rate": 0.0, "ratio": float("nan"), "quad_relerr": 0.0,
+                        "resolved": True, "support": (float("nan"), float("nan")), "panels": 0}
+            break
+        a, b = zs[max(idx[0] - 1, 0)], zs[min(idx[-1] + 1, 4000)]
+        if idx[-1] - idx[0] >= 64:
+            break
+
+    def rule(P):
+        edges = np.linspace(a, b, P + 1)
+        x, w = np.polynomial.legendre.leggauss(16)
+        zc, hw = 0.5 * (edges[:-1] + edges[1:]), 0.5 * (edges[1:] - edges[:-1])
+        z = (zc[:, None] + hw[:, None] * x[None, :]).ravel()
+        ww = (hw[:, None] * w[None, :]).ravel()
+        f, xx = _lcfa_integrand(eE_of_z, z, m, g)
+        return float(np.sum(ww * f)), ww, f, xx
+
+    P = max(int(n) // 16, 1)
+    I1 = rule(P)[0]
+    while True:
+        I2, ww, f, xx = rule(2 * P)
+        rel_p = abs(I2 - I1) / abs(I2) if I2 > 0 else (0.0 if I1 == 0 else float("inf"))
+        if rel_p <= rtol or 4 * P > 2 ** 14:
+            break
+        P, I1 = 2 * P, I2
+    pair = I2
+    live = f > 0
+    ratio_x = np.zeros_like(f)
+    ratio_x[live] = _schwinger_li_ratio(xx[live], fermion)
+    dec = float(np.sum(ww * f * ratio_x))
+    _, ww1, f1, xx1 = rule(P)
+    l1 = f1 > 0
+    r1 = np.zeros_like(f1)
+    r1[l1] = _schwinger_li_ratio(xx1[l1], fermion)
+    dec1 = float(np.sum(ww1 * f1 * r1))
+    rel_d = abs(dec - dec1) / abs(dec) if dec > 0 else 0.0
+    rel = max(rel_p, rel_d)
+    if strict and rel > flag_rel:
+        raise ValueError(f"LCFA quadrature unresolved (relative change {rel:.3g} > {flag_rel:g}); check the window")
+    return {"pair_rate": pair, "decay_rate": dec, "ratio": dec / pair if pair > 0 else float("nan"), "quad_relerr": rel,
+            "resolved": bool(rel <= flag_rel), "support": (float(a), float(b)), "panels": 2 * P}
 
 
 def sauter_step_lcfa_closed_form(m: float, eE0: float, L: float, fermion: bool) -> dict:
@@ -787,8 +995,12 @@ def sauter_step_lcfa_closed_form(m: float, eE0: float, L: float, fermion: bool) 
     x = pi m^2/eE0 (Psi = Tricomi U, mpmath.hyperu);  w_A = mu Gamma_A, mu = sum_{j>=0} (+-1)^j [delta((j+1)x)/delta(x)]
     e^{-jx}/(j+1)^2 (+ fermions, alternating bosons).
     Quantity: dict with 'pair_rate' (LCFA mean PAIRS per unit time per unit transverse area, energy^3) and
-        'decay_rate' (LCFA vacuum-decay rate per area, energy^3), spin-summed for spinors.
-    Valid when: eE0 L^2 >> 1 (and >> m^2/eE0); m > 0, eE0 > 0 (energy^2), L > 0 (1/energy)."""
+        'decay_rate' (LCFA vacuum-decay rate per area, energy^3), spin-summed for spinors; 'ratio' = w/Gamma;
+        'gamma' = m/(eE0 L) and 'weak_field_exponent' = pi m^4/(4 eE0^3 L^2) (exact/LCFA ~ exp(-that) for weak
+        fields; both must be << 1 for the LCFA to hold).
+    Valid when: gamma = m/(eE0 L) << 1 and pi m^4/(4 eE0^3 L^2) << 1, i.e. eE0 L^2 >> max(1, (m^2/eE0)^2); relative
+        correction ~ -[(pi/4)(m^2/eE0)^2 + O(m^2/eE0) + O(1)]/(eE0 L^2) (Part D; GG's "eE0 L^2 >> 1, >> m^2/eE0" is
+        not enough: at eE0 = 0.1 m^2, eE0 L^2 = 100, exact/LCFA = 0.38); m > 0, eE0 > 0 (energy^2), L > 0 (1/energy)."""
     import mpmath as mp
     m, eE0, L = _pos(m, "m"), _pos(eE0, "eE0"), _pos(L, "L")
     x = PI * m * m / eE0
@@ -803,7 +1015,8 @@ def sauter_step_lcfa_closed_form(m: float, eE0: float, L: float, fermion: bool) 
         if abs(term) < 1e-17 * abs(mu) or j > 2000:
             break
         j += 1
-    return {"pair_rate": pair, "decay_rate": float(mu) * pair, "ratio": float(mu)}
+    return {"pair_rate": pair, "decay_rate": float(mu) * pair, "ratio": float(mu), "gamma": m / (eE0 * L),
+            "weak_field_exponent": PI * m ** 4 / (4 * eE0 ** 3 * L * L)}
 
 
 # ---------------------------------------------------------------- self-test
@@ -915,6 +1128,37 @@ def selftest(verbose: bool = True) -> bool:
     except ValueError:
         refused = 1.0
     check("strict=True refuses the unresolved run", refused, 1.0, 0)
+    #    Exponents beyond the double range: a three-level staircase V = 2, 0, -2 (m = 1, omega = 0.1, k_perp = 0.2) with an
+    #    evanescent middle of length D = 800 (kappa = 1.015, n ~ e^{-1620}, |beta| ~ e^{810} > 1e308). The Magnus steps are
+    #    exact for piecewise-constant V with the jumps on grid nodes, so the renormalised ODE must match a 50-digit
+    #    transfer-matrix reference (exact segment exponentials in mpmath) to roundoff in ln n (tol 1e-9 absolute on
+    #    ln n ~ -1600: measured ~1e-12).
+    D, om3, kp3 = 800.0, 0.1, 0.2
+    V3 = lambda z: np.where(np.asarray(z) < 0, 2.0, np.where(np.asarray(z) < D, 0.0, -2.0))     # noqa: E731
+    r3s = klein_mode_scalar(V3, -800.0, 1600.0, [om3], [kp3], 1.0, steps=48)
+    r3f = klein_mode_spinor(V3, -800.0, 1600.0, [om3], [kp3], 1.0, steps=48)
+    with mp.workdps(50):
+        ep = mp.sqrt(1 + mp.mpf(kp3) ** 2)
+        segs = [(mp.mpf(om3) - 2, 800), (mp.mpf(om3), D), (mp.mpf(om3) + 2, 1600 - D)]       # (kinetic energy, length)
+        pL, pR = mp.sqrt(segs[0][0] ** 2 - ep ** 2), mp.sqrt(segs[2][0] ** 2 - ep ** 2)
+        u = mp.exp(-1j * pL * (-800)) / mp.sqrt(2 * pL)                                        # scalar: (psi, psi')
+        st = mp.matrix([u, -1j * pL * u])
+        sL = -mp.sign(segs[0][0])                                                              # spinor: (a, b)
+        kL, kR = pL / (segs[0][0] + ep), pR / (segs[2][0] + ep)
+        a0 = mp.exp(1j * sL * pL * (-800)) / mp.sqrt(2 * abs(kL))
+        sp = mp.matrix([a0, sL * kL * a0])
+        for pi_, l in segs:
+            k = mp.sqrt(mp.mpc(pi_ ** 2 - ep ** 2))
+            st = mp.matrix([[mp.cos(k * l), mp.sin(k * l) / k], [-k * mp.sin(k * l), mp.cos(k * l)]]) * st
+            Om = l * mp.matrix([[0, 1j * (pi_ + ep)], [1j * (pi_ - ep), 0]])
+            q = mp.sqrt(mp.mpc(-(pi_ ** 2 - ep ** 2))) * l
+            sp = (mp.cosh(q) * mp.eye(2) + mp.sinh(q) / q * Om) * sp
+        lnn_s = -2 * mp.log(abs(mp.sqrt(pR / 2) * (st[0] - 1j * st[1] / pR)))
+        lnn_f = -2 * mp.log(mp.sqrt(2 * abs(kR)) * abs(sp[0] - sp[1] / kR) / 2)              # pi_R > 0: c_in = c_-
+    check(f"beyond the double range (ln n = {float(lnn_s):.1f} scalar, {float(lnn_f):.1f} spinor): renormalised ODE vs "
+          "50-digit transfer matrices, max |ln n error|",
+          max(abs(float(r3s["ln_n"][0] - lnn_s)), abs(float(r3f["ln_n"][0] - lnn_f)))
+          + float(not (r3s["resolved"][0] and r3f["resolved"][0])), 0.0, 1e-9)
 
     # 4. Threshold null result: no Klein zone, no pairs, when Delta V < 2 sqrt(m^2 + k_perp^2); the total rate is
     #    EXACTLY 0 for Delta V < 2m. KLY II p. 3, quoted: "Pairs are produced only when ω + qE0L ≥ m and ω − qE0L ≤ − m,
@@ -953,14 +1197,15 @@ def selftest(verbose: bool = True) -> bool:
     #    electric field along the z-direction is included here in the limit k → 0, v→ ∞ with vk = −eE = const." ...
     #    "so that the reflection coefficient (22) reduces to R = { 1 + exp [ −π(p2 ⊥ +m2) ¯h(e|E|) ]} −1 . (25)" (reading:
     #    R = 1/(1 + exp(-pi (p_perp^2 + m^2)/(hbar e|E|))), so n = 1/R - 1 = exp(-pi eps_perp^2/eE)).
-    #    eE0 = 0.3, L = 100 (eE0 L^2 = 3000): corrections O(1/(eE0 L^2)), measured -0.35%; tol 1%.
+    #    eE0 = 0.3, L = 100 (eE0 L^2 = 3000): leading correction -pi eps^4/(4 eE0^3 L^2) = -0.35% (Part D), measured -0.35%; tol 1%.
     for fermion in (True, False):
         nf = sauter_step_n_spinor if fermion else sauter_step_n_scalar
         check(f"eE0 L^2 = 3000, omega = 0: {'spinor' if fermion else 'scalar'} n -> exp(-pi eps_perp^2/eE0) (CK eq. 25)",
               float(nf(0.0, 0.3, 1.0, 0.3, 100.0)), math.exp(-PI * 1.09 / 0.3), 1e-2, rel=True)
 
     # 6. Locally-constant-field limit of the RATE: exact Sauter rates -> int dz Gamma_Schwinger(E(z)) (pair number) and
-    #    int dz w_Schwinger(E(z)) (vacuum decay), corrections O(1/(eE0 L^2)): measured -2.5/(eE0 L^2) (spinor) at eE0 = m^2.
+    #    int dz w_Schwinger(E(z)) (vacuum decay); at eE0 = m^2 the corrections are -2.54/(eE0 L^2) (spinor), -1.75/(eE0 L^2)
+    #    (scalar), but the coefficient grows like (pi/4)(m^2/eE0)^2 in weak fields (checked below, Part D).
     #    The LCFA reference is GG p. 37, quoted: "ncr = J(d)αδ (2π)d−1 (eE) d 2 exp { −πm2 eE } . (9.18) Here δ = ∫ ∞ 0 dtt−1/ 2
     #    (t + 1)−(d−2)/ 2 exp ( −tπm2 eE ) =√πΨ (1 2,−d− 2 2 ;πm2 eE ) , where Ψ ( a,b ;x) is the confluent hypergeometric
     #    function [52]", and "Pv = exp (−µN cr), µ = ∞∑ j=0 (−1)(1−κ )j/ 2ǫj+1 (j + 1)d/ 2 exp ( −jπm2 eE ) , ǫj =δ−1√πΨ (1 2,
@@ -987,6 +1232,34 @@ def selftest(verbose: bool = True) -> bool:
               devs[0][0] / devs[1][0], 4.0, 0.4)
         check(f"{tag}: vacuum-decay rate -> int dz w_Schwinger (GG eq. 9.19) with the same 1/L^2 deviation",
               abs(devs[1][1] - devs[1][0]), 0.0, 2e-3)
+    #    Weak fields: the deviation coefficient C = (exact/LCFA - 1) eE0 L^2 is NOT O(1). Expanding the omega = 0 exponent,
+    #    2 pi L (a - sqrt(a^2 - eps^2)) = pi eps^2/eE0 + pi eps^4/(4 eE0^3 L^2) + ..., gives C -> -(pi/4)(m^2/eE0)^2 for
+    #    eE0 << m^2. At eE0 L^2 = 4000: C(0.05)/(-(pi/4)/0.05^2) measured 1.039 (spinor), 1.037 (scalar) (subleading
+    #    terms are O(eE0/m^2) relative: tol 0.1 around 1.04); C(0.1 m^2)/C(m^2) measured 35.7 (spinor), i.e. the
+    #    eE0 = m^2 coefficient underestimates the weak-field deviation by more than an order of magnitude (check > 20).
+    #    And at eE0 = 0.1 m^2, eE0 L^2 = 100 (m L = 31.6: "eE0 L^2 >> 1, m L >> 1" both hold) exact/LCFA = 0.381,
+    #    close to exp(-pi m^4/(4 eE0^3 L^2)) = exp(-0.785) = 0.456 (higher orders make up the rest): check < 0.5.
+    coef = {}
+    for fermion, e0 in ((True, 0.05), (False, 0.05), (True, 0.1), (True, 1.0)):
+        Lw = math.sqrt(4000.0 / e0)
+        ex = sauter_step_rates(1.0, e0, Lw, fermion, strict=True)
+        coef[(fermion, e0)] = (ex["pair_rate"] / sauter_step_lcfa_closed_form(1.0, e0, Lw, fermion)["pair_rate"] - 1) * 4000.0
+    for fermion in (True, False):
+        check(f"weak field ({'spinor' if fermion else 'scalar'}), eE0 = 0.05 m^2, eE0 L^2 = 4000: LCFA deviation coefficient "
+              "/ (-(pi/4)(m^2/eE0)^2) -> 1", coef[(fermion, 0.05)] / (-PI / 4 / 0.05 ** 2), 1.04, 0.1)
+    check("spinor: deviation coefficient at eE0 = 0.1 m^2 / that at eE0 = m^2 (> 20: the eE0 = m^2 value does not carry over)",
+          float(coef[(True, 0.1)] / coef[(True, 1.0)] > 20), 1.0, 0)
+    ex, lc = sauter_step_rates(1.0, 0.1, math.sqrt(1000.0), True), sauter_step_lcfa_closed_form(1.0, 0.1, math.sqrt(1000.0), True)
+    check(f"eE0 = 0.1 m^2, eE0 L^2 = 100, m L = 31.6: exact/LCFA = {ex['pair_rate'] / lc['pair_rate']:.3f} < 0.5 "
+          f"(weak-field exponent {lc['weak_field_exponent']:.3f} is not small)", float(ex["pair_rate"] / lc["pair_rate"] < 0.5), 1.0, 0)
+    #    LCFA quadrature on a window much wider than the field (Gaussian eE = 2 exp(-z^2), window +-200): the live support
+    #    is found and integrated by panels; reference: 30-digit mpmath quadrature of the same integrand on [-8, 8] (outside,
+    #    exp(-pi e^{64}/2) = 0). Tol 1e-9 (measured 2e-16).
+    lw = lcfa_rates_per_area(lambda z: 2.0 * np.exp(-z * z), -200.0, 200.0, 1.0, True, strict=True)
+    with mp.workdps(30):
+        ref = mp.quad(lambda z: 2 * 4 * mp.exp(-2 * z * z) / (8 * mp.pi ** 3) * mp.exp(-mp.pi / (2 * mp.exp(-z * z))), [-8, 0, 8])
+    check("LCFA pair rate, Gaussian field on a +-200 L window (200x wider than the field) vs mpmath quadrature",
+          lw["pair_rate"], float(ref), 1e-9, rel=True)
 
     # 7. Pair number versus vacuum decay from the SAME n. (a) CK 2009 eq. 47 (sharp step, scalar decay rate, elliptic
     #    integrals; read from the PDF and confirmed by checking its eqs. 43 and 46 numerically) vs our quadrature of
@@ -998,10 +1271,13 @@ def selftest(verbose: bool = True) -> bool:
     #    obtain for the pair production rate per unit area in the Sauter potential ( 3) the integral representation w⊥ =
     #    − 1 (2π)2¯h3 ∫ v−m 0 dp0 ∫ (p0−v)2−m2 0 dp2 ⊥ lnR(p0,p 2 ⊥). (32)": what CK call the "pair production rate" is
     #    -sum ln R, the VACUUM-DECAY rate (KLY II eq. 24 calls the same integral 2 Im L_eff), not the pair number.
-    for v in (1.5, 4.0):
+    #    Heights 1.01 m to 1000 m (v = 20, 100 and 1000 used to hit the branch point of F(arcsin al, 1/al) and fail):
+    #    measured <= 3.4e-7.
+    worst = 0.0
+    for v in (1.01, 1.5, 4.0, 20.0, 100.0, 1000.0):
         rq = rates_from_n(lambda o, k: klein_step_n_scalar(o, k, 1.0, 2 * v), v, -v, 1.0, False)
-        check(f"sharp step v = {v} m: integral of ln(1 + n) = CK eq. 47 closed form", rq["decay_rate"],
-              klein_step_decay_rate_scalar(1.0, 2 * v), 2e-6, rel=True)
+        worst = max(worst, abs(rq["decay_rate"] / klein_step_decay_rate_scalar(1.0, 2 * v) - 1))
+    check("sharp step v = 1.01 ... 1000 m: integral of ln(1 + n) = CK eq. 47 closed form, max rel.", worst, 0.0, 2e-6)
     #    (b) Sauter step with L -> 0 at fixed height 2v = 4m: decay rate -> CK eq. 47 with deviation ~ L (measured -5.5e-2
     #    at L = 0.01, -5.7e-3 at L = 0.001), while the PAIR rate diverges: L x pair rate -> (v^2 - m^2)^{5/2}/(20 pi v^3)
     #    (from eq. 9.6: n ~ p^4/(v^2 (v^2 L^2 p^2 + omega^2)) near omega = 0); measured -5.2e-2, -5.4e-3.
@@ -1135,7 +1411,7 @@ def main(argv=None) -> int:
     sub.add_parser("selftest")
     sp = sub.add_parser("sauter", help="Sauter step E0 sech^2(z/L): exact pair-number and vacuum-decay rates per area vs LCFA")
     mp_ = sub.add_parser("mode", help="one mode (omega, k_perp) of the Sauter step: closed form vs ODE")
-    pp = sub.add_parser("profile", help="rates for a field profile E(z) by the numerical solver (sauter, gauss, lorentz)")
+    pp = sub.add_parser("profile", help="rates for a field profile E(z) by the numerical solver (sauter, gauss)")
     for p in (sp, mp_, pp):
         p.add_argument("--m", default="0.51099895 MeV", help="mass, e.g. '0.511 MeV' (default: electron)")
         p.add_argument("--E", required=True, help="peak field, e.g. '1.32e18 V/m'")
@@ -1143,8 +1419,10 @@ def main(argv=None) -> int:
         p.add_argument("--scalar", action="store_true", help="scalar QED instead of spinor QED")
     mp_.add_argument("--omega", default="0 eV", help="energy measured from the mid-step potential, e.g. '0 eV'")
     mp_.add_argument("--kperp", default="0 eV", help="transverse momentum (as an energy), e.g. '100 keV'")
-    pp.add_argument("--shape", default="gauss", choices=("sauter", "gauss", "lorentz"),
-                    help="E(z) = E0 sech^2(z/L), E0 exp(-z^2/L^2) or E0/(1 + z^2/L^2)")
+    # (No Lorentzian E0/(1 + z^2/L^2): its 1/z^2 tail makes V approach its asymptotes only like 1/z, so the plane-wave
+    # ends that the solver needs require windows of thousands of L for near-edge nodes; outside its contract.)
+    pp.add_argument("--shape", default="gauss", choices=("sauter", "gauss"),
+                    help="E(z) = E0 sech^2(z/L) or E0 exp(-z^2/L^2)")
     pp.add_argument("--n", type=int, default=12, help="quadrature nodes per direction")
     sub.add_parser("convergence", help="slow studies: solver steps, quadrature grids, LCFA approach")
     args = ap.parse_args(argv)
@@ -1166,13 +1444,16 @@ def main(argv=None) -> int:
             print(f"step height Delta V = 2 eE0 L = {2 * eE0 * L:.6g} eV = {2 * eE0 * L / m:.4g} m "
                   f"({'Klein zone exists' if 2 * eE0 * L > 2 * m else 'below 2m: NO pairs, exactly'})")
             print(f"pair-number rate (mean pairs per time per area) {r['pair_rate']:.6g} eV^3 = "
-                  f"{rate_per_area_to_SI(r['pair_rate']):.6g} m^-2 s^-1   (quadrature rel. change {r['quad_relerr']:.1e})")
+                  f"{rate_per_area_to_SI(r['pair_rate']):.6g} m^-2 s^-1   (quadrature rel. change {r['quad_relerr']:.1e}, "
+                  f"resolved {r['resolved']})")
             print(f"vacuum-decay rate per area w = 2 Im L_eff  {r['decay_rate']:.6g} eV^3 = "
                   f"{rate_per_area_to_SI(r['decay_rate']):.6g} m^-2 s^-1; w/Gamma = "
                   f"{'n/a (no pairs)' if r['zone_empty'] else format(r['ratio'], '.6f')}")
             lc = sauter_step_lcfa_closed_form(m, eE0, L, fermion)
             print(f"locally-constant-field estimate (GG eq. 9.18): pair rate {lc['pair_rate']:.6g} eV^3 "
-                  f"(exact/LCFA = {r['pair_rate'] / lc['pair_rate'] if lc['pair_rate'] > 0 else float('nan'):.4g})")
+                  f"(exact/LCFA = {r['pair_rate'] / lc['pair_rate'] if lc['pair_rate'] > 0 else float('nan'):.4g}; "
+                  f"LCFA validity: gamma = m/(eE0 L) = {lc['gamma']:.3g} and pi m^4/(4 eE0^3 L^2) = "
+                  f"{lc['weak_field_exponent']:.3g} must both be << 1)")
             return 0
         if args.cmd == "mode":
             om, kp = qp._energy(args.omega), qp._energy(args.kperp)
@@ -1190,10 +1471,9 @@ def main(argv=None) -> int:
             return 0
         # profile: work in units of m (dimensionless), then convert back
         e0, Lm = eE0 / m ** 2, L * m
-        shapes = {"sauter": lambda z: e0 / np.cosh(z / Lm) ** 2, "gauss": lambda z: e0 * np.exp(-(z / Lm) ** 2),
-                  "lorentz": lambda z: e0 / (1 + (z / Lm) ** 2)}
-        half = {"sauter": 15 * Lm, "gauss": 7 * Lm, "lorentz": 3000 * Lm}[args.shape]
-        V = potential_from_field(shapes[args.shape], -half, half, 20001 if args.shape == "lorentz" else 4001)
+        shapes = {"sauter": lambda z: e0 / np.cosh(z / Lm) ** 2, "gauss": lambda z: e0 * np.exp(-(z / Lm) ** 2)}
+        half = {"sauter": 15 * Lm, "gauss": 7 * Lm}[args.shape]
+        V = potential_from_field(shapes[args.shape], -half, half, 4001)
         dV = abs(V(-half) - V(half))
         print(f"{args.shape}: step height {dV:.6g} m ({'Klein zone exists' if dV > 2 else 'below 2m: NO pairs, exactly'})")
         r = rates_numeric(V, -half, half, 1.0, fermion, n_omega=args.n, n_k=args.n, eE_max=e0)
@@ -1203,8 +1483,8 @@ def main(argv=None) -> int:
               f" (ODE, estimated rel. error {r['pair_relerr']:.1e}, resolved {r['resolved']})")
         print(f"vacuum-decay rate {r['decay_rate'] * conv:.6g} eV^3; w/Gamma = {r['ratio']:.6f}")
         print(f"LCFA: pair rate {lc['pair_rate'] * conv:.6g} eV^3 (exact/LCFA = "
-              f"{r['pair_rate'] / lc['pair_rate'] if lc['pair_rate'] > 0 else float('nan'):.4g}); "
-              "check the quadrature by repeating with a larger --n")
+              f"{r['pair_rate'] / lc['pair_rate'] if lc['pair_rate'] > 0 else float('nan'):.4g}; LCFA quadrature rel. "
+              f"change {lc['quad_relerr']:.1e}); check the ODE rate by repeating with a larger --n")
     except (ValueError, KeyError) as exc:
         print(f"ERROR: {exc}")
         return 1

@@ -68,6 +68,28 @@ class RadiativeRefusals(unittest.TestCase):
             with self.subTest(case=i), self.assertRaises(ValueError):
                 fn()
 
+    def test_underflow_and_bad_scalars(self):
+        r = qi.schwinger_radiative_rate(1.0, 1e-4)          # pi/beta = 31416: the rates underflow to 0
+        self.assertEqual(r["one_loop"], 0.0)
+        want = math.log10(2 / (8 * math.pi ** 3)) + 2 * math.log10(1e-4) - math.pi * 1e4 / math.log(10)
+        self.assertAlmostEqual(r["log10_one_loop"], want, places=8)
+        # difference of two numbers ~ -1.4e4: roundoff ~ 1.4e4 x eps = 3e-12, hence 9 places
+        self.assertAlmostEqual(r["log10_all_orders"] - r["log10_one_loop"], math.pi * qi.ALPHA_FS / math.log(10),
+                               places=9)
+        ok = qi.schwinger_radiative_rate(1.0, 0.1)
+        self.assertAlmostEqual(10 ** ok["log10_two_loop"] / ok["two_loop"], 1.0, places=10)
+        big = qi.schwinger_radiative_rate(1e300, 1e299)     # m^2 overflows: was ZeroDivisionError
+        self.assertEqual(big["one_loop"], 0.0)
+        self.assertTrue(math.isfinite(big["log10_one_loop"]))
+        for fn in (lambda: qi.schwinger_radiative_rate(1e300, 1e-300),    # eE/m^2 underflows to 0
+                   lambda: qi.schwinger_radiative_rate(np.array([1.0, 2.0]), 0.1)):   # was TypeError
+            with self.assertRaises(ValueError):
+                fn()
+        code, out = run_cli(["radiative", "--E", "1e15 V/m"])  # weak field, rate below double precision
+        self.assertEqual(code, 0)
+        self.assertIn("underflows double precision", out)
+        self.assertIn("10^(", out)
+
     def test_rate_bookkeeping(self):
         sp = qi.schwinger_radiative_rate(1.0, 0.1)
         sc = qi.schwinger_radiative_rate(1.0, 0.1, fermion=False)
@@ -112,6 +134,19 @@ class FloquetRefusals(unittest.TestCase):
         self.assertEqual(float(r["mu"][1]), 0.0)
         self.assertAlmostEqual(float(r["mu"][2]), 1.0, places=9)   # A = -1: y ~ e^{z}
 
+    def test_deep_tunnelling_large_exponent(self):
+        # A = 0, q = 1e5: |Delta| ~ 1e232 (squaring it used to overflow to mu = inf). WKB under the barrier:
+        # pi mu = int_0^pi sqrt(max(2q cos 2z, 0)) dz + ln|2 cos theta| with |ln| <~ ln 2, i.e. mu ~ sqrt(2q) x
+        # (sqrt(pi)/2) Gamma(3/4)/Gamma(5/4)/pi = 170.558; measured 170.237 (mpmath odefun agrees to 1e-9 at q = 1e3:
+        # mu = 17.2697069). Tolerance 0.5 in mu (0.3% relative) covers the oscillating O(1)/pi term.
+        r = qi.mathieu_floquet_exponent([0.0], 1e5)
+        wkb = math.sqrt(2e5) * math.sqrt(math.pi) / 2 * math.gamma(0.75) / math.gamma(1.25) / math.pi
+        self.assertTrue(bool(r["unstable"][0]))
+        self.assertTrue(math.isfinite(float(r["mu"][0])))
+        self.assertLess(abs(float(r["mu"][0]) - wkb), 0.5)
+        with self.assertRaises(ValueError):                         # |Delta| beyond double precision: refused
+            qi.mathieu_floquet_exponent([0.0], 4e5)                 # (used to return mu = 0, unstable = False)
+
     def test_broad_resonance_bands_start_above_2q(self):
         bands = qi.preheating_resonance_bands(1.0, 1e-4, 1e5)       # q = 25
         self.assertTrue(bands)
@@ -134,6 +169,28 @@ class HartreeRefusals(unittest.TestCase):
         for i, kw in enumerate(bad):
             with self.subTest(case=i), self.assertRaises(ValueError):
                 qi.hartree_preheating(**kw)
+
+    def test_custom_grid_cutoff_is_checked(self):
+        # A user grid that ends inside the q = 9 resonance band (edge n_k ~ 500) is refused like the automatic one.
+        kn, kw = np.linspace(0.05, 1.5, 60), np.full(60, 0.025)
+        with self.assertRaises(ValueError):
+            qi.hartree_preheating(1.0, 0.1, 60.0, t_end=30.0, k_nodes=kn, k_weights=kw)
+        with self.assertRaises(ValueError):                          # opt-out only for decoupled modes
+            qi.hartree_preheating(1.0, 0.1, 60.0, t_end=30.0, k_nodes=kn, k_weights=kw, check_cutoff=False)
+        r = qi.hartree_preheating(1.0, 0.1, 60.0, t_end=30.0, k_nodes=kn, k_weights=kw, check_cutoff=False,
+                                  backreaction=False)
+        self.assertGreater(r["edge_excitation"], 100.0)
+
+    def test_small_amplitude_not_refused_for_roundoff(self):
+        # Phi = 1e-6: rho_phi(0) is tiny next to the vacuum terms of the bare energy; the drift is normalized by
+        # max(rho_phi(0), roundoff floor), so pure rounding is not mistaken for a step-size error (was refused).
+        for spp in (None, 400):
+            r = qi.hartree_preheating(1.0, 0.1, 1e-6, m_chi=0.5, t_end=20.0, steps_per_halfperiod=spp)
+            self.assertLess(r["energy_drift_max"], 1e-4)
+            self.assertGreaterEqual(r["energy_scale"], r["energy_roundoff_floor"])
+        # ...while a genuinely too-large step at normal amplitude is still refused
+        with self.assertRaises(ValueError):
+            qi.hartree_preheating(1.0, 0.1, 60.0, t_end=40.0, kmax=14.0, steps_per_halfperiod=24, n_modes=(32, 32))
 
     def test_quantities_and_conservation(self):
         r = qi.hartree_preheating(1.0, 0.1, 30.0, t_end=20.0, n_modes=(48, 64), kmax=14.0)
@@ -162,6 +219,7 @@ class CommandLine(unittest.TestCase):
         code, out = run_cli(["preheat", "--m-phi", "1e13 GeV", "--g", "1e-3", "--Phi", "6e15 GeV", "--t-end", "10"])
         self.assertEqual(code, 0)
         self.assertIn("PARTICLES", out)
+        self.assertIn("Coleman-Weinberg", out)
         code, _ = run_cli(["preheat", "--m-phi", "1e13 GeV", "--g", "1e-3", "--Phi", "3 m"])   # a length, not an energy
         self.assertEqual(code, 1)
 

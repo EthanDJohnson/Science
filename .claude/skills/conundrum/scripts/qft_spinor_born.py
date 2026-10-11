@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """qft_spinor_born: first-order (Born, in-in) production of SPINOR pairs, and scalar-QED pairs, by weak
 classical electromagnetic and gravitational backgrounds, in the spectral form of qft_production Part D,
-plus the exact Dirac-in-FRW mode reduction used to test it (numpy + mpmath, no scipy).
+plus the exact Dirac-in-FRW mode reduction used to test it (numpy only here; qp uses mpmath; no scipy).
 
 Why this tool exists
     qft_production.py (imported here as qp) does Born production for scalar pairs (vertex V phi^2) and
@@ -62,7 +62,10 @@ PART 1. Vector-current spectral densities (QED vertex L = -j^mu A_mu)
       grows with m tau: scalar 3.4, 7.5, 14, 21 at m tau = 0.5, 1, 2, 3; at m tau = 3, eE0 = 0.01: 0.21 estimated,
       0.17 measured) and for Gaussian pulses with m T = 0.5..3, where it is one to two orders of magnitude too
       cautious (m T = 1, eE0 = 0.05 m^2: 0.91 estimated, 0.025 measured, refused: verify with the exact solver and
-      pass check=False). Outside that calibration (smooth pulses with m T > 3) treat it as a rough guide.
+      pass check=False). Outside that calibration (smooth pulses with m T > 3) treat it as a rough guide. For
+      Gaussian pulses with m T >~ 4 the one-photon content |eE~(2m)| reaches the roundoff floor of the numerical
+      transform (m T = 4: 14% off; m T = 5: too large by 23 orders of magnitude); 'noise_error' detects this and the
+      result is refused.
 
 PART 2. Stress-tensor spectral densities of Dirac (and Weyl) pairs (gravity vertex L = -(1/2) h_{mu nu} T^{mu nu})
 ------------------------------------------------------------------------------------------------------------
@@ -95,7 +98,12 @@ Assumptions and validity range
     Free fields in a prescribed classical background (no back-reaction), first order in the background; the
     background is off at both ends of the time window. Born is O(field^2) exact: compare two amplitudes (the
     self-test shows the deviation scaling as E0^2 for QED, by charge conjugation, and as eps for FRW). Per-mode
-    first-order occupations above 0.1, momentum kicks e|dA| > m/2 and error estimates (1 + 2mT) R2^2 > 0.5 are refused.
+    first-order occupations above 0.1, momentum kicks e|dA| > m/2, error estimates (1 + 2mT) R2^2 > 0.5 and metric
+    perturbations max|h| > 0.1 are refused (check=False returns the number with its diagnostics). The 1D Omega
+    integrals (born_qed_homogeneous, born_dirac_metric_homogeneous) also refuse a transform at its noise floor, a
+    spectrum still on at omega_max and an unconverged Omega grid (each > 1e-3 of the yield). The planar and general
+    entry points take transforms, cannot see the field in space-time, and do not check perturbativity: compare two
+    amplitudes and double the grids.
 
 Python usage
     import sys; sys.path.insert(0, ".claude/skills/conundrum/scripts")
@@ -162,6 +170,79 @@ def _beta(s, m):
     th = 4 * m * m
     with np.errstate(divide="ignore", invalid="ignore"):
         return s, np.where(s > th, np.sqrt(np.clip(1 - th / np.where(s > 0, s, 1.0), 0, None)), 0.0)
+
+
+def _grid(n, name: str, lo: int) -> int:
+    """A quadrature size: an integer (not bool) >= lo, else ValueError."""
+    if isinstance(n, bool) or not isinstance(n, (int, np.integer)) or n < lo:
+        raise ValueError(f"{name} must be an integer >= {lo} (got {n!r})")
+    return int(n)
+
+
+# Numerical-accuracy contract of the 1D Omega integrals (born_qed_homogeneous, born_dirac_metric_homogeneous):
+# 'noise_error', 'tail_fraction' and 'grid_error' are each refused above _NUM_TOL when check=True.
+_NUM_TOL = 1e-3
+_FT_CELLS_MAX = 5e8            # time nodes x frequencies of one transform (~35 s of numpy; 1e9 took 72 s); larger: refused
+_FT_CHUNK = 4_000_000          # complex phase-matrix cells per chunk (64 MB), so long windows do not exhaust memory
+
+
+def _time_nodes(f_of_t, t0, t1, omega_max, n_freq):
+    """Composite 16-point Gauss-Legendre nodes on [t0, t1] (as qp._ft_time, panels from omega_max) and f there."""
+    panels = int(max(8, math.ceil(2.0 * omega_max * (t1 - t0) / PI)))
+    if 16.0 * panels * n_freq > _FT_CELLS_MAX:
+        raise ValueError(f"window x omega_max too large for the numerical Fourier transform ({16 * panels} time nodes x "
+                         f"{n_freq} frequencies > {_FT_CELLS_MAX:.2g}): shorten [t0, t1] or omega_max, or integrate an "
+                         "analytic transform (as sauter_born_pairs_per_volume does)")
+    x, w = np.polynomial.legendre.leggauss(16)
+    edges = np.linspace(t0, t1, panels + 1)
+    half = 0.5 * (edges[1:] - edges[:-1])[:, None]
+    t = (half * x[None, :] + 0.5 * (edges[1:] + edges[:-1])[:, None]).ravel()
+    wt = (half * w[None, :]).ravel()
+    return t, wt, np.asarray(f_of_t(t))
+
+
+def _ft_nodes(t, wt, f, om):
+    """int f(t) e^{i Omega t} dt on the nodes of _time_nodes, Omega in chunks (bounded memory)."""
+    step = max(1, int(_FT_CHUNK // t.size))
+    parts = [np.tensordot(np.exp(1j * np.outer(om[i:i + step], t)) * wt[None, :], f, axes=([1], [0]))
+             for i in range(0, om.size, step)]
+    return np.concatenate(parts, axis=0)
+
+
+def _omega_nodes(m, omega_max, n):
+    """Gauss nodes on [2m, omega_max]: Omega = 2m + u^2 (smooth at a sqrt threshold) for m > 0, plain for m = 0."""
+    if m > 0:
+        u, wu = qp._gauss_legendre(0.0, math.sqrt(omega_max - 2 * m), n)
+        return 2 * m + u * u, 2 * u * wu
+    return qp._gauss_legendre(0.0, omega_max, n)
+
+
+def _numerics(om, w, dN_abs, dN_floor, N, N_half, omega_max, m):
+    """(noise_error, tail_fraction, grid_error) of a 1D spectral yield, all relative to N_abs = int dN_abs.
+
+    dN_abs: the yield density without cancellations between components (= dN for QED); dN_floor: the same density
+    evaluated with |transform| replaced by its numerical noise floor. By Cauchy-Schwarz the floor changes the yield by
+    at most 2 sqrt(N_abs N_floor) + N_floor. tail: (last-node density) x (omega_max - 2m), a proxy for the yield
+    above omega_max. grid: |N(n) - N(n/2)|, which bounds the Gauss error of N(n) when the grid is converging."""
+    N_abs = float(np.sum(w * dN_abs))
+    if not N_abs > 0:
+        return math.inf, math.inf, math.inf
+    r = float(np.sum(w * dN_floor)) / N_abs
+    return 2 * math.sqrt(r) + r, float(dN_abs[-1]) * (omega_max - 2 * m) / N_abs, abs(N - N_half) / N_abs
+
+
+def _numerics_refusal(noise, tail, grid, what):
+    if noise > _NUM_TOL:
+        raise ValueError(f"the numerical Fourier transform of {what} at Omega >= 2m is at or below its noise floor "
+                         f"(roundoff and the step left at the window ends; relative error bound {noise:.3g} > "
+                         f"{_NUM_TOL:g}): the one-photon content is too small to compute this way (smooth pulse with large "
+                         "m T?). Use an analytic transform, or widen [t0, t1] if the field is not yet off")
+    if tail > _NUM_TOL:
+        raise ValueError(f"spectrum not negligible at omega_max (tail estimate {tail:.3g} of the yield > {_NUM_TOL:g}): "
+                         "raise omega_max")
+    if grid > _NUM_TOL:
+        raise ValueError(f"Omega grid not converged (|N(n_omega) - N(n_omega/2)|/N = {grid:.3g} > {_NUM_TOL:g}): "
+                         "raise n_omega")
 
 
 # ---------------------------------------------------------------- PART 1: vector current
@@ -232,7 +313,7 @@ def fields_from_potential(K0, Kx, Ky, Kz, eA):
     return E, B
 
 
-def born_mode_efield(k_par, k_perp, m: float, eEtilde, field: str = "dirac"):
+def born_mode_efield(k_par, k_perp, m: float, eEtilde, field: str = "dirac", eA_max: float = None):
     """First-order (Born, in-in) occupation of one mode in a homogeneous E(t) along z (charge absorbed: eE).
 
     eEtilde(Omega) returns eE~(Omega) = int eE(t) e^{i Omega t} dt (energy). With w = sqrt(m^2 + k^2):
@@ -245,15 +326,26 @@ def born_mode_efield(k_par, k_perp, m: float, eEtilde, field: str = "dirac"):
     Quantity: per-mode in-in mean number of electrons in mode k (= positrons in -k = pairs in the mode), dimensionless;
         per spin state for Dirac (multiply by 2 for both spins), the complex scalar for 'scalar'.
     Valid when: weak field (refused if any n_k > 0.1: first order is then not an estimate); m^2 + k_perp^2 > 0;
-        E(t) homogeneous, linearly polarised, off at both ends; scalar QED also needs e|dA| << |k_par| (its first-order
-        term is proportional to k_par, so near k_par = 0 the second-order (e dA)^2 term dominates)."""
+        E(t) homogeneous, linearly polarised, off at both ends; eEtilde finite; scalar QED also needs e|dA| << |k_par|
+        (its first-order term is proportional to k_par, so near k_par = 0 the second-order (e dA)^2 term dominates:
+        40% off at e|dA|/|k_par| = 0.4, self-test 1g). The function cannot infer dA from eEtilde: pass eA_max = max_t
+        e|A(t) - (A_in + A_out)/2| and scalar modes with |k_par| < 10 eA_max are refused; without it, check yourself."""
     m = _mass(m)
     _field(field, _FIELDS_QED)
     kz, kp = np.broadcast_arrays(qp._arr(k_par, "k_par"), qp._arr(k_perp, "k_perp"))
     if np.any(m * m + kp * kp <= 0):
         raise ValueError("need m^2 + k_perp^2 > 0")
+    if eA_max is not None:
+        eA_max = float(eA_max)
+        if not (math.isfinite(eA_max) and eA_max >= 0):
+            raise ValueError("eA_max must be finite and >= 0")
+        if field == "scalar" and np.any(np.abs(kz) < 10 * eA_max):
+            raise ValueError(f"scalar QED: |k_par| < 10 e|dA| = {10 * eA_max:.3g} for some modes, where the second-order "
+                             "(e dA)^2 term rivals the first-order one; use qp.bogoliubov_boson")
     w = np.sqrt(m * m + kp * kp + kz * kz)
     E2 = np.abs(np.asarray(eEtilde(2 * w))) ** 2
+    if not np.all(np.isfinite(E2)):
+        raise ValueError("eEtilde returned non-finite values")
     num = (m * m + kp * kp) if field == "dirac" else kz * kz
     n = num * E2 / (4 * w ** 4)
     if np.any(n > 0.1):
@@ -287,32 +379,56 @@ def born_qed_homogeneous(eE_of_t, t0: float, t1: float, m: float, omega_max: flo
         error of Born for Sauter pulses (m tau = 0.5..3) and Gaussian pulses (m T = 0.5..3, where it is 10-100x too
         cautious). A Gaussian pulse with m T = 2 (exact/Born = 3.1 at eE0 T^2 = 0.08) has error_estimate ~400 and is
         refused; pass check=False to get the first-order number after verifying with the exact solvers.
+    Numerical diagnostics (each refused above 1e-3 when check=True; relative to the yield):
+      'noise_error' bounds the effect of the transform's noise floor (the step at the window ends,
+        (|eE(t0)| + |eE(t1)|)/Omega, plus 1e-14 int|eE|dt of roundoff). A smooth pulse with large m T (Gaussian,
+        m T >~ 4) has |eE~(2m)| at that floor: the number is noise (m T = 5: too large by 1e23), so it is refused;
+      'tail_fraction' = dN_dOmega(last node) (omega_max - 2m)/N: spectrum still on at omega_max;
+      'grid_error' = |N(n_omega) - N(n_omega/2)|/N: Omega grid not converged (narrow spectral lines).
     Quantity: dict with 'pairs_per_volume' (in-in mean number of e+e- PAIRS per unit volume, spin-summed, energy^3;
         = electrons = positrons per volume), 'particles_per_volume' (= 2 x pairs), the spectrum 'dN_dOmega' on 'omega'
-        (pairs per volume per unit pair energy), 'occupation_max', 'kick', 'R2', 'T_rms', 'error_estimate'.
-        At this order it also equals
+        (pairs per volume per unit pair energy), 'occupation_max', 'kick', 'R2', 'T_rms', 'error_estimate',
+        'noise_error', 'tail_fraction', 'grid_error'. At this order it also equals
         2 Im Gamma per volume (vacuum persistence exponent); beyond it the two differ.
-    Valid when: m > 0; first order (diagnostics above); eE(t) -> 0 at both ends of [t0, t1] (|eE| < 1e-6 max there);
-        |eE~| negligible above omega_max > 2m; field 'dirac' or 'scalar'."""
+    Valid when: m > 0; first order (diagnostics above); eE(t) -> 0 at both ends of finite [t0, t1] (|eE| < 1e-6 max
+        there, always refused otherwise); |eE~| negligible above omega_max > 2m and resolved by n_omega (integer >= 16;
+        checked by the numerical diagnostics; check by doubling n_omega); window x omega_max small enough for the
+        numerical transform (time nodes x 1.5 n_omega <= 5e8, refused otherwise; computed in chunks, so memory stays
+        bounded); field 'dirac' or 'scalar'."""
     m = _mass(m)
     _field(field, _FIELDS_QED)
-    t0, t1 = float(t0), float(t1)
+    n_omega = _grid(n_omega, "n_omega", 16)
+    t0, t1, omega_max = float(t0), float(t1), float(omega_max)
     if not m > 0:
         raise ValueError("m must be > 0 (massless pairs in a homogeneous field are non-perturbative at small k)")
-    if not (math.isfinite(t0) and math.isfinite(t1)) or t1 <= t0 or not omega_max > 2 * m or n_omega < 16:
-        raise ValueError("need finite t0 < t1, omega_max > 2m and n_omega >= 16")
-    ends = np.abs(np.asarray(eE_of_t(np.array([t0, t1])), dtype=float)).reshape(2, -1).max()
-    peak = np.abs(np.asarray(eE_of_t(np.linspace(t0, t1, 2001)), dtype=float)).max()
+    if not (math.isfinite(t0) and math.isfinite(t1) and math.isfinite(omega_max)) or t1 <= t0 or not omega_max > 2 * m:
+        raise ValueError("need finite t0 < t1 and finite omega_max > 2m")
+    om, w = _omega_nodes(m, omega_max, n_omega)
+    omh, wh = _omega_nodes(m, omega_max, n_omega // 2)                         # half grid: convergence check
+    tq, wq, fq = _time_nodes(eE_of_t, t0, t1, omega_max, om.size + omh.size)
+    fq = np.asarray(fq, dtype=float)
+    if not np.all(np.isfinite(fq)):
+        raise ValueError("eE(t) must be finite on [t0, t1]")
+    fmag = np.abs(fq) if fq.ndim == 1 else np.sqrt(np.sum(fq ** 2, axis=-1))
+    ends = float(np.abs(np.asarray(eE_of_t(np.array([t0, t1])), dtype=float)).reshape(2, -1).max())
+    edge_sum = float(np.sum(np.sqrt(np.sum(np.asarray(eE_of_t(np.array([t0, t1])), dtype=float).reshape(2, -1) ** 2,
+                                           axis=1))))
+    peak = float(fmag.max())
     if not peak > 0:
         raise ValueError("eE(t) vanishes identically")
     if ends > 1e-6 * peak:
         raise ValueError(f"eE at the window ends is {ends / peak:.2g} of its peak: extend [t0, t1] until the field is off")
-    u, wu = qp._gauss_legendre(0.0, math.sqrt(omega_max - 2 * m), n_omega)     # Omega = 2m + u^2: smooth at threshold
-    om, w = 2 * m + u * u, 2 * u * wu
-    Et = qp._ft_time(eE_of_t, t0, t1, om)
-    E2 = np.abs(Et) ** 2 if Et.ndim == 1 else np.sum(np.abs(Et) ** 2, axis=-1)
-    dN = E2 * vector_spectral_density(om * om, m, field) / (2 * PI)
+    Eall = _ft_nodes(tq, wq, fq, np.concatenate([om, omh]))
+    E2all = np.abs(Eall) ** 2 if Eall.ndim == 1 else np.sum(np.abs(Eall) ** 2, axis=-1)
+    E2, E2h = E2all[:om.size], E2all[om.size:]
+    rv = vector_spectral_density(om * om, m, field)
+    dN = E2 * rv / (2 * PI)
     N = float(np.sum(w * dN))
+    N_half = float(np.sum(wh * E2h * vector_spectral_density(omh * omh, m, field)) / (2 * PI))
+    # noise floor of the numerical transform: the step left at the window ends (|eE(t0)| + |eE(t1)|)/Omega plus
+    # roundoff, measured <= 1.5e-16 int|eE|dt (Gaussian pulses, windows up to +-160, Omega <= 30); 1e-14 is 70x that.
+    floor = edge_sum / om + 1e-14 * float(np.sum(wq * fmag))
+    noise, tail, grid = _numerics(om, w, dN, floor ** 2 * rv / (2 * PI), N, N_half, omega_max, m)
     # diagnostics on the Omega carrying the yield
     cdf = np.cumsum(w * dN) / max(N, 1e-300)
     sel = (cdf > 5e-4) & (cdf < 1 - 5e-4) | (dN >= 1e-3 * dN.max())
@@ -326,15 +442,16 @@ def born_qed_homogeneous(eE_of_t, t0: float, t1: float, m: float, omega_max: flo
     tm = float(np.sum(t * Emag) / np.sum(Emag))
     T_rms = math.sqrt(float(np.sum((t - tm) ** 2 * Emag) / np.sum(Emag)))
     G = np.sum(dA ** 2, axis=1) - c2
-    osel = om[sel][:: max(1, int(np.sum(sel)) // 40)]
+    isel = np.nonzero(sel)[0][:: max(1, int(np.sum(sel)) // 40)]
+    osel = om[isel]
     wt = np.full(npts, t[1] - t[0])
     wt[0] = wt[-1] = 0.5 * (t[1] - t[0])
     Gt = np.abs(np.exp(1j * np.outer(osel, t)) @ (wt * G))
-    Ef = qp._ft_time(eE_of_t, t0, t1, osel)
-    Ef2 = np.abs(Ef) if Ef.ndim == 1 else np.sqrt(np.sum(np.abs(Ef) ** 2, axis=-1))
+    Ef2 = np.sqrt(E2[isel])
     R2 = float(np.max(2 * Gt / np.maximum(Ef2, 1e-300))) if osel.size else 0.0
     err = (1 + 2 * m * T_rms) * R2 * R2
     if check:
+        _numerics_refusal(noise, tail, grid, "eE(t)")
         if occ > 0.1:
             raise ValueError(f"per-mode first-order occupation up to {occ:.3g} > 0.1 (resonant/Rabi regime): not perturbative")
         if kick > 0.5:
@@ -345,7 +462,8 @@ def born_qed_homogeneous(eE_of_t, t0: float, t1: float, m: float, omega_max: flo
                              "pulse with m T >~ 2). Verify with qp.bogoliubov_fermion_efield / qp.bogoliubov_boson, or pass "
                              "check=False to get the first-order number anyway")
     return {"pairs_per_volume": N, "particles_per_volume": 2 * N, "omega": om, "dN_dOmega": dN,
-            "occupation_max": occ, "kick": kick, "R2": R2, "T_rms": T_rms, "error_estimate": err}
+            "occupation_max": occ, "kick": kick, "R2": R2, "T_rms": T_rms, "error_estimate": err,
+            "noise_error": noise, "tail_fraction": tail, "grid_error": grid}
 
 
 def sauter_born_pairs_per_volume(m: float, eE0: float, tau: float, field: str = "dirac", n: int = 200) -> float:
@@ -356,10 +474,11 @@ def sauter_born_pairs_per_volume(m: float, eE0: float, tau: float, field: str = 
         complex scalar for 'scalar').
     Valid when: m > 0, eE0 > 0, tau > 0 and the pulse is perturbative: error estimate (1 + 1.81 m tau)(2 eE0 tau^2)^2
         <= 0.5 (born_qed_homogeneous's, with T = 0.907 tau) and eE0 tau <= m/2 (refused otherwise; compare
-        sauter_exact_pairs_per_volume)."""
+        sauter_exact_pairs_per_volume); n (Gauss nodes in Omega) an integer >= 16."""
     m = _mass(m)
     _field(field, _FIELDS_QED)
     eE0, tau = float(qp._positive(eE0, "eE0")), float(qp._positive(tau, "tau"))
+    n = _grid(n, "n", 16)
     if not m > 0:
         raise ValueError("m must be > 0")
     err = (1 + 2 * m * tau * PI / math.sqrt(12.0)) * (2 * eE0 * tau * tau) ** 2      # T_rms(sech^2) = pi tau/sqrt(12)
@@ -387,8 +506,9 @@ def sauter_exact_pairs_per_volume(m: float, eE0: float, tau: float, field: str =
     m = _mass(m)
     _field(field, _FIELDS_QED)
     eE0, tau = float(qp._positive(eE0, "eE0")), float(qp._positive(tau, "tau"))
-    if not m > 0 or n_k < 16 or n_c < 8:
-        raise ValueError("need m > 0, n_k >= 16, n_c >= 8")
+    n_k, n_c = _grid(n_k, "n_k", 16), _grid(n_c, "n_c", 8)
+    if not m > 0:
+        raise ValueError("need m > 0")
     if eE0 * tau > 10 * m:
         raise ValueError("eE0 tau > 10 m: n_k is too elongated for the spherical grid; use qp.sauter_pairs_per_volume")
     kmax = eE0 * tau + 30.0 / (2 * PI * tau) + 10 * m + 10 * math.sqrt(eE0)
@@ -411,11 +531,13 @@ def born_qed_planar(eAtilde, m: float, s_max: float, y_max: float, field: str = 
     (qp.wave_equation_residual_planar flags profiles that are not vacuum solutions).
     Quantity: dict with 'pairs_per_area' (in-in mean number of e+e- PAIRS per unit transverse area, spin-summed,
         energy^2) and 'particles_per_area' (= 2 x pairs).
-    Valid when: first order in eA (compare two amplitudes); spectrum negligible for s > s_max or |y| > y_max;
-        m >= 0; Gauss grids resolve eA~ (check by doubling n_s, n_y and y_max)."""
+    Valid when: first order in eA (this function cannot see eA(t, z): compare two amplitudes); spectrum negligible for
+        s > s_max or |y| > y_max; m >= 0; Gauss grids resolve eA~ (integers n_s, n_y >= 8; check by doubling n_s, n_y
+        and y_max)."""
     m = _mass(m)
     _field(field, _FIELDS_QED)
-    if not s_max > 4 * m * m or not y_max > 0 or min(n_s, n_y) < 8:
+    n_s, n_y = _grid(n_s, "n_s", 8), _grid(n_y, "n_y", 8)
+    if not s_max > 4 * m * m or not y_max > 0:
         raise ValueError("need s_max > 4m^2, y_max > 0 and n_s, n_y >= 8")
     s, ws = qp._s_nodes(4 * m * m, s_max, n_s)
     y, wy = qp._gauss_legendre(-y_max, y_max, n_y)
@@ -436,10 +558,12 @@ def born_qed_general(eAtilde4, m: float, s_max: float, kappa_max: float, field: 
         N = int d^4K/(2pi)^4 theta(K0) X_V rhoV(K^2) = int ds rhoV(s) int d^3K/((2pi)^4 2 K0) (|eE~|^2 - |eB~|^2).
     For massless Dirac this is Redi & Tesi's 2 Im Gamma (their eq. 7, both light cones = 2 x the K0 > 0 cone).
     Quantity: dict with 'pairs' (total in-in mean number of e+e- PAIRS, dimensionless, spin-summed) and 'particles'.
-    Valid when: first order in eA; spectrum negligible beyond s_max, kappa_max; m >= 0; the Gauss grids resolve
-        eA~ (check by doubling n_s, n_k, n_c, n_p)."""
+    Valid when: first order in eA (this function cannot see eA(x): compare two amplitudes); spectrum negligible beyond
+        s_max, kappa_max; m >= 0; the Gauss grids resolve eA~ (integers n_s, n_k >= 8 and n_c, n_p >= 4, the angular
+        minimum for nearly isotropic spectra; check by doubling n_s, n_k, n_c, n_p)."""
     m = _mass(m)
     _field(field, _FIELDS_QED)
+    n_s, n_k, n_c, n_p = _grid(n_s, "n_s", 8), _grid(n_k, "n_k", 8), _grid(n_c, "n_c", 4), _grid(n_p, "n_p", 4)
     if not s_max > 4 * m * m or not kappa_max > 0:
         raise ValueError("need s_max > 4m^2 and kappa_max > 0")
     S, K0, Kx, Ky, Kz, W = qp._four_nodes(4 * m * m, s_max, kappa_max, n_s, n_k, n_c, n_p)
@@ -471,34 +595,69 @@ def dirac_stress_spectral_densities(s, m: float = 0.0, field: str = "dirac"):
 
 
 def born_dirac_metric_homogeneous(h_of_t, t0: float, t1: float, omega_max: float, m: float = 0.0,
-                                  field: str = "dirac", n_omega: int = 200) -> dict:
+                                  field: str = "dirac", n_omega: int = 200, check: bool = True) -> dict:
     """Born Dirac (or Weyl) pairs per volume from a homogeneous metric perturbation g = eta + h(t), vertex -(1/2) h T.
 
     h_of_t(t_array) returns lower-index h_{mu nu}, shape (len(t), 4, 4). As qp.born_metric_homogeneous:
     N/V = (1/4) int dOmega/(2pi) [rho2 X2 + rho0 X0] with dirac_stress_spectral_densities. FRW in conformal time,
     a = 1 + eps f(eta): h = 2 eps f eta_{mu nu} feeds only the trace channel (rho0 ~ m^2).
+    Diagnostics (refused when check=True): 'h_max' = max |h_{mu nu}(t)| (refused > 0.1: the relative error of Born is
+    O(h); measured 0.32 h_max for the FRW trace channel, self-test 3c); 'noise_error', 'tail_fraction', 'grid_error' as
+    in born_qed_homogeneous (refused > 1e-3), here relative to N_abs = (1/4) int dOmega/(2pi) (rho2 + 3 rho0) ||h~_ij||^2
+    (the yield without cancellations between components; >= N, and nonzero when N = 0 by symmetry, e.g. a conformal h
+    with m = 0).
     Quantity: dict with 'pairs_per_volume' (in-in mean number of fermion-antifermion PAIRS per unit volume,
-        spin-summed, energy^3; per comoving volume in FRW), 'particles_per_volume' (= 2 x pairs), 'spin2_part', 'spin0_part'.
-    Valid when: |h| << 1 (first order), h -> 0 at both ends of [t0, t1], negligible spectrum above omega_max > 2m;
-        m >= 0 (Weyl: m = 0)."""
+        spin-summed, energy^3; per comoving volume in FRW), 'particles_per_volume' (= 2 x pairs), 'spin2_part',
+        'spin0_part', 'h_max', 'noise_error', 'tail_fraction', 'grid_error'.
+    Valid when: |h| << 1 (first order: max|h| <= 0.1, else refused unless check=False; compare two amplitudes), h -> 0
+        at both ends of finite [t0, t1] (|h| < 1e-6 of its peak there, always refused otherwise), negligible spectrum
+        above omega_max > 2m and resolved by n_omega (integer >= 16; checked by the diagnostics; check by doubling
+        n_omega); window x omega_max within the transform size limit of born_qed_homogeneous; m >= 0 (Weyl: m = 0)."""
     m = _mass(m)
     _field(field, _FIELDS_GRAV)
-    if not omega_max > 2 * m or t1 <= t0 or n_omega < 16:
-        raise ValueError("need omega_max > 2m, t1 > t0 and n_omega >= 16")
-    if m > 0:
-        u, wu = qp._gauss_legendre(0.0, math.sqrt(omega_max - 2 * m), n_omega)
-        om, w = 2 * m + u * u, 2 * u * wu
-    else:
-        om, w = qp._gauss_legendre(0.0, omega_max, n_omega)
-    H = qp._ft_time(h_of_t, t0, t1, om)
-    if H.shape[-2:] != (4, 4):
+    n_omega = _grid(n_omega, "n_omega", 16)
+    t0, t1, omega_max = float(t0), float(t1), float(omega_max)
+    if not (math.isfinite(t0) and math.isfinite(t1) and math.isfinite(omega_max)) or t1 <= t0 or not omega_max > 2 * m:
+        raise ValueError("need finite t0 < t1 and finite omega_max > 2m")
+    if field == "weyl" and m != 0:
+        raise ValueError("a Weyl fermion is massless (m must be 0)")
+    om, w = _omega_nodes(m, omega_max, n_omega)
+    omh, wh = _omega_nodes(m, omega_max, n_omega // 2)
+    tq, wq, hq = _time_nodes(h_of_t, t0, t1, omega_max, om.size + omh.size)
+    if hq.shape[-2:] != (4, 4) or hq.shape[0] != tq.size:
         raise ValueError("h_of_t must return shape (len(t), 4, 4)")
+    if not np.all(np.isfinite(hq)):
+        raise ValueError("h(t) must be finite on [t0, t1]")
+    he = np.asarray(h_of_t(np.array([t0, t1])))
+    peak, ends = float(np.abs(hq).max()), float(np.abs(he).max())
+    if not peak > 0:
+        raise ValueError("h(t) vanishes identically")
+    if ends > 1e-6 * peak:
+        raise ValueError(f"h at the window ends is {ends / peak:.2g} of its peak: extend [t0, t1] until h is off")
+    Hall = _ft_nodes(tq, wq, hq, np.concatenate([om, omh]))
+    H, Hh = Hall[:om.size], Hall[om.size:]
     z = np.zeros_like(om)
     X2, X0 = qp._metric_weights(om, z, z, z, H)
     r2, r0 = dirac_stress_spectral_densities(om * om, m, field)
     p2 = float(np.sum(w * 0.25 * r2 * X2 / (2 * PI)))
     p0 = float(np.sum(w * 0.25 * r0 * X0 / (2 * PI)))
-    return {"pairs_per_volume": p2 + p0, "particles_per_volume": 2 * (p2 + p0), "spin2_part": p2, "spin0_part": p0}
+    zh = np.zeros_like(omh)
+    X2h, X0h = qp._metric_weights(omh, zh, zh, zh, Hh)
+    r2h, r0h = dirac_stress_spectral_densities(omh * omh, m, field)
+    N_half = float(np.sum(wh * 0.25 * (r2h * X2h + r0h * X0h) / (2 * PI)))
+    # the X's depend only on the symmetrised spatial block at K = (Omega, 0): X2 <= ||h~_ij||^2, X0 <= 3 ||h~_ij||^2
+    sym = lambda a: 0.5 * (a + np.swapaxes(a, -1, -2))[..., 1:, 1:]          # noqa: E731
+    fro = lambda a: np.sqrt(np.sum(np.abs(sym(a)) ** 2, axis=(-1, -2)))    # noqa: E731
+    kern = 0.25 * (r2 + 3 * r0) / (2 * PI)
+    floor = float(np.sum(fro(he))) / np.where(om > 0, om, 1.0) + 1e-14 * float(np.sum(wq * fro(hq)))  # as QED
+    noise, tail, grid = _numerics(om, w, kern * fro(H) ** 2, kern * floor ** 2, p2 + p0, N_half, omega_max, m)
+    if check:
+        _numerics_refusal(noise, tail, grid, "h(t)")
+        if peak > 0.1:
+            raise ValueError(f"max |h_mu nu| = {peak:.3g} > 0.1: not first order (Born's relative error is O(h)); pass "
+                             "check=False to get the first-order number anyway")
+    return {"pairs_per_volume": p2 + p0, "particles_per_volume": 2 * (p2 + p0), "spin2_part": p2, "spin0_part": p0,
+            "h_max": peak, "noise_error": noise, "tail_fraction": tail, "grid_error": grid}
 
 
 def born_dirac_metric_planar(htilde, s_max: float, y_max: float, m: float = 0.0, field: str = "dirac",
@@ -509,10 +668,13 @@ def born_dirac_metric_planar(htilde, s_max: float, y_max: float, m: float = 0.0,
     A plane gravitational wave (null support) gives zero: rho2 ~ s^2 on the light cone even for massless fermions.
     Quantity: dict with 'pairs_per_area' (in-in mean number of PAIRS per unit transverse area, spin-summed, energy^2)
         and 'particles_per_area'.
-    Valid when: |h| << 1; spectrum negligible beyond s_max, |y| > y_max; m >= 0 (Weyl: m = 0); Gauss grids resolve h~."""
+    Valid when: |h| << 1 (this function cannot see h(t, z): the user must check it and compare two amplitudes);
+        spectrum negligible beyond s_max, |y| > y_max; m >= 0 (Weyl: m = 0); Gauss grids resolve h~ (integers n_s,
+        n_y >= 8; check by doubling n_s, n_y and y_max)."""
     m = _mass(m)
     _field(field, _FIELDS_GRAV)
-    if not s_max > 4 * m * m or not y_max > 0 or min(n_s, n_y) < 8:
+    n_s, n_y = _grid(n_s, "n_s", 8), _grid(n_y, "n_y", 8)
+    if not s_max > 4 * m * m or not y_max > 0:
         raise ValueError("need s_max > 4 m^2, y_max > 0 and n_s, n_y >= 8")
     s, ws = qp._s_nodes(4 * m * m, s_max, n_s)
     y, wy = qp._gauss_legendre(-y_max, y_max, n_y)
@@ -534,9 +696,12 @@ def born_dirac_metric_general(htilde4, s_max: float, kappa_max: float, m: float 
         N = (1/4) int d^4K/(2pi)^4 theta(K0) [rho2(K^2) X2 + rho0(K^2) X0].
     Quantity: dict with 'pairs' (total in-in mean number of fermion-antifermion PAIRS, spin-summed), 'particles',
         'spin2_part', 'spin0_part'.
-    Valid when: |h| << 1; spectrum negligible beyond s_max, kappa_max; m >= 0 (Weyl: m = 0); grids resolve h~."""
+    Valid when: |h| << 1 (this function cannot see h(x): the user must check it and compare two amplitudes); spectrum
+        negligible beyond s_max, kappa_max; m >= 0 (Weyl: m = 0); grids resolve h~ (integers n_s, n_k >= 8, n_c, n_p
+        >= 4; check by doubling them)."""
     m = _mass(m)
     _field(field, _FIELDS_GRAV)
+    n_s, n_k, n_c, n_p = _grid(n_s, "n_s", 8), _grid(n_k, "n_k", 8), _grid(n_c, "n_c", 4), _grid(n_p, "n_p", 4)
     if not s_max > 4 * m * m or not kappa_max > 0:
         raise ValueError("need s_max > 4 m^2 and kappa_max > 0")
     S, K0, Kx, Ky, Kz, W = qp._four_nodes(4 * m * m, s_max, kappa_max, n_s, n_k, n_c, n_p)
@@ -966,6 +1131,8 @@ def selftest(verbose: bool = True) -> bool:
     # 3c. Gravity-vertex Born (trace channel, rho0 = m^2 s beta^3/36pi) against the exact FRW solver (3a's reduction),
     #     a = 1 + eps f(eta), f = exp(-eta^2/2 tau^2), tau = 0.3, m = 1: h = 2 eps f eta at first order. Born is
     #     O(eps^2) exact; the next term is O(eps^3), so |exact/Born - 1| ~ eps: measured 0.63 eps. Bound 0.8 eps.
+    #     (h_max = 2 eps = 0.2 at eps = 0.1 exceeds the function's 0.1 refusal threshold: check=False on purpose,
+    #     since the point is to measure how the deviation grows with h.)
     tau_ = 0.3
     fg = lambda t: np.exp(-t ** 2 / (2 * tau_ ** 2))   # noqa: E731
     devs = []
@@ -976,7 +1143,7 @@ def selftest(verbose: bool = True) -> bool:
 
         def hfrw(t, eps=eps):
             return (2 * eps * fg(t))[:, None, None] * _ETA
-        bo = born_dirac_metric_homogeneous(hfrw, -12 * tau_, 12 * tau_, 40.0, 1.0)
+        bo = born_dirac_metric_homogeneous(hfrw, -12 * tau_, 12 * tau_, 40.0, 1.0, check=False)   # h_max = 2 eps
         devs.append(abs(ex / bo["pairs_per_volume"] - 1))
         check(f"FRW Dirac a = 1 + eps f, eps = {eps}: gravity-vertex Born (spin 0) vs exact modes, |dev| <= 0.8 eps",
               devs[-1], 0.0, 0.8 * eps)

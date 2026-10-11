@@ -39,6 +39,15 @@ class Docstrings(unittest.TestCase):
         self.assertIn("hbar = c = 1", sb.__doc__)
         self.assertIn("Heaviside-Lorentz", sb.__doc__)
 
+    def test_module_docstring_has_required_sections(self):
+        for section in ("Units (read this first)", "Conventions", "Assumptions and validity range", "Python usage",
+                        "Command line"):
+            with self.subTest(section=section):
+                self.assertIn(section, sb.__doc__)
+        for formula in ("beta (1 + 2 m^2/s)/(6 pi)", "rhoV = beta^3/(24 pi)", "rho0 = m^2 s beta^3/(36 pi)"):
+            with self.subTest(formula=formula):
+                self.assertIn(formula, sb.__doc__)
+
 
 class SpectralDensities(unittest.TestCase):
     def test_refusals(self):
@@ -89,6 +98,13 @@ class BornRefusals(unittest.TestCase):
             lambda: sb.born_mode_efield([0.0], [0.0], 1.0, lambda Om: 50.0 + 0 * Om),  # first-order n_k > 0.1
             lambda: sb.born_qed_planar(A, 1.0, 3.0, 4.0),                            # s_max below threshold
             lambda: sb.born_qed_general(lambda *K: np.zeros(np.shape(K[0]) + (4,)), 1.0, 10.0, -1.0),
+            lambda: sb.born_qed_general(lambda *K: np.zeros(np.shape(K[0]) + (4,)), 1.0, 10.0, 1.0, n_s=1),  # grid
+            lambda: sb.born_qed_planar(A, 1.0, 10.0, 4.0, n_y=8.5),                    # non-integer grid
+            lambda: sb.sauter_born_pairs_per_volume(1.0, 0.05, 1.0, n=1),            # grid too small
+            lambda: sb.born_qed_homogeneous(sech2, -20.0, 20.0, 1.0, 30.0, n_omega=20.5),   # non-integer grid
+            lambda: sb.born_qed_homogeneous(sech2, -np.inf, 20.0, 1.0, 30.0),       # infinite window
+            lambda: sb.born_mode_efield([0.1], [0.1], 1.0, lambda Om: np.nan * Om),  # non-finite transform
+            lambda: sb.born_mode_efield([0.05], [0.1], 1.0, lambda Om: 0.01 + 0 * Om, "scalar", eA_max=0.02),  # k_par small
         ]
         for i, fn in enumerate(bad):
             with self.subTest(case=i), self.assertRaises(ValueError):
@@ -103,6 +119,33 @@ class BornRefusals(unittest.TestCase):
         self.assertGreater(r["error_estimate"], 0.5)
         self.assertGreater(r["pairs_per_volume"], 0.0)
 
+    def test_noise_limited_transform_is_refused(self):
+        # Gaussian eE0 exp(-t^2/2T^2), m T = 5, window +-7T (ends 2e-11 of peak, so the ends check passes): the true
+        # |eE~(2m)| ~ exp(-50) of int|eE| is below the transform's roundoff and the window-edge step; the numerical
+        # yield was 3.3e-34 against the analytic 6.4e-57, with error_estimate 3e-5. It must be refused.
+        g = lambda t: 1e-5 * np.exp(-t * t / 50.0)                        # noqa: E731
+        with self.assertRaisesRegex(ValueError, "noise floor"):
+            sb.born_qed_homogeneous(g, -35.0, 35.0, 1.0, 30.0)
+        r = sb.born_qed_homogeneous(g, -35.0, 35.0, 1.0, 30.0, check=False)
+        self.assertGreater(r["noise_error"], 1.0)
+
+    def test_truncated_spectrum_and_coarse_grid_are_refused(self):
+        sauter = lambda t: 0.05 / np.cosh(t / 0.2) ** 2                   # noqa: E731
+        with self.assertRaisesRegex(ValueError, "omega_max"):              # yield 42x too small at omega_max = 2.2
+            sb.born_qed_homogeneous(sauter, -10.0, 10.0, 1.0, 2.2)
+        r = sb.born_qed_homogeneous(sauter, -10.0, 10.0, 1.0, 40.0)
+        self.assertAlmostEqual(r["pairs_per_volume"] / sb.sauter_born_pairs_per_volume(1.0, 0.05, 0.2), 1.0, places=8)
+        for key in ("noise_error", "tail_fraction", "grid_error"):
+            self.assertLess(r[key], 1e-6)
+        line = lambda t: 0.01 * np.exp(-t * t / 1800.0) * np.cos(3 * t)   # narrow line: n_omega = 200 is 0.4% off
+        with self.assertRaisesRegex(ValueError, "n_omega"):
+            sb.born_qed_homogeneous(line, -240.0, 240.0, 1.0, 10.0)
+
+    def test_long_window_is_refused_not_oom(self):
+        g = lambda t: 1e-3 * np.exp(-t * t / 8e6) * np.cos(3 * t)         # T = 2000: was OOM-killed  # noqa: E731
+        with self.assertRaisesRegex(ValueError, "too large"):
+            sb.born_qed_homogeneous(g, -16000.0, 16000.0, 1.0, 10.0)
+
     def test_sauter_R2_matches_its_closed_form(self):
         # R2 = 2 eE0 tau^2 for sech^2 (the dA^2 and E transforms share their poles); T_rms = pi tau/sqrt(12)
         r = sb.born_qed_homogeneous(lambda t: 0.05 / np.cosh(t / 1.5) ** 2, -30.0, 30.0, 1.0, 30.0)
@@ -111,6 +154,9 @@ class BornRefusals(unittest.TestCase):
 
     def test_gravity_and_frw_refusals(self):
         h = lambda t: np.zeros(len(t))                                     # noqa: E731
+
+        def htt(a):
+            return lambda t: a * np.exp(-np.asarray(t)[:, None, None] ** 2) * np.diag([0.0, 1.0, -1.0, 0.0])
         bad = [
             lambda: sb.born_dirac_metric_homogeneous(h, -1.0, 1.0, 5.0),               # h not 4x4
             lambda: sb.born_dirac_metric_homogeneous(lambda t: np.zeros((len(t), 4, 4)), -1.0, 1.0, 1.0, 1.0),  # omega_max < 2m
@@ -119,10 +165,23 @@ class BornRefusals(unittest.TestCase):
             lambda: sb.frw_dirac_tanh_n([0.0], 1.0, 1.3, 0.3, 0.8),                  # k = 0
             lambda: sb.frw_dirac_production([0.5], lambda e: 1.0 + 0.1 * e, 1.0, -5.0, 5.0),   # still expanding
             lambda: sb.frw_dirac_production([0.5], lambda e: -1.0, 1.0, -5.0, 5.0),            # a < 0
+            lambda: sb.born_dirac_metric_homogeneous(htt(0.1), -0.3, 0.3, 30.0),     # window cut: was 1400x too large
+            lambda: sb.born_dirac_metric_homogeneous(htt(100.0), -8.0, 8.0, 30.0),   # |h| = 100: not first order
+            lambda: sb.born_dirac_metric_homogeneous(htt(0.1), -np.inf, 8.0, 30.0),  # infinite window
+            lambda: sb.born_dirac_metric_homogeneous(htt(0.1), -8.0, 8.0, 30.0, n_omega=8),
+            lambda: sb.born_dirac_metric_general(lambda *K: np.zeros(np.shape(K[0]) + (4, 4)), 10.0, 2.0, n_k=2),
         ]
         for i, fn in enumerate(bad):
             with self.subTest(case=i), self.assertRaises(ValueError):
                 fn()
+
+    def test_metric_homogeneous_reports_h_max_and_check_false(self):
+        h = lambda t: 0.2 * np.exp(-np.asarray(t)[:, None, None] ** 2) * np.diag([0.0, 1.0, -1.0, 0.0])   # noqa: E731
+        r = sb.born_dirac_metric_homogeneous(h, -8.0, 8.0, 30.0, check=False)
+        self.assertAlmostEqual(r["h_max"], 0.2, places=6)        # max over the time quadrature nodes
+        r2 = sb.born_dirac_metric_homogeneous(lambda t: 0.5 * h(t), -8.0, 8.0, 30.0)
+        self.assertAlmostEqual(r["pairs_per_volume"] / r2["pairs_per_volume"], 4.0, places=9)
+        self.assertLess(r2["noise_error"], 1e-6)
 
     def test_particles_are_twice_pairs_and_yield_scales_exactly_as_E0_squared(self):
         r = sb.born_qed_homogeneous(lambda t: 0.05 / np.cosh(t) ** 2, -20.0, 20.0, 1.0, 30.0)

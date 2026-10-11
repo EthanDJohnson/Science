@@ -39,6 +39,14 @@ class Docstrings(unittest.TestCase):
         self.assertIn("Heaviside-Lorentz", qi.__doc__)
         self.assertIn("Klein zone", qi.__doc__.replace("KLEIN ZONE", "Klein zone"))
         self.assertIn("vacuum-decay", qi.__doc__)
+        for header in ("Python usage", "Command line", "Assumptions and validity", "Quantity:", "Valid when:"):
+            self.assertIn(header, qi.__doc__)
+
+    def test_lcfa_validity_is_stated_for_weak_fields(self):
+        # The LCFA needs eE0 L^2 >> (m^2/eE0)^2 as well as >> 1; the old "O(1/(eE0 L^2))" claim alone was wrong.
+        for fn in (qi.lcfa_rates_per_area, qi.sauter_step_lcfa_closed_form):
+            self.assertIn("pi m^4/(4 eE0^3 L^2) << 1", inspect.getdoc(fn))
+        self.assertIn("(m^2/eE0)^2", qi.__doc__)
 
 
 class Refusals(unittest.TestCase):
@@ -54,6 +62,11 @@ class Refusals(unittest.TestCase):
             lambda: qi.sauter_step_potential(1.0, 2.0, ends=3.0),                 # window too short
             lambda: qi.sauter_step_lcfa_closed_form(0.0, 1.0, 2.0, True),         # LCFA needs m > 0
             lambda: qi.lcfa_rates_per_area(lambda z: z, 1.0, -1.0, 1.0, True),    # reversed window
+            lambda: qi.klein_zone([-1.0], 1.0, 2.0, -2.0),                        # k_perp < 0
+            lambda: qi.rates_from_n(lambda o, k: np.full_like(o, np.nan), 2.0, -2.0, 1.0, True),       # NaN n
+            lambda: qi.rates_from_n(lambda o, k: np.full_like(o, 0.1), 2.0, -2.0, 1.0, True, eE_max=0.0),   # eE_max = 0
+            lambda: qi.rates_from_n(lambda o, k: np.full_like(o, 0.1), 2.0, -2.0, 1.0, True, eE_max=-1.0),  # eE_max < 0
+            lambda: qi.sauter_step_rates(1.0, 1.0, 2.0, True, 4, 4, strict=True),  # coarse quadrature (2.6% change)
         ]
         for i, fn in enumerate(bad):
             with self.subTest(case=i), self.assertRaises(ValueError):
@@ -78,6 +91,64 @@ class Refusals(unittest.TestCase):
         V, (z0, z1), _ = qi.sauter_step_potential(1.0, 1.5)
         with self.assertRaises(ValueError):
             qi.klein_mode_scalar(V, z0, z1, [0.2], [0.1], 1.0, steps=2, max_steps=4, rtol=1e-12, strict=True)
+
+
+class Precision(unittest.TestCase):
+    def test_closed_form_rates_flag_unresolved_quadrature(self):
+        self.assertFalse(qi.sauter_step_rates(1.0, 1.0, 2.0, True, 4, 4)["resolved"])
+        self.assertTrue(qi.sauter_step_rates(1.0, 1.0, 2.0, True)["resolved"])
+
+    def test_ck_eq47_all_heights(self):
+        # F(arcsin al, 1/al) sat on its branch point: about half of all heights raised TypeError (e.g. dV = 20, 2000).
+        vs = np.concatenate([1.0 + np.geomspace(1e-6, 5e-2, 25), np.linspace(1.1, 3.0, 40)[:-1], np.geomspace(3.0, 1e3, 40)])
+        w = np.array([qi.klein_step_decay_rate_scalar(1.0, 2.0 * v) for v in vs])
+        self.assertTrue(np.all(np.isfinite(w)) and np.all(w > 0))
+        self.assertTrue(np.all(np.diff(w) > 0))                                    # grows with the step height
+        # near threshold the closed form must not lose digits: w ~ (v - m)^2/(4 pi) (independently: a 40-digit
+        # mpmath double quadrature of ln(1 + n) gave 7.9577484809e-14 at v - m = 1e-6)
+        self.assertAlmostEqual(qi.klein_step_decay_rate_scalar(1.0, 2.0 * (1 + 1e-6)) / 7.9577484809e-14, 1.0, delta=1e-8)
+        for v in (1.0001, 1.01, 2.5, 10.0, 100.0, 1000.0):                         # vs quadrature of ln(1 + n): ~3e-7
+            q = qi.rates_from_n(lambda o, k: qi.klein_step_n_scalar(o, k, 1.0, 2 * v), v, -v, 1.0, False)["decay_rate"]
+            with self.subTest(v=v):
+                self.assertLess(abs(q / qi.klein_step_decay_rate_scalar(1.0, 2 * v) - 1), 2e-6)
+        self.assertGreater(qi.klein_step_rates(1.0, 2000.0, False)["decay_rate"], 0.0)
+
+    def test_lcfa_window_independent(self):
+        # A window 200x wider than the field used to miss the peak (0.27 x the right answer, unflagged).
+        f = lambda z: 2.0 * np.exp(-z * z)                                          # noqa: E731
+        ref = qi.lcfa_rates_per_area(f, -8.0, 8.0, 1.0, True)
+        for half in (200.0, 1e5):
+            r = qi.lcfa_rates_per_area(f, -half, half, 1.0, True)
+            with self.subTest(half=half):
+                self.assertTrue(r["resolved"])
+                self.assertAlmostEqual(r["pair_rate"] / ref["pair_rate"], 1.0, delta=1e-9)
+                self.assertAlmostEqual(r["decay_rate"] / ref["decay_rate"], 1.0, delta=1e-9)
+        # Lorentzian (1/z^2 tail) on +-3000 L: the old fixed 800-node rule returned 1.5e-16 instead of 3.0e-2.
+        g = lambda z: 3.778 / (1 + (z / 0.518) ** 2)                                # noqa: E731
+        self.assertAlmostEqual(qi.lcfa_rates_per_area(g, -1554.0, 1554.0, 1.0, True)["pair_rate"]
+                               / qi.lcfa_rates_per_area(g, -26.0, 26.0, 1.0, True)["pair_rate"], 1.0, delta=1e-8)
+
+    def test_solver_survives_overflowing_coarse_pass_and_does_not_false_converge(self):
+        # Window +-600 = 400 L: a 4-step pass overflowed (old: ValueError "n < ~1e-600"), and 4 vs 8 steps sampled only
+        # the plateaus, agreeing on the SHARP-step n = 0.52 (true 0.0226). Now: renormalised, started at >= 16 steps
+        # across the field.
+        V, (z0, z1), _ = qi.sauter_step_potential(1.0, 1.5, ends=400)
+        r = qi.klein_mode_spinor(V, z0, z1, [0.2], [0.1], 1.0, steps=4)
+        self.assertTrue(bool(r["resolved"][0]))
+        self.assertAlmostEqual(float(r["n"][0]) / float(qi.sauter_step_n_spinor(0.2, 0.1, 1.0, 1.0, 1.5)), 1.0, delta=1e-5)
+
+    def test_underflowing_n_keeps_ln_n(self):
+        # n = 4.6e-440: 'n' underflows to 0.0 but ln_n is exact, flux_error is finite, and no numpy warning leaks.
+        import warnings
+        V, (z0, z1), _ = qi.sauter_step_potential(0.004, 300.0, ends=10)
+        with warnings.catch_warnings():
+            warnings.simplefilter("error")
+            r = qi.klein_mode_scalar(V, z0, z1, [0.0], [0.0], 1.0, steps=4000, rtol=1e-6)
+        ref = float(qi.sauter_step_n_scalar(0.0, 0.0, 1.0, 0.004, 300.0, log=True))
+        self.assertAlmostEqual(ref, -1011.6064, delta=1e-3)
+        self.assertLess(abs(float(r["ln_n"][0]) - ref), 1e-4)
+        self.assertTrue(bool(r["resolved"][0]) and np.isfinite(r["flux_error"][0]))
+        self.assertEqual(float(qi.sauter_step_n_scalar(0.0, 0.0, 1.0, 0.004, 300.0)), 0.0)
 
 
 class Physics(unittest.TestCase):
@@ -140,6 +211,16 @@ class CommandLine(unittest.TestCase):
         self.assertEqual(code, 0)
         self.assertIn("closed form", out)
         self.assertIn("ODE", out)
+
+    def test_profile_cli_every_shape(self):
+        for shape in ("sauter", "gauss"):
+            with self.subTest(shape=shape):
+                code, out = self.run_cli(["profile", "--shape", shape, "--E", "2.6e18 V/m", "--L", "5e-13 m", "--n", "6"])
+                self.assertEqual(code, 0, out)
+                self.assertIn("resolved True", out)
+                self.assertRegex(out, r"exact/LCFA = 0\.[56]")      # 0.584 (gauss), 0.638 (sauter)
+        with self.assertRaises(SystemExit), contextlib.redirect_stderr(io.StringIO()):
+            self.run_cli(["profile", "--shape", "lorentz", "--E", "2.6e18 V/m", "--L", "5e-13 m"])   # removed: 1/z^2 tail
 
     def test_bad_units_return_1(self):
         self.assertEqual(self.run_cli(["sauter", "--E", "3 J", "--L", "1e-12 m"])[0], 1)          # energy, not a field

@@ -42,7 +42,8 @@ PART A. Radiative (Coulomb) corrections to Schwinger pair production, weak const
     extrapolation a -> 0); the self-test reproduces -1/4 for the circle in two regularizations.
     Corrected rate (schwinger_radiative_rate), n = 1 (single-instanton) term, spin factor 2s + 1:
         Gamma_1 = (2s + 1) (eE)^2/(8 pi^3) exp(-pi m^2/(eE) + pi alpha)        [all orders in alpha, quenched]
-        Gamma_1^(2-loop) = (2s + 1) (eE)^2/(8 pi^3) (1 + pi alpha) exp(-pi m^2/(eE))   [Lebedev & Ritus; Dunne eq. 4.16]
+        Gamma_1^(2-loop) = (2s + 1) (eE)^2/(8 pi^3) (1 + pi alpha) exp(-pi m^2/(eE))
+                           [spinor: Lebedev & Ritus, Dunne eq. 4.16; scalar: the O(alpha) term of AAM's exp(pi alpha)]
     with relative corrections O(alpha sqrt(eE)/m) (spinor: -0.44 alpha pi sqrt(eE/m^2), Dunne 2004 eq. 4.20),
     O(e^{-pi m^2/eE}) (n = 2 terms) and O(kappa) = O(e^2 eE/m^2) (prefactor at leading order in kappa).
     WHICH QUANTITY: Gamma_1 is the n = 1 term of the vacuum-decay rate w = 2 Im L_eff (in-out: P(vacuum survives)
@@ -64,7 +65,10 @@ PART B. Self-interacting fields in mean field (Hartree / leading large N): prehe
         <chi^2>_ren = int d^3k/(2pi)^3 [ |chi_k|^2 - 1/(2k) + theta(k - kappa) M^2(t)/(4 k^3) ].
     lam is the coefficient of <chi^2> in the chi mass: lam = 3 lam4 for one field with lam4 chi^4/4 (Hartree);
     lam = lam_N per component for an O(N) vector with (lam_N/4N)(chi.chi)^2 at leading order in 1/N (where the
-    mean field is the controlled leading term).
+    mean field is the controlled leading term). The solver is for ONE chi field coupled to phi0 (N = 1 in the
+    condensate force g^2 <chi^2>_ren phi0 and in the energy): for an N-component chi coupled by g^2 phi^2 chi.chi/2
+    the force on phi0 would be N g^2 <chi_1^2>_ren phi0, which no rescaling of g absorbs, so this code would
+    underestimate that back-reaction by a factor N. n_chi, rho_chi, chi2_ren are per component.
     Renormalization (adiabatic subtraction to second order, Cooper et al. 1994 sec. 5; scale kappa, default m_phi):
     on the quadrature grid (cutoff Lambda) let Q = int d^3k/(2pi)^3 1/(2k) (~ Lambda^2/8pi^2) and
     L = int_{k > kappa} d^3k/(2pi)^3 1/(4k^3) (~ ln(Lambda/kappa)/8pi^2). The equations above are EXACTLY the bare
@@ -158,7 +162,10 @@ _Y0 = -_CBRT2 / (2.0 - _CBRT2)
 
 # ---------------------------------------------------------------- input checks
 def _finite(x, name: str) -> float:
-    x = float(x)
+    try:
+        x = float(x)
+    except (TypeError, ValueError):
+        raise ValueError(f"{name} must be a real scalar") from None
     if not math.isfinite(x):
         raise ValueError(f"{name} must be finite")
     return x
@@ -183,19 +190,24 @@ def schwinger_radiative_rate(m: float, eE: float, alpha: float = ALPHA_FS, fermi
     """Weak-field Schwinger rate with the leading radiative (Coulomb) correction, n = 1 (single-instanton) term.
 
     one_loop  = (2s+1) (eE)^2/(8 pi^3) exp(-pi m^2/eE)                 (2s+1 = 2 spinor, 1 scalar)
-    two_loop  = one_loop x (1 + pi alpha)                               (Lebedev-Ritus; Dunne 2004 eq. 4.16, c_1 = 0)
+    two_loop  = one_loop x (1 + pi alpha)     spinor: Lebedev-Ritus, Dunne 2004 eq. 4.16 (spinor), c_1 = 0;
+                                              scalar: the O(alpha) term of AAM's scalar exp(pi alpha) (the scalar
+                                              two-loop Lagrangian is Ritus's, Dunne sec. 4.2), not eq. 4.16
     all_orders = one_loop x exp(pi alpha)                              (Affleck-Alvarez-Manton; quenched)
     Quantity: dict of rates per unit volume per unit time (energy^4): each is BOTH the n = 1 term of the in-out
         vacuum-decay rate w = 2 Im L_eff (Im L_eff alone is half of it) AND, at this leading weak-field order, the
         in-in mean number of PAIRS (one particle + one antiparticle; no 1/2 for a charged field) created per volume
         per time; 'enhancement' = exp(pi alpha); 'beta' = eE/m^2; 'kappa' = 4 pi alpha eE/m^2; 'n2_rel' = relative
         size of the omitted n = 2 term; 'next_rel' = estimated next correction, -0.44 alpha pi sqrt(beta) (spinor,
-        Dunne eq. 4.20; None for scalars).
+        Dunne eq. 4.20; None for scalars); 'log10_one_loop', 'log10_two_loop', 'log10_all_orders' = log10 of the
+        rates in the same units (finite where the rates underflow to 0, pi m^2/eE > ~745).
     Valid when: constant homogeneous E; m > 0 is the PHYSICAL (pole) mass; 0 < eE <= m^2 (weak field; corrections
         O(alpha sqrt(eE)/m)); 0 < alpha <= 1 and kappa <= 1 (prefactor at leading order in kappa); quenched (alpha =
         low-energy value). n >= 2 terms are not included."""
     m, eE, alpha = _pos(m, "m"), _pos(eE, "eE"), _pos(alpha, "alpha")
-    beta = eE / (m * m)
+    beta = (eE / m) / m
+    if not (math.isfinite(beta) and beta > 0):
+        raise ValueError(f"eE/m^2 = {beta!r} is not a finite positive number (inputs out of floating-point range)")
     if beta > 1.0:
         raise ValueError(f"eE/m^2 = {beta:.3g} > 1: not a weak field (the n = 1 instanton expansion fails)")
     if alpha > 1.0:
@@ -204,8 +216,17 @@ def schwinger_radiative_rate(m: float, eE: float, alpha: float = ALPHA_FS, fermi
     if kappa > 1.0:
         raise ValueError(f"kappa = e^2 eE/m^2 = {kappa:.3g} > 1: the prefactor is only known at leading order in kappa")
     g = 2.0 if fermion else 1.0
-    one = g * eE * eE / (8 * PI ** 3) * math.exp(-PI / beta)
+    ln1 = math.log(g / (8 * PI ** 3)) + 2 * math.log(eE) - PI / beta    # no (eE)^2: it can overflow on its own
+    if ln1 > 700:
+        raise ValueError("rate exceeds the double-precision range (eE too large in these units)")
+    pref = g * eE * eE / (8 * PI ** 3)
+    # direct product where (eE)^2 is finite (keeps full relative precision; exp(ln1) would lose |ln1| x eps);
+    # either form underflows to 0 for pi m^2/eE > ~745, where the log10 entries carry the value
+    one = pref * math.exp(-PI / beta) if math.isfinite(pref) else math.exp(ln1)
+    lg1 = ln1 / math.log(10)
     return {"one_loop": one, "two_loop": one * (1 + PI * alpha), "all_orders": one * math.exp(PI * alpha),
+            "log10_one_loop": lg1, "log10_two_loop": lg1 + math.log10(1 + PI * alpha),
+            "log10_all_orders": lg1 + PI * alpha / math.log(10),
             "enhancement": math.exp(PI * alpha), "beta": beta, "kappa": kappa,
             "n2_rel": 0.25 * math.exp(-PI / beta),
             "next_rel": (-0.44 * alpha * PI * math.sqrt(beta)) if fermion else None}
@@ -330,10 +351,14 @@ def mathieu_floquet_exponent(A, q, rtol: float = 1e-11) -> dict:
     the symmetry of cos 2z about pi/2, w_I(pi) = 2 w_I(pi/2) w_II'(pi/2) - 1 (DLMF 28.2.11), so the fundamental
     solutions are integrated over half a period with qft_production's 4th-order Magnus stepper, Richardson-
     extrapolated in the step (error O(h^4) -> O(h^6)), steps doubled until Delta changes by < rtol;
-    mu = ln(|Delta| + sqrt(Delta^2 - 1))/pi for |Delta| > 1 (unstable), 0 otherwise.
+    mu = ln(|Delta| + sqrt(Delta^2 - 1))/pi for |Delta| > 1 (unstable), 0 otherwise, evaluated as
+    (ln|Delta| + ln(1 + sqrt(1 - 1/Delta^2)))/pi so that nothing is squared.
     Quantity: dict with 'mu' (growth exponent per unit z of the growing solution, dimensionless: |y|^2 and the
         occupation number grow like exp(2 mu z)), 'half_trace' Delta, 'unstable' (|Delta| > 1), 'steps'.
-    Valid when: A, q real and finite (arrays broadcast); |A| + 2|q| <= 1e6 (step count)."""
+    Valid when: A, q real and finite (arrays broadcast); |A| + 2|q| <= 1e6 (step count); pi mu <= 700, i.e.
+        |Delta| <= 1e304 (Delta is formed in double precision: deep tunnelling A << -2|q| or A << 2q with large q,
+        e.g. A = 0, q >= ~5e4, overflows); refused (ValueError) when Delta is not finite or exceeds that bound, or
+        when the step doubling reaches its cap (2^15 steps per half period) without meeting rtol."""
     A = np.atleast_1d(np.asarray(A, dtype=float))
     q = np.atleast_1d(np.asarray(q, dtype=float))
     A, q = np.broadcast_arrays(A, q)
@@ -344,11 +369,17 @@ def mathieu_floquet_exponent(A, q, rtol: float = 1e-11) -> dict:
     if scale > 1e6:
         raise ValueError("|A| + 2|q| > 1e6: too many steps per period")
     w = np.ones_like(A)
+    big = 1e304                       # |Delta| bound: pi mu <= 700; the u v product below must stay finite
 
     def half_trace(n):
         # u(0) = 1/sqrt2, u'(0) = -i/sqrt2, so w_I = sqrt2 Re u and w_II = -sqrt2 Im u.
-        u, v = qp._magnus_boson(lambda z: A - 2 * q * np.cos(2 * z), 0.0, 0.5 * PI, n, w)
-        return -4.0 * np.real(u) * np.imag(v) - 1.0
+        with np.errstate(over="ignore", invalid="ignore"):
+            u, v = qp._magnus_boson(lambda z: A - 2 * q * np.cos(2 * z), 0.0, 0.5 * PI, n, w)
+            d = -4.0 * np.real(u) * np.imag(v) - 1.0
+        if not np.all(np.isfinite(d)) or np.any(np.abs(d) > big):
+            raise ValueError("|Delta| = |tr M|/2 exceeds 1e304 (pi mu > 700): deep-tunnelling (A, q) outside the "
+                             "double-precision range of this monodromy computation")
+        return d
 
     n = 2 ** max(4, int(math.ceil(math.log2(2 * PI * math.sqrt(scale + 1)))))
     h1 = half_trace(n)
@@ -358,11 +389,16 @@ def mathieu_floquet_exponent(A, q, rtol: float = 1e-11) -> dict:
         n *= 2
         h1, h2 = h2, half_trace(2 * n)
         e_new = (16 * h2 - h1) / 15
-        if np.all(np.abs(e_new - e_old) <= rtol * np.maximum(1.0, np.abs(e_new))) or n >= 2 ** 15:
+        if np.all(np.abs(e_new - e_old) <= rtol * np.maximum(1.0, np.abs(e_new))):
             break
+        if n >= 2 ** 15:
+            bad = float(np.max(np.abs(e_new - e_old) / np.maximum(1.0, np.abs(e_new))))
+            raise ValueError(f"monodromy did not converge to rtol = {rtol:g} with 2^16 steps per half period "
+                             f"(last relative change {bad:.2g})")
         e_old = e_new
     ad = np.abs(e_new)
-    mu = np.where(ad > 1, np.log(ad + np.sqrt(np.maximum(ad * ad - 1, 0.0))) / PI, 0.0)
+    with np.errstate(divide="ignore", invalid="ignore"):
+        mu = np.where(ad > 1, (np.log(ad) + np.log1p(np.sqrt(np.maximum(1.0 - (1.0 / ad) ** 2, 0.0)))) / PI, 0.0)
     return {"mu": mu, "half_trace": e_new, "unstable": ad > 1, "steps": 2 * n}
 
 
@@ -485,7 +521,8 @@ def hartree_preheating(m_phi: float, g: float, Phi: float, m_chi: float = 0.0, l
                        lam_phi: float = 0.0, t_end: float = 40.0, kmax: float = None, kappa: float = None,
                        n_modes=None, steps_per_halfperiod: int = None, record_every: int = None,
                        backreaction: bool = True, k_nodes=None, k_weights=None, record_modes: bool = False,
-                       _log_subtraction: bool = True) -> dict:
+                       check_cutoff: bool = True, _log_subtraction: bool = True,
+                       _no_drift_check: bool = False) -> dict:
     """Self-consistent mean-field (Hartree / leading large-N) evolution of a homogeneous condensate phi0(t) and the
     chi modes it produces through g^2 phi^2 chi^2/2 (and a chi self-coupling lam), in Minkowski space.
 
@@ -508,17 +545,27 @@ def hartree_preheating(m_phi: float, g: float, Phi: float, m_chi: float = 0.0, l
         'rho_chi' (energy density of those quasi-particles, int w_k n_k, energy^4), 'rho_phi' (condensate energy
         density with renormalized parameters, energy^4), 'adiabaticity' (max_k |dw_k/dt|/w_k^2: n_k is a transient,
         basis-dependent number where this is not small), 'energy_drift' (change of the conserved bare energy
-        relative to rho_phi(0)); final 'n_k' (per-mode in-in occupation, particles in mode k) on 'k' with
+        relative to max(rho_phi(0), 'energy_roundoff_floor'), the rounding scale of the vacuum terms); final 'n_k' (per-mode in-in occupation, particles in mode k) on 'k' with
         quadrature weights 'W' (d^3k/(2pi)^3 = W); 'wronskian_error' (max |chi chi*' - chi* chi' - i|/(1 + 2 n_k)),
-        'energy_drift_max', 'chi2_tail_estimate' (energy^2), 'bare', 'Q', 'L'.
+        'energy_drift_max', 'chi2_tail_estimate' (energy^2), 'edge_excitation' (max n_k for k > 0.8 kmax), 'bare',
+        'Q', 'L'. n_chi, rho_chi, chi2_ren, n_k are per chi component (ONE chi field acts on phi0: N = 1).
+        chi2_ren(0) != 0 even with no particles: it is the kappa-dependent vacuum (Coleman-Weinberg) part, so the
+        condensate's motion includes the one-loop effective potential and departs from Phi cos(m_phi t) while
+        n_chi ~ 0; m_phi and lam_phi are the parameters at scale kappa (not the oscillation frequency); only n_chi
+        (and rho_chi) count produced particles.
         Mean field OMITS rescattering, delta-phi production and thermalization.
     Valid when: early stage of preheating (before rescattering matters), Minkowski space; m_phi > 0, g, Phi, m_chi,
-        lam, lam_phi >= 0; lam L < 1 (Landau pole); M^2(0) > 0; the grid resolves the resonance bands and kmax lies
-        beyond them (refused if modes with k > 0.8 kmax get excited); refused if the energy drifts by > 1e-4."""
+        lam, lam_phi >= 0; lam L < 1 (Landau pole); M^2(0) > 0; the grid (automatic or k_nodes) resolves the
+        resonance bands and kmax = max(k) lies beyond them (refused if modes with k > 0.8 kmax get excited, n_k >
+        max(0.05, 1e-3 max n_k); check_cutoff=False skips this, for probe grids of decoupled modes, backreaction=False
+        and lam = 0, where each n_k is exact on its own but n_chi, chi2_ren are grid sums); refused if the energy
+        drifts by > 1e-4 (relative, as 'energy_drift')."""
     m_phi, g, Phi = _pos(m_phi, "m_phi"), _nonneg(g, "g"), _nonneg(Phi, "Phi")
     m_chi, lam, lam_phi = _nonneg(m_chi, "m_chi"), _nonneg(lam, "lam"), _nonneg(lam_phi, "lam_phi")
     t_end = _pos(t_end, "t_end")
     kappa = m_phi if kappa is None else _pos(kappa, "kappa")
+    if not check_cutoff and (backreaction or lam > 0):
+        raise ValueError("check_cutoff=False is only for decoupled modes (backreaction=False and lam = 0)")
     auto_grid = k_nodes is None
     if auto_grid:
         if kmax is None:
@@ -614,8 +661,22 @@ def hartree_preheating(m_phi: float, g: float, Phi: float, m_chi: float = 0.0, l
         cc, ss, ms, cp, sp, msp = rot[y]
         return cp * ph + sp * pp, msp * ph + cp * pp, cc * c + ss * dc, ms * c + cc * dc
 
+    def energy_terms_abs(ph, pp, c, dc):
+        sb = S_B(c)
+        return (0.5 * pp * pp + 0.5 * float(np.sum(W * (np.abs(dc) ** 2 + k * k * np.abs(c) ** 2)))
+                + abs(mphiB2) * ph * ph / 2 + abs(lamphiB) * ph ** 4 / 4 + abs(mchiB2) * sb / 2
+                + g2B * ph * ph * sb / 2 + lamB * sb * sb / 4)
+
     rho_phi0 = 0.5 * m_phi ** 2 * Phi ** 2 + 0.25 * lam_phi * Phi ** 4
-    e_scale = rho_phi0 if rho_phi0 > 0 else m_phi ** 4
+    # The conserved bare energy contains vacuum chi terms of order Q ~ kmax^4 that cancel in differences; their
+    # rounding (eps x sum of the absolute terms per evaluation, accumulating over the steps) is a floor below which
+    # a drift says nothing about the step size. Normalize by max(rho_phi(0), that floor); the refusal threshold
+    # (1e-4) is unchanged. Floor: 1e6 x eps x sum|terms| x sqrt(steps), so the refusal needs an absolute drift above
+    # 100 eps sum|terms| sqrt(steps); pure roundoff (Phi = 1e-8 .. 1e-6, 64..800 steps per half period, lam = 0 and
+    # 0.5) measured <= 12 eps sum|terms| sqrt(steps). For the default examples the floor is ~1e-8 of rho_phi(0).
+    E_abs = energy_terms_abs(phi, pi0, chi, dchi)
+    e_round = 1e6 * np.finfo(float).eps * E_abs * math.sqrt(nsteps)
+    e_scale = max(rho_phi0, e_round) if rho_phi0 > 0 else max(m_phi ** 4, e_round)
     E0 = energy(phi, pi0, chi, dchi)
     keys = ("t", "phi0", "dphi0", "M2", "chi2_ren", "n_chi", "rho_chi", "rho_phi", "adiabaticity", "energy_drift")
     out = {key: [] for key in keys}
@@ -661,17 +722,20 @@ def hartree_preheating(m_phi: float, g: float, Phi: float, m_chi: float = 0.0, l
                          "raise steps_per_halfperiod") from None
     res = {key: np.asarray(v) for key, v in out.items()}
     drift = float(np.max(np.abs(res["energy_drift"])))
-    if backreaction and drift > 1e-4:
-        raise ValueError(f"energy drifted by {drift:.2g} (relative): step too large, raise steps_per_halfperiod")
-    if auto_grid:
-        edge = nk[k > 0.8 * kmax]
-        nmax = float(np.nanmax(nk))
-        if edge.size and float(np.nanmax(edge)) > max(0.05, 1e-3 * nmax):
-            raise ValueError(f"modes near the cutoff are excited (n_k up to {float(np.nanmax(edge)):.3g} for k > 0.8 kmax): "
-                             "raise kmax")
+    if backreaction and drift > 1e-4 and not _no_drift_check:
+        raise ValueError(f"energy drifted by {drift:.2g} relative to max(rho_phi(0), roundoff floor {e_round:.2g}): "
+                         "step too large, raise steps_per_halfperiod")
+    # Cutoff check on EVERY grid (automatic or k_nodes): the top 20% of the k range must stay unexcited.
+    edge = nk[k > 0.8 * kmax]
+    edge_exc = float(np.nanmax(edge)) if edge.size and np.any(np.isfinite(edge)) else 0.0
+    nmax = float(np.nanmax(nk)) if np.any(np.isfinite(nk)) else 0.0
+    if check_cutoff and edge_exc > max(0.05, 1e-3 * nmax):
+        raise ValueError(f"modes near the cutoff are excited (n_k up to {edge_exc:.3g} for k > 0.8 kmax = "
+                         f"{0.8 * kmax:.3g}): raise kmax{'' if auto_grid else ' (extend k_nodes beyond the bands)'}")
     wr = float(np.max(np.abs(chi * np.conj(dchi) - np.conj(chi) * dchi - 1j) / (1 + 2 * np.abs(np.nan_to_num(nk)))))
     res["chi2_tail_estimate"] = 3 * float(np.max(np.abs(res["M2"]))) ** 2 / (64 * PI * PI * kmax * kmax)
-    res.update({"k": k, "W": W, "n_k": nk, "wronskian_error": wr, "energy_drift_max": drift, "Q": Q, "L": L,
+    res.update({"k": k, "W": W, "n_k": nk, "edge_excitation": edge_exc, "wronskian_error": wr,
+                "energy_drift_max": drift, "energy_scale": e_scale, "energy_roundoff_floor": e_round, "Q": Q, "L": L,
                 "q": g2 * Phi * Phi / (4 * m_phi * m_phi), "dt": h, "steps": nsteps,
                 "bare": {"m_phi2": mphiB2, "lam_phi": lamphiB, "m_chi2": mchiB2, "g2": g2B, "lam": lamB}})
     if record_modes:
@@ -757,11 +821,13 @@ def selftest(verbose: bool = True) -> bool:
     ref2 = 2 * beta ** 2 / (8 * PI ** 3) * (1 + ALPHA_FS * PI) * math.exp(-PI / beta)
     check("spinor two_loop = 2 x [Dunne eq. 4.16, k = 1, c_1 = 0]", r["two_loop"], ref2, 1e-12, rel=True)
     #      Lebedev-Ritus field-dependent mass, Dunne eq. 4.19: "m∗(k,E ) = m + 1 2αkc k √ eE − 1 2αkeE m" [k = 1,
-    #      c_1 = 0: m* = m - alpha eE/(2m)]; pi m*^2/eE - pi m^2/eE = -pi alpha + O(alpha^2): the same exponent shift.
-    #      Tolerance 2e-4: the O(alpha^2) remainder is alpha beta/4 = 1.8e-4 relative to pi alpha at beta = 0.1.
-    shift = PI * ((1 - ALPHA_FS * beta / 2) ** 2 - 1) / beta
-    check("exponent shift from the Lebedev-Ritus mass m* (Dunne eq. 4.19) = -pi alpha", shift, -PI * ALPHA_FS, 2e-4,
-          rel=True)
+    #      c_1 = 0: m* = m - alpha eE/(2m)]; exp(-pi m*^2/eE)/exp(-pi m^2/eE) = exp(pi alpha - pi alpha^2 beta/4): the
+    #      module's all_orders/one_loop must equal it to O(alpha^2 beta). Compared as logarithms (the ratio itself is
+    #      1.023, so a relative check of the ratio would be 40x weaker). Tolerance 2e-4 relative: the O(alpha^2)
+    #      remainder is alpha beta/4 = 1.8e-4 relative to pi alpha at beta = 0.1.
+    ls_shift = -PI * ((1 - ALPHA_FS * beta / 2) ** 2 - 1) / beta
+    check("ln(all_orders/one_loop) = exponent shift of the Lebedev-Ritus mass m* (Dunne eq. 4.19)",
+          math.log(r["all_orders"] / r["one_loop"]), ls_shift, 2e-4, rel=True)
 
     # ---- B1. Mathieu characteristic values (Fourier-matrix eigenvalues) vs the series of DLMF 28.6, quoted:
     #      "28.6.2 a 1 ⁡ ( q ) = 1 + q − 1 8 ⁢ q 2 − 1 64 ⁢ q 3 − 1 1536 ⁢ q 4 + 11 36864 ⁢ q 5 + 49 5 89824 ⁢ q 6 + 55 94
@@ -954,8 +1020,14 @@ def main(argv=None) -> int:
             tag = "scalar" if args.scalar else "spinor"
             print(f"{tag} QED, m = {m:.6g} eV (physical mass), eE = {eE:.6g} eV^2 = {r['beta']:.4g} m^2, alpha = {args.alpha:.8g}")
             print("n = 1 term: vacuum-decay rate 2 Im L = mean pairs per volume per time (equal at this order):")
+            ev4_to_si = qp.rate_density_to_SI(1.0)
             for key in ("one_loop", "two_loop", "all_orders"):
-                print(f"  {key:10s} {r[key]:.6g} eV^4 = {qp.rate_density_to_SI(r[key]):.6g} m^-3 s^-1")
+                lg = r["log10_" + key]
+                if r[key] > 0 and qp.rate_density_to_SI(r[key]) > 0:
+                    print(f"  {key:10s} {r[key]:.6g} eV^4 = {qp.rate_density_to_SI(r[key]):.6g} m^-3 s^-1")
+                else:                     # exp(-pi m^2/eE) underflows double precision: print the logarithm
+                    print(f"  {key:10s} 10^({lg:.6f}) eV^4 = 10^({lg + math.log10(ev4_to_si):.6f}) m^-3 s^-1 "
+                          "(underflows double precision)")
             nxt = "n/a (scalar)" if r["next_rel"] is None else f"{r['next_rel']:+.2e}"
             print(f"Coulomb enhancement exp(pi alpha) = {r['enhancement']:.8f}; omitted: n = 2 term {r['n2_rel']:.1e}, "
                   f"next prefactor correction {nxt} (relative)")
@@ -987,6 +1059,9 @@ def main(argv=None) -> int:
                   f"{r['rho_chi'][i] / r['rho_phi'][0]:17.6g}  {r['chi2_ren'][i]:16.6g}")
         print(f"amplitude = sqrt(rho_phi/rho_phi(0)) (condensate energy); n_chi counts chi PARTICLES in the instantaneous "
               f"adiabatic basis (pairs = n_chi/2; transient while phi0 oscillates); energy drift {r['energy_drift_max']:.1e}")
+        print("chi2_ren(0) != 0 with n_chi = 0 is the kappa-dependent vacuum (Coleman-Weinberg) part: the condensate's "
+              "motion includes the one-loop effective potential (m_phi, lam_phi defined at kappa = m_phi); only n_chi "
+              "counts produced particles. One chi field (N = 1); quantities per component.")
     except (ValueError, KeyError) as exc:
         print(f"ERROR: {exc}")
         return 1
