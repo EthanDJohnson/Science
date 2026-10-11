@@ -59,6 +59,8 @@ class Refusals(unittest.TestCase):
             lambda: cf.closed_mode_count(0),
             lambda: cf.weyl_mode_count(-1.0, 1.0),
             lambda: cf.ricci_scalar(-1.0, 0.0, 1),                  # a <= 0
+            lambda: cf.ricci_scalar(1.0, float("nan"), 1),          # a'' not finite
+            lambda: cf.closed_mode_count(2.5),
             lambda: cf.open_spectral_density([-1.0]),
         ]
         for i, fn in enumerate(bad):
@@ -79,6 +81,9 @@ class Refusals(unittest.TestCase):
             lambda: cf.milne_beta2([0.0]),
             lambda: cf.milne_beta2_finite([0.3], 0.0, 5.0),                               # m = 0
             lambda: cf.milne_beta2_finite([0.3], 1.0, 30.0),                              # m e^eta1 too large
+            lambda: cf.milne_beta2_finite([0.3], 1.0, 1e4),                               # would overflow exp
+            lambda: cf.conformal_tanh_beta2(1, [1], float("nan"), 2.0, 1.0, 0.5),         # m not finite
+            lambda: cf.conformal_tanh_beta2(1, [1], 1.0, 2.0, 1.0, float("inf")),         # rho not finite
         ]
         for i, fn in enumerate(bad):
             with self.subTest(case=i), self.assertRaises(ValueError):
@@ -103,12 +108,46 @@ class Refusals(unittest.TestCase):
                 fn()
 
 
+class ErrorBudget(unittest.TestCase):
+    def test_finite_difference_a_pp_error_is_reported(self):
+        # Default a'' (5-point FD, h = 1e-2) on a tanh switch of rate rho: the module repeats with h/2 and adds the
+        # difference to beta2_relerr. rho = 100: FD alone at h was off by 5e-3 (review probe); the reported error must
+        # cover the true error of the returned value (measured 2e-4 vs 4.8e-3 reported).
+        n = [1, 2, 5]
+        for rho in (100.0, 300.0):
+            a, app, (e0, e1) = qp.frw_tanh_scale_factor(2.0, 1.0, rho)
+            exact = cf.curved_frw_particle_production(1, n, a, 1.0, 0.0, e0, e1, a_pp=app)["beta2"]
+            r = cf.curved_frw_particle_production(1, n, a, 1.0, 0.0, e0, e1)
+            with self.subTest(rho=rho):
+                self.assertTrue(np.all(r["beta2_relerr"] >= np.abs(r["beta2"] / exact - 1)))
+                self.assertTrue(np.all(r["a_pp_fd_relerr"] > 1e-3))
+        self.assertFalse(np.any(r["resolved"]))                     # rho = 300: rho h ~ 3, every mode flagged
+        with self.assertRaises(ValueError):
+            cf.curved_frw_particle_production(1, n, a, 1.0, 0.0, e0, e1, strict=True)
+        # analytic a'' (or conformal coupling, where a'' drops out): no FD term
+        self.assertTrue(np.all(cf.curved_frw_particle_production(1, n, a, 1.0, 0.0, e0, e1, a_pp=app)["a_pp_fd_relerr"] == 0))
+
+    def test_closed_truncation_is_estimated(self):
+        # Exact conformal tanh spectrum, fast switching (rho = 200): N = 100 passes the last-decile test (9.9e-4) but
+        # misses 2.5e-3 of the N -> inf total; the power-law extrapolation must catch it.
+        nb = np.arange(1, 100001, dtype=float)
+        ref = float(np.sum(nb * nb * qp.tanh_model_beta2(nb, 1.0, 2.0, 1.0, 200.0)))
+        n = np.arange(1, 101, dtype=float)
+        with self.assertRaises(ValueError):
+            cf.closed_universe_totals(n, qp.tanh_model_beta2(n, 1.0, 2.0, 1.0, 200.0))
+        t = cf.closed_universe_totals(n, qp.tanh_model_beta2(n, 1.0, 2.0, 1.0, 200.0), tail_tol=1e-2)
+        true_missing = 1 - t["particles_total"] / ref
+        self.assertGreater(t["truncation_relerr"], 0.5 * true_missing)   # estimate, not a bound: within 2x
+        self.assertLess(t["truncation_relerr"], 2.0 * true_missing)
+
+
 class Bookkeeping(unittest.TestCase):
     def test_closed_spectrum(self):
         np.testing.assert_allclose(cf.spatial_eigenvalue(1, [1, 2, 3]), [0.0, 3.0, 8.0])
         np.testing.assert_allclose(cf.spatial_eigenvalue(-1, [0.0, 2.0], L=2.0), [0.25, 4.25])
         np.testing.assert_allclose(cf.closed_degeneracy([1, 2, 3]), [1.0, 4.0, 9.0])
         self.assertEqual(cf.closed_mode_count(3), 14)
+        self.assertEqual(cf.closed_mode_count(10 ** 6), 10 ** 6 * (10 ** 6 + 1) * (2 * 10 ** 6 + 1) // 6)   # exact
         self.assertAlmostEqual(cf.closed_comoving_volume(2.0), 16 * math.pi ** 2)
 
     def test_particles_pairs_and_volumes(self):
@@ -148,6 +187,13 @@ class CommandLine(unittest.TestCase):
         self.assertIn("total particles in the whole closed universe", out)
         self.assertIn("m^-3", out)
         self.assertIn("conformal closed form", out)
+
+    def test_flat_cli_has_no_curvature_radius(self):
+        code, out = self.run_main(["tanh", "--K", "0", "--m", "1", "--xi", "0", "--A", "2", "--B", "1", "--rho", "0.7",
+                                   "--kmax", "6"])
+        self.assertEqual(code, 0, out)
+        self.assertIn("K = 0 (flat)", out)
+        self.assertNotIn("curvature radius", out)
 
     def test_bad_units_return_1(self):
         code, out = self.run_main(["tanh", "--K", "1", "--m", "3 m", "--xi", "0", "--A", "2", "--B", "1", "--rho", "0.7"])

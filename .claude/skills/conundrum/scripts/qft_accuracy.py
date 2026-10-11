@@ -72,12 +72,22 @@ PART B. Phase-integral (complex-time WKB) asymptotics: Dykhne, Davis-Pechukas, P
     Turning points and poles of omega^2 are found by a grid scan of a box in the upper half plane plus
     complex Newton/secant refinement (mpmath.findroot); the phase integrals by Gauss-Legendre quadrature in
     s along t = t_c + (Re t_c - t_c) s^2 (smooth through the square-root zero) with the branch tracked
-    node by node. Refused (ValueError): real turning points (tunnelling, not over-barrier), a pole of
-    omega^2 closer to the real axis than the dominant turning point (the DDP contour is then blocked),
-    a double zero, more than two pairs within e^{-13.8} of the leading one (not validated).
+    node by node; small-residue poles next to a turning point (invisible on the grid) are searched for on rings
+    around the leading turning points. Refused (ValueError): real turning points (tunnelling, not over-barrier),
+    a pole of omega^2 closer to the real axis than the dominant turning point, or at/below the dominant height
+    between two interfering ones (Poeschl-Teller bumps; the DDP contour is then blocked), a double zero, more
+    than two pairs within window = 7.6 in K of the leading one (farther pairs change |beta|^2 by <= 2e^{-7.6} =
+    1e-3 relative and are neglected), and 2K < 2 (not even the order of magnitude: tanh at 2K = 1.4 is off 5.5x).
     Accuracy: leading exponential x prefactor, relative error O(1/K) in general (power corrections in the
-    adiabaticity parameter; Sauter scalar: e^{-pi/(4 eE0 tau^2)} - 1), exponentially small for the tanh model
-    and the Sauter spinor, zero for Landau-Zener (all measured in the self-test).
+    adiabaticity parameter), exponentially small for the tanh model, zero for Landau-Zener; PLUS a correction that
+    does not shrink with K from any double pole of omega^2 above the turning point, set by its residue
+    r = |Res omega| (r = eE0 tau^2 for Sauter, sqrt(V0)/rho for the Poeschl-Teller dip): exact/DDP =
+        F_spinor(r) = (1 - e^{-2 pi r})^2,   F_scalar(r) = 4 e^{-2 pi r} cosh^2(pi sqrt(r^2 - 1/4))  (-> e^{-pi/(4r)}),
+    read off from the Gavrilov-Gitman eqs. 42/43 at k = 0 and the Poeschl-Teller closed form below (exact there, an
+    estimate for poles not on the turning point's vertical line). It is reported ('pole_correction' = |1 - F|),
+    not applied; results are flagged reliable=False when it exceeds pole_tol (0.1) or when 2K < 6 (tanh model:
+    exact/PI = 0.59, 0.78 at 2K = 4.7, 7.0). Example: Sauter, eE0 tau^2 = 0.3, 2K = 29.6: spinor exact/PI = 0.72,
+    scalar 0.058, although 1/K = 0.07 (self-test B6).
     Closed-form exponents used as references: Landau-Zener/Schwinger 2K = pi eps_perp^2/eE; Sauter
     2K = pi tau (w_in + w_out) - 2 pi eE0 tau^2 (Fukushima et al. 2019 eq. 30); at k = 0 this is the
     Dunne-Schubert worldline-instanton action (pi m^2/eE) 2/(1 + sqrt(1 + gamma^2)), gamma = m omega/(eE),
@@ -96,13 +106,20 @@ PART C. Second-order Born (Dyson) for homogeneous backgrounds
         W_{+-} = eA sin theta0,  W_{++} = -W_{--} = -eA cos theta0,
         c1 = -i int W_{+-} e^{2i w0 t},  c2 = -int dt [W_{++}(t) int^t W_{+-} e^{2i w0 t'} + W_{+-} e^{2i w0 t} int^t W_{--}],
         n = |c1|^2 + 2 Re(c1* c2) + O(e^4)   (per spin state).
-    Quadrature: composite 16-point Gauss-Legendre with spectral (Legendre) cumulative integration inside panels.
+    Quadrature: composite 16-point Gauss-Legendre with spectral (Legendre) cumulative integration inside panels;
+    the series is iterated to THIRD order, and the O(V^4) terms |b2|^2 + 2|b1||b3| estimate the Born-2 error.
+    When Born fails: it needs the O(V) Fourier component V~(2 omega0) to dominate. For a smooth pulse of duration tau
+    and omega0 tau >~ 1.5, V~(2 omega0) ~ e^{-2 omega0^2 tau^2} (Gaussian) is exponentially smaller than the V*V
+    convolution (~ e^{-omega0^2 tau^2}), so the series is dominated by higher orders even when lam << 1 (Gaussian,
+    tau = 1, omega0 = 2, lam = 0.06: exact 7.3e-13, Born-1 4.4e-10, Born-2 -5.9e-10). Such modes are flagged
+    (born_ok False, values NaN) and number densities whose error estimate exceeds 10% are refused.
 
 Assumptions and validity range
     Free fields in a classical, prescribed, spatially homogeneous background (no back-reaction); adiabatic
     in AND out regions. Part A needs omega^2 as an mpmath callable (it must return an mpmath number computed
     at the working precision); Part B needs it to accept complex mpmath numbers (analytic continuation);
-    Part C takes numpy callables (double precision is enough: no cancellation in the Born integrals).
+    Part C takes numpy callables (double precision is enough: no cancellation in the Born integrals) and needs
+    omega0 tau <~ 1 (checked per mode, see Part C).
 
 Python usage
     import sys; sys.path.insert(0, ".claude/skills/conundrum/scripts")
@@ -350,8 +367,9 @@ def bogoliubov_boson_mp(omega2, t0: float, t1: float, rtol: float = 1e-5, atol: 
         eps_out = abs(mp.diff(omega2, mp.mpf(t1))) / (2 * w_out ** 3)
         eps_end = max(eps_in, eps_out)
     n0 = int(steps) if steps is not None else max(64, math.ceil(_omega_max(omega2, t0, t1) * (t1 - t0) / 0.8))
-    if n0 < 2 or n0 > max_steps:
-        raise ValueError(f"need 2 <= steps <= max_steps (the window needs ~{n0} steps; raise max_steps or shorten it)")
+    if n0 < 2 or 2 * n0 > max_steps:      # the first step-halving run already uses 2 n0 steps
+        raise ValueError(f"need 2 <= steps <= max_steps/2 (the window needs ~{n0} steps, and step halving doubles them; "
+                         "raise max_steps or shorten the window)")
 
     def run(n, d):
         return _magnus_boson_mp(omega2, t0, t1, n, d)
@@ -400,8 +418,9 @@ def bogoliubov_fermion_mp(p_of_t, eps_perp, t0: float, t1: float, rtol: float = 
     def w2(t):
         return mp.mpf(ep) ** 2 + p_of_t(t) ** 2
     n0 = int(steps) if steps is not None else max(64, math.ceil(_omega_max(w2, t0, t1) * (t1 - t0) / 0.8))
-    if n0 < 2 or n0 > max_steps:
-        raise ValueError(f"need 2 <= steps <= max_steps (the window needs ~{n0} steps; raise max_steps or shorten it)")
+    if n0 < 2 or 2 * n0 > max_steps:      # the first step-halving run already uses 2 n0 steps
+        raise ValueError(f"need 2 <= steps <= max_steps/2 (the window needs ~{n0} steps, and step halving doubles them; "
+                         "raise max_steps or shorten the window)")
 
     def run(n, d):
         return _magnus_fermion_mp(p_of_t, ep, t0, t1, n, d)
@@ -471,10 +490,12 @@ def sauter_ddp_exponent(k_par, k_perp, m, eE0, tau) -> float:
     equals dunne_schubert_exponent. (|w_out - w_in| < 2 eE0 tau always holds for eps_perp > 0.)
     Quantity: 2K (dimensionless) such that n_k ~ exp(-2K) for E(t) = E0 sech^2(t/tau) (both statistics; leading
         exponential only, prefactor 1 to relative O(1/K)).
-    Valid when: eE0 > 0 (energy^2), tau > 0 (1/energy), m^2 + k_perp^2 > 0; semiclassical when 2K >> 1."""
-    w_in, w_out, eE0, tau = qp._sauter_in_out(np.atleast_1d(k_par), np.atleast_1d(k_perp), _finite(m, "m"), eE0, tau)
-    if float(np.min(_finite(m, "m") ** 2 + np.atleast_1d(k_perp) ** 2)) <= 0:
+    Valid when: scalar k_par, k_perp (energy; arrays are refused), eE0 > 0 (energy^2), tau > 0 (1/energy),
+        m^2 + k_perp^2 > 0; semiclassical when 2K >> 1."""
+    kz, kp, m = _finite(k_par, "k_par"), _finite(k_perp, "k_perp"), _finite(m, "m")   # scalars only (no silent [0])
+    if m * m + kp * kp <= 0:
         raise ValueError("need m^2 + k_perp^2 > 0")
+    w_in, w_out, eE0, tau = qp._sauter_in_out(np.atleast_1d(kz), np.atleast_1d(kp), m, eE0, tau)
     return PI * tau * (float(w_in[0]) + float(w_out[0])) - 2 * PI * eE0 * tau * tau
 
 
@@ -525,7 +546,10 @@ def sauter_n_mp(k_par, k_perp, m, eE0, tau, fermion: bool, dps: int = 50):
                            / (sinh(pi tau w_in) sinh(pi tau w_out)),   w_in/out = sqrt(eps_perp^2 + (k_par -/+ eE0 tau)^2).
     Quantity: per-mode in-in mean number of particles in mode k (= antiparticles in -k = pairs in that mode;
         spinor: per spin state), dimensionless mpmath number.
-    Valid when: homogeneous Sauter pulse, m^2 + k_perp^2 > 0, eE0 > 0 (energy^2), tau > 0 (1/energy)."""
+    Valid when: homogeneous Sauter pulse, m^2 + k_perp^2 > 0, eE0 > 0 (energy^2), tau > 0 (1/energy); fermion is a
+        bool (True: spinor, False: scalar)."""
+    if not isinstance(fermion, (bool, np.bool_)):
+        raise ValueError("fermion must be True (spinor QED) or False (scalar QED)")
     kz, kp, m = _finite(k_par, "k_par"), _finite(k_perp, "k_perp"), _finite(m, "m")
     eE0, tau = _pos(eE0, "eE0"), _pos(tau, "tau")
     if m < 0 or m * m + kp * kp <= 0:
@@ -714,46 +738,130 @@ def turning_points(omega2, x_range, y_max: float, grid=(64, 24), dps: int = 30) 
                 poles.append(r)
         Ks = [2 * mp.im(_phase_to(omega2, tc)) for tc in tps]
         order = sorted(range(len(tps)), key=lambda i: Ks[i])
+        # A double pole of omega^2 with a small residue r sits close to a turning point and is invisible on the grid
+        # (|omega^2| stays O(1) at the nodes). Probe rings of radius Im(t_c) 2^-j around the two leading turning points:
+        # without a pole |omega^2| ~ |omega^2'(t_c)| rho on the ring; a pole near the ring makes it much larger. Refine
+        # 1/omega^2 from the ring point with the largest excess (one findroot per turning point).
+        for i in order[:2]:
+            tc = tps[i]
+            slope = abs(mp.diff(omega2, tc))
+            best = (mp.mpf(3), None, None)                  # excess must exceed 3 to try
+            for j in range(1, 15):
+                dlt = mp.im(tc) * mp.mpf(2) ** -j
+                for q in range(8):
+                    z = tc + dlt * mp.expjpi(mp.mpf(q) / 4)
+                    if mp.im(z) <= 0:
+                        continue
+                    exc = abs(omega2(z)) / (slope * dlt)
+                    if exc > best[0]:
+                        best = (exc, z, dlt)
+            if best[1] is None:
+                continue
+            try:
+                r = _refine(inv, best[1], lambda z: abs(inv(z)) <= mp.mpf(10) ** -6 / scale, center, radius, best[2] / 8)
+            except ZeroDivisionError:
+                r = best[1]
+            if r is not None and 0 < r.imag <= y_max * 1.0001 and abs(r - tc) <= 4 * best[2] and \
+                    not any(abs(r - q) < 1e-8 * (1 + abs(r)) for q in poles):
+                poles.append(r)
         return {"turning_points": [tps[i] for i in order], "K": [Ks[i] for i in order], "poles": poles,
                 "real_axis_min": rmin}
 
 
+def _double_pole_residue(omega2, p, others):
+    """|Res omega| at a pole p of omega^2: r = sqrt|c_-2|, c_-2 = lim (t - p)^2 omega^2 (0 for a simple pole of omega^2).
+
+    c_-2 = (1/2 pi i) oint (t - p) omega^2 dt = mean of (t - p)^2 omega^2 over a circle around p (trapezoid rule, spectrally
+    accurate). Zeros of omega^2 inside the circle do not matter (the integrand stays analytic there); the radius stays below
+    a quarter of the distance to every other pole in `others`. Returns (r, c_-2, c_-1)."""
+    dist = [abs(q - p) for q in others if abs(q - p) > 1e-8 * (1 + abs(p))]
+    rad = min([mp.im(p) / 10] + [d / 4 for d in dist])
+    n = 32
+    zs = [rad * mp.expjpi(2 * mp.mpf(j) / n) for j in range(n)]
+    vals = [omega2(p + z) for z in zs]
+    c2 = sum(z * z * v for z, v in zip(zs, vals)) / n
+    c1 = sum(z * v for z, v in zip(zs, vals)) / n
+    if abs(c2) <= mp.mpf(10) ** -6 * abs(c1) * (1 + abs(p)):
+        return None, c2, c1                       # simple pole of omega^2 (e.g. tanh): no residue of omega
+    return mp.sqrt(abs(c2)), c2, c1
+
+
+def _pole_factors(r):
+    """exact/DDP factors for a turning-point pair under a double pole of omega^2 with |Res omega| = r (module docstring)."""
+    r = mp.mpf(r)
+    f_ferm = (1 - mp.exp(-2 * mp.pi * r)) ** 2
+    f_bos = 4 * mp.exp(-2 * mp.pi * r) * mp.re(mp.cosh(mp.pi * mp.sqrt(mp.mpc(r * r - mp.mpf(1) / 4))) ** 2)
+    return float(f_bos), float(f_ferm)
+
+
 def phase_integral_beta2(omega2, x_range, y_max: float, statistics: str = "boson", grid=(64, 24), dps: int = 30,
-                         window: float = 13.8) -> dict:
+                         window: float = 7.6, pole_tol: float = 0.1, strict: bool = False) -> dict:
     """Phase-integral (complex-time WKB / Dykhne-Davis-Pechukas) |beta_k|^2 for one mode, with turning-point interference.
 
     One dominant pair: |beta|^2 = exp(-2K). Two pairs within `window` in K: Dumlu & Dunne 2010 eqs. 7 (scalar, +)
     and 8 (spinor, -): N = e^{-2K1} + e^{-2K2} +- 2 cos(2 alpha) e^{-K1-K2}, alpha = L - sigma(K1) - sigma(K2).
-    statistics 'boson' (u'' + omega^2 u = 0) or 'fermion' (two-level i c' = (p sigma_z + eps sigma_x) c with
-    omega^2 = eps^2 + p^2; per spin state).
+    Pairs with K - K_min > window are neglected (relative effect <= 2 e^{-window}; default 1e-3) and listed in
+    'subleading_K'. statistics 'boson' (u'' + omega^2 u = 0) or 'fermion' (two-level i c' = (p sigma_z + eps sigma_x) c
+    with omega^2 = eps^2 + p^2; per spin state).
+    Two corrections that do NOT shrink with 1/K are checked and flagged (module docstring, Part B):
+      * semiclassical: 2 K_min >= 6 (below it the result is off by tens of per cent to factors; 2K < 2 is refused);
+      * a double pole of omega^2 above the turning points with a small residue r = |Res omega| (Sauter: r = eE0 tau^2,
+        Poeschl-Teller dip: sqrt(V0)/rho) multiplies the result by F(r): spinor (1 - e^{-2 pi r})^2, scalar
+        4 e^{-2 pi r} cosh^2(pi sqrt(r^2 - 1/4)) (-> e^{-pi/(4r)} for large r). Exact for a pole on the vertical line
+        of the turning point (Sauter at k = 0, Poeschl-Teller dip), an estimate otherwise; the smallest r found in the
+        box sets 'pole_factor' and 'pole_correction' = |1 - F| (not applied to 'beta2').
+    'reliable' = semiclassical and pole_correction <= pole_tol; strict=True raises ValueError when it is False.
     Quantity: per-mode IN-IN mean number |beta_k|^2 (bosons: particles in mode k; fermions: per spin state) as the
         leading exponential x prefactor (1 per simple turning-point pair, Dumlu-Dunne interference for two pairs),
-        relative error O(1/K) (not estimated; exponentially small for tanh/Sauter spinor, exact for Landau-Zener);
-        dict with 'beta2' (for `statistics`; 'beta2_boson' and 'beta2_fermion' give both), 'exponent' = 2 K_min, 'K' (dominant pairs), 'turning_points', 'alpha', 'L', 'sigma',
-        'poles', 'subleading_K' (other turning points found), 'label'.
-    Valid when: omega^2 analytic near the strip below the dominant turning points (poles allowed only farther from
-        the real axis than them), real and > 0 on the real axis, simple turning points, at most two pairs within
-        `window`, semiclassical (2K >> 1); the box must contain the dominant turning points."""
+        relative error O(1/K) + O(pole correction) (the latter estimated in 'pole_correction'; exponentially small for
+        tanh, exact for Landau-Zener); dict with 'beta2' (for `statistics`; 'beta2_boson' and 'beta2_fermion' give
+        both), 'exponent' = 2 K_min, 'K' (dominant pairs), 'turning_points', 'alpha', 'L', 'sigma', 'poles',
+        'pole_residue' (smallest |Res omega| over double poles found, None if none), 'pole_factor' (F for
+        `statistics`), 'pole_correction', 'semiclassical', 'reliable', 'subleading_K' (other turning points), 'label'.
+    Valid when: omega^2 analytic near the strip below the dominant turning points (poles only strictly ABOVE them;
+        at or below: refused), real and > 0 on the real axis, simple turning points, at most two pairs within
+        `window`, semiclassical 2K >~ 6, no small-residue double pole of omega^2 above (both flagged); the box must
+        contain the dominant turning points and should reach >= 1.5 x their height so that such poles are seen."""
     if statistics not in ("boson", "fermion"):
         raise ValueError("statistics must be 'boson' or 'fermion'")
-    window = _pos(window, "window")
+    window, pole_tol = _pos(window, "window"), _pos(pole_tol, "pole_tol")
     tp = turning_points(omega2, x_range, y_max, grid, dps)
     if not tp["turning_points"]:
-        raise ValueError("no turning point found in the box: enlarge y_max / x_range or refine the grid")
+        if tp["poles"]:
+            raise ValueError(f"no turning point found in the box, but omega^2 has a pole at {mp.nstr(tp['poles'][0], 6)}: "
+                             "a turning point squeezed next to a small-residue pole is missed by the grid, and there the "
+                             "phase integral is unreliable anyway (pole correction of order 1); use bogoliubov_boson_mp/"
+                             "bogoliubov_fermion_mp")
+        raise ValueError("no turning point found in the box: enlarge y_max / x_range or refine the grid. If omega^2 has a "
+                         "pole in or just above the box, a turning point may be hiding next to a small-residue pole: "
+                         "there the phase integral is unreliable anyway (order-1 pole correction); use "
+                         "bogoliubov_boson_mp/bogoliubov_fermion_mp")
     with mp.workdps(int(dps)):
         tps, Ks = tp["turning_points"], tp["K"]
         if any(K <= 0 for K in Ks):
             raise ValueError("a turning point has K <= 0: branch tracking failed (refine the box or the grid)")
+        if 2 * Ks[0] < 2:
+            raise ValueError(f"2K = {float(2 * Ks[0]):.3g} < 2: far outside the semiclassical regime (the phase integral "
+                             "is not even an order-of-magnitude estimate here); use bogoliubov_boson_mp/bogoliubov_fermion_mp "
+                             "or qp's solvers")
         dom = [i for i in range(len(tps)) if Ks[i] <= Ks[0] + window]
         if len(dom) > 2:
             raise ValueError(f"{len(dom)} turning-point pairs within exp(-{window:g}) of the leading one: more than two "
                              "interfering pairs is not validated here; use bogoliubov_boson_mp/bogoliubov_fermion_mp")
         y_c = min(mp.im(tps[i]) for i in dom)
+        y_top = max(mp.im(tps[i]) for i in dom)
+        x_lo_d, x_hi_d = min(mp.re(tps[i]) for i in dom), max(mp.re(tps[i]) for i in dom)
+        tol_x = 1e-6 * (1 + abs(x_hi_d - x_lo_d) + y_top)
+        margin = 1 + mp.mpf(10) ** -6
         for p in tp["poles"]:
-            if mp.im(p) < y_c * (1 - mp.mpf(10) ** -8):
-                raise ValueError(f"pole of omega^2 at {mp.nstr(p, 6)} lies closer to the real axis than the dominant turning "
-                                 "point: the DDP contour is blocked (Fukushima et al. 2019); the turning-point formula "
-                                 "does not apply")
+            # below the dominant height anywhere, or at/below it inside the horizontal span of the dominant points (the
+            # Poeschl-Teller bump: double pole exactly at the height of, and between, two interfering turning points). A
+            # pole at the same height but to the SIDE is allowed: the tanh model has its turning point at exactly the
+            # height pi/(2 rho) of its simple pole, and the phase integral is accurate there (self-test B2).
+            if mp.im(p) < y_c / margin or (mp.im(p) <= y_top * margin and x_lo_d - tol_x <= mp.re(p) <= x_hi_d + tol_x):
+                raise ValueError(f"pole of omega^2 at {mp.nstr(p, 6)} lies at or below the height of a dominant turning "
+                                 "point (or between two interfering ones): the DDP contour is blocked (Fukushima et al. "
+                                 "2019); the turning-point formula does not apply")
         for i in dom:                              # nothing may sit on the vertical path below a dominant point
             for q in [tps[j] for j in range(len(tps)) if j != i] + tp["poles"]:
                 if abs(mp.re(q) - mp.re(tps[i])) < 1e-6 * (1 + abs(tps[i])) and mp.im(q) < mp.im(tps[i]):
@@ -761,12 +869,37 @@ def phase_integral_beta2(omega2, x_range, y_max: float, statistics: str = "boson
             d = mp.diff(omega2, tps[i])
             if abs(d) < mp.mpf(10) ** (-dps // 3) * (1 + abs(omega2(mp.re(tps[i])))):
                 raise ValueError("double (non-simple) turning point: prefactor 1 does not apply")
+        rs = [r for r in (_double_pole_residue(omega2, p, tp["poles"])[0] for p in tp["poles"]) if r is not None]
+        r_min = min(rs) if rs else None
+        f_bos, f_ferm = _pole_factors(r_min) if r_min is not None else (1.0, 1.0)
+        f_stat = f_bos if statistics == "boson" else f_ferm
+        pole_corr = abs(1 - f_stat)
+        semi = bool(2 * Ks[0] >= 6)
+        reliable = semi and pole_corr <= pole_tol
+        notes = []
+        if r_min is not None:
+            notes.append(f"pole correction ~{pole_corr:.2g} (double pole of omega^2, |Res omega| = {float(r_min):.4g}; "
+                         f"factor F = {f_stat:.4g} not applied)")
+        elif y_max < 1.5 * float(y_top):
+            notes.append(f"poles of omega^2 above y_max = {y_max:g} not searched")
+        if not semi:
+            notes.append(f"NOT semiclassical: 2K = {float(2 * Ks[0]):.3g} < 6")
+        if not reliable:
+            msg = "; ".join(notes) + f" (pole_tol {pole_tol:g})"
+            if strict:
+                raise ValueError("phase integral unreliable: " + msg + "; use bogoliubov_boson_mp/bogoliubov_fermion_mp")
+        tail = (" + " + "; ".join(notes)) if notes else ""
+        prefix = "" if reliable else "UNRELIABLE: "
         out = {"turning_points": [tps[i] for i in dom], "K": [float(Ks[i]) for i in dom], "poles": tp["poles"],
                "subleading_K": [float(Ks[i]) for i in range(len(tps)) if i not in dom], "exponent": float(2 * Ks[0]),
-               "alpha": None, "L": None, "sigma": None, "statistics": statistics}
+               "alpha": None, "L": None, "sigma": None, "statistics": statistics,
+               "pole_residue": None if r_min is None else float(r_min), "pole_factor": f_stat,
+               "pole_factor_boson": f_bos, "pole_factor_fermion": f_ferm, "pole_correction": pole_corr,
+               "semiclassical": semi, "reliable": reliable}
         if len(dom) == 1:
             out["beta2"] = out["beta2_boson"] = out["beta2_fermion"] = mp.exp(-2 * Ks[0])
-            out["label"] = "leading exponential x prefactor (single simple turning-point pair), relative error O(1/K)"
+            out["label"] = (prefix + "leading exponential x prefactor (single simple turning-point pair), relative error "
+                            "O(1/K)" + tail)
             return out
         i1, i2 = sorted(dom, key=lambda i: mp.re(tps[i]))
         t1, t2 = tps[i1], tps[i2]
@@ -780,8 +913,8 @@ def phase_integral_beta2(omega2, x_range, y_max: float, statistics: str = "boson
         out["beta2"] = out["beta2_" + statistics]
         out.update({"alpha": float(alpha), "L": float(L), "sigma": (float(s1), float(s2)), "K": [float(K1), float(K2)],
                     "turning_points": [t1, t2],
-                    "label": "leading exponential x prefactor with two-pair interference (Dumlu-Dunne eq. 7/8), "
-                             "relative error O(1/K) of the envelope"})
+                    "label": prefix + "leading exponential x prefactor with two-pair interference (Dumlu-Dunne eq. 7/8), "
+                             "relative error O(1/K) of the envelope" + tail})
         return out
 
 
@@ -840,63 +973,121 @@ def _born_setup(f_of_t, w0, t0, t1, panels, name):
     return w0, t, wt, S, h, f
 
 
-def born2_scalar_mode(V_of_t, omega0, t0: float, t1: float, panels: int = None) -> dict:
+def _born_flags(x1, x2, x3, lam, max_relerr, strict, what):
+    """Error estimate of the Born-2 occupation from the next order: |x2|^2 + 2|x1||x3| (the O(V^4) terms), and the
+    per-mode validity flag. Born fails when the O(V) Fourier component at 2 omega0 does not dominate: for smooth pulses
+    with omega0 tau >~ 1 the V*V (and V*V*V) convolutions are exponentially LESS suppressed than V~(2 omega0)."""
+    a1, a2, a3 = np.abs(x1), np.abs(x2), np.abs(x3)
+    with np.errstate(divide="ignore", invalid="ignore"):
+        rel2 = np.where(a1 > 0, (a2 * a2 + 2 * a1 * a3) / (a1 * a1), np.inf)
+        rel1 = np.where(a1 > 0, 2 * a2 / a1, np.inf)
+    ok = (rel2 <= max_relerr) & (a1 > 1e-13 * lam) & (a1 * a1 + 2 * np.real(np.conj(x1) * x2) > 0)
+    if strict and not np.all(ok):
+        bad = np.flatnonzero(~ok)
+        raise ValueError(f"{what}: Born series not dominated by first order for mode(s) {bad.tolist()} (estimated Born-2 "
+                         f"relative error {np.max(rel2[bad]):.3g} > {max_relerr:g}, or |first order| at roundoff): the "
+                         "omega0-tau product is too large for perturbation theory; use the exact mode solvers")
+    return rel1, rel2, ok
+
+
+def born2_scalar_mode(V_of_t, omega0, t0: float, t1: float, panels: int = None, max_relerr: float = 0.1,
+                      strict: bool = False) -> dict:
     """First- and second-order Born (Dyson) Bogoliubov coefficient for omega_k(t)^2 = omega0^2 + V(t), V -> 0 at the ends.
 
     V_of_t(t_array) returns V(t) (energy^2, numpy); omega0 (energy) may be an array of modes (omega0^2 = k^2 + m^2).
-    Quantity: dict with per-mode complex 'b1' (O(V)) and 'b2' (O(V^2)) terms of beta_k, 'beta2_born1' = |b1|^2 (the
-        in-in mean particle number in mode k to O(V^2), error O(V^3)), 'beta2_born2' = |b1|^2 + 2 Re(b1* b2) (to O(V^3),
-        error O(V^4), i.e. relative O(V^2)), and 'lam' = int |V| dt/(2 omega0) (expansion parameter; the next term is
-        ~lam^2 relative); dimensionless.
-    Valid when: V real, V -> 0 at both ends of [t0, t1] (|V(end)| <= 1e-8 max|V|), lam < 1 (else refused; Born is
-        meaningful for lam << 1), omega0 > 0; double precision: |b1| above ~1e-14 lam."""
+    The Dyson series is iterated to third order (module docstring, Part C); b3 only feeds the error estimate.
+    Quantity: dict with per-mode complex 'b1' (O(V)), 'b2' (O(V^2)), 'b3' (O(V^3)) terms of beta_k; 'beta2_born1' = |b1|^2
+        (the in-in mean particle number in mode k to O(V^2), error O(V^3)), 'beta2_born2' = |b1|^2 + 2 Re(b1* b2) (to O(V^3),
+        error O(V^4), i.e. relative O(V^2)), both NaN where 'born_ok' is False; 'beta2_born2_relerr' (estimated relative
+        error of Born-2 from the O(V^4) terms, (|b2|^2 + 2|b1||b3|)/|b1|^2), 'beta2_born1_relerr' (2|b2|/|b1|), 'b2_sq' =
+        |b2|^2, 'born_ok' (beta2_born2_relerr <= max_relerr, Born-2 > 0, |b1| above roundoff) and 'lam' = int |V| dt/(2 omega0);
+        dimensionless.
+    Valid when: V real, V -> 0 at both ends of [t0, t1] (|V(end)| <= 1e-8 max|V|), lam < 1 (else refused), omega0 > 0,
+        AND the O(V) Fourier component V~(2 omega0) dominates the series: for smooth pulses of duration tau this needs
+        omega0 tau <~ 1 (for omega0 tau >~ 1.5 the V*V term ~ e^{-omega0^2 tau^2} beats V~(2 omega0) ~ e^{-2 omega0^2 tau^2}
+        and Born fails even at lam << 1): checked per mode ('born_ok'; strict=True raises ValueError); double
+        precision: |b1| above ~1e-13 lam."""
+    max_relerr = _pos(max_relerr, "max_relerr")
     w0, t, wt, S, h, V = _born_setup(V_of_t, omega0, t0, t1, panels, "V_of_t")
     lam = float(np.sum(wt * np.abs(V))) / (2 * w0)
     if np.any(lam >= 1):
         raise ValueError(f"expansion parameter int|V|dt/(2 omega0) = {lam.max():.3g} >= 1: the Born series is not "
                          "applicable; use qp.bogoliubov_boson or bogoliubov_boson_mp")
+    # a' = -i kap (a + b e^{2i w0 t}), b' = +i kap (a e^{-2i w0 t} + b), kap = V/(2 w0); order by order from a = 1, b = 0
+    kap = V[None] / (2 * w0[:, None, None])
     ph = np.exp(-2j * w0[:, None, None] * t[None])
-    F = _cumint(V, wt, S, h)[None]
-    G = _cumint(V[None] * ph, wt, S, h)
-    b1 = 1j / (2 * w0) * np.sum(wt[None] * V[None] * ph, axis=(1, 2))
-    b2 = 1.0 / (2 * w0) ** 2 * np.sum(wt[None] * V[None] * (ph * F - G), axis=(1, 2))
+    a_prev, b_prev = np.ones_like(ph), np.zeros_like(ph)
+    bs = []
+    for _ in range(3):
+        da = -1j * kap * (a_prev + b_prev * np.conj(ph))
+        db = 1j * kap * (a_prev * ph + b_prev)
+        bs.append(np.sum(wt[None] * db, axis=(1, 2)))
+        a_prev, b_prev = _cumint(da, wt, S, h), _cumint(db, wt, S, h)
+    b1, b2, b3 = bs
+    rel1, rel2, ok = _born_flags(b1, b2, b3, lam, max_relerr, strict, "born2_scalar_mode")
     B1 = np.abs(b1) ** 2
-    return {"b1": b1, "b2": b2, "beta2_born1": B1, "beta2_born2": B1 + 2 * np.real(np.conj(b1) * b2), "lam": lam}
+    B2 = B1 + 2 * np.real(np.conj(b1) * b2)
+    return {"b1": b1, "b2": b2, "b3": b3, "beta2_born1": np.where(ok, B1, np.nan), "beta2_born2": np.where(ok, B2, np.nan),
+            "beta2_born1_relerr": rel1, "beta2_born2_relerr": rel2, "b2_sq": np.abs(b2) ** 2, "born_ok": ok, "lam": lam}
 
 
 def born2_scalar_number_density(V_of_t, t0: float, t1: float, m: float, kmax: float, g: float = 1.0, n: int = 64,
-                                kmin: float = 0.0, panels: int = None) -> dict:
+                                kmin: float = 0.0, panels: int = None, max_relerr: float = 0.1) -> dict:
     """Born-1 and Born-2 particle number per unit volume for a homogeneous scalar vertex omega_k^2 = k^2 + m^2 + V(t).
 
-    n_X = g/(2 pi^2) int k^2 |beta_k|^2_X dk by Gauss-Legendre with n nodes (as qp.number_density_isotropic).
+    n_X = g/(2 pi^2) int k^2 |beta_k|^2_X dk by Gauss-Legendre with n nodes (as qp.number_density_isotropic), using the
+    truncated-series values |b1|^2 and |b1|^2 + 2 Re(b1* b2) at every node. Error estimate: sum of the per-mode O(V^4)
+    terms (|b2|^2 + 2|b1||b3|) over modes where Born holds, plus (|b1| + |b2| + |b3|)^2 + |Born-2 value| over modes where it
+    does not (born2_scalar_mode 'born_ok'); refused (ValueError) when the Born-2 estimate exceeds max_relerr.
     Quantity: dict with 'particles_per_volume_born1' (to O(V^2), error O(V^3)) and 'particles_per_volume_born2'
         (to O(V^3), error O(V^4)): mean number of PARTICLES per unit volume (energy^3), in-in, summed over g internal
         states; for a REAL field pairs = particles/2, for a complex field particles = antiparticles = pairs.
-        Also 'lam_max' (largest expansion parameter over the k nodes).
-    Valid when: as born2_scalar_mode for every k in [kmin, kmax], |beta_k|^2 negligible above kmax, m >= 0, n >= 4."""
-    m = _finite(m, "m")
+        Also 'born2_relerr', 'born1_relerr' (estimated relative errors), 'modes_not_born' (count of k nodes with
+        born_ok False; their contribution is inside the error estimate) and 'lam_max'.
+    Valid when: as born2_scalar_mode for the k range that carries the density (omega0 tau <~ 1 there), |beta_k|^2
+        negligible above kmax, m >= 0, g > 0, n >= 4."""
+    m, g = _finite(m, "m"), _pos(g, "g")
     if m < 0:
         raise ValueError("m must be >= 0")
     kmin, kmax = _finite(kmin, "kmin"), _finite(kmax, "kmax")
     if not 0 <= kmin < kmax or int(n) < 4:
         raise ValueError("need 0 <= kmin < kmax and n >= 4")
+    max_relerr = _pos(max_relerr, "max_relerr")
     k, wk = qp._gauss_legendre(kmin, kmax, int(n))
-    r = born2_scalar_mode(V_of_t, np.sqrt(k * k + m * m), t0, t1, panels)
-    n1 = float(g / (2 * PI * PI) * np.sum(wk * k * k * r["beta2_born1"]))
-    n2 = float(g / (2 * PI * PI) * np.sum(wk * k * k * r["beta2_born2"]))
-    return {"particles_per_volume_born1": n1, "particles_per_volume_born2": n2, "lam_max": float(np.max(r["lam"]))}
+    r = born2_scalar_mode(V_of_t, np.sqrt(k * k + m * m), t0, t1, panels, max_relerr=max_relerr)
+    a1, a2, a3, ok = np.abs(r["b1"]), np.abs(r["b2"]), np.abs(r["b3"]), r["born_ok"]
+    B1 = a1 ** 2
+    B2 = B1 + 2 * np.real(np.conj(r["b1"]) * r["b2"])
+    e2 = np.where(ok, a2 * a2 + 2 * a1 * a3, (a1 + a2 + a3) ** 2 + np.abs(B2))
+    e1 = np.where(ok, 2 * a1 * a2, (a1 + a2 + a3) ** 2 + B1)
+    c = g / (2 * PI * PI) * wk * k * k
+    n1, n2 = float(np.sum(c * B1)), float(np.sum(c * B2))
+    rel2 = float(np.sum(c * e2)) / abs(n2) if n2 != 0 else math.inf
+    rel1 = float(np.sum(c * e1)) / abs(n1) if n1 != 0 else math.inf
+    if not rel2 <= max_relerr:
+        raise ValueError(f"born2_scalar_number_density: estimated Born-2 relative error {rel2:.3g} > {max_relerr:g} "
+                         f"({int(np.sum(~ok))} of {len(k)} k nodes outside the Born regime, omega0 tau too large): use "
+                         "qp.number_density_isotropic with qp.bogoliubov_boson")
+    return {"particles_per_volume_born1": n1, "particles_per_volume_born2": n2, "born1_relerr": rel1, "born2_relerr": rel2,
+            "modes_not_born": int(np.sum(~ok)), "lam_max": float(np.max(r["lam"]))}
 
 
-def born2_fermion_efield_mode(eA_of_t, k_par, k_perp, m: float, t0: float, t1: float, panels: int = None) -> dict:
+def born2_fermion_efield_mode(eA_of_t, k_par, k_perp, m: float, t0: float, t1: float, panels: int = None,
+                              max_relerr: float = 0.1, strict: bool = False) -> dict:
     """First- and second-order Born occupation for spinor QED in a homogeneous E(t) = -A'(t) with A -> 0 at both ends.
 
     Two-level reduction per spin: H = (k_par - eA(t)) sigma_z + eps_perp sigma_x = H0 + W, W = -eA sigma_z (module
-    docstring, Part C). eA_of_t(t_array) returns eA(t) (energy, numpy); k_par may be an array of modes.
-    Quantity: dict with per-mode complex 'c1', 'c2', 'n_born1' = |c1|^2 (per-spin in-in mean number of electrons in
-        mode k = pairs in that mode, to O(e^2), error O(e^3)), 'n_born2' = |c1|^2 + 2 Re(c1* c2) (to O(e^3), error
-        O(e^4)), and 'lam' = int |eA| dt (expansion parameter); dimensionless.
+    docstring, Part C). eA_of_t(t_array) returns eA(t) (energy, numpy); k_par may be an array of modes. The Dyson
+    series is iterated to third order; c3 only feeds the error estimate (at k_par = 0, c2 = 0 identically, so only c3
+    reveals a failing series).
+    Quantity: dict with per-mode complex 'c1', 'c2', 'c3', 'n_born1' = |c1|^2 (per-spin in-in mean number of electrons
+        in mode k = pairs in that mode, to O(e^2), error O(e^3)), 'n_born2' = |c1|^2 + 2 Re(c1* c2) (to O(e^3), error
+        O(e^4)), both NaN where 'born_ok' is False; 'n_born2_relerr' ((|c2|^2 + 2|c1||c3|)/|c1|^2), 'n_born1_relerr',
+        'born_ok', and 'lam' = int |eA| dt (expansion parameter); dimensionless.
     Valid when: A -> 0 at both ends (zero net momentum transfer, int E dt = 0; else the in and out bases differ),
-        lam < 1 (else refused), m^2 + k_perp^2 > 0."""
+        lam < 1 (else refused), m^2 + k_perp^2 > 0, and the first-order Fourier component at 2 omega0 dominates
+        (omega0 tau <~ 1 for smooth pulses; checked per mode: 'born_ok', strict=True raises)."""
+    max_relerr = _pos(max_relerr, "max_relerr")
     kz = np.atleast_1d(np.asarray(k_par, dtype=float))
     m, kp = _finite(m, "m"), _finite(k_perp, "k_perp")
     if m < 0 or m * m + kp * kp <= 0:
@@ -910,15 +1101,23 @@ def born2_fermion_efield_mode(eA_of_t, k_par, k_perp, m: float, t0: float, t1: f
                          "qp.bogoliubov_fermion_efield or bogoliubov_fermion_mp")
     th = np.arctan2(ep, kz)
     sin_t, cos_t = np.sin(th)[:, None, None], np.cos(th)[:, None, None]
-    Wpm = A[None] * sin_t                                   # W_{+-} = eA sin theta0
+    Wpm = A[None] * sin_t                                   # W_{+-} = W_{-+} = eA sin theta0
     Wpp = -A[None] * cos_t                                  # W_{++} = -eA cos theta0 = -W_{--}
     ph = np.exp(2j * w0[:, None, None] * t[None])
-    c1 = -1j * np.sum(wt[None] * Wpm * ph, axis=(1, 2))
-    inner_pm = _cumint(Wpm * ph, wt, S, h)
-    inner_mm = _cumint(-Wpp, wt, S, h)
-    c2 = -np.sum(wt[None] * (Wpp * inner_pm + Wpm * ph * inner_mm), axis=(1, 2))
+    # interaction picture: c+' = -i (W++ c+ + W+- e^{2iw0t} c-), c-' = -i (W+- e^{-2iw0t} c+ - W++ c-), from c- = 1, c+ = 0
+    cm_prev, cp_prev = np.ones_like(ph), np.zeros_like(ph)
+    cs = []
+    for _ in range(3):
+        dcp = -1j * (Wpp * cp_prev + Wpm * ph * cm_prev)
+        dcm = -1j * (Wpm * np.conj(ph) * cp_prev - Wpp * cm_prev)
+        cs.append(np.sum(wt[None] * dcp, axis=(1, 2)))
+        cp_prev, cm_prev = _cumint(dcp, wt, S, h), _cumint(dcm, wt, S, h)
+    c1, c2, c3 = cs
+    rel1, rel2, ok = _born_flags(c1, c2, c3, lam, max_relerr, strict, "born2_fermion_efield_mode")
     n1 = np.abs(c1) ** 2
-    return {"c1": c1, "c2": c2, "n_born1": n1, "n_born2": n1 + 2 * np.real(np.conj(c1) * c2), "lam": lam}
+    n2 = n1 + 2 * np.real(np.conj(c1) * c2)
+    return {"c1": c1, "c2": c2, "c3": c3, "n_born1": np.where(ok, n1, np.nan), "n_born2": np.where(ok, n2, np.nan),
+            "n_born1_relerr": rel1, "n_born2_relerr": rel2, "born_ok": ok, "lam": lam}
 
 
 # ---------------------------------------------------------------- self-test
@@ -1093,6 +1292,39 @@ def selftest(verbose: bool = True) -> bool:
     except ValueError:
         refused = 1.0
     check("omega^2 = 1 + 3/(t^2 + 1/4): pole at t = i/2 below the turning point t = 1.80i: refused", refused, 1.0, 0)
+    #     Poeschl-Teller bump, reflectionless V0 = -2 rho^2 (A4 (i): exact |beta|^2 = 0): the sech^2 double pole sits at the
+    #     turning points' height pi/(2 rho), between the two interfering ones; the phase integral would return 1.4e-28.
+    try:
+        w2f, _ = poschl_teller_mp(1.0, -0.02, 0.1)
+        phase_integral_beta2(w2f, (-20.0, 20.0), 17.0)
+        refused = 0.0
+    except ValueError:
+        refused = 1.0
+    check("Poeschl-Teller bump V0 = -2 rho^2 (reflectionless): pole between the turning points: refused", refused, 1.0, 0)
+    # B7. Flags. (i) Small pole residue: Sauter k = 0, tau = 5, eE0 tau^2 = 0.3 (2K = 29.6, so O(1/K) would promise ~7%):
+    #     the double pole of omega^2 at i pi tau/2 has |Res omega| = eE0 tau^2, and GG eqs. 42/43 (A3) / PI equal
+    #     F_spinor(0.3) = 0.719 and F_scalar(0.3) = 0.058 up to e^{-2 pi tau m} ~ 1e-14 (denominator sinh's): tol 1e-9 rel.
+    #     Both statistics must be flagged reliable = False.
+    om2, _, _, _ = sauter_mp(0.0, 0.0, 1.0, 0.012, 5.0)
+    for st, ferm in (("fermion", True), ("boson", False)):
+        pt = phase_integral_beta2(om2, (-15.0, 15.0), 8.0, st)
+        check(f"Sauter eE0 tau^2 = 0.3 ({st}): flagged unreliable, |Res omega| = {pt['pole_residue']:.6g} = eE0 tau^2",
+              float(not pt["reliable"] and abs(pt["pole_residue"] - 0.3) < 1e-9), 1.0, 0)
+        check(f"   GG eq. {42 if ferm else 43} / phase integral = pole factor F({st}) = {pt['pole_factor']:.6g}",
+              sauter_n_mp(0.0, 0.0, 1.0, 0.012, 5.0, ferm) / pt["beta2"], pt["pole_factor"], 1e-9 * pt["pole_factor"])
+    #     (ii) Outside the semiclassical regime (tanh model, B2 parameters): rho = 2 (2K = 3.5, exact/PI = 0.45) flagged,
+    #     rho = 5 (2K = 1.4, exact/PI = 0.18) refused.
+    w2f, _ = tanh_model_mp(0.5, 1.0, 2.0, 1.0, 2.0)
+    pt = phase_integral_beta2(w2f, (-1.5, 1.5), 1.0)
+    check("tanh rho = 2 (2K = 3.5): flagged semiclassical = reliable = False", float(not pt["semiclassical"] and not pt["reliable"]),
+          1.0, 0)
+    try:
+        w2f, _ = tanh_model_mp(0.5, 1.0, 2.0, 1.0, 5.0)
+        phase_integral_beta2(w2f, (-0.6, 0.6), 0.4)
+        refused = 0.0
+    except ValueError:
+        refused = 1.0
+    check("tanh rho = 5 (2K = 1.4): refused", refused, 1.0, 0)
 
     # ---- C. Second-order Born.
     # C1. Exact second-order coefficient for V = eps sech^2(rho t): the Lenzi et al. closed form quoted in A4 with V0 = -eps,
@@ -1148,6 +1380,25 @@ def selftest(verbose: bool = True) -> bool:
           1.0, 0)
     check("   spinor Born-1 residual ratio ~ 2: in [1.6, 2.4]", res1[1] / res1[0], 2.0, 0.4)
     check("   spinor Born-2 residual ratio ~ 4: in [3.2, 5.6]", res2[1] / res2[0], 4.4, 1.2)
+    # C4. Where Born fails although lam << 1: Gaussian V = 0.1 exp(-t^2/2), tau = 1. At omega0 = 2, 3 the V*V term beats
+    #     V~(2 omega0) (exact 7.3e-13, 9.5e-16 vs raw Born-2 -5.9e-10, -5.5e-17): flagged, values NaN. At omega0 = 0.5, 1 Born
+    #     holds; its error estimate (|b2|^2 + 2|b1||b3|)/|b1|^2 must be within a factor 3 of the true Born-2 error against
+    #     qp (measured 0.039 vs 0.050, 0.067 vs 0.095: higher orders add ~30%).
+    w0 = np.array([0.5, 1.0, 2.0, 3.0])
+    V = lambda t: 0.1 * np.exp(-t * t / 2)          # noqa: E731
+    rb2 = born2_scalar_mode(V, w0, -12.0, 12.0)
+    ex = qp.bogoliubov_boson(lambda t: w0 ** 2 + V(t), -12.0, 12.0, rtol=1e-9)["beta2"]
+    check("Gaussian V, tau = 1: omega0 = 0.5, 1 Born-valid; omega0 = 2, 3 flagged born_ok = False, Born-2 = NaN",
+          float(list(rb2["born_ok"]) == [True, True, False, False] and np.all(np.isnan(rb2["beta2_born2"][2:]))), 1.0, 0)
+    ratio = (np.abs(rb2["beta2_born2"][:2] / ex[:2] - 1) / rb2["beta2_born2_relerr"][:2])
+    check(f"   Born-2 error estimate / true error in [1/3, 3] (got {ratio[0]:.2f}, {ratio[1]:.2f})",
+          float(np.all((ratio > 1 / 3) & (ratio < 3))), 1.0, 0)
+    #     Spinor at k_par = 0: c2 = 0 identically (cos theta0 = 0), yet Born-1 is off (k_perp = 2: exact 2.2e-11, Born 1.3e-10);
+    #     the third-order term must flag it.
+    rf2 = born2_fermion_efield_mode(V, [0.0, 0.0], 2.0, 1.0, -12.0, 12.0)
+    rf3 = born2_fermion_efield_mode(V, [0.0], 3.0, 1.0, -12.0, 12.0)
+    check("spinor, eA = 0.1 exp(-t^2/2), k_par = 0, k_perp = 2 and 3: flagged born_ok = False (c2 = 0 there)",
+          float(not rf2["born_ok"][0] and not rf3["born_ok"][0] and abs(rf2["c2"][0]) < 1e-14), 1.0, 0)
 
     passed = all(results)
     if verbose:
@@ -1215,7 +1466,8 @@ def main(argv=None) -> int:
     tp.add_argument("--A", type=float, required=True)
     tp.add_argument("--B", type=float, required=True)
     sp = sub.add_parser("sauter", help="Sauter pulse E0 sech^2(t/tau), one mode: exact, phase integral, high-precision solver")
-    sp.add_argument("--m", default="0.51099895 MeV", help="mass (default electron); a bare number is in your natural unit")
+    sp.add_argument("--m", default="0.51099895 MeV", help="mass (default electron); a bare number is in your natural unit "
+                    "(then E, tau, kpar, kperp must be bare numbers in the same unit: mixing is refused)")
     sp.add_argument("--E", required=True, help="peak field: '1e17 V/m', or a bare number = eE0 in (natural unit)^2")
     sp.add_argument("--tau", required=True, help="pulse time: '1e-18 s', or a bare number in 1/(natural unit)")
     sp.add_argument("--kpar", default="0", help="canonical momentum along E (energy)")
@@ -1239,8 +1491,11 @@ def main(argv=None) -> int:
             print(f"|beta_k|^2 (mean particles in mode k, in-in): closed form {mp.nstr(ref, 12)}")
             print(f"  high-precision solver {mp.nstr(r['beta2'], 12)} +- {mp.nstr(r['beta2_err'], 2)} "
                   f"(dps {r['dps']}, steps {r['steps']}, resolved {r['resolved']})")
-            pt = phase_integral_beta2(w2f, (-3 / rho, 3 / rho), 2 / rho)
-            print(f"  phase integral {mp.nstr(pt['beta2'], 12)} ({pt['label']}); exponent 2K = {pt['exponent']:.10g}")
+            try:
+                pt = phase_integral_beta2(w2f, (-3 / rho, 3 / rho), 2 / rho)
+                print(f"  phase integral {mp.nstr(pt['beta2'], 12)} ({pt['label']}); exponent 2K = {pt['exponent']:.10g}")
+            except ValueError as exc:
+                print(f"  phase integral refused: {exc}")
             rq = qp.bogoliubov_boson(lambda t: np.array([k * k + m * m * (args.A + args.B * np.tanh(rho * t))]), t0, t1)
             print(f"  qp double precision {rq['beta2'][0]:.6g}, floor {rq['floor'][0]:.2g}, resolved {bool(rq['resolved'][0])}")
             return 0
@@ -1258,6 +1513,20 @@ def main(argv=None) -> int:
             return 0
         # sauter
         from unit_tools import Q
+
+        def bare(text):
+            try:
+                float(text)
+                return True
+            except ValueError:
+                return False
+        given = {"--m": args.m, "--E": args.E, "--tau": args.tau, "--kpar": args.kpar, "--kperp": args.kperp}
+        kinds = {name: bare(v) for name, v in given.items() if not (bare(v) and float(v) == 0)}   # a bare 0 fits any unit
+        if len(set(kinds.values())) > 1:
+            raise ValueError("mixed inputs: " + ", ".join(f"{n} {'bare' if b else 'with unit'}" for n, b in kinds.items())
+                             + ". Either give every quantity with a unit (m defaults to '0.51099895 MeV'; SI fields and "
+                             "times are converted to eV) or every one as a bare number in ONE natural unit (then pass "
+                             "--m as a bare number too)")
 
         def energy2(text):
             try:
@@ -1278,17 +1547,21 @@ def main(argv=None) -> int:
         print(f"{'spinor (per spin)' if fermion else 'scalar'} QED, m = {m:.6g}, eE0 = {eE0:.6g} (m^2 units: {eE0 / m ** 2:.4g}), "
               f"tau = {tau:.6g} (m tau = {m * tau:.4g}), eE0 tau^2 = {eE0 * tau * tau:.4g}")
         print(f"exact n_k (GG eq. {'42' if fermion else '43'}, in-in, per mode): {mp.nstr(ex, 10)}")
-        pt = phase_integral_beta2(om2, (-3 * tau, 3 * tau), 1.6 * tau, "fermion" if fermion else "boson")
-        print(f"phase integral: {mp.nstr(pt['beta2'], 10)}, exponent 2K = {pt['exponent']:.10g} ({pt['label']})")
+        try:
+            pt = phase_integral_beta2(om2, (-3 * tau, 3 * tau), 1.6 * tau, "fermion" if fermion else "boson")
+            print(f"phase integral: {mp.nstr(pt['beta2'], 10)}, exponent 2K = {pt['exponent']:.10g} ({pt['label']})")
+        except ValueError as exc:
+            print(f"phase integral refused: {exc}")
         if kz == 0 and kp == 0:
             print(f"Dunne-Schubert S0 (k = 0): {dunne_schubert_exponent(m, eE0, 1 / tau):.10g}")
         steps = _omega_max(om2, t0, t1) * (t1 - t0) / 0.8
-        if steps <= 2e4:
+        if steps <= 1.6e4:                              # bogoliubov_*_mp: 2 x initial steps <= max_steps = 2^15
             r = bogoliubov_fermion_mp(pf, ep, t0, t1) if fermion else bogoliubov_boson_mp(om2, t0, t1)
             v = r["n"] if fermion else r["beta2"]
             print(f"high-precision solver: {mp.nstr(v, 10)} (relative error {r['n_relerr' if fermion else 'beta2_relerr']:.1e})")
         else:
-            print(f"high-precision solver skipped: ~{steps:.3g} steps needed (m tau too large); the phase integral is the tool here")
+            print(f"high-precision solver skipped: ~{steps:.3g} steps needed (omega_max (t1 - t0) too large: "
+                  f"omega_max = {_omega_max(om2, t0, t1):.3g}, window {t1 - t0:.3g}); the phase integral is the tool here")
     except (ValueError, KeyError) as exc:
         print(f"ERROR: {exc}")
         return 1

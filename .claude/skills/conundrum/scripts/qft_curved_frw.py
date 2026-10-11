@@ -76,7 +76,9 @@ Assumptions and validity range
     Free real scalar (complex = two copies) on a prescribed classical background, no back-reaction; a(eta) > 0;
     static or adiabatic in and out regions (omega^2 > 0 and |omega'|/omega^2 <= 1e-3 at both window ends, enforced
     by the solver); particle numbers at intermediate times are not defined. K in {+1, 0, -1}, L > 0, m >= 0, any
-    real xi. Closed sums must converge inside n_max and open integrals inside k_max (checked; refused otherwise).
+    real xi. Closed sums must converge inside n_max and open integrals inside k_max (checked, with the part beyond
+    estimated by power-law extrapolation and added to total_relerr; refused otherwise). Without an analytic a'',
+    a'' is a finite difference whose error is estimated by step halving and added to beta2_relerr (pass a_pp).
     Not covered: global de Sitter (its in/out vacua are not adiabatic: |omega'|/omega^2 -> H/m), spinors, photons,
     gravitons, renormalised stress tensors.
 
@@ -214,9 +216,11 @@ def closed_mode_count(N: int) -> int:
 
     Quantity: number of modes in the WHOLE closed universe (dimensionless integer).
     Valid when: N is an integer >= 1."""
-    if int(N) != N or N < 1:
+    if isinstance(N, bool) or not (isinstance(N, (int, np.integer)) or (isinstance(N, float) and N.is_integer())) \
+            or N < 1:
         raise ValueError("N must be an integer >= 1")
-    return int(np.sum(closed_degeneracy(np.arange(1, int(N) + 1))))
+    N = int(N)
+    return N * (N + 1) * (2 * N + 1) // 6     # integer arithmetic: exact for any N
 
 
 def weyl_mode_count(k_max: float, volume: float) -> float:
@@ -236,12 +240,15 @@ def ricci_scalar(a, a_pp, K: int, L: float = 1.0):
     Anderson & Eaker 2000 eq. 6 (L = 1); sign convention: R > 0 for de Sitter (12 H^2) and the static closed
     universe (6/(a L)^2), R = 0 for the Milne universe (a = e^{eta/L}, K = -1).
     Quantity: R in energy^2 (a'' = d^2 a/d eta^2 in energy^2, eta conformal time).
-    Valid when: a > 0 (arrays allowed), K in {+1, 0, -1}, L > 0."""
+    Valid when: a > 0 and a'' finite (arrays allowed), K in {+1, 0, -1}, L > 0."""
     K, L = _check_K(K), _check_L(L)
     a = np.asarray(a, dtype=float)
     if np.any(a <= 0) or not np.all(np.isfinite(a)):
         raise ValueError("a must be finite and > 0")
-    return 6.0 * (np.asarray(a_pp, dtype=float) / a ** 3 + K / (L * L * a * a))
+    a_pp = np.asarray(a_pp, dtype=float)
+    if not np.all(np.isfinite(a_pp)):
+        raise ValueError("a'' must be finite")
+    return 6.0 * (a_pp / a ** 3 + K / (L * L * a * a))
 
 
 # ---------------------------------------------------------------- mode frequency and solver
@@ -251,10 +258,13 @@ def curved_frw_omega2(K: int, labels, a, m: float, xi: float, a_pp=None, L: floa
     chi'' + omega^2 chi = 0,  omega^2 = lambda + m^2 a^2 + (6 xi - 1) a''/a + 6 xi K/L^2,
     lambda = spatial_eigenvalue(K, labels, L). Conformal coupling: omega^2 = n^2/L^2 + m^2 a^2 (closed),
     k^2 + m^2 a^2 (open). If a_pp is None, a'' is taken by a 5-point finite difference with step h (default 1e-2
-    in the units of eta; truncation ~h^4 a^(6)/90), as in qft_production.frw_omega2.
+    in the units of eta; truncation ~h^4 a^(6)/90, NOT included in any error estimate here: at a tanh switch of
+    rate rho = 100, h = 1e-2 shifts |beta|^2 by 5e-3 relative), as in qft_production.frw_omega2.
+    curved_frw_particle_production estimates this error itself by repeating with h/2.
     Quantity: a callable eta -> omega^2 (array over the labels, energy^2, with eta in 1/energy).
     Valid when: a(eta) > 0 (checked at every call); K in {+1, 0, -1}; closed labels integers n >= 1, open/flat
-        k >= 0; m >= 0; any real xi; L > 0."""
+        k >= 0; m >= 0; any real xi; L > 0; with a_pp None, a(eta) smooth on conformal-time scales >> h (else pass
+        a_pp)."""
     K, L = _check_K(K), _check_L(L)
     _check_m_xi(m, xi)
     lam = spatial_eigenvalue(K, labels, L)
@@ -262,7 +272,7 @@ def curved_frw_omega2(K: int, labels, a, m: float, xi: float, a_pp=None, L: floa
     mm, c = m * m, 6.0 * xi - 1.0
     if a_pp is None:
         hh = 1e-2 if h is None else float(h)
-        if not hh > 0:
+        if not (math.isfinite(hh) and hh > 0):
             raise ValueError("finite-difference step h must be > 0")
 
         def a_pp(eta):   # noqa: F811  (5-point second derivative)
@@ -278,38 +288,82 @@ def curved_frw_omega2(K: int, labels, a, m: float, xi: float, a_pp=None, L: floa
 
 
 def curved_frw_particle_production(K: int, labels, a, m: float, xi: float, eta0: float, eta1: float, a_pp=None,
-                                   L: float = 1.0, **solver) -> dict:
+                                   L: float = 1.0, h: float = None, **solver) -> dict:
     """Particles created per mode between static in (eta0) and out (eta1) regions of a curved FRW universe.
 
-    Runs qft_production.bogoliubov_boson on curved_frw_omega2 (keyword arguments go to the solver).
+    Runs qft_production.bogoliubov_boson on curved_frw_omega2 (keyword arguments go to the solver). If a_pp is None
+    and xi != 1/6, a'' comes from 5-point finite differences: the modes are solved twice, with steps h and h/2
+    (default h = 1e-2 in eta units), the h/2 result is returned, and |beta2(h) - beta2(h/2)| is added to the
+    error estimate (Richardson: the h/2 result is off by about that difference/15; the full difference is kept
+    as margin because the h^4 asymptotics fail once a(eta) varies on scales ~h). "beta2_relerr", "resolved"
+    (relerr <= the solver's flag_rel) and the solver's strict refusal include this a'' error; "a_pp_fd_relerr"
+    reports it alone (0 with analytic a_pp). Pass the analytic a_pp whenever you have it.
     Quantity: dict whose "beta2" is the per-mode IN-IN mean number of particles in ONE real mode of each level
         (closed: each of the n^2 modes of level n; open/flat: one mode at comoving k), dimensionless, not a pair
         count and not a total; with the solver's "floor", "beta2_relerr", "resolved", "alpha2" and
         "vacuum_persistence_mode" (= 1/|alpha|^2, in-out, for a PAIR of modes; one real mode alone: 1/|alpha|),
-        plus "labels", "eigenvalue", "K", "L". Totals: closed_universe_totals / open_universe_density.
+        plus "labels", "eigenvalue", "K", "L", "a_pp_fd_relerr".
+        Totals: closed_universe_totals / open_universe_density.
     Valid when: a(eta) and a''/a are static (adiabatic) at both window ends, omega^2 > 0 there (e.g. the
-        massless minimally coupled closed n = 1 zero mode is refused), a > 0 throughout, eta0 < eta1."""
-    w2 = curved_frw_omega2(K, labels, a, m, xi, a_pp=a_pp, L=L)
+        massless minimally coupled closed n = 1 zero mode is refused), a > 0 throughout, eta0 < eta1; with a_pp
+        None, a(eta) smooth on conformal-time scales >> h (else beta2_relerr grows and resolved turns False:
+        pass a_pp)."""
+    strict = bool(solver.pop("strict", False))
+    flag_rel = float(solver.get("flag_rel", 1e-2))
+    fd = a_pp is None and 6.0 * xi - 1.0 != 0
+    hh = 1e-2 if h is None else float(h)
+    if fd and not (math.isfinite(hh) and hh > 0):
+        raise ValueError("finite-difference step h must be finite and > 0")
+    w2 = curved_frw_omega2(K, labels, a, m, xi, a_pp=a_pp, L=L, h=hh)
     r = qp.bogoliubov_boson(w2, eta0, eta1, **solver)
-    r.update(labels=_labels(K, labels), eigenvalue=spatial_eigenvalue(K, labels, L), K=K, L=float(L))
+    fd_rel = np.zeros_like(r["beta2"])
+    if fd:
+        rh = r
+        r = qp.bogoliubov_boson(curved_frw_omega2(K, labels, a, m, xi, a_pp=None, L=L, h=hh / 2), eta0, eta1, **solver)
+        with np.errstate(divide="ignore", invalid="ignore"):
+            fd_rel = np.where(r["beta2"] > 0, np.abs(rh["beta2"] - r["beta2"]) / r["beta2"], np.inf)
+        fd_rel = np.where(np.abs(rh["beta2"] - r["beta2"]) == 0, 0.0, fd_rel)
+        r["beta2_relerr"] = r["beta2_relerr"] + fd_rel
+        r["resolved"] = r["beta2_relerr"] <= flag_rel
+    if strict and not np.all(r["resolved"]):
+        raise ValueError(f"{int(np.sum(~r['resolved']))} mode(s) have relative error > {flag_rel:g} (solver floor or "
+                         "finite-difference a''): pass an analytic a_pp or use a high-precision method")
+    r.update(labels=_labels(K, labels), eigenvalue=spatial_eigenvalue(K, labels, L), K=K, L=float(L),
+             a_pp_fd_relerr=fd_rel)
     return r
 
 
 # ---------------------------------------------------------------- totals
+def _remainder_estimate(x_lo: float, f_lo: float, x_hi: float, f_hi: float) -> float:
+    """Integral of f above x_hi, extrapolating f by the local power law through (x_lo, f_lo), (x_hi, f_hi).
+
+    f ~ x^-p gives f_hi x_hi/(p - 1); an exponential e^{-c x} has local slope p = c x_hi and gives ~f_hi/c, the
+    right answer as well. Non-decaying f (p <= 1) returns inf."""
+    if f_hi <= 0:
+        return 0.0
+    if f_lo <= 0 or x_hi <= x_lo:
+        return math.inf
+    p = -math.log(f_hi / f_lo) / math.log(x_hi / x_lo)
+    return f_hi * x_hi / (p - 1.0) if p > 1.0 else math.inf
+
+
 def closed_universe_totals(n, beta2, L: float = 1.0, a_out: float = None, field: str = "real",
                            tail_tol: float = 1e-3) -> dict:
     """Totals over the closed universe from per-mode |beta_n|^2 for EVERY level n = 1..N.
 
     particles = sum_n n^2 |beta_n|^2 (real field: pairs = particles/2; complex field = two real fields:
-    particles = antiparticles = sum_n n^2 |beta_n|^2 and pairs = particles); the tail (last 10% of levels, at
-    least one) must hold <= tail_tol of the total. Vacuum persistence ln P = -(1/2) sum n^2 ln(1 + |beta_n|^2)
+    particles = antiparticles = sum_n n^2 |beta_n|^2 and pairs = particles). Convergence: the last 10% of levels
+    (at least one) must hold <= tail_tol of the total, AND the levels above N, estimated by extrapolating
+    n^2 |beta_n|^2 with its local power law over the last decile (exact for power laws, ~right for exponential
+    fall-off), must hold <= tail_tol ("truncation_relerr"; an estimate, not a rigorous bound; tail_tol >= 1 switches
+    both checks off, e.g. for a deliberately partial sum). Vacuum persistence ln P = -(1/2) sum n^2 ln(1 + |beta_n|^2)
     per real field.
     Quantity: dict of IN-IN mean numbers for the WHOLE closed universe: "particles_total" (real field: particles;
         complex field: particles, with an equal "antiparticles_total"), "pairs_total" (real: particles/2;
         complex: = particles), "per_comoving_volume" (particles per comoving volume, energy^3: / (2 pi^2 L^3)),
         "per_physical_volume_out" (particles per physical volume at a_out, energy^3, if a_out is given), and the
         IN-OUT "vacuum_persistence" P = |<0 out|0 in>|^2 of the whole universe with "log_vacuum_persistence"
-        (-ln P < pairs for bosons), plus "tail_fraction".
+        (-ln P < pairs for bosons), plus "tail_fraction" and "truncation_relerr" (estimated missing fraction).
     Valid when: n is exactly 1, 2, ..., N (every level); |beta_n|^2 >= 0 finite; field 'real' or 'complex';
         the sum has converged (tail fraction <= tail_tol, else ValueError: raise N); L > 0, a_out > 0."""
     if field not in ("real", "complex"):
@@ -325,14 +379,21 @@ def closed_universe_totals(n, beta2, L: float = 1.0, a_out: float = None, field:
     total = float(np.sum(contrib))
     ntail = max(1, n.size // 10)
     tail = float(np.sum(contrib[-ntail:])) / total if total > 0 else 0.0
-    if tail > tail_tol:
+    if total <= 0 or tail <= 1e-12:
+        trunc = tail          # nothing produced, or the top levels sit at the roundoff floor: nothing to extrapolate
+    elif n.size < 2:
+        trunc = math.inf
+    else:
+        lo = n.size - 1 - ntail
+        trunc = _remainder_estimate(n[lo], contrib[lo], n[-1], contrib[-1]) / total
+    if tail_tol < 1 and (tail > tail_tol or trunc > tail_tol):      # tail_tol >= 1 switches the check off
         raise ValueError(f"closed-universe sum not converged: the last {ntail} level(s) hold {tail:.3g} of the total "
-                         f"(> tail_tol = {tail_tol:g}); raise N")
+                         f"and the levels above N an estimated {trunc:.3g} (> tail_tol = {tail_tol:g}); raise N")
     g = 0.5 if field == "real" else 1.0
     logP = -g * float(np.sum(n * n * np.log1p(b2)))
     out = {"particles_total": total, "pairs_total": 0.5 * total if field == "real" else total,
            "per_comoving_volume": total / closed_comoving_volume(L), "log_vacuum_persistence": logP,
-           "vacuum_persistence": math.exp(logP), "tail_fraction": tail, "field": field, "N": int(n.size)}
+           "vacuum_persistence": math.exp(logP), "tail_fraction": tail, "truncation_relerr": trunc, "field": field, "N": int(n.size)}
     if field == "complex":
         out["antiparticles_total"] = total
     if a_out is not None:
@@ -348,8 +409,9 @@ def closed_universe_production(n_max: int, a, m: float, xi: float, eta0: float, 
 
     Quantity: closed_universe_totals(...) for the WHOLE closed universe (in-in mean particles, pairs, per
         comoving and per physical volume at a_out = a(eta1), in-out vacuum persistence), plus "modes" (the
-        solver dict) and "total_relerr" (estimated relative error of particles_total from the solver's per-mode
-        errors; unresolved modes count with their full value or floor).
+        solver dict) and "total_relerr" (estimated relative error of particles_total: the per-mode errors, including
+        a finite-difference a'' error, with unresolved modes counted at their full value or floor, plus the
+        estimated truncation above n_max, "truncation_relerr").
     Valid when: as curved_frw_particle_production with K = +1; the level sum converges within n_max; n_max <= 20000
         (more levels mean n/L >> the switching rate: use the flat limit, corrections O(1/(k L)^2))."""
     if int(n_max) != n_max or n_max < 1 or n_max > 20000:
@@ -359,7 +421,7 @@ def closed_universe_production(n_max: int, a, m: float, xi: float, eta0: float, 
     tot = closed_universe_totals(n, r["beta2"], L=L, a_out=float(a(eta1)), field=field, tail_tol=tail_tol)
     err = np.where(r["resolved"], r["beta2"] * r["beta2_relerr"], np.maximum(r["beta2"], r["floor"]))
     s = tot["particles_total"]
-    tot["total_relerr"] = float(np.sum(n * n * err)) / s if s > 0 else math.inf
+    tot["total_relerr"] = (float(np.sum(n * n * err)) / s + tot["truncation_relerr"]) if s > 0 else math.inf
     tot["modes"] = r
     return tot
 
@@ -369,10 +431,12 @@ def open_universe_density(k_max: float, a, m: float, xi: float, eta0: float, eta
     """Particles per comoving volume in an open (K = -1) or flat (K = 0) universe: int_0^k_max k^2 dk/(2 pi^2) |beta_k|^2.
 
     Gauss-Legendre with `nodes` points on [0, k_max]; the integrand at the top node times k_max/10 must be
-    <= tail_tol of the result (spectrum cut off inside k_max).
+    <= tail_tol of the result (spectrum cut off inside k_max), and so must the part above k_max estimated by
+    extrapolating the integrand with its local power law from k ~ 0.9 k_max ("truncation_relerr", an estimate).
     Quantity: dict with "per_comoving_volume" (IN-IN mean PARTICLES per comoving volume, energy^3; complex field:
         particles, antiparticles equal), "pairs_per_comoving_volume" (real: /2; complex: = particles),
-        "per_physical_volume_out" (at a_out = a(eta1)), "total_relerr", "modes" (solver dict at the nodes).
+        "per_physical_volume_out" (at a_out = a(eta1)), "total_relerr" (per-mode errors incl. finite-difference a''
+        plus "truncation_relerr"), "tail_fraction", "modes" (solver dict at the nodes).
         The total number in an open universe is infinite: only densities exist.
     Valid when: K in {-1, 0}; k_max > 0, 8 <= nodes <= 4096; the spectrum is negligible above k_max (checked); and
         as curved_frw_particle_production."""
@@ -388,13 +452,20 @@ def open_universe_density(k_max: float, a, m: float, xi: float, eta0: float, eta
     integrand = k * k * r["beta2"] / (2 * PI * PI)
     dens = float(np.sum(w * integrand))
     tail = float(integrand[-1] * k_max / 10.0) / dens if dens > 0 else 0.0
-    if tail > tail_tol:
-        raise ValueError(f"spectrum not cut off: the top of [0, k_max] carries ~{tail:.3g} of the result; raise k_max")
+    if dens <= 0 or tail <= 1e-12:
+        trunc = tail
+    else:
+        j = int(np.argmin(np.abs(k - 0.9 * k_max)))
+        trunc = _remainder_estimate(k[j], integrand[j], k[-1], integrand[-1]) / dens
+    if tail > tail_tol or trunc > tail_tol:
+        raise ValueError(f"spectrum not cut off: the top of [0, k_max] carries ~{tail:.3g} of the result and the part "
+                         f"above k_max an estimated {trunc:.3g}; raise k_max")
     err = np.where(r["resolved"], r["beta2"] * r["beta2_relerr"], np.maximum(r["beta2"], r["floor"]))
     a_out = float(a(eta1))
     return {"per_comoving_volume": dens, "pairs_per_comoving_volume": 0.5 * dens if field == "real" else dens,
             "per_physical_volume_out": dens / a_out ** 3, "field": field, "tail_fraction": tail,
-            "total_relerr": float(np.sum(w * k * k * err)) / (2 * PI * PI) / dens if dens > 0 else math.inf,
+            "truncation_relerr": trunc,
+            "total_relerr": float(np.sum(w * k * k * err)) / (2 * PI * PI) / dens + trunc if dens > 0 else math.inf,
             "modes": r}
 
 
@@ -408,6 +479,9 @@ def conformal_tanh_beta2(K: int, labels, m: float, A: float, B: float, rho: floa
     Valid when: xi = 1/6 only; A > |B| (a^2 > 0), rho > 0, m >= 0; closed labels integers n >= 1, open k >= 0
         (k_eff > 0 or m > 0)."""
     K, L = _check_K(K), _check_L(L)
+    _check_m_xi(m, 1.0 / 6.0)
+    if not all(math.isfinite(float(v)) for v in (A, B, rho)) or not rho > 0:
+        raise ValueError("A, B and rho must be finite, rho > 0")
     if not A > abs(B):
         raise ValueError("need A > |B| so that a(eta)^2 > 0")
     keff = np.sqrt(spatial_eigenvalue(K, labels, L) + K / (L * L))
@@ -452,6 +526,8 @@ def milne_beta2_finite(k, m: float, eta1: float) -> np.ndarray:
     k = _labels(-1, k)
     if np.any(k == 0) or not (math.isfinite(m) and m > 0):
         raise ValueError("need k > 0 and m > 0")
+    if not (math.isfinite(eta1) and eta1 <= math.log(1e7 / m)):     # test before exp: no OverflowError
+        raise ValueError("m e^eta1 must be <= 1e7 (eta1 finite)")
     z = m * math.exp(eta1)
     if not z <= 1e7:
         raise ValueError("m e^eta1 must be <= 1e7")
@@ -797,6 +873,8 @@ def main(argv=None) -> int:
         if args.cmd == "convergence":
             return _convergence()
         if args.cmd == "milne":
+            if not (args.m > 0 and args.z1 > 0 and math.isfinite(args.z1)):
+                raise ValueError("need m > 0 and z1 > 0")
             k = np.array(args.k, dtype=float)
             e0, e1 = _milne_window(k, args.m, args.z1)
             a_m, app_m = milne_scale_factor()
@@ -813,9 +891,12 @@ def main(argv=None) -> int:
         m, rho, L = _parse(args.m, "energy"), _parse(args.rho, "inverse"), _parse(args.L, "length")
         a_t, app_t, (t0, t1) = qp.frw_tanh_scale_factor(args.A, args.B, rho)
         a_out = math.sqrt(args.A + args.B)
-        print(f"tanh universe K = {args.K:+d}, m = {m:.6g}, xi = {args.xi:g}, a^2 = {args.A:g} + {args.B:g} tanh({rho:.6g} eta), "
-              f"L = {L:.6g} (natural units; if the energy unit is eV, L = {inverse_eV_to_length(L):.4g} m); "
-              f"physical curvature radius at the end a L = {a_out * L:.6g}")
+        head = (f"tanh universe K = {args.K:+d}" if args.K else "tanh universe K = 0 (flat)") + \
+            f", m = {m:.6g}, xi = {args.xi:g}, a^2 = {args.A:g} + {args.B:g} tanh({rho:.6g} eta)"
+        if args.K:       # a flat universe has no curvature radius: L plays no role there
+            head += (f", L = {L:.6g} (natural units; if the energy unit is eV, L = {inverse_eV_to_length(L):.4g} m); "
+                     f"physical curvature radius at the end a L = {a_out * L:.6g}")
+        print(head)
         if args.K == 1:
             nmax = args.nmax if args.nmax else max(12, int(math.ceil(10 * rho * L)))
             c = closed_universe_production(nmax, a_t, m, args.xi, t0, t1, a_pp=app_t, L=L)
@@ -840,7 +921,7 @@ def main(argv=None) -> int:
                   f"{o['pairs_per_comoving_volume']:.6e}; per physical volume at the end {o['per_physical_volume_out']:.6e}"
                   f" energy^3 (= {qp.density_to_SI(o['per_physical_volume_out']):.4g} m^-3 if the energy unit is eV); "
                   f"relative error ~{o['total_relerr']:.1g}")
-    except (ValueError, KeyError) as exc:
+    except (ValueError, KeyError, OverflowError) as exc:
         print(f"ERROR: {exc}")
         return 1
     return 0

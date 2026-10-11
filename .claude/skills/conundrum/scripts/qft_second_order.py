@@ -70,10 +70,12 @@ Why contact and photon-exchange terms are not an "effective background" for qft_
     propagators 1/(k1 - q1)^2, 1/(k2 - q1)^2, which depend on k1 and k2 separately, not on K alone; the self-test
     shows numerically that the full amplitude lies outside the span of {h.T}. Since only the sum is gauge
     invariant, the s-channel (and hence Part D fed with h^(2)) alone is not a physical answer: for two same-helicity
-    waves at 90 degrees Part D predicts about 8 times the photon pairs an R/L pair really makes, while the full
-    amplitude gives none;
-    head-on R/L waves give the reverse (Part D zero, full nonzero); for linear polarisations it is off by factors
-    of 3 to 11 (measured; the self-test checks the first two cases).
+    waves at 90 degrees Part D predicts about 8 times (8.26) the photon pairs an R/L pair really makes, while the
+    full amplitude gives none;
+    head-on R/L waves give the reverse (Part D zero, full nonzero); for linear polarisations it is off by
+    angle-dependent factors (Part D/full, measured: plus/plus 22, 11, 3.0 at 30, 90, 180 deg; plus/cross 18, 9,
+    1.09 at 30, 90, 150 deg and Part D zero head-on; R/L 3.6, 1.01, 0.25 at 30, 90, 120 deg). The self-test checks
+    the first two cases.
 
 PART B. Production by two classical waves (coherent states), in-in mean number of PAIRS
 -------------------------------------------------------------------------------------
@@ -108,7 +110,22 @@ Self-test references (python3 qft_second_order.py selftest)
     eq. II.27 and Bjerrum-Bohr et al. 2016 eqs. A.10, A.11, A.16 (helicity amplitudes: shapes agree to 1e-12; the
     PRINTED normalisations of II.27 (= 2016 A.13) and A.10-A.11 are 2x and 4x ours, which agree with Holstein and
     with the one-graviton forward limit of A.16); qft_production's stress spectral densities (s-channel); the
-    luminosity relation from two independent phase-space routes.
+    luminosity relation from two independent phase-space routes; the analytic same-helicity massive-scalar cross
+    section (sigma_same_helicity_scalar_closed_form) for the graded quadrature; extreme boosts (frequency ratio 1e-12,
+    opening angle 1e-9) against the closed forms.
+
+Numerics (why the answers survive boosts)
+    The channels are individually ~ kappa^2 s (K0^2/s)^2 in a frame where K = q1 + q2 moves fast and cancel to
+    ~ kappa^2 t^2/s; contracted in such a frame they lose ~ (K0^2/s)^2 digits. Every physical entry point therefore
+    first carries the momenta and wavefunctions to the CM of K (_CMFrame: light-cone variables, s = K+ K- with
+    K- = q1- + q2- summed from cancellation-free components, the polarisations mapped in closed form straight to the
+    CM radiation gauge, exact by the Ward identities) and reconstructs exact CM kinematics there. Polarisation frames
+    are built without arccos (which loses 1e-16/theta near the poles). Measured: boosted g g -> gamma gamma and
+    Compton amplitudes agree with the exact formulas to < 1e-14 for K0^2/s up to 4e24; beam rates agree with
+    sigma n1 n2 (1 - cos theta) to < 1e-14 for w2/w1 down to 1e-20 and theta down to 1e-13. Remaining roundoff: the
+    suppressed (kappa/2)^2 t^2/s amplitude, relative ~ 1e-16 s/|t| (3.5e-6 at theta = 1e-5); the massive
+    same-helicity scalar amplitude ~ m^4/s, relative ~ 3e-17 s^2/m^4 at generic angles (3e-5 at m^2/s = 1e-6) and
+    its cross section ~ 1e-14 s/m^2 (phase space refused below m^2/s = 1e-8).
 
 Assumptions and validity range
     Tree level, flat background, |h| << 1 (refused at h >= 0.1), s << M_Pl^2, monochromatic infinite plane
@@ -130,7 +147,7 @@ Command line (from the project root)
     python3 .claude/skills/conundrum/scripts/qft_second_order.py beams --omega "1 kHz" --h 1e-21 --theta 180
     python3 .claude/skills/conundrum/scripts/qft_second_order.py beams --f "100 Hz" --h 1e-20 --theta 90 --pol1 R --pol2 L
     python3 .claude/skills/conundrum/scripts/qft_second_order.py amplitudes --theta 60 --final scalar --m 0.5
-    python3 .claude/skills/conundrum/scripts/qft_second_order.py compton --omega 0.3 --m 1 --theta 40
+    python3 .claude/skills/conundrum/scripts/qft_second_order.py compton --omega 0.3 --theta 40     (omega/m; G^2 m^2)
     python3 .claude/skills/conundrum/scripts/qft_second_order.py convergence    (quadrature and roundoff studies)
 """
 from __future__ import annotations
@@ -344,12 +361,7 @@ def _frame(n):
     nn = np.linalg.norm(n)
     if not nn > 0:
         raise ValueError("direction must be nonzero")
-    n = n / nn
-    th = math.acos(max(-1.0, min(1.0, float(n[2]))))
-    ph = math.atan2(float(n[1]), float(n[0]))
-    et = np.array([math.cos(th) * math.cos(ph), math.cos(th) * math.sin(ph), -math.sin(th)])
-    ep = np.array([-math.sin(ph), math.cos(ph), 0.0])
-    return et, ep
+    return _transverse_basis(n)
 
 
 def _spatial(k):
@@ -422,20 +434,148 @@ def _check_final(q1, q2, k1, k2, m):
     if np.any(q1[..., 0] <= 0) or np.any(q2[..., 0] <= 0) or np.any(k1[..., 0] <= 0) or np.any(k2[..., 0] <= 0):
         raise ValueError("production kinematics needs positive energies for all four particles")
     K = q1 + q2
-    s = _dot(K, K)
-    if np.any(s <= 4 * m * m * (1 + 1e-12)) or np.any(s <= 0):
-        raise ValueError("need s = (q1 + q2)^2 > max(4 m^2, 0): collinear gravitons (s = 0) make nothing")
     if np.max(np.abs(K - k1 - k2)) > 1e-9 * np.max(K[..., 0]):
         raise ValueError("momentum not conserved: q1 + q2 != k1 + k2")
     for k, nm in ((k1, "k1"), (k2, "k2")):
         if np.any(np.abs(_dot(k, k) - m * m) > _ONSHELL_TOL * np.max(k[..., 0] ** 2)):
             raise ValueError(f"{nm} must be on shell (k^2 = m^2)")
+    _check_boost(q1, q2)
+    return q1, q2, k1, k2
+
+
+_MAX_BOOST2 = 1e24     # largest tested K0^2/s (self-test 18 and 'convergence'); beyond it refused
+
+
+def _check_boost(pa, pb, ma=0.0):
+    """Refuse kinematics so close to collinear that even the light-cone CM transformation is untested."""
+    F = _CMFrame(pa, ma, pb, 0.0)
+    K0 = (pa + pb)[..., 0]
+    if np.any(~(F.s > 0)):
+        raise ValueError("need s = (q1 + q2)^2 > 0: collinear massless momenta (s = 0)")
+    if np.any(K0 * K0 > _MAX_BOOST2 * F.s):
+        raise ValueError(f"K0^2/s > {_MAX_BOOST2:.0e} (nearly collinear waves or extreme frequency ratio): outside the "
+                         "tested range of the CM transformation")
+
+
+# ---------------------------------------------------------------- exact CM transformation (light-cone form)
+def _transverse_basis(qv):
+    """Spherical unit vectors (e_theta, e_phi) of the direction of the 3-vectors qv (vectorised; no arccos, which
+    loses ~1e-16/theta of the polar angle near the poles: e_theta = (cos th cos ph, cos th sin ph, -sin th) with
+    sin th = rho = |n_perp|, cos th = n_z, (cos ph, sin ph) = (n_x, n_y)/rho; on the axis ph = atan2(n_y, n_x))."""
+    qv = np.asarray(qv, dtype=float)
+    n = qv / np.linalg.norm(qv, axis=-1, keepdims=True)
+    rho = np.hypot(n[..., 0], n[..., 1])
+    ph = np.arctan2(n[..., 1], n[..., 0])
+    on = rho > 0
+    safe = np.where(on, rho, 1.0)
+    cp = np.where(on, n[..., 0] / safe, np.cos(ph))
+    sp = np.where(on, n[..., 1] / safe, np.sin(ph))
+    et = np.stack([n[..., 2] * cp, n[..., 2] * sp, -rho], axis=-1)
+    ep = np.stack([-sp, cp, np.zeros_like(cp)], axis=-1)
+    return et, ep
+
+
+class _CMFrame:
+    """Boost along K = pa + pb to its rest frame written in light-cone variables, so that NO component cancels.
+
+    With z^ = K/|K| (lab), v+- = v0 +- v.z^ and v_perp: the boost is v+ -> v+ sqrt(s)/K+, v- -> v- K+/sqrt(s), v_perp
+    unchanged. The small light-cone component of an on-shell vector is taken from v+ v- = m^2 + |v_perp|^2 (never by
+    subtraction), K- = pa- + pb- and s = K+ K- (not K0^2 - |K|^2), and pa_perp = -pb_perp from the lower-energy one.
+    Polarisations are mapped to their CM transverse (radiation-gauge) part T(L f) = L f - ((L f)^0/(L q)^0) L q in
+    closed form, without forming the boosted vector (whose pure-gauge part grows like the boost factor):
+        T_z = f_z q0/q'0,  T_perp = f_perp + f_z |K| q_perp/(sqrt(s) q'0)      (f0 = 0 gauge first; q'0 = CM energy).
+    Since the tree amplitude is gauge invariant (Ward identities, self-test 5) this changes nothing but roundoff."""
+
+    def __init__(self, pa, ma, pb, mb):
+        K = pa + pb
+        Kv = K[..., 1:]
+        self.Kn = np.linalg.norm(Kv, axis=-1)
+        safe = np.where(self.Kn > 0, self.Kn, 1.0)
+        self.z = np.where((self.Kn > 0)[..., None], Kv / safe[..., None], np.array([0.0, 0.0, 1.0]))
+        a_soft = (pa[..., 0] <= pb[..., 0])[..., None]
+        perp_a = np.where(a_soft, self._perp(pa), -self._perp(pb))
+        self.perp_ab = (perp_a, -perp_a)
+        pa_pm, pb_pm = self._pm(pa, ma, perp_a), self._pm(pb, mb, -perp_a)
+        self.Kp = pa_pm[0] + pb_pm[0]
+        self.s = self.Kp * (pa_pm[1] + pb_pm[1])
+        self.rs = np.sqrt(self.s)
+
+    def _perp(self, v):
+        """Component of v's 3-vector transverse to z^, as z^ x (v x z^) (no cancellation for v nearly along z^)."""
+        z = np.broadcast_to(self.z, v[..., 1:].shape)
+        return np.cross(z, np.cross(v[..., 1:], z))
+
+    def _pm(self, v, m, perp):
+        vz = np.einsum("...i,...i->...", v[..., 1:], self.z)
+        tr = m * m + np.einsum("...i,...i->...", perp, perp)
+        fwd = vz >= 0
+        big = np.where(fwd, v[..., 0] + vz, v[..., 0] - vz)
+        small = tr / big
+        return np.where(fwd, big, small), np.where(fwd, small, big)
+
+    def vec(self, v, m=0.0, perp=None):
+        """CM components (same spatial axes) of the on-shell vector v of mass m."""
+        perp = self._perp(v) if perp is None else perp
+        vp, vm = self._pm(v, m, perp)
+        vp, vm = vp * self.rs / self.Kp, vm * self.Kp / self.rs
+        return np.concatenate([(0.5 * (vp + vm))[..., None], perp + (0.5 * (vp - vm))[..., None] * self.z], axis=-1)
+
+    def pol(self, f, q, q0c, perp_q=None):
+        """CM transverse part of the polarisation vector f (upper, f.q = 0) of the massless momentum q; q0c its CM energy."""
+        f = f - (f[..., 0] / q[..., 0])[..., None] * q
+        perp_q = self._perp(q) if perp_q is None else perp_q
+        fz = np.einsum("...i,...i->...", f[..., 1:], self.z)
+        fperp = f[..., 1:] - fz[..., None] * self.z
+        Tz = fz * q[..., 0] / q0c
+        Tv = fperp + (fz * self.Kn / (self.rs * q0c))[..., None] * perp_q + Tz[..., None] * self.z
+        return np.concatenate([np.zeros(Tv.shape[:-1] + (1,), dtype=Tv.dtype), Tv], axis=-1)
+
+    def tensor(self, E, q, q0c, perp_q=None):
+        """CM TT part of the graviton polarisation tensor E (lower indices, q^m E_mn = 0) of the momentum q."""
+        et, ep = _transverse_basis(q[..., 1:])
+        z0 = np.zeros(et.shape[:-1] + (1,))
+        basis = [np.concatenate([z0, et], axis=-1), np.concatenate([z0, ep], axis=-1)]
+        c = [[np.einsum("...m,...n,...mn->...", fi, fj, E) for fj in basis] for fi in basis]
+        tr = 0.5 * (c[0][0] + c[1][1])
+        V = [_low(self.pol(fi, q, q0c, perp_q)) for fi in basis]
+        out = 0.0
+        for i in range(2):
+            for j in range(2):
+                cij = c[i][j] - (tr if i == j else 0.0)
+                out = out + cij[..., None, None] * np.einsum("...m,...n->...mn", V[i], V[j])
+        return out
+
+
+def _gg_to_cm(q1, eps1, q2, eps2, k1, k2, m, e1=None, e2=None):
+    """Exact CM kinematics and radiation-gauge wavefunctions for g g -> X X (see _CMFrame)."""
+    F = _CMFrame(q1, 0.0, q2, 0.0)
+    if np.any(~(F.s > 4 * m * m * (1 + 1e-12))) or np.any(~(F.s > 0)):
+        raise ValueError("need s = (q1 + q2)^2 > max(4 m^2, 0): collinear gravitons (s = 0) make nothing")
+    E = 0.5 * F.rs
+    qa = F.vec(q1, 0.0, F.perp_ab[0])
+    na = qa[..., 1:] / np.linalg.norm(qa[..., 1:], axis=-1, keepdims=True)
+    kf = F.vec(k1, m)
+    n1 = kf[..., 1:] / np.linalg.norm(kf[..., 1:], axis=-1, keepdims=True)
+    p = np.sqrt(np.maximum(E * E - m * m, 0.0))
+    Ex = E[..., None]
+    q1c, q2c = np.concatenate([Ex, Ex * na], axis=-1), np.concatenate([Ex, -Ex * na], axis=-1)
+    k1c, k2c = np.concatenate([Ex, p[..., None] * n1], axis=-1), np.concatenate([Ex, -p[..., None] * n1], axis=-1)
+    E1c, E2c = F.tensor(eps1, q1, E, F.perp_ab[0]), F.tensor(eps2, q2, E, F.perp_ab[1])
+    out = {"F": F, "s": F.s, "q1": q1c, "q2": q2c, "k1": k1c, "k2": k2c, "eps1": E1c, "eps2": E2c}
+    if e1 is not None:
+        out["e1"], out["e2"] = F.pol(e1, k1, E), F.pol(e2, k2, E)
+    # t - m^2 = -2 E (E - p cos) with E - p cos = m^2/(E + p) + p |na - n1|^2/2 (no cancellation); u: n1 -> -n1
+    for key, sg in (("t", 1.0), ("u", -1.0)):
+        out[key] = m * m - 2 * E * (m * m / (E + p) + 0.5 * p * np.sum((na - sg * n1) ** 2, axis=-1))
+    return out
+
+
+def _check_tu(c, m):
     if m == 0:
-        tu = np.minimum(np.abs(_dot(k1 - q1, k1 - q1)), np.abs(_dot(k2 - q1, k2 - q1)))
-        if np.any(tu <= 1e-12 * s):
+        tu = np.minimum(np.abs(c["t"]), np.abs(c["u"]))
+        if np.any(tu <= 1e-12 * c["s"]):
             raise ValueError("a final particle exactly collinear with a graviton (t or u = 0): the separate exchange "
                              "channels are singular there (their sum is finite); move off the axis")
-    return q1, q2, k1, k2
 
 
 # ---------------------------------------------------------------- Part A: amplitudes
@@ -450,8 +590,10 @@ def amplitude_gg_to_photons(q1, eps1, q2, eps2, k1, e1, k2, e2, G: float = 1.0, 
         delta: M, dimensionless, kappa^2 = 32 pi G included (O(8 pi G s)); per unit-normalised polarisations;
         with parts=True a dict of 'contact', 's_channel', 'tu_channel' (each gauge DEPENDENT) and 'total'.
     Valid when: tree level, s << 1/G; q1, q2, k1, k2 light-like with positive energy and q1 + q2 = k1 + k2,
-        s > 0, |t|, |u| > 1e-12 s (the channels cancel like s/|t|: relative roundoff ~ 1e-16 s/min(|t|, |u|));
-        eps symmetric, transverse, traceless; G > 0 (energy^-2)."""
+        s > 0, |t|, |u| > 1e-12 s, K0^2/s <= 1e24 (refused beyond: untested); any frame (the inputs are carried to the
+        CM exactly, see 'Numerics'): relative roundoff ~ 1e-15 for the unsuppressed amplitudes and ~ 1e-16 s/|t|
+        for the suppressed (kappa/2)^2 t^2/s one; parts=True is evaluated in the caller's frame and gauge (there it
+        loses ~ (K0^2/s)^2 digits when K moves fast); eps symmetric, transverse, traceless; e.k = 0; G > 0."""
     if not G > 0:
         raise ValueError("G must be > 0")
     q1, q2 = _check_null(q1, "q1"), _check_null(q2, "q2")
@@ -459,9 +601,21 @@ def amplitude_gg_to_photons(q1, eps1, q2, eps2, k1, e1, k2, e2, G: float = 1.0, 
     q1, q2, k1, k2 = _check_final(q1, q2, k1, k2, 0.0)
     eps1, eps2 = _check_tt(q1, eps1, "eps1"), _check_tt(q2, eps2, "eps2")
     e1, e2 = np.asarray(e1, dtype=complex), np.asarray(e2, dtype=complex)
-    if np.max(np.abs(_dot(k1, e1))) > 1e-9 * np.max(k1[..., 0]) or np.max(np.abs(_dot(k2, e2))) > 1e-9 * np.max(k2[..., 0]):
-        raise ValueError("photon polarisations must be transverse (e.k = 0)")
-    return _parts_out(_core_photon(q1, eps1, q2, eps2, k1, np.conj(e1), k2, np.conj(e2)), 32 * PI * G, parts)
+    _check_transverse(k1, e1, "e1")
+    _check_transverse(k2, e2, "e2")
+    c = _gg_to_cm(q1, eps1, q2, eps2, k1, k2, 0.0, e1, e2)
+    _check_tu(c, 0.0)
+    if parts:   # the gauge-dependent channels exist only for the wavefunctions and frame the caller supplied
+        return _parts_out(_core_photon(q1, eps1, q2, eps2, k1, np.conj(e1), k2, np.conj(e2)), 32 * PI * G, True)
+    return _parts_out(_core_photon(c["q1"], c["eps1"], c["q2"], c["eps2"], c["k1"], np.conj(c["e1"]), c["k2"],
+                                   np.conj(c["e2"])), 32 * PI * G, parts)
+
+
+def _check_transverse(k, e, name):
+    if e.shape[-1] != 4 or not np.all(np.isfinite(e)):
+        raise ValueError(f"{name} must be a finite 4-vector")
+    if np.max(np.abs(_dot(k, e))) > 1e-9 * np.max(k[..., 0]) * max(np.max(np.abs(e)), 1e-300):
+        raise ValueError(f"photon polarisation {name} must be transverse (e.k = 0)")
 
 
 def amplitude_gg_to_scalars(q1, eps1, q2, eps2, k1, k2, m: float = 0.0, G: float = 1.0, parts: bool = False):
@@ -472,13 +626,20 @@ def amplitude_gg_to_scalars(q1, eps1, q2, eps2, k1, k2, m: float = 0.0, G: float
     Quantity: IN-OUT amplitude M (dimensionless, kappa^2 = 32 pi G included), definition as in
         amplitude_gg_to_photons; parts=True gives the gauge-dependent channels and 'total'.
     Valid when: tree level; m >= 0; q1, q2 light-like, k1^2 = k2^2 = m^2, positive energies, q1 + q2 = k1 + k2,
-        s > 4 m^2 (for m = 0 also |t|, |u| > 1e-12 s); eps transverse and traceless; G > 0."""
+        s > 4 m^2 (for m = 0 also |t|, |u| > 1e-12 s), K0^2/s <= 1e24; any frame (carried to the CM exactly);
+        the same-helicity amplitude (~ 8 pi G m^4 s/((t - m^2)(u - m^2))) is a cancellation of O(s) channels:
+        relative roundoff ~ 3e-17 s^2/m^4 at generic angles (5e-9 at m^2/s = 1e-4, 0.4 at 1e-8); eps transverse
+        and traceless; G > 0."""
     if not G > 0 or not (m >= 0 and math.isfinite(m)):
         raise ValueError("need G > 0 and m >= 0")
     q1, q2 = _check_null(q1, "q1"), _check_null(q2, "q2")
     q1, q2, k1, k2 = _check_final(q1, q2, k1, k2, m)
     eps1, eps2 = _check_tt(q1, eps1, "eps1"), _check_tt(q2, eps2, "eps2")
-    return _parts_out(_core_scalar(q1, eps1, q2, eps2, k1, k2, float(m)), 32 * PI * G, parts)
+    c = _gg_to_cm(q1, eps1, q2, eps2, k1, k2, float(m))
+    _check_tu(c, float(m))
+    if parts:
+        return _parts_out(_core_scalar(q1, eps1, q2, eps2, k1, k2, float(m)), 32 * PI * G, True)
+    return _parts_out(_core_scalar(c["q1"], c["eps1"], c["q2"], c["eps2"], c["k1"], c["k2"], float(m)), 32 * PI * G, parts)
 
 
 def _cm_final(s, cth, phi, m):
@@ -506,12 +667,7 @@ def _final_wavefunctions(final, k1, k2):
 
 def _pol_array(k, hel):
     """photon_polarization vectorised over leading axes of k (4-vectors)."""
-    k = np.asarray(k, dtype=float)
-    n = k[..., 1:] / np.linalg.norm(k[..., 1:], axis=-1, keepdims=True)
-    th = np.arccos(np.clip(n[..., 2], -1, 1))
-    ph = np.arctan2(n[..., 1], n[..., 0])
-    et = np.stack([np.cos(th) * np.cos(ph), np.cos(th) * np.sin(ph), -np.sin(th)], axis=-1)
-    ep = np.stack([-np.sin(ph), np.cos(ph), np.zeros_like(ph)], axis=-1)
+    et, ep = _transverse_basis(np.asarray(k, dtype=float)[..., 1:])
     v = (-hel * et - 1j * ep) / math.sqrt(2.0)
     return np.concatenate([np.zeros(v.shape[:-1] + (1,)), v], axis=-1)
 
@@ -533,8 +689,10 @@ def helicity_amplitudes_cm(s: float, theta: float, phi: float = 0.0, final: str 
     polar angle theta, azimuth phi, particle 2 opposite; photon helicities s1, s2 = +-1 along their own directions.
     Quantity: dict {(l1, l2, s1, s2): M} (photons) or {(l1, l2): M} (scalars) of IN-OUT amplitudes M
         (dimensionless, kappa^2 = 32 pi G included), phase conventions of photon_polarization/graviton_polarization.
-    Valid when: s > 4 m^2 (energy^2), 0 < theta < pi (exactly forward/backward is refused because the separate
-        photon-exchange channels are singular there although the sum is finite), m >= 0 (scalar only), G > 0."""
+    Valid when: s > 4 m^2 (energy^2), 0 < theta < pi with |t|, |u| > 1e-12 s for m = 0 (exactly forward/backward is
+        refused because the separate photon-exchange channels are singular there although the sum is finite;
+        the suppressed t^2/s amplitudes carry relative roundoff ~ 1e-16 s/|t|), m >= 0 (scalar only; same-helicity
+        massive amplitudes: roundoff as in amplitude_gg_to_scalars), G > 0."""
     _check_final_kind(final, m)
     if not (s > 4 * m * m and s > 0 and math.isfinite(s)):
         raise ValueError("need finite s > 4 m^2")
@@ -566,34 +724,64 @@ def compton_amplitude(target: str, p_in, q_in, eps_in, p_out, q_out, eps_out, e_
     Quantity: IN-OUT amplitude M (dimensionless, kappa^2 = 32 pi G), same normalisation as amplitude_gg_to_photons;
         parts=True gives the gauge-dependent channels (here 'contact', 's_channel' = graviton exchange in the
         t-channel of the Compton process, 'tu_channel' = X exchange) and 'total'.
-    Valid when: tree level; target 'photon' (m = 0, e_in and e_out given) or 'scalar' (m >= 0); on-shell momenta with
-        p_in + q_in = p_out + q_out, nonzero momentum transfer (q_in != q_out) and, for m = 0, (p_out - q_in)^2 != 0;
-        eps transverse-traceless; G > 0."""
+    Valid when: tree level; target 'photon' (m = 0, e_in and e_out given, e_in.p_in = e_out.p_out = 0) or 'scalar'
+        (m >= 0); on-shell momenta with positive energies, p_in + q_in = p_out + q_out, |t| > 1e-24 s (t = 0 is the
+        graviton pole) and, for m = 0, |u| > 1e-24 s; any frame (carried to the CM of p_in + q_in exactly; measured
+        < 2e-15 against Holstein eq. 66 down to theta_lab = 1e-10); eps transverse-traceless; G > 0."""
     if target not in ("photon", "scalar"):
         raise ValueError("target must be 'photon' or 'scalar'")
     if not G > 0 or not (m >= 0 and math.isfinite(m)):
         raise ValueError("need G > 0 and m >= 0")
     p_in, q_in, p_out, q_out = (np.asarray(v, dtype=float) for v in (p_in, q_in, p_out, q_out))
+    for v, nm in ((p_in, "p_in"), (q_in, "q_in"), (p_out, "p_out"), (q_out, "q_out")):
+        if v.shape[-1] != 4 or not np.all(np.isfinite(v)) or np.any(v[..., 0] <= 0):
+            raise ValueError(f"{nm} must be a finite 4-vector with positive energy (physical Compton kinematics)")
     q_in, q_out = _check_null(q_in, "q_in"), _check_null(q_out, "q_out")
     if np.max(np.abs(p_in + q_in - p_out - q_out)) > 1e-9 * np.max(p_in[..., 0] + q_in[..., 0]):
         raise ValueError("momentum not conserved")
     for p, nm in ((p_in, "p_in"), (p_out, "p_out")):
         if np.any(np.abs(_dot(p, p) - m * m) > _ONSHELL_TOL * np.max(p[..., 0] ** 2)):
             raise ValueError(f"{nm} must be on shell")
-    t = _dot(q_in - q_out, q_in - q_out)
-    if np.any(np.abs(t) <= 1e-12 * np.max(q_in[..., 0] ** 2)):
-        raise ValueError("zero momentum transfer (exactly forward) is the graviton pole: refused")
-    if m == 0 and np.any(np.abs(_dot(p_out - q_in, p_out - q_in)) <= 1e-12 * np.max(q_in[..., 0] ** 2)):
-        raise ValueError("massless target scattered exactly along the incoming graviton (u = 0): the separate "
-                         "exchange channels are singular there; move off the axis")
     eps_in, eps_out = _check_tt(q_in, eps_in, "eps_in"), _check_tt(q_out, eps_out, "eps_out")
     if target == "photon":
         if m != 0 or e_in is None or e_out is None:
             raise ValueError("photon target: m = 0 and both photon polarisations required")
-        core = _core_photon(q_in, eps_in, -q_out, np.conj(eps_out), p_out, np.conj(np.asarray(e_out, dtype=complex)),
-                            -p_in, np.asarray(e_in, dtype=complex))
+        e_in, e_out = np.asarray(e_in, dtype=complex), np.asarray(e_out, dtype=complex)
+        _check_transverse(p_in, e_in, "e_in")
+        _check_transverse(p_out, e_out, "e_out")
+    if parts:   # the gauge-dependent channels exist only for the wavefunctions and frame the caller supplied
+        if target == "photon":
+            return _parts_out(_core_photon(q_in, eps_in, -q_out, np.conj(eps_out), p_out, np.conj(e_out), -p_in, e_in),
+                              32 * PI * G, True)
+        return _parts_out(_core_scalar(q_in, eps_in, -q_out, np.conj(eps_out), p_out, -p_in, float(m)), 32 * PI * G, True)
+    _check_boost(p_in, q_in, float(m))
+    # exact CM kinematics of p_in + q_in (light-cone transformation, _CMFrame); every vector in its CM radiation gauge
+    F = _CMFrame(p_in, float(m), q_in, 0.0)
+    rs = F.rs
+    kc = (F.s - m * m) / (2 * rs)
+    Ep = (F.s + m * m) / (2 * rs)
+    def unit(v):
+        return v[..., 1:] / np.linalg.norm(v[..., 1:], axis=-1, keepdims=True)
+    n_in = unit(F.vec(q_in, 0.0, F.perp_ab[1]))
+    n_out = unit(F.vec(q_out, 0.0))
+    t = -kc * kc * np.sum((n_in - n_out) ** 2, axis=-1)          # (q_in - q_out)^2 without cancellation
+    u = -kc * kc * np.sum((n_in + n_out) ** 2, axis=-1)            # (p_out - q_in)^2 for a massless target
+    if np.any(np.abs(t) <= 1e-24 * F.s):
+        raise ValueError("zero momentum transfer (exactly forward) is the graviton pole: refused")
+    if m == 0 and np.any(np.abs(u) <= 1e-24 * F.s):
+        raise ValueError("massless target scattered exactly along the incoming graviton (u = 0): the separate "
+                         "exchange channels are singular there; move off the axis")
+    kx, Ex = kc[..., None], Ep[..., None]
+    qi = np.concatenate([kx, kx * n_in], axis=-1)
+    qo = np.concatenate([kx, kx * n_out], axis=-1)
+    pi_ = np.concatenate([Ex, -kx * n_in], axis=-1)
+    po = np.concatenate([Ex, -kx * n_out], axis=-1)
+    Ei, Eo = F.tensor(eps_in, q_in, kc, F.perp_ab[1]), F.tensor(eps_out, q_out, kc)
+    if target == "photon":
+        ei, eo = F.pol(e_in, p_in, kc, F.perp_ab[0]), F.pol(e_out, p_out, kc)
+        core = _core_photon(qi, Ei, -qo, np.conj(Eo), po, np.conj(eo), -pi_, ei)
     else:
-        core = _core_scalar(q_in, eps_in, -q_out, np.conj(eps_out), p_out, -p_in, float(m))
+        core = _core_scalar(qi, Ei, -qo, np.conj(Eo), po, -pi_, float(m))
     return _parts_out(core, 32 * PI * G, parts)
 
 
@@ -634,45 +822,87 @@ def _sym(final, field):
     return 0.5 if (final == "photon" or field == "real") else 1.0
 
 
+_MIN_M2_OVER_S = 1e-8   # massive-scalar phase space refused below (same-helicity roundoff ~1e-14 s/m^2 = 1e-6 there)
+
+
+def _polar_rule(final, m, s, order):
+    """Nodes and weights in cos(theta) on [-1, 1] for the CM polar integral.
+
+    Massless final states: one Gauss-Legendre rule of the given order (exact: the integrands are polynomials of degree
+    <= 8). Massive scalars: the propagators 1/(t - m^2), 1/(u - m^2) peak within 1 - |cos| ~ delta = 1 - beta ~ 2 m^2/s
+    of the axis (the same-helicity amplitude is ~ m^4 s/((t - m^2)(u - m^2)) and nothing else), so a single Gauss rule
+    misses them for light scalars; here composite Gauss panels in x = 1 - |cos| are graded geometrically (ratio 2)
+    from 1 down to 1e-3 delta, plus [0, 1e-3 delta], on both sides. On each panel [a, 2a] the integrand's nearest
+    singularity (x = -delta) is >= 3 half-widths away, so the error falls like 5.8^(-2 order)."""
+    c, w = np.polynomial.legendre.leggauss(order)
+    if final == "photon" or m == 0:
+        return c, w
+    beta = math.sqrt(max(1.0 - 4 * m * m / s, 0.0))
+    delta = 4 * m * m / (s * (1 + beta))                       # = 1 - beta without cancellation
+    edges = [1.0]
+    while edges[-1] > 1e-3 * delta and len(edges) < 200:
+        edges.append(edges[-1] / 2)
+    edges.append(0.0)
+    xs, ws = [], []
+    for a, b in zip(edges[1:], edges[:-1]):
+        xs.append(0.5 * (b - a) * c + 0.5 * (b + a))
+        ws.append(0.5 * (b - a) * w)
+    x, wx = np.concatenate(xs), np.concatenate(ws)
+    return np.concatenate([1 - x, x - 1]), np.concatenate([wx, wx])
+
+
 def _phase_space_sum(qa, Ea, qb, Eb, final, m, n_theta, n_phi):
-    """W = int dPhi2 sum_final |M|^2 (kappa = 1, no identical-particle factor) by Gauss x uniform quadrature in the CM."""
-    K = qa + qb
-    s = float(_dot(K, K))
+    """W = int dPhi2 sum_final |M|^2 (kappa = 1, no identical-particle factor) by quadrature in the CM.
+
+    The waves are carried to the CM of K = qa + qb by _CMFrame (light-cone form: no cancellation in s, in the boost or
+    in the polarisations, which arrive in the CM radiation gauge). Polar rule: _polar_rule; for massive scalars the
+    integral is repeated with panel order + 4 and a relative change > 1e-8 raises ValueError (convergence guard)."""
+    F = _CMFrame(qa, 0.0, qb, 0.0)
+    s = float(F.s)
     M_ = math.sqrt(s)
-    b = K[1:] / K[0]
-    b2 = float(b @ b)
-    L = np.eye(4)
-    if b2 > 0:
-        g = 1.0 / math.sqrt(1.0 - b2)
-        L[0, 0] = g
-        L[0, 1:] = L[1:, 0] = -g * b
-        L[1:, 1:] += (g - 1.0) * np.outer(b, b) / b2
+    E = 0.5 * M_
+    d = F.vec(qa, 0.0, F.perp_ab[0])[1:]
+    d = d / np.linalg.norm(d)
+    Ea_c, Eb_c = F.tensor(Ea, qa, E, F.perp_ab[0]), F.tensor(Eb, qb, E, F.perp_ab[1])
     # rotate so that graviton a moves along +z in the CM: the quadrature axis is then the collision axis, where the
     # interference of the J_z = +4 and -4 channels (linear polarisations) is non-smooth but integrates to zero exactly
     # under the uniform azimuthal rule; elsewhere the integrand is smooth (polynomial for massless final states).
-    d = (L @ qa)[1:]
-    d = d / np.linalg.norm(d)
     e1 = np.cross(d, [0.0, 1.0, 0.0] if abs(d[1]) < 0.9 else [1.0, 0.0, 0.0])
     e1 /= np.linalg.norm(e1)
     R4 = np.eye(4)
     R4[1:, 1:] = np.array([e1, np.cross(d, e1), d])
-    L = R4 @ L
-    Li = np.linalg.inv(L)
-    qa_c, qb_c = L @ qa, L @ qb
-    Ea_c, Eb_c = Li.T @ Ea @ Li, Li.T @ Eb @ Li
-    c, wc = np.polynomial.legendre.leggauss(n_theta)
+    Ea_c, Eb_c = R4 @ Ea_c @ R4.T, R4 @ Eb_c @ R4.T
+    qa_c, qb_c = np.array([E, 0.0, 0.0, E]), np.array([E, 0.0, 0.0, -E])
     ph = (np.arange(n_phi) + 0.5) * 2 * PI / n_phi
-    C_, P_ = np.meshgrid(c, ph, indexing="ij")
-    k1, k2, p = _cm_final(s, C_, P_, m)
-    tot = np.zeros(C_.shape)
-    for _, w1, w2 in _final_wavefunctions(final, k1, k2):
-        if final == "photon":
-            parts = _core_photon(qa_c, Ea_c, qb_c, Eb_c, k1, w1, k2, w2)
-        else:
-            parts = _core_scalar(qa_c, Ea_c, qb_c, Eb_c, k1, k2, m)
-        tot += np.abs(sum(parts)) ** 2
-    W = float(np.einsum("i,ij->", wc, tot)) * (2 * PI / n_phi) * p / (16 * PI * PI * M_)
-    return W, s
+
+    def integrate(order):
+        c, wc = _polar_rule(final, m, s, order)
+        C_, P_ = np.meshgrid(c, ph, indexing="ij")
+        k1, k2, p = _cm_final(s, C_, P_, m)
+        tot = np.zeros(C_.shape)
+        for _, w1, w2 in _final_wavefunctions(final, k1, k2):
+            if final == "photon":
+                parts = _core_photon(qa_c, Ea_c, qb_c, Eb_c, k1, w1, k2, w2)
+            else:
+                parts = _core_scalar(qa_c, Ea_c, qb_c, Eb_c, k1, k2, m)
+            tot += np.abs(sum(parts)) ** 2
+        return float(np.einsum("i,ij->", wc, tot)) * (2 * PI / n_phi) * p / (16 * PI * PI * M_)
+
+    if final == "photon" or m == 0:
+        return integrate(n_theta), s
+    if m * m < _MIN_M2_OVER_S * s:
+        raise ValueError(f"m^2/s = {m * m / s:.1e} < {_MIN_M2_OVER_S:.0e}: the same-helicity amplitude ~ m^4/s is a "
+                         "cancellation of channels ~ s (relative roundoff ~ 1e-14 s/m^2); use m = 0 (opposite-helicity "
+                         "and linear-polarisation results then change by ~ 20 m^2/s < 2e-7) and "
+                         "sigma_same_helicity_scalar_closed_form for the same-helicity piece")
+    order = max(8, n_theta // 3)
+    W, W2 = integrate(order), integrate(order + 4)
+    # 1e-7: above the roundoff floor (~1e-14 s/m^2 <= 1e-6, measured) only where quadrature, not roundoff, dominates;
+    # measured panel-order differences are <= 2e-8 down to m^2/s = 1e-8 at the default order 8.
+    if abs(W2 - W) > 1e-7 * abs(W2) + 1e-300:
+        raise ValueError(f"massive-scalar phase-space quadrature not converged (relative change {abs(W2 / W - 1):.1e} "
+                         "between panel orders): raise n_theta")
+    return W2, s
 
 
 def dsigma_domega_cm(s: float, theta: float, pol1="R", pol2="L", final: str = "photon", m: float = 0.0,
@@ -704,13 +934,17 @@ def sigma_total(s: float, pol1="R", pol2="L", final: str = "photon", m: float = 
     """Total cross section of g g -> gamma gamma (phi phi) at CM energy^2 s for given incoming polarisation states.
 
     sigma = sym/(2 s) int dPhi2 sum_final |M|^2, flux 2s (massless initial state), sym = 1/2 for identical final
-    particles (photons, real scalar), 1 for a complex scalar (particle + antiparticle). Gauss-Legendre (n_theta) x
-    uniform (n_phi) quadrature in the CM: exact for the massless integrands (polynomials of degree <= 8 in cos
-    and e^{+-8 i phi}) at the defaults.
+    particles (photons, real scalar), 1 for a complex scalar (particle + antiparticle). Massless final states:
+    Gauss-Legendre (n_theta) x uniform (n_phi) quadrature in the CM, exact for the polynomial integrands (degree <= 8
+    in cos and e^{+-8 i phi}). Massive scalars: composite Gauss panels graded geometrically towards cos = +-1 on the
+    scale 1 - beta ~ 2 m^2/s (order max(8, n_theta // 3) per panel; _polar_rule), repeated at order + 4 with a
+    ValueError above 1e-7 relative change (measured against sigma_same_helicity_scalar_closed_form: <= 1.1e-9 for
+    m^2/s >= 4e-6, 1e-6 at m^2/s = 1e-8).
     Quantity: sigma (1/energy^2) for the given initial polarisations (pol1 of graviton 1 along +z, pol2 of graviton 2
         along -z; 'R', 'L', 'plus', 'cross'), summed over final helicities, counting PAIRS (each pair once).
-    Valid when: tree level; s > 4 m^2; final 'photon' (m = 0) or 'scalar' (m >= 0); G > 0; n_theta >= 8, n_phi >= 17
-        (massive scalars: check convergence by raising them)."""
+    Valid when: tree level; s > 4 m^2; final 'photon' (m = 0) or 'scalar' (m = 0 or m^2/s >= 1e-8: below that the
+        same-helicity amplitude is roundoff-limited and the call is refused; use m = 0 plus
+        sigma_same_helicity_scalar_closed_form); G > 0; n_theta >= 8, n_phi >= 17."""
     _check_final_kind(final, m)
     if not (s > 4 * m * m and s > 0 and math.isfinite(s) and G > 0):
         raise ValueError("need finite s > 4 m^2 and G > 0")
@@ -744,6 +978,27 @@ def sigma_total_massless_closed_form(s: float, pol1="R", pol2="L", final: str = 
     w = {"R": (1.0, 0.0), "L": (0.0, 1.0), "plus": (0.5, 0.5), "cross": (0.5, 0.5)}
     a, b = w[_pol_label(pol1)], w[_pol_label(pol2)]
     return sym * base * (a[0] * b[1] + a[1] * b[0])
+
+
+def sigma_same_helicity_scalar_closed_form(s: float, m: float, G: float = 1.0, field: str = "real") -> float:
+    """Closed-form total cross section of g g -> phi phi for SAME-helicity gravitons (R/R or L/L), massive scalar.
+
+    The same-helicity amplitude is |M| = 8 pi G m^4 s/|(t - m^2)(u - m^2)| (the crossing of Bjerrum-Bohr, Donoghue &
+    Vanhove 2014 eq. II.27 with its normalisation halved, see self-test 8). With t - m^2 = -(s/2)(1 - beta c),
+    u - m^2 = -(s/2)(1 + beta c), beta = sqrt(1 - 4 m^2/s), sigma = sym/(2s) int dPhi2 |M|^2 integrates to
+        sigma = sym 32 pi G^2 m^8 beta/s^3 [1/(1 - beta^2) + ln((1 + beta)/(1 - beta))/(2 beta)]
+    (= 16 pi G^2 m^8 beta/s^3 [...] for a real scalar; sym = 1/2 real, 1 complex). For m^2 << s this is
+    ~ sym 8 pi G^2 m^6/s^2: tiny, peaked within 1 - |cos theta| ~ 2 m^2/s of the collision axis.
+    Quantity: sigma (1/energy^2) for incoming helicities (+2, +2) or (-2, -2), counting pairs.
+    Valid when: tree level; 0 < m, s > 4 m^2 (energy^2); G > 0; any m^2/s (no cancellation in this form)."""
+    if not (m > 0 and s > 4 * m * m and math.isfinite(s) and G > 0):
+        raise ValueError("need m > 0, finite s > 4 m^2, G > 0")
+    sym = _sym("scalar", field)
+    x = 4 * m * m / s
+    beta = math.sqrt(1 - x)
+    one_m_b = x / (1 + beta)                                    # 1 - beta without cancellation
+    return 2 * sym * 16 * PI * G * G * m ** 8 * beta / s ** 3 * (1 / x + (math.log1p(2 * beta / one_m_b) if beta > 0
+                                                                        else 0.0) / (2 * beta if beta > 0 else 1.0))
 
 
 # ---------------------------------------------------------------- Part A': the second-order metric
@@ -815,27 +1070,31 @@ def beams_pair_rate(omega1: float, h1: float, omega2: float, h2: float, theta: f
     Wave 1 along +z, wave 2 in the x-z plane at angle theta (head-on: theta = pi); polarisations per gw_plane_wave
     ('plus' axes: in the x-z plane and along y). Gamma = sym int dPhi2 sum_final |M(H1, H2)|^2 (kappa = 1), computed in
     the CM frame of K = q1 + q2 by boosting the waves' momenta and polarisation tensors; equal to
-    sigma(s) n1 n2 (1 - cos theta), s = 2 w1 w2 (1 - cos theta).
+    sigma(s) n1 n2 (1 - cos theta), s = 2 w1 w2 (1 - cos theta) = 4 w1 w2 sin^2(theta/2).
     Quantity: dict with 'pair_rate' (in-in mean number of PAIRS per unit volume per unit time, energy^4; leading
         order, ~ h1^2 h2^2), 'particle_rate' (= 2 x pairs: photons or scalars per volume per time), 'sigma'
         (cross section for these polarisation states, 1/energy^2), 'n1', 'n2' (graviton number densities, energy^3),
         'rho1', 'rho2' (energy densities, energy^4), 's' (energy^2), 'flux_factor' = 1 - cos theta.
     Valid when: tree level, |h| < 0.1, s << 1/G; infinite plane waves (a finite overlap region needs packets much
-        longer than 1/omega: then multiply by the overlap volume x time, not validated here); s > 4 m^2; vacuum.
-        Same-helicity circular waves give exactly zero for massless pairs; the quadrature then returns roundoff
-        (about 1e-30 of the opposite-helicity rate)."""
+        longer than 1/omega: then multiply by the overlap volume x time, not validated here); s > 4 m^2; vacuum;
+        any frequency ratio and angle with K0^2/s <= 1e24 (refused beyond; tested to w2/w1 = 1e-20, theta = 1e-13:
+        the waves are carried to the CM exactly, s and 1 - cos theta = 2 sin^2(theta/2) taken in closed form);
+        massive scalars need m^2/s >= 1e-8 (see sigma_total; the same-helicity rate is the m^4 piece, integrated on
+        panels graded towards the collision axis). Same-helicity circular waves give exactly zero for massless pairs;
+        the quadrature then returns roundoff (about 1e-30 of the opposite-helicity rate)."""
     _check_final_kind(final, m)
     if n_theta < 8 or n_phi < 17:
         raise ValueError("need n_theta >= 8 and n_phi >= 17")
     sym = _sym(final, field)
     wa, wb = _beams(omega1, h1, omega2, h2, theta, pol1, pol2, G)
-    s = float(_dot(wa["q"] + wb["q"], wa["q"] + wb["q"]))
+    flux = 2.0 * math.sin(theta / 2) ** 2                       # 1 - cos(theta) without cancellation
+    s = 2.0 * omega1 * omega2 * flux
     if not s > 4 * m * m:
         raise ValueError(f"below threshold: s = {s:.4g} <= 4 m^2")
+    _check_boost(wa["q"] / omega1, wb["q"] / omega1)
     # unit polarisations and momenta in units of omega1 (W ~ energy^4, |M|^2 bilinear in |H1|^2 |H2|^2): no underflow
     W, _ = _phase_space_sum(wa["q"] / omega1, wa["eps"], wb["q"] / omega1, wb["eps"], final, m / omega1, n_theta, n_phi)
     rate = sym * W * omega1 ** 4 * (wa["amp"] * wb["amp"]) ** 2
-    flux = 1.0 - math.cos(theta)
     sigma = rate / (wa["n"] * wb["n"] * flux)
     return {"pair_rate": rate, "particle_rate": 2 * rate, "sigma": sigma, "n1": wa["n"], "n2": wb["n"],
             "rho1": wa["rho"], "rho2": wb["rho"], "s": s, "flux_factor": flux}
@@ -1061,12 +1320,13 @@ def selftest(verbose: bool = True) -> bool:
     #    the s-channel (here: graviton t-channel) from the second-order metric. Tolerance 1e-10: the closed form and
     #    the amplitude differ only by roundoff (no quadrature).
     worst = 0.0
-    for w_, th_ in ((0.05, 0.3), (0.3, 1.3), (2.0, 2.5), (5.0, 3.0)):
+    for w_, th_ in ((0.05, 0.3), (0.3, 1.3), (2.0, 2.5), (5.0, 3.0), (0.3, 1e-6)):
         mine = compton_scalar_lab_dsigma(w_, th_, 1.0)
         wfr = 1 / (1 + 2 * w_ * math.sin(th_ / 2) ** 2)
         hol = wfr ** 2 * (math.cos(th_ / 2) ** 8 / math.sin(th_ / 2) ** 4 + math.sin(th_ / 2) ** 4)
         worst = max(worst, abs(mine / hol - 1))
-    check("massive-scalar gravitational Compton, lab frame, unpolarised: max |ours/Holstein eq. 66 - 1| (4 points)",
+    check("massive-scalar gravitational Compton, lab frame, unpolarised: max |ours/Holstein eq. 66 - 1| (5 points, "
+          "one at theta = 1e-6)",
           worst, 0.0, 1e-10)
 
     #    Classical limit: a slow graviton (w << m) grazing a mass is deflected like light, theta = 4 G m/b (GR light
@@ -1267,16 +1527,42 @@ def selftest(verbose: bool = True) -> bool:
         check("   ...and the CM-boosted route (beams_pair_rate) agrees", mid, right, 1e-9, rel=True)
 
     # 16. Limits and scalings: collinear waves give nothing ((1 - cos th)^2 -> 0); rate ~ h1^2 h2^2 and is independent
-    #     of G at fixed strain, while sigma ~ G^2 at fixed s.
+    #     of G at fixed strain. beams_pair_rate works with G-free strains, so its own G-independence is a consistency
+    #     check only; the physics check goes through routes where G really enters: (a) sigma_total(G) (kappa^4) times
+    #     the Isaacson densities n(G) = w h^2/(16 pi G) of gw_plane_wave, (b) the in-out amplitude with kappa^2 = 32 pi G
+    #     fed the canonical coherent amplitudes A = |H|/sqrt(32 pi G).
     r1 = beams_pair_rate(1.0, 1e-3, 1.0, 1e-3, 1e-2, "plus", "plus")["pair_rate"]
     r2_ = beams_pair_rate(1.0, 1e-3, 1.0, 1e-3, 2e-2, "plus", "plus")["pair_rate"]
     check("collinear limit: rate(theta = 0.02)/rate(theta = 0.01) = ((1 - cos 0.02)/(1 - cos 0.01))^2 (~16: rate -> 0)",
           r2_ / r1, ((1 - math.cos(0.02)) / (1 - math.cos(0.01))) ** 2, 1e-9, rel=True)
     ra = beams_pair_rate(1.0, 1e-3, 1.0, 1e-3, 2.0, "R", "L", G=1.0)
     rb = beams_pair_rate(1.0, 2e-3, 1.0, 3e-3, 2.0, "R", "L", G=7.0)
-    check("scaling: rate x (h1 h2)^-2 is the same for (h1, h2, G) = (1e-3, 1e-3, 1) and (2e-3, 3e-3, 7)",
+    check("consistency: beams rate x (h1 h2)^-2 the same for (h1, h2, G) = (1e-3, 1e-3, 1) and (2e-3, 3e-3, 7)",
           rb["pair_rate"] / ra["pair_rate"], 36.0, 1e-9, rel=True)
-    check("scaling: sigma ~ G^2 (G = 7 vs 1 at the same s)", rb["sigma"] / ra["sigma"], 49.0, 1e-9, rel=True)
+    lum = []
+    for G_ in (1.0, 7.0):
+        A_, B_ = _beams(1.0, 1e-3, 1.3, 2e-3, 2.0, "R", "L", G_)
+        lum.append(sigma_total(2 * 1.3 * (1 - math.cos(2.0)), "R", "L", G=G_) * A_["n"] * B_["n"] * (1 - math.cos(2.0)))
+    check("G-independence at fixed strain: sigma_total(G) n1(G) n2(G) (1 - cos th), G = 7 vs 1 (G enters both factors)",
+          lum[1] / lum[0], 1.0, 1e-12, rel=True)
+    amp_G = []
+    for G_ in (1.0, 7.0):
+        A_, B_ = _beams(1.0, 1e-3, 1.3, 2e-3, 2.0, "plus", "R", G_)
+        kq = A_["q"] + B_["q"]
+        bb = kq[1:] / kq[0]                               # CM final state (along y, transverse to the 2-wave plane)
+        gg = 1 / math.sqrt(1 - bb @ bb)                   # boosted to the lab
+        Lg = np.eye(4)
+        Lg[0, 0] = gg
+        Lg[0, 1:] = Lg[1:, 0] = gg * bb
+        Lg[1:, 1:] += (gg - 1) * np.outer(bb, bb) / (bb @ bb)
+        Eh = 0.5 * math.sqrt(_dot(kq, kq))
+        k1g = Lg @ np.array([Eh, 0.0, Eh, 0.0])
+        k2g = kq - k1g
+        Mg = amplitude_gg_to_photons(A_["q"], A_["A"] * A_["eps"], B_["q"], B_["A"] * B_["eps"], k1g,
+                                     photon_polarization(k1g, 1), k2g, photon_polarization(k2g, -1), G=G_)
+        amp_G.append(abs(complex(Mg)))
+    check("G-independence at fixed strain: |M(kappa^2 = 32 pi G; A = |H|/sqrt(32 pi G))|, G = 7 vs 1",
+          amp_G[1] / amp_G[0], 1.0, 1e-12, rel=True)
 
     # 17. SI: F&H eq. 5.41 "T tz = 1.5 mW m −2 ( h0 10−22 ) 2 ( f 1 kHz ) 2" (energy flux = rho c of a linear wave) and the
     #     closed-form photon rate w^4 h^4 (1 - cos th)^2/(1280 pi c^3) for linear waves (from (2/5) pi G^2 s).
@@ -1286,6 +1572,56 @@ def selftest(verbose: bool = True) -> bool:
     w_ = 2 * PI * 1e3
     check("SI pair rate (head-on, plus/plus, 1 kHz, h = 1e-22) vs w^4 h^4 (1 - cos th)^2/(1280 pi c^3)",
           si["pair_rate_SI"], w_ ** 4 * 1e-88 * 4 / (1280 * PI * C ** 3), 1e-8, rel=True)
+
+    # 18. Extreme kinematics (the CM transformation): before it, these were wrong by factors up to 1e22 (beams) and
+    #     4e3 (amplitudes) without warning. (a) LIGO x PTA-like frequency ratio 1e-12 at 90 deg and (b) nearly collinear
+    #     equal-frequency waves (theta = 1e-9, K0^2/s = 4e18) against sigma_closed_form n1 n2 (1 - cos theta);
+    #     measured <= 4e-15: tolerance 1e-12. (c) A lab event with an opening angle d between the gravitons (w = 1 and
+    #     1.3), photon 1 along a fixed lab direction n with E1 = s/(2 (K0 - K.n)) so that t = -2 E1 (1 - n_z), u = -s - t
+    #     and s = 4 w1 w2 sin^2(d/2) are exact; |M| vs (kappa/2)^2 {t^2, u^2}/s and massless scalars vs (kappa/2)^2 |t u|/s
+    #     at d = 1e-3 and 1e-6 (K0^2/s = 4e6, 4e12; measured <= 1e-14): tolerance 1e-12.
+    worst = 0.0
+    for w2_, th_, pols in ((1e-12, PI / 2, (("R", "L"), ("plus", "cross"))), (1.0, 1e-9, (("plus", "plus"), ("L", "R")))):
+        for pa, pb in pols:
+            A_, B_ = _beams(1.0, 1e-3, w2_, 2e-3, th_, pa, pb, 1.0)
+            fl = 2 * math.sin(th_ / 2) ** 2
+            want = sigma_total_massless_closed_form(2 * w2_ * fl, pa, pb) * A_["n"] * B_["n"] * fl
+            worst = max(worst, abs(beams_pair_rate(1.0, 1e-3, w2_, 2e-3, th_, pa, pb)["pair_rate"] / want - 1))
+    check("extreme beams: w2/w1 = 1e-12 (R/L, plus/cross) and theta = 1e-9 (plus/plus, L/R) vs sigma n1 n2 (1 - cos th)",
+          worst, 0.0, 1e-12)
+    worst = 0.0
+    for d_ in (1e-3, 1e-6):
+        qa_ = np.array([1.0, 0.0, 0.0, 1.0])
+        qb_ = 1.3 * np.array([1.0, math.sin(d_), 0.0, math.cos(d_)])
+        Kl = qa_ + qb_
+        s_ = 4 * 1.3 * math.sin(d_ / 2) ** 2
+        nl = np.array([math.sin(0.5) * math.cos(0.3), math.sin(0.5) * math.sin(0.3), math.cos(0.5)])
+        E1 = s_ / (2 * (Kl[0] - Kl[1:] @ nl))
+        k1l = np.concatenate([[E1], E1 * nl])
+        k2l = Kl - k1l
+        t_ = -2 * E1 * 2 * math.sin(0.25) ** 2
+        u_ = -s_ - t_
+        Ea, Eb = graviton_polarization(qa_, "R"), graviton_polarization(qb_, "L")
+        got = sorted(abs(complex(amplitude_gg_to_photons(qa_, Ea, qb_, Eb, k1l, photon_polarization(k1l, a), k2l,
+                                                          photon_polarization(k2l, -a)))) for a in (1, -1))
+        want = sorted([kap2 / 4 * t_ * t_ / s_, kap2 / 4 * u_ * u_ / s_])
+        Msc = abs(complex(amplitude_gg_to_scalars(qa_, Ea, qb_, Eb, k1l, k2l)))
+        worst = max(worst, abs(got[0] / want[0] - 1), abs(got[1] / want[1] - 1), abs(Msc / (kap2 / 4 * abs(t_ * u_) / s_) - 1))
+    check("boosted lab events (opening angle 1e-3, 1e-6): |M| vs (kappa/2)^2 {t^2, u^2}/s and |t u|/s (max rel. dev.)",
+          worst, 0.0, 1e-12)
+
+    # 19. Light massive scalar, same helicities (the whole answer is the m^4 piece, peaked within 2 m^2/s of the axis):
+    #     graded-panel quadrature of the diagrammatic amplitude vs the analytic integral of the crossed eq. II.27
+    #     (sigma_same_helicity_scalar_closed_form). Before the graded rule: 11% (m = 0.01) and 62% (m = 0.03) of the
+    #     answer. Measured 4e-11 and 6e-12 (roundoff ~ 1e-14 s/m^2): tolerance 1e-9; beams head-on R/R, m = 0.02.
+    worst = 0.0
+    for m_ in (0.01, 0.02):
+        worst = max(worst, abs(sigma_total(1.0, "R", "R", "scalar", m_) / sigma_same_helicity_scalar_closed_form(1.0, m_) - 1))
+    A_, B_ = _beams(1.0, 1e-3, 1.0, 1e-3, PI, "R", "R", 1.0)
+    rb_ = beams_pair_rate(1.0, 1e-3, 1.0, 1e-3, PI, "R", "R", "scalar", 0.02)["pair_rate"]
+    worst = max(worst, abs(rb_ / (sigma_same_helicity_scalar_closed_form(4.0, 0.02) * A_["n"] * B_["n"] * 2.0) - 1))
+    check("light scalar R/R (m/sqrt(s) = 0.01, 0.02; beams m = 0.02 head-on) vs the analytic same-helicity sigma",
+          worst, 0.0, 1e-9)
 
     passed = all(results)
     if verbose:
@@ -1299,10 +1635,20 @@ def _convergence() -> int:
     print("sigma_tot (photon, R/L, s = 1) vs Gauss order; closed form (4/5) pi =", 0.8 * PI)
     for n in (8, 12, 24, 48):
         print(f"  n_theta = {n}, n_phi = {max(n, 17)}: {sigma_total(1.0, 'R', 'L', n_theta=n, n_phi=max(n, 17)):.15g}")
-    print("massive scalar (m = 0.4, s = 1), sigma_tot (R/R and R/L) vs Gauss order")
-    for n in (12, 24, 48, 96):
-        print(f"  n = {n}: {sigma_total(1.0, 'R', 'R', 'scalar', 0.4, n_theta=n, n_phi=max(n, 17)):.12g}  "
-              f"{sigma_total(1.0, 'R', 'L', 'scalar', 0.4, n_theta=n, n_phi=max(n, 17)):.12g}")
+    print("massive scalar, s = 1: sigma_tot(R/R) / sigma_same_helicity_scalar_closed_form - 1 vs n_theta (graded panels)")
+    for m in (0.4, 0.05, 0.01, 0.002, 1e-4):
+        row = [f"{sigma_total(1.0, 'R', 'R', 'scalar', m, n_theta=n) / sigma_same_helicity_scalar_closed_form(1.0, m) - 1:+.1e}"
+               for n in (24, 48, 96)]
+        print(f"  m = {m:g}: n_theta = 24, 48, 96 -> {row}")
+    print("beams vs sigma n1 n2 (1 - cos theta) - 1 at extreme kinematics (R/L, plus/cross)")
+    for w2, th in ((1e-6, PI / 2), (1e-12, PI / 2), (1e-20, PI / 2), (1.0, 1e-5), (1.0, 1e-9), (1.0, 2.1e-12)):
+        row = []
+        for pa, pb in (("R", "L"), ("plus", "cross")):
+            A_, B_ = _beams(1.0, 1e-3, w2, 1e-3, th, pa, pb, 1.0)
+            fl = 2 * math.sin(th / 2) ** 2
+            want = sigma_total_massless_closed_form(2 * w2 * fl, pa, pb) * A_["n"] * B_["n"] * fl
+            row.append(f"{beams_pair_rate(1.0, 1e-3, w2, 1e-3, th, pa, pb)['pair_rate'] / want - 1:+.1e}")
+        print(f"  w2/w1 = {w2:g}, theta = {th:g}: {row}")
     print("lab-frame direct rate / closed-form luminosity rate, plus/plus, vs (n_c, n_phi) and theta")
     for th in (PI / 6, PI / 3, 2 * PI / 3, PI):
         A_, B_ = _beams(1.0, 1e-3, 1.0, 1e-3, th, "plus", "plus", 1.0)
@@ -1343,14 +1689,14 @@ def main(argv=None) -> int:
     bp.add_argument("--pol2", default="plus", choices=_POLS)
     bp.add_argument("--final", default="photon", choices=("photon", "scalar"))
     bp.add_argument("--m", default="0", help="scalar mass, e.g. '1e-12 eV' (bare number = eV)")
-    ap_ = sub.add_parser("amplitudes", help="CM helicity amplitudes and dsigma/dOmega (G = 1, energies in units of sqrt(s))")
+    ap_ = sub.add_parser("amplitudes", help="CM helicity amplitudes and dsigma/dOmega (G = 1; s and m in one arbitrary "
+                                            "energy unit, cross sections in its inverse square)")
     ap_.add_argument("--s", type=float, default=1.0)
     ap_.add_argument("--theta", type=float, required=True, help="degrees")
     ap_.add_argument("--final", default="photon", choices=("photon", "scalar"))
     ap_.add_argument("--m", type=float, default=0.0)
     cp = sub.add_parser("compton", help="unpolarised lab cross section of graviton scattering off a massive scalar (G = 1)")
-    cp.add_argument("--omega", type=float, required=True, help="graviton energy in units of the mass")
-    cp.add_argument("--m", type=float, default=1.0)
+    cp.add_argument("--omega", type=float, required=True, help="graviton energy in units of the mass (omega/m)")
     cp.add_argument("--theta", type=float, required=True, help="degrees")
     args = ap.parse_args(argv)
     try:
@@ -1360,7 +1706,8 @@ def main(argv=None) -> int:
             return _convergence()
         if args.cmd == "amplitudes":
             amps = helicity_amplitudes_cm(args.s, math.radians(args.theta), 0.0, args.final, args.m)
-            print(f"g g -> {args.final} pair, s = {args.s}, theta = {args.theta} deg (G = 1; M dimensionless, in-out)")
+            print(f"g g -> {args.final} pair, s = {args.s}, m = {args.m} (one arbitrary energy unit), theta = {args.theta} deg "
+                  "(G = 1 in that unit^-2; M dimensionless, in-out; dsigma/dOmega and sigma in unit^-2)")
             for key, M in amps.items():
                 print(f"  {key}: M = {M.real:+.6e} {M.imag:+.6e} i   |M| = {abs(M):.6e}")
             for p1, p2 in (("R", "L"), ("R", "R"), ("plus", "plus")):
@@ -1368,15 +1715,21 @@ def main(argv=None) -> int:
                       f"   sigma_tot = {sigma_total(args.s, p1, p2, args.final, args.m):.6e} (pairs, 1/2 for identical)")
             return 0
         if args.cmd == "compton":
-            ds = compton_scalar_lab_dsigma(args.omega, math.radians(args.theta), args.m)
-            print(f"unpolarised lab dsigma/dOmega = {ds:.8g} (units G^2 m^2 when G = 1, energies in units of m)")
+            ds = compton_scalar_lab_dsigma(args.omega, math.radians(args.theta), 1.0)
+            print(f"unpolarised lab dsigma/dOmega = {ds:.8g} G^2 m^2 (omega/m = {args.omega:g}, "
+                  f"theta = {args.theta:g} deg)")
             return 0
         from unit_tools import Q
         if args.omega is not None:
             w1 = Q(args.omega).expect("frequency").si
+            if "hz" in args.omega.lower():
+                print(f"note: --omega is an ANGULAR frequency; '{args.omega}' is read as omega = {w1:.6g} rad/s "
+                      f"(f = {w1 / (2 * PI):.6g} Hz). For an ordinary frequency use --f (rate ~ omega^4).")
         else:
             w1 = 2 * PI * Q(args.f).expect("frequency").si
         w2 = Q(args.omega2).expect("frequency").si if args.omega2 else w1
+        if args.omega2 and "hz" in args.omega2.lower():
+            print(f"note: --omega2 is an ANGULAR frequency: omega2 = {w2:.6g} rad/s (f2 = {w2 / (2 * PI):.6g} Hz)")
         m_eV = _parse_energy(args.m)
         r = beams_pair_rate_SI(w1, args.h, math.radians(args.theta), w2, args.h2, args.pol1, args.pol2, args.final, m_eV)
         print(f"wave 1: omega = {w1:.6g} rad/s, h = {args.h:g} ({args.pol1}); wave 2: omega = {w2:.6g} rad/s, "
