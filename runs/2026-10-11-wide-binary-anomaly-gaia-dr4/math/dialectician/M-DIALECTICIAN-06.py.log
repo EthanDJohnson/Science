@@ -1,0 +1,25 @@
+# math_run log
+command:  python3 runs/2026-10-11-wide-binary-anomaly-gaia-dr4/math/dialectician/M-DIALECTICIAN-06.py
+started:  2026-10-11T06:02:51Z
+duration: 0.6 s
+exit:     0
+versions: python 3.13.16, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   6 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+Newton f=.1    two-point slope 0.584 intercept 0.9690 | LSQ slope 0.550 intercept 0.9719 (se 0.0023) | lens None | same-release no-triple median 0.988
+Newton f=.2    two-point slope 0.651 intercept 1.0041 | LSQ slope 0.599 intercept 1.0113 (se 0.0047) | lens 1.004 | same-release no-triple median 0.988
+PASS 1.0040628571428571 == 1.004: within 0.002; 1.00406 vs 1.004 (SI)
+Newton f=.3    two-point slope 0.648 intercept 1.0225 | LSQ slope 0.614 intercept 1.0312 (se 0.0060) | lens 1.022 | same-release no-triple median 0.988
+PASS 1.0224687499999998 == 1.022: within 0.002; 1.02247 vs 1.022 (SI)
+MOND f=.2      two-point slope 0.678 intercept 1.2610 | LSQ slope 0.636 intercept 1.2679 (se 0.0038) | lens 1.261 | same-release no-triple median 1.255
+PASS 1.2610459770114943 == 1.261: within 0.002; 1.26105 vs 1.261 (SI)
+const1.4 f=.2  two-point slope 0.747 intercept 1.4058 | LSQ slope 0.677 intercept 1.4181 (se 0.0065) | lens 1.406 | same-release no-triple median 1.364
+PASS 1.4058275862068965 == 1.406: within 0.002; 1.40583 vs 1.406 (SI)
+PASS g2 - t2*(g1 - g2)/(t1 - t2) == (-g1*t2 + g2*t1)/(t1 - t2): symbolic
+PASS 0.14426460239268124 == 0.144: within 0.01; 0.144265 vs 0.144 (SI)
+fraction removed by ipd cut: 0.1443
+SUMMARY: 6 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

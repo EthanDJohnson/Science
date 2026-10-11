@@ -1,0 +1,74 @@
+# math_run log
+command:  python3 runs/2026-10-11-wide-binary-anomaly-gaia-dr4/calc/lens-constraints_sepdep.py
+started:  2026-10-11T05:40:28Z
+duration: 7.2 s
+exit:     0
+versions: python 3.13.16, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+base median v~ (alpha=1.3) = 0.5134
+
+=== 1. Inner-binary kicks vs wide separation (f_multi = 0.3, d = 150 pc, M_wide = 1.5 Msun) ===
+-- sigma_logP = 2.3 dex (assumed); P peak 300 yr (Raghavan+10)
+             RUWE-only removal: DR3 full 1.197 trunc 1.133 | DR4 full 1.164 trunc 1.122
+  s=  500 au: P(kappa>0.3)=0.534 P(kappa>1)=0.124 | DR3 flags ruwe 0.241 acc 0.430; DR4 flags ruwe 0.300 acc 0.494
+             gamma (all triples kept): full 1.208 trunc 1.146 | after DR3 flags: full 1.045 trunc 1.041 | after DR4 flags: full 1.021 trunc 1.020 | unflagged kappa>0.3 frac DR3 0.131 DR4 0.048
+             RUWE-only removal: DR3 full 1.238 trunc 1.134 | DR4 full 1.206 trunc 1.129
+  s= 1000 au: P(kappa>0.3)=0.603 P(kappa>1)=0.205 | DR3 flags ruwe 0.215 acc 0.384; DR4 flags ruwe 0.266 acc 0.442
+             gamma (all triples kept): full 1.253 trunc 1.151 | after DR3 flags: full 1.073 trunc 1.063 | after DR4 flags: full 1.041 trunc 1.038 | unflagged kappa>0.3 frac DR3 0.204 DR4 0.117
+             RUWE-only removal: DR3 full 1.274 trunc 1.124 | DR4 full 1.248 trunc 1.127
+  s= 2000 au: P(kappa>0.3)=0.665 P(kappa>1)=0.289 | DR3 flags ruwe 0.196 acc 0.349; DR4 flags ruwe 0.242 acc 0.402
+             gamma (all triples kept): full 1.292 trunc 1.143 | after DR3 flags: full 1.102 trunc 1.079 | after DR4 flags: full 1.066 trunc 1.058 | unflagged kappa>0.3 frac DR3 0.272 DR4 0.183
+             RUWE-only removal: DR3 full 1.328 trunc 1.118 | DR4 full 1.295 trunc 1.113
+  s= 5000 au: P(kappa>0.3)=0.732 P(kappa>1)=0.398 | DR3 flags ruwe 0.177 acc 0.319; DR4 flags ruwe 0.222 acc 0.365
+             gamma (all triples kept): full 1.354 trunc 1.139 | after DR3 flags: full 1.149 trunc 1.093 | after DR4 flags: full 1.101 trunc 1.073 | unflagged kappa>0.3 frac DR3 0.344 DR4 0.257
+             RUWE-only removal: DR3 full 1.364 trunc 1.108 | DR4 full 1.334 trunc 1.107
+  s=10000 au: P(kappa>0.3)=0.776 P(kappa>1)=0.476 | DR3 flags ruwe 0.167 acc 0.302; DR4 flags ruwe 0.209 acc 0.346
+             gamma (all triples kept): full 1.398 trunc 1.128 | after DR3 flags: full 1.182 trunc 1.094 | after DR4 flags: full 1.137 trunc 1.085 | unflagged kappa>0.3 frac DR3 0.387 DR4 0.305
+             RUWE-only removal: DR3 full 1.388 trunc 1.092 | DR4 full 1.368 trunc 1.093
+  s=20000 au: P(kappa>0.3)=0.815 P(kappa>1)=0.550 | DR3 flags ruwe 0.161 acc 0.289; DR4 flags ruwe 0.201 acc 0.333
+             gamma (all triples kept): full 1.436 trunc 1.113 | after DR3 flags: full 1.208 trunc 1.084 | after DR4 flags: full 1.164 trunc 1.079 | unflagged kappa>0.3 frac DR3 0.425 DR4 0.342
+-- sigma_logP = 1.5 dex (assumed); P peak 300 yr (Raghavan+10)
+             RUWE-only removal: DR3 full 1.228 trunc 1.155 | DR4 full 1.194 trunc 1.145
+  s=  500 au: P(kappa>0.3)=0.629 P(kappa>1)=0.138 | DR3 flags ruwe 0.123 acc 0.495; DR4 flags ruwe 0.174 acc 0.615
+             gamma (all triples kept): full 1.234 trunc 1.163 | after DR3 flags: full 1.056 trunc 1.051 | after DR4 flags: full 1.020 trunc 1.019 | unflagged kappa>0.3 frac DR3 0.177 DR4 0.063
+             RUWE-only removal: DR3 full 1.276 trunc 1.157 | DR4 full 1.244 trunc 1.153
+  s= 1000 au: P(kappa>0.3)=0.697 P(kappa>1)=0.231 | DR3 flags ruwe 0.107 acc 0.433; DR4 flags ruwe 0.153 acc 0.533
+             gamma (all triples kept): full 1.283 trunc 1.166 | after DR3 flags: full 1.091 trunc 1.078 | after DR4 flags: full 1.049 trunc 1.044 | unflagged kappa>0.3 frac DR3 0.267 DR4 0.149
+             RUWE-only removal: DR3 full 1.325 trunc 1.148 | DR4 full 1.292 trunc 1.146
+  s= 2000 au: P(kappa>0.3)=0.752 P(kappa>1)=0.330 | DR3 flags ruwe 0.096 acc 0.391; DR4 flags ruwe 0.137 acc 0.483
+             gamma (all triples kept): full 1.336 trunc 1.159 | after DR3 flags: full 1.126 trunc 1.097 | after DR4 flags: full 1.074 trunc 1.063 | unflagged kappa>0.3 frac DR3 0.341 DR4 0.224
+             RUWE-only removal: DR3 full 1.390 trunc 1.135 | DR4 full 1.360 trunc 1.134
+  s= 5000 au: P(kappa>0.3)=0.815 P(kappa>1)=0.464 | DR3 flags ruwe 0.089 acc 0.360; DR4 flags ruwe 0.125 acc 0.446
+             gamma (all triples kept): full 1.407 trunc 1.147 | after DR3 flags: full 1.181 trunc 1.110 | after DR4 flags: full 1.120 trunc 1.086 | unflagged kappa>0.3 frac DR3 0.415 DR4 0.300
+             RUWE-only removal: DR3 full 1.437 trunc 1.120 | DR4 full 1.417 trunc 1.122
+  s=10000 au: P(kappa>0.3)=0.855 P(kappa>1)=0.560 | DR3 flags ruwe 0.086 acc 0.347; DR4 flags ruwe 0.122 acc 0.429
+             gamma (all triples kept): full 1.462 trunc 1.133 | after DR3 flags: full 1.221 trunc 1.105 | after DR4 flags: full 1.158 trunc 1.094 | unflagged kappa>0.3 frac DR3 0.459 DR4 0.345
+             RUWE-only removal: DR3 full 1.485 trunc 1.099 | DR4 full 1.463 trunc 1.104
+  s=20000 au: P(kappa>0.3)=0.890 P(kappa>1)=0.655 | DR3 flags ruwe 0.084 acc 0.341; DR4 flags ruwe 0.119 acc 0.420
+             gamma (all triples kept): full 1.516 trunc 1.109 | after DR3 flags: full 1.257 trunc 1.090 | after DR4 flags: full 1.191 trunc 1.087 | unflagged kappa>0.3 frac DR3 0.490 DR4 0.378
+
+=== 2. Measurement noise sigma_v~ per axis (M = 1.5 Msun) ===
+  bias table sigma -> gamma: 0.00->1.000, 0.02->1.001, 0.05->1.011, 0.10->1.051, 0.15->1.111, 0.20->1.199, 0.25->1.314, 0.30->1.453, 0.40->1.811, 0.60->2.846
+  G=13 d=100pc sigma_mu DR3 0.0129 DR4 0.0054 mas/yr | sigma_v~ DR3/DR4: s=2k: 0.011/0.004 (bias 1.000/1.000); s=5k: 0.017/0.007 (bias 1.001/1.000); s=10k: 0.024/0.010 (bias 1.002/1.000); s=20k: 0.033/0.014 (bias 1.005/1.001)
+  G=13 d=200pc sigma_mu DR3 0.0129 DR4 0.0054 mas/yr | sigma_v~ DR3/DR4: s=2k: 0.021/0.009 (bias 1.001/1.000); s=5k: 0.033/0.014 (bias 1.005/1.001); s=10k: 0.047/0.020 (bias 1.010/1.001); s=20k: 0.067/0.028 (bias 1.024/1.004)
+  G=13 d=300pc sigma_mu DR3 0.0129 DR4 0.0054 mas/yr | sigma_v~ DR3/DR4: s=2k: 0.032/0.013 (bias 1.005/1.001); s=5k: 0.050/0.021 (bias 1.011/1.001); s=10k: 0.071/0.030 (bias 1.028/1.004); s=20k: 0.100/0.042 (bias 1.051/1.008)
+  G=15 d=100pc sigma_mu DR3 0.0283 DR4 0.0119 mas/yr | sigma_v~ DR3/DR4: s=2k: 0.023/0.010 (bias 1.002/1.000); s=5k: 0.037/0.015 (bias 1.007/1.001); s=10k: 0.052/0.022 (bias 1.013/1.002); s=20k: 0.074/0.031 (bias 1.030/1.005)
+  G=15 d=200pc sigma_mu DR3 0.0283 DR4 0.0119 mas/yr | sigma_v~ DR3/DR4: s=2k: 0.046/0.020 (bias 1.010/1.001); s=5k: 0.074/0.031 (bias 1.030/1.005); s=10k: 0.104/0.044 (bias 1.055/1.009); s=20k: 0.147/0.062 (bias 1.108/1.020)
+  G=15 d=300pc sigma_mu DR3 0.0283 DR4 0.0119 mas/yr | sigma_v~ DR3/DR4: s=2k: 0.070/0.029 (bias 1.027/1.004); s=5k: 0.110/0.046 (bias 1.063/1.010); s=10k: 0.156/0.065 (bias 1.122/1.023); s=20k: 0.221/0.093 (bias 1.247/1.045)
+  G=17 d=100pc sigma_mu DR3 0.0759 DR4 0.0319 mas/yr | sigma_v~ DR3/DR4: s=2k: 0.062/0.026 (bias 1.021/1.003); s=5k: 0.099/0.041 (bias 1.050/1.008); s=10k: 0.139/0.059 (bias 1.098/1.018); s=20k: 0.197/0.083 (bias 1.194/1.037)
+  G=17 d=200pc sigma_mu DR3 0.0759 DR4 0.0319 mas/yr | sigma_v~ DR3/DR4: s=2k: 0.125/0.052 (bias 1.081/1.013); s=5k: 0.197/0.083 (bias 1.194/1.037); s=10k: 0.279/0.117 (bias 1.394/1.071); s=20k: 0.394/0.166 (bias 1.790/1.139)
+  G=17 d=300pc sigma_mu DR3 0.0759 DR4 0.0319 mas/yr | sigma_v~ DR3/DR4: s=2k: 0.187/0.079 (bias 1.176/1.034); s=5k: 0.296/0.124 (bias 1.441/1.080); s=10k: 0.418/0.176 (bias 1.905/1.156); s=20k: 0.591/0.248 (bias 2.802/1.311)
+  G=19 d=100pc sigma_mu DR3 0.2713 DR4 0.1139 mas/yr | sigma_v~ DR3/DR4: s=2k: 0.223/0.094 (bias 1.252/1.046); s=5k: 0.353/0.148 (bias 1.641/1.109); s=10k: 0.499/0.209 (bias 2.321/1.221); s=20k: 0.705/0.296 (bias 2.846/1.442)
+  G=19 d=200pc sigma_mu DR3 0.2713 DR4 0.1139 mas/yr | sigma_v~ DR3/DR4: s=2k: 0.446/0.187 (bias 2.048/1.177); s=5k: 0.705/0.296 (bias 2.846/1.442); s=10k: 0.997/0.419 (bias 2.846/1.908); s=20k: 1.410/0.592 (bias 2.846/2.806)
+  G=19 d=300pc sigma_mu DR3 0.2713 DR4 0.1139 mas/yr | sigma_v~ DR3/DR4: s=2k: 0.669/0.281 (bias 2.846/1.400); s=5k: 1.058/0.444 (bias 2.846/2.039); s=10k: 1.496/0.628 (bias 2.846/2.846); s=20k: 2.115/0.888 (bias 2.846/2.846)
+
+=== 3. Galactic tide (ASSUMED inputs: Oort A = 15.3, B = -11.9 km/s/kpc; rho0 = 0.1 Msun/pc^3) ===
+  Jacobi radius (1.5 Msun) r_J = 323993 au = 1.57 pc
+  r = 5000 au: g_N = 3.558e-10 m/s^2, in-plane tide 1.308e-15 (ratio 3.68e-06), vertical tide 4.246e-15 (ratio 1.19e-05)
+  r = 10000 au: g_N = 8.895e-11 m/s^2, in-plane tide 2.615e-15 (ratio 2.94e-05), vertical tide 8.492e-15 (ratio 9.55e-05)
+  r = 30000 au: g_N = 9.883e-12 m/s^2, in-plane tide 7.846e-15 (ratio 7.94e-04), vertical tide 2.548e-14 (ratio 2.58e-03)
+
+--- stderr ---
+

@@ -1,0 +1,32 @@
+# math_run log
+command:  python3 runs/2026-10-11-wide-binary-anomaly-gaia-dr4/math/statistician/M-STATISTICIAN-01.py
+started:  2026-10-11T05:36:36Z
+duration: 2.5 s
+exit:     0
+versions: python 3.13.16, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   3 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+OK  Chae24b stat z (gamma): got 4.111, lens 4.1 (tol 0.05)
+OK  Chae24b stat z (Gamma): got 4.533, lens 4.5 (tol 0.05)
+OK  Chae24b stat+sys z (gamma): got 2.907, lens 2.9 (tol 0.05)
+OK  Chae24b stat+sys z (Gamma): got 3.206, lens 3.21 (tol 0.01)
+OK  two-sided p at z=3.21: got 0.001348, lens 0.0013 (tol 5e-05)
+OK  two-sided p at z=2.91: got 0.003649, lens 0.0037 (tol 0.0001)
+OK  Yoon+25 1.32 -0.11: got 2.909, lens 2.9 (tol 0.05)
+OK  Hernandez 1.5+-0.2: got 2.5, lens 2.5 (tol 0.01)
+OK  Chae24a pure 1.49 -0.19: got 2.579, lens 2.6 (tol 0.05)
+OK  Chae25 MOND 1.48 -0.23: got 2.087, lens 2.1 (tol 0.05)
+OK  Chae25 +transition 1.34 -0.08: got 4.25, lens 4.25 (tol 0.01)
+OK  Chae+26 1.60 -0.14: got 4.286, lens 4.29 (tol 0.01)
+OK  Chae23 1.43+-0.06: got 7.167, lens 7.2 (tol 0.05)
+OK  Chae23 re-analysed Gamma 0.059+-0.009: got 6.556, lens 6.6 (tol 0.05)
+Chae+26 w/o 2 systems z: [1.75, 1.839, 1.889] (lens: 1.8-1.9)
+PASS lim g->1 of g*log(g)/(g - 1) == 1: symbolic limit 1
+PASS log(10**G0)/log(10) == G0: symbolic
+PASS -s/sqrt(s**2 + t**2) + 1 is nonnegative: numeric at 50 points, s in [0.001, 1], t in [0, 1]
+ALL NUMERIC CHECKS OK
+SUMMARY: 3 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

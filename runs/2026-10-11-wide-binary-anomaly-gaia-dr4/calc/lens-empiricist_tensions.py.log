@@ -1,0 +1,48 @@
+# math_run log
+command:  python3 runs/2026-10-11-wide-binary-anomaly-gaia-dr4/calc/lens-empiricist_tensions.py
+started:  2026-10-11T05:09:01Z
+duration: 0.0 s
+exit:     0
+versions: python 3.13.16, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+== 1. Pairwise tensions (published gamma, low-acceleration) ==
+Chae 2024b total error (up, down) = (0.189, 0.127)
+Chae24b(stat+sys) 1.37 vs Boufourou E2 1.045 [same parent data]: diff = +0.325, sigma = 0.129, z = 2.51
+Chae24b(stat only) 1.37 vs Boufourou E2 1.045: diff = +0.325, sigma = 0.093, z = 3.50
+Chae24b(stat+sys) 1.37 vs Boufourou E3 1.05: diff = +0.320, sigma = 0.129, z = 2.48
+Chae24b(stat+sys) 1.37 vs Banik+24 0.99 (converted): diff = +0.380, sigma = 0.131, z = 2.91
+Chae 2023 1.43+-0.06 (stat) vs Banik+24 0.99: diff = +0.440, sigma = 0.067, z = 6.56
+Chae 2024a pure 1.49 vs Banik+24 0.99: diff = +0.500, sigma = 0.192, z = 2.60
+Hernandez+24 1.5+-0.2 vs 1.0: diff = +0.500, sigma = 0.200, z = 2.50
+Chae+26 1.60 vs Saad&Ting 1.00 [SAME 36 pairs; modelling only]: diff = +0.600, sigma = 0.278, z = 2.16
+Chae 2025 3D 1.48 vs 1.0: diff = +0.480, sigma = 0.230, z = 2.09
+Saad&Ting C3PO s>3kau 1.17 vs MOND 1.37: diff = -0.200, sigma = 0.370, z = 0.54
+Boufourou deep bin 1.11+-0.07 vs MOND 1.37: diff = -0.260, sigma = 0.070, z = 3.71
+Boufourou deep bin 1.11+-0.07 vs Newton 1.00: diff = +0.110, sigma = 0.070, z = 1.57
+
+== 2. Same-data decomposition of the Chae-vs-robust gap (Chae 2024 catalogue) ==
+implied full-median 1.12: estimator share = 0.075 of gap 0.325 = 23%; remaining (pipeline: cuts, f_multi, templates) = 0.250 = 77%
+implied full-median 1.20: estimator share = 0.155 of gap 0.325 = 48%; remaining (pipeline: cuts, f_multi, templates) = 0.170 = 52%
+Boufourou fiducial cuts keep 41760/81088 = 51.5% of pairs (D-31)
+Saad&Ting same 36 pairs: deprojection choice moves gamma 1.00 -> 1.56, delta = 0.56 (D-17)
+Cookson+26 cut choice: Newton 1501x (d<130pc, ipd=0) -> MOND 12x (d<150pc, no ipd): swing = 4.26 dex in Bayes-factor-like ratio (D-29)
+
+== 3. Grouped chi2 by camp (symmetrised: mean of up/down) -- correlated data, upper bound ==
+pro (Chae23, Chae24a, Chae24b tot, YTC25, Hern24, Chae25): mean = 1.436 +- 0.040, chi2 = 1.92/5, p = 0.860
+null (Banik24, BoufE2, Saad&Ting C3PO, S&T 36-pair): mean = 1.022 +- 0.016, chi2 = 3.04/3, p = 0.386
+between-camp chi2 = 93.4 (dof 1), z = 9.7
+within chi2 = 5.0/8, p = 0.762
+pooled mean = 1.081 +- 0.015, PDG scale factor S = 3.31 -> 1.081 +- 0.050
+
+== 4. Grouped chi2 by estimator family (provisional mapping, D-69) ==
+F1 full-median: mean = 1.403 +- 0.050, chi2 = 0.77/2, p = 0.681
+F2 tail-truncated: mean = 1.045 +- 0.022, chi2 = 0.00/0, p = 1.000
+F3 mixture: mean = 1.034 +- 0.013, chi2 = 4.24/1, p = 0.040
+F4 Bayes 3D (Chae25, Chae+26, S&T-36, C3PO): mean = 1.336 +- 0.117, chi2 = 4.94/3, p = 0.176
+between-family chi2 = 56.2 (dof 3), z = 6.9
+NOTE: F4 includes Chae+26 and S&T on the same 36 pairs (counted twice here deliberately to show within-family model spread); F1 entries share Chae 2023 parent data.
+
+--- stderr ---
+

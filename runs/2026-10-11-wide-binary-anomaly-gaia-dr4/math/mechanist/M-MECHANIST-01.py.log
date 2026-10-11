@@ -1,0 +1,31 @@
+# math_run log
+command:  python3 runs/2026-10-11-wide-binary-anomaly-gaia-dr4/math/mechanist/M-MECHANIST-01.py
+started:  2026-10-11T05:49:03Z
+duration: 0.4 s
+exit:     0
+versions: python 3.13.16, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   8 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+s = 2 kau: v_c = 0.8157 km/s (lens 0.816)
+PASS (G*1.5*Msun/(2e3 au))^0.5 == 0.816 km/s: within 0.002; 815.687 vs 816 (SI)
+s = 5 kau: v_c = 0.5159 km/s (lens 0.516)
+PASS (G*1.5*Msun/(5e3 au))^0.5 == 0.516 km/s: within 0.002; 515.886 vs 516 (SI)
+s = 10 kau: v_c = 0.3648 km/s (lens 0.365)
+PASS (G*1.5*Msun/(10e3 au))^0.5 == 0.365 km/s: within 0.002; 364.786 vs 365 (SI)
+s = 20 kau: v_c = 0.2579 km/s (lens 0.258)
+PASS (G*1.5*Msun/(20e3 au))^0.5 == 0.258 km/s: within 0.002; 257.943 vs 258 (SI)
+s = 30 kau: v_c = 0.2106 km/s (lens 0.211)
+PASS (G*1.5*Msun/(30e3 au))^0.5 == 0.211 km/s: within 0.002; 210.61 vs 211 (SI)
+PASS (G*1.5*Msun/(2e3 au))^0.5 has the dimension of m/s: dimensional analysis
+kick 0.1 km/s at 2 kau = 0.123 v_c (lens 0.12)
+kick 0.1 km/s at 20 kau = 0.388 v_c (lens 0.39)
+kick 0.5 km/s at 2 kau = 0.613 v_c (lens 0.61)
+kick 0.5 km/s at 20 kau = 1.938 v_c (lens 1.94)
+PASS sqrt(10) == sqrt(10): symbolic
+PASS lim s->0 of k*sqrt(s)/(sqrt(G)*sqrt(M)) == 0: symbolic limit 0
+PASS-like: arithmetic asserts passed
+SUMMARY: 8 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

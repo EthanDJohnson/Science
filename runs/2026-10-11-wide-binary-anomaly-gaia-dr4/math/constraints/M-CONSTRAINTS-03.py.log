@@ -1,0 +1,96 @@
+# math_run log
+command:  python3 runs/2026-10-11-wide-binary-anomaly-gaia-dr4/math/constraints/M-CONSTRAINTS-03.py
+started:  2026-10-11T06:07:13Z
+duration: 28.3 s
+exit:     0
+versions: python 3.13.16, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   42 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+PASS 0 == 0: symbolic
+  g_Ne (simple) / 1e-10 m s^-2: computed 1.37288 vs lens 1.373
+PASS 1.37287971275 == 1.373: within 0.001; 1.37288 vs 1.373 (SI)
+  simple log g_N = -11.0: computed 1.42276 vs lens 1.4228
+PASS 1.4227584755 == 1.4228: within 0.0003; 1.42276 vs 1.4228 (SI)
+  n1.5 log g_N = -11.0: computed 1.16694 vs lens 1.167
+PASS 1.16694138949 == 1.167: within 0.0003; 1.16694 vs 1.167 (SI)
+  standard log g_N = -11.0: computed 1.07258 vs lens 1.0726
+PASS 1.07258276526 == 1.0726: within 0.0003; 1.07258 vs 1.0726 (SI)
+  MLS log g_N = -11.0: computed 1.36909 vs lens 1.3691
+PASS 1.36909087134 == 1.3691: within 0.0003; 1.36909 vs 1.3691 (SI)
+  simple log g_N = -10.5: computed 1.4222 vs lens 1.4222
+PASS 1.4221994802 == 1.4222: within 0.0003; 1.4222 vs 1.4222 (SI)
+  n1.5 log g_N = -10.5: computed 1.16694 vs lens 1.167
+PASS 1.16694019358 == 1.167: within 0.0003; 1.16694 vs 1.167 (SI)
+  standard log g_N = -10.5: computed 1.07277 vs lens 1.0728
+PASS 1.07277145623 == 1.0728: within 0.0003; 1.07277 vs 1.0728 (SI)
+  MLS log g_N = -10.5: computed 1.36854 vs lens 1.3686
+PASS 1.36854320407 == 1.3686: within 0.0003; 1.36854 vs 1.3686 (SI)
+  simple log g_N = -10.0: computed 1.41591 vs lens 1.4159
+PASS 1.41591037372 == 1.4159: within 0.0003; 1.41591 vs 1.4159 (SI)
+  n1.5 log g_N = -10.0: computed 1.16675 vs lens 1.1668
+PASS 1.16675147328 == 1.1668: within 0.0003; 1.16675 vs 1.1668 (SI)
+  standard log g_N = -10.0: computed 1.0746 vs lens 1.0746
+PASS 1.07459827344 == 1.0746: within 0.0003; 1.0746 vs 1.0746 (SI)
+  MLS log g_N = -10.0: computed 1.36244 vs lens 1.3625
+PASS 1.36244417737 == 1.3625: within 0.0003; 1.36244 vs 1.3625 (SI)
+  simple log g_N = -9.75: computed 1.38207 vs lens 1.3821
+PASS 1.38206680067 == 1.3821: within 0.0003; 1.38207 vs 1.3821 (SI)
+  n1.5 log g_N = -9.75: computed 1.16329 vs lens 1.1633
+PASS 1.1632906949 == 1.1633: within 0.0003; 1.16329 vs 1.1633 (SI)
+  standard log g_N = -9.75: computed 1.07789 vs lens 1.0779
+PASS 1.07789326547 == 1.0779: within 0.0003; 1.07789 vs 1.0779 (SI)
+  MLS log g_N = -9.75: computed 1.33212 vs lens 1.3321
+PASS 1.3321193056 == 1.3321: within 0.0003; 1.33212 vs 1.3321 (SI)
+  simple log g_N = -9.5: computed 1.27624 vs lens 1.2762
+PASS 1.27624475949 == 1.2762: within 0.0003; 1.27624 vs 1.2762 (SI)
+  n1.5 log g_N = -9.5: computed 1.11168 vs lens 1.1117
+PASS 1.11168359231 == 1.1117: within 0.0003; 1.11168 vs 1.1117 (SI)
+  standard log g_N = -9.5: computed 1.05217 vs lens 1.0522
+PASS 1.05216833155 == 1.0522: within 0.0003; 1.05217 vs 1.0522 (SI)
+  MLS log g_N = -9.5: computed 1.22675 vs lens 1.2268
+PASS 1.22675145275 == 1.2268: within 0.0003; 1.22675 vs 1.2268 (SI)
+  simple log g_N = -9.0: computed 1.10761 vs lens 1.1076
+PASS 1.10760655225 == 1.1076: within 0.0003; 1.10761 vs 1.1076 (SI)
+  n1.5 log g_N = -9.0: computed 1.02618 vs lens 1.0262
+PASS 1.02617648211 == 1.0262: within 0.0003; 1.02618 vs 1.0262 (SI)
+  standard log g_N = -9.0: computed 1.00699 vs lens 1.007
+PASS 1.00698706512 == 1.007: within 0.0003; 1.00699 vs 1.007 (SI)
+  MLS log g_N = -9.0: computed 1.05848 vs lens 1.0585
+PASS 1.05847675235 == 1.0585: within 0.0003; 1.05848 vs 1.0585 (SI)
+  simple log g_N = -8.5: computed 1.03658 vs lens 1.0366
+PASS 1.03658429561 == 1.0366: within 0.0003; 1.03658 vs 1.0366 (SI)
+  n1.5 log g_N = -8.5: computed 1.00488 vs lens 1.0049
+PASS 1.0048809326 == 1.0049: within 0.0003; 1.00488 vs 1.0049 (SI)
+  standard log g_N = -8.5: computed 1.00072 vs lens 1.0007
+PASS 1.00071786622 == 1.0007: within 0.0003; 1.00072 vs 1.0007 (SI)
+  MLS log g_N = -8.5: computed 1.00593 vs lens 1.0059
+PASS 1.00592649874 == 1.0059: within 0.0003; 1.00593 vs 1.0059 (SI)
+  simple log g_N = -8.0: computed 1.01186 vs lens 1.0119
+PASS 1.0118586108 == 1.0119: within 0.0003; 1.01186 vs 1.0119 (SI)
+  n1.5 log g_N = -8.0: computed 1.00087 vs lens 1.0009
+PASS 1.00087492119 == 1.0009: within 0.0003; 1.00087 vs 1.0009 (SI)
+  standard log g_N = -8.0: computed 1.00007 vs lens 1.0001
+PASS 1.00007197866 == 1.0001: within 0.0003; 1.00007 vs 1.0001 (SI)
+  MLS log g_N = -8.0: computed 1.00011 vs lens 1.0001
+PASS 1.00010853506 == 1.0001: within 0.0003; 1.00011 vs 1.0001 (SI)
+  simple: Gauss result at g_N = 1e-14 equals linearised nu_e(1+K/3): computed 1.42282 vs lens 1.4228199425961489836
+PASS 1.42281994253 == 1.4228199425961489836: within 0.0001; 1.42282 vs 1.42282 (SI)
+  simple: Newton limit at g_N = 1e-4 m s^-2: computed 1 vs lens 1.0
+PASS 1.0000012 == 1.0: within 0.0001; 1 vs 1 (SI)
+  standard: Gauss result at g_N = 1e-14 equals linearised nu_e(1+K/3): computed 1.07256 vs lens 1.0725617504654743201
+PASS 1.07256175049 == 1.0725617504654743201: within 0.0001; 1.07256 vs 1.07256 (SI)
+  standard: Newton limit at g_N = 1e-4 m s^-2: computed 1 vs lens 1.0
+PASS 1 == 1.0: within 0.0001; 1 vs 1 (SI)
+  simple scoring-bin log-uniform mean: computed 1.39432 vs lens 1.393
+PASS 1.39432047577 == 1.393: within 0.001; 1.39432 vs 1.393 (SI)
+  standard scoring-bin log-uniform mean: computed 1.07297 vs lens 1.073
+PASS 1.0729684482 == 1.073: within 0.001; 1.07297 vs 1.073 (SI)
+  MLS scoring-bin log-uniform mean: computed 1.34212 vs lens 1.341
+PASS 1.34212343784 == 1.341: within 0.001; 1.34212 vs 1.341 (SI)
+  relative difference in (gamma_MOND - 1), exact vs bz18_simple preset 1.3748 (preset value taken from lens): computed 0.109686 vs lens 0.11
+PASS 0.109686162547 == 0.11: within 0.05; 0.109686 vs 0.11 (SI)
+SUMMARY: 42 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

@@ -1,0 +1,45 @@
+# math_run log
+command:  python3 runs/2026-10-11-wide-binary-anomaly-gaia-dr4/math/dialectician/M-DIALECTICIAN-05.py
+started:  2026-10-11T06:02:51Z
+duration: 0.4 s
+exit:     0
+versions: python 3.13.16, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   19 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+f=0.1: R=1.0416 (lens 1.042); excess ratio 2.265; residual/f 0.416
+PASS 1.041586073500967 == 1.042: within 0.001; 1.04159 vs 1.042 (SI)
+f=0.2: R=1.0619 (lens 1.062); excess ratio 1.694; residual/f 0.310
+PASS 1.0619307832422584 == 1.062: within 0.001; 1.06193 vs 1.062 (SI)
+f=0.3: R=1.0945 (lens 1.094); excess ratio 1.755; residual/f 0.315
+PASS 1.0944881889763778 == 1.094: within 0.001; 1.09449 vs 1.094 (SI)
+PASS 1.6938775510204058 == 1.7: within 0.01; 1.69388 vs 1.7 (SI)
+PASS 2.264705882352938 == 2.3: within 0.02; 2.26471 vs 2.3 (SI)
+PASS 0.3096539162112921 == 0.31: within 0.01; 0.309654 vs 0.31 (SI)
+PASS 0.3149606299212593 == 0.31: within 0.02; 0.314961 vs 0.31 (SI)
+LSQ slope through origin over f=0.1..0.3: 0.321; at f=0.1 the residual is 0.042 vs 0.31*0.1 = 0.031
+Newton f=.2: p=0.3 ratio 1.0338 (lens 1.034)
+PASS 1.0337591240875912 == 1.034: within 0.001; 1.03376 vs 1.034 (SI)
+Newton f=.3: p=0.3 ratio 1.0400 (lens 1.04)
+PASS 1.0399644760213145 == 1.04: within 0.001; 1.03996 vs 1.04 (SI)
+MOND f=.2: p=0.3 ratio 1.2534 (lens 1.253)
+PASS 1.2534309240622141 == 1.253: within 0.001; 1.25343 vs 1.253 (SI)
+PASS 0.031 == 0.03: within 0.08; 0.031 vs 0.03 (SI)
+surrogate f=0.1: 0.0310; LSQ-slope version 0.0321
+PASS 0.055799999999999995 == 0.06: within 0.08; 0.0558 vs 0.06 (SI)
+surrogate f=0.18: 0.0558; LSQ-slope version 0.0577
+PASS 0.1333 == 0.13: within 0.08; 0.1333 vs 0.13 (SI)
+surrogate f=0.43: 0.1333; LSQ-slope version 0.1379
+PASS 0.2015 == 0.2: within 0.08; 0.2015 vs 0.2 (SI)
+surrogate f=0.65: 0.2015; LSQ-slope version 0.2084
+f=.2: median-g(0.3) = 0.033 (lens 0.033); ratio to S-1 = 0.418
+PASS 0.03299999999999992 == 0.033: within 0.01; 0.033 vs 0.033 (SI)
+PASS 0.41772151898734095 == 0.4: within 0.06; 0.417722 vs 0.4 (SI)
+f=.3: median-g(0.3) = 0.080 (lens 0.08); ratio to S-1 = 0.388
+PASS 0.07999999999999985 == 0.08: within 0.01; 0.08 vs 0.08 (SI)
+PASS 0.3883495145631061 == 0.4: within 0.06; 0.38835 vs 0.4 (SI)
+PASS lim x->y of ((x + 1)/(y + 1) - 1)/(x - y) == 1/(y + 1): symbolic limit 1/(y + 1)
+SUMMARY: 19 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

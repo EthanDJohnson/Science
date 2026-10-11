@@ -1,0 +1,34 @@
+# math_run log
+command:  python3 runs/2026-10-11-wide-binary-anomaly-gaia-dr4/math/statistician/M-STATISTICIAN-10.py
+started:  2026-10-11T05:39:08Z
+duration: 27.0 s
+exit:     0
+versions: python 3.13.16, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   2 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+OK  total gap 1.37-1.045: got 0.325, lens 0.33 (tol 0.006)
+OK  median-vs-robust low: got 0.075, lens 0.07 (tol 0.006)
+OK  median-vs-robust high: got 0.155, lens 0.15 (tol 0.006)
+OK  pipeline low: got 0.17, lens 0.17 (tol 0.001)
+OK  pipeline high: got 0.25, lens 0.25 (tol 0.001)
+PASS M_true/M_est == M_true/M_est: symbolic
+PASS lim M_est->M_true of M_true/M_est == 1: symbolic limit 1
+10% mass underestimate multiplies gamma_est by 1.1111
+  applied to the lens's own f_t=0.2 baselines: median 1.11-1.15 -> 1.233-1.278 (increment 0.123-0.128); mixture 1.01-1.04 -> 1.122-1.156 (increment 0.112-0.116)
+  lens cand E states the mass shift as '+0.28 (median) and +0.15 (mixture)': these equal total gamma-1 at f_t=0.2 (1.28, 1.15), not the increment due to mass.
+self-check bound: max v~ = 1.4059 <= sqrt(2) = 1.4142
+  alpha=0.0: median v~ = 0.6047
+  alpha=1.0: median v~ = 0.5487
+  alpha=1.25: median v~ = 0.5382
+  alpha=1.3: median v~ = 0.5354
+  alpha=2.0: median v~ = 0.5126
+thermal truth analysed with alpha=1.25 template: gamma_est = 1.0395 (shift +0.039); with alpha=1.3 template: 1.0500 (shift +0.050)
+  applied multiplicatively to the lens's f_t=0.2 median baseline 1.11-1.15: 1.154-1.195 (lens sim: 1.177)
+BAD lens claim 'thermal vs alpha=1.3 changes median by +0.18': got 0.05002, lens 0.18 (tol 0.03)
+OK  <r>/a thermal = 1 + <e^2>/2 = 1.25: got 1.25, lens 1.25 (tol 0.003)
+SOME NUMERIC CHECK DIFFERS
+SUMMARY: 2 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

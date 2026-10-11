@@ -1,0 +1,42 @@
+# math_run log
+command:  python3 runs/2026-10-11-wide-binary-anomaly-gaia-dr4/calc/lens-examiner_dr4window.py
+started:  2026-10-11T05:23:17Z
+duration: 0.1 s
+exit:     0
+versions: python 3.13.16, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+
+--- s = 3000 au: v_c = 0.666 km/s; v_ph >= v_c for a_in <= 175 au; stability a_in <~ 432 au
+DR3 G~13  d=100 pc: P=T at a=2.1 au; 5sig accel to a=19 au; resolved beyond 50 au; hidden velocity-relevant window [19, 50] au -> log-uniform fraction 0.22
+DR3 G~13  d=200 pc: P=T at a=2.1 au; 5sig accel to a=14 au; resolved beyond 100 au; hidden velocity-relevant window [14, 100] au -> log-uniform fraction 0.45
+DR3 G~17  d=100 pc: P=T at a=2.1 au; 5sig accel to a=10 au; resolved beyond 50 au; hidden velocity-relevant window [10, 50] au -> log-uniform fraction 0.37
+DR3 G~17  d=200 pc: P=T at a=2.1 au; 5sig accel to a=7 au; resolved beyond 100 au; hidden velocity-relevant window [7, 100] au -> log-uniform fraction 0.61
+DR4 G~13  d=100 pc: P=T at a=3.3 au; 5sig accel to a=58 au; resolved beyond 50 au; hidden velocity-relevant window [58, 50] au -> log-uniform fraction 0.00
+DR4 G~13  d=200 pc: P=T at a=3.3 au; 5sig accel to a=41 au; resolved beyond 100 au; hidden velocity-relevant window [41, 100] au -> log-uniform fraction 0.22
+DR4 G~17  d=100 pc: P=T at a=3.3 au; 5sig accel to a=24 au; resolved beyond 50 au; hidden velocity-relevant window [24, 50] au -> log-uniform fraction 0.19
+DR4 G~17  d=200 pc: P=T at a=3.3 au; 5sig accel to a=17 au; resolved beyond 100 au; hidden velocity-relevant window [17, 100] au -> log-uniform fraction 0.45
+
+--- s = 10000 au: v_c = 0.365 km/s; v_ph >= v_c for a_in <= 583 au; stability a_in <~ 1440 au
+DR3 G~13  d=100 pc: P=T at a=2.1 au; 5sig accel to a=19 au; resolved beyond 50 au; hidden velocity-relevant window [19, 50] au -> log-uniform fraction 0.17
+DR3 G~13  d=200 pc: P=T at a=2.1 au; 5sig accel to a=14 au; resolved beyond 100 au; hidden velocity-relevant window [14, 100] au -> log-uniform fraction 0.35
+DR3 G~17  d=100 pc: P=T at a=2.1 au; 5sig accel to a=10 au; resolved beyond 50 au; hidden velocity-relevant window [10, 50] au -> log-uniform fraction 0.29
+DR3 G~17  d=200 pc: P=T at a=2.1 au; 5sig accel to a=7 au; resolved beyond 100 au; hidden velocity-relevant window [7, 100] au -> log-uniform fraction 0.48
+DR4 G~13  d=100 pc: P=T at a=3.3 au; 5sig accel to a=58 au; resolved beyond 50 au; hidden velocity-relevant window [58, 50] au -> log-uniform fraction 0.00
+DR4 G~13  d=200 pc: P=T at a=3.3 au; 5sig accel to a=41 au; resolved beyond 100 au; hidden velocity-relevant window [41, 100] au -> log-uniform fraction 0.17
+DR4 G~17  d=100 pc: P=T at a=3.3 au; 5sig accel to a=24 au; resolved beyond 50 au; hidden velocity-relevant window [24, 50] au -> log-uniform fraction 0.14
+DR4 G~17  d=200 pc: P=T at a=3.3 au; 5sig accel to a=17 au; resolved beyond 100 au; hidden velocity-relevant window [17, 100] au -> log-uniform fraction 0.34
+
+--- s = 20000 au: v_c = 0.258 km/s; v_ph >= v_c for a_in <= 1166 au; stability a_in <~ 2880 au
+DR3 G~13  d=100 pc: P=T at a=2.1 au; 5sig accel to a=19 au; resolved beyond 50 au; hidden velocity-relevant window [19, 50] au -> log-uniform fraction 0.15
+DR3 G~13  d=200 pc: P=T at a=2.1 au; 5sig accel to a=14 au; resolved beyond 100 au; hidden velocity-relevant window [14, 100] au -> log-uniform fraction 0.32
+DR3 G~17  d=100 pc: P=T at a=2.1 au; 5sig accel to a=10 au; resolved beyond 50 au; hidden velocity-relevant window [10, 50] au -> log-uniform fraction 0.26
+DR3 G~17  d=200 pc: P=T at a=2.1 au; 5sig accel to a=7 au; resolved beyond 100 au; hidden velocity-relevant window [7, 100] au -> log-uniform fraction 0.43
+DR4 G~13  d=100 pc: P=T at a=3.3 au; 5sig accel to a=58 au; resolved beyond 50 au; hidden velocity-relevant window [58, 50] au -> log-uniform fraction 0.00
+DR4 G~13  d=200 pc: P=T at a=3.3 au; 5sig accel to a=41 au; resolved beyond 100 au; hidden velocity-relevant window [41, 100] au -> log-uniform fraction 0.15
+DR4 G~17  d=100 pc: P=T at a=3.3 au; 5sig accel to a=24 au; resolved beyond 50 au; hidden velocity-relevant window [24, 50] au -> log-uniform fraction 0.13
+DR4 G~17  d=200 pc: P=T at a=3.3 au; 5sig accel to a=17 au; resolved beyond 100 au; hidden velocity-relevant window [17, 100] au -> log-uniform fraction 0.30
+
+--- stderr ---
+

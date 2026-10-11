@@ -1,0 +1,60 @@
+# math_run log
+command:  python3 runs/2026-10-11-wide-binary-anomaly-gaia-dr4/math/constraints/M-CONSTRAINTS-01.py
+started:  2026-10-11T06:06:08Z
+duration: 1.1 s
+exit:     0
+versions: python 3.13.16, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   23 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+PASS (232.8 km/s)^2/(8.2 kpc) == 2.142e-10 m/s^2: within 0.001; 2.14191e-10 vs 2.142e-10 (SI)
+g_ext/a0 = 1.785
+  g_ext/a0: computed 1.785 vs lens 1.785
+PASS 1.785 == 1.785: within 0.002; 1.785 vs 1.785 (SI)
+PASS K*nu_e*(3*z**2/(x**2 + y**2 + z**2) - 1)/(x**2 + y**2 + z**2)**(3/2) - nu_e*(2*K*x**2*((x**2 + y**2)/(x**2 + y**2 + z**2) - 1)/(x**2 + y**2 + z**2) + K*(4*x**2*(x**2 + y**2)/(x**2 + y**2 + z**2)**2 - 4*x**2/(x**2 + y**2 + z**2) - (x**2 + y**2)/(x**2 + y**2 + z**2) + 1) + (3*x**2/(x**2 + y**2 + z**2) - 1)*(K*(x**2 + y**2)/(x**2 + y**2 + z**2) + 2)/2)/(x**2 + y**2 + z**2)**(3/2) - nu_e*(2*K*y**2*((x**2 + y**2)/(x**2 + y**2 + z**2) - 1)/(x**2 + y**2 + z**2) + K*(4*y**2*(x**2 + y**2)/(x**2 + y**2 + z**2)**2 - 4*y**2/(x**2 + y**2 + z**2) - (x**2 + y**2)/(x**2 + y**2 + z**2) + 1) + (3*y**2/(x**2 + y**2 + z**2) - 1)*(K*(x**2 + y**2)/(x**2 + y**2 + z**2) + 2)/2)/(x**2 + y**2 + z**2)**(3/2) - nu_e*(2*K*z**2*(x**2 + y**2)/(x**2 + y**2 + z**2)**2 + K*(x**2 + y**2)*(4*z**2/(x**2 + y**2 + z**2) - 1)/(x**2 + y**2 + z**2) + (3*z**2/(x**2 + y**2 + z**2) - 1)*(K*(x**2 + y**2)/(x**2 + y**2 + z**2) + 2)/2)/(x**2 + y**2 + z**2)**(3/2) == 0: symbolic
+PASS 2/3 == 2/3: symbolic
+simple: y_e=1.14407 nu_e=1.56022 K=-0.26420
+  simple QUMOND: computed 1.42282 vs lens 1.4228
+PASS 1.4228199426 == 1.4228: within 0.0002; 1.42282 vs 1.4228 (SI)
+  simple AQUAL: computed 1.40563 vs lens 1.4056
+PASS 1.405627298 == 1.4056: within 0.0002; 1.40563 vs 1.4056 (SI)
+  simple nu_e: computed 1.56022 vs lens 1.5602
+PASS 1.56022408964 == 1.5602: within 0.0002; 1.56022 vs 1.5602 (SI)
+standard: y_e=1.55727 nu_e=1.14623 K=-0.19282
+  standard QUMOND: computed 1.07256 vs lens 1.0726
+PASS 1.07256175047 == 1.0726: within 0.0002; 1.07256 vs 1.0726 (SI)
+  standard AQUAL: computed 1.06616 vs lens 1.0662
+PASS 1.06615983761 == 1.0662: within 0.0002; 1.06616 vs 1.0662 (SI)
+  standard nu_e: computed 1.14623 vs lens 1.1462
+PASS 1.14623341018 == 1.1462: within 0.0002; 1.14623 vs 1.1462 (SI)
+MLS: y_e=1.18362 nu_e=1.50809 K=-0.27639
+  MLS QUMOND: computed 1.36915 vs lens 1.3692
+PASS 1.36915113814 == 1.3692: within 0.0002; 1.36915 vs 1.3692 (SI)
+  MLS AQUAL: computed 1.3508 vs lens 1.3508
+PASS 1.35080360471 == 1.3508: within 0.0002; 1.3508 vs 1.3508 (SI)
+  MLS nu_e: computed 1.50809 vs lens 1.5081
+PASS 1.50808924796 == 1.5081: within 0.0002; 1.50809 vs 1.5081 (SI)
+  n=1.5 QUMOND: computed 1.16694 vs lens 1.167
+PASS 1.16694135297 == 1.167: within 0.0002; 1.16694 vs 1.167 (SI)
+  simple perpendicular: computed 1.35412 vs lens 1.354
+PASS 1.35411786908 == 1.354: within 0.001; 1.35412 vs 1.354 (SI)
+  simple at 1.71 a0: computed 1.44241 vs lens 1.4424
+PASS 1.44240580487 == 1.4424: within 0.0003; 1.44241 vs 1.4424 (SI)
+  simple at 2.09 a0: computed 1.35797 vs lens 1.358
+PASS 1.35797428668 == 1.358: within 0.0003; 1.35797 vs 1.358 (SI)
+  standard at 1.71 a0: computed 1.08002 vs lens 1.08
+PASS 1.08002119438 == 1.08: within 0.0003; 1.08002 vs 1.08 (SI)
+  standard at 2.09 a0: computed 1.05054 vs lens 1.0505
+PASS 1.05054490504 == 1.0505: within 0.0003; 1.05054 vs 1.0505 (SI)
+  MLS at 1.71 a0: computed 1.38941 vs lens 1.3894
+PASS 1.38941018702 == 1.3894: within 0.0003; 1.38941 vs 1.3894 (SI)
+  MLS at 2.09 a0: computed 1.30209 vs lens 1.3021
+PASS 1.30209249032 == 1.3021: within 0.0003; 1.30209 vs 1.3021 (SI)
+  simple, g_ext = 1e6 a0 (Newton limit): computed 1 vs lens 1.0
+PASS 1.00000066667 == 1.0: within 0.001; 1 vs 1 (SI)
+  deep-MOND EF limit: boost/nu_e -> 1 - 1/6 (K -> -1/2): computed 0.833342 vs lens 0.8333333333333334
+PASS 0.83334166625 == 0.8333333333333334: within 0.001; 0.833342 vs 0.833333 (SI)
+SUMMARY: 23 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

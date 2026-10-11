@@ -1,0 +1,107 @@
+# math_run log
+command:  python3 runs/2026-10-11-wide-binary-anomaly-gaia-dr4/calc/lens-constraints_vtilde.py
+started:  2026-10-11T05:36:27Z
+duration: 53.6 s
+exit:     0
+versions: python 3.13.16, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+=== A. Newtonian v~ distribution (no noise, no contaminants), N = 600000 per law ===
+  circular     median 0.6914 (half-sample 0.6916) | max 1.0000 | P(v~>1) 0.0000 | P(v~>1.2) 0.0000
+  uniform a=0  median 0.5895 (half-sample 0.5892) | max 1.3917 | P(v~>1) 0.0420 | P(v~>1.2) 0.0026
+  a=0.5        median 0.5535 (half-sample 0.5538) | max 1.3992 | P(v~>1) 0.0453 | P(v~>1.2) 0.0035
+  a=0.94       median 0.5296 (half-sample 0.5292) | max 1.3902 | P(v~>1) 0.0470 | P(v~>1.2) 0.0041
+  thermal a=1  median 0.5263 (half-sample 0.5264) | max 1.4054 | P(v~>1) 0.0467 | P(v~>1.2) 0.0041
+  a=1.17       median 0.5191 (half-sample 0.5188) | max 1.3912 | P(v~>1) 0.0469 | P(v~>1.2) 0.0043
+  a=1.2        median 0.5182 (half-sample 0.5181) | max 1.4009 | P(v~>1) 0.0471 | P(v~>1.2) 0.0043
+  a=1.3        median 0.5125 (half-sample 0.5127) | max 1.3909 | P(v~>1) 0.0473 | P(v~>1.2) 0.0043
+  a=1.5        median 0.5064 (half-sample 0.5069) | max 1.3977 | P(v~>1) 0.0473 | P(v~>1.2) 0.0045
+  a=2          median 0.4895 (half-sample 0.4888) | max 1.3972 | P(v~>1) 0.0472 | P(v~>1.2) 0.0050
+  reference D-48 (a^-1.6 MC): circular 0.6925, uniform 0.5896, thermal 0.5269, alpha=1.3 0.5134, alpha=2 0.4880
+
+=== B. Pseudo-Newtonian gamma: fraction of pairs above cuts, tail-truncated medians ===
+  thermal a=1 gamma_true 1.0000: P(v~>sqrt2) 0.0000, P(>1.6) 0.0000, P(>2) 0.0000, P(>2.5) 0.0000 | trunc-median 0.5263 -> naive gamma 1.0000 (consistent template: exact by construction)
+  thermal a=1 gamma_true 1.2000: P(v~>sqrt2) 0.0005, P(>1.6) 0.0000, P(>2) 0.0000, P(>2.5) 0.0000 | trunc-median 0.5764 -> naive gamma 1.1992 (consistent template: exact by construction)
+  thermal a=1 gamma_true 1.3700: P(v~>sqrt2) 0.0035, P(>1.6) 0.0000, P(>2) 0.0000, P(>2.5) 0.0000 | trunc-median 0.6146 -> naive gamma 1.3635 (consistent template: exact by construction)
+  thermal a=1 gamma_true 1.4228: P(v~>sqrt2) 0.0052, P(>1.6) 0.0001, P(>2) 0.0000, P(>2.5) 0.0000 | trunc-median 0.6257 -> naive gamma 1.4131 (consistent template: exact by construction)
+  a=1.3       gamma_true 1.0000: P(v~>sqrt2) 0.0000, P(>1.6) 0.0000, P(>2) 0.0000, P(>2.5) 0.0000 | trunc-median 0.5125 -> naive gamma 1.0000 (consistent template: exact by construction)
+  a=1.3       gamma_true 1.2000: P(v~>sqrt2) 0.0005, P(>1.6) 0.0000, P(>2) 0.0000, P(>2.5) 0.0000 | trunc-median 0.5612 -> naive gamma 1.1991 (consistent template: exact by construction)
+  a=1.3       gamma_true 1.3700: P(v~>sqrt2) 0.0038, P(>1.6) 0.0000, P(>2) 0.0000, P(>2.5) 0.0000 | trunc-median 0.5983 -> naive gamma 1.3627 (consistent template: exact by construction)
+  a=1.3       gamma_true 1.4228: P(v~>sqrt2) 0.0055, P(>1.6) 0.0001, P(>2) 0.0000, P(>2.5) 0.0000 | trunc-median 0.6090 -> naive gamma 1.4118 (consistent template: exact by construction)
+
+=== C. Full-median contamination bound (all contaminants above the clean median) ===
+  thermal a=1 f -> gamma_bias_max: 0.02->1.028, 0.05->1.074, 0.10->1.161, 0.15->1.263, 0.20->1.387, 0.25->1.539, 0.30->1.733, 0.40->2.365
+     uncalibrated contaminant fraction needed for gamma = 1.05: f >= 0.035
+     uncalibrated contaminant fraction needed for gamma = 1.10: f >= 0.066
+     uncalibrated contaminant fraction needed for gamma = 1.20: f >= 0.120
+     uncalibrated contaminant fraction needed for gamma = 1.37: f >= 0.193
+     uncalibrated contaminant fraction needed for gamma = 1.50: f >= 0.238
+  a=1.3       f -> gamma_bias_max: 0.02->1.029, 0.05->1.076, 0.10->1.166, 0.15->1.272, 0.20->1.402, 0.25->1.564, 0.30->1.771, 0.40->2.455
+     uncalibrated contaminant fraction needed for gamma = 1.05: f >= 0.034
+     uncalibrated contaminant fraction needed for gamma = 1.10: f >= 0.064
+     uncalibrated contaminant fraction needed for gamma = 1.20: f >= 0.117
+     uncalibrated contaminant fraction needed for gamma = 1.37: f >= 0.188
+     uncalibrated contaminant fraction needed for gamma = 1.50: f >= 0.231
+
+=== D. Triple perturbation (f = 0.2, kappa = |dv|/v_c(s), isotropic 3D kick projected) ===
+  kappa 0.10: full-median gamma 1.003 | trunc<sqrt2 gamma 1.003 (triples kept 1.00) | trunc<2.5 gamma 1.003 (kept 1.00)
+  kappa 0.20: full-median gamma 1.013 | trunc<sqrt2 gamma 1.013 (triples kept 1.00) | trunc<2.5 gamma 1.013 (kept 1.00)
+  kappa 0.30: full-median gamma 1.028 | trunc<sqrt2 gamma 1.027 (triples kept 1.00) | trunc<2.5 gamma 1.028 (kept 1.00)
+  kappa 0.50: full-median gamma 1.073 | trunc<sqrt2 gamma 1.069 (triples kept 0.99) | trunc<2.5 gamma 1.073 (kept 1.00)
+  kappa 0.75: full-median gamma 1.146 | trunc<sqrt2 gamma 1.131 (triples kept 0.95) | trunc<2.5 gamma 1.146 (kept 1.00)
+  kappa 1.00: full-median gamma 1.221 | trunc<sqrt2 gamma 1.176 (triples kept 0.87) | trunc<2.5 gamma 1.221 (kept 1.00)
+  kappa 1.50: full-median gamma 1.318 | trunc<sqrt2 gamma 1.165 (triples kept 0.60) | trunc<2.5 gamma 1.317 (kept 1.00)
+  kappa 2.00: full-median gamma 1.358 | trunc<sqrt2 gamma 1.093 (triples kept 0.33) | trunc<2.5 gamma 1.334 (kept 0.94)
+  kappa 4.00: full-median gamma 1.391 | trunc<sqrt2 gamma 1.016 (triples kept 0.06) | trunc<2.5 gamma 1.075 (kept 0.22)
+
+=== E. Measurement noise (per-axis Gaussian sigma in v~ units), Newtonian truth, alpha = 1.3 ===
+  sigma_v~ 0.02: full-median gamma (noise-free template) 1.0030; trunc<sqrt2 1.0030
+  sigma_v~ 0.05: full-median gamma (noise-free template) 1.0130; trunc<sqrt2 1.0130
+  sigma_v~ 0.10: full-median gamma (noise-free template) 1.0499; trunc<sqrt2 1.0493
+  sigma_v~ 0.15: full-median gamma (noise-free template) 1.1137; trunc<sqrt2 1.1112
+  sigma_v~ 0.20: full-median gamma (noise-free template) 1.2017; trunc<sqrt2 1.1943
+  sigma_v~ 0.30: full-median gamma (noise-free template) 1.4540; trunc<sqrt2 1.4162
+  scaling: sigma_v~ = 4.74 km/s * d[kpc] * sigma_mu,rel[mas/yr] / sqrt(G M/s) grows as s^0.5 at fixed d, M
+
+=== F. Eccentricity template mismatch (full median): gamma_spurious = (med_true/med_template)^2 ===
+  template thermal a=1 -> circular:1.725, uniform a=0:1.255, a=0.5:1.106, a=0.94:1.012, thermal a=1:1.000, a=1.17:0.973, a=1.2:0.969, a=1.3:0.948, a=1.5:0.926, a=2:0.865
+  template a=1.2       -> circular:1.780, uniform a=0:1.294, a=0.5:1.141, a=0.94:1.045, thermal a=1:1.032, a=1.17:1.004, a=1.2:1.000, a=1.3:0.978, a=1.5:0.955, a=2:0.893
+  template a=1.3       -> circular:1.820, uniform a=0:1.323, a=0.5:1.166, a=0.94:1.068, thermal a=1:1.055, a=1.17:1.026, a=1.2:1.022, a=1.3:1.000, a=1.5:0.976, a=2:0.912
+  template alpha=1.2: true alpha needed for gamma_spurious=1.10: 0.69 (circular gives 1.780)
+  template alpha=1.2: true alpha needed for gamma_spurious=1.20: 0.31 (circular gives 1.780)
+  template alpha=1.2: true alpha needed for gamma_spurious=1.37: 0.00 (circular gives 1.780)
+  template alpha=1.3: true alpha needed for gamma_spurious=1.10: 0.80 (circular gives 1.820)
+  template alpha=1.3: true alpha needed for gamma_spurious=1.20: 0.39 (circular gives 1.820)
+  template alpha=1.3: true alpha needed for gamma_spurious=1.37: 0.00 (circular gives 1.820)
+  observed (Hwang+22, D-41): alpha = 1.30 at 1-3 kau, 1.32 +0.09-0.08 at 3-10 kau, 1.17 +0.14-0.15 at 10-30 kau
+
+=== G. Hidden-companion mass underestimate (no velocity perturbation) ===
+  L~m^3.5, q_in~U(0.1,1): mean M_true/M_est 1.2689, median 1.2879, max 1.4541
+  L~m^3.5, q_in~U(0.5,1): mean M_true/M_est 1.3504, median 1.3521, max 1.4542
+  L~m^4.0, q_in~U(0.1,1): mean M_true/M_est 1.2787, median 1.2970, max 1.4799
+  L~m^4.0, q_in~U(0.5,1): mean M_true/M_est 1.3661, median 1.3685, max 1.4798
+  f=0.2, L~m^3.5, q_in~U(0.1,1), mass term only: full-median gamma 1.0461, trunc<sqrt2 gamma 1.0455
+  f=0.1 mass term only: full-median gamma 1.0222
+  f=0.3 mass term only: full-median gamma 1.0707
+  f=0.5 mass term only: full-median gamma 1.1214
+
+=== H. Statistical floor of a median estimator (thermal-ish alpha=1.3, Newton) ===
+  pdf at median f(m) = 1.4008, median m = 0.5125 -> sigma_gamma/gamma = 1.393/sqrt(N) (weights ignored in N)
+  N =     61: sigma_gamma(gamma=1) = 0.1783, (gamma=1.4) = 0.2497
+  N =    341: sigma_gamma(gamma=1) = 0.0754, (gamma=1.4) = 0.1056
+  N =   1000: sigma_gamma(gamma=1) = 0.0440, (gamma=1.4) = 0.0617
+  N =   3000: sigma_gamma(gamma=1) = 0.0254, (gamma=1.4) = 0.0356
+  N =   6389: sigma_gamma(gamma=1) = 0.0174, (gamma=1.4) = 0.0244
+  N =  10000: sigma_gamma(gamma=1) = 0.0139, (gamma=1.4) = 0.0195
+  N =  30000: sigma_gamma(gamma=1) = 0.0080, (gamma=1.4) = 0.0113
+  N =  50000: sigma_gamma(gamma=1) = 0.0062, (gamma=1.4) = 0.0087
+  N = 100000: sigma_gamma(gamma=1) = 0.0044, (gamma=1.4) = 0.0062
+  N needed for sigma_gamma = 0.005 at gamma=1: 77599
+  N needed for sigma_gamma = 0.010 at gamma=1: 19399
+  N needed for sigma_gamma = 0.020 at gamma=1: 4849
+  bootstrap check N=341: sd(gamma) = 0.0853 (analytic 0.0754; weights add variance)
+  bootstrap check N=3000: sd(gamma) = 0.0258 (analytic 0.0254; weights add variance)
+
+--- stderr ---
+

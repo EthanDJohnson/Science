@@ -1,0 +1,33 @@
+# math_run log
+command:  python3 runs/2026-10-11-wide-binary-anomaly-gaia-dr4/math/constraints/M-CONSTRAINTS-09.py
+started:  2026-10-11T06:09:50Z
+duration: 31.2 s
+exit:     1
+versions: python 3.13.16, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   4 PASS, 5 FAIL, 0 UNDECIDED
+
+--- stdout ---
+template alpha 1.2: a=-0.9: 1.721, a=-0.7: 1.602, a=-0.5: 1.501, a=-0.3: 1.418, a=0.0: 1.302, a=0.2: 1.234, a=0.31: 1.195, a=0.39: 1.176, a=0.5: 1.149, a=0.69: 1.102, a=0.8: 1.073, a=1.0: 1.040, a=1.17: 1.006, a=1.2: 1.000, a=1.3: 0.986, a=2.0: 0.893
+template alpha 1.3: a=-0.9: 1.746, a=-0.7: 1.625, a=-0.5: 1.522, a=-0.3: 1.438, a=0.0: 1.321, a=0.2: 1.252, a=0.31: 1.212, a=0.39: 1.193, a=0.5: 1.165, a=0.69: 1.118, a=0.8: 1.088, a=1.0: 1.054, a=1.17: 1.021, a=1.2: 1.014, a=1.3: 1.000, a=2.0: 0.906
+  tmpl 1.3, true 1.17: computed 1.02056 vs lens 1.026
+FAIL 1.02055948252 == 1.026: relative tolerance 0.005; 1.02056 vs 1.026 (SI)
+  tmpl 1.3, true 2: computed 0.905509 vs lens 0.912
+FAIL 0.905509051597 == 0.912: relative tolerance 0.005; 0.905509 vs 0.912 (SI)
+  tmpl 1.2, true 0.31 -> 1.20: computed 1.19496 vs lens 1.2
+PASS 1.19495537117 == 1.2: within 0.01; 1.19496 vs 1.2 (SI)
+  tmpl 1.3, true 0.39 -> 1.20: computed 1.1928 vs lens 1.2
+PASS 1.19280213814 == 1.2: within 0.01; 1.1928 vs 1.2 (SI)
+  tmpl 1.2, true 0.69 -> 1.10: computed 1.10247 vs lens 1.1
+PASS 1.10247273209 == 1.1: within 0.01; 1.10247 vs 1.1 (SI)
+  tmpl 1.3, true 0.80 -> 1.10: computed 1.08806 vs lens 1.1
+FAIL 1.08806055157 == 1.1: relative tolerance 0.01; 1.08806 vs 1.1 (SI)
+  tmpl 1.3, true alpha 0 (uniform) -> lens says 1.37 needs alpha ~ 0: computed 1.32076 vs lens 1.37
+FAIL 1.3207587228 == 1.37: relative tolerance 0.01; 1.32076 vs 1.37 (SI)
+  tmpl 1.2, true alpha 0 (uniform): computed 1.30231 vs lens 1.37
+FAIL 1.30231364033 == 1.37: relative tolerance 0.01; 1.30231 vs 1.37 (SI)
+  matched-template limit: computed 1 vs lens 1.0
+PASS 1 == 1.0: within 1e-12; 1 vs 1 (SI)
+SUMMARY: 4 pass, 5 fail, 0 undecided
+
+--- stderr ---
+

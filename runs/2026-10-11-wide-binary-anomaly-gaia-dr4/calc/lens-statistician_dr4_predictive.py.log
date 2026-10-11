@@ -1,0 +1,44 @@
+# math_run log
+command:  python3 runs/2026-10-11-wide-binary-anomaly-gaia-dr4/calc/lens-statistician_dr4_predictive.py
+started:  2026-10-11T05:15:17Z
+duration: 0.8 s
+exit:     0
+versions: python 3.13.16, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+sigma_stat DR3 -> DR4 (median of k):
+  F1: DR3 0.095 -> DR4 median 0.0534 [range 0.0425-0.0672]
+  F2: DR3 0.040 -> DR4 median 0.0225 [range 0.0179-0.0283]
+  F3: DR3 0.025 -> DR4 median 0.0141 [range 0.0112-0.0177]
+  F4: DR3 0.200 -> DR4 median 0.1519 [range 0.1155-0.2000]
+analyst-choice spread: {'F1': 0.05, 'F2': 0.035, 'F3': 0.035, 'F4': 0.12}
+
+family | hypothesis | median | 68% interval | P(0.95<=g<=1.05) | P(g>1.25) | mean | sd
+F1 | Newton | 1.231 | [1.137, 1.325] | 0.024 | 0.421 | 1.231 | 0.093
+F1 | MOND   | 1.346 | [1.243, 1.450] | 0.002 | 0.823 | 1.347 | 0.104
+F2 | Newton | 1.060 | [1.009, 1.111] | 0.408 | 0.000 | 1.060 | 0.052
+F2 | MOND   | 1.149 | [1.072, 1.233] | 0.091 | 0.113 | 1.152 | 0.077
+F3 | Newton | 1.020 | [0.975, 1.065] | 0.685 | 0.000 | 1.020 | 0.045
+F3 | MOND   | 1.149 | [1.073, 1.231] | 0.084 | 0.109 | 1.152 | 0.076
+F4 | Newton | 1.223 | [0.934, 1.522] | 0.108 | 0.465 | 1.227 | 0.287
+F4 | MOND   | 1.344 | [1.044, 1.627] | 0.070 | 0.623 | 1.337 | 0.289
+
+Discriminating power: density ratio p(x|MOND)/p(x|Newton) evaluated at each conditional median
+  F1 at median|Newton: 1.231  LR(M:N) = 0.506
+  F1 at median|MOND: 1.346  LR(M:N) = 1.9
+  F2 at median|Newton: 1.060  LR(M:N) = 0.376
+  F2 at median|MOND: 1.149  LR(M:N) = 2.62
+  F3 at median|Newton: 1.020  LR(M:N) = 0.126
+  F3 at median|MOND: 1.149  LR(M:N) = 24.5
+  F4 at median|Newton: 1.223  LR(M:N) = 0.964
+  F4 at median|MOND: 1.344  LR(M:N) = 1.09
+
+Illustrative combination with P(Newton)=0.75 (main session must substitute the judge's credences):
+  F1: median 1.256 68% [1.152, 1.367] P[0.95,1.05]=0.019 P(>1.25)=0.522
+  F2: median 1.074 68% [1.017, 1.148] P[0.95,1.05]=0.328 P(>1.25)=0.028
+  F3: median 1.037 68% [0.984, 1.125] P[0.95,1.05]=0.535 P(>1.25)=0.027
+  F4: median 1.254 68% [0.956, 1.552] P[0.95,1.05]=0.098 P(>1.25)=0.505
+
+--- stderr ---
+

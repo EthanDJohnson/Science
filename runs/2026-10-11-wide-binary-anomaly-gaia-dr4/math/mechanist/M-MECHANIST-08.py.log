@@ -1,0 +1,30 @@
+# math_run log
+command:  python3 runs/2026-10-11-wide-binary-anomaly-gaia-dr4/math/mechanist/M-MECHANIST-08.py
+started:  2026-10-11T05:52:41Z
+duration: 0.4 s
+exit:     1
+versions: python 3.13.16, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   1 PASS, 3 FAIL, 0 UNDECIDED
+
+--- stdout ---
+estimator | shift vs own f=0 (f=.1,.2,.3) | deviation from truth (f=0..0.3) | slope per unit residual (f=.3)
+E1a  | +0.053 +0.095 +0.152 | -0.011 +0.042 +0.084 +0.141 | 0.92
+E1b  | +0.056 +0.074 +0.090 | -0.062 -0.006 +0.012 +0.028 | 0.55
+E1c  | +0.059 +0.073 +0.094 | -0.088 -0.029 -0.015 +0.006 | 0.57
+E2a  | +0.066 +0.110 +0.152 | -0.029 +0.037 +0.081 +0.123 | 0.92
+E2b  | +0.062 +0.124 +0.182 | -0.017 +0.045 +0.107 +0.165 | 1.10
+E3   | +0.032 +0.056 +0.075 | -0.029 +0.003 +0.027 +0.046 | 0.45
+E4   | +0.065 +0.147 +0.191 | -0.027 +0.038 +0.120 +0.164 | 1.16
+PASS 0.028000000000000025 <= 0.0300000000000000: symbolic, constant
+FAIL 0.09000000000000008 <= 0.0300000000000000: numeric, constant; counterexample value = 0.06; value 0.06
+FAIL 0.09399999999999997 <= 0.0300000000000000: numeric, constant; counterexample value = 0.064; value 0.064
+FAIL -0.08799999999999997 >= -0.0600000000000000: numeric, constant; counterexample value = -0.028; value -0.028
+E1b: shift at f=0.3 is 0.59 of E1a's and 0.59 of E2a's
+E1c: shift at f=0.3 is 0.62 of E1a's and 0.62 of E2a's
+E3: shift at f=0.3 is 0.49 of E1a's and 0.49 of E2a's
+triple share 0.03: remaining 0.29 -> unbound fraction 0.188
+triple share 0.09: remaining 0.23 -> unbound fraction 0.149
+SUMMARY: 1 pass, 3 fail, 0 undecided
+
+--- stderr ---
+

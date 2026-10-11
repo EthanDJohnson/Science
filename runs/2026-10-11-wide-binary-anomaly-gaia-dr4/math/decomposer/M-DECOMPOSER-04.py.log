@@ -1,0 +1,59 @@
+# math_run log
+command:  python3 runs/2026-10-11-wide-binary-anomaly-gaia-dr4/math/decomposer/M-DECOMPOSER-04.py
+started:  2026-10-11T05:57:58Z
+duration: 111.1 s
+exit:     1
+versions: python 3.13.16, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   24 PASS, 4 FAIL, 0 UNDECIDED
+
+--- stdout ---
+PASS 0.9892492101789344 == 1.0: within 0.02; 0.989249 vs 1 (SI)
+PASS 1.3990096496019215 <= 1.4142135637873088: symbolic, constant
+PASS 1.250141434097559 == 1.2499741968388873: within 0.002; 1.25014 vs 1.24997 (SI)
+PASS 0.7853967780850155 == 0.7853981633974483: within 0.002; 0.785397 vs 0.785398 (SI)
+PASS 1.5234036254696548E-11 < 1.00000000000000E-9: symbolic, constant
+alpha=0.0: median v~ = 0.6049
+alpha=0.95: median v~ = 0.5516
+alpha=1.0: median v~ = 0.5492
+alpha=1.05: median v~ = 0.5472
+alpha=1.15: median v~ = 0.5425
+alpha=1.2: median v~ = 0.5408
+alpha=1.25: median v~ = 0.5385
+alpha=1.3: median v~ = 0.5366
+alpha=2.0: median v~ = 0.5135
+
+M-04: gamma_app = (med_truth/med_template)^2
+alpha2: TEST 0.902-0.916; CAL 0.867-0.896; diff 1.006-1.057
+thermal: TEST 1.032-1.048; CAL 0.991-1.025; diff 1.006-1.057
+uniform: TEST 1.251-1.271; CAL 1.202-1.243; diff 1.006-1.057
+PASS 0.935000000000000 >= 0.881799639253614: symbolic, constant
+PASS 0.935000000000000 <= 0.935961442022370: symbolic, constant
+PASS 0.865000000000000 >= 0.836718092541154: symbolic, constant
+PASS 0.865000000000000 <= 0.9260461606867927: symbolic, constant
+PASS 1.06300000000000 >= 1.011533260313631: symbolic, constant
+PASS 1.06300000000000 <= 1.0677323914133778: symbolic, constant
+PASS 0.997000000000000 >= 0.9614048540890511: symbolic, constant
+PASS 0.997000000000000 <= 1.0549520816949638: symbolic, constant
+PASS 1.30500000000000 >= 1.2310686804076623: symbolic, constant
+FAIL 1.30500000000000 <= 1.2907153814384649: numeric, constant; counterexample value = 0.01428461856; value 0.01428461856
+PASS 1.24600000000000 >= 1.1723999712600932: symbolic, constant
+PASS 1.24600000000000 <= 1.27308686657116: symbolic, constant
+PASS 0.055260498797570744 < 0.09531017980432493: symbolic, constant
+PASS 0.055260498797570744 < 0.09531017980432493: symbolic, constant
+PASS 0.055260498797570744 < 0.09531017980432493: symbolic, constant
+
+M-05: truncation at sqrt2, HTZ-like alpha = 1.25
+gam=1.291: P(v~>sqrt2) = 0.0041; median 0.6116 -> 0.6097 (-0.30%); max/sqrt(2gam) = 0.9936
+FAIL 0.004079 == 0.0125: relative tolerance 0.35; 0.004079 vs 0.0125 (SI)
+PASS 1.5965242438239036 <= 1.6068602942272239: symbolic, constant
+PASS 0.00301355401511072 < 0.0120000000000000: symbolic, constant
+FAIL -0.00301355401511072 == -0.009: relative tolerance 0.35; -0.00301355 vs -0.009 (SI)
+gam=1.266: P(v~>sqrt2) = 0.0032; median 0.6056 -> 0.6042 (-0.24%); max/sqrt(2gam) = 0.9936
+FAIL 0.0032105 == 0.0108: relative tolerance 0.35; 0.0032105 vs 0.0108 (SI)
+PASS 1.5809904608554195 <= 1.591225944064513: symbolic, constant
+PASS 0.0023895316765015773 < 0.0120000000000000: symbolic, constant
+PASS 0.0 <= 0: symbolic, constant
+SUMMARY: 24 pass, 4 fail, 0 undecided
+
+--- stderr ---
+

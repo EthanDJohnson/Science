@@ -1,0 +1,21 @@
+# math_run log
+command:  python3 runs/2026-10-11-wide-binary-anomaly-gaia-dr4/calc/lens-decomposer_budget.py
+started:  2026-10-11T05:25:13Z
+duration: 0.0 s
+exit:     0
+versions: python 3.13.16, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+Chae 2024b gamma = 1.368; total ln-gap to E2 = 0.269
+E1 global 1.12: pipeline/calibration part ln = 0.200 (74%), estimator-family part ln = 0.069 (26%)
+E1 deep 1.20: pipeline/calibration part ln = 0.131 (49%), estimator-family part ln = 0.138 (51%)
+E3 vs E2 on same data: ln = 0.0048
+Family-4 deprojection-prior swing on 36 pairs: ln = 0.445  (ratio 1.56) -> exceeds the whole family-1 gap ln 0.313: True
+f_triple=0.2: generator differential residual 1.075; share of Chae ln-gap explained = 23%
+f_triple=0.3: generator differential residual 1.128; share of Chae ln-gap explained = 38%
+Boufourou E1 Newtonian bias 1.08: share of ln(1.368) = 25%
+Boufourou E1 Newtonian bias 1.13: share of ln(1.368) = 39%
+
+--- stderr ---
+

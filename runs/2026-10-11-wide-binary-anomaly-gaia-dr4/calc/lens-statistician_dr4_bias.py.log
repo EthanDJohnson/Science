@@ -1,0 +1,130 @@
+# math_run log
+command:  python3 runs/2026-10-11-wide-binary-anomaly-gaia-dr4/calc/lens-statistician_dr4_bias.py
+started:  2026-10-11T05:11:19Z
+duration: 142.1 s
+exit:     0
+versions: python 3.13.16, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+MOND gamma at g_N=1e-10: bz18_simple 1.375  chae2024 1.333  at 10^-10.5: 1.414 1.362
+
+[N_t0.1] seed=1000 true median gamma in bin=1.000 N_bin=9473 N_cal=63160 f_cal=0.108 (cal-bin gammas [1.078, 1.042, 1.006, 0.97, 0.933, 0.854, 0.776]) t=10s
+   median         gamma=1.056 sigma_boot=0.016 N=9473 bias(gamma/true)=1.056
+   threshold      gamma=1.050 sigma_boot=0.014 N=9473 bias(gamma/true)=1.050
+   trimmed        gamma=1.073 sigma_boot=0.013 N=9473 bias(gamma/true)=1.073
+   mixture        gamma=1.016 sigma_boot=0.012 N=9473 bias(gamma/true)=1.016
+   bayes          gamma=1.108 sigma_boot=0.005 N=9473 bias(gamma/true)=1.108
+   median_fcal    gamma=0.973 sigma_boot=0.014 N=9473 bias(gamma/true)=0.973
+   median_empcal  gamma=0.996 sigma_boot=0.014 N=9473 bias(gamma/true)=0.996
+
+[N_t0.2] seed=1001 true median gamma in bin=1.000 N_bin=9581 N_cal=62980 f_cal=0.162 (cal-bin gammas [1.121, 1.084, 1.045, 1.009, 0.971, 0.89, 0.809]) t=11s
+   median         gamma=1.112 sigma_boot=0.017 N=9581 bias(gamma/true)=1.112
+   threshold      gamma=1.124 sigma_boot=0.013 N=9581 bias(gamma/true)=1.124
+   trimmed        gamma=1.174 sigma_boot=0.015 N=9581 bias(gamma/true)=1.174
+   mixture        gamma=1.040 sigma_boot=0.016 N=9581 bias(gamma/true)=1.040
+   bayes          gamma=1.185 sigma_boot=0.017 N=9581 bias(gamma/true)=1.185
+   median_fcal    gamma=0.987 sigma_boot=0.017 N=9581 bias(gamma/true)=0.987
+   median_empcal  gamma=1.009 sigma_boot=0.016 N=9581 bias(gamma/true)=1.009
+
+[N_t0.3] seed=1002 true median gamma in bin=1.000 N_bin=9580 N_cal=63144 f_cal=0.207 (cal-bin gammas [1.158, 1.122, 1.082, 1.045, 1.006, 0.922, 0.839]) t=12s
+   median         gamma=1.226 sigma_boot=0.019 N=9580 bias(gamma/true)=1.226
+   threshold      gamma=1.148 sigma_boot=0.014 N=9580 bias(gamma/true)=1.148
+   trimmed        gamma=1.286 sigma_boot=0.017 N=9580 bias(gamma/true)=1.286
+   mixture        gamma=1.008 sigma_boot=0.020 N=9580 bias(gamma/true)=1.008
+   bayes          gamma=1.237 sigma_boot=0.014 N=9580 bias(gamma/true)=1.237
+   median_fcal    gamma=1.057 sigma_boot=0.017 N=9580 bias(gamma/true)=1.057
+   median_empcal  gamma=1.074 sigma_boot=0.016 N=9580 bias(gamma/true)=1.074
+
+[N_t0.2_thermal] seed=1003 true median gamma in bin=1.000 N_bin=9480 N_cal=63525 f_cal=0.143 (cal-bin gammas [1.105, 1.069, 1.031, 0.995, 0.957, 0.876, 0.797]) t=10s
+   median         gamma=1.177 sigma_boot=0.016 N=9480 bias(gamma/true)=1.177
+   threshold      gamma=1.117 sigma_boot=0.017 N=9480 bias(gamma/true)=1.117
+   trimmed        gamma=1.208 sigma_boot=0.014 N=9480 bias(gamma/true)=1.208
+   mixture        gamma=1.043 sigma_boot=0.017 N=9480 bias(gamma/true)=1.043
+   bayes          gamma=1.188 sigma_boot=0.043 N=9480 bias(gamma/true)=1.188
+   median_fcal    gamma=1.058 sigma_boot=0.019 N=9480 bias(gamma/true)=1.058
+   median_empcal  gamma=1.079 sigma_boot=0.018 N=9480 bias(gamma/true)=1.079
+
+[N_t0.2_mass0.9] seed=1004 true median gamma in bin=1.000 N_bin=9674 N_cal=63333 f_cal=0.300 (cal-bin gammas [1.25, 1.211, 1.167, 1.13, 1.087, 1.0, 0.912]) t=10s
+   median         gamma=1.277 sigma_boot=0.022 N=9674 bias(gamma/true)=1.277
+   threshold      gamma=1.232 sigma_boot=0.017 N=9674 bias(gamma/true)=1.232
+   trimmed        gamma=1.312 sigma_boot=0.017 N=9674 bias(gamma/true)=1.312
+   mixture        gamma=1.150 sigma_boot=0.018 N=9674 bias(gamma/true)=1.150
+   bayes          gamma=1.342 sigma_boot=0.015 N=9674 bias(gamma/true)=1.342
+   median_fcal    gamma=1.020 sigma_boot=0.022 N=9674 bias(gamma/true)=1.020
+   median_empcal  gamma=1.038 sigma_boot=0.020 N=9674 bias(gamma/true)=1.038
+
+[N_t0.2_ca0.02] seed=1005 true median gamma in bin=nan N_bin=9739 N_cal=62348 f_cal=0.157 (cal-bin gammas [1.117, 1.082, 1.042, 1.006, 0.967, 0.886, 0.806]) t=11s
+   median         gamma=1.154 sigma_boot=0.016 N=9739 bias(gamma/true)=nan
+   threshold      gamma=1.104 sigma_boot=0.012 N=9739 bias(gamma/true)=nan
+   trimmed        gamma=1.205 sigma_boot=0.016 N=9739 bias(gamma/true)=nan
+   mixture        gamma=1.015 sigma_boot=0.013 N=9739 bias(gamma/true)=nan
+   bayes          gamma=1.150 sigma_boot=0.023 N=9739 bias(gamma/true)=nan
+   median_fcal    gamma=1.028 sigma_boot=0.017 N=9739 bias(gamma/true)=nan
+   median_empcal  gamma=1.058 sigma_boot=0.016 N=9739 bias(gamma/true)=nan
+
+[M_bz18_t0.2] seed=1006 true median gamma in bin=1.310 N_bin=9678 N_cal=62927 f_cal=0.170 (cal-bin gammas [1.127, 1.091, 1.052, 1.016, 0.977, 0.895, 0.814]) t=11s
+   median         gamma=1.434 sigma_boot=0.021 N=9678 bias(gamma/true)=1.095
+   threshold      gamma=1.378 sigma_boot=0.013 N=9678 bias(gamma/true)=1.052
+   trimmed        gamma=1.485 sigma_boot=0.018 N=9678 bias(gamma/true)=1.134
+   mixture        gamma=1.342 sigma_boot=0.019 N=9678 bias(gamma/true)=1.025
+   bayes          gamma=1.521 sigma_boot=0.030 N=9678 bias(gamma/true)=1.161
+   median_fcal    gamma=1.271 sigma_boot=0.022 N=9678 bias(gamma/true)=0.971
+   median_empcal  gamma=1.287 sigma_boot=0.021 N=9678 bias(gamma/true)=0.982
+
+[M_chae_t0.2] seed=1007 true median gamma in bin=1.284 N_bin=9436 N_cal=63248 f_cal=0.180 (cal-bin gammas [1.134, 1.096, 1.061, 1.024, 0.985, 0.908, 0.824]) t=10s
+   median         gamma=1.377 sigma_boot=0.020 N=9436 bias(gamma/true)=1.072
+   threshold      gamma=1.343 sigma_boot=0.029 N=9436 bias(gamma/true)=1.046
+   trimmed        gamma=1.427 sigma_boot=0.016 N=9436 bias(gamma/true)=1.111
+   mixture        gamma=1.300 sigma_boot=0.021 N=9436 bias(gamma/true)=1.012
+   bayes          gamma=1.472 sigma_boot=0.010 N=9436 bias(gamma/true)=1.147
+   median_fcal    gamma=1.214 sigma_boot=0.015 N=9436 bias(gamma/true)=0.946
+   median_empcal  gamma=1.228 sigma_boot=0.014 N=9436 bias(gamma/true)=0.957
+
+[M_bz18_t0.3] seed=1008 true median gamma in bin=1.304 N_bin=9377 N_cal=63008 f_cal=0.212 (cal-bin gammas [1.164, 1.126, 1.088, 1.05, 1.01, 0.926, 0.844]) t=12s
+   median         gamma=1.582 sigma_boot=0.023 N=9377 bias(gamma/true)=1.213
+   threshold      gamma=1.467 sigma_boot=0.022 N=9377 bias(gamma/true)=1.125
+   trimmed        gamma=1.662 sigma_boot=0.025 N=9377 bias(gamma/true)=1.274
+   mixture        gamma=1.369 sigma_boot=0.017 N=9377 bias(gamma/true)=1.050
+   bayes          gamma=1.628 sigma_boot=0.026 N=9377 bias(gamma/true)=1.248
+   median_fcal    gamma=1.371 sigma_boot=0.023 N=9377 bias(gamma/true)=1.051
+   median_empcal  gamma=1.374 sigma_boot=0.021 N=9377 bias(gamma/true)=1.053
+
+[N_t0.2_seed2] seed=1009 true median gamma in bin=1.000 N_bin=9607 N_cal=63152 f_cal=0.155 (cal-bin gammas [1.114, 1.078, 1.039, 1.004, 0.966, 0.888, 0.806]) t=11s
+   median         gamma=1.154 sigma_boot=0.017 N=9607 bias(gamma/true)=1.154
+   threshold      gamma=1.124 sigma_boot=0.019 N=9607 bias(gamma/true)=1.124
+   trimmed        gamma=1.180 sigma_boot=0.015 N=9607 bias(gamma/true)=1.180
+   mixture        gamma=1.020 sigma_boot=0.019 N=9607 bias(gamma/true)=1.020
+   bayes          gamma=1.172 sigma_boot=0.020 N=9607 bias(gamma/true)=1.172
+   median_fcal    gamma=1.029 sigma_boot=0.011 N=9607 bias(gamma/true)=1.029
+   median_empcal  gamma=1.050 sigma_boot=0.011 N=9607 bias(gamma/true)=1.050
+
+[M_bz18_t0.2_seed2] seed=1010 true median gamma in bin=1.309 N_bin=9714 N_cal=63080 f_cal=0.178 (cal-bin gammas [1.133, 1.097, 1.06, 1.022, 0.983, 0.904, 0.822]) t=11s
+   median         gamma=1.439 sigma_boot=0.022 N=9714 bias(gamma/true)=1.099
+   threshold      gamma=1.385 sigma_boot=0.014 N=9714 bias(gamma/true)=1.059
+   trimmed        gamma=1.485 sigma_boot=0.018 N=9714 bias(gamma/true)=1.135
+   mixture        gamma=1.326 sigma_boot=0.027 N=9714 bias(gamma/true)=1.013
+   bayes          gamma=1.495 sigma_boot=0.017 N=9714 bias(gamma/true)=1.143
+   median_fcal    gamma=1.269 sigma_boot=0.020 N=9714 bias(gamma/true)=0.969
+   median_empcal  gamma=1.281 sigma_boot=0.019 N=9714 bias(gamma/true)=0.979
+
+[N_t0.2_DR3] seed=1011 true median gamma in bin=1.000 N_bin=9600 N_cal=63167 f_cal=0.172 (cal-bin gammas [1.131, 1.092, 1.054, 1.017, 0.978, 0.897, 0.814]) t=11s
+   median         gamma=1.135 sigma_boot=0.020 N=9600 bias(gamma/true)=1.135
+   threshold      gamma=1.058 sigma_boot=0.015 N=9600 bias(gamma/true)=1.058
+   trimmed        gamma=1.185 sigma_boot=0.016 N=9600 bias(gamma/true)=1.185
+   mixture        gamma=0.991 sigma_boot=0.021 N=9600 bias(gamma/true)=0.991
+   bayes          gamma=1.158 sigma_boot=0.026 N=9600 bias(gamma/true)=1.158
+   median_fcal    gamma=0.991 sigma_boot=0.014 N=9600 bias(gamma/true)=0.991
+   median_empcal  gamma=1.120 sigma_boot=0.014 N=9600 bias(gamma/true)=1.120
+
+[M_bz18_t0.2_DR3] seed=1012 true median gamma in bin=1.307 N_bin=9546 N_cal=63153 f_cal=0.190 (cal-bin gammas [1.146, 1.111, 1.072, 1.034, 0.992, 0.912, 0.83]) t=11s
+   median         gamma=1.471 sigma_boot=0.026 N=9546 bias(gamma/true)=1.126
+   threshold      gamma=1.363 sigma_boot=0.020 N=9546 bias(gamma/true)=1.043
+   trimmed        gamma=1.512 sigma_boot=0.020 N=9546 bias(gamma/true)=1.157
+   mixture        gamma=1.334 sigma_boot=0.026 N=9546 bias(gamma/true)=1.021
+   bayes          gamma=1.474 sigma_boot=0.032 N=9546 bias(gamma/true)=1.128
+   median_fcal    gamma=1.275 sigma_boot=0.018 N=9546 bias(gamma/true)=0.976
+   median_empcal  gamma=1.393 sigma_boot=0.017 N=9546 bias(gamma/true)=1.066
+
+--- stderr ---
+

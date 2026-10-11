@@ -1,0 +1,49 @@
+# math_run log
+command:  python3 runs/2026-10-11-wide-binary-anomaly-gaia-dr4/calc/lens-dialectician_massplit.py
+started:  2026-10-11T05:29:53Z
+duration: 43.2 s
+exit:     0
+versions: python 3.13.16, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+(a) Gamma -> gamma conversions
+  Chae+26 all, gN<10^-9.1                Gamma=0.102 -> gamma=1.600
+  Chae+26 all, gN<10^-9.5                Gamma=0.132 -> gamma=1.837
+  Chae+26 minus 2 systems, <10^-9.1      Gamma=0.042 -> gamma=1.213
+  minus 2, <10^-9.5                      Gamma=0.057 -> gamma=1.300
+  minus 2, <10^-10.1                     Gamma=0.085 -> gamma=1.479
+  Chae 2025 MOND regime                  Gamma=0.085 -> gamma=1.479
+  Chae 2025 high-g                       Gamma=0.000 -> gamma=1.000
+  Chae 2024b new sample                  Gamma=0.068 -> gamma=1.368
+
+(b) M_est tercile edges [Msun]: [0.427 0.804 1.109 2.597]
+  Newton f_t=0.2
+    s  2000- 3500 au: gamma_med lowM 1.125 midM 1.146 highM 1.140 | low-high -0.015
+    s  3500- 6000 au: gamma_med lowM 1.128 midM 1.131 highM 1.156 | low-high -0.029
+    s  6000-12000 au: gamma_med lowM 1.151 midM 1.154 highM 1.164 | low-high -0.014
+    s 12000-30000 au: gamma_med lowM 1.155 midM 1.179 highM 1.149 | low-high +0.006
+  Newton f_t=0.3
+    s  2000- 3500 au: gamma_med lowM 1.225 midM 1.217 highM 1.212 | low-high +0.013
+    s  3500- 6000 au: gamma_med lowM 1.222 midM 1.218 highM 1.247 | low-high -0.025
+    s  6000-12000 au: gamma_med lowM 1.176 midM 1.215 highM 1.248 | low-high -0.072
+    s 12000-30000 au: gamma_med lowM 1.255 midM 1.296 highM 1.300 | low-high -0.045
+  MOND chae2024 f_t=0
+    s  2000- 3500 au: gamma_med lowM 1.111 midM 1.115 highM 1.063 | low-high +0.048
+    s  3500- 6000 au: gamma_med lowM 1.196 midM 1.181 highM 1.166 | low-high +0.029
+    s  6000-12000 au: gamma_med lowM 1.272 midM 1.260 highM 1.263 | low-high +0.009
+    s 12000-30000 au: gamma_med lowM 1.287 midM 1.316 highM 1.347 | low-high -0.060
+  MOND chae2024 f_t=0.2
+    s  2000- 3500 au: gamma_med lowM 1.269 midM 1.249 highM 1.242 | low-high +0.026
+    s  3500- 6000 au: gamma_med lowM 1.366 midM 1.354 highM 1.344 | low-high +0.022
+    s  6000-12000 au: gamma_med lowM 1.487 midM 1.422 highM 1.441 | low-high +0.047
+    s 12000-30000 au: gamma_med lowM 1.471 midM 1.488 highM 1.510 | low-high -0.039
+
+  chae2024 gamma_MOND at g_N = G M/(1.2 s)^2 for M = 0.8 / 1.3 / 2.0 Msun:
+    s ~   2646 au: 1.185 1.129 1.090
+    s ~   4583 au: 1.308 1.262 1.208
+    s ~   8485 au: 1.357 1.344 1.327
+    s ~  18974 au: 1.367 1.366 1.364
+
+--- stderr ---
+

@@ -1,0 +1,17 @@
+# math_run log
+command:  python3 runs/2026-10-11-wide-binary-anomaly-gaia-dr4/calc/lens-mechanist_grid_g14.py
+started:  2026-10-11T05:16:04Z
+duration: 151.8 s
+exit:     0
+versions: python 3.13.16, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+f_triple=0.0 gamma_inj=1.4 | N_low=9958 N_cal=48218 trip_frac_low_after_cuts=0.000 med_low=0.6050 med_cal=0.5306 fmulti_cal=0.086 E3_ftrip=0.000 | E1a=1.356±0.013 E1b=1.300±0.020 E1c=1.282±0.012 E2a=1.386±0.017 E2b=1.358±0.020 E3=1.386±0.013 E4=1.396±0.006
+f_triple=0.1 gamma_inj=1.4 | N_low=9200 N_cal=45191 trip_frac_low_after_cuts=0.046 med_low=0.6305 med_cal=0.5384 fmulti_cal=0.124 E3_ftrip=0.044 | E1a=1.476±0.028 E1b=1.371±0.021 E1c=1.362±0.027 E2a=1.438±0.012 E2b=1.466±0.016 E3=1.414±0.009 E4=1.450±0.025
+f_triple=0.2 gamma_inj=1.4 | N_low=8750 N_cal=42133 trip_frac_low_after_cuts=0.100 med_low=0.6403 med_cal=0.5376 fmulti_cal=0.121 E3_ftrip=0.081 | E1a=1.523±0.020 E1b=1.419±0.023 E1c=1.409±0.018 E2a=1.478±0.016 E2b=1.542±0.022 E3=1.452±0.020 E4=1.548±0.016
+f_triple=0.3 gamma_inj=1.4 | N_low=8085 N_cal=39004 trip_frac_low_after_cuts=0.152 med_low=0.6478 med_cal=0.5450 fmulti_cal=0.157 E3_ftrip=0.137 | E1a=1.559±0.027 E1b=1.413±0.020 E1c=1.406±0.025 E2a=1.473±0.012 E2b=1.563±0.012 E3=1.404±0.020 E4=1.540±0.017
+elapsed 151.6 s
+
+--- stderr ---
+

@@ -1,0 +1,37 @@
+# math_run log
+command:  python3 runs/2026-10-11-wide-binary-anomaly-gaia-dr4/math/constraints/M-CONSTRAINTS-05.py
+started:  2026-10-11T06:08:33Z
+duration: 14.0 s
+exit:     0
+versions: python 3.13.16, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   9 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+PASS x**0.6/s**1.6 == x**0.6/s**1.6: numeric at 50 points, s in [0.5, 5], x in [0.05, 1]
+circular: half-sample medians 0.6905 0.6909
+  median v~ circular: computed 0.690707 vs lens 0.6914
+PASS 0.690706846841 == 0.6914: within 0.0025; 0.690707 vs 0.6914 (SI)
+uniform: half-sample medians 0.5888 0.5886
+  median v~ uniform: computed 0.588673 vs lens 0.5895
+PASS 0.588672553559 == 0.5895: within 0.0025; 0.588673 vs 0.5895 (SI)
+thermal: half-sample medians 0.5257 0.5263
+  median v~ thermal: computed 0.526022 vs lens 0.5263
+PASS 0.526022046458 == 0.5263: within 0.0025; 0.526022 vs 0.5263 (SI)
+1.17: half-sample medians 0.5195 0.5188
+  median v~ 1.17: computed 0.519127 vs lens 0.5191
+PASS 0.519127303768 == 0.5191: within 0.0025; 0.519127 vs 0.5191 (SI)
+1.3: half-sample medians 0.5132 0.5123
+  median v~ 1.3: computed 0.512713 vs lens 0.5125
+PASS 0.512713361564 == 0.5125: within 0.0025; 0.512713 vs 0.5125 (SI)
+2: half-sample medians 0.4899 0.4884
+  median v~ 2: computed 0.489144 vs lens 0.4895
+PASS 0.489143594852 == 0.4895: within 0.0025; 0.489144 vs 0.4895 (SI)
+max v~ over all laws: 1.4038332147731163
+  max v~ does not exceed sqrt 2 (ratio min(max, sqrt2)/max): computed 1 vs lens 1.0
+PASS 1 == 1.0: within 1e-12; 1 vs 1 (SI)
+  face-on circular v~ = 1 (definition): computed 1 vs lens 1.0
+PASS 1 == 1.0: within 1e-12; 1 vs 1 (SI)
+SUMMARY: 9 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

@@ -1,0 +1,17 @@
+# math_run log
+command:  python3 runs/2026-10-11-wide-binary-anomaly-gaia-dr4/calc/lens-decomposer_dr4split.py
+started:  2026-10-11T05:25:41Z
+duration: 19.3 s
+exit:     0
+versions: python 3.13.16, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+DR4 noise, pure Newtonian: median vt CAL = 0.5302, TEST = 0.5182
+f_triple=0.3, all a_in 0.1-300 au: gamma_app CAL = 1.107, TEST = 1.225, TEST/CAL = 1.107
+f_triple=0.3, short a_in 0.1-5 au (DR4-flaggable): gamma_app CAL = 1.085, TEST = 1.127, TEST/CAL = 1.039
+f_triple=0.3, long a_in 5-300 au (not flagged): gamma_app CAL = 1.220, TEST = 1.437, TEST/CAL = 1.177
+DR3 noise, f=0.3 all a_in: CAL = 1.129, TEST = 1.280, TEST/CAL = 1.134
+
+--- stderr ---
+

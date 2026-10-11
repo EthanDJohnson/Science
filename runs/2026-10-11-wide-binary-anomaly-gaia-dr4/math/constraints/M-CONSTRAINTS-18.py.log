@@ -1,0 +1,25 @@
+# math_run log
+command:  python3 runs/2026-10-11-wide-binary-anomaly-gaia-dr4/math/constraints/M-CONSTRAINTS-18.py
+started:  2026-10-11T06:12:57Z
+duration: 0.5 s
+exit:     0
+versions: python 3.13.16, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   7 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+PASS dv*sqrt(s)/(sqrt(G_)*sqrt(M)) == dv*sqrt(s)/(sqrt(G_)*sqrt(M)): symbolic
+PASS lim s->1 of 2 == 2: symbolic limit 2
+  1.364/1.238: computed 1.10178 vs lens 1.1
+PASS 1.10177705977 == 1.1: within 0.006; 1.10178 vs 1.1 (SI)
+  1.137/1.041: computed 1.09222 vs lens 1.09
+PASS 1.09221902017 == 1.09: within 0.006; 1.09222 vs 1.09 (SI)
+  1.388/1.238: computed 1.12116 vs lens 1.12
+PASS 1.1211631664 == 1.12: within 0.006; 1.12116 vs 1.12 (SI)
+  1.437/1.276: computed 1.12618 vs lens 1.13
+PASS 1.12617554859 == 1.13: within 0.006; 1.12618 vs 1.13 (SI)
+  1.485/1.276: computed 1.16379 vs lens 1.16
+PASS 1.16379310345 == 1.16: within 0.006; 1.16379 vs 1.16 (SI)
+SUMMARY: 7 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

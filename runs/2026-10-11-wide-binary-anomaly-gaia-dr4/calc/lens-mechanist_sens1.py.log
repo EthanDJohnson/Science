@@ -1,0 +1,19 @@
+# math_run log
+command:  python3 runs/2026-10-11-wide-binary-anomaly-gaia-dr4/calc/lens-mechanist_sens1.py
+started:  2026-10-11T05:16:04Z
+duration: 196.7 s
+exit:     0
+versions: python 3.13.16, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+[Newton f_trip=0.2] baseline htz truth, alpha_e=1.3 template | N_low=5251 N_cal=28061 trip_frac_low_after_cuts=0.104 med_low=0.5440 med_cal=0.5432 fmulti_cal=0.147 E3_ftrip=0.088 | E1a=1.090±0.020 E1b=1.003±0.024 E1c=0.981±0.018 E2a=1.063±0.017 E2b=1.089±0.014 E3=1.021±0.024 E4=1.119±0.017
+[Newton f_trip=0.2] truth thermal (alpha=1), template 1.3 | N_low=5287 N_cal=28170 trip_frac_low_after_cuts=0.098 med_low=0.5515 med_cal=0.5397 fmulti_cal=0.131 E3_ftrip=0.084 | E1a=1.121±0.024 E1b=1.044±0.022 E1c=1.023±0.022 E2a=1.097±0.016 E2b=1.127±0.018 E3=1.059±0.015 E4=1.145±0.012
+[Newton f_trip=0.2] truth uniform e, template 1.3 | N_low=5254 N_cal=28492 trip_frac_low_after_cuts=0.109 med_low=0.6089 med_cal=0.6007 fmulti_cal=0.391 E3_ftrip=0.082 | E1a=1.374±0.028 E1b=1.027±0.019 E1c=1.010±0.022 E2a=1.177±0.014 E2b=1.347±0.014 E3=1.164±0.018 E4=1.193±0.021
+[Newton f_trip=0.2] truth htz, template thermal (1.0) | N_low=5251 N_cal=28061 trip_frac_low_after_cuts=0.104 med_low=0.5440 med_cal=0.5432 fmulti_cal=0.082 E3_ftrip=0.090 | E1a=1.037±0.019 E1b=1.003±0.024 E1c=0.982±0.018 E2a=1.060±0.015 E2b=1.043±0.013 E3=1.007±0.020 E4=1.119±0.017
+[Newton f_trip=0.2] mass_bias 0.9 in BOTH zones | N_low=5006 N_cal=28056 trip_frac_low_after_cuts=0.104 med_low=0.5707 med_cal=0.5726 fmulti_cal=0.282 E3_ftrip=0.086 | E1a=1.204±0.020 E1b=0.993±0.026 E1c=0.971±0.017 E2a=1.167±0.012 E2b=1.209±0.014 E3=1.146±0.026 E4=1.217±0.027
+[Newton f_trip=0.2] mass_bias 0.9 in LOW zone only (separation-dependent) | N_low=5006 N_cal=28061 trip_frac_low_after_cuts=0.104 med_low=0.5707 med_cal=0.5432 fmulti_cal=0.147 E3_ftrip=0.086 | E1a=1.204±0.020 E1b=1.104±0.030 E1c=1.085±0.018 E2a=1.167±0.012 E2b=1.209±0.014 E3=1.146±0.026 E4=1.217±0.027
+elapsed 196.4 s
+
+--- stderr ---
+

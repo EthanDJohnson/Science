@@ -1,0 +1,86 @@
+# math_run log
+command:  python3 runs/2026-10-11-wide-binary-anomaly-gaia-dr4/calc/lens-constraints_mond_gamma.py
+started:  2026-10-11T05:32:23Z
+duration: 0.4 s
+exit:     0
+versions: python 3.13.16, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+=== 1. EF-dominated asymptotes (BZ18 framework), a0 = 1.20e-10 m/s^2 ===
+BZ18 g_ext = (232.8 km/s)^2/8.2 kpc = 2.1419e-10 m/s^2 = 1.7849 a0
+Reference BZ18 Table 3 (dossier D-43): simple QUMOND 1.4228 / AQUAL 1.4056 / nu_ext 1.5602; standard 1.0726 / 1.0661 / 1.1462; MLS 1.3692 / 1.3508 / 1.5081
+-- x_e = g_ext/a0 = 1.785 (g_ext = 2.142e-10 m/s^2)
+  simple(n=1)    y_e=1.1440 nu_e=1.5602 K=-0.2642 | QUMOND avg 1.4228 [perp 1.3541, par 1.5602] | AQUAL avg 1.4056 [1.3384, 1.5602] | v~max(bound) QUMOND 1.7665 AQUAL 1.7665 | Newton sqrt2 = 1.4142
+  n=1.5          y_e=1.4133 nu_e=1.2630 K=-0.2281 | QUMOND avg 1.1670 [perp 1.1189, par 1.2630] | AQUAL avg 1.1568 [1.1096, 1.2630] | v~max(bound) QUMOND 1.5893 AQUAL 1.5893 | Newton sqrt2 = 1.4142
+  standard(n=2)  y_e=1.5572 nu_e=1.1462 K=-0.1928 | QUMOND avg 1.0726 [perp 1.0357, par 1.1462] | AQUAL avg 1.0662 [1.0298, 1.1462] | v~max(bound) QUMOND 1.5141 AQUAL 1.5141 | Newton sqrt2 = 1.4142
+  MLS            y_e=1.1835 nu_e=1.5081 K=-0.2764 | QUMOND avg 1.3692 [perp 1.2997, par 1.5081] | AQUAL avg 1.3508 [1.2829, 1.5081] | v~max(bound) QUMOND 1.7367 AQUAL 1.7367 | Newton sqrt2 = 1.4142
+-- x_e = g_ext/a0 = 1.800 (g_ext = 2.160e-10 m/s^2)
+  simple(n=1)    y_e=1.1571 nu_e=1.5556 K=-0.2632 | QUMOND avg 1.4191 [perp 1.3509, par 1.5556] | AQUAL avg 1.4021 [1.3353, 1.5556] | v~max(bound) QUMOND 1.7638 AQUAL 1.7638 | Newton sqrt2 = 1.4142
+  n=1.5          y_e=1.4287 nu_e=1.2598 K=-0.2265 | QUMOND avg 1.1647 [perp 1.1172, par 1.2598] | AQUAL avg 1.1548 [1.1080, 1.2598] | v~max(bound) QUMOND 1.5874 AQUAL 1.5874 | Newton sqrt2 = 1.4142
+  standard(n=2)  y_e=1.5735 nu_e=1.1440 K=-0.1908 | QUMOND avg 1.0712 [perp 1.0348, par 1.1440] | AQUAL avg 1.0649 [1.0290, 1.1440] | v~max(bound) QUMOND 1.5126 AQUAL 1.5126 | Newton sqrt2 = 1.4142
+  MLS            y_e=1.1974 nu_e=1.5033 K=-0.2754 | QUMOND avg 1.3653 [perp 1.2963, par 1.5033] | AQUAL avg 1.3472 [1.2797, 1.5033] | v~max(bound) QUMOND 1.7339 AQUAL 1.7339 | Newton sqrt2 = 1.4142
+-- x_e = g_ext/a0 = 1.900 (g_ext = 2.280e-10 m/s^2)
+  simple(n=1)    y_e=1.2448 nu_e=1.5263 K=-0.2564 | QUMOND avg 1.3959 [perp 1.3306, par 1.5263] | AQUAL avg 1.3801 [1.3162, 1.5263] | v~max(bound) QUMOND 1.7472 AQUAL 1.7472 | Newton sqrt2 = 1.4142
+  n=1.5          y_e=1.5315 nu_e=1.2406 K=-0.2165 | QUMOND avg 1.1511 [perp 1.1063, par 1.2406] | AQUAL avg 1.1422 [1.0981, 1.2406] | v~max(bound) QUMOND 1.5752 AQUAL 1.5752 | Newton sqrt2 = 1.4142
+  standard(n=2)  y_e=1.6813 nu_e=1.1300 K=-0.1783 | QUMOND avg 1.0629 [perp 1.0293, par 1.1300] | AQUAL avg 1.0576 [1.0244, 1.1300] | v~max(bound) QUMOND 1.5034 AQUAL 1.5034 | Newton sqrt2 = 1.4142
+  MLS            y_e=1.2897 nu_e=1.4732 K=-0.2687 | QUMOND avg 1.3413 [perp 1.2753, par 1.4732] | AQUAL avg 1.3244 [1.2598, 1.4732] | v~max(bound) QUMOND 1.7165 AQUAL 1.7165 | Newton sqrt2 = 1.4142
+-- x_e = g_ext/a0 = 2.000 (g_ext = 2.400e-10 m/s^2)
+  simple(n=1)    y_e=1.3333 nu_e=1.5000 K=-0.2500 | QUMOND avg 1.3750 [perp 1.3125, par 1.5000] | AQUAL avg 1.3603 [1.2990, 1.5000] | v~max(bound) QUMOND 1.7321 AQUAL 1.7321 | Newton sqrt2 = 1.4142
+  n=1.5          y_e=1.6345 nu_e=1.2236 K=-0.2071 | QUMOND avg 1.1392 [perp 1.0969, par 1.2236] | AQUAL avg 1.1312 [1.0896, 1.2236] | v~max(bound) QUMOND 1.5644 AQUAL 1.5644 | Newton sqrt2 = 1.4142
+  standard(n=2)  y_e=1.7889 nu_e=1.1180 K=-0.1667 | QUMOND avg 1.0559 [perp 1.0249, par 1.1180] | AQUAL avg 1.0513 [1.0206, 1.1180] | v~max(bound) QUMOND 1.4953 AQUAL 1.4953 | Newton sqrt2 = 1.4142
+  MLS            y_e=1.3830 nu_e=1.4462 K=-0.2623 | QUMOND avg 1.3197 [perp 1.2565, par 1.4462] | AQUAL avg 1.3040 [1.2421, 1.4462] | v~max(bound) QUMOND 1.7007 AQUAL 1.7007 | Newton sqrt2 = 1.4142
+-- x_e = g_ext/a0 = 1.710 (g_ext = 2.052e-10 m/s^2)
+  simple(n=1)    y_e=1.0790 nu_e=1.5848 K=-0.2695 | QUMOND avg 1.4424 [perp 1.3712, par 1.5848] | AQUAL avg 1.4242 [1.3545, 1.5848] | v~max(bound) QUMOND 1.7803 AQUAL 1.7803 | Newton sqrt2 = 1.4142
+  n=1.5          y_e=1.3365 nu_e=1.2794 K=-0.2361 | QUMOND avg 1.1788 [perp 1.1284, par 1.2794] | AQUAL avg 1.1677 [1.1183, 1.2794] | v~max(bound) QUMOND 1.5996 AQUAL 1.5996 | Newton sqrt2 = 1.4142
+  standard(n=2)  y_e=1.4761 nu_e=1.1584 K=-0.2031 | QUMOND avg 1.0800 [perp 1.0408, par 1.1584] | AQUAL avg 1.0728 [1.0341, 1.1584] | v~max(bound) QUMOND 1.5221 AQUAL 1.5221 | Newton sqrt2 = 1.4142
+  MLS            y_e=1.1152 nu_e=1.5333 K=-0.2816 | QUMOND avg 1.3894 [perp 1.3174, par 1.5333] | AQUAL avg 1.3700 [1.2996, 1.5333] | v~max(bound) QUMOND 1.7512 AQUAL 1.7512 | Newton sqrt2 = 1.4142
+-- x_e = g_ext/a0 = 2.090 (g_ext = 2.508e-10 m/s^2)
+  simple(n=1)    y_e=1.4136 nu_e=1.4785 K=-0.2445 | QUMOND avg 1.3580 [perp 1.2977, par 1.4785] | AQUAL avg 1.3442 [1.2851, 1.4785] | v~max(bound) QUMOND 1.7196 AQUAL 1.7196 | Newton sqrt2 = 1.4142
+  n=1.5          y_e=1.7273 nu_e=1.2100 K=-0.1991 | QUMOND avg 1.1297 [perp 1.0895, par 1.2100] | AQUAL avg 1.1224 [1.0828, 1.2100] | v~max(bound) QUMOND 1.5556 AQUAL 1.5556 | Newton sqrt2 = 1.4142
+  standard(n=2)  y_e=1.8853 nu_e=1.1086 K=-0.1570 | QUMOND avg 1.0505 [perp 1.0215, par 1.1086] | AQUAL avg 1.0465 [1.0178, 1.1086] | v~max(bound) QUMOND 1.4890 AQUAL 1.4890 | Newton sqrt2 = 1.4142
+  MLS            y_e=1.4677 nu_e=1.4240 K=-0.2568 | QUMOND avg 1.3021 [perp 1.2411, par 1.4240] | AQUAL avg 1.2873 [1.2276, 1.4240] | v~max(bound) QUMOND 1.6876 AQUAL 1.6876 | Newton sqrt2 = 1.4142
+
+=== 2. Transition regime: gamma_MOND(g_N), g_N = internal Newtonian accel (m/s^2) ===
+log10 gN | alg-simple | alg-n1.5 | alg-standard | alg-MLS | Chae-eq22(chae2024) | gen bz18_simple | gen bz18_standard
+ -11.00 | 1.4228 | 1.1670 | 1.0726 | 1.3691 | 1.3666 | 1.4220 | 1.0724
+ -10.75 | 1.4226 | 1.1670 | 1.0726 | 1.3690 | 1.3655 | 1.4201 | 1.0720
+ -10.50 | 1.4222 | 1.1670 | 1.0728 | 1.3686 | 1.3619 | 1.4145 | 1.0707
+ -10.25 | 1.4208 | 1.1669 | 1.0732 | 1.3672 | 1.3521 | 1.4004 | 1.0672
+ -10.00 | 1.4159 | 1.1668 | 1.0746 | 1.3625 | 1.3331 | 1.3748 | 1.0608
+  -9.75 | 1.3821 | 1.1633 | 1.0779 | 1.3321 | 1.2982 | 1.3258 | 1.0515
+  -9.50 | 1.2762 | 1.1117 | 1.0522 | 1.2268 | 1.2358 | 1.2477 | 1.0342
+  -9.25 | 1.1773 | 1.0572 | 1.0207 | 1.1261 | 1.1632 | 1.1671 | 1.0164
+  -9.00 | 1.1076 | 1.0262 | 1.0070 | 1.0585 | 1.1033 | 1.1044 | 1.0062
+  -8.75 | 1.0633 | 1.0114 | 1.0023 | 1.0217 | 1.0621 | 1.0624 | 1.0021
+  -8.50 | 1.0366 | 1.0049 | 1.0007 | 1.0059 | 1.0362 | 1.0363 | 1.0007
+  -8.25 | 1.0209 | 1.0021 | 1.0002 | 1.0011 | 1.0208 | 1.0208 | 1.0002
+  -8.00 | 1.0119 | 1.0009 | 1.0001 | 1.0001 | 1.0118 | 1.0118 | 1.0001
+quadrature check alg-simple at 1e-10: nth=2001 -> 1.415928, nth=3001 -> 1.415928
+limit checks: alg-simple at y=1e4 -> 1.000100 (Newton 1); at y=1e-4 -> 1.4228 (EF-limit avg 1.4228)
+
+=== 3. Scoring bin: log-uniform average over [10^-10.5, 10^-9.5] and at 1e-10 ===
+  alg simple(n=1)    at 1e-10: 1.4159 ; bin-avg: 1.3932 ; at 10^-9.5: 1.2762 ; at 10^-10.5: 1.4222
+  alg standard(n=2)  at 1e-10: 1.0746 ; bin-avg: 1.0727 ; at 10^-9.5: 1.0522 ; at 10^-10.5: 1.0728
+  alg MLS            at 1e-10: 1.3625 ; bin-avg: 1.3410 ; at 10^-9.5: 1.2268 ; at 10^-10.5: 1.3686
+  gen chae2024       at 1e-10: 1.3331 ; bin-avg: 1.3214
+  gen bz18_simple    at 1e-10: 1.3748 ; bin-avg: 1.3589
+  gen bz18_standard  at 1e-10: 1.0608 ; bin-avg: 1.0582
+
+=== 4. Projected-separation g_N proxy: g_N(s) = G M/s^2 vs g_N(r) = G M/r^2 ===
+  <s/r> = 0.7853 (pi/4 = 0.7854); median r/s = 1.1554; <(s/r)^2> = 0.6665
+  s-proxy g_N=3.16e-10: alg-simple gamma at proxy 1.2762, averaged over true r: 1.3440
+  s-proxy g_N=1.00e-10: alg-simple gamma at proxy 1.4159, averaged over true r: 1.4193
+  s-proxy g_N=3.16e-11: alg-simple gamma at proxy 1.4222, averaged over true r: 1.4225
+
+=== 5. Physical scales for M_tot = 1.5 Msun ===
+  g_N = 1e-8.0 m/s^2 -> r = 943 au, v_c(r) = 1188 m/s
+  g_N = 1e-9.0 m/s^2 -> r = 2982 au, v_c(r) = 668 m/s
+  g_N = 1e-9.5 m/s^2 -> r = 5304 au, v_c(r) = 501 m/s
+  g_N = 1e-10.0 m/s^2 -> r = 9431 au, v_c(r) = 376 m/s
+  g_N = 1e-10.5 m/s^2 -> r = 16772 au, v_c(r) = 282 m/s
+  g_N = 1e-11.0 m/s^2 -> r = 29825 au, v_c(r) = 211 m/s
+  Newtonian external field (simple) g_Ne = y_e a0 = 1.373e-10 m/s^2 -> internal = external at r = 8050 au (1.5 Msun)
+
+--- stderr ---
+

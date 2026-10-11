@@ -1,0 +1,23 @@
+# math_run log
+command:  python3 runs/2026-10-11-wide-binary-anomaly-gaia-dr4/math/statistician/M-STATISTICIAN-02.py
+started:  2026-10-11T05:37:33Z
+duration: 0.5 s
+exit:     0
+versions: python 3.13.16, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   3 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+OK  z_loc 3.21 N=5: got 2.715, lens 2.72 (tol 0.06)
+OK  z_loc 3.21 N=10: got 2.478, lens 2.48 (tol 0.06)
+OK  z_loc 3.21 N=30: got 2.064, lens 2.06 (tol 0.06)
+OK  z_loc 4.29 N=5: got 3.918, lens 3.9 (tol 0.06)
+OK  z_loc 4.29 N=10: got 3.747, lens 3.75 (tol 0.06)
+OK  z_loc 4.29 N=30: got 3.462, lens 3.5 (tol 0.06)
+PASS series of 1 - (1 - p)**N about p = 0 to order 2 == N*p: symbolic: N*p
+PASS lim N->1 of 1 - (1 - p)**N == p: symbolic limit p
+PASS 1 - (1 - p)**N >= p: numeric at 50 points, N in [1, 50], p in [0.0001, 0.5]
+ALL NUMERIC CHECKS OK
+SUMMARY: 3 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

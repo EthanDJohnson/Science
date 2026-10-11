@@ -1,0 +1,42 @@
+# math_run log
+command:  python3 runs/2026-10-11-wide-binary-anomaly-gaia-dr4/math/mechanist/M-MECHANIST-07.py
+started:  2026-10-11T05:52:11Z
+duration: 0.4 s
+exit:     0
+versions: python 3.13.16, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   19 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+E1a shift vs f=0: 0.095 (f=0.2, resid 0.101), 0.152 (f=0.3, resid 0.165); vs truth 1: 0.084, 0.141
+PASS 0.09500000000000008 == 0.10: within 0.06; 0.095 vs 0.1 (SI)
+PASS 0.15200000000000002 == 0.15: within 0.03; 0.152 vs 0.15 (SI)
+slope per unit residual: mine 0.94, 0.92; Boufourou 0.40, 0.43; ratio 2.35-2.13
+PASS 2.234167416741675 == 2: within 0.2; 2.23417 vs 2 (SI)
+E2a shift vs f=0 at f=0.2/0.3: [0.10999999999999999, 0.15200000000000002]; E3 shift f=0.1..0.3: [0.03199999999999992, 0.07500000000000007]; E2b max 1.165
+PASS 0.10999999999999999 == 0.11: within 0.02; 0.11 vs 0.11 (SI)
+PASS 0.15200000000000002 == 0.15: within 0.02; 0.152 vs 0.15 (SI)
+PASS 0.03199999999999992 == 0.03: within 0.1; 0.032 vs 0.03 (SI)
+PASS 0.07500000000000007 == 0.075: within 0.01; 0.075 vs 0.075 (SI)
+γ_inj 1.2, f=0: 1.148-1.208; γ_inj 1.4, f=0: 1.282-1.396
+PASS 1.148 == 1.148: within 1e-06; 1.148 vs 1.148 (SI)
+PASS 1.208 == 1.208: within 1e-06; 1.208 vs 1.208 (SI)
+PASS 1.282 == 1.282: within 1e-06; 1.282 vs 1.282 (SI)
+PASS 1.396 == 1.396: within 1e-06; 1.396 vs 1.396 (SI)
+E3 at 1.4: 1.386-1.452; at 1.2: 1.208-1.255; all γ_inj 1.4: 1.282-1.563
+PASS 1.386 == 1.386: within 1e-06; 1.386 vs 1.386 (SI)
+PASS 1.452 == 1.452: within 1e-06; 1.452 vs 1.452 (SI)
+PASS 1.282 == 1.282: within 1e-06; 1.282 vs 1.282 (SI)
+PASS 1.563 == 1.563: within 1e-06; 1.563 vs 1.563 (SI)
+E1b, E1c low at γ_inj 1.4, f=0: 0.100, 0.118
+E1b no RUWE: +0.053 (lens 0.05)
+PASS 0.05300000000000016 == 0.05: within 0.2; 0.053 vs 0.05 (SI)
+E1b PM noise: +0.033 (lens 0.03)
+PASS 0.03300000000000014 == 0.03: within 0.2; 0.033 vs 0.03 (SI)
+E1b a_in: +0.027 (lens 0.03)
+PASS 0.027000000000000135 == 0.03: within 0.2; 0.027 vs 0.03 (SI)
+E1b ecc thermal: +0.041 (lens 0.04)
+PASS 0.04100000000000015 == 0.04: within 0.2; 0.041 vs 0.04 (SI)
+SUMMARY: 19 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

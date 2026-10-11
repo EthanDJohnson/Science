@@ -1,0 +1,20 @@
+# math_run log
+command:  python3 runs/2026-10-11-wide-binary-anomaly-gaia-dr4/math/examiner/M-EXAMINER-08.py
+started:  2026-10-11T05:52:29Z
+duration: 0.4 s
+exit:     0
+versions: python 3.13.16, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   5 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+PASS 1.10900000000000 == 1.10900000000000: symbolic
+PASS 1.27600000000000 == 1.27600000000000: symbolic
+PASS k**2 == k**2: symbolic
+PASS lim k->0 of (k + m)**2/m**2 == 1: symbolic limit 1
+M = 0.93 Msun: chae2024 gamma at s = 5, 10, 30 kau: 1.278, 1.353, 1.367
+M = 1.5 Msun: chae2024 gamma at s = 5, 10, 30 kau: 1.221, 1.338, 1.367
+PASS 0.0540000000000000 is positive: symbolic, constant
+SUMMARY: 5 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

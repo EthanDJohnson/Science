@@ -1,0 +1,20 @@
+# math_run log
+command:  python3 runs/2026-10-11-wide-binary-anomaly-gaia-dr4/calc/lens-constraints_zoneavg.py
+started:  2026-10-11T05:43:49Z
+duration: 6.4 s
+exit:     0
+versions: python 3.13.16, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+Boufourou test zone / Banik+24 range 2-30 kau  N=200000: median-inferred gamma simple 1.2753 (mean 1.2857), standard 1.0482 (mean 1.0477); log10 g_N(r) 10/50/90% = -10.84/-9.68/-8.92; g_N(s) -10.52/-9.40/-8.78
+Boufourou test zone / Banik+24 range 2-30 kau  N=300000: median-inferred gamma simple 1.2771 (mean 1.2867), standard 1.0472 (mean 1.0479); log10 g_N(r) 10/50/90% = -10.84/-9.69/-8.92; g_N(s) -10.52/-9.41/-8.78
+Chae 2024b-like s >~ 5 kau                     N=200000: median-inferred gamma simple 1.4017 (mean 1.4030), standard 1.0725 (mean 1.0725); log10 g_N(r) 10/50/90% = -11.10/-10.30/-9.68; g_N(s) -10.76/-10.04/-9.55
+Chae 2024b-like s >~ 5 kau                     N=300000: median-inferred gamma simple 1.4027 (mean 1.4031), standard 1.0728 (mean 1.0726); log10 g_N(r) 10/50/90% = -11.09/-10.29/-9.68; g_N(s) -10.76/-10.04/-9.55
+Cookson+26 range 1-30 kau                      N=200000: median-inferred gamma simple 1.1833 (mean 1.1948), standard 1.0304 (mean 1.0305); log10 g_N(r) 10/50/90% = -10.60/-9.17/-8.34; g_N(s) -10.28/-8.89/-8.19
+Cookson+26 range 1-30 kau                      N=300000: median-inferred gamma simple 1.1799 (mean 1.1949), standard 1.0305 (mean 1.0305); log10 g_N(r) 10/50/90% = -10.60/-9.17/-8.33; g_N(s) -10.28/-8.89/-8.19
+scoring bin via s-proxy [10^-10.5, 10^-9.5]: nu n=1 median-inferred gamma 1.4028 (N_sel=60653)
+scoring bin via s-proxy [10^-10.5, 10^-9.5]: nu n=2 median-inferred gamma 1.0738 (N_sel=60653)
+
+--- stderr ---
+

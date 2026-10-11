@@ -1,0 +1,45 @@
+# math_run log
+command:  python3 runs/2026-10-11-wide-binary-anomaly-gaia-dr4/math/constraints/M-CONSTRAINTS-07.py
+started:  2026-10-11T06:09:40Z
+duration: 5.2 s
+exit:     0
+versions: python 3.13.16, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   16 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+  kappa 0.3 full median: computed 1.02828 vs lens 1.028
+PASS 1.02828283855 == 1.028: within 0.004; 1.02828 vs 1.028 (SI)
+  kappa 0.3 truncated < sqrt2: computed 1.02775 vs lens 1.027
+PASS 1.02775212536 == 1.027: within 0.004; 1.02775 vs 1.027 (SI)
+  kappa 0.5 full median: computed 1.07384 vs lens 1.073
+PASS 1.07383958478 == 1.073: within 0.004; 1.07384 vs 1.073 (SI)
+  kappa 0.5 truncated < sqrt2: computed 1.07021 vs lens 1.069
+PASS 1.07020775212 == 1.069: within 0.004; 1.07021 vs 1.069 (SI)
+  kappa 0.75 full median: computed 1.14692 vs lens 1.146
+PASS 1.14691692971 == 1.146: within 0.004; 1.14692 vs 1.146 (SI)
+  kappa 0.75 truncated < sqrt2: computed 1.13179 vs lens 1.131
+PASS 1.13178963728 == 1.131: within 0.004; 1.13179 vs 1.131 (SI)
+  kappa 1.0 full median: computed 1.21929 vs lens 1.221
+PASS 1.2192948462 == 1.221: within 0.004; 1.21929 vs 1.221 (SI)
+  kappa 1.0 truncated < sqrt2: computed 1.17504 vs lens 1.176
+PASS 1.17504342832 == 1.176: within 0.004; 1.17504 vs 1.176 (SI)
+  kappa 1.5 full median: computed 1.31768 vs lens 1.318
+PASS 1.31768449563 == 1.318: within 0.004; 1.31768 vs 1.318 (SI)
+  kappa 1.5 truncated < sqrt2: computed 1.16418 vs lens 1.165
+PASS 1.16418285292 == 1.165: within 0.004; 1.16418 vs 1.165 (SI)
+  kappa 2.0 full median: computed 1.35717 vs lens 1.358
+PASS 1.35716953512 == 1.358: within 0.004; 1.35717 vs 1.358 (SI)
+  kappa 2.0 truncated < sqrt2: computed 1.09239 vs lens 1.093
+PASS 1.09238585251 == 1.093: within 0.004; 1.09239 vs 1.093 (SI)
+  kappa 4.0 full median: computed 1.38945 vs lens 1.391
+PASS 1.38944590481 == 1.391: within 0.004; 1.38945 vs 1.391 (SI)
+  kappa 4.0 truncated < sqrt2: computed 1.01841 vs lens 1.016
+PASS 1.0184136361 == 1.016: within 0.004; 1.01841 vs 1.016 (SI)
+  kappa 4 truncated < 2.5: computed 1.07597 vs lens 1.075
+PASS 1.07596899737 == 1.075: within 0.004; 1.07597 vs 1.075 (SI)
+  kappa -> 0 limit: computed 1 vs lens 1.0
+PASS 1 == 1.0: within 1e-06; 1 vs 1 (SI)
+SUMMARY: 16 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

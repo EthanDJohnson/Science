@@ -1,0 +1,14 @@
+# math_run log
+command:  python3 runs/2026-10-11-wide-binary-anomaly-gaia-dr4/calc/lens-mechanist_quick.py
+started:  2026-10-11T05:14:43Z
+duration: 43.8 s
+exit:     0
+versions: python 3.13.16, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+quick f_triple=0.2 gamma_inj=1.0 (n_test=3e4) | N_low=2583 N_cal=14030 trip_frac_low_after_cuts=0.102 med_low=0.5366 med_cal=0.5412 fmulti_cal=0.136 E3_ftrip=0.095 | E1a=1.059±0.024 E1b=0.983±0.030 E1c=0.959±0.022 E2a=1.028±0.016 E2b=1.050±0.025 E3=0.994±0.026 E4=1.072±0.025
+elapsed 43.6 s
+
+--- stderr ---
+

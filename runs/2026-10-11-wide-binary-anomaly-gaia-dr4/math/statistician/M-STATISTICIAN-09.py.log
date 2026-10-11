@@ -1,0 +1,96 @@
+# math_run log
+command:  python3 runs/2026-10-11-wide-binary-anomaly-gaia-dr4/math/statistician/M-STATISTICIAN-09.py
+started:  2026-10-11T05:39:03Z
+duration: 5.3 s
+exit:     0
+versions: python 3.13.16, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   1 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+F1 Newton: median 1.231 [1.137, 1.325] P[.95,1.05] 0.024 P>1.25 0.422 sd 0.093
+OK  F1 Newton median: got 1.231, lens 1.231 (tol 0.006)
+OK  F1 Newton q16: got 1.137, lens 1.137 (tol 0.008)
+OK  F1 Newton q84: got 1.325, lens 1.325 (tol 0.008)
+OK  F1 Newton P in: got 0.02414, lens 0.024 (tol 0.01)
+OK  F1 Newton P>1.25: got 0.4218, lens 0.421 (tol 0.01)
+OK  F1 Newton sd: got 0.09338, lens 0.093 (tol 0.004)
+F1 MOND  : median 1.346 [1.243, 1.450] P[.95,1.05] 0.002 P>1.25 0.823 sd 0.104
+OK  F1 MOND median: got 1.346, lens 1.346 (tol 0.006)
+OK  F1 MOND q16: got 1.243, lens 1.243 (tol 0.008)
+OK  F1 MOND q84: got 1.45, lens 1.45 (tol 0.008)
+OK  F1 MOND P in: got 0.002027, lens 0.002 (tol 0.01)
+OK  F1 MOND P>1.25: got 0.8232, lens 0.823 (tol 0.01)
+OK  F1 MOND sd: got 0.1041, lens 0.104 (tol 0.004)
+F2 Newton: median 1.060 [1.009, 1.111] P[.95,1.05] 0.406 P>1.25 0.000 sd 0.051
+OK  F2 Newton median: got 1.06, lens 1.06 (tol 0.006)
+OK  F2 Newton q16: got 1.009, lens 1.009 (tol 0.008)
+OK  F2 Newton q84: got 1.111, lens 1.111 (tol 0.008)
+OK  F2 Newton P in: got 0.4064, lens 0.408 (tol 0.01)
+OK  F2 Newton P>1.25: got 0.00012, lens 0 (tol 0.01)
+OK  F2 Newton sd: got 0.05148, lens 0.052 (tol 0.004)
+F2 MOND  : median 1.149 [1.072, 1.233] P[.95,1.05] 0.091 P>1.25 0.113 sd 0.078
+OK  F2 MOND median: got 1.149, lens 1.149 (tol 0.006)
+OK  F2 MOND q16: got 1.072, lens 1.072 (tol 0.008)
+OK  F2 MOND q84: got 1.233, lens 1.233 (tol 0.008)
+OK  F2 MOND P in: got 0.09078, lens 0.091 (tol 0.01)
+OK  F2 MOND P>1.25: got 0.1133, lens 0.113 (tol 0.01)
+OK  F2 MOND sd: got 0.07751, lens 0.077 (tol 0.004)
+F3 Newton: median 1.020 [0.975, 1.065] P[.95,1.05] 0.685 P>1.25 0.000 sd 0.045
+OK  F3 Newton median: got 1.02, lens 1.02 (tol 0.006)
+OK  F3 Newton q16: got 0.9749, lens 0.975 (tol 0.008)
+OK  F3 Newton q84: got 1.065, lens 1.065 (tol 0.008)
+OK  F3 Newton P in: got 0.6848, lens 0.685 (tol 0.01)
+OK  F3 Newton P>1.25: got 5e-07, lens 0 (tol 0.01)
+OK  F3 Newton sd: got 0.04531, lens 0.045 (tol 0.004)
+F3 MOND  : median 1.149 [1.074, 1.231] P[.95,1.05] 0.084 P>1.25 0.108 sd 0.075
+OK  F3 MOND median: got 1.149, lens 1.149 (tol 0.006)
+OK  F3 MOND q16: got 1.074, lens 1.073 (tol 0.008)
+OK  F3 MOND q84: got 1.231, lens 1.231 (tol 0.008)
+OK  F3 MOND P in: got 0.08385, lens 0.084 (tol 0.01)
+OK  F3 MOND P>1.25: got 0.1078, lens 0.109 (tol 0.01)
+OK  F3 MOND sd: got 0.07539, lens 0.076 (tol 0.004)
+F4 Newton: median 1.223 [0.934, 1.521] P[.95,1.05] 0.107 P>1.25 0.465 sd 0.286
+OK  F4 Newton median: got 1.223, lens 1.223 (tol 0.006)
+OK  F4 Newton q16: got 0.9337, lens 0.934 (tol 0.008)
+OK  F4 Newton q84: got 1.521, lens 1.522 (tol 0.008)
+OK  F4 Newton P in: got 0.1075, lens 0.108 (tol 0.01)
+OK  F4 Newton P>1.25: got 0.465, lens 0.465 (tol 0.01)
+OK  F4 Newton sd: got 0.2865, lens 0.287 (tol 0.004)
+F4 MOND  : median 1.343 [1.043, 1.625] P[.95,1.05] 0.070 P>1.25 0.622 sd 0.289
+OK  F4 MOND median: got 1.343, lens 1.344 (tol 0.006)
+OK  F4 MOND q16: got 1.043, lens 1.044 (tol 0.008)
+OK  F4 MOND q84: got 1.625, lens 1.627 (tol 0.008)
+OK  F4 MOND P in: got 0.07027, lens 0.07 (tol 0.01)
+OK  F4 MOND P>1.25: got 0.6216, lens 0.623 (tol 0.01)
+OK  F4 MOND sd: got 0.2892, lens 0.289 (tol 0.004)
+Likelihood ratio p(x|MOND)/p(x|Newton) at each conditional median:
+  F1: at Newton median 0.503, at MOND median 1.843
+  F2: at Newton median 0.397, at MOND median 2.663
+  F3: at Newton median 0.138, at MOND median 29.168
+  F4: at Newton median 0.943, at MOND median 1.105
+BAD cand A: P(F3 in [0.97,1.07] | Newton): got 0.73, lens 0.69 (tol 0.02)
+BAD cand A: same | MOND: got 0.1448, lens 0.08 (tol 0.02)
+Illustrative mix P(Newton)=0.75:
+  F1: 1.256 [1.152, 1.367]
+OK  mix F1 median: got 1.256, lens 1.256 (tol 0.008)
+OK  mix F1 q16: got 1.152, lens 1.152 (tol 0.01)
+OK  mix F1 q84: got 1.367, lens 1.367 (tol 0.01)
+  F2: 1.074 [1.017, 1.148]
+OK  mix F2 median: got 1.074, lens 1.074 (tol 0.008)
+OK  mix F2 q16: got 1.017, lens 1.017 (tol 0.01)
+OK  mix F2 q84: got 1.148, lens 1.148 (tol 0.01)
+  F3: 1.037 [0.984, 1.126]
+OK  mix F3 median: got 1.037, lens 1.037 (tol 0.008)
+OK  mix F3 q16: got 0.9838, lens 0.984 (tol 0.01)
+OK  mix F3 q84: got 1.126, lens 1.125 (tol 0.01)
+  F4: 1.253 [0.956, 1.551]
+OK  mix F4 median: got 1.253, lens 1.254 (tol 0.008)
+OK  mix F4 q16: got 0.9556, lens 0.956 (tol 0.01)
+OK  mix F4 q84: got 1.551, lens 1.552 (tol 0.01)
+PASS 1/(b*(log(a) - log(b))) - 1/(a*(log(a) - log(b))) == (-1/b + 1/a)/log(b/a): symbolic
+OK  F2 Newton sd analytic: got 0.05147, lens 0.052 (tol 0.002)
+SOME NUMERIC CHECK DIFFERS
+SUMMARY: 1 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

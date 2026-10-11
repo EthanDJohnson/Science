@@ -1,0 +1,40 @@
+# Math check: empiricist
+status: final
+| ID | Claim (finding) | Statement checked | Checks | Verdict | Log |
+|---|---|---|---|---|---|
+| M-EMPIRICIST-01 | Grouped χ² by camp, pooled S (F2; used by cand B and C) | Inverse-variance means. Symmetrised σ = (up+down)/2. Values treated as independent. γ is dimensionless. Pro camp = {Chae 2023 1.43±0.06, Chae 2024a 1.49 +0.21/−0.19 (as L1 lists it), Chae 2024b 1.37 +0.189/−0.127, Yoon 1.32 +0.12/−0.11, Hernandez 1.5±0.2, Chae 2025 1.48 +0.33/−0.23}. Null camp = {Banik 0.99, Boufourou E2 1.045, C3PO 1.17, S&T-36 1.00}. Lens values: pro 1.436±0.040 (χ² 1.92/5), null 1.022±0.016 (3.04/3), between 93.4 (z 9.7), within 5.0/8 (p 0.76), S = 3.31 | numeric over 8 input variants; identity (total χ² = within + between for inverse-variance groups, symbolic); limit σ→∞ gives between-χ² → 0 | refuted | math/empiricist/M-EMPIRICIST-01.py.log |
+| M-EMPIRICIST-02 | Grouped χ² by family: 56.2 for 3 dof, z = 6.9 (Calculations; cand C) | Families as in the lens's provisional mapping. F1 = {Chae 2023, Chae 2024b tot, Yoon 1.32}; F2 = {E2}; F3 = {Banik 0.99, E3 1.05 +0.02/−0.01}; F4 = {Chae 2025, Chae+26, S&T-36, C3PO}. Between-family χ² = χ² of the family means about their weighted mean | numeric; identity total = within + between (checked numerically); two-sided z from the χ²₃ tail | verified. F1 1.403±0.050 and F4 1.336±0.117 reproduce exactly. Between is 56.4 (z 6.96) or 59.1 (z 7.14), depending on which Banik error is used. Adding Chae 2024a (σ 0.20) and Hernandez to F1 gives 65.6–68.7 (z 7.6–7.8). F4 counts the same 36 pairs twice; the lens states this | math/empiricist/M-EMPIRICIST-02.py.log |
+| M-EMPIRICIST-03 | Pairwise tensions (F3) | z = Δγ/√(σ_hi,down² + σ_lo,up²) with facing-side errors, independent. Chae 2024b total down-error = √(0.09²+0.09²) = 0.127. Chae 2024b vs E2: 2.513 (total), 3.499 (stat). Chae 2024b vs Banik: 2.903–2.919, depending on γ_M,paper. Chae+26 vs S&T-36: 2.159. Chae 2023 vs Banik: 6.59 (γ_M = 1.44) or 6.84 (γ_M = 1.333) | numeric; limit σ_sys→∞ gives z→0; sign (adding a systematic in quadrature lowers z); identity | verified. "6.6" holds for the γ_M = 1.44 conversion and is 6.8 for 1.333 | math/empiricist/M-EMPIRICIST-03.py.log |
+| M-EMPIRICIST-04 | Same-data gap decomposition and Cookson swing (F4a, F4c; cand A weakest link) | gap = 1.37 − 1.045 = 0.325. Estimator share = (γ_E1 − 1.045)/0.325 = 0.231–0.477 for γ_E1 ∈ [1.12, 1.20]; remainder 0.523–0.769. Swing = log₁₀1501 + log₁₀12 = 4.256 dex (dimensionless ratios). 41,760/81,088 = 0.515 | numeric; identity (shares sum to 1, symbolic) | verified. One UNDECIDED line is a cosmetic endpoint substitution (share = 1 at γ_E1 = γ_Chae) that failed to parse; that endpoint is trivially true | math/empiricist/M-EMPIRICIST-04.py.log |
+| M-EMPIRICIST-05 | C3PO and deep-bin distances; deep-bin g_N range vs scoring bin (F5, F6) | C3PO: (1.37−1.17)/0.37 = 0.541σ and (1.17−1.00)/0.23 = 0.739σ. Deep bin 1.11±0.07: 1.571σ above 1 and 3.714σ below 1.37. g_N = [0.03, 0.3]·a0 with a0 = 1.2×10⁻¹⁰ m s⁻² (SI) gives 3.6×10⁻¹² to 3.6×10⁻¹¹ m s⁻², log₁₀ −11.444 to −10.444. Scoring rule: bin ⊂ (−∞, −9.5] and −10 in the bin | numeric; quantity and units (acceleration, SI); a0 sensitivity (a0 = 1.0 or 1.4×10⁻¹⁰ keeps the upper edge below 10⁻¹⁰); interval-membership logic | verified. Chae 2025 [−11.0, −9.5] and Chae+26 (< −9.5) qualify only if "wholly below 10^-9.5" admits the edge equal to −9.5 | math/empiricist/M-EMPIRICIST-05.py.log |
+| M-EMPIRICIST-06 | α_grav → γ conversion (F7, L1) | γ = 1 + α(γ_M − 1), with α = −0.021 +0.065/−0.045. γ_M = 1.333 gives 0.9930 +0.0216/−0.0150. γ_M = 1.44 gives 0.9908 +0.0286/−0.0198. ∂γ/∂γ_M = α, so the centre moves by −0.0022 across 1.333→1.44 | numeric; limit α→0 gives 1 (Newton); α = 1 gives γ_M (template); sign (monotone in α for γ_M > 1, so errors map side to side) | verified | math/empiricist/M-EMPIRICIST-06.py.log |
+| M-EMPIRICIST-07 | Base rate: Laplace 0.10, Jeffreys 0.056 (F8, L3; cand B) | k = 0 new-physics outcomes in n = 8 resolved cases. Posterior mean of Beta(1,1) is (k+1)/(n+2) = 1/10. Posterior mean of Beta(½,½) is (k+½)/(n+1) = 1/18 = 0.0556. Cause tally 3+1+3+1 = 8 | identity (symbolic Beta integrals); limit n→∞ gives 0; numeric | verified | math/empiricist/M-EMPIRICIST-07.py.log |
+| M-EMPIRICIST-08 | Median time to resolution ~4 yr, range 0.1–14 yr (F8) | Durations from L3's "Years open" column for the 8 resolved cases: 9, 4, 0.1, 0.1, 2, 14, 1, 4 yr (same-year cases set to 0.1 yr). Median of 8 values = mean of the 4th and 5th sorted values | numeric; sensitivity to 4 alternative date readings | refuted (minor) | math/empiricist/M-EMPIRICIST-07.py.log |
+## Refuted
+- **M-EMPIRICIST-01.** The camp numbers in F2 do not follow from the members and errors the lens tabulates.
+  - **Cause.** L1 lists Chae 2024a as 1.49 +0.21/−0.19 (the 2463-pair "pure" sample). The grouped χ² instead enters Chae 2024a with σ = 0.07, the error of Chae's *general self-calibrated* sample (D-21). With σ = 0.07 the lens's numbers reproduce: pro 1.436±0.040, χ² 1.92/5, S = 3.315, between 93.9.
+  - **Corrected values with L1's own errors.**
+    - Pro camp: 1.415±0.047, χ² = 1.20/5 (p = 0.95). With Yoon's 1.26 instead: 1.403±0.047, χ² 2.44/5.
+    - Between camps: χ² = 60–67 for 1 dof (z = 7.8–8.2), not 93.4 (z = 9.7).
+    - Within camps: 4.0–6.1 for 8 dof (p = 0.64–0.85).
+    - Pooled scale factor: S = 2.70–2.82, not 3.31.
+  - **Double counting.** The 0.07 general-sample value draws on essentially the same parent data as Chae 2023 (D-20). Using it also adds a near-duplicate of that measurement.
+  - **What still holds.** The qualitative claim stands: the camps are internally consistent and separated by about 8σ under the independence assumption, which is itself an upper bound.
+  - **What depends on it.** The quoted figures in F2, the Calculations summary ("z = 9.7", "within-camp p = 0.76"), and candidate EMPIRICIST-C's observations ("χ²_within/dof = 5.0/8", "between-camp z of 9.7"). Use z ≈ 8 and χ²_within ≈ 4–6/8.
+- **M-EMPIRICIST-08.** The median is wrong.
+  - **Corrected value.** With the durations in table L3, the median time to resolution is 3.0 yr, not 4 yr. The range of 0.1–14 yr is right. The lens's 4.0 is the upper of the two middle values: for an even count it takes element n//2 of the sorted list.
+  - **Alternative date readings.** Reading local DM as 2012–2015 (to Moni Bidin 2015) gives 3.5 yr. OPERA at 0.5 yr, Pioneer at 10 yr or Eötvös at 5 yr each leave it at 3.0 yr.
+  - **Effect.** Small. The F8 sentence "median ~4 yr" should read "~3 yr". No candidate's status depends on it, but F9's timing intuition (DR4 within the typical resolution time) is slightly strengthened.
+## Unverified
+- None among the load-bearing computed numbers. These items were not checked because they are quoted literature values, which the source checks cover:
+  - the F4(b, d) sensitivities (Δγ = 0.56, f(e) band 0.73–1.73);
+  - the "~24× RV precision";
+  - the "~15% EFE anisotropy".
+- Candidate EMPIRICIST-C's "DR3 cannot fix γ to better than ~±0.3" is an inference from F4, not a derived result, so it was not treated as mathematics.
+- Boufourou's implied full-median value of 1.12–1.20 is his number; M-04 checks only the arithmetic done with it.
+## Formalizable
+- M-EMPIRICIST-01: For reals x_i and weights w_i > 0 split into groups A and B with weighted means m_A, m_B and pooled mean m, Σ w_i(x_i − m)² = Σ_A w_i(x_i − m_A)² + Σ_B w_i(x_i − m_B)² + (m_A − m_B)²/(1/W_A + 1/W_B), where W_A = Σ_A w_i and W_B = Σ_B w_i.
+- M-EMPIRICIST-03: For D, a, b, t > 0, D/√(a² + b² + t²) < D/√(a² + b²).
+- M-EMPIRICIST-06: For γ_M > 1, the map α ↦ 1 + α(γ_M − 1) is strictly increasing and affine, sends 0 to 1 and 1 to γ_M, and maps an interval [α − d, α + u] to [γ − d(γ_M − 1), γ + u(γ_M − 1)].
+- M-EMPIRICIST-07: ∫₀¹ p·p^k(1−p)^(n−k) dp / ∫₀¹ p^k(1−p)^(n−k) dp = (k+1)/(n+2), and the Beta(½,½) analogue equals (k+½)/(n+1).
+- M-EMPIRICIST-08: The median of an even-length sorted list (x_1..x_{2m}) is (x_m + x_{m+1})/2, which differs from x_{m+1} whenever x_m ≠ x_{m+1}.

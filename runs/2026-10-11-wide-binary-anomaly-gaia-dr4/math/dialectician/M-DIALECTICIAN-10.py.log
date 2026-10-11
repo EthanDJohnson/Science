@@ -1,0 +1,23 @@
+# math_run log
+command:  python3 runs/2026-10-11-wide-binary-anomaly-gaia-dr4/math/dialectician/M-DIALECTICIAN-10.py
+started:  2026-10-11T06:03:38Z
+duration: 0.4 s
+exit:     1
+versions: python 3.13.16, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   3 PASS, 1 FAIL, 0 UNDECIDED
+
+--- stdout ---
+interval z = 2.250; likelihood-ratio z = 3.098
+PASS 3.0983866769659336 == 3: within 0.05; 3.09839 vs 3 (SI)
+FAIL 2.2499999999999947 == 3: relative tolerance 0.05; 2.25 vs 3 (SI)
+gap 0.033: 6.6 sigma (one sigma 0.005), 4.7 sigma (difference of two)
+gap 0.08: 16.0 sigma (one sigma 0.005), 11.3 sigma (difference of two)
+PASS 4.666904755831213 == 4.67: within 0.01; 4.6669 vs 4.67 (SI)
+PASS lim Nn->oo of 6/(5*sqrt(Nn)) == 0: symbolic limit 0
+N = 100: sigma = 0.120
+N = 300: sigma = 0.069
+N = 500: sigma = 0.054
+SUMMARY: 3 pass, 1 fail, 0 undecided
+
+--- stderr ---
+

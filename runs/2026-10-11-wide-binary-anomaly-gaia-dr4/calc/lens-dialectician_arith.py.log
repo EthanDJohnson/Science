@@ -1,0 +1,28 @@
+# math_run log
+command:  python3 runs/2026-10-11-wide-binary-anomaly-gaia-dr4/calc/lens-dialectician_arith.py
+started:  2026-10-11T05:31:56Z
+duration: 0.0 s
+exit:     0
+versions: python 3.13.16, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+(1) Same-catalogue decomposition of the Chae-vs-Boufourou gap, in ln(gamma)
+  implied full-median 1.12: estimator share 0.26, sample/template/calibration share 0.74 (total ln-gap 0.269)
+  implied full-median 1.20: estimator share 0.51, sample/template/calibration share 0.49 (total ln-gap 0.269)
+(2) Calibrated full-median residual, Newton + triples (DR3), low/high bin medians from shape.py log
+  f_triple=0.1: ratio 1.042; residual per unit f 0.416; leverage ratio (lo-1)/(hi-1) 2.26
+  f_triple=0.2: ratio 1.062; residual per unit f 0.310; leverage ratio (lo-1)/(hi-1) 1.69
+  f_triple=0.3: ratio 1.094; residual per unit f 0.315; leverage ratio (lo-1)/(hi-1) 1.76
+  p=0.3 calibrated ratio Newton f=0.2: 1.034
+  p=0.3 calibrated ratio Newton f=0.3: 1.040
+  p=0.3 calibrated ratio MOND chae2024 f=0.2: 1.253
+  surrogate residual at Chae's self-calibrated f_multi values (linear in f, slope ~0.31):  f=0.1: +0.031, f=0.18: +0.056, f=0.43: +0.133, f=0.65: +0.202
+(3) Veto-ladder intercepts (DR4): linear in surviving triple fraction, first and last rungs
+  Newton f=0.2           slope 0.651 per unit triple fraction; intercept 1.004; no-triple same-seed-class truth 1.000
+  Newton f=0.3           slope 0.648 per unit triple fraction; intercept 1.022; no-triple same-seed-class truth 1.000
+  MOND chae2024 f=0.2    slope 0.678 per unit triple fraction; intercept 1.261; no-triple same-seed-class truth 1.255
+  const 1.4 f=0.2        slope 0.747 per unit triple fraction; intercept 1.406; no-triple same-seed-class truth 1.364
+
+--- stderr ---
+

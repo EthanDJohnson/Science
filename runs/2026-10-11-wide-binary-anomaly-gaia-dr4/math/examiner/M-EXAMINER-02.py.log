@@ -1,0 +1,29 @@
+# math_run log
+command:  python3 runs/2026-10-11-wide-binary-anomaly-gaia-dr4/math/examiner/M-EXAMINER-02.py
+started:  2026-10-11T05:50:44Z
+duration: 0.9 s
+exit:     0
+versions: python 3.13.16, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   10 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+PASS sqrt(1/4 + (x_e + 1)/x_e**2) + 1/2 == (x_e + 1)/x_e: numeric at 50 points, x_e in [0.1, 10]
+K0(x_e) = 2*(-x_e - 1)/(x_e**2 + x_e*sqrt(x_e**2 + 4*x_e + 4) + 4*x_e + 4)
+PASS 2/3 == 2/3: symbolic
+PASS -nu_e*(-K_0/3 - 1)/2 + nu_e*(K_0/3 + 1)/2 == nu_e*(K_0/3 + 1): symbolic
+PASS 2*(-x_e - 1)/(x_e**2 + x_e*sqrt(x_e**2 + 4*x_e + 4) + 4*x_e + 4) is negative: symbolic, x_e in [0.01, 100]
+PASS lim x_e->0 of 2*(-x_e - 1)/(x_e**2 + x_e*sqrt(x_e**2 + 4*x_e + 4) + 4*x_e + 4) == -1/2: symbolic limit -1/2
+PASS lim x_e->oo of 2*(-x_e - 1)/(x_e**2 + x_e*sqrt(x_e**2 + 4*x_e + 4) + 4*x_e + 4) == 0: symbolic limit 0
+nu 1.5602241
+K0 -0.26420079
+eta 1.4228199
+perp 1.3541179
+PASS 1.56020000000000 == 1.56020000000000: symbolic
+PASS -0.264200000000000 == -0.264200000000000: symbolic
+PASS 1.42280000000000 == 1.42280000000000: symbolic
+PASS 1.35410000000000 == 1.35410000000000: symbolic
+anisotropy (par-perp)/eta = 0.14486
+SUMMARY: 10 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

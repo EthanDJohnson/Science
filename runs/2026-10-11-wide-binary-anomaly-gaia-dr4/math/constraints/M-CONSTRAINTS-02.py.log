@@ -1,0 +1,42 @@
+# math_run log
+command:  python3 runs/2026-10-11-wide-binary-anomaly-gaia-dr4/math/constraints/M-CONSTRAINTS-02.py
+started:  2026-10-11T06:07:03Z
+duration: 0.6 s
+exit:     0
+versions: python 3.13.16, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   17 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+PASS 2*nu*u*(K*w/2 + 1) <= 2*nu: numeric at 50 points, K in [-0.5, 0], nu in [1, 2], u in [1e-06, 1], w in [0, 1]
+PASS 0.26420079260237783 is positive: symbolic, constant
+  simple AQUAL max |phi| r/GM equals nu_e: computed 1.56022 vs lens 1.5602240896358543
+PASS 1.56022408964 == 1.5602240896358543: within 1e-06; 1.56022 vs 1.56022 (SI)
+PASS 0.276385717912332 is positive: symbolic, constant
+  MLS AQUAL max |phi| r/GM equals nu_e: computed 1.50809 vs lens 1.50808924796151
+PASS 1.50808924796 == 1.50808924796151: within 1e-06; 1.50809 vs 1.50809 (SI)
+PASS 0.22805903985395304 is positive: symbolic, constant
+  n1.5 AQUAL max |phi| r/GM equals nu_e: computed 1.26295 vs lens 1.2629504413105719
+PASS 1.26295044131 == 1.2629504413105719: within 1e-06; 1.26295 vs 1.26295 (SI)
+PASS 0.1928184758663575 is positive: symbolic, constant
+  standard AQUAL max |phi| r/GM equals nu_e: computed 1.14623 vs lens 1.1462334101780152
+PASS 1.14623341018 == 1.1462334101780152: within 1e-06; 1.14623 vs 1.14623 (SI)
+  simple v~_max: computed 1.76648 vs lens 1.766
+PASS 1.76647903448 == 1.766: within 0.0006; 1.76648 vs 1.766 (SI)
+  MLS v~_max: computed 1.73671 vs lens 1.737
+PASS 1.7367148574 == 1.737: within 0.0006; 1.73671 vs 1.737 (SI)
+  n1.5 v~_max: computed 1.58931 vs lens 1.589
+PASS 1.5893083032 == 1.589: within 0.0006; 1.58931 vs 1.589 (SI)
+  standard v~_max: computed 1.51409 vs lens 1.514
+PASS 1.51408943605 == 1.514: within 0.0006; 1.51409 vs 1.514 (SI)
+  sqrt(2 gamma) simple: computed 1.6869 vs lens 1.687
+PASS 1.68690245278 == 1.687: within 0.0006; 1.6869 vs 1.687 (SI)
+  ceiling excess: computed 0.0471732 vs lens 0.047
+PASS 0.0471731969882 == 0.047: within 0.03; 0.0471732 vs 0.047 (SI)
+  2.5 / 1.766: computed 1.41524 vs lens 1.4
+PASS 1.41524464836 == 1.4: within 0.02; 1.41524 vs 1.4 (SI)
+  Newton ceiling: computed 1.41421 vs lens 1.41421356
+PASS 1.41421356237 == 1.41421356: within 1e-08; 1.41421 vs 1.41421 (SI)
+SUMMARY: 17 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

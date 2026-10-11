@@ -1,0 +1,24 @@
+# math_run log
+command:  python3 runs/2026-10-11-wide-binary-anomaly-gaia-dr4/math/dialectician/M-DIALECTICIAN-01.py
+started:  2026-10-11T06:01:08Z
+duration: 3.4 s
+exit:     0
+versions: python 3.13.16, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   8 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+PASS g == g: symbolic
+PASS p == p: symbolic
+PASS lim g->1 of 1 == 1: symbolic limit 1
+same orbits, gamma=1.4: gamma(p) at p=.1,.3,.5,.8,.9 = [1.4 1.4 1.4 1.4 1.4]  S = 1.0
+PASS 1.0 == 1: within 1e-09; 1 vs 1 (SI)
+PASS 1.4 == 1.4: within 1e-09; 1.4 vs 1.4 (SI)
+independent orbits gamma=1.4: gamma(.3,.5,.8) = [1.3971 1.4054 1.394 ]  S = 0.9977
+PASS 0.9977392774352021 == 1: within 0.02; 0.997739 vs 1 (SI)
+mixture 1.15/1.40: gamma(.3,.5,.8) = [1.2685 1.2727 1.272 ]  S = 1.0028
+PASS 1.002825326128226 == 1: within 0.02; 1.00283 vs 1 (SI)
+PASS (300 m/s)^2 / (6.674e-11 m^3/(kg s^2) * 2e30 kg / (1.5e15 m)) has the dimension of dimensionless: dimensional analysis
+SUMMARY: 8 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

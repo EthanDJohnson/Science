@@ -1,0 +1,35 @@
+# math_run log
+command:  python3 runs/2026-10-11-wide-binary-anomaly-gaia-dr4/math/mechanist/M-MECHANIST-05.py
+started:  2026-10-11T05:52:11Z
+duration: 0.5 s
+exit:     0
+versions: python 3.13.16, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   13 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+PASS M_t*g/M_e == M_t*g/M_e: symbolic
+PASS g*k_l/k_c == g*k_l/k_c: symbolic
+PASS g == g: symbolic
+PASS lim M_e->M_t of M_t*g/M_e == g: symbolic limit g
+PASS 1/0.9 == 1.111: within 0.001; 1.11111 vs 1.111 (SI)
+E1a: ratio −10% both zones = 1.1046; shift +0.114
+PASS 1.1045871559633027 == 1.1111111111111112: within 0.025; 1.10459 vs 1.11111 (SI)
+E2a: ratio −10% both zones = 1.0978; shift +0.104
+PASS 1.0978363123236126 == 1.1111111111111112: within 0.025; 1.09784 vs 1.11111 (SI)
+E3: ratio −10% both zones = 1.1224; shift +0.125
+PASS 1.1224289911851126 == 1.1111111111111112: within 0.025; 1.12243 vs 1.11111 (SI)
+E4: ratio −10% both zones = 1.0876; shift +0.098
+PASS 1.0875781948168008 == 1.1111111111111112: within 0.025; 1.08758 vs 1.11111 (SI)
+E1b: ratio −10% both zones = 0.9900; shift -0.010
+PASS 0.9900299102691925 == 1.0: within 0.025; 0.99003 vs 1 (SI)
+E1b wide-only: 1.1007 (predicted 1/0.9 = 1.1111)
+PASS 1.1006979062811568 == 1.1111111111111112: within 0.02; 1.1007 vs 1.11111 (SI)
+wide-only underestimate needed to raise 1.05 to 1.37: 0.234
+wide-only underestimate needed to raise 1.003 to 1.37: 0.268
+wide-only underestimate needed to raise 1.0 to 1.3: 0.231
+PASS 0.233576642335766 >= 0.200000000000000: symbolic, constant
+PASS 0.267883211678832 <= 0.300000000000000: symbolic, constant
+SUMMARY: 13 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

@@ -1,0 +1,18 @@
+# math_run log
+command:  python3 runs/2026-10-11-wide-binary-anomaly-gaia-dr4/calc/lens-mechanist_sens2.py
+started:  2026-10-11T05:16:04Z
+duration: 169.5 s
+exit:     0
+versions: python 3.13.16, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+[Newton f_trip=0.2] true PM noise 1.3x quoted (err_inflate=1.3) | N_low=5260 N_cal=28020 trip_frac_low_after_cuts=0.101 med_low=0.5515 med_cal=0.5418 fmulti_cal=0.142 E3_ftrip=0.101 | E1a=1.120±0.023 E1b=1.036±0.027 E1c=1.013±0.022 E2a=1.069±0.024 E2b=1.112±0.016 E3=1.030±0.024 E4=1.139±0.025
+[Newton f_trip=0.2] unbound comoving pairs 5% of test zone (sigma 0.5 km/s) | N_low=5303 N_cal=28020 trip_frac_low_after_cuts=0.094 med_low=0.5619 med_cal=0.5406 fmulti_cal=0.134 E3_ftrip=0.171 | E1a=1.165±0.027 E1b=1.080±0.025 E1c=1.060±0.026 E2a=1.136±0.014 E2b=1.186±0.020 E3=1.031±0.020 E4=1.187±0.021
+[Newton f_trip=0.2] chance alignments 2% (sigma 25 km/s) | N_low=5014 N_cal=27646 trip_frac_low_after_cuts=0.105 med_low=0.5433 med_cal=0.5409 fmulti_cal=0.139 E3_ftrip=0.086 | E1a=1.087±0.035 E1b=1.009±0.025 E1c=0.984±0.033 E2a=1.072±0.019 E2b=1.093±0.016 E3=1.017±0.017 E4=1.096±0.020
+[Newton f_trip=0.2] inner a_in up to 1000 au (longer inner periods) | N_low=5251 N_cal=28023 trip_frac_low_after_cuts=0.106 med_low=0.5486 med_cal=0.5406 fmulti_cal=0.136 E3_ftrip=0.102 | E1a=1.110±0.015 E1b=1.030±0.018 E1c=1.007±0.014 E2a=1.073±0.017 E2b=1.101±0.018 E3=1.011±0.017 E4=1.094±0.017
+[Newton f_trip=0.2] no RUWE-like wobble cut | N_low=5942 N_cal=32237 trip_frac_low_after_cuts=0.202 med_low=0.5675 med_cal=0.5524 fmulti_cal=0.191 E3_ftrip=0.170 | E1a=1.189±0.024 E1b=1.056±0.021 E1c=1.035±0.022 E2a=1.120±0.008 E2b=1.208±0.017 E3=1.012±0.018 E4=1.137±0.023
+elapsed 169.2 s
+
+--- stderr ---
+

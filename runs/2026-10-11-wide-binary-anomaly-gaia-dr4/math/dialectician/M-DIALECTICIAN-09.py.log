@@ -1,0 +1,30 @@
+# math_run log
+command:  python3 runs/2026-10-11-wide-binary-anomaly-gaia-dr4/math/dialectician/M-DIALECTICIAN-09.py
+started:  2026-10-11T06:03:37Z
+duration: 0.4 s
+exit:     0
+versions: python 3.13.16, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   7 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+y_e = 1.2448275862069  check closed form x^2/(1+x) = 1.2448275862068965
+PASS 1.2448275862069 == 1.2448275862068965: within 1e-09; 1.24483 vs 1.24483 (SI)
+PASS 1.00011998445163 == 1: within 0.001; 1.00012 vs 1 (SI)
+PASS -0.4999975 == -0.5: within 0.0001; -0.499997 vs -0.5 (SI)
+s=2646 au, M=0.8: gN = 4.707e-10 m/s^2, log10 -9.327, gamma = 1.1851
+s=2646 au, M=1.3: gN = 7.648e-10 m/s^2, log10 -9.116, gamma = 1.1289
+s=2646 au, M=2.0: gN = 1.177e-09 m/s^2, log10 -8.929, gamma = 1.0898
+PASS 1.1850616322850376 == 1.185: within 0.002; 1.18506 vs 1.185 (SI)
+PASS 1.0898015559703944 == 1.090: within 0.002; 1.0898 vs 1.09 (SI)
+PASS 0.09526007631464317 == 0.095: within 0.03; 0.0952601 vs 0.095 (SI)
+log10 gN = -11.0: gamma = 1.3666
+log10 gN = -10.5: gamma = 1.3619
+log10 gN = -10.0: gamma = 1.3331
+log10 gN = -9.75: gamma = 1.2982
+log10 gN = -9.5: gamma = 1.2358
+bin range [1.2358, 1.3666] contains 1.26: True
+PASS 1.26 == 1.26: within 1e-12; 1.26 vs 1.26 (SI)
+SUMMARY: 7 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

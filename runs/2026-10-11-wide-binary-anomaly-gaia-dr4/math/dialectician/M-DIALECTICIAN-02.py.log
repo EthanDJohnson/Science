@@ -1,0 +1,24 @@
+# math_run log
+command:  python3 runs/2026-10-11-wide-binary-anomaly-gaia-dr4/math/dialectician/M-DIALECTICIAN-02.py
+started:  2026-10-11T06:00:51Z
+duration: 2.0 s
+exit:     0
+versions: python 3.13.16, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   9 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+PASS 2*GM/s >= 2*GM/(s*(k + 1)): numeric at 50 points, GM in [0.1, 10], k in [0, 50], s in [0.1, 10]
+PASS GM*(w + 1)/s - GM/(s*(k + 1)) is positive: numeric at 50 points, GM in [0.1, 10], k in [0, 50], s in [0.1, 10], w in [1e-06, 5]
+PASS (k + 1)*(w + 1) - 1 is positive: numeric at 50 points, k in [0, 50], w in [1e-06, 5]
+PASS GM*(w + 1)/s - GM/s == GM*w/s: symbolic
+gamma=1.0: max v~/sqrt(2 gamma) = 0.981729; max v3D^2 s/(2 gamma GM) = 0.986745
+PASS 0.981728635108524 == 0.981728635108524: within 1e-12; 0.981729 vs 0.981729 (SI)
+PASS 0.9867454139819418 == 0.9867454139819418: within 1e-12; 0.986745 vs 0.986745 (SI)
+gamma=1.4: max v~/sqrt(2 gamma) = 0.986051; max v3D^2 s/(2 gamma GM) = 0.985367
+PASS 0.9860506949250737 == 0.9860506949250737: within 1e-12; 0.986051 vs 0.986051 (SI)
+PASS 0.985366754829806 == 0.985366754829806: within 1e-12; 0.985367 vs 0.985367 (SI)
+PASS (1 km/s)^2 * 1.5e15 m / (6.674e-11 m^3/(kg s^2) * 2e30 kg) has the dimension of dimensionless: dimensional analysis
+SUMMARY: 9 pass, 0 fail, 0 undecided
+
+--- stderr ---
+
