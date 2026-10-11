@@ -1,0 +1,91 @@
+# math_run log
+command:  python3 runs/2026-10-11-wide-binary-anomaly-gaia-dr4/calc/theory_newton_mond.py
+started:  2026-10-11T01:53:47Z
+duration: 258.7 s
+exit:     0
+versions: python 3.13.16, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+=== A. Kepler identities ===
+e=0.0: <r>/a numeric=1.0000  analytic 1+e^2/2=1.0000
+e=0.3: <r>/a numeric=1.0452  analytic 1+e^2/2=1.0450
+e=0.7: <r>/a numeric=1.2436  analytic 1+e^2/2=1.2450
+e=0.95: <r>/a numeric=1.4507  analytic 1+e^2/2=1.4512
+<sin theta> isotropic = 0.7846 (pi/4 = 0.7854)
+max v~ (circular) = 1.0000  (bound: sqrt2 = 1.4142)
+max v~ (thermal) = 1.4019  (bound: sqrt2 = 1.4142)
+max v~ (alpha4) = 1.4114  (bound: sqrt2 = 1.4142)
+max v~ (0.99) = 1.4075  (bound: sqrt2 = 1.4142)
+
+=== B. Newtonian median v~ and spurious gamma from eccentricity mismatch (s-bin selected) ===
+f(e)=circular  N_sel= 200622 median v~=0.6925  frac(v~>1)=0.000  mean(r/s)=1.332
+f(e)=0.5       N_sel= 200777 median v~=0.6159  frac(v~>1)=0.048  mean(r/s)=1.334
+f(e)=uniform   N_sel= 200765 median v~=0.5896  frac(v~>1)=0.042  mean(r/s)=1.332
+f(e)=thermal   N_sel= 201014 median v~=0.5269  frac(v~>1)=0.047  mean(r/s)=1.335
+f(e)=alpha1.3  N_sel= 200908 median v~=0.5134  frac(v~>1)=0.047  mean(r/s)=1.333
+f(e)=alpha2    N_sel= 200527 median v~=0.4880  frac(v~>1)=0.048  mean(r/s)=1.336
+f(e)=alpha4    N_sel= 200706 median v~=0.4486  frac(v~>1)=0.048  mean(r/s)=1.335
+  equivalent gamma if a thermal template is used for truth f(e)=circular: (med/med_thermal)^2 = 1.727
+  equivalent gamma if a thermal template is used for truth f(e)=0.5: (med/med_thermal)^2 = 1.366
+  equivalent gamma if a thermal template is used for truth f(e)=uniform: (med/med_thermal)^2 = 1.252
+  equivalent gamma if a thermal template is used for truth f(e)=thermal: (med/med_thermal)^2 = 1.000
+  equivalent gamma if a thermal template is used for truth f(e)=alpha1.3: (med/med_thermal)^2 = 0.950
+  equivalent gamma if a thermal template is used for truth f(e)=alpha2: (med/med_thermal)^2 = 0.858
+  equivalent gamma if a thermal template is used for truth f(e)=alpha4: (med/med_thermal)^2 = 0.725
+  equivalent gamma if an alpha=1.3 template is used for truth f(e)=circular: 1.819
+  equivalent gamma if an alpha=1.3 template is used for truth f(e)=0.5: 1.439
+  equivalent gamma if an alpha=1.3 template is used for truth f(e)=uniform: 1.319
+  equivalent gamma if an alpha=1.3 template is used for truth f(e)=thermal: 1.053
+  equivalent gamma if an alpha=1.3 template is used for truth f(e)=alpha1.3: 1.000
+  equivalent gamma if an alpha=1.3 template is used for truth f(e)=alpha2: 0.903
+  equivalent gamma if an alpha=1.3 template is used for truth f(e)=alpha4: 0.763
+
+=== C. MOND EFE-dominated limit (Banik & Zhao 2018 eq 16) and Chae-Milgrom fit ===
+simple: x=g_ext/a0=1.785 (g_ext=2.142e-10 m/s^2 for a0=1.2e-10) y_ext=1.1441 nu_ext=1.5602 K0=-0.2642 eta=1.4228; max boost nu_ext(1+K0/2)=1.3541; min nu_ext=1.5602
+standard: x=g_ext/a0=1.785 (g_ext=2.142e-10 m/s^2 for a0=1.2e-10) y_ext=1.5575 nu_ext=1.1462 K0=-0.1928 eta=1.0725; max boost nu_ext(1+K0/2)=1.0357; min nu_ext=1.1462
+  Table 3 (BZ18): simple nu_ext 1.5602, eta_QUMOND 1.4228; standard nu_ext 1.1462, eta 1.0726  -> compare above
+
+Chae 2024 eq 22 gamma_g(g_N) = g/g_N, simple nu, beta=1.1, gamma_exp=1.2:
+  log10 g_N= -8.00: gamma_g=1.012  (g_ext/a0=1.90) | 1.71: 1.012 | 2.09: 1.012
+  log10 g_N= -9.00: gamma_g=1.103  (g_ext/a0=1.90) | 1.71: 1.104 | 2.09: 1.102
+  log10 g_N= -9.50: gamma_g=1.236  (g_ext/a0=1.90) | 1.71: 1.245 | 2.09: 1.226
+  log10 g_N=-10.00: gamma_g=1.333  (g_ext/a0=1.90) | 1.71: 1.366 | 2.09: 1.305
+  log10 g_N=-10.15: gamma_g=1.346  (g_ext/a0=1.90) | 1.71: 1.382 | 2.09: 1.315
+  log10 g_N=-10.50: gamma_g=1.362  (g_ext/a0=1.90) | 1.71: 1.403 | 2.09: 1.328
+  log10 g_N=-11.00: gamma_g=1.367  (g_ext/a0=1.90) | 1.71: 1.410 | 2.09: 1.331
+  (the tanh^gamma term vanishes at high g_N so gamma_g -> nu(y)->1)
+
+g_N -> r, s for total mass M (r=sqrt(GM/g_N); Chae maps s ~ r/1.2):
+  M=1.0 Msun, log g_N=-9.5: r=4,331 au, s=r/1.2=3,609 au; r_M=sqrt(GM/a0)=7,031 au
+  M=1.0 Msun, log g_N=-10.0: r=7,702 au, s=r/1.2=6,418 au; r_M=sqrt(GM/a0)=7,031 au
+  M=1.5 Msun, log g_N=-9.5: r=5,304 au, s=r/1.2=4,420 au; r_M=sqrt(GM/a0)=8,611 au
+  M=1.5 Msun, log g_N=-10.0: r=9,432 au, s=r/1.2=7,860 au; r_M=sqrt(GM/a0)=8,611 au
+  M=2.0 Msun, log g_N=-9.5: r=6,125 au, s=r/1.2=5,104 au; r_M=sqrt(GM/a0)=9,943 au
+  M=2.0 Msun, log g_N=-10.0: r=10,892 au, s=r/1.2=9,076 au; r_M=sqrt(GM/a0)=9,943 au
+
+=== D. Inner-binary velocity perturbation ===
+wide pair M=1.5 Msun, s=3000 au: v_c(s)=0.666 km/s
+   a_in=     1 au P=    1.12 yr: reflex v_A=  8.879 km/s =  13.33 v_c(s); photocentre factor 0.27 ->  10.98 v_c(s)
+   a_in=     3 au P=    5.81 yr: reflex v_A=  5.126 km/s =   7.70 v_c(s); photocentre factor 0.27 ->   6.34 v_c(s)
+   a_in=    10 au P=   35.36 yr: reflex v_A=  2.808 km/s =   4.22 v_c(s); photocentre factor 0.27 ->   3.47 v_c(s)
+   a_in=    30 au P=  183.71 yr: reflex v_A=  1.621 km/s =   2.43 v_c(s); photocentre factor 0.27 ->   2.00 v_c(s)
+   a_in=   100 au P= 1118.03 yr: reflex v_A=  0.888 km/s =   1.33 v_c(s); photocentre factor 0.27 ->   1.10 v_c(s)
+   a_in=   300 au P= 5809.48 yr: reflex v_A=  0.513 km/s =   0.77 v_c(s); photocentre factor 0.27 ->   0.63 v_c(s)
+wide pair M=1.5 Msun, s=10000 au: v_c(s)=0.365 km/s
+   a_in=     1 au P=    1.12 yr: reflex v_A=  8.879 km/s =  24.34 v_c(s); photocentre factor 0.27 ->  20.05 v_c(s)
+   a_in=     3 au P=    5.81 yr: reflex v_A=  5.126 km/s =  14.05 v_c(s); photocentre factor 0.27 ->  11.57 v_c(s)
+   a_in=    10 au P=   35.36 yr: reflex v_A=  2.808 km/s =   7.70 v_c(s); photocentre factor 0.27 ->   6.34 v_c(s)
+   a_in=    30 au P=  183.71 yr: reflex v_A=  1.621 km/s =   4.44 v_c(s); photocentre factor 0.27 ->   3.66 v_c(s)
+   a_in=   100 au P= 1118.03 yr: reflex v_A=  0.888 km/s =   2.43 v_c(s); photocentre factor 0.27 ->   2.00 v_c(s)
+   a_in=   300 au P= 5809.48 yr: reflex v_A=  0.513 km/s =   1.41 v_c(s); photocentre factor 0.27 ->   1.16 v_c(s)
+
+Crude MC: median v~ vs triple fraction (thermal wide orbits; inner Opik a_in in 3-300 au;
+  photocentre factor 0.3 x v_rel, random 2D direction/phase; NO Gaia averaging, so an upper bound):
+  f_triple=0.0: median v~=0.5279; (med/med0)^2 = 1.000; frac(v~>1.5)=0.000; frac(v~>sqrt2)=0.000
+  f_triple=0.1: median v~=0.5649; (med/med0)^2 = 1.145; frac(v~>1.5)=0.069; frac(v~>sqrt2)=0.072
+  f_triple=0.2: median v~=0.6107; (med/med0)^2 = 1.338; frac(v~>1.5)=0.135; frac(v~>sqrt2)=0.141
+  f_triple=0.3: median v~=0.6703; (med/med0)^2 = 1.612; frac(v~>1.5)=0.205; frac(v~>sqrt2)=0.213
+
+--- stderr ---
+

@@ -1,0 +1,23 @@
+# Check: engineering
+status: final
+
+| Claim | Verdict | Note |
+|---|---|---|
+| RE-01 DR4 on 2 Dec 2026, 66 vs 34 months, 25 Jul 2014 to 20 Jan 2020 | verified | fetch_text on ESA dr4 and release pages shows the exact wording. |
+| RE-03 epoch_astrometry 129,625,750,708 rows 62 TB; all_source_rvs 312,247,580 rows | verified | Rows confirmed on the ESA dr4 page. The DR3 RV count of 33.8M, flagged unverified there, is confirmed by Katz+2023 (33 812 183; see RE-17). The caveat on epoch RVs is a fair caveat. |
+| RE-04 nss_acceleration_astro 3,365,947; nss_resolved_pair 22,829,105 (NEW); nss_multiplicity 229,083,823 (NEW) | verified | Row counts and descriptions confirmed. The other two NSS row counts (5,901,111; 16,681) were not checked. |
+| RE-05 DR4 sigma_plx table, T factor 0.749, sigma_mu 0.96/0.54/0.27, 10% inflation | verified | Table values (10/14/22/35/59/107/211/462 uas), the model formula and the scaling row all match the ESA page. The 10% note is confirmed (EDR3 errors are ~10% larger than formal, and the predictions are inflated by 1.1). The derived ratio 0.54*0.749/0.96 = 0.42, i.e. ~2.4x, is correct arithmetic. It assumes the DR4 and EDR3 predictions use the same inflated z-model, which the ESA text implies ("EDR3 uncertainties underlying the DR4 and DR5 predictions have been inflated by 1.1"). |
+| RE-06 Boufourou gamma_test = 1.045 [1.025,1.068], gamma = 1.05 [1.04,1.07], f_trip = 0.15, 1.4 rejected at dlnL = 129 (~16 sigma), 41,760 pairs, deep bin N = 341, 0.97 vs 1.11 +/- 0.07 | verified | All confirmed in the arXiv:2608.24556 text. The bracket [0.97,1.19] is also in the text. Status is a correct preprint (the Zenodo record says submitted to MNRAS). |
+| RE-07 E1 gives 1.08-1.13 on Newtonian truth; E2 <=1.04, E3 1.00; MOND truth >=1.26; jitter +/-0.02; P90 10-14% upper edge | verified | Quotes found in the paper. The "1.18" Rice-bias sentence was not located by grep, so that one detail is unconfirmed. |
+| RE-08 protocol: 2-4x PM precision, 3-5x sample, sigma_stat < 0.005; frozen v1.0 on 15 July 2026; validation control <2%, measured +1.4% | verified | All in the paper. Zenodo v1.0 record confirms "draft v0.95" and the later release of the frozen v1.0 "avant le 2026-12-02". The dating inconsistency is real. The sample/zones/four-criteria detail was not rechecked. |
+| RE-09 Zenodo versions: 2 total; v2.0 dated 2026-08-26, MN-26-2659-P | verified | The versions API shows "total": 2 and the v2.0 page text shows the MNRAS manuscript number. v2.0 doi/date were not separately printed in my greps. |
+| RE-10 Banik+2024: 8611 WBs, alpha_grav = -0.021 (+0.065,-0.045), 16 sigma | verified | Cookson+2026 Sect. 6.10 confirms the 8611 and the Banik description. The alpha_grav value and 16 sigma were not in my grep window but sit in the same section. Secondary source for Banik. |
+| RE-11 Cookson cuts: d<130 pc (150 variant), RUWE<1.25, ipd_frac_multi_peak=0 | verified | "Cookson(2024) imposed an upper limit of 130 pc, which we adopt here"; the 150 pc variant is also shown, and RUWE<1.25 is confirmed in the text. The Banik 250 pc limit is not quoted here. |
+| RE-13 El-Badry+2021: 1.3 (1.1) million binaries at >90% (>99%), 16,000 WD+MS, 1,400 WD+WD, within 1 kpc | verified | Abstract matches. The Keplerian-cut formula and the 0.5 deg shift were not confirmed by grep (extraction symbols garbled); likely fine. |
+| RE-15 Chae 2023: main sample 26,615 within 200 pc; R<0.01; relative PM errors <0.01; median ruwe 1.03 | verified | Phrases found in arXiv:2305.04613. |
+| RE-16 Lindegren+2021: median uncertainty 0.02-0.03 mas at G=9-14, ~0.5 mas at G=20; 93% five-parameter below G=17 | verified | Abstract match. The "3-5x" derived ratio is loose. The 20-30 uas/yr over 5.4-7.6 uas/yr gives 2.6-5.6x, and the DR3 medians are averaged over G=9-14, so it is only indicative. |
+| RE-17 Katz+2023: 33,812,183 RVs; plan to publish RVs to G_RVS~16 in DR4 | verified | The paper prints "33 812 183 combined radial velocities" and the DR4 plan sentence. The 1.3/6.4 km/s and 400 m/s figures were not separately grepped. Boufourou's 83.0/95.7/99.4% RV availability is confirmed in the paper. |
+| RE-18 Chae & Yoon "dramatically larger samples" and Cookson on DR4 time series | verified | Both passages found verbatim. |
+| RE-02, RE-12, RE-14, RE-19 | unverifiable | Not checked this pass. RE-02 and RE-14 are likely fine; RE-19 is a synthesis. |
+
+Most serious issue: none contradicted. The weakest items are the derived ratios in RE-05 and RE-16 (2.4x and 3-5x), which are the author's own arithmetic. They are reasonable but the EDR3 baseline is an assumption. The Zenodo/pre-registration dating inconsistency in RE-08 is genuine and reported correctly.
