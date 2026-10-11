@@ -79,6 +79,10 @@ class Refusals(unittest.TestCase):
             lambda: th.frw_redshifted_temperature(1.0, 0.0, 2.0),
             lambda: th.frw_thermal_production([0.5], lambda e: 1.0, 0.0, 1 / 6, -5.0, 5.0, -1.0),   # T_in < 0
             lambda: th.pair_spectral_density_yukawa([4.0], -1.0),
+            lambda: th.pair_spectral_density_yukawa([5.0], float("nan")),                 # NaN mass (was 0)
+            lambda: th.thermal_pair_weight(3.0, 0.0, float("nan"), 1.0),                   # NaN mass (was NaN)
+            lambda: th.born_yukawa_homogeneous_thermal(lambda t: 0.1 * np.exp(-t * t), -6, 6, float("nan"), 10.0, 1.0),
+            lambda: th.born_scalar_general_thermal(V, float("nan"), 10.0, 4.0, 1.0),
         ]
         for i, fn in enumerate(bad):
             with self.subTest(case=i), self.assertRaises(ValueError):
@@ -129,6 +133,37 @@ class Physics(unittest.TestCase):
             occ = th.bose_einstein if stat == "boson" else th.fermi_dirac
             self.assertAlmostEqual(float(at_rest), 1 + sg * float(occ(1.5, T, mu) + occ(1.5, T, -mu)), places=13)
 
+    @staticmethod
+    def bose_average_closed_form(Em, Ep, T, mu):
+        """<1/(e^{(E - mu)/T} - 1)> for E uniform on [Em, Ep], exact: T/D [ln(1 - e^{-(Ep-mu)/T}) - ln(1 - e^{-(Em-mu)/T})]."""
+        return T / (Ep - Em) * (math.log(-math.expm1(-(Ep - mu) / T)) - math.log(-math.expm1(-(Em - mu) / T)))
+
+    def test_bose_weight_with_E_minus_close_to_mu(self):
+        # complex scalar, m = 1, mu just below m, pair boosted with v = b so that E- = m (sits 1e-4..1e-6 above mu):
+        # the Bose average varies on E- - mu, not on T, so the Gauss branch must not be used here (review finding).
+        m = 1.0
+        for b, mu, T in ((0.1, 0.9999, 1.0), (0.1, 0.999999, 1.0), (0.2, 0.999999, 3.0), (0.2, 0.999999, 1.0)):
+            g = 1 / math.sqrt(1 - b * b)
+            K0, kap = g * 2 * m * g * (1 + 1e-13), g * b * 2 * m * g        # sqrt(s) = 2 m gamma, boost v = b
+            s = K0 * K0 - kap * kap
+            D = kap * math.sqrt(1 - 4 * m * m / s)
+            Em, Ep = 0.5 * (K0 - D), 0.5 * (K0 + D)
+            ref = 1 + self.bose_average_closed_form(Em, Ep, T, mu) + self.bose_average_closed_form(Em, Ep, T, -mu)
+            with self.subTest(b=b, mu=mu, T=T):
+                # 1e-12: the closed form is exact; the residue is double rounding of E- - mu ~ 1e-6 (here ~1e-15)
+                self.assertAlmostEqual(float(th.thermal_pair_weight(K0, kap, m, T, mu)) / ref, 1.0, delta=1e-12)
+
+    def test_massless_bose_weight_near_the_light_cone(self):
+        K0, kap, T = 0.0401, 0.04, 1.0          # m = 0: E- = 5e-5 << D = 0.04 < 0.05 T
+        ref = 1 + 2 * self.bose_average_closed_form(0.5 * (K0 - kap), 0.5 * (K0 + kap), T, 0.0)
+        self.assertAlmostEqual(float(th.thermal_pair_weight(K0, kap, 0.0, T)) / ref, 1.0, delta=1e-12)
+
+    def test_frw_T_eff_is_nan_for_round_off_occupations(self):
+        r = th.frw_thermal_production([0.5, 1.0], lambda e: 1.0, 1.0, 1 / 6, -5.0, 5.0, 0.0)    # static, T_in = 0
+        self.assertTrue(np.all(np.isnan(r["T_eff"])))
+        r = th.frw_thermal_production([0.5, 1.0], lambda e: 1.0, 1.0, 1 / 6, -5.0, 5.0, 0.3)    # static, thermal
+        np.testing.assert_allclose(r["T_eff"], 0.3, rtol=1e-10)
+
     def test_si_temperature_and_redshift(self):
         self.assertAlmostEqual(th.temperature_to_eV(th.temperature_from_eV(0.025)), 0.025, places=15)
         self.assertAlmostEqual(th.temperature_to_eV(11604.518), 1.0, places=6)      # 1 eV = 11604.518 K
@@ -154,6 +189,12 @@ class CommandLine(unittest.TestCase):
     def test_bad_units_return_1(self):
         self.assertEqual(self.run_cli(["mode", "--beta2", "0.01", "--omega", "0.6 MeV", "--T", "3 m"])[0], 1)
         self.assertEqual(self.run_cli(["sauter", "--E", "1e18 V/m", "--tau", "1e-21 m", "--T", "3e9 K"])[0], 1)
+
+    def test_sauter_help_says_bare_numbers_are_eV(self):
+        buf = io.StringIO()
+        with contextlib.redirect_stdout(buf), self.assertRaises(SystemExit):
+            th.main(["sauter", "--help"])
+        self.assertIn("NOT kelvin", " ".join(buf.getvalue().split()))
 
     def test_sauter_cli_with_SI_units(self):
         code, out = self.run_cli(["sauter", "--E", "1e18 V/m", "--tau", "1e-21 s", "--T", "3e9 K"])

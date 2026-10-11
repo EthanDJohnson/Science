@@ -59,8 +59,9 @@ Closed forms (references for the self-test, and useful on their own)
       of the mode integral and against the full nonlinear solver at small amplitude).
       Static limit: epsilon = 1 + e^2/(6 pi m^2) (spinor), 1 + e^2/(12 pi m^2) (scalar); m -> 0 spinor:
       chi_F -> e^2/(pi s^2), i.e. the photon mass mu^2 = e^2/pi.
-    * Constant field, no back-reaction: pairs per length per time Gamma = (eE/2pi) exp(-pi m^2/eE)
-      (Hebenstreit, Berges & Gelfand 2013, eq. 70) for both fields; vacuum-decay rate per length
+    * Constant field, no back-reaction: pairs per length per time Gamma = (eE/2pi) exp(-pi m^2/eE) for both
+      fields (spinor: Hebenstreit, Berges & Gelfand 2013, eq. 70; scalar: the same Landau-Zener n per mode,
+      qft_production.schwinger_n_mode with k_perp = 0, Nikishov); vacuum-decay rate per length
       w = -(eE/2pi) ln(1 - e^{-pi m^2/eE}) (spinor), +(eE/2pi) ln(1 + e^{-pi m^2/eE}) (scalar).
     * Transient polarization: while a weak, slowly varying field is on, the zeroth-order adiabatic
       number is n_pol = 3 (eE)^2/(256 m^3) (spinor), (eE)^2/(256 m^3) (scalar) per length: NOT pairs.
@@ -72,9 +73,24 @@ Numerics
     of symmetric steps; the error is O(dt^4) and energy is conserved to it (no secular drift). Modes on a
     uniform canonical-momentum grid (or any nodes and weights you pass). A uniform grid of spacing dk is
     EXACTLY the problem on a ring of circumference L = 2 pi/dk: pair members separate by up to 2(t - t0),
-    and the mode sum aliases once that exceeds L (Poisson summation), so the infinite-line answer needs
-    t - t0 <= pi/dk (enforced unless finite_ring=True). The solver REFUSES (ValueError) runs whose pairs
-    reached the grid edges, whose energy drifted (step too large) or whose omega_max dt exceeds 1.5.
+    and the mode sum aliases once that exceeds L (Poisson summation). Aliasing already sets in before
+    t - t0 = pi/dk (scalar, sudden switch-on, m = e = 1, eE0 = 5: 3e-8 E0 at 0.7 pi/dk, 4e-7 at 0.8, 3e-5 at
+    0.9, 4e-3 at 1.0), so the solver enforces t - t0 <= 0.8 pi/dk (default dk <= 0.75 pi/(t - t0)) unless
+    finite_ring=True; with your own k_nodes it checks the local spacing in the swept window. The solver
+    REFUSES (ValueError) runs whose pairs reached the grid edges, whose grid does not resolve m where the
+    pairs are made, whose energy balance (including the work of E_ext) drifted (step too large) or whose
+    omega_max dt exceeds 1.5.
+
+Published back-reaction comparison (selftest C9, C11; 'convergence' item 5)
+    Hebenstreit, Berges & Gelfand 2013 (e/m = 0.3, E0 = Ec, sudden switch-on, Wilson lattice a_s = 0.075/m on
+    a ring L = 19.2/m): the continuum mean field on their ring reproduces the first four extrema of their Fig. 5
+    to about 0.02 Ec (-0.82, +0.79, -0.75, +0.74 against digitized -0.80, +0.77, -0.74, +0.72; converged in dt).
+    Later extrema (t > 350/m) stay within ~0.07 Ec of theirs (slightly larger) but are not converged in dt on this
+    277-mode ring: they move by ~0.015 Ec per halving of dt, irregularly (sensitive dynamics after several
+    plasma periods), so only t <= 300/m is checked. Their zero crossings come 7-20% later
+    and their late frequency is ~10% lower: that is the Wilson-lattice dispersion (a homogeneous Wilson mean
+    field reproduces their crossings to ~2-3%). Their 'E ~ Ec/2' is an order-of-magnitude input to a
+    classicality estimate, not a measured amplitude.
 
 Quantities (the traps)
     E(t), A(t), j(t): in-in expectation values, basis independent, gauge invariant (A up to a constant).
@@ -82,7 +98,9 @@ Quantities (the traps)
     the scalar one particle + one antiparticle; no factor 1/2, as for any charged field), counted in the
     zeroth-order adiabatic basis. While the field is on this is basis dependent and contains transient
     vacuum polarization (adiabatic_polarization_pairs); it is a physical pair number only once the field
-    is off or slowly varying. f_k: the same per mode k.
+    is off or slowly varying. f_k: the same per mode k. energy_drift: the relative error of the energy
+    balance E^2/2 + int dk/2pi 2 omega f_k - int dt (dE_ext/dt) E (Otto et al. 2019 eq. 10), an accuracy
+    check whenever back-reaction is on (NaN when it is off: the prescribed field does no bookkeeping).
 
 Assumptions and validity range
     Mean field (semiclassical) approximation: the classical E couples to the expectation value of the
@@ -227,11 +245,15 @@ def screened_sauter_field(t, m: float, e: float, E0: float, tau: float, field: s
     with chi = vacuum_susceptibility (retarded; above nu = 2m it is complex: real pair absorption).
     Quantity: the mean (in-in) total field E(t) at times t (same unit as E0), including vacuum screening and the
         ringing it leaves, to first order in E0 (one loop).
-    Valid when: e E0 << m^2 (linear response; corrections O((eE0/m^2)^2)), m > 0, tau > 0, |t| <= 40 tau."""
+    Valid when: e|E0|/m^2 <= 0.1 (linear response; corrections O((eE0/m^2)^2): 8e-4 E0 at the limit (tau = 1/m),
+        3e-1 E0 at eE0 = 3 m^2; refused beyond with ValueError), m > 0, tau > 0, |t| <= 40 tau."""
     import mpmath as mp
     _field(field)
     m, e, tau = _pos(m, "m"), _pos(e, "e"), _pos(tau, "tau")
     E0 = _finite(E0, "E0")
+    if e * abs(E0) / (m * m) > 0.1:
+        raise ValueError(f"e|E0|/m^2 = {e * abs(E0) / m ** 2:.3g} > 0.1: outside linear response "
+                         "(use qed2_backreaction with E_ext for the self-consistent field)")
     tt = np.atleast_1d(np.asarray(t, dtype=float))
     if not np.all(np.isfinite(tt)) or np.any(np.abs(tt) > 40 * tau):
         raise ValueError("need finite |t| <= 40 tau")
@@ -249,8 +271,12 @@ def screened_sauter_field(t, m: float, e: float, E0: float, tau: float, field: s
     out = []
     with mp.workdps(20):
         for ti in tt:
+            # at most ~2 oscillations of e^{-i nu t} per subinterval (with 3-4 intervals the result was off by
+            # up to 2.5e-5 E0 at t = 40 tau)
+            width = 4 * PI / max(abs(ti), 1e-300)
+            pts = sorted(set(brk) | set(np.arange(width, nu_max, width).tolist()))
             f = lambda nu, ti=ti: mp.re(mp.exp(-1j * nu * ti) * inv_eps(nu)) * spec(nu)  # noqa: E731
-            out.append(float(E0 * mp.quad(f, brk) / PI))
+            out.append(float(E0 * mp.quad(f, pts) / PI))
     return np.array(out)
 
 
@@ -259,7 +285,8 @@ def pair_rates_constant_field(m: float, eE: float, field: str = "spinor") -> dic
 
     Each canonical mode crosses p = 0 once, at a rate eE/(2 pi) modes per length per time, and ends with
     n = exp(-pi m^2/eE) (Landau-Zener; qft_production.schwinger_n_mode with k_perp = 0). Hence
-        Gamma = (eE/2pi) n                          (Hebenstreit, Berges & Gelfand 2013 eq. 70),
+        Gamma = (eE/2pi) n                          (spinor: Hebenstreit, Berges & Gelfand 2013 eq. 70;
+                                                     scalar: same n from the scalar Landau-Zener problem),
         w     = -(eE/2pi) ln(1 - n) (spinor),  +(eE/2pi) ln(1 + n) (scalar)   (= 2 Im L_eff per length).
     Quantity: dict with 'pair_rate' Gamma (mean number of PAIRS per unit length per unit time, mass^2; in-in) and
         'decay_rate' w (vacuum decay: P(vacuum survives) = exp(-w L T), in-out, mass^2), 'n_mode' and 'ratio' w/Gamma.
@@ -278,13 +305,18 @@ def adiabatic_polarization_pairs(m: float, eE: float, field: str = "spinor") -> 
 
     Leading adiabatic order: spinor f_k = (eE m)^2/(16 omega^6), scalar f_k = (eE p)^2/(16 omega^6), so
         n_pol = int dk/2pi f_k = 3 (eE)^2/(256 m^3) (spinor), (eE)^2/(256 m^3) (scalar).
-    Quantity: the value the solver's 'pairs' output takes while the field is on: transient vacuum polarization
-        counted in the instantaneous adiabatic basis, per unit length (mass). It is NOT a number of real pairs:
-        it disappears when the field is switched off adiabatically.
-    Valid when: eE << m^2 and the field is slowly varying (|d ln E/dt| << m); m > 0."""
+    Quantity: the leading-order value of the solver's 'pairs' output while a weak, slowly varying field is on:
+        transient vacuum polarization counted in the instantaneous adiabatic basis, per unit length (mass). It is
+        NOT a number of real pairs: it disappears when the field is switched off adiabatically. (Solver/formula at
+        the peak of a pulse with tau = 10/m: spinor 1.013, 1.029, 1.064 at eE = 0.1, 0.2, 0.3 m^2; scalar 1.016,
+        1.055, 1.147.)
+    Valid when: |eE|/m^2 <= 0.2 (refused beyond with ValueError: the next orders grow fast, ratio 3.3 (spinor)
+        and 8.2 (scalar) at eE = m^2) and the field is slowly varying (|d ln E/dt| << m); m > 0."""
     _field(field)
     m = _pos(m, "m")
     eE = abs(_finite(eE, "eE"))
+    if eE / (m * m) > 0.2:
+        raise ValueError(f"|eE|/m^2 = {eE / m ** 2:.3g} > 0.2: outside the weak-field adiabatic expansion")
     return (3.0 if field == "spinor" else 1.0) * eE * eE / (256.0 * m ** 3)
 
 
@@ -296,6 +328,22 @@ def _chi_static_window(m: float, e: float, field: str, p_lo: float, p_hi: float)
             return m * m * (p / (3 * m * m * w ** 3) + 2 * p / (3 * m ** 4 * w)) / 4
         return p ** 3 / (3 * m * m * w ** 3) / 4      # int p^2 dp/(4 w^5)
     return e * e / (2 * PI) * (G(p_hi) - G(p_lo))
+
+
+def _check_nodes(k, eA_lo, eA_hi, margin, m, ring_dk):
+    """Refuse k_nodes whose local spacing in the swept window [eA_lo - margin, eA_hi + margin] (canonical modes
+    whose kinetic momentum came within 'margin' of 0: where pairs are made) exceeds m, or ring_dk (if given)."""
+    lo, hi = eA_lo - margin, eA_hi + margin
+    sel = (k[1:] >= lo) & (k[:-1] <= hi)
+    if not np.any(sel):
+        return
+    gap = float(np.max(np.diff(k)[sel]))
+    if gap > m * (1 + 1e-12):
+        raise ValueError(f"k_nodes spacing {gap:.3g} > m = {m:g} in the window [{lo:.3g}, {hi:.3g}] where pairs are "
+                         "made: the grid must resolve the mass scale")
+    if ring_dk is not None and gap > ring_dk * (1 + 1e-12):
+        raise ValueError(f"k_nodes spacing {gap:.3g} > 0.8 pi/(t_end - t0) = {ring_dk:.3g} in the window [{lo:.3g}, "
+                         f"{hi:.3g}]: pairs would meet periodic images; refine the nodes or pass finite_ring=True")
 
 
 # ---------------------------------------------------------------- mode evolution (exact at frozen A)
@@ -354,22 +402,29 @@ def qed2_backreaction(m: float, e: float, E0: float, t_end: float, field: str = 
     is then the prescribed E0 + E_ext(t) and the modes reproduce qft_production's fixed-background results.
     Grid: canonical k on a uniform grid of spacing dk over eA0 +- k_max (defaults from m, eE0 and t_end), or your
     own k_nodes with quadrature weights k_weights for int dk. A uniform grid is exactly the problem on a ring of
-    circumference L = 2 pi/dk; it equals the infinite line while t - t0 <= L/2 = pi/dk (pair members separate by up
-    to 2(t - t0)), which is enforced unless finite_ring=True ('ring_length' is returned). With k_nodes the same
-    rule applies to your spacing and is not checked. E_ext: callable t -> field (same unit as E0).
+    circumference L = 2 pi/dk; pair members separate by up to 2(t - t0), and the mode sum aliases as that nears L:
+    already at t - t0 = pi/dk the error reaches 4e-3 E0 (scalar sudden switch-on), 4e-7 at 0.8 pi/dk. So
+    t_end - t0 <= 0.8 pi/dk is enforced unless finite_ring=True ('ring_length' is returned), and the default dk
+    is <= 0.75 pi/(t_end - t0). With k_nodes, the local spacing of the nodes whose kinetic momentum came within
+    3 max(m, sqrt(eE)) of 0 during the run (the swept window, where pairs are made) must be <= m and, with
+    back-reaction and finite_ring=False, <= 0.8 pi/(t_end - t0) (checked; ValueError).
+    E_ext: callable t -> field (same unit as E0).
     Quantity: dict of arrays at record times 't': 'E' (total field: in-in mean field), 'A', 'j' (renormalized
         in-in current, gauge invariant, mass^2), 'pairs' (mean PAIRS per unit length in the zeroth-order adiabatic basis:
         basis dependent while E != 0, see adiabatic_polarization_pairs; physical once the field is off),
-        'energy_field' E^2/2, 'energy_matter' int dk/2pi 2 omega f_k, 'energy_total' (energies per length);
+        'energy_field' E^2/2, 'energy_matter' int dk/2pi 2 omega f_k, 'energy_total' (their sum; energies per
+        length), 'work_ext' int dt (dE_ext/dt) E (work done by the external current, 0 without E_ext);
         'E_steps' at every step 't_steps'; final per-mode 'f_k' on 'k' with kinetic momenta 'p';
-        'energy_drift' (max relative change of the total energy; meaningful when E_ext is None),
-        'edge_share' (fraction of the pairs in the outer 2% of the grid), 'chi_tail' (static susceptibility
-        missing beyond the grid), 'ring_length', 'dt', 'steps'.
+        'energy_drift' (max change of energy_total - work_ext relative to the largest energy_total; NaN when
+        backreaction=False), 'edge_share' (fraction of the pairs in the outer 2% of the grid), 'chi_tail'
+        (static susceptibility missing beyond the grid), 'eA_range' (min, max of eA during the run),
+        'ring_length', 'dt', 'steps'.
     Valid when: homogeneous field in 1+1, mean-field approximation; m > 0, e > 0; the grid resolves the mass
-        scale (dk <= m) and holds the pairs (edge_share <= edge_tol, else ValueError); omega_max dt <= 1.5
-        (else ValueError); with back-reaction and no E_ext the energy must be conserved to drift_tol (else
-        ValueError: reduce dt);
-        uniform grid: t_end - t0 <= pi/dk unless finite_ring=True (then the answer is for a ring of length 2 pi/dk)."""
+        scale (dk <= m; for k_nodes in the swept window) and holds the pairs (edge_share <= edge_tol, else
+        ValueError); omega_max dt <= 1.5 (else ValueError, raised as soon as it happens); with back-reaction
+        the energy balance must hold to drift_tol (else ValueError: reduce dt);
+        t_end - t0 <= 0.8 pi/dk (uniform grid; k_nodes with back-reaction: local spacing in the swept window)
+        unless finite_ring=True (then the answer is for a ring of length 2 pi/dk)."""
     field = _field(field)
     m, e = _pos(m, "m"), _pos(e, "e")
     E0, t0, t_end, A0 = _finite(E0, "E0"), _finite(t0, "t0"), _finite(t_end, "t_end"), _finite(A0, "A0")
@@ -382,6 +437,9 @@ def qed2_backreaction(m: float, e: float, E0: float, t_end: float, field: str = 
     if not math.isfinite(E_start):
         raise ValueError("E_ext(t0) must be finite")
     eE_scale = abs(e * E0) + (abs(e * Eext(t0)) if E_ext is not None else 0.0)
+    scale = max(m, math.sqrt(eE_scale))
+    T = t_end - t0
+    ring_dk = 0.8 * PI / T            # largest spacing that keeps the infinite-line answer (see the docstring)
     if k_nodes is not None:
         k = np.asarray(k_nodes, dtype=float).ravel()
         if k_weights is None:
@@ -390,20 +448,32 @@ def qed2_backreaction(m: float, e: float, E0: float, t_end: float, field: str = 
         if k.shape != wk.shape or k.size < 8 or not (np.all(np.isfinite(k)) and np.all(np.isfinite(wk))) \
                 or np.any(wk <= 0) or np.any(np.diff(k) <= 0):
             raise ValueError("k_nodes must be >= 8 increasing finite values with positive finite k_weights")
+        _check_nodes(k, e * A0, e * A0, 3 * scale, m, ring_dk if (backreaction and not finite_ring) else None)
     else:
-        scale = max(m, math.sqrt(eE_scale))
-        dk = _pos(dk, "dk") if dk is not None else min(scale / 8.0, m / 2.0, PI / (t_end - t0))
+        dk = _pos(dk, "dk") if dk is not None else min(scale / 8.0, m / 2.0, 0.75 * PI / T)
         if dk > m:
             raise ValueError(f"dk = {dk:g} > m = {m:g}: the grid must resolve the mass scale")
         # A uniform grid of spacing dk is exactly the system on a ring of circumference L = 2 pi/dk. Pair members
-        # separate by up to 2(t - t0) (Poisson summation: the mode sum aliases once that exceeds L), so the
-        # infinite-line answer is guaranteed only for t - t0 <= L/2 = pi/dk.
-        if (t_end - t0) > PI / dk * (1 + 1e-12) and not finite_ring:
-            raise ValueError(f"t_end - t0 = {t_end - t0:g} > pi/dk = {PI / dk:g}: pairs would meet their periodic images "
-                             f"on the ring of circumference 2 pi/dk = {2 * PI / dk:g} the grid represents; lower dk, "
-                             "or pass finite_ring=True to accept the finite-ring answer")
+        # separate by up to 2(t - t0) (Poisson summation: the mode sum aliases as that nears L). At t - t0 = pi/dk
+        # the scalar error is already 4e-3 E0 (sudden switch-on, m = e = 1, E0 = 5); at 0.8 pi/dk it is 4e-7.
+        if dk > ring_dk * (1 + 1e-12) and not finite_ring:
+            raise ValueError(f"t_end - t0 = {T:g} > 0.8 pi/dk = {0.8 * PI / dk:g}: pairs would meet their periodic "
+                             f"images on the ring of circumference 2 pi/dk = {2 * PI / dk:g} the grid represents "
+                             f"(aliasing sets in from ~0.8 pi/dk); use dk <= {ring_dk:.4g}, or pass finite_ring=True "
+                             "to accept the finite-ring answer")
         if k_max is None:
-            k_max = 12.0 * scale + min(abs(e * E0) * (t_end - t0), 30.0 * scale)
+            # Momentum the field gives the pairs: |eE0| T without back-reaction or with an external field. With
+            # back-reaction alone (energy: |E| <= |E0|), production screens E0 after t_s ~ sqrt(E0/(e Gamma))
+            # (dE/dt ~ -2e Gamma t), after which E oscillates with a smaller swing; 1.5 t_s is a safety margin
+            # (HBG parameters: t_s = 40, first zero of E at 57, max |e(A - A0)| = 32 by t = 60 < 1.5 eE0 t_s = 60).
+            t_push = T
+            if E_ext is None and backreaction and E0 != 0:
+                rate = abs(e * E0) / (2 * PI) * math.exp(-PI * m * m / abs(e * E0))
+                if rate > 0:
+                    t_push = min(T, 1.5 * math.sqrt(abs(E0) / (e * rate)))
+                k_max = 12.0 * scale + abs(e * E0) * t_push
+            else:
+                k_max = 12.0 * scale + (abs(e * E0) * T if E_ext is None else min(abs(e * E0) * T, 30.0 * scale))
         k_max = _pos(k_max, "k_max")
         nk = 2 * int(math.ceil(k_max / dk)) + 1
         if nk > 400001:
@@ -419,8 +489,8 @@ def qed2_backreaction(m: float, e: float, E0: float, t_end: float, field: str = 
     dt = _pos(dt, "dt")
     if om_max * dt > 1.5:
         raise ValueError(f"omega_max dt = {om_max * dt:.3g} > 1.5: the splitting would mis-resolve fast modes")
-    nsteps = max(1, int(math.ceil((t_end - t0) / dt)))
-    h = (t_end - t0) / nsteps
+    nsteps = max(1, int(math.ceil(T / dt)))
+    h = T / nsteps
     if record_every is None:
         record_every = max(1, nsteps // 2000)
     record_every = int(record_every)
@@ -438,31 +508,41 @@ def qed2_backreaction(m: float, e: float, E0: float, t_end: float, field: str = 
     v_flow = _v_spinor if field == "spinor" else _v_scalar
     charge = e if field == "spinor" else 2 * e
     A, Eind, t = A0, E0, t0
+    Ex_now, W = Eext(t0), 0.0
+    A_lo = A_hi = A0
 
     def drift(tau):
-        nonlocal A, t
+        # A moves at fixed induced field; the external current's work int (dE_ext/dt)(E_ind + E_ext) dt over the
+        # drift is exactly E_ind dE_ext + d(E_ext^2/2) (E_ind is constant here, and t does not move in the kicks)
+        nonlocal A, t, Ex_now, W, A_lo, A_hi
         integral = Eind * tau
         if E_ext is not None:
             integral += 0.5 * tau * sum(gw * Eext(t + 0.5 * tau * (gx + 1)) for gx, gw in zip(_GLX, _GLW))
+            ex1 = Eext(t + tau)
+            W += Eind * (ex1 - Ex_now) + 0.5 * (ex1 * ex1 - Ex_now * Ex_now)
+            Ex_now = ex1
         A, t = A - integral, t + tau
+        A_lo, A_hi = min(A_lo, A), max(A_hi, A)
 
-    rec = {key: [] for key in ("t", "E", "A", "j", "pairs", "energy_field", "energy_matter")}
+    rec = {key: [] for key in ("t", "E", "A", "j", "pairs", "energy_field", "energy_matter", "work_ext")}
 
     def record():
         f, j, em, npair, _ = _observables(st, A)
         Et = Eind + Eext(t)
-        for key, val in zip(rec, (t, Et, A, j, npair, 0.5 * Et * Et, em)):
+        for key, val in zip(rec, (t, Et, A, j, npair, 0.5 * Et * Et, em, W)):
             rec[key].append(val)
 
     t_steps, E_steps = [t], [E_start]
-    om_seen = om_max
     record()
     for i in range(nsteps):
         for c in (_W1, _W0, _W1):
             drift(0.5 * c * h)
             p = k - e * A
             om = np.sqrt(p * p + m * m)
-            om_seen = max(om_seen, om[0], om[-1])              # |p| is largest at a grid end
+            om_edge = max(om[0], om[-1])                       # |p| is largest at a grid end
+            if om_edge * h > 1.5:
+                raise ValueError(f"omega_max dt reached {om_edge * h:.3g} > 1.5 at t = {t:.4g} (the field moved the "
+                                 "grid): reduce dt, or k_max if the pairs do not need it")
             J = charge * float(np.sum(w * v_flow(st, p, om, c * h)))
             if backreaction:
                 Eind -= J
@@ -472,11 +552,11 @@ def qed2_backreaction(m: float, e: float, E0: float, t_end: float, field: str = 
         E_steps.append(Eind + Eext(t))
         if (i + 1) % record_every == 0 or i + 1 == nsteps:
             record()
-    if om_seen * h > 1.5:
-        raise ValueError(f"omega_max dt reached {om_seen * h:.3g} > 1.5 (the field moved the grid): reduce dt")
     out = {key: np.array(val) for key, val in rec.items()}
     out["energy_total"] = out["energy_field"] + out["energy_matter"]
     f, j, em, npair, p = _observables(st, A)
+    if k_nodes is not None:                                    # the window the pairs were made in is known now
+        _check_nodes(k, e * A_lo, e * A_hi, 3 * scale, m, ring_dk if (backreaction and not finite_ring) else None)
     nedge = max(2, k.size // 50)
     # Real pairs that ran off the grid show up as a sizeable share of all pairs in the outer 2% of the nodes.
     # (A sudden switch-on excites every mode at the level (eE m)^2/(16 omega0^6): that tail is legitimately cut.)
@@ -487,14 +567,19 @@ def qed2_backreaction(m: float, e: float, E0: float, t_end: float, field: str = 
         raise ValueError(f"{edge_share:.2g} of all pairs sit at the edges of the momentum grid (> {edge_tol:g}): "
                          "real pairs left the grid; raise k_max (or widen k_nodes)")
     etot = out["energy_total"]
+    bal = etot - out["work_ext"]                               # Otto et al. 2019 eq. 10: conserved
     floor = 1e-13 * float(np.dot(w, np.sqrt((k - e * A0) ** 2 + m * m)))      # roundoff scale of the mode sums
-    drift_rel = float(np.max(np.abs(etot - etot[0]))) / max(abs(etot[0]), floor)
-    if backreaction and E_ext is None and drift_rel > drift_tol:
-        raise ValueError(f"total energy drifted by {drift_rel:.2g} (> {drift_tol:g}): reduce dt")
+    if backreaction:
+        drift_rel = float(np.max(np.abs(bal - bal[0]))) / max(abs(bal[0]), float(np.max(np.abs(etot))), floor)
+        if drift_rel > drift_tol:
+            raise ValueError(f"energy balance drifted by {drift_rel:.2g} (> {drift_tol:g}): reduce dt")
+    else:
+        drift_rel = float("nan")        # prescribed field: E^2/2 does not pay for the matter energy
     chi_tail = _chi_static_window(m, e, field, -1e12, float(p[0])) + _chi_static_window(m, e, field, float(p[-1]), 1e12)
     out.update({"t_steps": np.array(t_steps), "E_steps": np.array(E_steps), "k": k, "p": p, "f_k": f,
                 "energy_drift": drift_rel, "edge_share": edge_share, "chi_tail": chi_tail, "dt": h,
                 "steps": nsteps, "field": field, "backreaction": bool(backreaction),
+                "eA_range": (e * A_lo, e * A_hi),
                 "ring_length": (2 * PI / dk if k_nodes is None else None),
                 "mu": schwinger_boson_mass(e), "epsilon_static": dielectric_constant(m, e, field)})
     return out
@@ -587,19 +672,23 @@ def selftest(verbose: bool = True) -> bool:
 
     # B3. Back-reaction ON but e -> 0 at fixed eE0: the back-reaction shifts f_k by O(e^2) (measured 4.5e-2, 4.4e-4,
     #     4.5e-6 relative at e = 1e-2, 1e-3, 1e-4), so at e = 1e-5 the occupations must again be Gavrilov-Gitman eq. 42
-    #     (same tolerance as B1).
+    #     (same tolerance as B1). finite_ring=True: t - t0 = 60 > 0.8 pi/0.1; the ring only matters through the
+    #     induced field, which is O(e^2) here.
     e_small = 1e-5
     kg = 0.1 * np.arange(-100, 101)
     r = qed2_backreaction(m_, e_small, 0.0, 15 * tau, "spinor", t0=-15 * tau, A0=A_in / e_small,
-                          E_ext=lambda t: sauter(t) / e_small, k_nodes=kg, k_weights=np.full(kg.size, 0.1), dt=0.02)
+                          E_ext=lambda t: sauter(t) / e_small, k_nodes=kg, k_weights=np.full(kg.size, 0.1), dt=0.02,
+                          finite_ring=True)
     sel = np.searchsorted(kg, ks - 1e-9)
-    check("spinor, back-reaction on with e = 1e-4 at fixed eE0: max rel. error of f_k vs eq. 42",
+    check("spinor, back-reaction on with e = 1e-5 at fixed eE0: max rel. error of f_k vs eq. 42",
           float(np.max(np.abs(r["f_k"][sel] / qp.sauter_n_spinor(ks, 0.0, m_, eE0, tau) - 1))), 0.0, 1e-6)
 
     # B4. Back-reaction OFF, constant field switched on at t = 0 (m = eE = 1): late-time slope of the pair number
-    #     per length against Hebenstreit, Berges & Gelfand 2013 (arXiv:1302.5537) eq. 70, "∆ n+ TLm 2 = ǫ 2π exp
+    #     per length. Spinor: against Hebenstreit, Berges & Gelfand 2013 (arXiv:1302.5537, Dirac fermions) eq. 70, "∆ n+ TLm 2 = ǫ 2π exp
     #     ( −π ǫ ) . (70)" with "ǫ = E0 Ec , (69) with the critical Schwinger ﬁeld strength Ec =m2/e", i.e.
-    #     dn/dt = (eE/2pi) exp(-pi m^2/eE). Slope over 10 <= t <= 20 (after the switch-on transient). Tolerances:
+    #     dn/dt = (eE/2pi) exp(-pi m^2/eE). Scalar: HBG treat fermions only; the scalar Landau-Zener crossing gives
+    #     the same n = exp(-pi m^2/eE) per mode (Nikishov; qft_production.schwinger_n_mode with k_perp = 0), hence
+    #     the same rate. Slope over 10 <= t <= 20 (after the switch-on transient). Tolerances:
     #     spinor 1e-4 (measured 1.6e-5, converged in dk and dt), scalar 1e-3 (the scalar adiabatic number keeps a
     #     slowly decaying oscillation after each crossing: measured -6.5e-4 here, between -4.5e-4 and -3.5e-5 in
     #     later windows).
@@ -609,7 +698,8 @@ def selftest(verbose: bool = True) -> bool:
                               k_weights=np.full(kc.size, 0.05), dt=0.02, record_every=1)
         i1, i2 = np.searchsorted(r["t"], 10.0 - 1e-9), np.searchsorted(r["t"], 20.0 - 1e-9)
         slope = (r["pairs"][i2] - r["pairs"][i1]) / (r["t"][i2] - r["t"][i1])
-        check(f"{field}, constant field, no back-reaction: pairs per length per time vs HBG eq. 70", slope,
+        check(f"{field}, constant field, no back-reaction: pairs per length per time vs "
+              f"{'HBG eq. 70' if field == 'spinor' else '(eE/2pi) exp(-pi m^2/eE) (scalar Landau-Zener)'}", slope,
               pair_rates_constant_field(1.0, 1.0, field)["pair_rate"], tol, rel=True)
 
     # C1. Massless limit (units mu = e/sqrt(pi) = 1, m = 0.05 mu), LARGE amplitude E0 = 1 (eE0 = 1.77 mu^2 = 700 m^2):
@@ -627,8 +717,8 @@ def selftest(verbose: bool = True) -> bool:
               rel=True)
         loss[m_l] = 1.0 - float(np.max(r["E_steps"][r["t_steps"] > 3 * 2 * PI]))
     # ... and harmonic in the limit: each passage through p = 0 leaves a Landau-Zener fraction ~ pi m^2/eE of the modes
-    # unflipped, so the amplitude loss over 3 periods must scale as m^2 (ratio (0.05/0.02)^2 = 6.25; measured 6.13,
-    # loss 5.1% and 0.83%). Tolerance 15% for the next order in m^2/eE.
+    # unflipped, so the amplitude loss over 3 periods must scale as m^2 (ratio (0.05/0.02)^2 = 6.25; measured 6.00).
+    # Tolerance 15% for the next order in m^2/eE.
     check("massless limit: amplitude loss over 3 periods scales as m^2 -> 0 (loss ratio m = 0.05 vs 0.02)",
           loss[0.05] / loss[0.02], 6.25, 0.15, rel=True)
     # C2. Energy budget E^2/2 + int dk/2pi 2 omega f_k conserved (Otto, Graeveling & Kaempfer 2019, arXiv:1812.10832,
@@ -672,9 +762,12 @@ def selftest(verbose: bool = True) -> bool:
     #     frequency-domain method), at the peak and in the ringing afterwards. Tolerance 2e-6 E0 for the spinor
     #     (nonlinear corrections O((eE0/m^2)^2) and splitting error; measured 1.2e-7). The scalar polarization integrand
     #     falls only as p^-3, so the grid (|p| < 60) misses chi_tail ~ 1.1e-5 of it: tolerance 2 chi_tail E + 2e-6 E0
-    #     (measured 1.2e-5 at the peak).
+    #     (measured 1.04e-5 at the peak).
+    #     Also the energy balance with the external work (Otto et al. eq. 10, quoted at C2) closes: tolerance 1e-6.
+    #     (Scalar dk = 0.2 keeps t - t0 = 12 <= 0.8 pi/dk; scalar dt = 0.005, omega_max dt = 0.3: at dt = 0.02 the
+    #     balance is off by 9.7e-6 and E by 2e-6 E0 more, falling as dt^4.)
     E0w, tt_ = 1e-3, np.array([0.0, 2.0, 4.0])
-    for field, kmax_, dk_, dt_ in (("spinor", 20.0, 0.125, 0.025), ("scalar", 60.0, 0.25, 0.02)):
+    for field, kmax_, dk_, dt_ in (("spinor", 20.0, 0.125, 0.025), ("scalar", 60.0, 0.2, 0.005)):
         r = qed2_backreaction(1.0, 1.0, 0.0, 4.0, field, t0=-8.0, E_ext=lambda t: E0w / math.cosh(t) ** 2,
                               k_max=kmax_, dk=dk_, dt=dt_)
         got = np.interp(tt_, r["t_steps"], r["E_steps"])
@@ -682,6 +775,7 @@ def selftest(verbose: bool = True) -> bool:
         tol = 2e-6 + (2 * r["chi_tail"] * float(np.max(np.abs(ref))) / E0w if field == "scalar" else 0.0)
         check(f"{field}: self-consistent E(t = 0, 2, 4) vs closed-form linear response, max |diff|/E0",
               float(np.max(np.abs(got - ref))) / E0w, 0.0, tol)
+        check(f"{field}, driven run: E^2/2 + matter - external work conserved (relative)", r["energy_drift"], 0.0, 1e-6)
     # C7. Small mass (m = 0.05 mu): the ringing after a short pulse is a damped oscillation near mu (photon decaying
     #     into pairs above 2m); simulation vs closed-form linear response at t = 5, 10 (frequency AND damping).
     #     Tolerance 1e-5 E0 (measured 4e-6; E0 = 1e-4, the oscillation amplitude is ~1.2 E0).
@@ -694,15 +788,16 @@ def selftest(verbose: bool = True) -> bool:
           float(np.max(np.abs(got - ref))) / E0w, 0.0, 1e-5)
 
     # C8. Slow weak pulse (tau = 10/m, eE0 = 1e-3 m^2), spinor. (a) Peak field vs the closed form (1e-6 E0, measured
-    #     2.8e-7); (b) the closed form's own adiabatic limit: E(0)/E0 = (1/eps)(1 + 2 chi2/(eps tau^2)) with
+    #     1.0e-7); (b) the closed form's own adiabatic limit: E(0)/E0 = (1/eps)(1 + 2 chi2/(eps tau^2)) with
     #     eps = 1 + e^2/(6 pi m^2), chi2 = -e^2/(30 pi m^4) (series of chi_F; tolerance 1e-5 for the O(tau^-4) rest);
     #     (c) TRAP: the adiabatic 'pairs' at the peak are vacuum polarization, 3 (eE)^2/(256 m^3) (2%: next adiabatic
     #     order O(1/(m tau)^2), measured 0.85%), and (d) they vanish once the pulse is over (no real pairs).
     #     finite_ring=True: t - t0 = 160 > pi/dk, harmless here because only ~1e-30 real pairs are made (nothing
-    #     propagates to meet its periodic image), and (a) cross-checks it.
+    #     propagates to meet its periodic image), and (a) cross-checks it. dt = 0.025 (omega_max dt = 0.5): at
+    #     dt = 0.05 the energy balance (including the external work) is off by 1.1e-6, falling as dt^4.
     E0w, tau = 1e-3, 10.0
     r = qed2_backreaction(1.0, 1.0, 0.0, 8 * tau, "spinor", t0=-8 * tau, E_ext=lambda t: E0w / math.cosh(t / tau) ** 2,
-                          k_max=20.0, dk=0.25, dt=0.05, finite_ring=True)
+                          k_max=20.0, dk=0.25, dt=0.025, finite_ring=True)
     E_pk = float(np.interp(0.0, r["t_steps"], r["E_steps"]))
     ref0 = float(screened_sauter_field(0.0, 1.0, 1.0, E0w, tau, "spinor")[0])
     check("slow pulse: peak E vs closed-form linear response (|diff|/E0)", abs(E_pk - ref0) / E0w, 0.0, 1e-6)
@@ -720,12 +815,12 @@ def selftest(verbose: bool = True) -> bool:
     #     m^2/e, sudden switch-on). Their statements: "This process happens on rather short time scales of the order of
     #     ∆ t ∼ 25/m." and creation "eﬀectively terminates when the magnitude of the ﬁeld strength drops below ∼ 0.5Ec,
     #     corresponding to the approximate plateaus in n+(t)". Checks: n(25)/n(60) within 10% of 1 (measured 1.018),
-    #     and n changes by < 5% between the first time |E| <= 0.5 Ec and t = 60 (measured 1.5%); energy conserved.
-    #     (Their later numbers, "E ≃ Ec/2" and "Ω ≃ πm/50", come from a lattice with a_s = 0.075/m and L = 19.2/m and
-    #     are compared, not checked, in the 'convergence' subcommand.)
+    #     and n changes by < 5% between the first time |E| <= 0.5 Ec and t = 60 (measured 2.6%); energy conserved.
+    #     (Their "E ≃ Ec/2" and "Ω ≃ πm/50" are order-of-magnitude inputs to a classicality estimate; the amplitudes
+    #     of their Fig. 5 are checked quantitatively in C11.)
     Ec = 1.0 / 0.3
-    kh = np.arange(-45.0, 15.0 + 1e-9, 0.05)                 # pi/dk = 63 > 60: infinite-line answer
-    r = qed2_backreaction(1.0, 0.3, Ec, 60.0, "spinor", k_nodes=kh, k_weights=np.full(kh.size, 0.05), dt=0.02)
+    kh = np.arange(-45.0, 15.0 + 1e-9, 0.04)                 # 0.8 pi/dk = 63 > 60: infinite-line answer
+    r = qed2_backreaction(1.0, 0.3, Ec, 60.0, "spinor", k_nodes=kh, k_weights=np.full(kh.size, 0.04), dt=0.02)
     n25, n60 = np.interp([25.0, 60.0], r["t"], r["pairs"])
     t_half = float(r["t_steps"][np.argmax(np.abs(r["E_steps"]) <= 0.5 * Ec)])
     check("HBG e/m = 0.3, E0 = Ec: pair number levels off within ~25/m (n(25)/n(60))", n25 / n60, 1.0, 0.1)
@@ -736,10 +831,30 @@ def selftest(verbose: bool = True) -> bool:
     #     scalar QED from spatially homogeneous strong electric fields in 1+1 dimensions. Solution of the semiclassical
     #     field equations shows particle creation followed by plasma oscillations." (m = e = E0 = 1): E reverses sign
     #     (min E/E0 measured -0.78), with energy conserved.
-    r = qed2_backreaction(1.0, 1.0, 1.0, 40.0, "scalar", k_max=30.0, dk=0.075, dt=1.0 / 80)
+    r = qed2_backreaction(1.0, 1.0, 1.0, 40.0, "scalar", k_max=30.0, dk=0.06, dt=1.0 / 80)   # 40 <= 0.8 pi/dk
     check("scalar, Kluger 1991: plasma oscillation (E reverses: min E/E0 < -0.5)",
           float(np.min(r["E_steps"]) < -0.5), 1.0, 0)
     check("scalar run: energy conserved (max relative drift)", r["energy_drift"], 0.0, 1e-6)
+
+    # C11. HBG 2013 Fig. 5 (arXiv:1302.5537 p. 10; "FIG. 5: Time evolution of the electric field E(t) (dashed line)
+    #     and the total particle number n+(t) (solid line) for an initial value ǫ = 1 for a much longer time period"),
+    #     quantitatively: the same physics (e/m = 0.3, E0 = Ec, sudden switch-on) on THEIR ring, L = 19.2/m, i.e.
+    #     dk = 2 pi/L (finite_ring=True on purpose), k in [-60, 30]. Extrema of E/Ec digitized from the figure at
+    #     300 dpi: -0.80 (t ~ 129), +0.77 (~195), -0.74 (~258). Module (converged in dt: dt <= 0.005 gives -0.8182,
+    #     +0.7883, -0.7533; dt = 0.01 differs by 1e-3; k in [-75, 35] by 1e-3): -0.818, +0.788, -0.754. Tolerances:
+    #     0.04 Ec on the first minimum, 0.05 Ec on the next (digitization ~0.01 Ec; HBG's Wilson lattice,
+    #     a_s = 0.075/m, gives slightly smaller extrema: -0.80, +0.74, -0.71 in a homogeneous Wilson mean field).
+    #     Timing is NOT checked: HBG's crossings (70, 164, 227) come later than the continuum's (57, 141, 208)
+    #     because of their lattice dispersion (the Wilson mean field gives 68, 160, 222).
+    dk_r = 2 * PI / 19.2
+    kr = dk_r * np.arange(int(math.floor(-60 / dk_r)), int(math.ceil(30 / dk_r)) + 1)
+    r = qed2_backreaction(1.0, 0.3, Ec, 250.0, "spinor", k_nodes=kr, k_weights=np.full(kr.size, dk_r), dt=0.01,
+                          record_every=10, finite_ring=True)
+    Eh = r["E_steps"] / Ec
+    cross = np.where(np.diff(np.sign(Eh)) != 0)[0]
+    ext = [float(Eh[sg[np.argmax(np.abs(Eh[sg]))]]) for sg in np.split(np.arange(Eh.size), cross + 1)[1:4]]
+    for i_x, (got, want, tol) in enumerate(zip(ext, (-0.80, 0.77, -0.74), (0.04, 0.05, 0.05))):
+        check(f"HBG Fig. 5 on their ring L = 19.2/m: extremum {i_x + 1} of E/Ec", got, want, tol)
 
     passed = all(results)
     if verbose:
@@ -758,20 +873,20 @@ def _convergence() -> int:
               f"drift {r['energy_drift']:.2e}")
     print("2. Step size, scalar m = e = E0 = 1, t = 40: E(40) and energy drift")
     for dt in (1 / 60, 1 / 120, 1 / 240):
-        r = qed2_backreaction(1.0, 1.0, 1.0, 40.0, "scalar", k_max=30.0, dk=0.075, dt=dt, drift_tol=1.0)
+        r = qed2_backreaction(1.0, 1.0, 1.0, 40.0, "scalar", k_max=30.0, dk=0.06, dt=dt, drift_tol=1.0)
         print(f"   dt {dt:.4f}: E(40) = {r['E_steps'][-1]:.10f}, drift {r['energy_drift']:.2e}")
     print("3. Scalar polarization tail: chi_tail vs grid reach K (static, e = m = 1); e^2/(8 pi K^2) for comparison")
     for K in (20.0, 40.0, 80.0):
         print(f"   K = {K:4.0f}: chi_tail = {_chi_static_window(1, 1, 'scalar', -1e12, -K) * 2:.3e} "
               f"(estimate {1 / (8 * PI * K * K):.3e})")
     print("4. HBG parameters (e/m = 0.3, E0 = Ec): first upward zero crossing of E vs grid spacing dk.")
-    print("   The infinite-line answer needs t <= pi/dk; coarser grids give the finite ring of length 2 pi/dk.")
+    print("   The infinite-line answer needs t <= 0.8 pi/dk; coarser grids give the finite ring of length 2 pi/dk.")
     Ec = 1.0 / 0.3
     for dk in (0.0625, 0.03125, 0.015625):
         t0 = time.time()
         kn = np.arange(-45.0, 15.0 + 1e-9, dk)
         r = qed2_backreaction(1.0, 0.3, Ec, 200.0, "spinor", k_nodes=kn, k_weights=np.full(kn.size, dk), dt=0.02,
-                              record_every=10)
+                              record_every=10, finite_ring=True)
         tt, EE = r["t_steps"], r["E_steps"]
         iu = np.where((tt[:-1] > 50.0) & (EE[:-1] < 0) & (EE[1:] >= 0))[0]
         tc = tt[iu] - EE[iu] * (tt[iu + 1] - tt[iu]) / (EE[iu + 1] - EE[iu])
@@ -779,19 +894,24 @@ def _convergence() -> int:
               f"{r['E_steps'].min() / Ec:.4f}  ({time.time() - t0:.0f} s)")
     print("5. HBG's own box, a ring of L = 19.2/m (dk = 2 pi/L), to t = 800/m: plasma periods and amplitude.")
     print("   HBG 2013 quote: 'In our case E ≃ Ec/2 = m2/2e during these times such that with Ω ≃ πm/50 for the")
-    print("   employed coupling e/m = 0.3' (Wilson lattice fermions, a_s = 0.075/m).")
+    print("   employed coupling e/m = 0.3' (an order-of-magnitude input to their classicality estimate E2/Ω2 ≃ 700;")
+    print("   Wilson lattice fermions, a_s = 0.075/m).")
     dk = 2 * PI / 19.2
     kn = dk * np.arange(int(math.floor(-60 / dk)), int(math.ceil(30 / dk)) + 1)
-    r = qed2_backreaction(1.0, 0.3, Ec, 800.0, "spinor", k_nodes=kn, k_weights=np.full(kn.size, dk), dt=0.02,
-                          record_every=10)
+    r = qed2_backreaction(1.0, 0.3, Ec, 800.0, "spinor", k_nodes=kn, k_weights=np.full(kn.size, dk), dt=0.01,
+                          record_every=10, finite_ring=True)
     P = oscillation_period(r["t_steps"], r["E_steps"], t_min=50.0)
     late = r["t_steps"] > 300
     print(f"   periods {np.round(P['periods'], 1)} (2 pi/periods: {np.round(2 * PI / P['periods'], 4)}; pi/50 = "
           f"{PI / 50:.4f}); max |E|/Ec after t = 300: {np.abs(r['E_steps'][late]).max() / Ec:.3f}")
     print("   Mean field on HBG's ring (continuum dispersion): the period falls from ~125/m to ~63/m as pairs accumulate")
-    print("   (HBG: 'The oscillation frequency Ω increases with the number of produced fermions'), bracketing 100/m;")
-    print("   the amplitude stays ~0.7-0.8 Ec, larger than HBG's 'E ≃ Ec/2' (not reproduced; their Wilson-lattice")
-    print("   dispersion at a_s = 0.075/m differs from the continuum at the momenta p ~ 25 m the pairs reach).")
+    print("   (HBG: 'The oscillation frequency Ω increases with the number of produced fermions'), bracketing 100/m.")
+    print("   Against HBG Fig. 5 (digitized -0.80, +0.77, -0.74, +0.72, -0.70, ..., +0.61): the first four extrema agree")
+    print("   to ~0.02 Ec (converged in dt; selftest C11 checks three). Later ones stay within ~0.07 Ec (slightly larger)")
+    print("   but move by ~0.015 Ec per halving of dt, irregularly, on this 277-mode ring (sensitive dynamics), so they")
+    print("   are not a converged comparison. HBG's zero crossings (70, 164, 227, ..., 778) come 7-20%")
+    print("   later and their late frequency is ~10% lower than here (57, 141, 208, ..., 723): their Wilson-lattice")
+    print("   dispersion (a_s = 0.075/m); a homogeneous Wilson mean field gives 68, 160, 222, 277 (~2-3%).")
     return 0
 
 
@@ -885,14 +1005,19 @@ def main(argv=None) -> int:
             r = qed2_backreaction(m, e, 0.0, 8 * tau, field, t0=-8 * tau,
                                   E_ext=lambda t: E0 / math.cosh(t / tau) ** 2)
             E_pk = float(np.interp(0.0, r["t_steps"], r["E_steps"]))
-            lin = float(screened_sauter_field(0.0, m, e, E0, tau, field)[0])
-            n_pk = float(np.interp(0.0, r["t"], r["pairs"]))
+            n_pk, n_end = float(np.interp(0.0, r["t"], r["pairs"])), float(r["pairs"][-1])
             print(f"{field} QED2, m = {m:.6g}, e = {e:.6g}, E0 = {E0:.6g} {unit}, tau = {tau:.6g}; eE0/m^2 = {e * E0 / m**2:.3g}")
-            print(f"peak total field / E0: self-consistent {E_pk / E0:.8f}, linear response {lin / E0:.8f}, "
+            weak = e * abs(E0) / m ** 2 <= 0.1                    # screened_sauter_field's range
+            lin = (f"linear response {float(screened_sauter_field(0.0, m, e, E0, tau, field)[0]) / E0:.8f}" if weak
+                   else "linear response n/a (eE0/m^2 > 0.1)")
+            print(f"peak total field / E0: self-consistent {E_pk / E0:.8f}, {lin}, "
                   f"static 1/eps {1 / dielectric_constant(m, e, field):.8f}")
-            print(f"adiabatic 'pairs' per length at the peak {n_pk:.4g} (vacuum polarization estimate "
-                  f"{adiabatic_polarization_pairs(m, e * E_pk, field):.4g}); after the pulse {r['pairs'][-1]:.3g}: "
-                  "the peak value is transient polarization, not pairs")
+            pol = (f" (vacuum polarization estimate {adiabatic_polarization_pairs(m, e * E_pk, field):.4g})"
+                   if e * abs(E_pk) / m ** 2 <= 0.2 else "")
+            print(f"adiabatic 'pairs' per length at the peak {n_pk:.4g}{pol}; after the pulse {n_end:.4g}" +
+                  (": the peak value is transient polarization, not pairs" if n_end < 1e-3 * n_pk else
+                   f": {n_end:.4g} real pairs per length remain after the pulse; the peak value mixes real pairs and "
+                   "transient polarization"))
             return 0
         t_span = _time_input(args.t, si) if args.t else min(6 * 2 * PI / mu, 200.0 / max(m, math.sqrt(abs(e * E0))))
         r = qed2_backreaction(m, e, E0, t_span, field, k_max=args.kmax, dk=args.dk, dt=args.dt,

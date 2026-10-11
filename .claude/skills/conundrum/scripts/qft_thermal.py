@@ -77,7 +77,7 @@ PART C. Spatially flat FRW (real scalar, conformal time eta, chi = a phi, k como
     In a static in-region (a = a_in) the thermal state at PHYSICAL temperature T_in has, per comoving mode,
     n_in(k) = 1/(e^{omega_in(k)/(a_in T_in)} - 1), omega_in = sqrt(k^2 + m^2 a_in^2) the conformal frequency
     (physical energy omega/a). Out: n_out(k) = n_in(k) + |beta_k|^2 (1 + 2 n_in(k)). Massless and conformally
-    coupled (xi = 1/6): beta = 0 for every a(eta) (Parker 1969), so n_out(k) = n_in(k) = 1/(e^{p/T_out} - 1), p = k/a_out
+    coupled (xi = 1/6): beta = 0 for every a(eta) (conformal invariance: omega^2 = k^2 exactly; Parker 1968), so n_out(k) = n_in(k) = 1/(e^{p/T_out} - 1), p = k/a_out
     the physical momentum and T_out = T_in a_in/a_out: the Planck spectrum survives, redshifted. Otherwise the out
     spectrum is not thermal; frw_thermal_production returns T_eff(k) = E_out/ln(1 + 1/n_out) per mode, which is the
     same for all k only when the spectrum is thermal.
@@ -375,7 +375,7 @@ def frw_redshifted_temperature(T_in: float, a_in: float, a_out: float) -> float:
     """Temperature of a thermal gas of massless, conformally coupled quanta after the universe expands a_in -> a_out.
 
     Quantity: physical temperature T_out = T_in a_in/a_out (same unit as T_in); the occupation of every comoving
-        mode is unchanged, so the spectrum stays exactly Planckian (no particles created: Parker 1969).
+        mode is unchanged, so the spectrum stays exactly Planckian (conformal invariance: no particles created; Parker 1968).
     Valid when: free massless field with conformally invariant equation (scalar with xi = 1/6, photons, massless
         fermions), spatially flat FRW, T_in >= 0, a_in, a_out > 0."""
     T_in = _temperature(T_in)
@@ -392,8 +392,9 @@ def frw_thermal_production(k, a, m: float, xi: float, eta0: float, eta1: float, 
     Quantity: dict of per-COMOVING-mode in-in expectations (dimensionless): 'n_in', 'n_out' (TOTAL out occupation),
         'net_created' (= |beta_k|^2 (1 + 2 n_in): net particles in mode k; pairs = particles/2 after summing modes),
         'beta2' (vacuum value) with the solver's 'floor' and 'resolved'; 'E_out' (physical out energy omega_out/a_out),
-        'T_eff' (physical temperature a Bose-Einstein spectrum would need at each k, E_out/ln(1 + 1/n_out); 0 where
-        n_out = 0) and 'T_redshifted' = T_in a_in/a_out. The spectrum is thermal only if T_eff is the same for all k.
+        'T_eff' (physical temperature a Bose-Einstein spectrum would need at each k, E_out/ln(1 + 1/n_out); NaN
+        where n_out is not above the solver's floor x (1 + 2 n_in) in an unresolved mode, i.e. n_out is round-off)
+        and 'T_redshifted' = T_in a_in/a_out. The spectrum is thermal only if T_eff is the same for all k.
     Valid when: as qp.frw_particle_production (a static at both ends, omega^2 > 0 and adiabatic there); T_in >= 0 in
         the energy unit of k/a (physical); real scalar, mu = 0."""
     T_in = _temperature(T_in)
@@ -402,9 +403,13 @@ def frw_thermal_production(k, a, m: float, xi: float, eta0: float, eta1: float, 
     n_in = bose_einstein(r["omega_in"], a_in * T_in)
     out = out_occupation(r["beta2"], n_in, n_in, "boson")
     E_out = r["omega_out"] / a_out
+    n_out = out["particles_out"]
+    # T_eff only where n_out is known: the mode is resolved, or the thermal part dominates the solver's uncertainty
+    # (~ floor x (1 + 2 n_in)); otherwise n_out is round-off (e.g. a static a(eta) at T_in = 0) and T_eff = NaN.
+    known = np.asarray(r["resolved"], dtype=bool) | (n_out > 10 * np.asarray(r["floor"]) * (1 + 2 * n_in))
     with np.errstate(divide="ignore"):
-        T_eff = np.where(out["particles_out"] > 0, E_out / np.log1p(1.0 / np.where(out["particles_out"] > 0,
-                                                                                      out["particles_out"], 1.0)), 0.0)
+        T_eff = np.where(known & (n_out > 0), E_out / np.log1p(1.0 / np.where(known & (n_out > 0), n_out, 1.0)),
+                         np.nan)
     return {"n_in": n_in, "n_out": out["particles_out"], "net_created": out["net_created"], "beta2": r["beta2"],
             "floor": r["floor"], "resolved": r["resolved"], "E_out": E_out, "T_eff": T_eff,
             "T_redshifted": T_in * a_in / a_out, "a_in": a_in, "a_out": a_out}
@@ -428,8 +433,14 @@ def _avg_occupation(Em, Ep, T, mu, sign):
             frac = (np.clip(mu - Em, 0, None) - np.clip(mu - Ep, 0, None)) / np.where(D > 0, D, 1.0)
         return np.where(D > 0, frac, np.where(0.5 * (Em + Ep) < mu, 1.0, np.where(0.5 * (Em + Ep) == mu, 0.5, 0.0)))
     out = np.empty_like(Em)
-    small = D < 0.05 * T
-    if np.any(small):     # 8-point Gauss-Legendre average: error ~ (D/T)^16, below 1e-20 here
+    # The occupation is analytic in E except for poles at E = mu + 2 pi i n T (Bose) or mu + (2n + 1) pi i T (Fermi).
+    # n-point Gauss-Legendre on [Em, Ep] then errs like rho^{-2n}, rho the Bernstein-ellipse parameter of the nearest
+    # pole; for the Bose pole at E = mu ON the real axis its distance is Em - mu, not T, so the Gauss branch also needs
+    # D << Em - mu (otherwise the endpoint-peaked average is badly underestimated). With D < 0.05 x (pole distance),
+    # rho > 40 and the 8-point error is < 40^-16 ~ 1e-25. Everywhere else the closed form (logs) is exact.
+    scale = np.minimum(T, Em - mu) if sign > 0 else T     # bosons: Em - mu > 0 is enforced by the callers
+    small = D < 0.05 * scale
+    if np.any(small):     # 8-point Gauss-Legendre average
         x, w = np.polynomial.legendre.leggauss(8)
         E = 0.5 * (Em[small] + Ep[small])[..., None] + 0.5 * D[small][..., None] * x
         y = (E - mu) / T
@@ -450,7 +461,8 @@ def thermal_pair_weight(K0, kappa, m: float, T: float, mu: float = 0.0, statisti
 
     For a vertex whose |M|^2 depends only on s = K0^2 - kappa^2 the pair decays isotropically in its rest frame, so
     in the medium frame E1 is uniform on [E-, E+], E+- = (K0 +- kappa b)/2, b = sqrt(1 - 4m^2/s), and so is E2 = K0 - E1;
-    the average is done in closed form (logs) or, for kappa b < 0.05 T, by 8-point Gauss-Legendre.
+    the average is done in closed form (logs) or, for kappa b < 0.05 T (bosons: < 0.05 min(T, E- - |mu|)), by 8-point
+    Gauss-Legendre.
     Quantity: dimensionless weight W(K) multiplying the vacuum two-particle spectral density to give the NET (created
         minus annihilated, in-in) pair yield in a thermal medium; W = (1 - e^{-K0/T}) <(1 +- n1)(1 +- n2)>; 1 at T = 0
         (bosons, or fermions with mu = 0).
@@ -462,8 +474,8 @@ def thermal_pair_weight(K0, kappa, m: float, T: float, mu: float = 0.0, statisti
     K0, kap = np.broadcast_arrays(qp._arr(K0, "K0"), qp._arr(kappa, "kappa"))
     K0, kap = K0.astype(float), kap.astype(float)
     m, mu = float(m), float(mu)
-    if m < 0 or not math.isfinite(mu):
-        raise ValueError("need m >= 0 and finite mu")
+    if not (math.isfinite(m) and m >= 0) or not math.isfinite(mu):      # 'm < 0' alone lets NaN through
+        raise ValueError("need finite m >= 0 and finite mu")
     if sg > 0 and (abs(mu) >= m and mu != 0):
         raise ValueError("bosons need |mu| < m (no condensate)")
     s = K0 * K0 - kap * kap
@@ -487,8 +499,8 @@ def pair_spectral_density_yukawa(s, m: float):
     Valid when: s real; m >= 0; zero for s <= 4m^2 (it vanishes like s on the light cone when m = 0)."""
     s = qp._arr(s, "s")
     m = float(m)
-    if m < 0:
-        raise ValueError("m must be >= 0")
+    if not (math.isfinite(m) and m >= 0):
+        raise ValueError("m must be finite and >= 0")
     th = 4 * m * m
     with np.errstate(divide="ignore", invalid="ignore"):
         b = np.where(s > th, np.sqrt(np.clip(1 - th / np.where(s > 0, s, 1.0), 0, None)), 0.0)
@@ -496,6 +508,8 @@ def pair_spectral_density_yukawa(s, m: float):
 
 
 def _thermal_born_checks(m, T, field, mu, statistics):
+    if not (math.isfinite(m) and m >= 0):
+        raise ValueError("m must be finite and >= 0")
     T = _temperature(T)
     mu = _field_mu(field, statistics, mu)
     if statistics == "boson" and (mu != 0 and abs(mu) >= m):
@@ -548,8 +562,8 @@ def born_scalar_general_thermal(Vtilde4, m: float, s_max: float, kappa_max: floa
     Valid when: as qp.born_scalar_general (first order; spectrum negligible beyond s_max, kappa_max; m > 0 or
         s_min > 0; grids resolve V~); T >= 0; field 'real' (mu = 0) or 'complex' (|mu| < m)."""
     m, s_min = float(m), float(s_min)
-    if m < 0 or s_min < 0:
-        raise ValueError("need m >= 0 and s_min >= 0")
+    if not (math.isfinite(m) and m >= 0 and math.isfinite(s_min) and s_min >= 0):
+        raise ValueError("need finite m >= 0 and s_min >= 0")
     qp._check_massless_scalar_vertex(m, s_min)
     T = _temperature(T)
     mu = _field_mu(field, "boson", mu)
@@ -814,26 +828,34 @@ def selftest(verbose: bool = True) -> bool:
     check("the stimulated effect is resolved: (R - 1) > 20 standard errors and R - 1 = 2|beta|^2 >> |beta|^2/n",
           float((R - 1) > 20 * se), 1.0, 0)
 
-    # C1. FRW, massless and conformally coupled. Parker 1969 (Phys. Rev. 183, 1057) abstract (lit_search): "We show
-    #     that in a universe with flat 3-space containing only massless particles in equilibrium, there will be
-    #     precisely no creation of massless particles as a result of the expansion". qp's FRW solver in a lumpy,
+    # C1. FRW, massless and conformally coupled: no creation by conformal invariance (Parker 1968, PRL 21, 562).
+    #     Parker 2012 (J. Phys. A 45, 374023, arXiv:1205.5616) abstract (lit_search): "there would be no particle
+    #     creation by these spatially-flat FLRW universes for free fields of any integer or half-integer spin
+    #     satisfying field equations that are invariant under conformal transformations of the metric". (Parker 1969's
+    #     abstract statement is narrower: "...precisely no creation of massless particles as a result of the
+    #     expansion, provided the Einstein field equations without the cosmological term are correct".) With m = 0
+    #     and xi = 1/6, omega^2 = k^2 exactly, so beta = 0 is conformal triviality, not a solver test: this checks
+    #     the bookkeeping (n_in per comoving mode at a_in T_in, the physical out energy k/a_out, T_eff) in a lumpy,
     #     non-tanh a(eta) (a_in = 1, a_out = 2): occupations unchanged and T_eff(k) = T_in a_in/a_out at every k.
     def lumpy(eta):
         return 1.0 + 0.5 * (1 + np.tanh(0.8 * eta)) + 0.3 * np.exp(-((eta - 1.0) / 0.7) ** 2)
     kc = np.linspace(0.05, 3.0, 12)
     rr = frw_thermal_production(kc, lumpy, 0.0, 1.0 / 6.0, -40.0, 40.0, 0.5)
-    check("FRW m = 0, xi = 1/6, T_in = 0.5: max |n_out - n_in| (no creation, Parker 1969)",
+    check("FRW m = 0, xi = 1/6, T_in = 0.5: max |n_out - n_in| (no creation: conformal invariance)",
           float(np.max(np.abs(rr["n_out"] - rr["n_in"]))), 0.0, 1e-12)   # solver floor ~1e-25 in |beta|^2
     check("... and the out spectrum is Planck at T_in a_in/a_out = 0.25: max rel. spread of T_eff(k)",
           float(np.max(np.abs(rr["T_eff"] / frw_redshifted_temperature(0.5, rr["a_in"], rr["a_out"]) - 1))), 0.0, 1e-10)
-    # C2. Massive, conformally coupled, tanh universe a^2 = 2 + tanh(0.7 eta) (Birrell & Davies eq. 3.140b closed
-    #     form): solver at finite T = closed form n_in + |beta|^2 (1 + 2 n_in); the out spectrum is NOT thermal.
+    # C2. Massive, conformally coupled, tanh universe a^2 = 2 + tanh(0.7 eta). CONSISTENCY check of the solver path:
+    #     the reference reuses the thermal formula n_in + |beta|^2 (1 + 2 n_in) with |beta|^2 from Birrell & Davies
+    #     eq. 3.140b, so it tests frw_thermal_production's plumbing (solver -> n_in at a_in T_in -> out_occupation),
+    #     not the thermal factor; that factor is checked independently in A1, A3, the classical ensemble and D2.
+    #     The out spectrum is NOT thermal.
     a_f, app_f, (e0, e1) = qp.frw_tanh_scale_factor(2.0, 1.0, 0.7)
     rr = frw_thermal_production(kc, a_f, 1.0, 1.0 / 6.0, e0, e1, 0.5, a_pp=app_f)
     nin = bose_einstein(np.sqrt(kc * kc + 1.0), 1.0 * 0.5)
     ref = nin + qp.tanh_model_beta2(kc, 1.0, 2.0, 1.0, 0.7) * (1 + 2 * nin)
-    check("FRW tanh universe, m = 1, xi = 1/6, T_in = 0.5: net created = |beta|^2 (1 + 2 n_in) and n_out = n_in + net, "
-          "max rel.", float(np.max(np.abs(rr["net_created"] / (ref - nin) - 1)) + np.max(np.abs(rr["n_out"] / ref - 1))),
+    check("FRW tanh universe, m = 1, xi = 1/6, T_in = 0.5 (solver-path consistency, B&D |beta|^2 x module factor): "
+          "net created and n_out, max rel.", float(np.max(np.abs(rr["net_created"] / (ref - nin) - 1)) + np.max(np.abs(rr["n_out"] / ref - 1))),
           0.0, 1e-6)    # qp's solver: rtol 1e-7 on beta, |beta|^2 to ~1e-7 (qp checks 1e-6 against this closed form)
     spread = float(np.max(rr["T_eff"]) / np.min(rr["T_eff"]) - 1)
     check(f"... massive: out spectrum not thermal (T_eff(k) spread {spread:.3f} > 0.05)", float(spread > 0.05), 1.0, 0)
@@ -1027,11 +1049,12 @@ def main(argv=None) -> int:
     mp.add_argument("--fermion", action="store_true", help="fermions (Dirac) instead of bosons")
     mp.add_argument("--real", action="store_true", help="real (neutral) boson field: mu must be 0")
     sp = sub.add_parser("sauter", help="Sauter pulse E0 sech^2(t/tau): net pairs per volume at T vs T = 0")
-    sp.add_argument("--m", default="0.51099895 MeV", help="mass (default: electron)")
+    sp.add_argument("--m", default="0.51099895 MeV", help="mass with units (default: electron); a bare number is eV")
     sp.add_argument("--E", required=True, help="peak field, e.g. '1e18 V/m'")
     sp.add_argument("--tau", required=True, help="pulse time scale, e.g. '1e-21 s'")
-    sp.add_argument("--T", required=True, help="temperature of the in-state, e.g. '3e9 K'")
-    sp.add_argument("--mu", default="0", help="chemical potential (energy)")
+    sp.add_argument("--T", required=True, help="temperature of the in-state with units, e.g. '3e9 K' or '0.3 MeV'; "
+                    "a bare number is k_B T in eV, NOT kelvin")
+    sp.add_argument("--mu", default="0", help="chemical potential with units, e.g. '0.1 MeV'; a bare number is eV")
     sp.add_argument("--scalar", action="store_true", help="scalar QED instead of spinor QED")
     sub.add_parser("convergence", help="slow studies: Born vs exact at finite T, Monte Carlo error, 4D grids")
     args = ap.parse_args(argv)
