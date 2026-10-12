@@ -1,0 +1,22 @@
+
+==============================================================================================================
+(b) average of 1 + f(q1) + f(q2) over the photon energies, relative to B&O's 1 + 2 f(omega_s)
+==============================================================================================================
+  (i) B&O's isotropic narrow-band model: pair momentum K = 2 w x, photon CM polar angle c (w.r.t. K);
+      eq. S6 integrand ~ dK s^2 (2 + sin^2 theta)^2 (ring volumes 2 pi (w sigma)^2/K each), s = 4w^2(1 - x^2);
+      lab photon energies q = w (1 +- x c).  Check of this weight: its normalisation reproduces 3/(25 pi):
+      coefficient from this weight = 0.038197186342;  3/(25 pi) = 0.038197186342
+      Rayleigh-Jeans limit: <f(q1)+f(q2)>/(2 f(w)) = <1/(1 - x^2 c^2)> = 1.049558
+      w/T =   1e-04: <1 + f1 + f2> = 2.099115e+04;  1 + 2 f(w) = 2.000000e+04;  ratio = 1.049558
+      w/T =   1e-02: <1 + f1 + f2> = 2.099132e+02;  1 + 2 f(w) = 2.000017e+02;  ratio = 1.049557
+      w/T =   3e-01: <1 + f1 + f2> = 7.046967e+00;  1 + 2 f(w) = 6.716592e+00;  ratio = 1.049188
+      w/T =   1e+00: <1 + f1 + f2> = 2.262773e+00;  1 + 2 f(w) = 2.163953e+00;  ratio = 1.045666
+      w/T =   3e+00: <1 + f1 + f2> = 1.133381e+00;  1 + 2 f(w) = 1.104791e+00;  ratio = 1.025878
+      w/T =   1e+01: <1 + f1 + f2> = 1.001231e+00;  1 + 2 f(w) = 1.000091e+00;  ratio = 1.001140
+  (ii) incoherent isotropic monochromatic gas, physical amplitudes: pair weight ~ sigma v ~ (1 - c12)^2,
+       boost beta = cos(theta12/2), CM photon distribution ~ (1 - cos g)^4 + (1 + cos g)^4 about the graviton
+       axis (perpendicular to K), cos g = sin chi cos phi; q = w (1 +- beta cos chi).
+       Rayleigh-Jeans: <f(q1)+f(q2)>/(2 f(w)) = 1.0787 +- 0.0006
+       w/T = 1e-02: <1 + f1 + f2>/(1 + 2 f(w)) = 1.0787
+       w/T = 1e+00: <1 + f1 + f2>/(1 + 2 f(w)) = 1.0725
+       w/T = 3e+00: <1 + f1 + f2>/(1 + 2 f(w)) = 1.0413

@@ -1,0 +1,35 @@
+=== (a) cross section from the closed-form helicity amplitudes (own quadrature) ===
+sigma_opp(own quad)            = 9.299114254626e+00
+(4/5) pi G^2 s                 = 9.299114254626e+00
+module sigma_total(R,L)        = 9.299114254626e+00
+module sigma_total(plus,plus)  = 4.649557127313e+00  (expect half: 4.649557127313e+00)
+module sigma_total(plus,cross) = 4.649557127313e+00
+module sigma_total(R,R)        = 1.967e-30  (same helicity: 0)
+
+=== (b) two crossing plane waves: own sigma n1 n2 (1-cos) vs module beams_pair_rate ===
+ plus/plus  th= 30.0: own=3.0173922268e-17 module=3.0173922268e-17  rel.diff=6.1e-16
+ plus/plus  th= 90.0: own=1.6810740864e-15 module=1.6810740864e-15  rel.diff=1.4e-15
+ plus/plus  th=150.0: own=5.8535853802e-15 module=5.8535853802e-15  rel.diff=1.3e-16
+ plus/plus  th=180.0: own=6.7242963456e-15 module=6.7242963456e-15  rel.diff=5.9e-16
+ plus/cross th= 30.0: own=3.0173922268e-17 module=3.0173922268e-17  rel.diff=6.1e-16
+ plus/cross th= 90.0: own=1.6810740864e-15 module=1.6810740864e-15  rel.diff=1.4e-15
+ plus/cross th=150.0: own=5.8535853802e-15 module=5.8535853802e-15  rel.diff=4.0e-16
+ plus/cross th=180.0: own=6.7242963456e-15 module=6.7242963456e-15  rel.diff=7.0e-16
+    R/L     th= 30.0: own=2.4139137814e-16 module=2.4139137814e-16  rel.diff=2.0e-16
+    R/L     th= 90.0: own=1.3448592691e-14 module=1.3448592691e-14  rel.diff=1.2e-15
+    R/L     th=150.0: own=4.6828683041e-14 module=4.6828683041e-14  rel.diff=0.0e+00
+    R/L     th=180.0: own=5.3794370765e-14 module=5.3794370765e-14  rel.diff=1.2e-16
+    R/R     th= 30.0: own=0.0000000000e+00 module=1.0637768362e-46  rel.diff=1.1e-46
+    R/R     th= 90.0: own=0.0000000000e+00 module=7.0949546431e-45  rel.diff=7.1e-45
+    R/R     th=150.0: own=0.0000000000e+00 module=1.3207284287e-44  rel.diff=1.3e-44
+    R/R     th=180.0: own=0.0000000000e+00 module=1.4845212442e-44  rel.diff=1.5e-44
+
+=== (c) B&O eq. 14 from the kinetic formula (*) with sigma_unpol = (2/5) pi G^2 s ===
+w=0.7: Gamma(kinetic)/rho^2 = 1.675516081915;  B&O eq.14: 8 pi G^2/15 = 1.675516081915
+w=2.0: Gamma(kinetic)/rho^2 = 1.675516081915;  B&O eq.14: 8 pi G^2/15 = 1.675516081915
+broad spectrum: Gamma/rho^2 = 1.675516081915 (expect 8 pi/15 = 1.675516081915)
+
+=== (d) toy normalisation: Monte Carlo of the Parseval form of |J~|^2 for two enveloped crossing waves ===
+<rho(s)> over envelope / rho(K^2) = 1.00016 (-> 1 + O(1/(w Lw)^2): Gamma = 4 rho |a1 a2|^2 confirmed)
+sigma_toy = Gamma/(n1 n2 (1-cos)) with n = 2 w |a|^2 and s = 2 w1 w2 (1-cos):  = 4 rho/(4 w1 w2 (1-cos)) = 2 rho/s
+gravity-equivalent weight: rho_grav(s) = sigma_lin s/2 = (pi/5) G^2 s^2 ; e.g. s=1: 0.628319

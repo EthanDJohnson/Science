@@ -1,0 +1,6 @@
+
+==============================================================================================================
+(c) inverse-process correction f1 f2 (1 + N1 + N2)/[N1 N2 (1 + f1 + f2)] ~ f/N
+==============================================================================================================
+  GW150914 merger (E ~ 3 Msun c^2, nu ~ 150 Hz): N0 = 5.40e+78; graviton phase-space occupation ~ 2 pi N0/max(w R, 1)^2 = 3.4e+79; CMB f(150 Hz) = 3.79e+08; correction ~ f/N = 1.1e-71
+  (estimate: phase-space density conserved along rays; emission region ~ max(R_source, 1/omega))

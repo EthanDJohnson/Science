@@ -1,0 +1,33 @@
+=== exact S-matrix totals for the Pauli-Jordan shell (free field incl. incoming part and focus) ===
+ profile  sig/w   P_toy/(G^2N^2w^3sig)   P_BO(exact)/(G^2N^2w^3sig)   T_eff*sig = P_BO/(eq.8)*sig   (4pi/3 = 4.18879)
+ tophat   0.100     1.359090e-01            1.526480e-01                  3.99631
+ tophat   0.050     1.389775e-01            1.562180e-01                  4.08978
+ tophat   0.020     1.409031e-01            1.584616e-01                  4.14851
+ tophat   0.010     1.415591e-01            1.592265e-01                  4.16854
+ gauss    0.100     4.676287e-01
+ gauss    0.050     4.980259e-01
+ gauss    0.020     5.192779e-01
+
+=== kinetic (local in-in) estimate of the same free field: head-on in x out collisions, cut at r_c ===
+ tophat sig=0.100: P_kin = 0.08488 G^2N^2w^3sig/(w r_c);  exact proxy needs w r_c,eff = 0.6246  (lambda = 6.283/w)
+ tophat sig=0.050: P_kin = 0.08488 G^2N^2w^3sig/(w r_c);  exact proxy needs w r_c,eff = 0.6108  (lambda = 6.283/w)
+ tophat sig=0.020: P_kin = 0.08488 G^2N^2w^3sig/(w r_c);  exact proxy needs w r_c,eff = 0.6024  (lambda = 6.283/w)
+ gauss  sig=0.100: P_kin = 0.31915 G^2N^2w^3sig/(w r_c);  exact proxy needs w r_c,eff = 0.6825  (lambda = 6.283/w)
+ gauss  sig=0.050: P_kin = 0.31915 G^2N^2w^3sig/(w r_c);  exact proxy needs w r_c,eff = 0.6408  (lambda = 6.283/w)
+ gauss  sig=0.020: P_kin = 0.31915 G^2N^2w^3sig/(w r_c);  exact proxy needs w r_c,eff = 0.6146  (lambda = 6.283/w)
+
+=== where the kinetic in x out yield sits (top hat, sig = 0.05): fraction of int dr P(t-r)P(t+r)/r^2 from r > R ===
+(check: C(0) = int P^2 = 5.305165e-03 vs sig/(3 pi) = 5.305165e-03)
+  R*w =     6.28 (  1.00 lambda): fraction of kinetic in-out yield from r > R = 0.0767   (r_c/R = 0.0971)
+  R*w =    18.85 (  3.00 lambda): fraction of kinetic in-out yield from r > R = 0.0143   (r_c/R = 0.0324)
+  R*w =    62.83 ( 10.00 lambda): fraction of kinetic in-out yield from r > R = 0.0005   (r_c/R = 0.0097)
+  R*w =    20.00 (  3.18 lambda): fraction of kinetic in-out yield from r > R = 0.0128   (r_c/R = 0.0305)
+  R*w =    60.00 (  9.55 lambda): fraction of kinetic in-out yield from r > R = 0.0006   (r_c/R = 0.0102)
+
+=== B&O's 'effective volume' remark, decoded ===
+ eps = 0.1: V_eff = 40 pi^2/(9 w sig^2) = 4386.49/w^3 = 17.68 lambda^3 (= 5 lambda^3/(9 pi eps^2) = 17.68 lambda^3) = 43.86 x (1/w)(1/sig)^2
+ eps = 0.15: V_eff = 40 pi^2/(9 w sig^2) = 1949.55/w^3 = 7.86 lambda^3 (= 5 lambda^3/(9 pi eps^2) = 7.86 lambda^3) = 43.86 x (1/w)(1/sig)^2
+ Reading: eq.8 = (8 pi/15) G^2 (N w)^2 / V_eff, i.e. N gravitons crossing isotropically inside V_eff. In the free field the
+ N gravitons sit on a shell of thickness ~1/sig; during the focus (|t| < ~1/sig) a fraction ~ (lambda sig) of them is inside
+ a wavelength of the origin crossing at all angles, and (N lambda sig)^2/lambda^3 = N^2 sig^2/lambda reproduces N^2/V_eff with
+ V_eff ~ lambda/sig^2: the 'coherence enhancement' IS the geometric focus of the source-free (incoming + outgoing) solution.

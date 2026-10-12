@@ -14,4 +14,4 @@ calc/taskB_where_grid.py      (2b) exact second-order amplitude on a (t, r) grid
 calc/taskB_ring_coherence.py  coherent ring average of the full gravity amplitude (module) for near-collinear pairs. (~2 min)
 calc/taskB_outgoing.py        (3)+(4) physical outgoing wave: yield beyond r_min (steady and burst), window-shape
                               robustness, l=2 with near-field terms, gravity factors, GW150914-like numbers.     (~5-8 min)
-Outputs of the last run were captured in the session scratchpad (not part of the record); rerun to reproduce.
+Logs of the 2026-10-12 foreground re-run are in notes/taskB_<name>.log (identical to the previous run).
