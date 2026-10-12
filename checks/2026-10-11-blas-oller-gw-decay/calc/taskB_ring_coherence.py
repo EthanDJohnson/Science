@@ -80,7 +80,10 @@ def coherence(a, lab_pol="plus", n_ring=48, n_c=24, n_phi=40):
         for (h1, h2) in Msum:
             e1 = q2._pol_array(p1, h1)
             e2 = q2._pol_array(p2, h2)
-            M = q2.amplitude_gg_to_photons(ks[0], eps[0], ks[1], eps[1], p1, e1, p2, e2, G)
+            # broadcast the graviton momenta/tensors to the photon grid explicitly (the reviewed module of
+            # 2026-10-11 17:11 no longer broadcasts a single graviton against a photon grid)
+            bk = lambda x: np.broadcast_to(x, C.shape + x.shape)  # noqa: E731
+            M = q2.amplitude_gg_to_photons(bk(ks[0]), bk(eps[0]), bk(ks[1]), bk(eps[1]), p1, e1, p2, e2, G)
             Msum[(h1, h2)] += M / n_ring
             M2sum += np.abs(M) ** 2 / n_ring
     dOm = (wc[:, None] * np.ones_like(P)) * (2 * PI / n_phi)

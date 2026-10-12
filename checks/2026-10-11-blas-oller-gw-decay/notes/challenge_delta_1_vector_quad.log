@@ -1,0 +1,8 @@
+Independent explicit-vector quadrature of B&O's top-hat model (exact kinematics, own prefactor).
+Reference values from taskC1 (exact-kinematics quadrature): sig=0.1: R0 0.0365103, Ptot 0.1526480;  sig=0.05: 0.0373422, 0.1562180;  narrow-band limits 3/(25pi)=0.0381972, 4/25=0.16, ratio 4pi/3=4.18879
+  sig/w=0.20 grid=(28, 20, 16, 12, 10, 8):  R(0)/(G^2N^2w^3sig^2) = 0.0349178   P_tot/(G^2N^2w^3sig) = 0.1461332   sig P_tot/R(0) = 4.18506
+  sig/w=0.20 grid=(40, 28, 22, 16, 12, 10):  R(0)/(G^2N^2w^3sig^2) = 0.0349178   P_tot/(G^2N^2w^3sig) = 0.1461332   sig P_tot/R(0) = 4.18506
+  sig/w=0.10 grid=(28, 20, 16, 12, 10, 8):  R(0)/(G^2N^2w^3sig^2) = 0.0365103   P_tot/(G^2N^2w^3sig) = 0.1526480   sig P_tot/R(0) = 4.18095
+  sig/w=0.10 grid=(40, 28, 22, 16, 12, 10):  R(0)/(G^2N^2w^3sig^2) = 0.0365103   P_tot/(G^2N^2w^3sig) = 0.1526480   sig P_tot/R(0) = 4.18095
+  sig/w=0.05 grid=(28, 20, 16, 12, 10, 8):  R(0)/(G^2N^2w^3sig^2) = 0.0373422   P_tot/(G^2N^2w^3sig) = 0.1562180   sig P_tot/R(0) = 4.18342
+  sig/w=0.05 grid=(40, 28, 22, 16, 12, 10):  R(0)/(G^2N^2w^3sig^2) = 0.0373422   P_tot/(G^2N^2w^3sig) = 0.1562180   sig P_tot/R(0) = 4.18342

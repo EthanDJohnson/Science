@@ -1,0 +1,33 @@
+====================================================================================================
+(a) T_eff = 2 pi int H^2 dx / (int H dx)^2, by exact discrete convolution in the band offsets (sig = 1)
+   top hat (n=2000): T_eff = 4.188791/sig   (claim 4 pi/3 = 4.188790)
+   Gaussian exp(-(k-w)^2/(2 sig^2)) (n=2000): T_eff = 1.253314/sig   (claim sqrt(pi/2) = 1.253314)
+   top hat (n=20000): T_eff = 4.188790/sig   (claim 4 pi/3 = 4.188790)
+   Gaussian exp(-(k-w)^2/(2 sig^2)) (n=20000): T_eff = 1.253314/sig   (claim sqrt(pi/2) = 1.253314)
+====================================================================================================
+(b) chirp f = exp(i d^2 D/(2 sig)): P_tot(chirp)/P_tot(transform-limited) by discrete convolution vs 3 pi/(sig D)
+   sig D =    6.28: ratio = 0.91143   3pi/(sig D) = 1.50000   eq.8 / (in-out pairs per D) = (3 sig D/(4 pi))/ratio =       1.646   (sig D)^2/(4pi^2) =       1.000
+   sig D =   20.00: ratio = 0.45666   3pi/(sig D) = 0.47124   eq.8 / (in-out pairs per D) = (3 sig D/(4 pi))/ratio =      10.456   (sig D)^2/(4pi^2) =      10.132
+   sig D =  100.00: ratio = 0.09281   3pi/(sig D) = 0.09425   eq.8 / (in-out pairs per D) = (3 sig D/(4 pi))/ratio =     257.223   (sig D)^2/(4pi^2) =     253.303
+   sig D =  300.00: ratio = 0.03127   3pi/(sig D) = 0.03142   eq.8 / (in-out pairs per D) = (3 sig D/(4 pi))/ratio =    2290.160   (sig D)^2/(4pi^2) =    2279.727
+   sig D = 1000.00: ratio = 0.00941   3pi/(sig D) = 0.00942   eq.8 / (in-out pairs per D) = (3 sig D/(4 pi))/ratio =   25360.699   (sig D)^2/(4pi^2) =   25330.296
+   sig D = 3000.00: ratio = 0.00314   3pi/(sig D) = 0.00314   eq.8 / (in-out pairs per D) = (3 sig D/(4 pi))/ratio =  228069.772   (sig D)^2/(4pi^2) =  227972.663
+====================================================================================================
+(c) SB example, own constants: E_rel = M_sun c^2, eps = 0.15
+   w = 1e+04 eV: N0 = 1.1154e+62, tau = 6.8380e-45 s, tau_h = 7.6274e+17 s (t_univ = 4.355e+17 s), converted fraction (4pi/3)/(sig tau_h) = 2.4098e-36, photons = 2.6880e+26
+   w with tau_h = t_univ: 1.1504e+04 eV;  w for converted fraction = 1: 7.4588e+15 eV
+====================================================================================================
+(d) inspiral bins inside B&O's allowed region (eps = 0.1, equal mass): overestimate eq.8/(in-out per t_eps) ~ (sig t_eps)^2/(4pi^2)
+   stimulated factor OFF: 0/1260 grid points allowed;  max (sig t_eps)^2/(4pi^2) inside allowed region = 0.000e+00 at M = None Msun, nu = None Hz
+   stimulated factor ON : 217/1260 grid points allowed;  max (sig t_eps)^2/(4pi^2) inside allowed region = 6.991e+03 at M = 5623413.251903491 Msun, nu = 1e-05 Hz
+      sig t_eps over allowed points: min 1.000e+00, median 2.684e+00, max 5.254e+02
+   quoted point M=1.0 Msun nu=0.001 Hz: (eps n)^2 = 4.763e+19; tau = 8.123e+34 s (with CMB stim 7.151e+20 s) vs min(1/(eps w), t_eps) = 1.592e+03 s -> OUTSIDE B&O allowed region (stim on)
+   quoted point M=1.0 Msun nu=10.0 Hz: (eps n)^2 = 2.211e+06; tau = 3.770e+17 s (with CMB stim 3.319e+07 s) vs min(1/(eps w), t_eps) = 1.592e-01 s -> OUTSIDE B&O allowed region (stim on)
+   quoted point M=10.0 Msun nu=10.0 Hz: (eps n)^2 = 1.026e+03; tau = 1.750e+14 s (with CMB stim 1.541e+04 s) vs min(1/(eps w), t_eps) = 1.592e-01 s -> OUTSIDE B&O allowed region (stim on)
+   quoted point M=65.0 Msun nu=10.0 Hz: (eps n)^2 = 2.002e+00; tau = 3.414e+11 s (with CMB stim 3.006e+01 s) vs min(1/(eps w), t_eps) = 1.592e-01 s -> OUTSIDE B&O allowed region (stim on)
+====================================================================================================
+(e) symbolic identities
+   P_tot / h^4 = omega**5*r**4/(400*delta)   (claim w^5 r^4/(400 delta))
+(e) symbolic identities
+   P_tot / h^4 = omega**5*r**4/(400*delta)   (claim w^5 r^4/(400 delta))
+   eq.8/(eq.14 V) = 9*V*delta**2*omega/(40*pi**2)   (claim 9 V sig^2 w/(40 pi^2))

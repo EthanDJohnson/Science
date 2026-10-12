@@ -70,8 +70,12 @@ def m_photon_physical_module(k1, k2, Q1, Q2, s, pat):
     for s1, s2 in ((1, -1), (-1, 1), (1, 1), (-1, -1)):
         e1 = np.stack([q2.photon_polarization(q, s1) for q in Q1])
         e2 = np.stack([q2.photon_polarization(q, s2) for q in Q2])
-        A = q2.amplitude_gg_to_photons(k1[:, None], H1[:, None], k2[:, None], H2[:, None],
-                                       Q1[None], e1[None], Q2[None], e2[None])
+        # explicit broadcast to the full (n_graviton, n_photon) grid: the reviewed module (2026-10-11 17:11)
+        # no longer broadcasts (n,1,.) against (1,m,.) inside its CM frame helper
+        nk, nq = k1.shape[0], Q1.shape[0]
+        B = lambda x, gr: np.broadcast_to(x[:, None] if gr else x[None], (nk, nq) + x.shape[1:])  # noqa: E731
+        A = q2.amplitude_gg_to_photons(B(k1, 1), B(H1, 1), B(k2, 1), B(H2, 1),
+                                       B(Q1, 0), B(e1, 0), B(Q2, 0), B(e2, 0))
         out.append(np.asarray(A))
     return out
 
@@ -109,8 +113,10 @@ def m_scalar_physical_module(k1, k2, Q1, Q2, s, pat, m=0.0):
     n1 = k1[:, 1:] / np.linalg.norm(k1[:, 1:], axis=1, keepdims=True)
     n2 = k2[:, 1:] / np.linalg.norm(k2[:, 1:], axis=1, keepdims=True)
     H1, H2 = bc.to4(bc.pattern(pat, n1)), bc.to4(bc.pattern(pat, n2))
-    return [np.asarray(q2.amplitude_gg_to_scalars(k1[:, None], H1[:, None], k2[:, None], H2[:, None],
-                                                  Q1[None], Q2[None], m))]
+    nk, nq = k1.shape[0], Q1.shape[0]
+    B = lambda x, gr: np.broadcast_to(x[:, None] if gr else x[None], (nk, nq) + x.shape[1:])  # noqa: E731
+    return [np.asarray(q2.amplitude_gg_to_scalars(B(k1, 1), B(H1, 1), B(k2, 1), B(H2, 1),
+                                                  B(Q1, 0), B(Q2, 0), m))]
 
 
 def m_scalar_bo(k1, k2, q1, q2, s, profile, m=0.0, combo="coherent"):

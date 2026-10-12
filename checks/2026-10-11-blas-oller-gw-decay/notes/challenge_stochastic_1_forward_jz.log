@@ -1,0 +1,9 @@
+  photon along +z, helicity +1: J_z = +1.000000
+  photon along +z, helicity -1: J_z = -1.000000
+  photon along -z, helicity +1: J_z = -1.000000
+  photon along -z, helicity -1: J_z = +1.000000
+  theta = 0.01: nonzero |M|/(8 pi G s): {(2, -2, 1, -1): 0.99995, (2, -2, -1, 1): 0.0, (-2, 2, 1, -1): 0.0, (-2, 2, -1, 1): 0.99995}
+  theta = 0.0001: nonzero |M|/(8 pi G s): {(2, -2, 1, -1): 0.99999999, (-2, 2, -1, 1): 0.99999999}
+  theta = 3.14149: nonzero |M|/(8 pi G s): {(2, -2, -1, 1): 0.99999999, (-2, 2, 1, -1): 0.99999999}
+  m^4 - t u + 4 E^2 p^2 (1 - c^2) = 0
+  A++ ~ m^4 s/((t-m^2)(u-m^2)) at c = 1: m**2

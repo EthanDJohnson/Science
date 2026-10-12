@@ -1,0 +1,39 @@
+
+====================================================================================================
+(a) displacement identity, single oscillator mode (w = 1), truncated Fock space n = 80
+====================================================================================================
+  alpha=(1.3+0.4j), (t1,t2)=(0.3,1.7): <a|T x x|a> - x_c x_c = 0.0849835715-0.4927248650j;  <0|T x x|0> = 0.0849835715-0.4927248650j
+  alpha=(1.3+0.4j), (t1,t2)=(2.1,0.4): <a|T x x|a> - x_c x_c = -0.0644222471-0.4958324052j;  <0|T x x|0> = -0.0644222471-0.4958324052j
+  alpha=(-0.7+2j), (t1,t2)=(0.3,1.7): <a|T x x|a> - x_c x_c = 0.0849835715-0.4927248650j;  <0|T x x|0> = 0.0849835715-0.4927248650j
+  alpha=(-0.7+2j), (t1,t2)=(2.1,0.4): <a|T x x|a> - x_c x_c = -0.0644222471-0.4958324052j;  <0|T x x|0> = -0.0644222471-0.4958324052j
+
+====================================================================================================
+(b) collinear support: int dOmega_12 delta(|k1|+|k2|-|k1+k2|) is finite (not a measure-zero cancellation)
+====================================================================================================
+  k1=1.0, k2=1.0, width=0.001: 2 pi int dc delta_w(g) = 6.280679;  one-sided 2 pi (k1+k2)/(2 k1 k2) = 6.283185
+  k1=1.0, k2=1.0, width=0.0001: 2 pi int dc delta_w(g) = 6.282935;  one-sided 2 pi (k1+k2)/(2 k1 k2) = 6.283185
+  k1=0.7, k2=1.3, width=0.001: 2 pi int dc delta_w(g) = 6.901845;  one-sided 2 pi (k1+k2)/(2 k1 k2) = 6.904599
+  k1=0.7, k2=1.3, width=0.0001: 2 pi int dc delta_w(g) = 6.904324;  one-sided 2 pi (k1+k2)/(2 k1 k2) = 6.904599
+
+====================================================================================================
+(b1) single on-shell graviton -> two collinear photons: eps_{mu nu} <gamma gamma|T^{mu nu}|0> = 0
+====================================================================================================
+  200 random collinear configurations: max |eps.T| = 4.08e-16   (non-collinear control, same eps: max 2.53e+00)
+
+====================================================================================================
+(b2) on-shell 3-graviton kinematics for collinear real momenta: all building blocks vanish
+====================================================================================================
+  max |k_i.k_j| = 1.2e-15; max |eps_i.k_j| = 3.2e-16; max |<ij>| = 1.0e-15
+  -> the cubic vertex (two derivatives, contracted from k_i.k_j, eps.k, eps.eps) vanishes on this support;
+     the 3-point on-shell amplitude M3 ~ kappa <12>^6/(<23><31>)^2 (or [..]) is 0 for real collinear momenta.
+
+====================================================================================================
+(c) module: full g g -> gamma gamma amplitude as incoming gravitons become collinear (energies fixed = 1)
+====================================================================================================
+  physical helicities (+2,-2) and (+2,+2), photons summed; theta12 = opening angle of incoming gravitons
+  theta12= 1.00: s = 9.194e-01; max |M| over helicities/angles = 2.2649e+01;  max|M|/(8 pi s) = 0.980166
+  theta12= 0.30: s = 8.933e-02; max |M| over helicities/angles = 2.2005e+00;  max|M|/(8 pi s) = 0.980166
+  theta12= 0.10: s = 9.992e-03; max |M| over helicities/angles = 2.4614e-01;  max|M|/(8 pi s) = 0.980166
+  theta12= 0.03: s = 8.999e-04; max |M| over helicities/angles = 2.2169e-02;  max|M|/(8 pi s) = 0.980166
+  theta12= 0.01: s = 1.000e-04; max |M| over helicities/angles = 2.4634e-03;  max|M|/(8 pi s) = 0.980166
+  -> |M| <= 8 pi G s -> 0 at s = 0 (independent bound: |t|, |u| <= s so 8 pi G t^2/s <= 8 pi G s).

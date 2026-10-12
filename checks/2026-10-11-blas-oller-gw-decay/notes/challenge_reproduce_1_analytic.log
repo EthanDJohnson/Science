@@ -1,0 +1,7 @@
+S6 prefactor derived: G**2/(16384*pi**9*omega**4)   B&O: G**2/(16384*pi**9*omega**4)  equal: True
+int dOmega [int dalpha (t^2+u^2)/s]^2 = 36*pi**3*(K - 2*omega)**2*(K + 2*omega)**2/5   (claim 36 pi^3 s^2/5: True )
+dP/dt photons (pairs per unit time) = 3*G**2*N**2*omega**3*sigma**2/(25*pi)   ratio to 3G^2N^2w^3sg^2/(25pi): 1
+scalar/photon (m=0, B&O model) = 7/54 -> C_scalar = 7/(450*pi)  (claim 7/(450 pi))
+Irwin-Hall n=4 density at centre = 2/3
+T_eff = 2 pi (2/3) sigma^3 / sigma^4 = 4*pi/(3*sigma)  -> P_total/(G^2 N^2 w^3 sigma) = 4/25
+MC density at 0 (bin 0.01): 0.664975

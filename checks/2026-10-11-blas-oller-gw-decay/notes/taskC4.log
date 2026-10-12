@@ -1,0 +1,44 @@
+====================================================================================================
+(i)+(ii) SI restoration and hbar power at fixed classical (E_rel, w, delta)
+====================================================================================================
+   eq.8  dP/dt  [pairs per J^-1 -> per s: multiply by 1/hbar]:
+      SI form = 3*E**2*G**2*delta**2*omega/(25*pi*c**10)
+      dims (kg,m,s) = (0, 0, -1);  hbar power at fixed E,w,delta = 0
+   eq.9  N_gamma(t), t in s (t_nat = t/hbar):
+      SI form = 6*E**2*G**2*delta**2*omega*t/(25*pi*c**10)
+      dims (kg,m,s) = (0, 0, 0);  hbar power at fixed E,w,delta = 0
+   eq.10 tau [s] (= hbar x natural):
+      SI form = 25*pi*c**10/(6*E**2*G**2*delta**2*omega)
+      dims (kg,m,s) = (0, 0, 1);  hbar power at fixed E,w,delta = 0
+   eq.11 W_gamma [W] (energy per natural time / hbar):
+      SI form = 6*E**2*G**2*delta**2*hbar*omega**2/(25*pi*c**10)
+      dims (kg,m,s) = (1, 2, -3);  hbar power at fixed E,w,delta = 1
+   C1    P_tot [pairs, whole history]:
+      SI form = 4*E**2*G**2*delta*omega/(25*c**10)
+      dims (kg,m,s) = (0, 0, 0);  hbar power at fixed E,w,delta = 0
+   B&O's own SI form of eq.11, 6 G^2 hbar E^2 w^2 delta^2/(25 pi c^10): dims = (1, 2, -3) (watt = (1, 2, -3));  minus our conversion = 0
+   unique exponents making G^2 E^2 w^2 delta^2 hbar^x c^y a power: [{x: 1, y: -10}]
+
+   eq.12: W = (3/(50 pi)) (r_m/l)^2 hbar w^2 with r_m = 2 G E/c^4, l = c dt.  Equal to eq.11 iff dt = 1/delta:
+      eq.12/eq.11 = 1/(delta**2*dt**2)   -> = 1 for dt = 1/delta (B&O's 'dt ~ 1/sigma' taken as an equality)
+
+====================================================================================================
+(iii) classical-field content: photon PAIRS and photon NUMBER rate are hbar-free at fixed classical wave
+====================================================================================================
+   eq.8 dP/dt = 3*E**2*G**2*delta**2*omega/(25*pi*c**10)   (hbar-free: a pure function of the classical wave E_rel, w, delta)
+   C1 P_tot = 4*E**2*G**2*delta*omega/(25*c**10)   (hbar-free: a pure function of the classical wave E_rel, w, delta)
+   => W_gamma = hbar w x (hbar-free pair rate x 2): the single hbar is the photon quantum hbar w, as B&O say; the graviton
+      count N enters only through N hbar w = E_rel, so 'N^2' is (E_rel/(hbar w))^2 compensated by G_nat^2 = G^2/(hbar c^5)^2.
+   B&O flux relation -> h_r^2 = 8*E*G*delta/(c**3*omega**2*r**2)  (dims (0, 0, 0): dimensionless, hbar-free, = 8 G E delta/(c^3 r^2 w^2))
+   P_tot / h_r^4 = omega**5*r**4/(400*c**4*delta)   (dims (0, 0, 0); hbar-free) -> P_tot = (1/400) (h_r^2)^2 (w r/c)^4 (w/delta)
+   check: 0
+   So the in-out pair number is a quartic functional of the CLASSICAL strain with no hbar: the 'N^2 coherent enhancement'
+   is identical to (classical h)^4 rewritten in graviton units; nothing beyond the classical second-order field squared.
+
+====================================================================================================
+(iv) N^2 is not specific to coherence: B&O eq. 14 for the (incoherent, Gaussian P-function) background is
+     dP/dtdV = 8 pi G^2 rho^2/15, also quadratic in graviton number.  Rewrite eq. 8 per volume with rho = N w/V:
+     eq.8 / (eq.14 x V) = 9*V*sigma_w**2*w_s/(40*pi**2)   -> equal when V w sig^2 = 40*pi**2/9  (B&O: 'V w sig^2 -> 40 pi^2/9')
+     So the 'coherent enhancement' is a smaller effective volume (higher peak h^2 at the focus), i.e. the
+     classical spatial concentration of h^4, not an extra power of N.
+====================================================================================================

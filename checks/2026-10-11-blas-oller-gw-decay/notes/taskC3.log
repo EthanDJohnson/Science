@@ -1,0 +1,73 @@
+==============================================================================================================
+(a) algebra (sympy)
+==============================================================================================================
+   2 x (dP/dt) x t - eq.9 = 0
+   ODE dN/dt = -2 (dP/dt)(N) solved: N_gamma = 6*G**2*N_0**2*omega**3*sigma**2*t/(6*G**2*N_0*omega**3*sigma**2*t + 25*pi);   minus S7 = 0
+   eq.9 = 1 photon at t = 25*pi/(6*G**2*N_0**2*omega**3*sigma**2);  minus eq.10 (E_rel = N0 w) = 0   -> tau is the mean time per PHOTON (half a reaction)
+   eq.9 = N0 at t = tau_h = 25*pi/(6*G**2*N_0*omega**3*sigma**2);  tau_h/tau = N_0 (= E_rel/w_s, as in SB);  S7 at tau_h: N_gamma/N0 = 1/2
+   W = w dN_gamma/dt = 6*G**2*N_0**2*omega**4*sigma**2/(25*pi);  minus eq.11 = 0
+   photons expected within T = 1/sig: (1/sig)/tau = 1/(sig tau) -> relative Poisson error sqrt(sig tau)  (B&O: sqrt(sig tau))
+   in-out total photons N_gamma,tot = 2 P_tot = 8*G**2*N_0**2*omega**3*sigma/25 = 4*pi/3 /(sig tau)
+   fraction of the packet ever converted = N_gamma,tot/N0 = 4*pi/3 /(sig tau_h)
+   eq.9 exceeds the in-out total for t > 4*pi/3/sig
+
+==============================================================================================================
+(b) SB example: E_rel = M_sun c^2, eps = 0.15 (sig = eps w_s): 'tau_h shorter than the age of the universe for w_s >~ 1e4 eV'
+==============================================================================================================
+   w_s with tau_h = 13.8 Gyr: 1.150e+04 eV   (B&O: ~1e4 eV)
+   w_s = 1.000e+04 eV: N0 = 1.115e+62, tau = 6.838e-45 s, tau_h = 7.627e+17 s, 1/sig = 4.388e-19 s;  fraction of packet ever converted = (4pi/3)/(sig tau_h) = 2.410e-36 (in-out photons N0 x that = 2.688e+26)
+   w_s = 1.150e+04 eV: N0 = 9.696e+61, tau = 4.491e-45 s, tau_h = 4.355e+17 s, 1/sig = 3.814e-19 s;  fraction of packet ever converted = (4pi/3)/(sig tau_h) = 3.669e-36 (in-out photons N0 x that = 3.557e+26)
+   w_s needed for (4pi/3)/(sig tau_h) = 1 (depletion within the packet, B&O model): 7.459e+15 eV
+
+==============================================================================================================
+(c) eq. 19 / S12: each event radiates W_gamma for the whole propagation time (E_j ~ W_gamma x int dz'/H).
+    In B&O's own model the energy per event is w_s x 2 P_tot = W_gamma x 4 pi/(3 sig).  Ratio ~ 3 sig/(4 pi H(z))
+    (order of magnitude: propagation time taken as 1/H(z) at the injection redshift; eps = 0.1, ratio scales as eps)
+==============================================================================================================
+   w_s [eV]     z=0e+00      z=1e+03      z=1e+05      z=2e+06       (ratio; bound on sqrt(Gamma) eps E_rel too strong by sqrt(ratio))
+      1e-10       1.66e+21     8.23e+16     1.71e+13     4.35e+10
+      1e-05       1.66e+26     8.23e+21     1.71e+18     4.35e+15
+      1e+00       1.66e+31     8.23e+26     1.71e+23     4.35e+20
+      1e+05       1.66e+36     8.23e+31     1.71e+28     4.35e+25
+      1e+10       1.66e+41     8.23e+36     1.71e+33     4.35e+30
+
+==============================================================================================================
+(d0) fixed GW power L, bin of duration D and bandwidth sig, N = L D/w.  In units of G^2 L^2 w:
+     eq. 8 (real Theta, transform-limited packet)        = (3/(25 pi)) (sig D)^2   [depends on the bin choice]
+     in-out total / D for the same bin, chirped to last D = (4/25) sig D x chirp_ratio(sig D)   [-> 12 pi/25 for sig D >> 2 pi]
+==============================================================================================================
+   sig D =    6.28:  eq.8 =     1.5080   in-out P_tot/D =  0.9163   (12 pi/25 = 1.5080; transform-limited bins of width 2 pi/sig: 8 pi/25 = 1.0053)   ratio =      1.646
+   sig D =   20.00:  eq.8 =    15.2789   in-out P_tot/D =  1.4613   (12 pi/25 = 1.5080; transform-limited bins of width 2 pi/sig: 8 pi/25 = 1.0053)   ratio =     10.456
+   sig D =  100.00:  eq.8 =   381.9719   in-out P_tot/D =  1.4850   (12 pi/25 = 1.5080; transform-limited bins of width 2 pi/sig: 8 pi/25 = 1.0053)   ratio =    257.223
+   sig D = 1000.00:  eq.8 = 38197.1863   in-out P_tot/D =  1.5062   (12 pi/25 = 1.5080; transform-limited bins of width 2 pi/sig: 8 pi/25 = 1.0053)   ratio =  25360.700
+
+==============================================================================================================
+(d) inspiral bins (eps = 0.1, equal mass, M = 2^(6/5) M_c): when t_eps > 1/(eps w) the bin is a chirp of duration
+    t_eps >> 2 pi/sig; eq. 8 with N = E_rel/w and sig = eps w treats it as a transform-limited packet of duration ~1/sig.
+    taskC1(f): eq.8 / [chirp P_tot / t_eps] -> (sig t_eps)^2/(4 pi^2) = (eps n)^2, n = w t_eps/(2 pi) cycles in the bin
+==============================================================================================================
+   M =    1e+00 Msun, nu =   1e-03 Hz (ISCO 4.40e+03): t_eps = 6.901e+13 s, 1/(eps w) = 1.592e+03 s, sig t_eps = 4.336e+10: B&O use sig = eps w; eq.8 / in-out average over t_eps = 4.763e+19  ((eps n)^2 = 4.763e+19)
+   M =    1e+00 Msun, nu =   1e-01 Hz (ISCO 4.40e+03): t_eps = 3.203e+08 s, 1/(eps w) = 1.592e+01 s, sig t_eps = 2.013e+07: B&O use sig = eps w; eq.8 / in-out average over t_eps = 1.026e+13  ((eps n)^2 = 1.026e+13)
+   M =    1e+00 Msun, nu =   1e+01 Hz (ISCO 4.40e+03): t_eps = 1.487e+03 s, 1/(eps w) = 1.592e-01 s, sig t_eps = 9.342e+03: B&O use sig = eps w; eq.8 / in-out average over t_eps = 2.211e+06  ((eps n)^2 = 2.211e+06)
+   M =    1e+00 Msun, nu =   1e+03 Hz (ISCO 4.40e+03): t_eps = 6.901e-03 s, 1/(eps w) = 1.592e-03 s, sig t_eps = 4.336e+00: B&O use sig = eps w; eq.8 / in-out average over t_eps = 1.082e+00  ((eps n)^2 = 4.763e-01)
+   M =    1e+01 Msun, nu =   1e-03 Hz (ISCO 4.40e+02): t_eps = 1.487e+12 s, 1/(eps w) = 1.592e+03 s, sig t_eps = 9.342e+08: B&O use sig = eps w; eq.8 / in-out average over t_eps = 2.211e+16  ((eps n)^2 = 2.211e+16)
+   M =    1e+01 Msun, nu =   1e-01 Hz (ISCO 4.40e+02): t_eps = 6.901e+06 s, 1/(eps w) = 1.592e+01 s, sig t_eps = 4.336e+05: B&O use sig = eps w; eq.8 / in-out average over t_eps = 4.763e+09  ((eps n)^2 = 4.763e+09)
+   M =    1e+01 Msun, nu =   1e+01 Hz (ISCO 4.40e+02): t_eps = 3.203e+01 s, 1/(eps w) = 1.592e-01 s, sig t_eps = 2.013e+02: B&O use sig = eps w; eq.8 / in-out average over t_eps = 1.034e+03  ((eps n)^2 = 1.026e+03)
+   M =    6e+01 Msun, nu =   1e-03 Hz (ISCO 6.76e+01): t_eps = 6.567e+10 s, 1/(eps w) = 1.592e+03 s, sig t_eps = 4.126e+07: B&O use sig = eps w; eq.8 / in-out average over t_eps = 4.313e+13  ((eps n)^2 = 4.313e+13)
+/home/user/Science/checks/2026-10-11-blas-oller-gw-decay/calc/taskC3_usage_consistency.py:112: IntegrationWarning: The maximum number of subdivisions (400) has been achieved.
+  If increasing the limit yields no improvement it is advised to analyze 
+  the integrand in order to determine the difficulties.  If the position of a 
+  local difficulty can be determined (singularity, discontinuity) one will 
+  probably gain from splitting up the interval and calling the integrator 
+  on the subranges.  Perhaps a special-purpose integrator should be used.
+  v, _ = integrate.quad(lambda x: inner(1 - x), 0, 1, limit=400, epsabs=0, epsrel=1e-10)
+   M =    6e+01 Msun, nu =   1e-01 Hz (ISCO 6.76e+01): t_eps = 3.048e+05 s, 1/(eps w) = 1.592e+01 s, sig t_eps = 1.915e+04: B&O use sig = eps w; eq.8 / in-out average over t_eps = 9.293e+06  ((eps n)^2 = 9.292e+06)
+   M =    6e+01 Msun, nu =   1e+01 Hz (ISCO 6.76e+01): t_eps = 1.415e+00 s, 1/(eps w) = 1.592e-01 s, sig t_eps = 8.890e+00: B&O use sig = eps w; eq.8 / in-out average over t_eps = 2.548e+00  ((eps n)^2 = 2.002e+00)
+   M =    1e+03 Msun, nu =   1e-03 Hz (ISCO 4.40e+00): t_eps = 6.901e+08 s, 1/(eps w) = 1.592e+03 s, sig t_eps = 4.336e+05: B&O use sig = eps w; eq.8 / in-out average over t_eps = 4.763e+09  ((eps n)^2 = 4.763e+09)
+   M =    1e+03 Msun, nu =   1e-01 Hz (ISCO 4.40e+00): t_eps = 3.203e+03 s, 1/(eps w) = 1.592e+01 s, sig t_eps = 2.013e+02: B&O use sig = eps w; eq.8 / in-out average over t_eps = 1.034e+03  ((eps n)^2 = 1.026e+03)
+   M =    1e+06 Msun, nu =   1e-03 Hz (ISCO 4.40e-03): t_eps = 6.901e+03 s, 1/(eps w) = 1.592e+03 s, sig t_eps = 4.336e+00: B&O use sig = eps w; eq.8 / in-out average over t_eps = 1.082e+00  ((eps n)^2 = 4.763e-01)
+
+==============================================================================================================
+(e) merger (B&O: nu ~ 150 Hz (65 Msun/M), t_m ~ 5 ms (M/65 Msun), eps ~ 0.15): sig t_m is M-independent
+==============================================================================================================
+   sig t_m = eps 2 pi nu t_m = 0.707  (transform-limited: the delta(0)->T step costs only the O(1) factor of taskC1(b))
