@@ -1,0 +1,34 @@
+# math_run log
+command:  python3 runs/2026-10-13-gravitational-wave-decay-photon-pairs/calc/lens-constraints_farzone.py
+started:  2026-10-13T16:13:58Z
+duration: 81.9 s
+exit:     0
+versions: python 3.13.16, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+=== Part A: yield of the region beyond R for one outgoing spherical wave (toy) ===
+  w R =   20.0: Y = 3.67713e-01  (1.5x grid: 3.67680e-01, rel diff 9.09e-05)
+  w R =   40.0: Y = 4.92749e-02  (1.5x grid: 4.92689e-02, rel diff 1.21e-04)
+  w R =   80.0: Y = 6.37453e-03  (1.5x grid: 6.37383e-03, rel diff 1.10e-04)
+  w R =  160.0: Y = 8.10551e-04  (1.5x grid: 8.10440e-04, rel diff 1.37e-04)
+  fitted slope d ln Y / d ln R = -2.943   (expected -3)
+    local slope 20->40: -2.900
+    local slope 40->80: -2.950
+    local slope 80->160: -2.975
+
+  Implication for GW150914 (lambda = c/150 Hz = 2.0e6 m): fraction of near-zone yield made beyond R,
+    R = 1 lambda: (lambda/(2 pi R))^3 = 4.031e-03
+    R = 1e9 m   : (lambda/(2 pi R))^3 = 3.218e-11
+    R = 1 AU    : (lambda/(2 pi R))^3 = 9.536e-18
+    R = 1 kpc   : (lambda/(2 pi R))^3 = 1.095e-42
+    R = 410 Mpc : (lambda/(2 pi R))^3 = 1.590e-59
+
+=== Part B: observational bound on path depletion ===
+  GW150914: D_L = 1.265e+25 m; amplitude calibration 11.29% -> energy e-folding length L > 5.280e+25 m = 1711 Mpc
+  Jones-Singleton <r> ~ 1e11 m: predicted amplitude factor exp(-D/(2L)) = exp(-6.326e+13) -> 0; excluded by a factor D/(2 L_JS)/0.12 = 5.27e+14 in the exponent
+  B&O tau_h = 1.3e+82 s: energy fraction lost over 410 Mpc = 3.25e-66; allowed <= 0.21
+  B&O tau_h = 1.7e+73 s: energy fraction lost over 410 Mpc = 2.48e-57; allowed <= 0.21
+
+--- stderr ---
+

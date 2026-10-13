@@ -1,0 +1,42 @@
+# math_run log
+command:  python3 runs/2026-10-13-gravitational-wave-decay-photon-pairs/calc/lens-mechanist_outgoing.py
+started:  2026-10-13T15:45:17Z
+duration: 10.3 s
+exit:     0
+versions: python 3.13.16, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+Inputs (SI): E = 3.575e+47 J, f = 150.0 Hz, w = 942.5 rad/s, sigma_w = 200.0 rad/s, L = c/sigma = 1.499e+06 m, 1/k = 3.181e+05 m
+
+1. Two-beam rate per volume vs crossing angle (h = 1e-21 each, plus/plus), SI pairs m^-3 s^-1
+  theta =  1.000 rad: Gamma = 1.5389e-102, rho each = 1.1898e-11 J/m^3
+  theta =  0.300 rad: Gamma = 1.4527e-104, rho each = 1.1898e-11 J/m^3
+  theta =  0.100 rad: Gamma = 1.8175e-106, rho each = 1.1898e-11 J/m^3
+  theta =  0.030 rad: Gamma = 1.4744e-108, rho each = 1.1898e-11 J/m^3
+  theta =  0.010 rad: Gamma = 1.8205e-110, rho each = 1.1898e-11 J/m^3
+  small-angle power law: Gamma ~ theta^4.000 (expect 4: s ~ theta^2, sigma ~ G^2 s, flux ~ theta^2)
+  head-on (theta = pi): Gamma = 2.9129e-101
+
+2. Pairs made by the outgoing shell beyond radius r (integral r..infinity), two theta(r) models
+  model fresnel: dN/dr ~ r^-4.00 at large r
+    N(>r = 1/k    = 3.18e+05 m) = 6.786e-08 pairs
+    N(>r = 10/k   = 3.05e+06 m) = 8.578e-11 pairs
+    N(>r = 1e3/k  = 3.15e+08 m) = 7.890e-17 pairs
+    N(>r = 1 AU   = 1.42e+11 m) = 8.697e-25 pairs
+    N(>r = 1 kpc  = 3.18e+19 m) = 7.714e-50 pairs
+  model gradient: dN/dr ~ r^-6.00 at large r
+    N(>r = 1/k    = 3.18e+05 m) = 4.157e-08 pairs
+    N(>r = 10/k   = 3.05e+06 m) = 5.742e-13 pairs
+    N(>r = 1e3/k  = 3.15e+08 m) = 4.894e-23 pairs
+    N(>r = 1 AU   = 1.42e+11 m) = 2.672e-36 pairs
+    N(>r = 1 kpc  = 3.18e+19 m) = 4.712e-78 pairs
+
+3. B&O eq. 8 (SI form 3 G^2 E^2 w sigma^2/(25 pi c^10))
+  dP/dt = 1.398e-04 pairs/s; x T_eff = 4pi/(3 sigma) = 0.0209 s -> per-packet total 2.928e-06 pairs
+  read as sustained along D = 410 Mpc (t = 4.220e+16 s): 5.900e+12 pairs, energy 1.173e-18 J = 3.281e-66 of E
+  B&O validity tau << 1/sigma: (pair time 1/(dP/dt) = 7.152e+03 s) vs 1/sigma = 5.000e-03 s
+  (sigma/w = 0.212: the narrow-band premise is marginal at B&O's own GW150914 point)
+
+--- stderr ---
+

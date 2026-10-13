@@ -1,0 +1,25 @@
+# Analysis: constraints (Kant: audit the conditions any valid answer must satisfy)
+status: draft
+
+## Method applied
+List every constraint that bears on GW -> gamma gamma in vacuum (kinematics, conservation, plane-wave no-go theorems, quantum-classical counting, plasma dispersion, spectral distortions, EBL, BBN photofission, LVK/PTA/N_eff energy budgets), compute what each B&O consequence requires against it, and classify each candidate as violates / strained / consistent, with the assumptions under which each constraint applies.
+
+## Findings
+
+F0. What B&O's Fig. 3 constrains (source read for this lens). The bounds are on a population of "recurrent GW sources", parameter sqrt(Gamma eps) E_rel/Msun in Gpc^-3/2 yr^-1/2 with Gamma = n~ kappa (comoving density x repetition rate), plotted against hbar w_s from 1e-10 eV to 1e10 eV (2.4e4 Hz to 2.4e24 Hz). Each source radiates W_gamma from its creation time onward, summed over all sources causally connected: [new: B&O v2 arXiv PDF p. 5, full-text, "Summing the energy radiated by all sources causally connected with the observation point, in the limit 1/κ(t− ta)≪1 andH(z)/κ≪1, the total deposited energy density reads (see SM SE for the derivation), ∆ργ(z,ωs) (1 +z) 4 ≈ WγΓ H2 0 F(z,ω),(19) where Γ = ˜nκ"]. Windows: "In the µ-regime, 105 ≲z≲z a≈3×10 6" and "In the range 10 3 ≲z≲z a≈10 5 ... y-distortion"; EBL bounds "for high frequency at low redshift (ω s ≳10 eV, z <zdec)"; photofission uses "requiringδ D <0.03" [new: same PDF pp. 5, 13, full-text]. The stimulated factor enters as (1 + 2(e^{w̄_s/(1+z'')} - 1)^-1) inside F (eq. S13), i.e. w_s is the physical frequency at injection. No plasma correction appears in these passages (consistent with [D-62]).
+
+F1. Plasma kinematics is a hard threshold, not just a propagation loss. A transverse photon in a cold plasma has effective mass hbar w_p, so g g -> gamma gamma needs s >= 4 w_p^2; two gravitons of frequency w have s <= 4 w^2, so production needs w > w_p (and theta >= 2 arcsin(w_p/w)). For the GW150914 band (35-250 Hz) production is kinematically FORBIDDEN in hot ISM (f_pe = 492 Hz at an assumed 3e-3 cm^-3), warm ISM (1.56 kHz) and the VLISM (2.54 kHz), and allowed in the mean IGM (f_pe = 4.2 Hz all-baryon, 1.5 Hz realistic) only for theta > 3.2 deg (150 Hz) [calc: runs/2026-10-13-gravitational-wave-decay-photon-pairs/calc/lens-constraints_plasma.py] [D-07] [D-40]. Combined with the far-zone invariant mass s ~ 4 w c/r (F4), production in the IGM stops altogether beyond r_max = c w/w_p^2 = 4.0e8 m (~200 lambda) at 150 Hz (3.2e9 m for the realistic IGM density) [same calc]. So "decay along the path" of a merger-band GW is kinematically zero in every real medium beyond ~1e9 m, independent of B&O's rate.
+
+F2. Cosmic plasma voids the low-frequency end of the CMB windows. Minimum physical photon energy for production, hbar w_p(z) (fully ionised before recombination): 6.4e-10 eV at z = 1100, 1.7e-8 eV at z = 1e4, 5.5e-7 eV at z = 1e5, 9.1e-5 eV at z = 3e6 [calc: lens-constraints_plasma.py]. B&O's y window (1e3 < z < 1e5) therefore needs hbar w_s > 6.4e-10 to 5.5e-7 eV, and the mu window (1e5 < z < 3e6) hbar w_s > 5.5e-7 to 9.1e-5 eV; Fig. 3 starts at 1e-10 eV. Any part of the mu/y curves below these energies sits where the process is kinematically forbidden. For a fixed observed frequency f0 (primordial SGWB), production before recombination needs f0 > 4.2 Hz sqrt(1+z): f0 > 1.3 kHz at z = 1e5, > 6.0 kHz at z = 2e6; the LVK band (25 Hz) makes no photons at any z > 1100 [same calc]. Assumes cold unmagnetised plasma, all baryons ionised, helium recombination ignored (<~8% in n_e).
+
+F3. Eq. 14 is exactly kinetic theory, so for an incoherent background it is the right quantity, and it is negligible. With qft_second_order's physical cross sections, sigma(R,L) = (4/5) pi G^2 s, sigma(R,R) = 0 (1.5e-31 roundoff), linear pairs (2/5) pi G^2 s; the isotropic Boltzmann average (1/2) n^2 <sigma (1 - cos)> gives Gamma/(G^2 rho^2) = 1.675516 at Gauss-Legendre n = 8, 12, 16, equal to 8 pi/15 to 6 digits [calc: runs/2026-10-13-gravitational-wave-decay-photon-pairs/calc/lens-constraints_eq14.py]. SI: pair rate 2.8e-109, 3.1e-110, 7.7e-111 m^-3 s^-1 for DeltaN_eff = 0.3, 0.1, 0.05 (rho_GW = 2.8e-15, 9.5e-16, 4.7e-16 J/m^3); LVK-limited 1.6e-115 m^-3 s^-1 [same calc] (agrees with [D-44]). Cosmic injection at DeltaN_eff = 0.3, plasma ignored (generous): Delta rho_gamma/rho_gamma <= 4.3e-79 (mu window, stimulated) and 1.6e-83 (y window), for any f0 from 25 Hz to 1e9 Hz; 3.8e-76 at f0 = 1e14 Hz; vs FIRAS ~6e-5 [D-08] the shortfall is >= 1e71. Scale: Delta rho/rho ~ r^2 (T/M_Pl)^3 per e-fold, (T/M_Pl)^3 = 1.9e-76 at z = 3e6. Depletion time today: 3.1e125 s unstimulated, 6.8e115 s stimulated (1.6e98 t_H) [same calc]. Verdict for eq. 14: right arithmetic, right quantity (incoherent kinetic rate); no constraint possible.
+
+## Lens-specific outputs
+
+## Calculations
+
+## Candidate answers (at least 3; the null and a reframe count)
+
+## What would change my mind
+
+## Assumptions I relied on

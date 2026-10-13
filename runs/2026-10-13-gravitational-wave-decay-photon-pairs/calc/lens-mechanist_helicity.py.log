@@ -1,0 +1,55 @@
+# math_run log
+command:  python3 runs/2026-10-13-gravitational-wave-decay-photon-pairs/calc/lens-mechanist_helicity.py
+started:  2026-10-13T15:42:54Z
+duration: 1.6 s
+exit:     0
+versions: python 3.13.16, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+Part 1: helicity amplitudes, CM frame, s = 4 (natural units), unit 8 pi G s
+graviton helicities (l1, l2) physical along own momentum; photon helicities (h1, h2) physical
+th = 1.1 rad, ph = 0.7 rad: t^2/s^2 = 0.074639, u^2/s^2 = 0.528235
+  (l1,l2)=(+2,+2) (h1,h2)=(+1,+1): |M|/(8piG s) = 0.000000  arg =      nan deg
+  (l1,l2)=(+2,+2) (h1,h2)=(+1,-1): |M|/(8piG s) = 0.000000  arg =      nan deg
+  (l1,l2)=(+2,+2) (h1,h2)=(-1,+1): |M|/(8piG s) = 0.000000  arg =      nan deg
+  (l1,l2)=(+2,+2) (h1,h2)=(-1,-1): |M|/(8piG s) = 0.000000  arg =      nan deg
+  (l1,l2)=(+2,-2) (h1,h2)=(+1,+1): |M|/(8piG s) = 0.000000  arg =      nan deg
+  (l1,l2)=(+2,-2) (h1,h2)=(+1,-1): |M|/(8piG s) = 0.528235  arg =   -19.57 deg
+  (l1,l2)=(+2,-2) (h1,h2)=(-1,+1): |M|/(8piG s) = 0.074639  arg =   -19.57 deg
+  (l1,l2)=(+2,-2) (h1,h2)=(-1,-1): |M|/(8piG s) = 0.000000  arg =      nan deg
+  (l1,l2)=(-2,+2) (h1,h2)=(+1,+1): |M|/(8piG s) = 0.000000  arg =      nan deg
+  (l1,l2)=(-2,+2) (h1,h2)=(+1,-1): |M|/(8piG s) = 0.074639  arg =    19.57 deg
+  (l1,l2)=(-2,+2) (h1,h2)=(-1,+1): |M|/(8piG s) = 0.528235  arg =    19.57 deg
+  (l1,l2)=(-2,+2) (h1,h2)=(-1,-1): |M|/(8piG s) = 0.000000  arg =      nan deg
+  (l1,l2)=(-2,-2) (h1,h2)=(+1,+1): |M|/(8piG s) = 0.000000  arg =      nan deg
+  (l1,l2)=(-2,-2) (h1,h2)=(+1,-1): |M|/(8piG s) = 0.000000  arg =      nan deg
+  (l1,l2)=(-2,-2) (h1,h2)=(-1,+1): |M|/(8piG s) = 0.000000  arg =      nan deg
+  (l1,l2)=(-2,-2) (h1,h2)=(-1,-1): |M|/(8piG s) = 0.000000  arg =      nan deg
+
+Phase dependence on photon azimuth ph (opposite-helicity gravitons +2,-2):
+  ph=0.0 (h1,h2)=(+1,-1) |M|=0.528235 arg=  180.00 deg
+  ph=0.0 (h1,h2)=(-1,+1) |M|=0.074639 arg=  180.00 deg
+  ph=0.7 (h1,h2)=(+1,-1) |M|=0.528235 arg=  -19.57 deg
+  ph=0.7 (h1,h2)=(-1,+1) |M|=0.074639 arg=  -19.57 deg
+  ph=1.4 (h1,h2)=(+1,-1) |M|=0.528235 arg=  140.86 deg
+  ph=1.4 (h1,h2)=(-1,+1) |M|=0.074639 arg=  140.86 deg
+  ph=2.1 (h1,h2)=(+1,-1) |M|=0.528235 arg=  -58.72 deg
+  ph=2.1 (h1,h2)=(-1,+1) |M|=0.074639 arg=  -58.72 deg
+
+Part 2: final-state structure. For opposite-helicity gravitons the t^2 and u^2 amplitudes go to
+DIFFERENT final photon helicity states (orthogonal), so they cannot interfere in sum_final |M|^2.
+  int dcos (t^4+u^4)/s^4 = 0.800000 (exact 4/5)
+  int dcos (t^2+u^2)^2/s^4 = 0.933333 (exact 14/15)
+  ratio B&O-coherent / physical incoherent = 1.166667 (exact 7/6)
+  toolkit sum_final |M(+2,-2)|^2 / (8piGs)^2 vs (t^4+u^4)/s^4: max rel dev = 1.89e-15
+  same physical helicity (+2,+2): max sum_final |M|^2/(8piGs)^2 = 5.00e-31 (selection rule zero)
+
+Part 3: two LINEARLY polarised gravitons ('plus' about each own axis), sum_final |M|^2 vs azimuth
+  chi = 0.000 rad: sum_final|M|^2/(8piGs)^2 over ph: min 0.18173 max 0.18173 mean 0.18173
+  chi = 0.785 rad: sum_final|M|^2/(8piGs)^2 over ph: min 0.10287 max 0.10287 mean 0.10287
+  chi = 1.571 rad: sum_final|M|^2/(8piGs)^2 over ph: min 0.18173 max 0.18173 mean 0.18173
+  reference at th=1.1: (t^4+u^4)/(2 s^4) = 0.14230 [physical, half the gravitons pairs are +- ]; B&O real-sign (t^2+u^2)^2/(2 s^4) = 0.18173
+
+--- stderr ---
+

@@ -1,0 +1,56 @@
+# math_run log
+command:  python3 runs/2026-10-13-gravitational-wave-decay-photon-pairs/calc/lens-empiricist_uldm.py
+started:  2026-10-13T15:52:28Z
+duration: 3.4 s
+exit:     0
+versions: python 3.13.16, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+=== 1. Symbolic check: eq. 17 + eq. 16 -> W_phi ===
+  N_phi (B&O eq.16 form) = 9*pi*H0**2*Omega*x/(4*G*m**4*v**3)
+  2 m dP/dt from eq.17   = 9*pi*G*H0**2*N0**2*Omega*m**2*v**3*x/256
+  B&O printed W_phi*x    = 9*pi*G*H0**2*N0**2*Omega*m**2*v**3*x/256  ; ratio = 1
+
+=== 2. Numbers: eq. 16 and eq. 18 ===
+  N_phi(1e-22 eV, v=1e-3, x=1) = 5.750e+87  (B&O: 6e87)
+  E_rel=2/65 Mc^2 (B&O merger scaling): m=1e-22 eV -> f_GW=2.418e-08 Hz, M=1.820e+11 Msun, N0=6.247e+97, W_phi(x=1)=3.841e+15 W, scalars/s=2.397e+56
+  E_rel=2/65 Mc^2 (B&O merger scaling): m=1e-21 eV -> f_GW=2.418e-07 Hz, M=1.820e+10 Msun, N0=6.247e+95, W_phi(x=1)=3.841e+13 W, scalars/s=2.397e+53
+  E_rel=2/65 Mc^2 (B&O merger scaling): m=2e-20 eV -> f_GW=4.836e-06 Hz, M=9.098e+08 Msun, N0=1.562e+93, W_phi(x=1)=9.602e+10 W, scalars/s=2.997e+49
+  E_rel=3/65 Mc^2 (LVK GW150914 ratio): m=1e-22 eV -> f_GW=2.418e-08 Hz, M=1.820e+11 Msun, N0=9.370e+97, W_phi(x=1)=8.642e+15 W, scalars/s=5.394e+56
+  E_rel=3/65 Mc^2 (LVK GW150914 ratio): m=1e-21 eV -> f_GW=2.418e-07 Hz, M=1.820e+10 Msun, N0=9.370e+95, W_phi(x=1)=8.642e+13 W, scalars/s=5.394e+53
+  E_rel=3/65 Mc^2 (LVK GW150914 ratio): m=2e-20 eV -> f_GW=4.836e-06 Hz, M=9.098e+08 Msun, N0=2.343e+93, W_phi(x=1)=2.160e+11 W, scalars/s=6.742e+49
+  B&O eq.18: 1e14 W x_MW at 1e-21 eV ; ~1e54 s^-1
+
+=== 3. Can the resonance (eq. 17) be met by a real chirp? m = 1e-21 eV, v = 1e-3 ===
+  m=1e-21 eV: f=2.418e-07 Hz (period 47.9 d), M=1.82e+10 Msun
+    resonance fractional bandwidth v^2/2 = 5.0e-07; sigma_omega = 7.596e-13 rad/s
+    packet duration eq.17 needs 1/sigma = 1.316e+12 s = 4.171e+04 yr ; ULDM coherence time = 1.310e+05 yr
+    chirp f/fdot at that f (Newtonian, equal mass) = 2.415e+07 s ; time inside resonance band = 1.207e+01 s
+    shortfall: t_band / (1/sigma) = 9.172e-12
+    gravitons spectrally inside band: N_band = 1.411e+89 vs B&O N0 = 6.247e+95 ; (N_band/N0)^2 = 5.100e-14
+    W_phi(x=1): face value 3.841e+13 W ; with in-band N 1.959e+00 W
+  m=2e-20 eV: f=4.836e-06 Hz (period 2.4 d), M=9.10e+08 Msun
+    resonance fractional bandwidth v^2/2 = 5.0e-07; sigma_omega = 1.519e-11 rad/s
+    packet duration eq.17 needs 1/sigma = 6.582e+10 s = 2.086e+03 yr ; ULDM coherence time = 6.552e+03 yr
+    chirp f/fdot at that f (Newtonian, equal mass) = 1.207e+06 s ; time inside resonance band = 6.037e-01 s
+    shortfall: t_band / (1/sigma) = 9.172e-12
+    gravitons spectrally inside band: N_band = 3.527e+86 vs B&O N0 = 1.562e+93 ; (N_band/N0)^2 = 5.100e-14
+    W_phi(x=1): face value 9.602e+10 W ; with in-band N 4.897e-03 W
+
+=== 4. Compare with anything observable ===
+  x_MW=1.0e+00: W_phi(face) = 3.841e+13 W = 1.003e-13 Lsun ; W_phi/L_GW,peak = 1.067e-36
+  x_MW=1.0e+05: W_phi(face) = 3.841e+18 W = 1.003e-08 Lsun ; W_phi/L_GW,peak = 1.067e-31
+  x_MW=2.4e+05: W_phi(face) = 9.218e+18 W = 2.408e-08 Lsun ; W_phi/L_GW,peak = 2.561e-31
+  x needed for W_phi = 1 Lsun at face value: 9.967e+12 (cosmic-mean multiples)
+  merger time t_m = 1.400e+06 s ; fractional GW energy converted (face, x=1e5) = 5.372e-32
+  Scalars of energy ~1e-21 eV coupled only gravitationally: no detector channel exists (no lab coupling).
+
+=== 5. Observational bound on GW damping from GW170817 (Lagos et al. 2019, c_M) ===
+  c_M=-37: d_GW/d_EM - 1 = -1.666e-01 (amplitude); energy-flux change ~ +4.398e-01
+  c_M=-9: d_GW/d_EM - 1 = -4.336e-02 (amplitude); energy-flux change ~ +9.271e-02
+  c_M=+12: d_GW/d_EM - 1 = +6.089e-02 (amplitude); energy-flux change ~ -1.115e-01
+  => observed GW amplitudes are consistent with no damping to ~10% over ~40 Mpc; B&O depletion 1e-66..1e-57 [D-47] is untestable.
+
+--- stderr ---
+

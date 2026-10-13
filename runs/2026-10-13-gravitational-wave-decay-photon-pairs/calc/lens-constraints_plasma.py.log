@@ -1,0 +1,61 @@
+# math_run log
+command:  python3 runs/2026-10-13-gravitational-wave-decay-photon-pairs/calc/lens-constraints_plasma.py
+started:  2026-10-13T16:10:20Z
+duration: 0.0 s
+exit:     0
+versions: python 3.13.16, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+=== 1. Local media: plasma frequency vs GW frequency (photon needs f_gamma > f_pe) ===
+  IGM mean today, all baryons ionised [D-40]         n_e = 2.200e-07 cm^-3  f_pe =  4.212e+00 Hz  hbar w_p = 1.742e-14 eV
+  IGM today, realistic mean (2.2e-7/8, [D-40 note])  n_e = 2.750e-08 cm^-3  f_pe =  1.489e+00 Hz  hbar w_p = 6.159e-15 eV
+  hot ISM (assumed 3e-3 cm^-3)                       n_e = 3.000e-03 cm^-3  f_pe =  4.919e+02 Hz  hbar w_p = 2.034e-12 eV
+  warm ISM [D-40]                                    n_e = 3.000e-02 cm^-3  f_pe =  1.555e+03 Hz  hbar w_p = 6.433e-12 eV
+  VLISM (Voyager) [D-07]                             n_e = 8.000e-02 cm^-3  f_pe =  2.540e+03 Hz  hbar w_p = 1.050e-11 eV
+  solar wind at 1 AU [D-40]                          n_e = 5.000e+00 cm^-3  f_pe =  2.008e+04 Hz  hbar w_p = 8.304e-11 eV
+  ionosphere F layer [D-40]                          n_e = 1.000e+06 cm^-3  f_pe =  8.980e+06 Hz  hbar w_p = 3.714e-08 eV
+
+=== 2. Kinematic window for g g -> gamma gamma at the GW150914 band ===
+  f_GW =   35.0 Hz in IGM mean today, all baryons : allowed for theta >  13.82 deg; far-zone production stops beyond r_max = c w/w_p^2 = 9.413e+07 m = 1.099e+01 lambda
+  f_GW =   35.0 Hz in IGM today, realistic mean (2: allowed for theta >   4.88 deg; far-zone production stops beyond r_max = c w/w_p^2 = 7.530e+08 m = 8.792e+01 lambda
+  f_GW =   35.0 Hz in hot ISM (assumed 3e-3 cm^-3): FORBIDDEN (f_GW/f_pe = 0.0712 < 1)
+  f_GW =   35.0 Hz in warm ISM [D-40]             : FORBIDDEN (f_GW/f_pe = 0.0225 < 1)
+  f_GW =  150.0 Hz in IGM mean today, all baryons : allowed for theta >   3.22 deg; far-zone production stops beyond r_max = c w/w_p^2 = 4.034e+08 m = 2.018e+02 lambda
+  f_GW =  150.0 Hz in IGM today, realistic mean (2: allowed for theta >   1.14 deg; far-zone production stops beyond r_max = c w/w_p^2 = 3.227e+09 m = 1.615e+03 lambda
+  f_GW =  150.0 Hz in hot ISM (assumed 3e-3 cm^-3): FORBIDDEN (f_GW/f_pe = 0.305 < 1)
+  f_GW =  150.0 Hz in warm ISM [D-40]             : FORBIDDEN (f_GW/f_pe = 0.0964 < 1)
+  f_GW =  250.0 Hz in IGM mean today, all baryons : allowed for theta >   1.93 deg; far-zone production stops beyond r_max = c w/w_p^2 = 6.724e+08 m = 5.607e+02 lambda
+  f_GW =  250.0 Hz in IGM today, realistic mean (2: allowed for theta >   0.68 deg; far-zone production stops beyond r_max = c w/w_p^2 = 5.379e+09 m = 4.486e+03 lambda
+  f_GW =  250.0 Hz in hot ISM (assumed 3e-3 cm^-3): FORBIDDEN (f_GW/f_pe = 0.508 < 1)
+  f_GW =  250.0 Hz in warm ISM [D-40]             : FORBIDDEN (f_GW/f_pe = 0.161 < 1)
+
+=== 3. Cosmic plasma: minimum physical photon energy hbar w_p(z) for production at redshift z ===
+  z =         0: hbar w_p =  1.742e-14 eV  (f_p,phys =  4.212e+00 Hz)
+  z =         6: hbar w_p =  3.226e-13 eV  (f_p,phys =  7.801e+01 Hz)
+  z =        20: hbar w_p =  2.371e-14 eV  (f_p,phys =  5.732e+00 Hz)
+  z =       100: hbar w_p =  2.501e-13 eV  (f_p,phys =  6.046e+01 Hz)
+  z =     1e+03: hbar w_p =  7.802e-12 eV  (f_p,phys =  1.886e+03 Hz)
+  z =   1.1e+03: hbar w_p =  6.372e-10 eV  (f_p,phys =  1.541e+05 Hz)
+  z =     3e+03: hbar w_p =  2.864e-09 eV  (f_p,phys =  6.924e+05 Hz)
+  z =     1e+04: hbar w_p =  1.742e-08 eV  (f_p,phys =  4.213e+06 Hz)
+  z =     1e+05: hbar w_p =  5.509e-07 eV  (f_p,phys =  1.332e+08 Hz)
+  z =     3e+05: hbar w_p =  2.862e-06 eV  (f_p,phys =  6.921e+08 Hz)
+  z =     1e+06: hbar w_p =  1.742e-05 eV  (f_p,phys =  4.212e+09 Hz)
+  z =     2e+06: hbar w_p =  4.927e-05 eV  (f_p,phys =  1.191e+10 Hz)
+  z =     3e+06: hbar w_p =  9.051e-05 eV  (f_p,phys =  2.189e+10 Hz)
+  B&O y window 1e3 < z < 1e5 needs hbar w_s > 6.37e-10 .. 5.51e-07 eV
+  B&O mu window 1e5 < z < 3e6 needs hbar w_s > 5.51e-07 .. 9.05e-05 eV
+  B&O Fig. 3 x-axis starts at hbar w_s = 1e-10 eV (f = 2.418e+04 Hz)
+
+=== 4. A GW observed today at f0 (a fixed comoving frequency, e.g. a primordial SGWB) ===
+  photon at f0(1+z) propagates/produced iff f0 > f_p0 sqrt(1+z) sqrt(x_e) (f_p0 = 4.212 Hz)
+  f0 =  1.0e-08 Hz: z=1e+01:NO, z=1e+02:NO, z=1e+03:NO, z=1e+03:NO, z=1e+04:NO, z=1e+05:NO, z=1e+06:NO, z=3e+06:NO
+  f0 =  2.5e+01 Hz: z=1e+01:ok, z=1e+02:ok, z=1e+03:ok, z=1e+03:NO, z=1e+04:NO, z=1e+05:NO, z=1e+06:NO, z=3e+06:NO
+  f0 =  1.0e+03 Hz: z=1e+01:ok, z=1e+02:ok, z=1e+03:ok, z=1e+03:ok, z=1e+04:ok, z=1e+05:NO, z=1e+06:NO, z=3e+06:NO
+  f0 =  1.0e+04 Hz: z=1e+01:ok, z=1e+02:ok, z=1e+03:ok, z=1e+03:ok, z=1e+04:ok, z=1e+05:ok, z=1e+06:ok, z=3e+06:ok
+  pre-recombination cut-off for f0 = 25.0 Hz: 1+z < (f0/f_p0)^2 = 35.2 (so forbidden at all z > 1100)
+  minimum f0 for production at z = 1e5: 1.332e+03 Hz; at z = 2e6: 5.957e+03 Hz
+
+--- stderr ---
+

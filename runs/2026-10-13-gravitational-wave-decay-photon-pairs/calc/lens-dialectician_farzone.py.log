@@ -1,0 +1,22 @@
+# math_run log
+command:  python3 runs/2026-10-13-gravitational-wave-decay-photon-pairs/calc/lens-dialectician_farzone.py
+started:  2026-10-13T15:59:11Z
+duration: 0.1 s
+exit:     0
+versions: python 3.13.16, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+GW150914, 150 Hz: lambda = 1.999e+06 m, r0 = lambda/2pi = 3.181e+05 m
+   fraction of yield made beyond c*tau_BO (tau = 3578 s) (r = 1.07e+12 m): ~ (r0/r)^5 = 2.29e-33;  B&O linear-growth reading: yield(r)/yield(r0) = r/r0 = 3.37e+06
+   fraction of yield made beyond 1 AU (r = 1.5e+11 m): ~ (r0/r)^5 = 4.35e-29;  B&O linear-growth reading: yield(r)/yield(r0) = r/r0 = 4.7e+05
+   fraction of yield made beyond 1 kpc (r = 3.09e+19 m): ~ (r0/r)^5 = 1.16e-70;  B&O linear-growth reading: yield(r)/yield(r0) = r/r0 = 9.7e+13
+   fraction of yield made beyond 410 Mpc (r = 1.27e+25 m): ~ (r0/r)^5 = 1e-98;  B&O linear-growth reading: yield(r)/yield(r0) = r/r0 = 3.98e+19
+LISA WD binary, 6.2 mHz: lambda = 4.835e+10 m, r0 = lambda/2pi = 7.696e+09 m
+   fraction of yield made beyond 1 kpc (r = 3.09e+19 m): ~ (r0/r)^5 = 9.65e-49;  B&O linear-growth reading: yield(r)/yield(r0) = r/r0 = 4.01e+09
+numeric fraction beyond 2 r0 = 0.03124; analytic x^-5 = 0.03125
+numeric fraction beyond 10 r0 = 9.998e-06; analytic x^-5 = 1e-05
+numeric fraction beyond 100 r0 = 9.985e-11; analytic x^-5 = 1e-10
+
+--- stderr ---
+

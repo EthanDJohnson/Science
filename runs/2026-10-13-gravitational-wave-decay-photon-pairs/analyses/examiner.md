@@ -1,0 +1,125 @@
+# Analysis: examiner (Socrates: examine the question before answering it)
+status: final
+
+## Method applied
+Define the loaded terms ("decay", "in vacuum", "rate", "coherent state of a real source"), test each hidden premise (support, falsifier, what the question becomes if it fails), and look for a better-posed nearby question. Owned calculation (brief): the space-time structure of B&O's coherent state, which field it carries, where and when the pair probability is generated, and the yield beyond radius r for an outgoing wave.
+
+## Findings
+F1. **Which field B&O's state carries.** B&O build the state as S|0> evolved as an initial state and give its field as sqrt(8 pi G) Int Delta_rad T_s with Delta_rad "the Pauli-Jordan function" [D-10]. The Pauli-Jordan function is G_ret - G_adv. For times after the source has stopped, the G_adv term vanishes and the field is the outgoing retarded wave; for times before the source switches on, the G_ret term vanishes and the field is minus the advanced wave, i.e. an incoming shell converging on the source. As a free field (which is how a coherent in-state of fixed alpha(k) evolves under H_0) it is one solution that converges from infinity, passes through r ~ 0 at t ~ 0 and re-expands: a time-symmetric field. A real source's Heisenberg state carries only the retarded field and has no incoming half. B&O call it an "outgoing spherical packet" [D-11], which is true only for t > 0. This settles hidden premise 1 against B&O, unless B&O's in-out amplitude happens not to depend on the incoming half; F2 shows that it does. [D-10, D-11, D-71a; the G_ret - G_adv identity is standard]
+F2. **Where the yield of the time-symmetric state is made (scalar monopole toy).** For phi+ = [g(t-r) - g(t+r)]/r and source j = (phi+)^2, the purely outgoing and purely incoming self-terms give exactly zero time-like Fourier amplitude over all space (Int_0^inf 2 cos(q0 r) sin(q r)/r dr = 0 for q < q0). The whole whole-space yield comes from the cross term -2 g(t-r) g(t+r)/r^2: incoming gravitons meeting outgoing ones head-on where the two shells overlap (|t|, r <~ 1/sigma). The fraction made beyond R falls as R^-1 to R^-1.5 for 1/w < R < 1/sigma and collapses for R > 1/sigma: slopes -4.3 and -7.4 between R = 50, 100, 200 /w at sigma = 0.01 w. So **the yield B&O compute is a property of the incoming-plus-outgoing configuration, generated in a ball of radius ~c/sigma around the source within |t| <~ 1/sigma, and not of the outgoing wave.** [calc: runs/2026-10-13-gravitational-wave-decay-photon-pairs/calc/lens-examiner_spacetime_toy.py]
+F3. **Retarded (physical) field in the same toy.** For phi+ = g(t-r)/r (the same outgoing wave and the same N), the whole-space yield is 1/12 = 0.083 of the time-symmetric one for a contact vertex (p = 0, exact; numeric 0.0842). For the graviton-like vertex |M|^2 ∝ s^2 (p = 2) it is 0.020. It is made at r <~ few/w: the fraction made beyond R is 0.55, 0.16, 0.018, 0.0027, 3.6e-4, 2.3e-5, 2.9e-6 at wR = 1, 2, 5, 10, 20, 50, 100. Local slope d ln F/d ln R = -2.9 to -3.0 for 10 < wR < 100, which is the predicted (wR)^-3 law (local Fresnel angle theta^2 ~ 1/(wR), s ~ w^2 theta^2, |M|^2 ∝ s^2). The window-shape uncertainty is a factor ~2 at wR = 50 (D = R/8 vs R/4); D = R/2 leaks the near zone and gives 14x more. Above wR ~ 200 the numerics hit their floor (damping length 1500/w), so the slopes there are not trusted. **A freely propagating outgoing wave does not keep fusing: the yield it makes beyond R converges as (lambda/2 pi R)^3.** [calc: runs/2026-10-13-gravitational-wave-decay-photon-pairs/calc/lens-examiner_spacetime_toy.py]
+F4. **Exact plane wave.** j = g(t-z)^2 has Fourier support only on q0 = q_z, q_perp = 0, i.e. q^2 = 0: no time-like component, so the yield is zero for any vertex weight. This is the second-order (fusion) analogue of the plane-wave no-go results [D-56, D-57], and agrees with B&O's own concession that a single plane wave produces nothing [D-17] and with the time-like-support rule for pair yields [D-60]. [calc: lens-examiner_spacetime_toy.py, Check 2, analytic]
+
+F5. **The "rate" depends on the profile and the polarisation pattern, not only on N, w_s, sigma_w (premise 4 fails).** For the same N, w and sigma, the toolkit's coherent-fusion calculator gives the following, relative to B&O's eq. 8 coefficient 3/(25 pi) = 0.0382 (top hat, B&O's real-sign model):
+  - B&O real-sign model, Gaussian profile: 12.6 times B&O's coefficient. The per-packet total coefficient c_tot rises from 0.16 to 0.60, and T_eff changes from (4 pi/3)/sigma to sqrt(pi/2)/sigma, so part of the factor is the width convention.
+  - Top hat, physical polarisation patterns: 0.31 (linear quadrupole), 0.56 (circular binary), 0.23 (isotropic_plus).
+  - Pure-circular packet: 0, to about 1e-32, from an exact helicity selection rule.
+  The tool reproduces the scalar coefficient 7/(450 pi) = 0.00495 for the real-sign top hat. Eq. 8 is therefore one model's number, and a physical pattern carries O(0.2-0.6) of it. Within B&O's own model the coefficient is reproduced (the idealizer owns that check). [calc: runs/2026-10-13-gravitational-wave-decay-photon-pairs/tools/gw_coherent_fusion.py table (run by this lens; printed table quoted in Calculations)]
+F6. **The far-zone yield of real sources is negligible.** Extrapolating the toy's (wR)^-3 law from F(wR = 10) = 2.7e-3 (a labelled toy extrapolation), the fraction of a packet's yield made beyond R is:
+
+  | Source | 100 lambda/2pi | 1 AU | 1 pc | Its distance |
+  |---|---|---|---|---|
+  | GW150914 (150 Hz) | 2.7e-6 | 2.6e-17 | 3.0e-33 | 4.3e-59 (410 Mpc) |
+  | GW170817 (100 Hz) | 2.7e-6 | 8.8e-17 | 1.0e-32 | 1.6e-55 |
+  | Galactic WD binary (6.2 mHz) | 2.7e-6 | 3.7e-4 | 4.2e-20 | 4.2e-29 (1 kpc) |
+
+  B&O's eq. 19/S12 has each event radiate W_gamma for its whole light-travel time. For GW150914 that is sigma x t_prop = 8.4e18 packet totals, where the physical yield is one total, nearly all of it made within a few lambda/2pi (~1e6 m). Premise 7 fails by this factor before any other correction. [calc: runs/2026-10-13-gravitational-wave-decay-photon-pairs/calc/lens-examiner_scales.py] [D-14, D-19]
+F7. **Where the physical yield is made, flat-space EFT does not apply (mergers) or the field is not a free wave (inspirals).**
+  - GW150914: lambda/2pi = 3.18e5 m = 3.3 GM/c^2, and c/sigma = 1.5e6 m = 15.6 GM/c^2. B&O's own sigma_w = 200 /s gives a ball of the time-symmetric state (F2) that lies within ~16 GM/c^2 of a merging 65 Msun binary. Its Kepler separation at f_GW = 150 Hz is 3.4e5 m, with v/c = 0.53.
+  - GW170817 at 100 Hz: lambda/2pi = 4.8e5 m = 3.1 orbital separations (v/c = 0.16), i.e. the near zone.
+  So the region that dominates the retarded yield (r <~ 5 lambda/2pi; F3) is the strong-field region or the near zone. There the field is not a superposition of free on-shell gravitons, and a coherent state of free gravitons (B&O eq. 5-7) is not the right description. [calc: lens-examiner_scales.py, section 4] [D-27, D-30, D-31]
+F8. **A competing near-source channel, to order of magnitude only (labelled; the O(1) coefficient k is not computed).** The source's own off-shell field has time-like Fourier components, so it can make photon pairs at linear order in h, with amplitude ~ G T. The Redi-Tesi yield is ∝ Int theta(q^2) |W(q)|^2, and gauge fields have c_J = 16 [D-60]. Per packet this gives P_lin ~ k (hbar w/E_Pl)^2 N, whereas B&O's fusion total is c_tot G^2 N^2 w^3 sigma. The ratio P_BO/P_lin ~ (c_tot/k) G E sigma/c^5:
+  - GW150914 (B&O inputs): P_lin/k = 9.3e-3 pairs per packet against P_BO = 2.9e-6, a ratio of 3.2e-4 x (1/k);
+  - GW170817, 100 Hz bin: ratio 3.0e-8 x (1/k).
+  If k is not tiny, B&O's N^2 fusion is the subleading pair channel at the source. Either way the near-source pair yield of GW150914 is <~ 1e-2 pairs per event x k, which is unobservable. [calc: lens-examiner_scales.py, section 3] [D-60, D-52]
+F9. **Plane-wave no-go results and what a packet evades.** The no-go results [D-56, D-57, D-58] and F4 forbid production by an exact plane wave. A spherical packet evades them only through non-collinear graviton pairs. These exist in strength only where the wavefront curvature or the incoming/outgoing overlap is O(1): at r <~ lambda/2pi for the retarded field, and r <~ c/sigma for B&O's state. Beyond that, the local Fresnel angle theta^2 ~ 1/(wr) makes s -> 0 and |M|^2 ∝ s^2 -> 0 (F3). Premise 5 fails for the physically relevant field. [calc: lens-examiner_spacetime_toy.py] [D-55]
+F10. **Quantum or classical (premise 10).** The classical Maxwell field obeys equations linear in F on any metric, so F = 0 stays a solution: no classical pair "decay" exists. The N^2 term is pair production from the photon vacuum by the classical second-order metric h^(2), which is the semiclassical description B&O v2 concede [D-16, D-54]. Its N^2 is classical field nonlinearity (h^(2) ∝ h^2), and its hbar is the photon energy. The question "does h^(2) of an outgoing wave have time-like Fourier support far from the source?" is classical and ħ-free, and F3 answers it: the support falls off. [D-16, D-17, D-54]
+F11. **Plasma (premise 8).** Wherever the yield is made around a real merger or inspiral in a galaxy, a 150 Hz photon needs n_e < 2.8e-4 cm^-3 to propagate [D-62]. In the early-universe plasma, a photon that is 150 Hz today is evanescent for 1+z > ~1300 [D-40]. Even the single per-event total is therefore produced (if at all) as evanescent near-field EM fluctuations, not as free photons, in any ionised environment. The CMB occupation factor 1 + 2f_gamma presumes propagating CMB modes at that frequency, which do not exist below the plasma frequency. [D-40, D-62, D-43]
+
+## Lens-specific outputs
+
+### Loaded terms, defined and tested
+| Term | Definition that makes the question well posed | Survives scrutiny? |
+|---|---|---|
+| "decay" | 1 -> 2 of a single quantum with a lifetime. Applied to a wave: an energy loss per unit propagation length that persists along the path | 1 -> 2 is kinematically forbidden for massless gravitons to massless photons [D-55]. "Decay of the wave" then means 2 -> 2 self-interaction with a persistent rate per path length. F3/F6: the per-path-length yield falls as R^-4, so the word does not survive. "Transient pair production at the source" does |
+| "in vacuum" | No matter or plasma, at r >> lambda from the source | Two failures: the yield is made at r <~ few lambda/2pi (F3, F7), not far away; and real environments are plasma at these frequencies (F11). The term is coherent only as an idealisation, and in that idealisation the answer is "no persistent production" |
+| "rate" dP/dt | Pairs per unit time, valid as a sustained rate along the path | B&O's rate is the per-packet total P divided by T_eff ~ 1/sigma [D-14]. It is not sustained (F6), and its coefficient depends on the profile and width convention (x12.6, F5). Well posed only as a packet average over |t| <~ 1/sigma |
+| "coherent state of the GW" | S|0> with <h> equal to the classical field of the source | As a free in-state it carries the time-symmetric (Pauli-Jordan) field: an incoming shell plus an outgoing shell (F1). A real source's state carries only the retarded field, so the two are different states with different yields (F2, F3) |
+| "photon" (at 1e-13 eV) | A propagating, on-shell transverse quantum | Fails in any plasma with n_e > (nu/8980 Hz)^2 cm^-3 [D-62]. In vacuum near a BBH it holds formally |
+| "physically right quantity" | The in-in mean number of out-photons in the Heisenberg state of a retarded source, per event, including all channels at the same order | Computable in principle. At leading order it differs from eq. 8 in field (F1-F3), in channel (F8) and in validity region (F7) |
+
+### Premise ledger (brief's premises 1-10, plus three found by this lens)
+| # | Premise | Support | Falsifier | Verdict | If false, the question becomes |
+|---|---|---|---|---|---|
+| 1 | S|0> as in-state carries the outgoing field of a real source | B&O's eq. 5 field matches the retarded field at t > 0 [D-10, D-11] | A free coherent state that is outgoing at t > 0 must be incoming at t < 0 (Pauli-Jordan = G_ret - G_adv) | **False** (F1). The whole in-out yield comes from incoming x outgoing overlap (F2) | What does the retarded field (with its source) yield? Toy: 0.02 of eq. 8's total, made at r <~ 5 lambda/2pi (F3) |
+| 2 | Eq. 6 amplitudes add as real positive numbers; the "unpolarized" state is realisable | B&O eq. 7 [D-12] | Physical phases: a pure-circular packet gives exactly 0; physical patterns give 0.23-0.56 of eq. 8 (F5) | **False as stated** (mechanist owns the details) | Coefficient = pattern-dependent, O(0.2-0.6) x B&O, 0 for pure circular |
+| 3 | 2 pi delta(0) -> T gives a sustained rate along the path | B&O S6 [D-14] | Yield beyond R falls as R^-3 (F3) | **False** | Per-event total; "rate" only as an average over the packet's coherence time at the source |
+| 4 | Rate depends only on N, w_s, sigma_w | B&O eq. 8 | Profile factor 12.6 (Gaussian vs top hat); pattern factors 0-0.56 (F5) | **False** | Specify the profile and pattern; O(10) systematic |
+| 5 | Non-collinearity survives at r >> lambda | B&O's "decay happens in an extended region" [D-19] | Local s ~ w^2/(wr) -> 0; F3 slope -3 | **False** for the retarded field | Near-source only |
+| 6 | Binning a chirp gives a lower bound | B&O [D-19] | Not tested by this lens (dialectician owns) | Undetermined here | Moot if per-event totals replace rates (F6) |
+| 7 | Each event radiates W_gamma over its whole propagation time | B&O eq. 19/S12 | F6: overstates by sigma t_prop ~ 8e18 (GW150914) | **False** | Sum of per-event totals: ~1e-2 x k pairs per merger (F8) |
+| 8 | CMB stimulation (1 + 2f_gamma) and vacuum photon propagation apply | B&O "in the average sense" | Plasma cutoff [D-62]; no propagating modes for the bath or the products (F11) | **False** in ionised environments; unclear near an isolated BBH | Evanescent near-field fluctuations, not photons |
+| 9 | ULDM occupation and resonance apply over the signal duration | B&O eqs. 16-18 [D-26] | Production is localised to r <~ few lambda/2pi and |t| <~ 1/sigma (F3) | **Strained** (empiricist owns) | Bose enhancement only within a lambda-scale volume at the source |
+| 10 | N^2 signals quantum "decay" rather than classical nonlinearity | B&O v1 [D-54] | B&O v2's own semiclassical equivalence [D-16]; Maxwell linearity (F10) | **False** | Semiclassical production by h^(2): a classical question about h^(2)'s time-like support |
+| 11 (new) | Second-order fusion is the leading pair channel near the source | Implicit in B&O | Linear O(GT) production by the source's off-shell field is larger by ~1e3/k (GW150914) and ~3e7/k (GW170817) (F8) | **Doubtful** (order of magnitude, k not computed) | Near-source pair yield is dominated by source structure, not N^2 |
+| 12 (new) | Flat-space graviton EFT holds where the yield is made | B&O's model | lambda/2pi = 3.3 GM/c^2 for GW150914 (F7) | **False for mergers**; near zone for inspirals | No reliable computation from free gravitons; needs strong-field or near-zone treatment |
+| 13 (new) | In-out probability = in-in mean pair number here | True at leading order for a c-number background | Not falsified at O(G^2) [D-03] | Holds at leading order | — |
+
+### Reframe
+**Better-posed question:** "Given a real source radiating a GW, what is the total number of photon pairs (in-in, per event) produced at O(G^2), and how much of it is produced beyond radius R?" Equivalently, semiclassically: what is the time-like Fourier power, weighted by the photon vertex, of the full second-order source (the source's own field plus h^(2)) restricted to r > R? It has a clearer answer:
+  - a finite per-event total, made within a few lambda/2pi of the source, where the strong-field/near-zone physics and the linear O(GT) channel matter (F3, F7, F8);
+  - a far-zone contribution falling as (lambda/2pi R)^3, so the path depletion is zero for any practical purpose (F6);
+  - hence no "decay in vacuum", and no cosmological integral of a sustained W_gamma.
+
+### Hardest questions any proposed answer must survive
+1. Evaluate <h> of B&O's state at t = -10/sigma, r = 10 c/sigma. Is it zero, as for a real source, or an incoming shell? (Pauli-Jordan says an incoming shell.)
+2. Keep the late-time outgoing wave fixed and remove the incoming half (retarded field plus source). Does the yield change? (Toy: by a factor 0.02 for |M|^2 ∝ s^2; F3.)
+3. What fraction of the yield is generated beyond R = 100 lambda/2pi? A vacuum decay needs this to grow linearly with path length; the toy gives 2.7e-6, falling as R^-3.
+4. At fixed N, w_s and energy-weighted bandwidth, does the eq. 8 "rate" change between top-hat and Gaussian profiles, and between linear, circular and pure-circular patterns? (F5: x12.6; 0.23-0.56; exactly 0.)
+5. Is the flat-space perturbative graviton description valid in the region that dominates the yield (r <~ 5 lambda/2pi = 16 GM/c^2 for GW150914)?
+6. At the same order in G, is the linear channel (virtual graviton from the source -> gamma gamma) larger than N^2 fusion? Compute k for a circular binary.
+7. Can a 150 Hz photon exist as a propagating mode where it is supposedly made and along its path? (n_e < 2.8e-4 cm^-3 needed [D-62].)
+8. Replace each event's sustained W_gamma in eq. 19 by its per-event total. Does any CMB, EBL or photofission bound survive? (Factor sigma t_prop ~ 1e18-1e19 lower, F6, on top of D-45's shortfall of 1e91 or more.)
+9. Does B&O's claimed equivalence with semiclassical production on h^(2) [D-16] reproduce eq. 8 when h^(2) is sourced by the retarded field only?
+10. Does the in-out amplitude with a coherent in-state contain the term B&O drop in G_F = G_ret - 2 pi i theta(-k0) delta(k^2) [D-18], and does dropping it select the time-symmetric or the retarded field?
+
+## Calculations
+- `runs/2026-10-13-gravitational-wave-decay-photon-pairs/calc/lens-examiner_spacetime_toy.py` (log beside it). This is a scalar monopole toy: source j = (phi+)^2, vertex weight (q^2)^p with p = 0 (contact) and p = 2 (graviton-like), natural units, w = 1, sigma = 0.01 w. Results:
+  - analytic checks reproduced: I_ret(q = w) = 0.5499i, I_sym = -pi;
+  - whole-space retarded/time-symmetric yield = 0.0842 (p = 0; exact 1/12) and 0.0204 (p = 2);
+  - fraction made beyond R for the retarded field, p = 2: 0.55, 0.16, 0.018, 2.7e-3, 3.6e-4, 2.3e-5, 2.9e-6 at wR = 1, 2, 5, 10, 20, 50, 100, with slopes -2.9 to -3.0;
+  - time-symmetric field, p = 2: 0.64, 0.21, 0.092, 0.040, 0.015, 1.9e-3, 9.3e-5, 5.4e-7 at wR = 1, 2, 5, 10, 20, 50, 100, 200; it collapses beyond 1/sigma = 100/w;
+  - window-shape sensitivity at wR = 50: a factor ~2.
+- `runs/2026-10-13-gravitational-wave-decay-photon-pairs/calc/lens-examiner_scales.py` (SI). Results:
+  - far-zone fractions (F6 table);
+  - sigma t_prop = 8.4e18 for GW150914;
+  - N = 3.6e78 and hbar w/E_Pl = 5.1e-41;
+  - P_lin/k = 9.3e-3 against P_BO = 2.9e-6 pairs per packet (GW150914); GW170817 100 Hz bin: 1.9e-6 against 5.6e-14;
+  - lambda/2pi = 3.18e5 m = 3.3 GM/c^2 and c/sigma = 15.6 GM/c^2 (GW150914);
+  - GW170817: lambda/2pi = 3.1 orbital separations.
+- `runs/2026-10-13-gravitational-wave-decay-photon-pairs/tools/gw_coherent_fusion.py table` (run by this lens, natural units). c_rate/B&O, photon final state:
+  - linear_quadrupole: 0.3125 (top hat), 3.927 (Gaussian);
+  - circular_binary: 0.562 (top hat), 7.062 (Gaussian);
+  - pure_circular: 2.7e-32;
+  - isotropic_plus: 0.2253 (top hat);
+  - bo_real_sign: 1 (top hat), 12.57 (Gaussian);
+  - scalar, bo_real_sign top hat: c_rate = 0.00495 = 7/(450 pi).
+
+## Candidate answers (at least 3; the null and a reframe count)
+- [EXAMINER-A] (reframe: the premise is wrong) Eq. 8 is right arithmetic for the wrong quantity. It is the in-out pair yield of a time-symmetric graviton shell that implodes onto the source and re-expands; all of it comes from incoming x outgoing overlap within ~c/sigma of the source. It is not the yield of an outgoing wave, and its 2 pi delta(0) -> T "rate" is a per-packet total divided by 1/sigma. The right quantity is a finite per-event total made within a few lambda/2pi of the source. | status: surviving | why: F1-F3 (Pauli-Jordan field, exact cancellation of the self-terms, retarded/symmetric = 0.02 in the toy), F5, F7 | distinguishing test: compute the in-in pair number for a retarded quadrupole source (circular binary) at O(G^2), with the source in the Hamiltonian. Prediction: it differs from B&O's eq. 8 total by O(10-100), and the yield beyond R falls as R^-3. Under [EXAMINER-C] it would equal eq. 8 x T and grow linearly with R | confidence: medium-high (the toy is a scalar monopole; the spin-2 retarded computation is not done)
+- [EXAMINER-B] (null) A freely propagating GW does not decay in vacuum. Production beyond R converges as (lambda/2pi R)^3, so the path depletion is zero for any practical purpose: about 1e-59 of an already ~1e-6-pair total for GW150914 at 410 Mpc. Every consequence that assumes sustained emission falls: Fig. 2 as a luminosity, eq. 19/S12 (by sigma t_prop ~ 1e19), and the CMB, EBL and photofission bounds. | status: surviving | why: F3, F4, F6, F9, F11; consistent with the exact-plane-wave no-go results [D-56, D-57] and the time-like-support rule [D-60] | distinguishing test: the far-zone slope d ln P(>R)/d ln R in a full spin-2 calculation. [EXAMINER-B] predicts about -3; [EXAMINER-C] predicts +1 (linear growth). Observationally indistinguishable from [EXAMINER-A], because both predict nothing detectable | confidence: high
+- [EXAMINER-C] (B&O as claimed) GWs decay in vacuum into photon pairs at the eq. 8 rate, sustained along the path, with the consequences of Fig. 2, eq. 14 and eqs. 16-19. | status: eliminated | why: premises 1, 3, 5 and 7 fail (F1-F3, F6). The coefficient is pattern- and profile-dependent (F5), the generation region is outside the model's validity (F7), and the photons cannot propagate in plasma (F11) | distinguishing test: as for [EXAMINER-B]; a sustained rate would require yield beyond R ∝ R | confidence: high that it is eliminated
+- [EXAMINER-D] (reframe: channel and region) Near-source photon-pair production is real but is a property of the source, not of the wave. It is made in the strong-field/near zone, where free-graviton coherent states do not apply. It is probably dominated by the linear O(GT) channel, the source's off-shell field -> gamma gamma, larger than N^2 fusion by ~1e3/k (GW150914) to ~3e7/k (GW170817). It is <~ 1e-2 x k pairs per merger and unobservable in any case. | status: strained | why: F7, F8; the ratio rests on an order-of-magnitude scaling with an uncomputed coefficient k | distinguishing test: compute k for a circular binary with the Redi-Tesi kernel (c_J = 16) and T~ of the binary's quadrupole at time-like q. If k << 3e-4, fusion dominates at GW150914 and [EXAMINER-A]'s near-source total is the leading term | confidence: low-medium
+- [EXAMINER-E] (interpretive reframe) The N^2 "graviton fusion" is semiclassical photon-vacuum production by the classical second-order metric h^(2), not a quantum decay of gravitons. Whether it persists is the ħ-free question of whether h^(2) of an outgoing wave has time-like Fourier support far from the source, and it does not. | status: surviving | why: F10, and B&O v2's own equivalence statement [D-16, D-54] | distinguishing test: compute photon production on the classical h^(2) sourced by the retarded field. It should reproduce [EXAMINER-A]/[EXAMINER-B]'s localisation and fall-off. A residual piece that grows with path length would refute it | confidence: medium-high
+
+## What would change my mind
+- A spin-2 retarded-source calculation (in-in, source in the Hamiltonian) showing a far-zone yield that does not fall faster than R^-1. That would mean the toy's (wR)^-3 law fails for quadrupole patterns, for instance because angular structure supplies non-collinear pairs at all r.
+- A demonstration that B&O's dropped Feynman-propagator term [D-18], or a different choice of in-state, makes their coherent state carry the retarded field only, with an unchanged eq. 8.
+- An explicit k for the linear channel that is << 1e-3. That would make fusion the leading near-source term and move [EXAMINER-D] to eliminated, without rescuing vacuum decay.
+
+## Assumptions I relied on
+- The scalar monopole toy captures the kinematics: local Fresnel angle, the s^2 vertex suppression and the incoming/outgoing overlap. A quadrupole's angular pattern varies on O(1 rad), which adds transverse momentum ~1/r, the same order as the curvature term, so the scaling is expected to survive. It is not computed for spin 2.
+- Narrow band (sigma = 0.01 w in the toy). B&O's GW150914 inputs have sigma/w = 0.21, outside the narrow-band regime.
+- In-out equals in-in at leading order for a c-number background [D-03].
+- The linear-channel scaling P_lin ~ k (hbar w/E_Pl)^2 N is dimensional analysis with an uncomputed coefficient.
+- The toy's window function defines "yield made beyond R" up to a factor ~2 (F3).

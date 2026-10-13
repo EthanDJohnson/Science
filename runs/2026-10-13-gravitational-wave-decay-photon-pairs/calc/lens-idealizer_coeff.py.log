@@ -1,0 +1,45 @@
+# math_run log
+command:  python3 runs/2026-10-13-gravitational-wave-decay-photon-pairs/calc/lens-idealizer_coeff.py
+started:  2026-10-13T16:04:10Z
+duration: 96.4 s
+exit:     0
+versions: python 3.13.16, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+=== Part 1: closed form (sympy), narrow band, top hat, real-sign model ===
+int dOmega* (1+sin^2/2)^2 = 36*pi/5  (photon, per config)
+int dOmega* (1-sin^2/2)^2 = 28*pi/15  (scalar)
+int_0^{2w} s^2 dK = 256*omega**5/15
+P_total(photon pairs) =  4/25 * G^2 N^2 w^3 sigma   [= 0.16 ]
+P_total(scalar pairs) =  14/675 * G^2 N^2 w^3 sigma   [= 0.02074074074074074 ]
+T_eff = 2 pi int L^2 dK0 / sigma^4 = 4*pi/(3*sigma)
+B&O 'rate' photon: 3/(25*pi)  target 3/(25 pi): True
+B&O 'rate' scalar: 7/(450*pi)  target 7/(450 pi): True
+tau_phi/tau = (3/25)/(7/450) = 54/7
+
+=== Part 2: brute force with EXACT kinematics at finite sigma/omega (top hat, real sign) ===
+sigma/w =  0.10: c_tot photon = 0.152645 (narrow-band 4/25 = 0.16), scalar = 0.019695 (14/675 = 0.020741); photon B&O-rate coeff c_tot*3/(4 pi) = 0.036441 vs 3/(25pi) = 0.038197
+sigma/w =  0.03: c_tot photon = 0.157702 (narrow-band 4/25 = 0.16), scalar = 0.020413 (14/675 = 0.020741); photon B&O-rate coeff c_tot*3/(4 pi) = 0.037649 vs 3/(25pi) = 0.038197
+sigma/w =  0.01: c_tot photon = 0.159221 (narrow-band 4/25 = 0.16), scalar = 0.020630 (14/675 = 0.020741); photon B&O-rate coeff c_tot*3/(4 pi) = 0.038011 vs 3/(25pi) = 0.038197
+grid check (sigma/w=0.03, doubled nK, na): 0.15770433898623118
+
+=== Part 3: profile independence -> Parseval scaling law P = (12 pi/25) G^2 w int L(t)^2 dt ===
+tophat  : E = N w = 0.99877 (expect 1); P from int C^2 = 1.600013e-03; P from (12pi/25) w int L^2 dt = 1.600013e-03; ratio 1.0000
+          top hat closed form (4/25) N^2 w^3 sigma = 1.600000e-03
+gaussian: E = N w = 1.00000 (expect 1); P from int C^2 = 6.015908e-03; P from (12pi/25) w int L^2 dt = 6.015908e-03; ratio 1.0000
+          Gaussian closed form = 6.015908e-03 = 6 sqrt(2 pi)/25 -> c_tot = 0.601591 G^2N^2w^3 sigma
+
+=== Part 4: incoherent isotropic bath (stochastic background), physical cross section ===
+s = 1.0: toolkit sigma(RL->gg) = 2.513274, mine (4 pi/5) G^2 s = 2.513274; sigma(RR) = 4.69e-31
+s = 4.0: toolkit sigma(RL->gg) = 10.053096, mine (4 pi/5) G^2 s = 10.053096; sigma(RR) = 1.88e-30
+Gamma / (G^2 rho^2) = 8*pi/15  B&O eq.14: 8 pi/15 -> True
+two-line spectrum: Gamma/(G^2 rho^2) = 1.6755160819145565  = 8pi/15 = 1.6755160819145563
+
+=== Part 5: eqs. 9-12 and hbar counting (symbolic) ===
+photon rate 2 dP/dt = 6*G**2*N**2*omega**3*sigma**2/(25*pi) ; tau (one photon) = 25*pi/(6*E**2*G**2*omega*sigma**2)  vs eq.10 25 pi/(6 G^2 E^2 w sigma^2): True
+W_gamma = w * photon rate = 6*E**2*G**2*omega**2*sigma**2/(25*pi)  vs eq.11 6 G^2 E^2 w^2 sigma^2/(25 pi): True
+eq.12 with explicit 1/hbar: (3/(50 pi))(r_m/l)^2 (hbar w)^2/hbar = 6*E**2*G**2*hbar*omega**2*sigma**2/(25*pi*c**10) -> power linear in hbar; pair NUMBER P = (4/25) G^2 E^2 w sigma / c^10 is hbar-free
+
+--- stderr ---
+

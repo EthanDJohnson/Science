@@ -1,0 +1,51 @@
+# math_run log
+command:  python3 runs/2026-10-13-gravitational-wave-decay-photon-pairs/calc/lens-examiner_scales.py
+started:  2026-10-13T15:53:11Z
+duration: 0.0 s
+exit:     0
+versions: python 3.13.16, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+=== (1) Far-zone yield fraction F(R) = 2.7e-3 (10/(wR/c))^3 [toy extrapolation] ===
+GW150914 merger (B&O inputs): lambda/2pi = 3.181e+05 m
+   beyond R = 100 lambda/2pi  (3.18e+07 m): F = 2.70e-06
+   beyond R = 1 AU            (1.50e+11 m): F = 2.60e-17
+   beyond R = 1 pc            (3.09e+16 m): F = 2.96e-33
+   beyond R = distance        (1.27e+25 m): F = 4.29e-59
+GW170817 at 100 Hz (eps=0.1 bin): lambda/2pi = 4.771e+05 m
+   beyond R = 100 lambda/2pi  (4.77e+07 m): F = 2.70e-06
+   beyond R = 1 AU            (1.50e+11 m): F = 8.76e-17
+   beyond R = 1 pc            (3.09e+16 m): F = 9.98e-33
+   beyond R = distance        (1.23e+24 m): F = 1.56e-55
+Galactic WD binary (LISA, ASSUMED M_c=0.3 Msun): lambda/2pi = 7.696e+09 m
+   beyond R = 100 lambda/2pi  (7.70e+11 m): F = 2.70e-06
+   beyond R = 1 AU            (1.50e+11 m): F = 3.68e-04
+   beyond R = 1 pc            (3.09e+16 m): F = 4.19e-20
+   beyond R = distance        (3.09e+19 m): F = 4.19e-29
+
+=== (2) B&O eq.19/S12: W_gamma sustained over the light-travel time vs the packet total ===
+GW150914 merger (B&O inputs): T_packet ~ 1/sigma = 5.00e-03 s; light-travel time 4.22e+16 s; B&O-style sustained yield / packet total = sigma*t_prop = 8.44e+18
+   physically (F3 / toy): yield after the first 100 lambda/2pi is F = 2.7e-06 of the total,
+   so the sustained-emission assumption overstates the per-event yield by ~8e+18
+   (relative to its own packet total) and the total converges within r ~ few lambda/2pi = 9.54e+05 m
+
+=== (3) Linear near-source pair production vs B&O fusion, per packet (order of magnitude) ===
+GW150914 merger: N = 3.60e+78, hbar w/E_Pl = 5.08e-41
+   P_lin/k = 9.29e-03 pairs per packet; P_BO (c_tot=0.16) = 2.93e-06 pairs per packet
+   P_BO/(P_lin/k) = 3.15e-04;  check G E sigma/c^5 = 1.97e-03 (x c_tot = 3.15e-04)
+GW150914 with E=3 Msun c^2: N = 5.40e+78, hbar w/E_Pl = 5.08e-41
+   P_lin/k = 1.39e-02 pairs per packet; P_BO (c_tot=0.16) = 6.59e-06 pairs per packet
+   P_BO/(P_lin/k) = 4.73e-04;  check G E sigma/c^5 = 2.96e-03 (x c_tot = 4.73e-04)
+GW170817 100 Hz bin (eps=0.1, t_eps=0.60 s): N = 1.63e+75, hbar w/E_Pl = 3.39e-41
+   P_lin/k = 1.87e-06 pairs per packet; P_BO (c_tot=0.16) = 5.59e-14 pairs per packet
+   P_BO/(P_lin/k) = 2.99e-08;  check G E sigma/c^5 = 1.87e-07 (x c_tot = 2.99e-08)
+
+=== (4) Is the generation region inside the strong-field zone? (lambda/2pi vs GM/c^2, c/sigma) ===
+GW150914 (65 Msun, 150 Hz, sigma=200/s): lambda/2pi = 3.181e+05 m, GM/c^2 = 9.600e+04 m, ratio = 3.31; c/sigma = 1.499e+06 m = 15.6 GM/c^2
+   orbital separation a = 3.387e+05 m (Kepler at f_orb = f/2); lambda/2pi / a = 0.94; v/c = 0.532
+GW170817 (2.74 Msun, 100 Hz): lambda/2pi = 4.771e+05 m, GM/c^2 = 4.047e+03 m, ratio = 117.91
+   orbital separation a = 1.545e+05 m (Kepler at f_orb = f/2); lambda/2pi / a = 3.09; v/c = 0.162
+
+--- stderr ---
+

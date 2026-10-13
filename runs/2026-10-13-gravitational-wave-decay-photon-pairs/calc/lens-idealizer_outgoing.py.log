@@ -1,0 +1,64 @@
+# math_run log
+command:  python3 runs/2026-10-13-gravitational-wave-decay-photon-pairs/calc/lens-idealizer_outgoing.py
+started:  2026-10-13T16:08:07Z
+duration: 10.2 s
+exit:     0
+versions: python 3.13.16, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+
+--- scalar l=2 m=2 out ---
+x = kr =    1.0: r^4 int TT dOmega / L^2 = f =  1.3017e+03; flux/L =  1.0000
+x = kr =    2.0: r^4 int TT dOmega / L^2 = f =  8.4518e-01; flux/L =  1.0000
+x = kr =    4.0: r^4 int TT dOmega / L^2 = f =  2.4819e-02; flux/L =  1.0000
+x = kr =    8.0: r^4 int TT dOmega / L^2 = f =  4.0878e-03; flux/L =  1.0000
+x = kr =   16.0: r^4 int TT dOmega / L^2 = f =  9.1992e-04; flux/L =  1.0000
+x = kr =   32.0: r^4 int TT dOmega / L^2 = f =  2.2400e-04; flux/L =  1.0000
+x = kr =   64.0: r^4 int TT dOmega / L^2 = f =  5.5631e-05; flux/L =  1.0000
+local power-law slope d ln f / d ln x: [-10.589  -5.09   -2.602  -2.152  -2.038  -2.01 ]
+
+--- scalar l=2 m=0 out ---
+x = kr =    1.0: r^4 int TT dOmega / L^2 = f =  2.8593e+03; flux/L =  1.0000
+x = kr =    2.0: r^4 int TT dOmega / L^2 = f =  3.6105e+00; flux/L =  1.0000
+x = kr =    4.0: r^4 int TT dOmega / L^2 = f =  9.1069e-02; flux/L =  1.0000
+x = kr =    8.0: r^4 int TT dOmega / L^2 = f =  8.7857e-03; flux/L =  1.0000
+x = kr =   16.0: r^4 int TT dOmega / L^2 = f =  1.5364e-03; flux/L =  1.0000
+x = kr =   32.0: r^4 int TT dOmega / L^2 = f =  3.4563e-04; flux/L =  1.0000
+x = kr =   64.0: r^4 int TT dOmega / L^2 = f =  8.4047e-05; flux/L =  1.0000
+local power-law slope d ln f / d ln x: [-9.629 -5.309 -3.374 -2.516 -2.152 -2.04 ]
+
+--- scalar l=2 m=2 stand ---
+x = kr =    1.0: r^4 int TT dOmega / L^2 = f =  7.8864e-04; flux/L =  0.0000
+x = kr =    2.0: r^4 int TT dOmega / L^2 = f =  2.1548e-02; flux/L =  0.0000
+x = kr =    4.0: r^4 int TT dOmega / L^2 = f =  1.4707e+00; flux/L = -0.0000
+x = kr =    8.0: r^4 int TT dOmega / L^2 = f =  1.2274e+00; flux/L =  0.0000
+x = kr =   16.0: r^4 int TT dOmega / L^2 = f =  1.0439e+00; flux/L = -0.0000
+x = kr =   32.0: r^4 int TT dOmega / L^2 = f =  8.8170e-01; flux/L =  0.0000
+x = kr =   64.0: r^4 int TT dOmega / L^2 = f =  1.4259e+00; flux/L = -0.0000
+local power-law slope d ln f / d ln x: [ 4.772  6.093 -0.261 -0.234 -0.244  0.693]
+
+--- cumulative yield beyond x0 relative to B&O in-state total, R(x0) = (5/6) int f/x^2 dx (outgoing) ---
+(2, 2, 'out'): asymptotic f ~ 2.507e-01 x^-2.024
+   x0 =         1: R(x0) ~ 6.910e-02
+   x0 =      6.28: R(x0) ~ 2.666e-04
+   x0 =       100: R(x0) ~ 6.193e-08
+   x0 =     1e+04: R(x0) ~ 5.551e-14
+   x0 =   4.7e+05: R(x0) ~ 4.879e-19
+(2, 0, 'out'): asymptotic f ~ 5.068e-01 x^-2.096
+   x0 =         1: R(x0) ~ 1.364e-01
+   x0 =      6.28: R(x0) ~ 4.609e-04
+   x0 =       100: R(x0) ~ 8.763e-08
+   x0 =     1e+04: R(x0) ~ 5.629e-14
+   x0 =   4.7e+05: R(x0) ~ 3.745e-19
+(2, 2, 'stand'): asymptotic f ~ 1.210e+00 x^0.000
+   x0 =         1: R(x0) ~ 1.008e+00
+   x0 =      6.28: R(x0) ~ 1.605e-01
+   x0 =       100: R(x0) ~ 1.008e-02
+   x0 =     1e+04: R(x0) ~ 1.008e-04
+   x0 =   4.7e+05: R(x0) ~ 2.145e-06
+
+standing (time-symmetric) wave: f -> const means TT ~ L^2/r^4 (head-on in x out), outgoing: f falls as a power of x -> yield converges at x ~ 1 (near zone).
+
+--- stderr ---
+
