@@ -1,0 +1,28 @@
+# Check: quantitative
+status: final
+
+Method: quotes re-fetched with fetch_text.py --grep; arithmetic spot-checked by hand (RQ-04, 08, 09, 10, 11, 16). Script outputs themselves were not re-run.
+
+| Claim | Verdict | Note |
+|---|---|---|
+| RQ-01 B&O merger scalings (150 Hz, 2 Msun c^2, 5 ms; equal-mass, eps=0.1, tau<<min) | verified | p. 3 quote matches exactly; M=2^(6/5)Mc, eps=0.1 and the tau<<min(1/(eps w), t_eps) condition also confirmed. Refs [39,40] are Buonanno-Cook-Pretorius and Flanagan-Hughes. v1/v2 labelling not checked. |
+| RQ-02 GW150914 LVK values | verified | 3.0+-0.5 Msun c^2, 3.6e56 erg/s, 200 Msun c^2/s, 410 Mpc, z=0.09, masses 36/29/62 all match arXiv:1602.03837. Superseded-values caveat: the 2016 values were later re-analysed (GWTC-1 gives E_rad about 3.1 Msun c^2). The note admits this; difference is small and not load-bearing. The 35-250 Hz and 1e-21 strain figures were not re-grepped. |
+| RQ-03 Planck 2018 cosmology / N_eff | verified | N_eff = 2.99+-0.17 (abstract) and 2.99 +0.34 -0.33 (95%, eq. 67b) confirmed. H0, Omega_m, Omega_c h^2 not re-grepped. |
+| RQ-04 Maggiore BBN bound 5.6e-6 (N_nu-3) | verified | Eq. 118 and h0^2 Omega_gamma = 2.481e-5 match. Derived 1.7e-6 -> 2.8e-15 J/m^3 = 1.8e4 eV/m^3 reproduced by hand. Caveat: 0.3 for Delta N_eff is the analyst's reading, and it flags this itself. |
+| RQ-05 LVK O4a and NANOGrav limits | verified | 2.0e-9 and 2.8e-9 (95% cred.) and NANOGrav 2.4 +0.7 -0.6 e-15 match the arXiv abstracts. The journal ref (PRD 114, 042001) was not confirmed on the arXiv page, which shows only the Aug 2025 submission. The CBC estimate Omega_CBC(25 Hz) = 0.9 +1.1 -0.5 e-9 is in the same abstract. |
+| RQ-06 FIRAS limits | verified | |y|<15e-6, |mu|<9e-5, T=2.728+-0.004 K (95% CL) match the abstract. "Not improved by any later spectrometer" was not checked. |
+| RQ-07 B&O constraint inputs | verified | mu regime 1e5<z<3e6, y regime 1e3<z<1e5, thermalize before z~3e6, FIRAS values, Fermi IGRB 100 MeV to 820 GeV, 2dP/dtdV~1e-110 and Phi~1e-25 Hz^-1 to z~1e28 all match. The refs [55] (Faucher-Giguere) and [56] (Ackermann) are as stated. The "10^3 < z < z_a ~ 1e5" y-range phrasing matches the paper. |
+| RQ-08 tau, N0, W_gamma at GW150914 point | verified | By hand: L = 2.95 km, tau = 25 pi c^2/(6 L^2 w s^2) = 3.6e3 s, as claimed. The formula was not matched to B&O eqs. 10-12 by me. Eq. 12 as printed has the form W = 3/(50 pi) (r_m/l)^2 (hbar w)^2, and the note's "agree" statement was not rechecked. The conclusion that tau >> t_m at the nominal point follows from the stated inputs. |
+| RQ-09 CMB stimulation factor | verified | kT = 2.35e-4 eV, hbar w = 6.2e-13 eV, f = 3.8e8, 1+2f = 7.6e8 all recomputed. B&O's "(1+2f_gamma)" replacement and the "isotropic unpolarized bath" wording are confirmed on p. 3. The Fig. 2b "~1e6 s^-1" comparison and eq. 13 were not re-opened. |
+| RQ-10 plasma frequency / IGM electron density | misattributed | Arithmetic is right (4.2 Hz, 1.7e-14 eV, 5.5e-7 eV at z=1e5, 9e-5 eV at z=3e6, crossover 1+z~1300). Scope error: Mirizzi-Raffelt-Serpico say n_e=1.8e-7 is for ALL baryons uniform and ionised. The "at least a factor of 15" lower applies to the n_e assumed in their ref. [6], which is about half of all baryons uniformly ionised (abstract and p. 3), and is for z<~1. The note applies it to the 1.8e-7 figure. Correct scope: real average is below the half-baryon value by >=15, i.e. below the 1.8e-7 figure by roughly 8 (if ~half is the base). Direction of the conclusion is unchanged. |
+| RQ-11 Eq. 14 conversion to SI and rates | verified | Independent hand conversion for rho = 1.77e4 eV/m^3 gives 2.75e-109 m^-3 s^-1, matching the pair rate. The LVK-bound rate 3e-115 rescales correctly. Caveat: using Omega_GW(25 Hz) as the total rho_GW treats the flat spectrum as if all energy sat at that level, and ignores bandwidth. The inference about which Delta N_eff B&O used is the analyst's own and is flagged as such. |
+| RQ-12 ULDM inputs, N_phi and W_phi | unverifiable | Eq. 16 (6e87 for 1e-22 eV) and Eq. 17 and the 9 pi G m^2 v^3 N0^2 H0^2 Omega_DM /256 form of eq. 18 are confirmed in the B&O text. The de Salas-Widmark ranges (0.4-0.6, 0.3-0.5 GeV/cm^3) match the abstract. The 8.6e13 / 8.6e18 W figures depend on an ASSUMED E_rel = 3/65 M c^2 and an unevaluated x_MW; confidence low, as the note says. Not independently recomputed. |
+| RQ-13 BBN photodisintegration thresholds | verified | 2.2246, 5.4935, 19.8139, 20.5776 MeV match the table in astro-ph/0211258. The Poulin-Serpico non-universality statement is confirmed qualitatively; the exact "10/T_keV MeV" wording was cut off in the grep. The note's own "not verified" for title/journal is fair. Status: Poulin-Serpico appeared in PRD, not just as a preprint (I did not check the journal ref). |
+| RQ-14 Fermi-LAT IGRB 100 MeV-820 GeV | verified | Quote matches arXiv:1501.05464 p. 6. B&O p. 5 itself states the 100 MeV to 820 GeV range and the residual Galactic foreground. |
+| RQ-15 GW170817 values and B&O recipe results | verified | Chirp mass 1.188 +0.004 -0.002, total mass 2.74 +0.04 -0.01 (low-spin), D_L 40 +8 -14 Mpc and E_rad>0.025 Msun c^2 match Table I. The derived tau and L_gamma values come from the run's script and were not recomputed. B&O's t_eps = 5 eps/12 (2 (G Mc)^5 w^8)^(1/3) is as in the note's recipe. |
+| RQ-16 ISCO check | verified | f_ISCO = 4395 Hz (Msun/M) recomputed, 67.6 Hz at 65 Msun. The 1.8e-2 W/m^2 flux at 410 Mpc was not rechecked. |
+
+## Most serious problem
+RQ-10: the "factor 15" is attached to the wrong baseline (it refers to a half-baryon estimate, not the all-baryon 1.8e-7). Everything else is faithful to its sources.
+
+Summary count: verified 13, misattributed 1, unverifiable 1, contradicted 0, status-wrong 0.

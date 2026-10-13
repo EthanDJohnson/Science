@@ -1,0 +1,102 @@
+# math_run log
+command:  python3 runs/2026-10-13-gravitational-wave-decay-photon-pairs/calc/quantitative_inputs.py
+started:  2026-10-13T04:55:16Z
+duration: 0.0 s
+exit:     0
+versions: python 3.13.16, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+=== 1. GW150914 through B&O eqs. 8-13 (SI) ===
+-- B&O input E_rel=2 Msun c^2
+   E_rel = 3.574e+47 J ; omega_s = 942.5 rad/s ; sigma_omega = 1/t_m = 200.0 s^-1
+   N0 = E/(hbar omega) = 3.596e+78 gravitons
+   tau (vacuum) = 3.578e+03 s  (>> t_m = 5 ms: B&O's tau<<t_m condition is violated at nominal point)
+   W_gamma (eq.11) = 2.778e-35 W ; via eq.12 = 2.778e-35 W (should agree)
+   f_gamma(150 Hz) = 3.786e+08; stimulation factor 1+2f = 7.572e+08
+   tau with CMB stim = 4.725e-06 s ; L_gamma = 1/tau = 2.116e+05 photons/s (B&O Fig 2b: ~1e6 s^-1)
+   W_gamma with stim = 2.103e-26 W ; photons emitted in one t_m = 1.058e+03
+   Hawking W_H(65 Msun) = 2.132e-32 W ; W_H/W_gamma(vacuum) = 7.676e+02 (B&O eq.13: 1e2-1e3)
+   energy in photons / E_GW over t_m (stim) = 2.942e-76
+   depletion time tau_h = tau*E/(hbar omega) (vacuum) = 1.287e+82 s = 4.077e+74 yr
+-- LVK central E_rad=3.0 Msun c^2
+   E_rel = 5.361e+47 J ; omega_s = 942.5 rad/s ; sigma_omega = 1/t_m = 200.0 s^-1
+   N0 = E/(hbar omega) = 5.394e+78 gravitons
+   tau (vacuum) = 1.590e+03 s  (>> t_m = 5 ms: B&O's tau<<t_m condition is violated at nominal point)
+   W_gamma (eq.11) = 6.250e-35 W ; via eq.12 = 6.250e-35 W (should agree)
+   f_gamma(150 Hz) = 3.786e+08; stimulation factor 1+2f = 7.572e+08
+   tau with CMB stim = 2.100e-06 s ; L_gamma = 1/tau = 4.762e+05 photons/s (B&O Fig 2b: ~1e6 s^-1)
+   W_gamma with stim = 4.733e-26 W ; photons emitted in one t_m = 2.381e+03
+   Hawking W_H(65 Msun) = 2.132e-32 W ; W_H/W_gamma(vacuum) = 3.411e+02 (B&O eq.13: 1e2-1e3)
+   energy in photons / E_GW over t_m (stim) = 4.414e-76
+   depletion time tau_h = tau*E/(hbar omega) (vacuum) = 8.578e+81 s = 2.718e+74 yr
+
+=== 2. Real-source inputs ===
+GW150914 peak luminosity 3.6e56 erg/s = 3.60e+49 W ; LVK E_rad 3.0 Msun c^2 = 5.361e+47 J
+peak GW energy flux at Earth, L/(4 pi d^2), d=410 Mpc: 1.790e-02 W/m^2
+c^3 w^2 h^2/(32 pi G) with h=1e-21, 150 Hz: 3.567e-03 W/m^2 (cross-check, order of magnitude only)
+f_GW,ISCO for 1 Msun = 4397.2 Hz (B&O: 8800 pi rad/s /2pi = 4400 Hz) ; for 65 Msun = 67.6 Hz
+GW150914 nominal merger frequency 150 Hz / f_GW,ISCO(65 Msun) = 2.22
+
+=== 3. Plasma frequency (photon effective mass) ===
+n_b today = 2.516e-07 cm^-3 ; fully ionised n_e today = 2.207e-07 cm^-3 (B&O/brief: omega_p ~1e-14 eV)
+   IGM mean, fully ionised, z=0                       n_e= 2.207e-07 cm^-3 : nu_p =   4.2184e+00 Hz ; omega_p =  1.745e-14 eV
+   IGM z=0.5 mean (x(1+z)^3)                          n_e= 7.450e-07 cm^-3 : nu_p =   7.7497e+00 Hz ; omega_p =  3.205e-14 eV
+   fully ionised z=1e3 (not physical: recombined)     n_e= 2.207e+02 cm^-3 : nu_p =   1.3340e+05 Hz ; omega_p =  5.517e-10 eV
+   fully ionised z=1e5                                n_e= 2.207e+08 cm^-3 : nu_p =   1.3340e+08 Hz ; omega_p =  5.517e-07 eV
+   fully ionised z=3e6                                n_e= 5.960e+12 cm^-3 : nu_p =   2.1919e+10 Hz ; omega_p =  9.065e-05 eV
+   warm ISM 0.03 cm^-3                                n_e= 3.000e-02 cm^-3 : nu_p =   1.5552e+03 Hz ; omega_p =  6.432e-12 eV
+   solar wind at 1 AU ~5 cm^-3                        n_e= 5.000e+00 cm^-3 : nu_p =   2.0077e+04 Hz ; omega_p =  8.303e-11 eV
+   ionospheric F-layer ~1e6 cm^-3                     n_e= 1.000e+06 cm^-3 : nu_p =   8.9787e+06 Hz ; omega_p =  3.713e-08 eV
+   150 Hz photon energy = 6.204e-13 eV ; CMB kT = 2.349e-04 eV
+   (1+z)^3 scaling: omega_p(z) = omega_p(0)*(1+z)^1.5 for a fully ionised medium; omega_s(z)=omega_s(0)*(1+z) so omega_s/omega_p falls as (1+z)^-0.5
+
+=== 4. Stochastic background, B&O eq. 14 ===
+   BBN/CMB integral bound 5.6e-6*DeltaN, DeltaN=0.3 (Planck+BAO 95% ~ N_eff<3.3)
+      Omega_GW h^2 = 1.68e-06 ; Omega_GW = 3.70e-06 ; rho_GW c^2 = 2.836e-15 J/m^3 = 1.770e+04 eV/m^3
+      eq.14 pair rate = 2.758e-109 m^-3 s^-1 ; photon rate (x2) = 5.517e-109 m^-3 s^-1 (B&O: ~1e-110)
+   DeltaN=0.1
+      Omega_GW h^2 = 5.60e-07 ; Omega_GW = 1.23e-06 ; rho_GW c^2 = 9.454e-16 J/m^3 = 5.901e+03 eV/m^3
+      eq.14 pair rate = 3.065e-110 m^-3 s^-1 ; photon rate (x2) = 6.130e-110 m^-3 s^-1 (B&O: ~1e-110)
+   DeltaN=0.05
+      Omega_GW h^2 = 2.80e-07 ; Omega_GW = 6.16e-07 ; rho_GW c^2 = 4.727e-16 J/m^3 = 2.950e+03 eV/m^3
+      eq.14 pair rate = 7.662e-111 m^-3 s^-1 ; photon rate (x2) = 1.532e-110 m^-3 s^-1 (B&O: ~1e-110)
+   LVK O4a Omega(25Hz)<=2.8e-9 flat, h^2 included
+      Omega_GW h^2 = 1.27e-09 ; Omega_GW = 2.80e-09 ; rho_GW c^2 = 2.147e-18 J/m^3 = 1.340e+01 eV/m^3
+      eq.14 pair rate = 1.581e-115 m^-3 s^-1 ; photon rate (x2) = 3.163e-115 m^-3 s^-1 (B&O: ~1e-110)
+   NANOGrav ~ Omega h^2 ~ 1e-9 band
+      Omega_GW h^2 = 1.00e-09 ; Omega_GW = 2.20e-09 ; rho_GW c^2 = 1.688e-18 J/m^3 = 1.054e+01 eV/m^3
+      eq.14 pair rate = 9.773e-116 m^-3 s^-1 ; photon rate (x2) = 1.955e-115 m^-3 s^-1 (B&O: ~1e-110)
+
+=== 5. ULDM inputs and B&O eqs. 16-18 ===
+Omega_DM = 0.2642 ; cosmic mean DM density = 1.264e-06 GeV/cm^3
+   local DM 0.3 GeV/cm^3 / cosmic mean = 2.373e+05 (B&O x_MW ~ 1e5)
+   local DM 0.4 GeV/cm^3 / cosmic mean = 3.164e+05 (B&O x_MW ~ 1e5)
+   local DM 0.6 GeV/cm^3 / cosmic mean = 4.745e+05 (B&O x_MW ~ 1e5)
+   v_rms ~ 220 km/s = 7.34e-04 c (B&O v = 1e-3)
+   N_phi(m=1e-22 eV, v=1e-3, Omega=0.26 version) = 5.663e+87 (B&O eq.16: 6e87; ratio shows B&O used (2pi)^3 n /(4pi/3 (m v)^3))
+   N_phi(m=1e-22 eV, v=1e-3, Planck Omega_DM=0.264) = 5.753e+87
+   m=1e-21 eV: binary mass at ISCO 1.820e+10 Msun ; N0 = 9.368e+95 (E_rel=3/65 M c^2) ; W_phi (x_MW=1e5) = 8.643e+18 W (B&O eq 18: ~1e14 W x ... ; reconstruction assumption)
+   m=1e-20 eV: binary mass at ISCO 1.820e+09 Msun ; N0 = 9.368e+93 (E_rel=3/65 M c^2) ; W_phi (x_MW=1e5) = 8.643e+16 W (B&O eq 18: ~1e14 W x ... ; reconstruction assumption)
+   m=1e-22 eV: binary mass at ISCO 1.820e+11 Msun ; N0 = 9.368e+97 (E_rel=3/65 M c^2) ; W_phi (x_MW=1e5) = 8.643e+20 W (B&O eq 18: ~1e14 W x ... ; reconstruction assumption)
+
+=== 6. Inspiral cases through B&O eq.10 (quadrupole chirp; eps=0.1 bin; sigma_omega=1/t_eps; E_rel=t_eps*L_GW) ===
+-- GW170817-like DNS at 100 Hz: Mc=1.188 Msun, f_GW=100.0 Hz, eps=0.1
+   fdot = 1.664e+01 Hz/s ; t_eps = 6.010e-01 s ; L_GW = 1.767e+44 W ; E_rel = 1.062e+44 J
+   tau(vacuum) = 8.783e+14 s ; 1/(eps omega) = 1.592e-02 s ; stim factor 1.136e+09 ; tau(stim) = 7.733e+05 s ; L_gamma(stim) = 1.293e-06 photons/s ; photon energy 4.136e-13 eV
+   photon power W_gamma(vacuum) = 7.544e-47 W ; (stim) = 8.569e-38 W ; ratio to L_GW (stim) = 4.849e-82
+-- GW170817-like DNS at 30 Hz: Mc=1.188 Msun, f_GW=30.0 Hz, eps=0.1
+   fdot = 2.013e-01 Hz/s ; t_eps = 1.490e+01 s ; L_GW = 3.194e+42 W ; E_rel = 4.759e+43 J
+   tau(vacuum) = 8.961e+18 s ; 1/(eps omega) = 5.305e-02 s ; stim factor 3.786e+09 ; tau(stim) = 2.367e+09 s ; L_gamma(stim) = 4.225e-10 photons/s ; photon energy 1.241e-13 eV
+   photon power W_gamma(vacuum) = 2.218e-51 W ; (stim) = 8.398e-42 W ; ratio to L_GW (stim) = 2.629e-84
+-- galactic WD binary ~ LISA band (HM Cnc-like Mc assumed 0.3 Msun, 6.2 mHz; ASSUMED parameters): Mc=0.3 Msun, f_GW=0.0062 Hz, eps=0.1
+   fdot = 6.267e-16 Hz/s ; t_eps = 9.892e+11 s ; L_GW = 1.697e+28 W ; E_rel = 1.678e+40 J
+   tau(vacuum) = 1.537e+51 s ; 1/(eps omega) = 2.567e+02 s ; stim factor 1.832e+13 ; tau(stim) = 8.388e+37 s ; L_gamma(stim) = 1.192e-38 photons/s ; photon energy 2.564e-17 eV
+   photon power W_gamma(vacuum) = 2.673e-87 W ; (stim) = 4.897e-74 W ; ratio to L_GW (stim) = 2.887e-102
+-- GW150914-like BBH inspiral (Mc~28 Msun) at 50 Hz: Mc=28.0 Msun, f_GW=50.0 Hz, eps=0.1
+   fdot = 2.539e+02 Hz/s ; t_eps = 1.970e-02 s ; L_GW = 6.581e+47 W ; E_rel = 1.296e+46 J
+   tau(vacuum) = 1.266e+08 s ; 1/(eps omega) = 3.183e-02 s ; stim factor 2.272e+09 ; tau(stim) = 5.575e-02 s ; L_gamma(stim) = 1.794e+01 photons/s ; photon energy 2.068e-13 eV
+   photon power W_gamma(vacuum) = 2.616e-40 W ; (stim) = 5.943e-31 W ; ratio to L_GW (stim) = 9.030e-79
+
+--- stderr ---
+

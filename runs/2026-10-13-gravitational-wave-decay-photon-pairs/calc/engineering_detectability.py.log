@@ -1,0 +1,59 @@
+# math_run log
+command:  python3 runs/2026-10-13-gravitational-wave-decay-photon-pairs/calc/engineering_detectability.py
+started:  2026-10-13T05:08:17Z
+duration: 0.0 s
+exit:     0
+versions: python 3.13.16, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+=== A. GW150914 point, B&O inputs (E_rel = 2 Msun c^2, nu = 150 Hz, t_m = 5 ms) ===
+L = G E/c^4 = 2.953e+03 m ; omega_s = 9.425e+02 rad/s ; hbar*omega = 6.204e-13 eV = 9.939e-32 J
+tau(vacuum) = 3.578e+03 s ; f_gamma = 3.786e+08 ; stimulation 1+2f = 7.572e+08
+tau(CMB-stimulated) = 4.725e-06 s ; L_gamma = 2.116e+05 photons/s
+
+=== B. Photon flux at an observer at D = 410 Mpc if the photons were emitted isotropically ===
+4 pi D^2 = 2.011e+51 m^2
+photon number flux = 1.052e-46 photons m^-2 s^-1 ; energy flux = 1.046e-77 W m^-2
+lambda = 1.999e+06 m (1999 km) ; isotropic effective area lambda^2/4pi = 3.179e+11 m^2
+  expected photons absorbed by one isotropic antenna in 1 s = 3.345e-35
+  expected photons absorbed by one isotropic antenna in 1000 s = 3.345e-32
+  flux needed for 1 photon/s in that antenna = 3.146e-12 photons m^-2 s^-1 ; this is 2.99e+34 x the B&O flux
+
+=== C. CMB's own Rayleigh-Jeans brightness at 150 Hz, per Hz, per sr ===
+B_nu(RJ, 150 Hz) = 1.884e-35 W m^-2 Hz^-1 sr^-1 ; 4pi sr, 1 Hz bandwidth: 2.368e-34 W m^-2
+B&O energy flux / this = 4.417e-44
+
+=== D. Plasma cut-off: electron density at which 150 Hz is evanescent ===
+f = 150 Hz -> n_e = 2.790e-04 cm^-3 (nu_p = 8980 sqrt(n_e) Hz)
+f = 2600 Hz -> n_e = 8.383e-02 cm^-3 (nu_p = 8980 sqrt(n_e) Hz)
+  mean IGM (z=0, fully ionised)    n_e =   2.2e-07 cm^-3 -> nu_p = 4.212e+00 Hz ; 150 Hz photon propagates: True
+  VLISM (Voyager 1)                n_e =      0.08 cm^-3 -> nu_p = 2.540e+03 Hz ; 150 Hz photon propagates: False
+  warm ISM                         n_e =      0.03 cm^-3 -> nu_p = 1.555e+03 Hz ; 150 Hz photon propagates: False
+  solar wind 1 AU                  n_e =         5 cm^-3 -> nu_p = 2.008e+04 Hz ; 150 Hz photon propagates: False
+  ionospheric F layer              n_e =     1e+06 cm^-3 -> nu_p = 8.980e+06 Hz ; 150 Hz photon propagates: False
+
+=== E. Stochastic background (eq. 14) vs CMB distortion sensitivity ===
+rho_crit c^2 (h=0.674) = 7.669e-10 J/m^3
+rho_CMB = 2.606e+05 eV/m^3
+primordial bound, h2 Omega=1.7e-6 (Delta N=0.3): pair rate = 2.825e-109 m^-3 s^-1 ; photon E = 1.034e-13 eV ; stim x1.00e+00 ; injected energy over t_H = 2.544e-104 eV/m^3 ; fraction of rho_CMB = 9.762e-110
+primordial bound, h2 Omega=1.7e-6 (Delta N=0.3): pair rate = 2.825e-109 m^-3 s^-1 ; photon E = 1.034e-13 eV ; stim x4.54e+09 ; injected energy over t_H = 1.156e-94 eV/m^3 ; fraction of rho_CMB = 4.435e-100
+LVK scale-invariant Omega(25Hz)<=2.8e-9: pair rate = 1.581e-115 m^-3 s^-1 ; photon E = 1.034e-13 eV ; stim x1.00e+00 ; injected energy over t_H = 1.424e-110 eV/m^3 ; fraction of rho_CMB = 5.465e-116
+LVK scale-invariant Omega(25Hz)<=2.8e-9: pair rate = 1.581e-115 m^-3 s^-1 ; photon E = 1.034e-13 eV ; stim x4.54e+09 ; injected energy over t_H = 6.469e-101 eV/m^3 ; fraction of rho_CMB = 2.483e-106
+PTA-band Omega ~ 1e-9 at 1 nHz: pair rate = 2.017e-116 m^-3 s^-1 ; photon E = 4.136e-24 eV ; stim x1.00e+00 ; injected energy over t_H = 7.265e-122 eV/m^3 ; fraction of rho_CMB = 2.788e-127
+PTA-band Omega ~ 1e-9 at 1 nHz: pair rate = 2.017e-116 m^-3 s^-1 ; photon E = 4.136e-24 eV ; stim x1.14e+20 ; injected energy over t_H = 8.252e-102 eV/m^3 ; fraction of rho_CMB = 3.167e-107
+Distortion thresholds (energy fraction ~ 4 y or mu/1.4 for mu-era injection):
+  FIRAS |y|<1.5e-5 (95%): dE/E = 4y = 6.00e-05
+  PIXIE 1 sigma y 3.4e-9: dE/E = 4y = 1.36e-08
+  Super-PIXIE 1 sigma y 1.6e-9: dE/E = 4y = 6.40e-09
+  FIRAS |mu|<9e-5 (95%): dE/E = mu/1.401 = 6.42e-05
+  PIXIE 1 sigma mu 3e-8: dE/E = mu/1.401 = 2.14e-08
+  Super-PIXIE 1 sigma mu 7.7e-9: dE/E = mu/1.401 = 5.50e-09
+
+=== F. GW amplitude depletion along path (B&O tau_h = tau N0), GW150914 at 410 Mpc ===
+N0 = 3.596e+78 gravitons ; tau_h(vac) = 1.287e+82 s ; tau_h(stim) = 1.699e+73 s ; light travel time = 4.220e+16 s
+fractional energy lost over path: vac 3.280e-66 ; stimulated 2.483e-57
+(compare LVK amplitude calibration uncertainty of order a few per cent: see engineering.md RE-10)
+
+--- stderr ---
+
