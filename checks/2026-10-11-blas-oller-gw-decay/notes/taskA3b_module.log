@@ -1,0 +1,3 @@
+identical coarse grid {'NK': 3, 'NthK': 3, 'nth': 3, 'nph': 8, 'na': 16, 'c_alpha': 4.0} {'c_pole': 4}: bo_plus: spinor C = 9.529411166029e-03, module C = 9.529411165974e-03, rel. diff = 5.8e-12   [1 s, 26 s]
+identical coarse grid {'NK': 3, 'NthK': 3, 'nth': 3, 'nph': 8, 'na': 16, 'c_alpha': 4.0} {}: binary: spinor C = 2.294618375328e-02, module C = 2.294618375217e-02, rel. diff = 4.9e-11   [1 s, 15 s]
+identical coarse grid {'NK': 3, 'NthK': 3, 'nth': 3, 'nph': 8, 'na': 16, 'c_alpha': 4.0} {'splitK': False}: linear: spinor C = 1.165706367430e-02, module C = 1.165706367430e-02, rel. diff = 6.9e-15   [0 s, 4 s]

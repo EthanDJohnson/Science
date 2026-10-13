@@ -1,0 +1,94 @@
+
+==============================================================================================================
+(a) sigma(g g -> gamma gamma): closed form (sympy) and module spot checks
+==============================================================================================================
+sigma_opp, full sphere with identical-photon 1/2 : 4*pi*G**2*s/5
+sigma_opp, hemisphere (each pair once), no 1/2   : 4*pi*G**2*s/5
+expected (4/5) pi G^2 s                          : 4*pi*G**2*s/5
+unpolarised average (1/4) sum_{l1 l2} sigma      : 2*pi*G**2*s/5   (same helicities give 0)
+
+module helicity amplitudes (physical helicities along each particle's own momentum), |M|/(8 pi G):
+  s=1.0, theta=0.4: t^2/s=0.001557841667, u^2/s=0.922618835670; nonzero: (-2, 2, -1, 1):0.922618835670, (-2, 2, 1, -1):0.001557841667, (2, -2, -1, 1):0.001557841667, (2, -2, 1, -1):0.922618835670;  max |others|/(8 pi s) = 1.6e-16
+  s=2.5, theta=1.3: t^2/s=0.335348728791, u^2/s=1.004095800353; nonzero: (-2, 2, -1, 1):1.004095800353, (-2, 2, 1, -1):0.335348728791, (2, -2, -1, 1):0.335348728791, (2, -2, 1, -1):1.004095800353;  max |others|/(8 pi s) = 2.0e-16
+  s=0.7, theta=2.4: t^2/s=0.528243961490, u^2/s=0.012068360612; nonzero: (-2, 2, -1, 1):0.012068360612, (-2, 2, 1, -1):0.528243961490, (2, -2, -1, 1):0.528243961490, (2, -2, 1, -1):0.012068360612;  max |others|/(8 pi s) = 2.1e-16
+
+module sigma_total / ((4/5) pi G^2 s):
+  s=0.5: R/L=1.000000000000, L/R=1.000000000000, R/R=0.000000000000, L/L=0.000000000000, plus/plus=0.500000000000, plus/cross=0.500000000000
+  s=3.0: R/L=1.000000000000, L/R=1.000000000000, R/R=0.000000000000, L/L=0.000000000000, plus/plus=0.500000000000, plus/cross=0.500000000000
+
+==============================================================================================================
+(b) P-representation (Gaussian, random phases) -> kinetic sum over unordered graviton pairs
+==============================================================================================================
+  diagonal m_ii zero: <|A|^2>_P = 35.78679 +- 0.02932;  sum_(i<j) N_i N_j |m_ij|^2 (+ (1/2) sum N_i^2 |m_ii|^2) = 35.81472
+  diagonal m_ii kept: <|A|^2>_P = 45.97412 +- 0.03884;  sum_(i<j) N_i N_j |m_ij|^2 (+ (1/2) sum N_i^2 |m_ii|^2) = 45.97635
+  a single COHERENT state with the same N_i (|A|^2 / incoherent value):
+     all phases equal      : 2.6017
+     fixed random phases #0: 0.7950
+     fixed random phases #1: 0.0459
+     fixed random phases #2: 0.5693
+  => the incoherent rate is the phase average of the coherent one; interference between different graviton
+     pairs feeding the same final state is what a coherent state adds (it can raise or lower the rate).
+  continuum: sum_{i<j} = (1/2) sum_{i != j}  ->  Gamma = (1/2) sum_{l1 l2} int dn_l1 dn_l2 sigma_{l1 l2} v_rel,
+             v_rel = 1 - cos theta_12 (massless Moller flux); no zero-point (1/2) term: normal ordering.
+
+==============================================================================================================
+(c) isotropic gas: Gamma = (8 pi/15) G^2 rho^2 ?  (sympy, then module two-beam route)
+==============================================================================================================
+Gamma (physical helicities)            = 32*pi*G**2*n_m*n_p*omega**2/15  ; with n_p w = rho_p, n_m w = rho_m: 32*pi*G**2*rho_m*rho_p/15
+unpolarised (rho_p = rho_m = rho/2)     = 8*pi*G**2*rho**2/15   ;  B&O eq. 14: 8 pi G^2 rho^2/15 ; ratio = 1
+helicity fraction p of +2:  Gamma/(8 pi G^2 rho^2/15) = 4*p*(1 - p)  -> 0 for a fully circularly polarised background
+if eq. 6's equal labels were PHYSICAL helicities (same-helicity pairs radiate):  Gamma/(8 pi G^2 rho^2/15) = 4*p**2 - 4*p + 2  (= 1 only at p = 1/2: eq. 14 is blind to the label reading)
+spectrum: sigma v ~ k1 k2, so Gamma = (32 pi/15) G^2 (int k dn_+)(int k dn_-) = (8 pi/15) G^2 rho^2 for ANY isotropic unpolarised spectrum (the integrand factorises).
+
+module route: beams_pair_rate (full amplitude, module phase space), Gauss-Legendre average over cos(theta_12)
+  w1=1.0, w2=1.0: <sigma v>(R,L)/(w1 w2) = 6.702064327658 [sympy: 32 pi/15 = 6.702064327658],  (R,R)/(w1 w2) = 7.92e-30;  (1/2)<sigma v>_unpol/(w1 w2) = 1.675516081915  [8 pi/15 = 1.675516081915]
+  w1=0.5, w2=2.0: <sigma v>(R,L)/(w1 w2) = 6.702064327658 [sympy: 32 pi/15 = 6.702064327658],  (R,R)/(w1 w2) = 3.13e-29;  (1/2)<sigma v>_unpol/(w1 w2) = 1.675516081915  [8 pi/15 = 1.675516081915]
+  w1=0.3, w2=1.7: <sigma v>(R,L)/(w1 w2) = 6.702064327658 [sympy: 32 pi/15 = 6.702064327658],  (R,R)/(w1 w2) = 1.25e-28;  (1/2)<sigma v>_unpol/(w1 w2) = 1.675516081915  [8 pi/15 = 1.675516081915]
+  two-line isotropic spectrum (60% at 0.3, 40% at 1.7, unpolarised, n = 1): Gamma/rho^2 = 1.675516081915  (8 pi/15 = 1.675516081915)
+
+==============================================================================================================
+(c') B&O's coherent/incoherent comparison: eq. 8 vs eq. 14 for N gravitons in a volume V
+==============================================================================================================
+eq.8 / (eq.14 x V) = 9*V*omega*sigma**2/(40*pi**2) ;  equal when V w sigma^2 = 40*pi**2/9  (B&O: 40 pi^2/9)
+V_eff with sigma = eps w, w = 2 pi/lambda: 5*lambda**3/(9*pi*epsilon**2)  (B&O: 5 lambda^3/(9 pi eps^2));  eps = 0.1: 17.68 lambda^3; eps = 0.15: 7.86 lambda^3
+
+==============================================================================================================
+(d) number emissivity 2 dP/dtdV with Delta N_eff-allowed rho_GW (SI)
+==============================================================================================================
+units: Gamma_nat = (8 pi/15) G_nat^2 rho_nat^2 -> Gamma_SI = (8 pi/15) G^2 rho_E^2 / c^7 (pairs m^-3 s^-1);
+       G_nat = G/(hbar c^5), rho_nat = rho_E (hbar c)^3, rate density / (hbar^4 c^3): hbar cancels.
+rho_gamma(T0 = 2.7255 K) = 4.1748e-14 J/m^3 ; rho_crit(H0 = 67.4) = 7.6689e-10 J/m^3
+Planck 2018 abstract: N_eff = 2.99 +- 0.17 (68%), SM 3.044 -> Delta N_eff <~ 0.3 at 2 sigma
+  Delta N_eff = 0.10: rho_GW = 9.481e-16 J/m^3 (Omega_GW h^2 = 5.62e-07);  Gamma = 3.08e-110 pairs m^-3 s^-1;  2 Gamma = 6.17e-110 photons m^-3 s^-1
+  Delta N_eff = 0.20: rho_GW = 1.896e-15 J/m^3 (Omega_GW h^2 = 1.12e-06);  Gamma = 1.23e-109 pairs m^-3 s^-1;  2 Gamma = 2.47e-109 photons m^-3 s^-1
+  Delta N_eff = 0.29: rho_GW = 2.750e-15 J/m^3 (Omega_GW h^2 = 1.63e-06);  Gamma = 2.59e-109 pairs m^-3 s^-1;  2 Gamma = 5.19e-109 photons m^-3 s^-1
+  Delta N_eff = 0.50: rho_GW = 4.741e-15 J/m^3 (Omega_GW h^2 = 2.81e-06);  Gamma = 7.71e-109 pairs m^-3 s^-1;  2 Gamma = 1.54e-108 photons m^-3 s^-1
+  B&O's '2 dP/dtdV ~ 1e-110 m^-3 s^-1' needs rho_GW = 3.82e-16 J/m^3, i.e. Delta N_eff = 0.040 (Omega_GW h^2 = 2.3e-07)
+  energy emissivity for photons of energy hbar*omega: 2 Gamma hbar omega (linear in hbar)
+  with the CMB stimulated factor (1 + 2 f), nu = 1e-09 Hz: 1 + 2 f = 1.14e+20 -> 2 Gamma (1 + 2 f) = 5.9e-89 m^-3 s^-1 (monochromatic estimate)
+  with the CMB stimulated factor (1 + 2 f), nu = 1e+02 Hz: 1 + 2 f = 1.14e+09 -> 2 Gamma (1 + 2 f) = 5.9e-100 m^-3 s^-1 (monochromatic estimate)
+
+==============================================================================================================
+(e) depletion: Gamma_1(k), B&O eqs. 15 / S9 and |Phi|
+==============================================================================================================
+Gamma_1(k1) per unit partner density at energy k2: 16*pi*G**2*k1*k2/15  -> int dn_2: (16 pi/15) G^2 k1 rho  (rho = int k2 dn_2)
+check: int dn_1 Gamma_1 = (16 pi/15) G^2 rho^2 = 2 x Gamma(eq. 14) (two gravitons per pair): 2
+module: Gamma_1/(k1 rho) for k1 = 0.8, partners at 1.9 = 3.351032163829; 16 pi/15 = 3.351032163829
+d Y/dz from the physical collision rate (k_phys = (1+z) k0): 16*pi*G**2*k0*rho_co*(z + 1)**4*Y(z)/(15*H)
+B&O S9 right side:                                          16*pi*G**2*k0*rho_co*(z + 1)**4*Y(z)/(15*H)  -> identical (k = comoving / today's momentum)
+
+formal solution check (toy units G = 1, H(z) = (1+z)^2, y(k, z_i) = k e^{-k}, z from 3 to 0):
+  max |y(k,0) exp(-k Phi(z_i)) - y(k,z_i)| / max y = 1.9e-05;  depletion of rho_co: 0.3322  (high-k end depleted most: y(k=20,0)/y(k=20,z_i) = 4.134e-07, y(k=1,0)/y(k=1,z_i) = 0.4795)
+
+|Phi| in SI: exponent = omega0 * |Phi|, |Phi| = int_0^z (16 pi/15)(G^2 hbar/c^7)(1+z)^4 rho_co / H(z) dz  [s]
+  Delta N_eff = 0.29, rho_co = 2.75e-15 J/m^3, z_max = 1e28 (T = 2.3e+15 GeV), constant Omega_r: |Phi| = 3.16e-25 s   (B&O: ~1e-25 Hz^-1)
+      nu0 = 1e-09 Hz: omega0|Phi| = 2.0e-33;  with CMB-stimulated (1 + 2f): 2.3e-13
+      nu0 = 1e+02 Hz: omega0|Phi| = 2.0e-22;  with CMB-stimulated (1 + 2f): 2.3e-13
+      nu0 = 1e+09 Hz: omega0|Phi| = 2.0e-15;  with CMB-stimulated (1 + 2f): 2.3e-13
+  Delta N_eff = 0.29, rho_co = 2.75e-15 J/m^3, z_max = 1e28 (T = 2.3e+15 GeV), g_* steps: |Phi| = 5.09e-25 s   (B&O: ~1e-25 Hz^-1)
+      nu0 = 1e-09 Hz: omega0|Phi| = 3.2e-33;  with CMB-stimulated (1 + 2f): 3.6e-13
+      nu0 = 1e+02 Hz: omega0|Phi| = 3.2e-22;  with CMB-stimulated (1 + 2f): 3.6e-13
+      nu0 = 1e+09 Hz: omega0|Phi| = 3.2e-15;  with CMB-stimulated (1 + 2f): 3.6e-13
+
+caveat (plasma): relativistic e+- plasma, omega_pl = e T/3 = 0.101 T; GW today at nu0 << GHz has k/T = 1.8e-09 (100 Hz), so 2-photon final states (photon energies ~k) are below the plasma cutoff while the plasma is relativistic: S9 integrated to z ~ 1e28 overstates even this tiny depletion.
+        today's mean (fully ionised) n_e = 0.22 m^-3 -> omega_pl0 = 26.5 rad/s; nHz PTA photons cannot propagate at all.

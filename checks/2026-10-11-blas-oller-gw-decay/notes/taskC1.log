@@ -1,0 +1,67 @@
+==============================================================================================================
+(a) narrow-band limit, symbolic (sympy): radial-offset integral with and without the delta(0) -> T step
+==============================================================================================================
+   int dE Dm(E)^2 = 2*sigma**3/3  ;  (int dE Dm(E))^2 = sigma**4
+   P_tot / (dP/dt)_BO = 2 pi int Dm^2 / (int Dm)^2 = 4*pi/(3*sigma)   (= 4.188790/sigma)
+   int dE Dm e^(iEt) e^(-2iwt) = 2*(1 - cos(sigma*t))/t**2  (= sg^2 sinc^2(sg t/2))
+   int sinc^4(x) dx = 2*pi/3  -> int R dt / R(0) = (2/sigma) x 2*pi/3 = 4*pi/3/sigma
+   R(0) = (dP/dt)_BO = 3/(25*pi) G^2 N^2 w^3 sig^2   (B&O eq. 8: 3/(25 pi) = 0.03819719)
+   P_tot = R(0) x 4 pi/(3 sig) = 4/25 G^2 N^2 w^3 sig = 0.160000 G^2 N^2 w^3 sig   [pairs; photons x2]
+
+==============================================================================================================
+(b) 'duration' conventions: P_tot vs (dP/dt)_BO x T
+==============================================================================================================
+   T_eff = P_tot/(dP/dt)_BO = 4 pi/(3 sig) = 4.18879/sig
+   T =  1.0000/sig (B&O 'T ~ 1/sigma'):  P_tot / [(dP/dt)_BO x T] = 4.1888
+   T =  4.0076/sig (FWHM of R(t) = R(0) sinc^4(sig t/2)):  P_tot / [(dP/dt)_BO x T] = 1.0452
+   T =  6.2832/sig (equivalent width of the field intensity sinc^2(sig u/2) at a point = 2 pi/sig):  P_tot / [(dP/dt)_BO x T] = 0.6667
+   T =  5.5662/sig (FWHM of the field intensity sinc^2(sig u/2)):  P_tot / [(dP/dt)_BO x T] = 0.7525
+
+==============================================================================================================
+(c0) kinematic identity used: cos(theta_g*) = (a-b)/K for the CM direction of k1 (random check)
+==============================================================================================================
+   max |cos(theta_g*) - (a-b)/K| over 2000 random pairs = 2.46e-13
+
+==============================================================================================================
+(c) exact-kinematics quadrature (B&O kernel, exact 1/(2|k|) factors, exact ring Jacobian), sig -> 0
+    columns: R(0)/(G^2N^2w^3sig^2) [B&O eq.8: 3/(25pi) = 0.0381972]   P_tot/(G^2N^2w^3sig) [-> 4/25]   sig P_tot/R(0) [-> 4pi/3]
+==============================================================================================================
+   sig/w = 0.400:  R(0) coeff = 0.0320288   P_tot coeff = 0.1355456   sig P_tot/R(0) = 4.23200   (finer grid: 0.0320288, 0.1355456)
+   sig/w = 0.200:  R(0) coeff = 0.0349178   P_tot coeff = 0.1461332   sig P_tot/R(0) = 4.18506   (finer grid: 0.0349178, 0.1461332)
+   sig/w = 0.100:  R(0) coeff = 0.0365103   P_tot coeff = 0.1526480   sig P_tot/R(0) = 4.18095   (finer grid: 0.0365103, 0.1526480)
+   sig/w = 0.050:  R(0) coeff = 0.0373422   P_tot coeff = 0.1562180   sig P_tot/R(0) = 4.18342   (finer grid: 0.0373422, 0.1562180)
+   sig/w = 0.020:  R(0) coeff = 0.0378524   P_tot coeff = 0.1584616   sig P_tot/R(0) = 4.18630   (finer grid: 0.0378524, 0.1584616)
+   sig/w = 0.010:  R(0) coeff = 0.0380243   P_tot coeff = 0.1592265   sig P_tot/R(0) = 4.18749   (finer grid: 0.0380243, 0.1592265)
+
+==============================================================================================================
+(d) time profile R(t)/R(0) at sig/w = 0.1 (exact kinematics) vs sinc^4(sig t/2); Parseval int R dt vs P_tot
+==============================================================================================================
+   sig t =  0.00:  R(t)/R(0) = 1.00000   sinc^4(sig t/2) = 1.00000
+   sig t =  0.50:  R(t)/R(0) = 0.95889   sinc^4(sig t/2) = 0.95911
+   sig t =  1.00:  R(t)/R(0) = 0.84453   sinc^4(sig t/2) = 0.84529
+   sig t =  1.50:  R(t)/R(0) = 0.68088   sinc^4(sig t/2) = 0.68229
+   sig t =  2.00:  R(t)/R(0) = 0.49946   sinc^4(sig t/2) = 0.50137
+   sig t =  3.00:  R(t)/R(0) = 0.19378   sinc^4(sig t/2) = 0.19556
+   sig t =  4.00:  R(t)/R(0) = 0.04219   sinc^4(sig t/2) = 0.04273
+   sig t =  6.00:  R(t)/R(0) = 0.00048   sinc^4(sig t/2) = 0.00000
+   int_(-300)^(300) R dt = 1.526431e-02 (+ sinc^4 tails ~5.4e-07);  P_tot = 1.526480e-02;  ratio (with tails) = 1.00000
+
+==============================================================================================================
+(e) B&O's ORIGINAL profile f ~ exp(-(k-w)^2/(2 sig^2)) (narrow band), same N: dP/dt and P_tot
+==============================================================================================================
+   Gaussian/top-hat at equal N and equal sig parameter: R(0) ratio = 4*pi, P_tot ratio = 3*sqrt(2)*sqrt(pi)/2 = 3.7599
+   Gaussian: dP/dt|_peak = 12/25 G^2N^2w^3sig^2 = 0.48000;  P_tot = 6*sqrt(2)*sqrt(pi)/25 G^2N^2w^3sig = 0.60159;  T_eff = sqrt(2)*sqrt(pi)/2/sig = 1.25331/sig
+   at equal rms bandwidth Delta of |f|^2:  P_tot(top hat) = 0.5543 G^2N^2w^3 Delta, P_tot(Gauss) = 0.8508 G^2N^2w^3 Delta
+
+==============================================================================================================
+(f) same |f| (same N, same band) but a quadratic phase spreading the packet over duration D (chirp):
+    f = Theta exp(i (k-w)^2 D/(2 sig)), group delay spans [-D/2, D/2].  Narrow band: H ~ int dy exp(i y^2 D/(4 sig))
+==============================================================================================================
+   sig D =     0.0:  P_tot(chirp)/P_tot(transform-limited) = 1.00000   asymptote 3pi/(sig D) = nan   eq.8 / [P_tot(chirp)/D] =       nan   (sig D)^2/(4 pi^2) =     0.000
+   sig D =     6.3:  P_tot(chirp)/P_tot(transform-limited) = 0.91143   asymptote 3pi/(sig D) = 1.50000   eq.8 / [P_tot(chirp)/D] =     1.646   (sig D)^2/(4 pi^2) =     1.000
+   sig D =    20.0:  P_tot(chirp)/P_tot(transform-limited) = 0.45666   asymptote 3pi/(sig D) = 0.47124   eq.8 / [P_tot(chirp)/D] =    10.456   (sig D)^2/(4 pi^2) =    10.132
+   sig D =    50.0:  P_tot(chirp)/P_tot(transform-limited) = 0.18236   asymptote 3pi/(sig D) = 0.18850   eq.8 / [P_tot(chirp)/D] =    65.457   (sig D)^2/(4 pi^2) =    63.326
+   sig D =   100.0:  P_tot(chirp)/P_tot(transform-limited) = 0.09281   asymptote 3pi/(sig D) = 0.09425   eq.8 / [P_tot(chirp)/D] =   257.223   (sig D)^2/(4 pi^2) =   253.303
+   sig D =   300.0:  P_tot(chirp)/P_tot(transform-limited) = 0.03127   asymptote 3pi/(sig D) = 0.03142   eq.8 / [P_tot(chirp)/D] =  2290.160   (sig D)^2/(4 pi^2) =  2279.727
+   sig D =  1000.0:  P_tot(chirp)/P_tot(transform-limited) = 0.00941   asymptote 3pi/(sig D) = 0.00942   eq.8 / [P_tot(chirp)/D] = 25360.700   (sig D)^2/(4 pi^2) = 25330.296
+   sig D =  3000.0:  P_tot(chirp)/P_tot(transform-limited) = 0.00314   asymptote 3pi/(sig D) = 0.00314   eq.8 / [P_tot(chirp)/D] = 228069.817   (sig D)^2/(4 pi^2) = 227972.663

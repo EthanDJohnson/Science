@@ -1,0 +1,80 @@
+
+=== l = 0: Pauli-Jordan field of the Gaussian shell, sig = 0.1 w; P in units of G^2 N^2 w^3 sig ===
+full grid P = 0.46763   (momentum-space closed form, taskB_pj_exact.py: 0.46763)
+  window in 0.5lam : P = 0.28423   = 0.6078 of full
+  window in 1lam   : P = 0.39744   = 0.8499 of full
+  window in 2lam   : P = 0.44544   = 0.9526 of full
+  window in 4lam   : P = 0.46156   = 0.9870 of full
+  window in 8lam   : P = 0.46607   = 0.9967 of full
+  window out 1lam  : P = 0.01052   = 0.0225 of full
+  window out 2lam  : P = 0.00137   = 0.0029 of full
+  window out 4lam  : P = 0.00012   = 0.0002 of full
+  window out 8lam  : P = 0.00001   = 0.0000 of full
+  time-resolved rate (Gaussian time window T_w = 8/w around t_c), units G^2 N^2 w^3 sig^2:
+     t_c*w =  -60.0 (t_c*sig = -6.00):  dP/dt = 0.00000
+     t_c*w =  -55.0 (t_c*sig = -5.50):  dP/dt = 0.00000
+     t_c*w =  -50.0 (t_c*sig = -5.00):  dP/dt = 0.00000
+     t_c*w =  -45.0 (t_c*sig = -4.50):  dP/dt = 0.00000
+     t_c*w =  -40.0 (t_c*sig = -4.00):  dP/dt = 0.00000
+     t_c*w =  -35.0 (t_c*sig = -3.50):  dP/dt = 0.00001
+     t_c*w =  -30.0 (t_c*sig = -3.00):  dP/dt = 0.00001
+     t_c*w =  -25.0 (t_c*sig = -2.50):  dP/dt = 0.00016
+     t_c*w =  -20.0 (t_c*sig = -2.00):  dP/dt = 0.00234
+     t_c*w =  -15.0 (t_c*sig = -1.50):  dP/dt = 0.01958
+     t_c*w =  -10.0 (t_c*sig = -1.00):  dP/dt = 0.08965
+     t_c*w =   -5.0 (t_c*sig = -0.50):  dP/dt = 0.22339
+     t_c*w =    0.0 (t_c*sig =  0.00):  dP/dt = 0.30287
+     t_c*w =    5.0 (t_c*sig =  0.50):  dP/dt = 0.22339
+     t_c*w =   10.0 (t_c*sig =  1.00):  dP/dt = 0.08965
+     t_c*w =   15.0 (t_c*sig =  1.50):  dP/dt = 0.01958
+     t_c*w =   20.0 (t_c*sig =  2.00):  dP/dt = 0.00234
+     t_c*w =   25.0 (t_c*sig =  2.50):  dP/dt = 0.00016
+     t_c*w =   30.0 (t_c*sig =  3.00):  dP/dt = 0.00001
+     t_c*w =   35.0 (t_c*sig =  3.50):  dP/dt = 0.00001
+     t_c*w =   40.0 (t_c*sig =  4.00):  dP/dt = 0.00000
+     t_c*w =   45.0 (t_c*sig =  4.50):  dP/dt = 0.00000
+     t_c*w =   50.0 (t_c*sig =  5.00):  dP/dt = 0.00000
+     t_c*w =   55.0 (t_c*sig =  5.50):  dP/dt = 0.00000
+     t_c*w =   60.0 (t_c*sig =  6.00):  dP/dt = 0.00000
+  sum dP/dt * 5 = 0.48659 (vs full P = 0.46763);  B&O eq.8 rate for comparison: 3/(25 pi) = 0.03820 (their kernel/top hat; proxy kernel differs by O(1))
+  [3 s]
+
+=== l = 2: Pauli-Jordan field of the Gaussian shell, sig = 0.1 w; P in units of G^2 N^2 w^3 sig ===
+full grid P = 0.25469   (quadrupole pattern; no closed form)
+  window in 0.5lam : P = 0.02365   = 0.0929 of full
+  window in 1lam   : P = 0.12585   = 0.4941 of full
+  window in 2lam   : P = 0.20908   = 0.8209 of full
+  window in 4lam   : P = 0.24182   = 0.9495 of full
+  window in 8lam   : P = 0.25136   = 0.9869 of full
+  window out 1lam  : P = 0.03025   = 0.1188 of full
+  window out 2lam  : P = 0.00374   = 0.0147 of full
+  window out 4lam  : P = 0.00031   = 0.0012 of full
+  window out 8lam  : P = 0.00002   = 0.0001 of full
+  time-resolved rate (Gaussian time window T_w = 8/w around t_c), units G^2 N^2 w^3 sig^2:
+     t_c*w =  -60.0 (t_c*sig = -6.00):  dP/dt = 0.00000
+     t_c*w =  -55.0 (t_c*sig = -5.50):  dP/dt = 0.00001
+     t_c*w =  -50.0 (t_c*sig = -5.00):  dP/dt = 0.00001
+     t_c*w =  -45.0 (t_c*sig = -4.50):  dP/dt = 0.00001
+     t_c*w =  -40.0 (t_c*sig = -4.00):  dP/dt = 0.00001
+     t_c*w =  -35.0 (t_c*sig = -3.50):  dP/dt = 0.00001
+     t_c*w =  -30.0 (t_c*sig = -3.00):  dP/dt = 0.00002
+     t_c*w =  -25.0 (t_c*sig = -2.50):  dP/dt = 0.00012
+     t_c*w =  -20.0 (t_c*sig = -2.00):  dP/dt = 0.00142
+     t_c*w =  -15.0 (t_c*sig = -1.50):  dP/dt = 0.01113
+     t_c*w =  -10.0 (t_c*sig = -1.00):  dP/dt = 0.04943
+     t_c*w =   -5.0 (t_c*sig = -0.50):  dP/dt = 0.12122
+     t_c*w =    0.0 (t_c*sig =  0.00):  dP/dt = 0.16351
+     t_c*w =    5.0 (t_c*sig =  0.50):  dP/dt = 0.12122
+     t_c*w =   10.0 (t_c*sig =  1.00):  dP/dt = 0.04943
+     t_c*w =   15.0 (t_c*sig =  1.50):  dP/dt = 0.01113
+     t_c*w =   20.0 (t_c*sig =  2.00):  dP/dt = 0.00142
+     t_c*w =   25.0 (t_c*sig =  2.50):  dP/dt = 0.00012
+     t_c*w =   30.0 (t_c*sig =  3.00):  dP/dt = 0.00002
+     t_c*w =   35.0 (t_c*sig =  3.50):  dP/dt = 0.00001
+     t_c*w =   40.0 (t_c*sig =  4.00):  dP/dt = 0.00001
+     t_c*w =   45.0 (t_c*sig =  4.50):  dP/dt = 0.00001
+     t_c*w =   50.0 (t_c*sig =  5.00):  dP/dt = 0.00001
+     t_c*w =   55.0 (t_c*sig =  5.50):  dP/dt = 0.00001
+     t_c*w =   60.0 (t_c*sig =  6.00):  dP/dt = 0.00000
+  sum dP/dt * 5 = 0.26516 (vs full P = 0.25469);  B&O eq.8 rate for comparison: 3/(25 pi) = 0.03820 (their kernel/top hat; proxy kernel differs by O(1))
+  [9 s]

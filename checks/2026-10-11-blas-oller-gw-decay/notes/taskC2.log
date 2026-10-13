@@ -1,0 +1,5 @@
+Monte Carlo, 4.0e+07 samples per sigma (statistical 1-sigma errors shown)
+columns: P_tot/(G^2N^2w^3 sig)  [taskC1 quadrature; limit 0.16]     R(0)/(G^2N^2w^3sig^2) [taskC1; limit 3/(25pi)=0.0381972]
+   sig/w = 0.20:  P_tot coeff = 0.14608 +- 0.00008  [0.14613]    R(0) coeff = 0.034924 +- 0.000021  [0.034918]    sig P_tot/R(0) = 4.183
+   sig/w = 0.10:  P_tot coeff = 0.15253 +- 0.00012  [0.15265]    R(0) coeff = 0.036508 +- 0.000031  [0.036510]    sig P_tot/R(0) = 4.178
+   sig/w = 0.05:  P_tot coeff = 0.15623 +- 0.00017  [0.15622]    R(0) coeff = 0.037351 +- 0.000045  [0.037342]    sig P_tot/R(0) = 4.183

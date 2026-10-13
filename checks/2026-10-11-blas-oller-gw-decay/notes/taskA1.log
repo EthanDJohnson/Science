@@ -1,0 +1,129 @@
+
+====================================================================================================
+0. spinor-route sanity (independent of the module)
+====================================================================================================
+max | |<ij>|^2 - 2 p_i.p_j | over random null pairs: 8.88e-16
+max |eps.k| (+,-): 2.17e-16 1.49e-16;  eps+.eps- = [1.+0.j 1.+0.j] ; |eps+.conj(eps+)| = [1. 1.]
+k along +z: transverse spatial parts (x, y) of eps^+ : [ 1.-0.j -0.-1.j]   of eps^- : [1.+0.j 0.+1.j]
+  -> eps^- has (x + i y) form = physical helicity +1 for an INCOMING particle (wavefunction e^{-ikx} eps);
+     as the conjugated vector of an OUTGOING particle, eps^- = conj(physical -1)  => label '-' = physical -1 out.
+     So: outgoing labels = physical helicities; an incoming graviton of physical helicity +2 fills a '--' slot.
+
+====================================================================================================
+1. module helicity_amplitudes_cm: |M|/(8 pi G) against t^2/s and u^2/s (physical helicities)
+====================================================================================================
+graviton 1 along +z (helicity l1 along +z), graviton 2 along -z (helicity l2 along -z); photon 1 at (theta, phi).
+t = (k_g1 - q_gam1)^2, u = (k_g1 - q_gam2)^2  (B&O's definitions with their letters).
+
+ theta = 30 deg, phi = 0 deg:  t^2/s = 0.017949, u^2/s = 3.482051
+   (l1,l2,s1,s2) = (2, 2, 1, 1):  |M|/(8 pi G) = 1.696348e-15 
+   (l1,l2,s1,s2) = (2, 2, 1, -1):  |M|/(8 pi G) = 4.596047e-16 
+   (l1,l2,s1,s2) = (2, 2, -1, 1):  |M|/(8 pi G) = 2.477315e-16 
+   (l1,l2,s1,s2) = (2, 2, -1, -1):  |M|/(8 pi G) = 1.696348e-15 
+   (l1,l2,s1,s2) = (2, -2, 1, 1):  |M|/(8 pi G) = 5.213474e-17 
+   (l1,l2,s1,s2) = (2, -2, 1, -1):  |M|/(8 pi G) = 3.482051e+00 = u^2/s
+   (l1,l2,s1,s2) = (2, -2, -1, 1):  |M|/(8 pi G) = 1.794919e-02 = t^2/s
+   (l1,l2,s1,s2) = (2, -2, -1, -1):  |M|/(8 pi G) = 1.584384e-16 
+   (l1,l2,s1,s2) = (-2, 2, 1, 1):  |M|/(8 pi G) = 1.584384e-16 
+   (l1,l2,s1,s2) = (-2, 2, 1, -1):  |M|/(8 pi G) = 1.794919e-02 = t^2/s
+   (l1,l2,s1,s2) = (-2, 2, -1, 1):  |M|/(8 pi G) = 3.482051e+00 = u^2/s
+   (l1,l2,s1,s2) = (-2, 2, -1, -1):  |M|/(8 pi G) = 5.213474e-17 
+   (l1,l2,s1,s2) = (-2, -2, 1, 1):  |M|/(8 pi G) = 1.696348e-15 
+   (l1,l2,s1,s2) = (-2, -2, 1, -1):  |M|/(8 pi G) = 2.477315e-16 
+   (l1,l2,s1,s2) = (-2, -2, -1, 1):  |M|/(8 pi G) = 4.596047e-16 
+   (l1,l2,s1,s2) = (-2, -2, -1, -1):  |M|/(8 pi G) = 1.696348e-15 
+
+ theta = 75 deg, phi = 40 deg:  t^2/s = 0.549349, u^2/s = 1.584625
+   (l1,l2,s1,s2) = (2, 2, 1, 1):  |M|/(8 pi G) = 8.543234e-16 
+   (l1,l2,s1,s2) = (2, 2, 1, -1):  |M|/(8 pi G) = 4.882186e-16 
+   (l1,l2,s1,s2) = (2, 2, -1, 1):  |M|/(8 pi G) = 2.613797e-16 
+   (l1,l2,s1,s2) = (2, 2, -1, -1):  |M|/(8 pi G) = 2.903354e-16 
+   (l1,l2,s1,s2) = (2, -2, 1, 1):  |M|/(8 pi G) = 8.947913e-17 
+   (l1,l2,s1,s2) = (2, -2, 1, -1):  |M|/(8 pi G) = 1.584625e+00 = u^2/s
+   (l1,l2,s1,s2) = (2, -2, -1, 1):  |M|/(8 pi G) = 5.493492e-01 = t^2/s
+   (l1,l2,s1,s2) = (2, -2, -1, -1):  |M|/(8 pi G) = 1.257533e-16 
+   (l1,l2,s1,s2) = (-2, 2, 1, 1):  |M|/(8 pi G) = 1.257533e-16 
+   (l1,l2,s1,s2) = (-2, 2, 1, -1):  |M|/(8 pi G) = 5.493492e-01 = t^2/s
+   (l1,l2,s1,s2) = (-2, 2, -1, 1):  |M|/(8 pi G) = 1.584625e+00 = u^2/s
+   (l1,l2,s1,s2) = (-2, 2, -1, -1):  |M|/(8 pi G) = 8.947913e-17 
+   (l1,l2,s1,s2) = (-2, -2, 1, 1):  |M|/(8 pi G) = 2.903354e-16 
+   (l1,l2,s1,s2) = (-2, -2, 1, -1):  |M|/(8 pi G) = 2.613797e-16 
+   (l1,l2,s1,s2) = (-2, -2, -1, 1):  |M|/(8 pi G) = 4.882186e-16 
+   (l1,l2,s1,s2) = (-2, -2, -1, -1):  |M|/(8 pi G) = 8.543234e-16 
+
+ theta = 120 deg, phi = 200 deg:  t^2/s = 2.250000, u^2/s = 0.250000
+   (l1,l2,s1,s2) = (2, 2, 1, 1):  |M|/(8 pi G) = 5.691250e-16 
+   (l1,l2,s1,s2) = (2, 2, 1, -1):  |M|/(8 pi G) = 4.372172e-16 
+   (l1,l2,s1,s2) = (2, 2, -1, 1):  |M|/(8 pi G) = 1.721777e-16 
+   (l1,l2,s1,s2) = (2, 2, -1, -1):  |M|/(8 pi G) = 8.490450e-16 
+   (l1,l2,s1,s2) = (2, -2, 1, 1):  |M|/(8 pi G) = 3.606932e-17 
+   (l1,l2,s1,s2) = (2, -2, 1, -1):  |M|/(8 pi G) = 2.500000e-01 = u^2/s
+   (l1,l2,s1,s2) = (2, -2, -1, 1):  |M|/(8 pi G) = 2.250000e+00 = t^2/s
+   (l1,l2,s1,s2) = (2, -2, -1, -1):  |M|/(8 pi G) = 1.211887e-16 
+   (l1,l2,s1,s2) = (-2, 2, 1, 1):  |M|/(8 pi G) = 1.211887e-16 
+   (l1,l2,s1,s2) = (-2, 2, 1, -1):  |M|/(8 pi G) = 2.250000e+00 = t^2/s
+   (l1,l2,s1,s2) = (-2, 2, -1, 1):  |M|/(8 pi G) = 2.500000e-01 = u^2/s
+   (l1,l2,s1,s2) = (-2, 2, -1, -1):  |M|/(8 pi G) = 3.606932e-17 
+   (l1,l2,s1,s2) = (-2, -2, 1, 1):  |M|/(8 pi G) = 8.490450e-16 
+   (l1,l2,s1,s2) = (-2, -2, 1, -1):  |M|/(8 pi G) = 1.721777e-16 
+   (l1,l2,s1,s2) = (-2, -2, -1, 1):  |M|/(8 pi G) = 4.372172e-16 
+   (l1,l2,s1,s2) = (-2, -2, -1, -1):  |M|/(8 pi G) = 5.691250e-16 
+
+ theta = 160 deg, phi = 310 deg:  t^2/s = 3.762407, u^2/s = 0.003637
+   (l1,l2,s1,s2) = (2, 2, 1, 1):  |M|/(8 pi G) = 5.765189e-16 
+   (l1,l2,s1,s2) = (2, 2, 1, -1):  |M|/(8 pi G) = 1.379950e-16 
+   (l1,l2,s1,s2) = (2, 2, -1, 1):  |M|/(8 pi G) = 4.291423e-16 
+   (l1,l2,s1,s2) = (2, 2, -1, -1):  |M|/(8 pi G) = 1.984330e-16 
+   (l1,l2,s1,s2) = (2, -2, 1, 1):  |M|/(8 pi G) = 1.415149e-16 
+   (l1,l2,s1,s2) = (2, -2, 1, -1):  |M|/(8 pi G) = 3.636980e-03 = u^2/s
+   (l1,l2,s1,s2) = (2, -2, -1, 1):  |M|/(8 pi G) = 3.762407e+00 = t^2/s
+   (l1,l2,s1,s2) = (2, -2, -1, -1):  |M|/(8 pi G) = 2.388260e-16 
+   (l1,l2,s1,s2) = (-2, 2, 1, 1):  |M|/(8 pi G) = 2.388260e-16 
+   (l1,l2,s1,s2) = (-2, 2, 1, -1):  |M|/(8 pi G) = 3.762407e+00 = t^2/s
+   (l1,l2,s1,s2) = (-2, 2, -1, 1):  |M|/(8 pi G) = 3.636980e-03 = u^2/s
+   (l1,l2,s1,s2) = (-2, 2, -1, -1):  |M|/(8 pi G) = 1.415149e-16 
+   (l1,l2,s1,s2) = (-2, -2, 1, 1):  |M|/(8 pi G) = 1.984330e-16 
+   (l1,l2,s1,s2) = (-2, -2, 1, -1):  |M|/(8 pi G) = 4.291423e-16 
+   (l1,l2,s1,s2) = (-2, -2, -1, 1):  |M|/(8 pi G) = 1.379950e-16 
+   (l1,l2,s1,s2) = (-2, -2, -1, -1):  |M|/(8 pi G) = 5.765189e-16 
+
+====================================================================================================
+2. independent spinor closed form vs module: complex ratio over all 16 helicity configs and kinematic points
+====================================================================================================
+nonzero configurations: 20 of 80 (both routes zero for the rest: True)
+ratio module/spinor: mean = 1.000000000000-0.000000000000j, max |ratio - mean| = 3.79e-15
+
+====================================================================================================
+2b. same test for RANDOM lab kinematics, random complex TT graviton tensors, random photon polarisations
+====================================================================================================
+193 random configurations: ratio module/spinor mean = 1.000000000000-0.000000000000j, max |ratio - mean| = 1.49e-12
+=> the module's FULL multilinear amplitude (all phases) equals the KLT closed form up to one global constant.
+
+====================================================================================================
+3. mapping physical helicities to spin projections on a common axis (B&O's eq. 6 labels)
+====================================================================================================
+Head-on CM: J along +z of the graviton pair = l1 - l2 (graviton 2 moves along -z).
+Photon pair along n: J along n = s1 - s2.  Nonzero physical configurations found above:
+  physical (l1,l2,s1,s2) = (2, -2, 1, -1):  J_z(gg) = +4, J_n(gamma gamma) = +2;  |M|/(8 pi G) = u^2/s;  common-axis label (g-axis k1, photon axis q1): A_++++;  (g-axis k1, photon axis q2): A_++--
+  physical (l1,l2,s1,s2) = (2, -2, -1, 1):  J_z(gg) = +4, J_n(gamma gamma) = -2;  |M|/(8 pi G) = t^2/s;  common-axis label (g-axis k1, photon axis q1): A_++--;  (g-axis k1, photon axis q2): A_++++
+  physical (l1,l2,s1,s2) = (-2, 2, 1, -1):  J_z(gg) = -4, J_n(gamma gamma) = +2;  |M|/(8 pi G) = t^2/s;  common-axis label (g-axis k1, photon axis q1): A_--++;  (g-axis k1, photon axis q2): A_----
+  physical (l1,l2,s1,s2) = (-2, 2, -1, 1):  J_z(gg) = -4, J_n(gamma gamma) = -2;  |M|/(8 pi G) = u^2/s;  common-axis label (g-axis k1, photon axis q1): A_----;  (g-axis k1, photon axis q2): A_--++
+B&O eq. 6: A++++ = A---- = 8 pi G t^2/s,  A++-- = A--++ = 8 pi G u^2/s, others zero.
+Physical-helicity reading of B&O's labels: A++++ would be (l1,l2,s1,s2) = (2,2,1,1): module |M| = 2.1e-14 (zero) -> that reading is refuted.
+Common-axis reading: magnitudes and zeros match; with the graviton axis along k1 and the photon axis along q2
+(or along k2 and q1) the t/u assignment is exactly B&O's; with axes (k1, q1) t and u are interchanged,
+which only relabels the two photons and cannot change any integrated rate.
+
+====================================================================================================
+4. rephasing-invariant phases: can all eq.-6 amplitudes be made real & positive by a choice of conventions?
+====================================================================================================
+For fixed photons (q1, q2) and two graviton axes a, a' on the ring k1 + k2 = q1 + q2 (same K), the product
+  I(a, a') = M_a(+2,-2 -> +1,-1) M_a(+2,-2 -> -1,+1)^* M_a'(+2,-2 -> -1,+1) M_a'(+2,-2 -> +1,-1)^*
+is invariant under every rephasing of graviton and photon helicity states. Eq. 6 as real positive numbers
+would force arg I = 0 for all a, a'.
+  photons at theta=60, phi=17:  arg I(a=0, a') for a' tilted by 30 deg:   +63.87, 60 deg:   -17.09, 90 deg:  -125.78
+  photons at theta=60, phi=45:  arg I(a=0, a') for a' tilted by 30 deg:  +126.66, 60 deg:   -46.80, 90 deg:  +106.26
+  photons at theta=100, phi=10:  arg I(a=0, a') for a' tilted by 30 deg:   +21.15, 60 deg:   +52.85, 90 deg:  -178.25
+=> nonzero rephasing-invariant phases: no phase convention makes all eq.-6 amplitudes real and positive at once;
+   eq. 6 is correct for the MAGNITUDES only, and a coherent sum over different graviton pairs (eq. 7) needs the
+   phases.

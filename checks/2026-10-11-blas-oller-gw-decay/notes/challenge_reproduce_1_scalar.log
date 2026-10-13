@@ -1,0 +1,5 @@
+massless scalar: |M(+2,-2)|/(8piG) vs tu/s: max |ratio-1| = 2.22e-16; same helicity max |M| = 2.58e-31 (= S10 at m = 0: A+- -> -8piG tu/s, A++ -> 0, labels = physical helicities)
+grid {'NK': 6, 'NthK': 6, 'nth': 8, 'nph': 20, 'na': 256}: B&O-model isotropic scalar C/(7/(450pi)) = 1.000000
+   bo_plus : C = 9.484617e-04  C/(7/(450pi)) = 0.191551
+   binary  : C = 2.349680e-03  C/(7/(450pi)) = 0.474540
+   linear  : C = 1.315245e-03  C/(7/(450pi)) = 0.265626;  B&O model same profile 0.906236

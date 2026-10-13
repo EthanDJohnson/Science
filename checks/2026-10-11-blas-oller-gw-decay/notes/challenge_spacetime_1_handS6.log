@@ -1,0 +1,4 @@
+hand rate dP/dt  = 3*G**2*N**2*sigma**2*w**3/(25*pi)    B&O eq.8 = 3 G^2 N^2 w^3 sig^2/(25 pi): True
+exact total P    = 4*G**2*N**2*sigma*w**3/25  =  0.160000000000000 G^2 N^2 w^3 sig  (sig -> 0 limit)
+T_eff = P/rate   = 4*pi/(3*sigma)  -> T_eff*sig = 4.18879020478639 (4 pi/3 = 4.18879020478639 )
+Interpretation: B&O's own state yields a FINITE total of 4/25 G^2N^2w^3 sig pairs; eq.8 x T reproduces it only for T = 4pi/(3 sig).

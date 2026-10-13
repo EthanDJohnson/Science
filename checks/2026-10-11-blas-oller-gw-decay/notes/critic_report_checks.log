@@ -1,0 +1,7 @@
+(1) GW150914-like anchors: E_rel = 2 Msun c^2, nu = 150 Hz, t_m = 5 ms, sigma = 1/t_m
+   tau (eq. 10, vacuum) = 3.5779e+03 s;  tau/t_m = 7.156e+05
+   CMB f(150 Hz) = 3.7860e+08;  1 + 2f = 7.5720e+08
+   tau with (1 + 2f) = 4.7251e-06 s;  tau/t_m = 9.450e-04
+   c tau (vacuum) = 1.0726e+12 m = 5.367e+05 wavelengths;  c tau (stimulated) = 1.4165e+03 m = 7.088e-04 wavelengths (lambda = 1998.6 km)
+(2) profile dependence at equal N and equal sigma parameter (taskC1 (e) closed forms):
+   peak-rate ratio Gaussian/top-hat = 4 pi = 12.5664;  P_tot: top hat 0.16000, Gaussian 0.60159 G^2N^2w^3sig (ratio 3.7599)

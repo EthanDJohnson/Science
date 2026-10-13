@@ -1,0 +1,11 @@
+(2a) B&O model, massless scalar, symbolic: amplitude-level sum (1/2) sum_{l1 l2} f f A_{l1 l2} with S10 at m=0
+    scalar/photon rate ratio in the B&O model = 7/54;  x 3/(25 pi) = 7/450/pi  (B&O: 7/(450 pi); tau_phi = (54/7) tau)
+    numerical ring engine, B&O model, m = 0: C = 0.004951487118;  7/(450 pi) = 0.004951487118;  ratio = 1.000000000000
+
+(2b) eq. S11 vs the B&O-model ring integral at finite m (N_phi = 0), coefficient of G^2 N^2 omega^3 sigma^2
+    m = 0: S11 coefficient = 0.004951487118  (7/(450 pi) = 0.004951487118)
+    m = 0.1: S11 = 4.639379e-03 | B&O-model coherent (A++ + A+-) = 4.639380e-03 (ratio 1.000000) | opposite only = 4.633432e-03 | same only = 1.976836e-08 | incoherent sum = 4.633452e-03 (ratio 0.998722) | pointwise dC/dK ratio coherent/S11 at 3 K nodes: 1.000000, 1.000000, 1.000000
+    m = 0.3: S11 = 2.964774e-03 | B&O-model coherent (A++ + A+-) = 2.964779e-03 (ratio 1.000002) | opposite only = 2.738628e-03 | same only = 1.247737e-05 | incoherent sum = 2.751105e-03 (ratio 0.927931) | pointwise dC/dK ratio coherent/S11 at 3 K nodes: 1.000000, 1.000000, 1.000000
+    m = 0.5: S11 = 1.711354e-03 | B&O-model coherent (A++ + A+-) = 1.711372e-03 (ratio 1.000011) | opposite only = 8.920444e-04 | same only = 2.088870e-04 | incoherent sum = 1.100931e-03 (ratio 0.643310) | pointwise dC/dK ratio coherent/S11 at 3 K nodes: 1.000000, 1.000000, 1.000000
+    m = 0.7: S11 = 1.641803e-03 | B&O-model coherent (A++ + A+-) = 1.641838e-03 (ratio 1.000021) | opposite only = 1.089841e-04 | same only = 1.013256e-03 | incoherent sum = 1.122240e-03 (ratio 0.683541) | pointwise dC/dK ratio coherent/S11 at 3 K nodes: 1.000000, 1.000000, 1.000000
+    m = 0.9: S11 = 1.672795e-03 | B&O-model coherent (A++ + A+-) = 1.672822e-03 (ratio 1.000016) | opposite only = 6.541102e-07 | same only = 1.618183e-03 | incoherent sum = 1.618837e-03 (ratio 0.967744) | pointwise dC/dK ratio coherent/S11 at 3 K nodes: 1.000000, 1.000000, 1.000000

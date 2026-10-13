@@ -1,0 +1,8 @@
+closed form (no ring phase): C_coh = 3.6/6.4 = 0.5625
+a = 0.600 rad, s/w^2 = 1.27528, lab pol plus : ring-averaged (1/2)int dPhi2 sum|M|^2 = 4.087460e+00  [(4/5) pi G^2 s^2 = 4.087465e+00];  C_coh = 0.40922
+a = 0.600 rad, s/w^2 = 1.27528, lab pol cross: ring-averaged (1/2)int dPhi2 sum|M|^2 = 4.087460e+00  [(4/5) pi G^2 s^2 = 4.087465e+00];  C_coh = 0.40922
+a = 0.200 rad, s/w^2 = 0.15788, lab pol plus : ring-averaged (1/2)int dPhi2 sum|M|^2 = 6.264446e-02  [(4/5) pi G^2 s^2 = 6.264453e-02];  C_coh = 0.40922
+a = 0.200 rad, s/w^2 = 0.15788, lab pol cross: ring-averaged (1/2)int dPhi2 sum|M|^2 = 6.264446e-02  [(4/5) pi G^2 s^2 = 6.264453e-02];  C_coh = 0.40922
+a = 0.050 rad, s/w^2 = 0.00999, lab pol plus : ring-averaged (1/2)int dPhi2 sum|M|^2 = 2.509086e-04  [(4/5) pi G^2 s^2 = 2.509088e-04];  C_coh = 0.40922
+a = 0.050 rad, s/w^2 = 0.00999, lab pol cross: ring-averaged (1/2)int dPhi2 sum|M|^2 = 2.509086e-04  [(4/5) pi G^2 s^2 = 2.509088e-04];  C_coh = 0.40922
+a = 0.200, both helicity +2: (1/2)int dPhi2 sum|M|^2 = 1.030e-31 (same helicity: 0 expected)

@@ -1,0 +1,48 @@
+=== field strength: PJ focus vs physical near field (steady, equal luminosity; |R| relative to outgoing far-field |h1| ~ 1/(w r)) ===
+  l=0: max |R_PJ| = 2.000 (at w r = 0.01);  |h_l^(1)| at w r = 1: 1.000, at w r = 0.5: 2.000
+  l=2: max |R_PJ| = 0.614 (at w r = 3.34);  |h_l^(1)| at w r = 1: 3.606, at w r = 0.5: 25.060
+
+=== pair rates (proxy, G = w = 1, units G^2 B^4 w^...; only ratios matter), setting {'dr': 0.01, 'rT': 300.0} ===
+  l=0: PJ standing wave Gamma = 5.33491e+00
+        outgoing r_min =  0.500/w: Gamma = 5.51078e-02  Gamma_out/Gamma_PJ = 1.0330e-02
+        outgoing r_min =  0.700/w: Gamma = 4.04438e-02  Gamma_out/Gamma_PJ = 7.5810e-03
+        outgoing r_min =  1.000/w: Gamma = 2.57056e-02  Gamma_out/Gamma_PJ = 4.8184e-03
+        outgoing r_min =  2.000/w: Gamma = 6.83947e-03  Gamma_out/Gamma_PJ = 1.2820e-03
+        outgoing r_min =  6.283/w: Gamma = 3.52310e-04  Gamma_out/Gamma_PJ = 6.6039e-05
+  l=2: PJ standing wave Gamma = 3.74953e+00
+        outgoing r_min =  0.500/w: Gamma = 3.47226e+02  Gamma_out/Gamma_PJ = 9.2605e+01
+        outgoing r_min =  0.700/w: Gamma = 4.94868e+01  Gamma_out/Gamma_PJ = 1.3198e+01
+        outgoing r_min =  1.000/w: Gamma = 6.54156e+00  Gamma_out/Gamma_PJ = 1.7446e+00
+        outgoing r_min =  2.000/w: Gamma = 1.58756e-01  Gamma_out/Gamma_PJ = 4.2340e-02
+        outgoing r_min =  6.283/w: Gamma = 1.48907e-03  Gamma_out/Gamma_PJ = 3.9714e-04
+  K_l2/K_l0 at w r_min =  0.500: 6300.85  (ratio of outgoing rates per unit luminosity)
+  K_l2/K_l0 at w r_min =  0.700: 1223.59  (ratio of outgoing rates per unit luminosity)
+  K_l2/K_l0 at w r_min =  1.000: 254.48  (ratio of outgoing rates per unit luminosity)
+  K_l2/K_l0 at w r_min =  2.000: 23.21  (ratio of outgoing rates per unit luminosity)
+  K_l2/K_l0 at w r_min =  6.283: 4.23  (ratio of outgoing rates per unit luminosity)
+  PJ standing l=2 / l=0: 0.7028   [23 s]
+
+=== pair rates (proxy, G = w = 1, units G^2 B^4 w^...; only ratios matter), setting {'dr': 0.02, 'rT': 600.0} ===
+  l=0: PJ standing wave Gamma = 5.34828e+00
+        outgoing r_min =  0.500/w: Gamma = 5.51054e-02  Gamma_out/Gamma_PJ = 1.0303e-02
+        outgoing r_min =  0.700/w: Gamma = 4.04420e-02  Gamma_out/Gamma_PJ = 7.5617e-03
+        outgoing r_min =  1.000/w: Gamma = 2.57044e-02  Gamma_out/Gamma_PJ = 4.8061e-03
+        outgoing r_min =  2.000/w: Gamma = 6.83898e-03  Gamma_out/Gamma_PJ = 1.2787e-03
+        outgoing r_min =  6.283/w: Gamma = 3.52189e-04  Gamma_out/Gamma_PJ = 6.5851e-05
+  l=2: PJ standing wave Gamma = 3.77815e+00
+        outgoing r_min =  0.500/w: Gamma = 3.47229e+02  Gamma_out/Gamma_PJ = 9.1904e+01
+        outgoing r_min =  0.700/w: Gamma = 4.94875e+01  Gamma_out/Gamma_PJ = 1.3098e+01
+        outgoing r_min =  1.000/w: Gamma = 6.54172e+00  Gamma_out/Gamma_PJ = 1.7315e+00
+        outgoing r_min =  2.000/w: Gamma = 1.58766e-01  Gamma_out/Gamma_PJ = 4.2022e-02
+        outgoing r_min =  6.283/w: Gamma = 1.48921e-03  Gamma_out/Gamma_PJ = 3.9416e-04
+  K_l2/K_l0 at w r_min =  0.500: 6301.17  (ratio of outgoing rates per unit luminosity)
+  K_l2/K_l0 at w r_min =  0.700: 1223.67  (ratio of outgoing rates per unit luminosity)
+  K_l2/K_l0 at w r_min =  1.000: 254.50  (ratio of outgoing rates per unit luminosity)
+  K_l2/K_l0 at w r_min =  2.000: 23.21  (ratio of outgoing rates per unit luminosity)
+  K_l2/K_l0 at w r_min =  6.283: 4.23  (ratio of outgoing rates per unit luminosity)
+  PJ standing l=2 / l=0: 0.7064   [45 s]
+
+=== consequence (uses taskB_outgoing.py printed values: B&O-applied 0.03820 G^2L^2w; monopole proxy at r_min = 1/w 6.426e-03; merger 1.909e-09 pairs; B&O rate x t_m = 6.987e-07 pairs) ===
+  l=2 (with near-field terms) / monopole at r_min = 1/w = 254.5
+  steady: proxy l=2 at r_min = 1/w = 1.635e+00 G^2L^2w; x C_coh x g_binary = 2.656e-02 vs B&O-applied 0.0382  (ratio 0.70)
+  merger: in-in beyond r_min = 1/w (318 km) rescaled to l=2: 4.86e-07 pairs vs B&O rate x t_m 6.99e-07 (ratio 0.70)

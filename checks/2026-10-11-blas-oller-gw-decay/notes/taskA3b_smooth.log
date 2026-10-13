@@ -1,0 +1,7 @@
+pattern binary, physical amplitudes, two grids:
+   grid {'NK': 8, 'NthK': 8, 'nth': 8, 'nph': 24, 'na': 32}: C = 0.02308931;  C/(3/(25 pi)) = 0.604477   [6 s]
+   grid {'NK': 12, 'NthK': 12, 'nth': 10, 'nph': 32, 'na': 48}: C = 0.02308931;  C/(3/(25 pi)) = 0.604477   [44 s]
+pattern linear, physical amplitudes, two grids:
+   grid {'NK': 8, 'NthK': 8, 'nth': 8, 'nph': 24, 'na': 32}: C = 0.01288882;  C/(3/(25 pi)) = 0.337429   [10 s]
+   grid {'NK': 12, 'NthK': 12, 'nth': 10, 'nph': 32, 'na': 48}: C = 0.01288882;  C/(3/(25 pi)) = 0.337429   [50 s]
+   B&O model with the same linear-quadrupole profile: C = 0.03403691 (C/(3/(25 pi)) = 0.891084);  physical/B&O-model for this profile = 0.37867

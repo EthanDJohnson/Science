@@ -1,0 +1,29 @@
+====================================================================================================
+(a) symbolic evaluation of eq. S6 with B&O's integrand (s^2 - 2tu)(s'^2 - 2t'u')/(s s')
+====================================================================================================
+Theta^2 from N = 2 helicities x int dk~ Theta^2  -> [2*pi**2*N/(omega*sigma)]  (B&O: 2 pi^2 N/(omega sigma))
+int d alpha (t^2+u^2)/s = -pi*(K**2/2 - 2*omega**2)*(sin(theta)**2 + 2)
+int dOmega_gamma [int d alpha (t^2+u^2)/s]^2 = 36*pi**3*(K - 2*omega)**2*(K + 2*omega)**2/5
+dP/dt from eq. S6 = 3*G**2*N**2*omega**3*sigma**2/(25*pi)  ; coefficient of G^2 N^2 omega^3 sigma^2 = 3/(25*pi)  ; B&O eq. 8: 3/(25 pi)
+
+====================================================================================================
+(b) Monte-Carlo check of the ring volume  V(K) = vol{k : |K/2 - k|, |K/2 + k| in [w - sg/2, w + sg/2]}
+    claimed exactly 2 pi (w sg)^2/K for sg < K < 2w - sg
+====================================================================================================
+   K = 0.3: MC volume = 8.370830e-03 +- 1.2e-05;  2 pi (w sg)^2/K = 8.377580e-03
+   K = 1.0: MC volume = 2.517015e-03 +- 4.0e-06;  2 pi (w sg)^2/K = 2.513274e-03
+   K = 1.7: MC volume = 1.478503e-03 +- 2.5e-06;  2 pi (w sg)^2/K = 1.478397e-03
+
+====================================================================================================
+(c) numerical ring engine with B&O's real amplitudes (validates the engine normalisation used for physics)
+====================================================================================================
+   isotropic top-hat, B&O model: C = 0.038197186342;  3/(25 pi) = 0.038197186342;  ratio = 1.000000000000
+   linear-quadrupole profile f_+ = f_- = (sin^2 th/2)/norm, B&O model: C = 0.0340369102 (finer grid 0.0340369102);  C/(3/(25 pi)) = 0.891084
+
+====================================================================================================
+(d) the exact energy delta instead of 2 pi delta(0) -> T (same model, same narrow band)
+====================================================================================================
+   int d^4(delta k) delta(d1 + d2 - d1' - d2') over the band^4 = sigma^3 x 2/3  (Irwin-Hall density at 0)
+   Monte Carlo density of d1+d2-d1'-d2' at 0: 0.6704
+   => P_total = (dP/dt) x T_eff with T_eff = 2 pi x 2/3/sigma = 4*pi/3/sigma = 4.1888/sigma
+   => P_total (mean number of photon PAIRS over the whole packet history, B&O model) = 4/25 G^2 N^2 omega^3 sigma = 0.160000 G^2 N^2 omega^3 sigma;  photons = 2 x pairs.

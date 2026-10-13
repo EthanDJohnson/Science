@@ -1,0 +1,7 @@
+Per-pair, head-on, s=4 (omega=1): phi-averaged sum over photon helicities of |M|^2/(8piG)^2, integrated dcos
+  plus(x) / plus(x) aligned   : int dcos <sum|M|^2>_phi = 6.400000
+  plus / cross                : int dcos <sum|M|^2>_phi = 6.400000
+  R x L (phys +2,-2)          : int dcos <sum|M|^2>_phi = 12.800000
+  R x R (phys +2,+2)          : int dcos <sum|M|^2>_phi = 0.000000
+  B&O (t^2+u^2)^2/(2 s^2) integrated: 7.466667;  (t^4+u^4)/(2s^2): 6.400000;  ratio = 0.857143 (6/7 = 0.857143)
+  theta=40: cross-term phi-mean 5.02e-15, dominant harmonic 8 amplitude 0.170714, t^2u^2/s^2 = 0.170714

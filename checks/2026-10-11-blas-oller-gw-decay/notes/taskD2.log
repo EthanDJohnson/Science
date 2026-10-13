@@ -1,0 +1,40 @@
+
+==============================================================================================================
+(a) exact short-time evolution: Delta<n_b1> vs N1 N2 (1+f1)(1+f2) - (1+N1)(1+N2) f1 f2
+==============================================================================================================
+  coherent gravitons N=(1.440,0.810), photons f=(0.3,0.8): Delta<n_b1>/(g t)^2 = 1.669261; formula = 1.669440; N1N2(1+f1+f2) = 2.449440; vacuum N1N2 = 1.166400
+  coherent gravitons N=(1.000,1.210), photons f=(0.6,0.2): Delta<n_b1>/(g t)^2 = 1.792767; formula = 1.792800; N1N2(1+f1+f2) = 2.178000; vacuum N1N2 = 1.210000
+  thermal  gravitons N=(1.426,0.810), photons f=(0.3,0.8): Delta<n_b1>/(g t)^2 = 1.652588; formula = 1.648375; N1N2(1+f1+f2) = 2.424995; vacuum N1N2 = 1.154759
+
+  classical-pump limit: two-mode squeeze S(r) = exp(r (b1+ b2+ - b1 b2)) of a thermal state (dense, n = 60)
+   r=0.05, f=(0.3,0.8): Delta<n1> = 0.00525438;  sinh^2 r (1 + f1 + f2) = 0.00525438
+   r=0.4, f=(0.5,0.5): Delta<n1> = 0.33743495;  sinh^2 r (1 + f1 + f2) = 0.33743495
+   r=0.8, f=(0.2,1.1): Delta<n1> = 1.81408403;  sinh^2 r (1 + f1 + f2) = 1.81408414
+
+==============================================================================================================
+(b) average of 1 + f(q1) + f(q2) over the photon energies, relative to B&O's 1 + 2 f(omega_s)
+==============================================================================================================
+  (i) B&O's isotropic narrow-band model: pair momentum K = 2 w x, photon CM polar angle c (w.r.t. K);
+      eq. S6 integrand ~ dK s^2 (2 + sin^2 theta)^2 (ring volumes 2 pi (w sigma)^2/K each), s = 4w^2(1 - x^2);
+      lab photon energies q = w (1 +- x c).  Check of this weight: its normalisation reproduces 3/(25 pi):
+      coefficient from this weight = 0.038197186342;  3/(25 pi) = 0.038197186342
+      Rayleigh-Jeans limit: <f(q1)+f(q2)>/(2 f(w)) = <1/(1 - x^2 c^2)> = 1.049558
+      w/T =   1e-04: <1 + f1 + f2> = 2.099115e+04;  1 + 2 f(w) = 2.000000e+04;  ratio = 1.049558
+      w/T =   1e-02: <1 + f1 + f2> = 2.099132e+02;  1 + 2 f(w) = 2.000017e+02;  ratio = 1.049557
+      w/T =   3e-01: <1 + f1 + f2> = 7.046967e+00;  1 + 2 f(w) = 6.716592e+00;  ratio = 1.049188
+      w/T =   1e+00: <1 + f1 + f2> = 2.262773e+00;  1 + 2 f(w) = 2.163953e+00;  ratio = 1.045666
+      w/T =   3e+00: <1 + f1 + f2> = 1.133381e+00;  1 + 2 f(w) = 1.104791e+00;  ratio = 1.025878
+      w/T =   1e+01: <1 + f1 + f2> = 1.001231e+00;  1 + 2 f(w) = 1.000091e+00;  ratio = 1.001140
+  (ii) incoherent isotropic monochromatic gas, physical amplitudes: pair weight ~ sigma v ~ (1 - c12)^2,
+       boost beta = cos(theta12/2), CM photon distribution ~ (1 - cos g)^4 + (1 + cos g)^4 about the graviton
+       axis (perpendicular to K), cos g = sin chi cos phi; q = w (1 +- beta cos chi).
+       Rayleigh-Jeans: <f(q1)+f(q2)>/(2 f(w)) = 1.0787 +- 0.0006
+       w/T = 1e-02: <1 + f1 + f2>/(1 + 2 f(w)) = 1.0787
+       w/T = 1e+00: <1 + f1 + f2>/(1 + 2 f(w)) = 1.0725
+       w/T = 3e+00: <1 + f1 + f2>/(1 + 2 f(w)) = 1.0413
+
+==============================================================================================================
+(c) inverse-process correction f1 f2 (1 + N1 + N2)/[N1 N2 (1 + f1 + f2)] ~ f/N
+==============================================================================================================
+  GW150914 merger (E ~ 3 Msun c^2, nu ~ 150 Hz): N0 = 5.40e+78; graviton phase-space occupation ~ 2 pi N0/max(w R, 1)^2 = 3.4e+79; CMB f(150 Hz) = 3.79e+08; correction ~ f/N = 1.1e-71
+  (estimate: phase-space density conserved along rays; emission region ~ max(R_source, 1/omega))

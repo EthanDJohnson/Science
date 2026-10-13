@@ -1,0 +1,5 @@
+eq.11  G^2 E^2 w^2 delta^2 hbar^x c^y = power  ->  {x: 1, y: -10}   (B&O: hbar^1 c^-10)
+eq.8   G^2 E^2 w delta^2 hbar^x c^y = 1/time   ->  {x: 0, y: -10}   (hbar-free photon-pair rate)
+P_tot  G^2 E^2 w delta hbar^x c^y = number      ->  {x: 0, y: -10}
+eq.12/eq.11 = 1/(delta**2*dt**2)  (=1 iff dt = 1/delta)
+3 sig/(4 pi H0) at w_s = 1e-10 eV, eps = 0.1: 1.661e+21

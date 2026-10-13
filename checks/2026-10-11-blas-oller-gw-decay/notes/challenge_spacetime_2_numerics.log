@@ -1,0 +1,30 @@
+=== A. algebra ===
+V_eff from eq.8 = 40*pi**2/(9*sigma**2*w) ; equals 5 lam^3/(9 pi eps^2) with lam=2pi/w, eps=sig/w: True
+int L dE = sigma**2  int L^2 dE = 2*sigma**3/3  T_eff = 2pi int L^2/(int L)^2 = 4*pi/(3*sigma)
+eq.9 at t = tau(eq.10): 1 photon(s)  -> tau = time to FIRST photon
+steady mapping N=L t/w, sig=1/t: 3*G**2*L**2*w/(25*pi) = 0.03819718634205488 G^2 L^2 w
+
+=== B. GW150914-like, SI ===
+N0 = 3.5962e+78; eq.8 dP/dt = 1.3975e-04 pairs/s; photons/s = 2.7950e-04; tau = 3.5779e+03 s; rate*t_m = 6.9874e-07; tau/t_m = 7.156e+05 (B&O require tau << 1/sig)
+w D = 3.9773e+19; focus strain l=0 (2 w D h) = 0.080
+lambda = 1998.6 km, lambda/2pi = 318.1 km; GM_tot/c^2 (65 Msun) = 96 km
+
+=== C. own outgoing-wave radial transform (w=1, steady) ===
+window exp8:
+  r_min = 0.159 lambda: K_l0 = 1.5801e-01 (R=40) 1.6273e-01 (R=80); K_l2 = 1.9950e+01 / 2.0582e+01;  K_l2/K_l0 = 126.48
+  r_min = 1.000 lambda: K_l0 = 3.2074e-03 (R=40) 3.7806e-03 (R=80); K_l2 = 1.0319e-02 / 1.2213e-02;  K_l2/K_l0 = 3.23
+  r_min = 2.000 lambda: K_l0 = 3.5579e-04 (R=40) 4.9381e-04 (R=80); K_l2 = 9.1723e-04 / 1.2771e-03;  K_l2/K_l0 = 2.59
+window poly:
+  r_min = 0.159 lambda: K_l0 = 1.4355e-01 (R=40) 1.4805e-01 (R=80); K_l2 = 1.5923e+01 / 1.6445e+01;  K_l2/K_l0 = 111.08
+  r_min = 1.000 lambda: K_l0 = 2.1145e-03 (R=40) 2.5085e-03 (R=80); K_l2 = 7.0984e-03 / 8.4542e-03;  K_l2/K_l0 = 3.37
+  r_min = 2.000 lambda: K_l0 = 2.1830e-04 (R=40) 3.0628e-04 (R=80); K_l2 = 5.7845e-04 / 8.1408e-04;  K_l2/K_l0 = 2.66
+l=0 scaling, window exp8, R = 30 r_min:
+  r_min=1 lambda: K_l0 = 4.1538e-03
+  r_min=2 lambda: K_l0 = 6.3828e-04
+  r_min=4 lambda: K_l0 = 8.8196e-05
+  local slopes: [np.float64(-2.702), np.float64(-2.855)]
+
+=== D. analysis' l=0-proxy near-zone numbers rescaled by the l=2/l=0 near-field ratio ===
+  own exp8 window: K_l2/K_l0 = 126.5 -> steady ratio to B&O-applied (no g) = 8.71, with binary g = 0.345; merger pairs beyond lambda/2pi = 2.41e-07 vs B&O rate x t_m = 6.99e-07 (ratio 0.35)
+  own poly window: K_l2/K_l0 = 111.1 -> steady ratio to B&O-applied (no g) = 7.65, with binary g = 0.303; merger pairs beyond lambda/2pi = 2.12e-07 vs B&O rate x t_m = 6.99e-07 (ratio 0.30)
+  taskB_outgoing_l2: K_l2/K_l0 = 254.5 -> steady ratio to B&O-applied (no g) = 17.52, with binary g = 0.695; merger pairs beyond lambda/2pi = 4.86e-07 vs B&O rate x t_m = 6.99e-07 (ratio 0.70)

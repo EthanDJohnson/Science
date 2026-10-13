@@ -1,0 +1,31 @@
+(1) |module| vs eq. S10 magnitudes, labels = PHYSICAL helicities (l1 along graviton 1, l2 along graviton 2)
+    S10: A++ = A-- = -8 pi G m^4 s/((t-m^2)(u-m^2)),  A+- = A-+ = -8 pi G (m^4 - t u)^2/(s (t-m^2)(u-m^2))
+   s=4.0, m=0.3, theta=20: |M(+2,+2)|/S10_same = 1.000000000000, |M(+2,-2)|/S10_opp = 1.000000000000
+   s=4.0, m=0.3, theta=70: |M(+2,+2)|/S10_same = 1.000000000000, |M(+2,-2)|/S10_opp = 1.000000000000
+   s=4.0, m=0.3, theta=125: |M(+2,+2)|/S10_same = 1.000000000000, |M(+2,-2)|/S10_opp = 1.000000000000
+   s=4.0, m=0.9, theta=20: |M(+2,+2)|/S10_same = 1.000000000000, |M(+2,-2)|/S10_opp = 1.000000000000
+   s=4.0, m=0.9, theta=70: |M(+2,+2)|/S10_same = 1.000000000000, |M(+2,-2)|/S10_opp = 1.000000000000
+   s=4.0, m=0.9, theta=125: |M(+2,+2)|/S10_same = 1.000000000000, |M(+2,-2)|/S10_opp = 1.000000000000
+   s=10.0, m=1.2, theta=20: |M(+2,+2)|/S10_same = 1.000000000000, |M(+2,-2)|/S10_opp = 1.000000000000
+   s=10.0, m=1.2, theta=70: |M(+2,+2)|/S10_same = 1.000000000000, |M(+2,-2)|/S10_opp = 1.000000000000
+   s=10.0, m=1.2, theta=125: |M(+2,+2)|/S10_same = 1.000000000000, |M(+2,-2)|/S10_opp = 1.000000000000
+   s=3.0, m=0.1, theta=20: |M(+2,+2)|/S10_same = 1.000000000001, |M(+2,-2)|/S10_opp = 1.000000000000
+   s=3.0, m=0.1, theta=70: |M(+2,+2)|/S10_same = 1.000000000007, |M(+2,-2)|/S10_opp = 1.000000000000
+   s=3.0, m=0.1, theta=125: |M(+2,+2)|/S10_same = 1.000000000007, |M(+2,-2)|/S10_opp = 1.000000000000
+   max deviation: same-helicity 7.3e-12, opposite-helicity 3.1e-15
+   => S10 magnitudes confirmed with A++ = physical SAME helicities (J_z = 0 head-on; the m^4 amplitude, nonzero
+      in the forward direction) and A+- = physical OPPOSITE helicities (J_z = +-4; (m^4 - tu)^2 vanishes at theta = 0, pi).
+   J_z check at theta = 1e-3 (s = 4, m = 0.5): |M(2,2)|/(8 pi G) = 2.500e-01
+   J_z check at theta = 1e-3 (s = 4, m = 0.5): |M(2,-2)|/(8 pi G) = 2.250e-12
+
+   crossing convention: gravitational Compton phi(p) g(k, +2) -> phi(p') g(k', lf), m = 1, omega = 0.7, lab:
+      lf = +2: |M|/(8 pi G) = 1.368596657
+      lf = -2: |M|/(8 pi G) = 0.328989928
+      S10 crossed (s,t,u)_gg = (t_C, u_C, s_C): same-helicity form = 0.328989928, opposite-helicity form = 1.368596657
+      => Compton helicity FLIP (+2 -> -2) = the S10 m^4 ('A++') form; crossing the outgoing graviton to an
+      incoming one reverses its helicity, so the flip becomes gg -> phi phi with SAME physical helicities.
+      Hence B&O's A^t_{++} (m^4) is labelled by the physical helicities of the two INCOMING gravitons, not by
+      the (in, out) labels of the Compton amplitude it was crossed from - unlike eq. 6, whose nonzero labels
+      only make sense as spin projections on a common axis (taskA1).
+
+   massless scalar, 146 random configurations and random complex TT tensors: module/spinor mean = 1.000000000000+0.000000000000j, max |ratio - mean| = 1.8e-12

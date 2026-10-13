@@ -1,0 +1,44 @@
+
+====================================================================================================
+(1) ring-average derivation of the scalar/photon ratio in B&O's model; physical cross-section ratio
+====================================================================================================
+  int (2+sin^2)^2 dx = 72/5, int (2-sin^2)^2 dx = 56/15;  ratio scalar/photon (2 photon pols) = 7/54
+  x 3/(25 pi): 7/450/pi  (B&O: 7/(450 pi))
+  ring average <(n.p)^2> = sin(theta)**2/2
+  physical (incoherent) sigma_phiphi/sigma_gamgam at m = 0, by hand: 1/12
+  module sigma_total(R,L) scalar/photon at s=1.0: 0.0833333333
+  module sigma_total(R,L) scalar/photon at s=3.0: 0.0833333333
+
+====================================================================================================
+(2) eq. S11 massless limit and tau_phi/tau
+====================================================================================================
+  S11 at m = 0, N_phi = 0: dP/dt = 7/(450*pi) G^2 N^2 w^3 sigma^2   (B&O: 7/(450 pi))
+  tau_phi/tau = (2 x 3/(25 pi))/(2 x 7/(450 pi)) = 54/7  (B&O: 54/7)
+
+====================================================================================================
+(3) resonant regime: S11 for w_s = m (1 + delta), delta -> 0; eq. 17 needs dP/dt -> G^2 N^2 sigma^2 N_phi m^3 delta/16
+====================================================================================================
+  delta = 0.01: [dP/dt]/(G^2 N^2 sigma^2 N_phi m^3 delta) = 0.0599282336472   (1/16 = 0.0625)
+  delta = 0.0001: [dP/dt]/(G^2 N^2 sigma^2 N_phi m^3 delta) = 0.0624734461567   (1/16 = 0.0625)
+  delta = 1.0e-6: [dP/dt]/(G^2 N^2 sigma^2 N_phi m^3 delta) = 0.0624997343759   (1/16 = 0.0625)
+  with sigma = m v^2/2, delta = v^2/2: G^2 N^2 (m^2 v^4/4) N_phi m^3 (v^2/2)/16 = G^2 m^5 N^2 v^6 N_phi/128 (eq. 17)
+  check S11 numerics at m = 1e-4, w = 1: J/(15360 pi) = 0.00495148678684;  7/(450 pi) = 0.00495148711841
+
+====================================================================================================
+(4) eqs. 16-18 in SI
+====================================================================================================
+  m = 1e-22 eV, v = 0.001: N_phi = n/[(4pi/3)(m v)^3/(2 pi hbar)^3] = 5.66e+87;  n/[(m v)^3/(2 pi hbar)^3] = 2.37e+88   (eq. 16 scaling: 6e87 (1e-22 eV/m)^4 = 6.0e+87)
+  m = 1e-21 eV, v = 0.001: N_phi = n/[(4pi/3)(m v)^3/(2 pi hbar)^3] = 5.66e+83;  n/[(m v)^3/(2 pi hbar)^3] = 2.37e+84   (eq. 16 scaling: 6e87 (1e-22 eV/m)^4 = 6.0e+83)
+  W_phi = 2 m x eq.17 with N_phi = 9 pi H0^2 Omega/(4 G m^4 v^3): 9*pi*G*H0**2*N0**2*Omega*m**2*v**3/256   (B&O: 9 pi G m^2 v^3 N0^2 H0^2 Omega_DM/256)
+
+  eq. 18: m = w_s (ISCO: w_s = 8800 pi (Msun/M) rad/s), E_rel = 2 Msun c^2 (M/65 Msun), N0 = E_rel/(hbar w_s)
+  m = 1e-21 eV: w_s = 1.519e-06 rad/s, M = 1.82e+10 Msun, E_rel = 1.00e+56 J, N0 = 6.25e+95; W_phi (x_MW = 1, v = 1e-3) = 3.78e+13 W;  W/(m c^2) = 2.4e+53 s^-1 (scalars), pairs 1.2e+53 s^-1
+     x_MW = 1e5: W_phi = 3.78e+18 W, scalars 2.4e+58 s^-1
+     merger duration t_m = 5 ms (M/65 Msun) = 1.40e+06 s -> natural bandwidth ~ 1/t_m = 7.14e-07 s^-1; resonant band m v^2/2 = 7.60e-13 s^-1; fraction of N0 in band ~ 1.1e-06; rate ~ (N sigma)^2 -> suppression of eq. 17 by ~ 1.1e-12 if the band is filled at the merger's spectral density
+     time to accumulate the resonant band: 1/(m v^2/2) = 1.32e+12 s = 4.2e+04 yr (eq. 8 needs tau << 1/sigma)
+     inverse process: net ~ f_g^2 (1 + 2 N_phi) - N_phi^2 (1 + 2 f_g); f_g ~ 1.2e+97, N_phi (x_MW = 1e5) ~ 5.7e+88 -> forward wins iff f_g > N_phi: True
+  m = 1e-22 eV: w_s = 1.519e-07 rad/s, M = 1.82e+11 Msun, E_rel = 1.00e+57 J, N0 = 6.25e+97; W_phi (x_MW = 1, v = 1e-3) = 3.78e+15 W;  W/(m c^2) = 2.4e+56 s^-1 (scalars), pairs 1.2e+56 s^-1
+     x_MW = 1e5: W_phi = 3.78e+20 W, scalars 2.4e+61 s^-1
+     merger duration t_m = 5 ms (M/65 Msun) = 1.40e+07 s -> natural bandwidth ~ 1/t_m = 7.14e-08 s^-1; resonant band m v^2/2 = 7.60e-14 s^-1; fraction of N0 in band ~ 1.1e-06; rate ~ (N sigma)^2 -> suppression of eq. 17 by ~ 1.1e-12 if the band is filled at the merger's spectral density
+     time to accumulate the resonant band: 1/(m v^2/2) = 1.32e+13 s = 4.2e+05 yr (eq. 8 needs tau << 1/sigma)
+     inverse process: net ~ f_g^2 (1 + 2 N_phi) - N_phi^2 (1 + 2 f_g); f_g ~ 1.2e+99, N_phi (x_MW = 1e5) ~ 5.7e+92 -> forward wins iff f_g > N_phi: True
