@@ -1,0 +1,39 @@
+# math_run log
+command:  python3 runs/2026-10-13-gravitational-wave-decay-photon-pairs/math/mechanist/M-MECHANIST-02.py
+started:  2026-10-13T17:32:04Z
+duration: 0.7 s
+exit:     0
+versions: python 3.13.16, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   13 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+cross term X(phi) = M_(Jz=-4) conj(M_(Jz=+4)) at theta = 1.1: photons (1+,2-): max |X - X0 e^(-8i phi)|/|X0| = 2.43e-15, photons (1-,2+): max |X - X0 e^(+8i phi)|/|X0| = 2.43e-15
+  phi = 0.000: ang: |X/X0| = 1.000000, arg(X/X0)/phi = 0.0000; sq: |X/X0| = 1.000000, arg(X/X0)/phi = 0.0000
+  phi = 0.157: ang: |X/X0| = 1.000000, arg(X/X0)/phi = -8.0000; sq: |X/X0| = 1.000000, arg(X/X0)/phi = 8.0000
+  phi = 0.314: ang: |X/X0| = 1.000000, arg(X/X0)/phi = -8.0000; sq: |X/X0| = 1.000000, arg(X/X0)/phi = 8.0000
+  phi = 0.471: ang: |X/X0| = 1.000000, arg(X/X0)/phi = 5.3333; sq: |X/X0| = 1.000000, arg(X/X0)/phi = -5.3333
+  phi = 0.628: ang: |X/X0| = 1.000000, arg(X/X0)/phi = 2.0000; sq: |X/X0| = 1.000000, arg(X/X0)/phi = -2.0000
+  phi = 0.785: ang: |X/X0| = 1.000000, arg(X/X0)/phi = 0.0000; sq: |X/X0| = 1.000000, arg(X/X0)/phi = -0.0000
+PASS 1.000000000000002 == 1: within 1e-10; 1 vs 1 (SI)
+beta = 0.000: sum_final|M|^2/(8piG s)^2 over phi: min 0.11040 max 0.18173 mean 0.14230
+beta = 0.785: sum_final|M|^2/(8piG s)^2 over phi: min 0.11975 max 0.17018 mean 0.14230
+beta = 1.571: sum_final|M|^2/(8piG s)^2 over phi: min 0.14230 max 0.14230 mean 0.14230
+beta = 1.300: sum_final|M|^2/(8piG s)^2 over phi: min 0.13377 max 0.15285 mean 0.14230
+references at theta = 1.1: incoherent (t^4+u^4)/(2s^4) = 0.14230, B&O real-sign (t^2+u^2)^2/(2s^4) = 0.18173, (t^2-u^2)^2/(2s^4) = 0.10287
+PASS 0.142301842554 == 0.142301842554: within 1e-09; 0.142302 vs 0.142302 (SI)
+PASS 0.181729 == 0.18173: within 0.0001; 0.181729 vs 0.18173 (SI)
+PASS 0.142302 == 0.14230: within 0.0001; 0.142302 vs 0.1423 (SI)
+PASS 0.102875 == 0.10287: within 0.0001; 0.102875 vs 0.10287 (SI)
+int (t^4+u^4)/s^4 = 4/5 ; int (t^2+u^2)^2/s^4 = 14/15 ; int (t^2-u^2)^2/s^4 = 2/3
+PASS 4/5 == 4/5: symbolic
+PASS 14/15 == 14/15: symbolic
+PASS 2/3 == 2/3: symbolic
+PASS 7/6 == 7/6: symbolic
+PASS 5/7 == 5/7: symbolic
+PASS 12/7 == 12/7: symbolic
+PASS 6/7 == 6/7: symbolic
+PASS 0 == 0: symbolic
+SUMMARY: 13 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

@@ -1,0 +1,20 @@
+# math_run log
+command:  python3 runs/2026-10-13-gravitational-wave-decay-photon-pairs/math/empiricist/M-EMPIRICIST-06.py
+started:  2026-10-13T17:40:34Z
+duration: 0.5 s
+exit:     0
+versions: python 3.13.16, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   4 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+410 Mpc = 1.2651e+25 m; L/1e11 m = 1.2651e+14
+PASS 410 Mpc == 1.3e25 m: within 0.03; 1.26513e+25 vs 1.3e+25 (SI)
+PASS 126512780841146.05 == 1.3e14: within 0.03; 1.26513e+14 vs 1.3e+14 (SI)
+log10 survival (energy, e-folding 1e11 m) = -5.4944e+13
+h nu/kT = 2.6413e-09; f = 3.7860e+08; 1 + 2f = 7.5720e+08
+PASS 757202738.941724 == 7.6e8: within 0.01; 7.57203e+08 vs 7.6e+08 (SI)
+PASS lim x->0 of x/(exp(x) - 1) == 1: symbolic limit 1
+SUMMARY: 4 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

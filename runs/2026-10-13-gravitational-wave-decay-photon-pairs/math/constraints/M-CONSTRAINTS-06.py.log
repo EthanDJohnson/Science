@@ -1,0 +1,58 @@
+# math_run log
+command:  python3 runs/2026-10-13-gravitational-wave-decay-photon-pairs/math/constraints/M-CONSTRAINTS-06.py
+started:  2026-10-13T17:54:53Z
+duration: 0.7 s
+exit:     0
+versions: python 3.13.16, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   28 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+L_P = 3.6282549044112803e+52 W ; E_P = 1.2208901282098642e+28 eV
+PASS 6*E*G**2*hbar*omega**2*sigma/(25*pi*c**10) == 6*E*G**2*hbar*omega**2*sigma/(25*pi*c**10): symbolic
+1 + 2f at 150 Hz: 757202740.4056767
+PASS 757202740.4056767 == 7.6e8: within 0.01; 7.57203e+08 vs 7.6e+08 (SI)
+E=2 Msun c^2: pairs/burst=6.987e-07, r_m/l=3.940e-03, stimulated pairs=5.291e+02, W/L=3.886e-85
+PASS 6.987013698385644e-07 == 7e-07: within 0.05; 6.98701e-07 vs 7e-07 (SI)
+PASS 3.88589926835225e-85 == 3.9e-85: within 0.05; 3.8859e-85 vs 3.9e-85 (SI)
+E=3 Msun c^2: pairs/burst=1.572e-06, r_m/l=5.911e-03, stimulated pairs=1.190e+03, W/L=5.829e-85
+PASS 1.57207808213677e-06 == 1.6e-06: within 0.05; 1.57208e-06 vs 1.6e-06 (SI)
+PASS 5.828848902528378e-85 == 5.8e-85: within 0.05; 5.82885e-85 vs 5.8e-85 (SI)
+PASS 0.003940393014348145 == 3.9e-3: within 0.03; 0.00394039 vs 0.0039 (SI)
+PASS 530.0419182839737 == 5.3e2: within 0.03; 530.042 vs 530 (SI)
+threshold conversion: 0.0008823529411764705
+PASS 0.0008823529411764705 == 8.8e-4: within 0.01; 0.000882353 vs 0.00088 (SI)
+hbar w / E_P needed at L = L_P: 0.10747080064435617  = 1.3121003957750476e+27 eV
+PASS 0.10747080064435617 == 0.11: within 0.05; 0.107471 vs 0.11 (SI)
+z=3000000.0: kT=705 eV, needed hbar w=1.222e+51 eV (>> kT, RJ violated)
+PASS 1.2216974734714088e+51 == 1e+51: within 0.3; 1.2217e+51 vs 1e+51 (SI)
+z=1000.0: kT=0.235 eV, needed hbar w=3.661e+54 eV (>> kT, RJ violated)
+PASS 3.661432209901798e+54 == 3.6e+54: within 0.3; 3.66143e+54 vs 3.6e+54 (SI)
+1e-10 eV: X=6.624e+21, sqrt X=8.14e+10
+PASS 6.624006076809466e+21 == 6.6e+21: within 0.03; 6.62401e+21 vs 6.6e+21 (SI)
+10 eV: X=6.624e+32, sqrt X=2.57e+16
+PASS 6.624006076809466e+32 == 6.6e+32: within 0.03; 6.62401e+32 vs 6.6e+32 (SI)
+2200000.0 eV: X=1.457e+38, sqrt X=1.21e+19
+PASS 1.4572813368980825e+38 == 1.5e+38: within 0.03; 1.45728e+38 vs 1.5e+38 (SI)
+10000000000.0 eV: X=6.624e+41, sqrt X=8.14e+20
+PASS 6.624006076809466e+41 == 6.6e+41: within 0.03; 6.62401e+41 vs 6.6e+41 (SI)
+C x X at 1e10 eV (L=1e-3 L_P): 33.94915170133684 ; tau_h/t_H = 0.02945581700530745 ; hoop at 1e9 eV: 16.97457585066842
+PASS 33.94915170133684 == 34: within 0.05; 33.9492 vs 34 (SI)
+PASS 16.97457585066842 == 17: within 0.05; 16.9746 vs 17 (SI)
+PASS 5.12516916616249e-41 == 5e-41: within 0.05; 5.12517e-41 vs 5e-41 (SI)
+PASS c**5/(2*G) == c**5/(2*G): symbolic
+PASS 5.12516916616249e-59 == 5.1e-59: within 0.03; 5.12517e-59 vs 5.1e-59 (SI)
+PASS 2.562584583081245e-56 == 2.6e-56: within 0.03; 2.56258e-56 vs 2.6e-56 (SI)
+deposit: 1.965502375223315e-65 J/m^3 ; /rho_CMB: 4.708015653979389e-52
+PASS 1.965502375223315e-65 == 2e-65: within 0.05; 1.9655e-65 vs 2e-65 (SI)
+PASS 1.4934619791592025e-76 == 1.5e-76: within 0.05; 1.49346e-76 vs 1.5e-76 (SI)
+L_min = 5.280273537785235e+25 m = 1711.2201123855518 Mpc
+PASS 5.280273537785235e+25 m == 5.3e25 m: within 0.02; 5.28027e+25 vs 5.3e+25 (SI)
+tau_h = 1.2867034513018052e+82 s ; depletion over 410 Mpc vac: 3.279708407526503e-66  stimulated: 2.4834041939106058e-57
+PASS 3.279708407526503e-66 == 3.3e-66: within 0.05; 3.27971e-66 vs 3.3e-66 (SI)
+PASS 2.4834041939106058e-57 == 2.5e-57: within 0.05; 2.4834e-57 vs 2.5e-57 (SI)
+Jones-Singleton exponent D/(2*1e11 m): 63256390420573.02
+PASS 63256390420573.02 == 6.3e13: within 0.02; 6.32564e+13 vs 6.3e+13 (SI)
+SUMMARY: 28 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

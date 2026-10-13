@@ -1,0 +1,21 @@
+# math_run log
+command:  python3 runs/2026-10-13-gravitational-wave-decay-photon-pairs/math/idealizer/M-IDEALIZER-05.py
+started:  2026-10-13T17:55:24Z
+duration: 0.7 s
+exit:     0
+versions: python 3.13.16, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   6 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+sigma(RL) = 4*pi*G**2*s/5
+PASS 4*pi*G**2*s/5 == 4*pi*G**2*s/5: symbolic
+PASS 8*pi*G**2*n1**2*w1**2/15 + 16*pi*G**2*n1*n2*w1*w2/15 + 8*pi*G**2*n2**2*w2**2/15 == 8*pi*G**2*n1**2*w1**2/15 + 16*pi*G**2*n1*n2*w1*w2/15 + 8*pi*G**2*n2**2*w2**2/15: symbolic
+PASS 8*pi*G**2*rho**2/15 == 8*pi*G**2*rho**2/15: symbolic
+SI form: 8*pi*G_S**2*rho_E**2/(15*c_l**7)
+PASS 8*pi*G_S**2*rho_E**2/(15*c_l**7) == 8*pi*G_S**2*rho_E**2/(15*c_l**7): symbolic
+PASS (6.674e-11 m^3/(kg s^2))^2 * (1 J/m^3)^2 / (299792458 m/s)^7 has the dimension of 1/(m^3 s): dimensional analysis
+PASS lim s->0 of 4*pi*G**2/5 == 4*pi*G**2/5: symbolic limit 4*pi*G**2/5
+SUMMARY: 6 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

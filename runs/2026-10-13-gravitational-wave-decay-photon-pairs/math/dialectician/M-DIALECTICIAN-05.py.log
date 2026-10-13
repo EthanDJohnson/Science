@@ -1,0 +1,24 @@
+# math_run log
+command:  python3 runs/2026-10-13-gravitational-wave-decay-photon-pairs/math/dialectician/M-DIALECTICIAN-05.py
+started:  2026-10-13T17:44:48Z
+duration: 0.8 s
+exit:     0
+versions: python 3.13.16, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   6 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+PASS 3*pi/(sigma*tc) == 3*pi/(sigma*tc): symbolic
+J(0) = 0.667000 (expect 0.666667)
+PASS 0.6670000648192241 == 0.6666666666666666: within 0.001; 0.667 vs 0.666667 (SI)
+sigma t_c = 10: J/J_TL = 0.79515, asymptote 0.94248, ratio/asym = 0.8437 (lens 0.84)
+PASS 0.8436778621014701 == 0.84: within 0.015; 0.843678 vs 0.84 (SI)
+sigma t_c = 50: J/J_TL = 0.18238, asymptote 0.18850, ratio/asym = 0.9676 (lens 0.967)
+PASS 0.9675771836945303 == 0.967: within 0.015; 0.967577 vs 0.967 (SI)
+sigma t_c = 200: J/J_TL = 0.04680, asymptote 0.04712, ratio/asym = 0.9930 (lens 0.993)
+PASS 0.9930294353830257 == 0.993: within 0.015; 0.993029 vs 0.993 (SI)
+sigma t_c = 800: J/J_TL = 0.01176, asymptote 0.01178, ratio/asym = 0.9985 (lens 0.998)
+PASS 0.9985108018329129 == 0.998: within 0.015; 0.998511 vs 0.998 (SI)
+SUMMARY: 6 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

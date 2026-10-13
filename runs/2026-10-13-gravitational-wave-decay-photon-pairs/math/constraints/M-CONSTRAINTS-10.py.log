@@ -1,0 +1,25 @@
+# math_run log
+command:  python3 runs/2026-10-13-gravitational-wave-decay-photon-pairs/math/constraints/M-CONSTRAINTS-10.py
+started:  2026-10-13T17:54:57Z
+duration: 0.5 s
+exit:     0
+versions: python 3.13.16, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   6 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+g_ff(1e4 K, 150 Hz) = 14.623055748088658
+PASS 14.623055748088658 == 14.6: within 0.01; 14.6231 vs 14.6 (SI)
+n=2.2e-07, T=10000, nu=150: g_ff=14.62, length=0.572 (Mpc)
+PASS 0.5723688240628186 == 0.57: within 0.05; 0.572369 vs 0.57 (SI)
+n=2.75e-08, T=10000, nu=150: g_ff=14.62, length=36.6 (Mpc)
+PASS 36.63160474002039 == 37: within 0.05; 36.6316 vs 37 (SI)
+n=2.2e-07, T=10000, nu=1000: g_ff=13.58, length=27.4 (Mpc)
+PASS 27.398322521113535 == 27: within 0.05; 27.3983 vs 27 (SI)
+n=2.75e-08, T=10000, nu=1000: g_ff=13.58, length=1.75e+03 (Mpc)
+PASS 1753.4926413512662 == 1800.0: within 0.05; 1753.49 vs 1800 (SI)
+n=0.0001, T=1e+06, nu=150: g_ff=18.43, length=2.2 (kpc)
+PASS 2.197853635400376 == 2.2: within 0.05; 2.19785 vs 2.2 (SI)
+SUMMARY: 6 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

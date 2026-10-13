@@ -1,0 +1,24 @@
+# math_run log
+command:  python3 runs/2026-10-13-gravitational-wave-decay-photon-pairs/math/idealizer/M-IDEALIZER-10.py
+started:  2026-10-13T18:09:42Z
+duration: 1.2 s
+exit:     0
+versions: python 3.13.16, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   7 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+PASS -G**(2/3)*Omega**(2/3)*m1*m2/(2*(m1 + m2)**(1/3)) == -G**(2/3)*Omega**(2/3)*m1*m2/(2*(m1 + m2)**(1/3)): symbolic
+w L |dE/dOm| = 64*G**3*M_c**5*Omega**4/(15*c**5)
+PASS 4 == 4: symbolic
+GW170817: P = 2.8326e-08 pairs (lens 2.8e-08)
+PASS 2.8326248904947387e-08 == 2.8e-08: within 0.03; 2.83262e-08 vs 2.8e-08 (SI)
+GW150914 inspiral: P = 2.7534e-08 pairs (lens 2.8e-08)
+PASS 2.753359024989269e-08 == 2.8e-08: within 0.03; 2.75336e-08 vs 2.8e-08 (SI)
+WD binary: L = 1.6966e+28 W, P = 4.0536e-43 per yr
+PASS 1.6966242349185006e+28 W == 1.7e28 W: within 0.02; 1.69662e+28 vs 1.7e+28 (SI)
+PASS 4.05361394729768e-43 == 4.1e-43: within 0.02; 4.05361e-43 vs 4.1e-43 (SI)
+PASS 32/5 * c^5/G * (G * 0.3 Msun * 0.019478 /s / c^3)^(10/3) == 1.7e28 W: within 0.02; 1.69666e+28 vs 1.7e+28 (SI)
+SUMMARY: 7 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

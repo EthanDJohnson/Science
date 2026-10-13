@@ -1,0 +1,21 @@
+# math_run log
+command:  python3 runs/2026-10-13-gravitational-wave-decay-photon-pairs/math/idealizer/M-IDEALIZER-11.py
+started:  2026-10-13T18:09:43Z
+duration: 0.4 s
+exit:     0
+versions: python 3.13.16, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   6 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+rho = 2.800e-15 J/m^3: Gamma = 2.689e-109 m^-3 s^-1, fraction per Hubble time = 1.456e-108
+PASS 2.6886309280645537e-109 == 2.7e-109: within 0.02; 2.68863e-109 vs 2.7e-109 (SI)
+PASS 1.4564307541960778e-108 == 1.5e-108: within 0.04; 1.45643e-108 vs 1.5e-108 (SI)
+rho = 2.147e-18 J/m^3: Gamma = 1.581e-115 m^-3 s^-1, fraction per Hubble time = 1.117e-111
+PASS 1.5812580513943378e-115 == 1.6e-115: within 0.02; 1.58126e-115 vs 1.6e-115 (SI)
+PASS 1.1169291381379188e-111 == 1.1e-111: within 0.04; 1.11693e-111 vs 1.1e-111 (SI)
+PASS (6.674e-11 m^3/(kg s^2))^2 * (2.8e-15 J/m^3)^2 / c^7 has the dimension of 1/(m^3 s): dimensional analysis
+PASS (1 /(m^3 s)) * hbar * (157 /s) * (1 s) / (1 J/m^3) has the dimension of dimensionless: dimensional analysis
+SUMMARY: 6 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

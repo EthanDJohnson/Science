@@ -1,0 +1,31 @@
+# math_run log
+command:  python3 runs/2026-10-13-gravitational-wave-decay-photon-pairs/math/examiner/M-EXAMINER-04.py
+started:  2026-10-13T17:43:41Z
+duration: 8.2 s
+exit:     0
+versions: python 3.13.16, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   4 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+I_R(q=1) at R=1e-2, D=1e-3: (-0.009999256135923451+0.549205148818487j)   whole space: i artanh(1/2) = 0.5493i
+PASS 0.549000000000000 == 0.549000000000000: symbolic
+D = R/8: wR=1: 0.603, wR=2: 0.208, wR=5: 0.0296, wR=10: 0.00493, wR=20: 0.000708, wR=50: 4.91e-05, wR=100: 6.31e-06, wR=200: 7.99e-07
+   local slopes: -1.54, -2.12, -2.59, -2.80, -2.91, -2.96, -2.98
+D = R/5: wR=1: 0.563, wR=2: 0.176, wR=5: 0.0198, wR=10: 0.00297, wR=20: 0.000405, wR=50: 2.73e-05, wR=100: 3.47e-06, wR=200: 4.38e-07
+   local slopes: -1.68, -2.38, -2.74, -2.87, -2.94, -2.98, -2.99
+wR=1: lens 0.55; own D=R/8 0.603, D=R/5 0.563
+wR=2: lens 0.16; own D=R/8 0.208, D=R/5 0.176
+wR=5: lens 0.018; own D=R/8 0.0296, D=R/5 0.0198
+wR=10: lens 0.0027; own D=R/8 0.00493, D=R/5 0.00297
+wR=20: lens 0.00036; own D=R/8 0.000708, D=R/5 0.000405
+wR=50: lens 2.3e-05; own D=R/8 4.91e-05, D=R/5 2.73e-05
+wR=100: lens 2.9e-06; own D=R/8 6.31e-06, D=R/5 3.47e-06
+mean slope wR 10 -> 100 (D=R/8): -2.893
+PASS -2.89327619163983 < -2.70000000000000: symbolic, constant
+PASS -2.89327619163983 > -3.30000000000000: symbolic, constant
+PASS 0.602676088023138 < 1.09861228866811: symbolic, constant
+narrower window D = R/40: F(10) = 0.0125, F(100) = 3.52e-05, slope -2.55
+SUMMARY: 4 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

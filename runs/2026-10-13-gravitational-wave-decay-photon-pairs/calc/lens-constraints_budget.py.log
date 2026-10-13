@@ -1,0 +1,79 @@
+# math_run log
+command:  python3 runs/2026-10-13-gravitational-wave-decay-photon-pairs/calc/lens-constraints_budget.py
+started:  2026-10-13T17:25:14Z
+duration: 2.0 s
+exit:     0
+versions: python 3.13.16, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+Planck: t_P = 5.3912e-44 s, E_P = 1.2209e+28 eV, L_P = c^5/G = 3.6283e+52 W, t_H = 4.355e+17 s
+
+=== Part A: hbar counting of eqs. 8, 11, 12 (sympy) ===
+  eq. 8 pair rate with N = E/(hbar w): 3*E**2*G**2*omega*sigma**2/(25*pi*c**10) ; d/dhbar = 0
+  W = 2 hbar w dP/dt minus eq. 11 : 0
+  W minus eq. 12 [(3/50pi)(r_m/l)^2 hbar w^2]: 0
+  eq. 12 as transcribed in D-24 [(hbar w)^2] divided by W: hbar (an energy: not a power)
+  CMB-stimulated leading term W x 2kT/(hbar w) = 12*E**2*G**2*kT*omega*sigma**2/(25*pi*c**10) ; d/dhbar = 0
+  pairs per burst (rate x 1/sigma) = 3*E**2*G**2*omega*sigma/(25*pi*c**10)
+  ... with r_m = x l (x = r_m/l): 3*omega*x**2/(100*pi*sigma)  -> pairs/burst = (3/(100 pi)) x^2 (w/sigma)
+
+=== Part B: near-source conversion fraction C = W_gamma/L_GW = (6/(25 pi)) (L/L_P) (hbar w/E_P)^2 ===
+  GW150914 E = 2.0 Msun c^2: W_gamma = 2.778e-35 W (D-42: 2.8e-35 / 6.3e-35 W); L = E sigma = 7.149e+49 W; C = 3.886e-85 = formula 3.886e-85; r_m/l = 3.941e-03; pairs per burst = 6.987e-07; x CMB stim (7.572e+08) = 5.291e+02
+  GW150914 E = 3.0 Msun c^2: W_gamma = 6.250e-35 W (D-42: 2.8e-35 / 6.3e-35 W); L = E sigma = 1.072e+50 W; C = 5.829e-85 = formula 5.829e-85; r_m/l = 5.911e-03; pairs per burst = 1.572e-06; x CMB stim (7.572e+08) = 1.190e+03
+  GW170817 at 100 Hz [D-48 L]                     : L = 1.800e+44 W, C_vac = 4.349e-91, C_stim(CMB today) = 4.939e-82
+  BBH M_c=28 at 50 Hz (quadrupole)                : L = 6.582e+47 W, C_vac = 3.975e-88, C_stim(CMB today) = 9.031e-79
+  WD binary M_c=0.3 at 6.2 mHz (ASSUMED, D-48)    : L = 1.697e+28 W, C_vac = 1.576e-115, C_stim(CMB today) = 2.887e-102
+  SMBH 1.8e10 Msun near ISCO, L = 1e-3 L_P        : L = 3.628e+49 W, C_vac = 5.231e-103, C_stim(CMB today) = 2.432e-85
+  any merger at peak, L = 1e-3 L_P, f = 150 Hz    : L = 3.628e+49 W, C_vac = 1.972e-85, C_stim(CMB today) = 1.493e-76
+  rho_GW/rho_gamma allowed by DeltaN_eff = 0.3: 0.0681; FIRAS Delta rho/rho ~ 6e-5 -> needs C > 8.81e-04
+  unstimulated, even at L = L_P: needs hbar w > 1.311e+27 eV = 0.107 E_P (outside the EFT)
+  stimulated at z = 1e+03 (kT = 2.351e-01 eV), L = L_P: needs hbar w > 3.654e+54 eV (RJ requires hbar w < kT: impossible)
+  stimulated at z = 1e+05 (kT = 2.349e+01 eV), L = L_P: needs hbar w > 3.658e+52 eV (RJ requires hbar w < kT: impossible)
+  stimulated at z = 3e+06 (kT = 7.046e+02 eV), L = L_P: needs hbar w > 1.219e+51 eV (RJ requires hbar w < kT: impossible)
+
+=== Part C: eq. 19 overcount X = sigma t_prop and energy conservation of B&O's integration ===
+  hbar w = 1.000e-10 eV: X = sigma t_H = 6.62e+21; L=1e-3 L_P: C_near = 5.13e-81, B&O C x X = 3.39e-59; hoop-limited: E <= 6.68e+00 Msun c^2, pairs/burst <= 0.095, C <= 2.56e-78, B&O C x X = 1.70e-56
+  hbar w = 1.000e-07 eV: X = sigma t_H = 6.62e+24; L=1e-3 L_P: C_near = 5.13e-75, B&O C x X = 3.39e-50; hoop-limited: E <= 6.68e-03 Msun c^2, pairs/burst <= 0.095, C <= 2.56e-72, B&O C x X = 1.70e-47
+  hbar w = 1.000e-05 eV: X = sigma t_H = 6.62e+26; L=1e-3 L_P: C_near = 5.13e-71, B&O C x X = 3.39e-44; hoop-limited: E <= 6.68e-05 Msun c^2, pairs/burst <= 0.095, C <= 2.56e-68, B&O C x X = 1.70e-41
+  hbar w = 1.000e-03 eV: X = sigma t_H = 6.62e+28; L=1e-3 L_P: C_near = 5.13e-67, B&O C x X = 3.39e-38; hoop-limited: E <= 6.68e-07 Msun c^2, pairs/burst <= 0.095, C <= 2.56e-64, B&O C x X = 1.70e-35
+  hbar w = 1.000e+00 eV: X = sigma t_H = 6.62e+31; L=1e-3 L_P: C_near = 5.13e-61, B&O C x X = 3.39e-29; hoop-limited: E <= 6.68e-10 Msun c^2, pairs/burst <= 0.095, C <= 2.56e-58, B&O C x X = 1.70e-26
+  hbar w = 1.000e+01 eV: X = sigma t_H = 6.62e+32; L=1e-3 L_P: C_near = 5.13e-59, B&O C x X = 3.39e-26; hoop-limited: E <= 6.68e-11 Msun c^2, pairs/burst <= 0.095, C <= 2.56e-56, B&O C x X = 1.70e-23
+  hbar w = 2.225e+06 eV: X = sigma t_H = 1.47e+38; L=1e-3 L_P: C_near = 2.54e-48, B&O C x X = 3.73e-10; hoop-limited: E <= 3.00e-16 Msun c^2, pairs/burst <= 0.095, C <= 1.27e-45, B&O C x X = 1.87e-07
+  hbar w = 1.980e+07 eV: X = sigma t_H = 1.31e+39; L=1e-3 L_P: C_near = 2.01e-46, B&O C x X = 2.63e-07; hoop-limited: E <= 3.37e-17 Msun c^2, pairs/burst <= 0.095, C <= 1.00e-43, B&O C x X = 1.32e-04
+  hbar w = 1.000e+09 eV: X = sigma t_H = 6.62e+40; L=1e-3 L_P: C_near = 5.13e-43, B&O C x X = 3.39e-02; hoop-limited: E <= 6.68e-19 Msun c^2, pairs/burst <= 0.095, C <= 2.56e-40, B&O C x X = 1.70e+01  (> 1)
+  hbar w = 1.000e+10 eV: X = sigma t_H = 6.62e+41; L=1e-3 L_P: C_near = 5.13e-41, B&O C x X = 3.39e+01  (> 1: violates energy conservation); hoop-limited: E <= 6.68e-20 Msun c^2, pairs/burst <= 0.095, C <= 2.56e-38, B&O C x X = 1.70e+04  (> 1)
+  hbar w = 1e+03 eV, L = 1e-3 L_P: B&O depletion time tau_h = 1/(sigma C) = 1.284e+37 s = 2.949e+19 t_H
+  hbar w = 1e+06 eV, L = 1e-3 L_P: B&O depletion time tau_h = 1/(sigma C) = 1.284e+28 s = 2.949e+10 t_H
+  hbar w = 1e+09 eV, L = 1e-3 L_P: B&O depletion time tau_h = 1/(sigma C) = 1.284e+19 s = 2.949e+01 t_H
+  hbar w = 1e+10 eV, L = 1e-3 L_P: B&O depletion time tau_h = 1/(sigma C) = 1.284e+16 s = 2.949e-02 t_H
+
+=== Part D: what sources the photofission / EBL windows need; Hawking emission of the same sources ===
+  EBL (B&O: w_s >~ 10 eV)     : total mass at ISCO M = 3.614e+18 kg = 1.817e-12 Msun; component Hawking kT = 5.851e+00 eV; evaporation time (mass M/2) = 1.139e+21 t_H
+  D(gamma,n)p 2.2246 MeV      : total mass at ISCO M = 1.624e+13 kg = 8.169e-18 Msun; component Hawking kT = 1.302e+06 eV; evaporation time (mass M/2) = 1.035e+05 t_H
+  4He(gamma,p)t 19.81 MeV     : total mass at ISCO M = 1.824e+12 kg = 9.172e-19 Msun; component Hawking kT = 1.159e+07 eV; evaporation time (mass M/2) = 1.465e+02 t_H
+  Fig. 3 top 1e10 eV          : total mass at ISCO M = 3.614e+09 kg = 1.817e-21 Msun; component Hawking kT = 5.851e+09 eV; evaporation time (mass M/2) = 1.139e-06 t_H
+  GW150914-like: W_gamma = 6.250e-35 W; W_H(one BH of 65 Msun) = 2.132e-32 W (ratio 341); W_H(two BHs of 32.5) = 1.706e-31 W (ratio 2729); mass independent
+
+=== Part E: free-free absorption of Hz-kHz photons (Rybicki-Lightman, RJ, cgs) ===
+  IGM mean today, all baryons    n_e = 2.20e-07 cm^-3, T = 1e+04 K, nu =     150 Hz: g_ff = 14.6, absorption length = 5.724e-01 Mpc
+  IGM mean today, all baryons    n_e = 2.20e-07 cm^-3, T = 1e+04 K, nu =    1000 Hz: g_ff = 13.6, absorption length = 2.740e+01 Mpc
+  IGM mean today, all baryons    n_e = 2.20e-07 cm^-3, T = 1e+04 K, nu =   10000 Hz: g_ff = 12.3, absorption length = 3.022e+03 Mpc
+  IGM realistic mean             n_e = 2.75e-08 cm^-3, T = 1e+04 K, nu =     150 Hz: g_ff = 14.6, absorption length = 3.663e+01 Mpc
+  IGM realistic mean             n_e = 2.75e-08 cm^-3, T = 1e+04 K, nu =    1000 Hz: g_ff = 13.6, absorption length = 1.753e+03 Mpc
+  IGM realistic mean             n_e = 2.75e-08 cm^-3, T = 1e+04 K, nu =   10000 Hz: g_ff = 12.3, absorption length = 1.934e+05 Mpc
+  hot halo gas (assumed)         n_e = 1.00e-04 cm^-3, T = 1e+06 K, nu =     150 Hz: g_ff = 18.4, absorption length = 2.198e-03 Mpc
+  hot halo gas (assumed)         n_e = 1.00e-04 cm^-3, T = 1e+06 K, nu =    1000 Hz: g_ff = 17.4, absorption length = 1.036e-01 Mpc
+  hot halo gas (assumed)         n_e = 1.00e-04 cm^-3, T = 1e+06 K, nu =   10000 Hz: g_ff = 16.1, absorption length = 1.117e+01 Mpc
+
+=== Part F: ULDM channel kinematics (eqs. 16-18) ===
+  resonant regime (w = m(1+v^2/2)): |k1+k2| <= 2 m v requires opening angle theta >= pi - 2 arcsin(v/(1+v^2/2)) -> within 2.000e-03 rad of head-on; solid-angle fraction ~ 1.00e-06
+  m = 1e-22 eV: resonant f = 2.418e-08 Hz, lambda = 1.240e+16 m; production by an outgoing wave limited to r <~ hbar c/m = 1.973e+15 m = lambda/2pi
+    resonance width sigma = m v^2/2 = 7.596e-14 s^-1 (resolution time 1/sigma = 1.316e+13 s); binary at ISCO there: M = 1.82e+11 Msun, df/dt = 9.998e-17 Hz/s, time in band = 1.209e+02 s; shortfall 1/(sigma t_in) = 1.09e+11
+    energy budget: W_phi (D-50) ~ 8.6e13 W x x_MW vs L_GW ~ 1e-3 L_P = 3.63e+49 W
+  m = 1e-21 eV: resonant f = 2.418e-07 Hz, lambda = 1.240e+15 m; production by an outgoing wave limited to r <~ hbar c/m = 1.973e+14 m = lambda/2pi
+    resonance width sigma = m v^2/2 = 7.596e-13 s^-1 (resolution time 1/sigma = 1.316e+12 s); binary at ISCO there: M = 1.82e+10 Msun, df/dt = 9.998e-15 Hz/s, time in band = 1.209e+01 s; shortfall 1/(sigma t_in) = 1.09e+11
+    energy budget: W_phi (D-50) ~ 8.6e13 W x x_MW vs L_GW ~ 1e-3 L_P = 3.63e+49 W
+
+--- stderr ---
+

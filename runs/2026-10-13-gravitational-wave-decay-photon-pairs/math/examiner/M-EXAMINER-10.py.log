@@ -1,0 +1,20 @@
+# math_run log
+command:  python3 runs/2026-10-13-gravitational-wave-decay-photon-pairs/math/examiner/M-EXAMINER-10.py
+started:  2026-10-13T17:45:42Z
+duration: 0.5 s
+exit:     0
+versions: python 3.13.16, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   3 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+f_p coefficient = 8978.7 Hz per sqrt(n_e / cm^-3)
+PASS 8980.00000000000 == 8980.00000000000: symbolic
+n_e max for 150 Hz = 2.791e-04 cm^-3
+PASS 0.000280000000000000 == 0.000280000000000000: symbolic
+n_b = 2.516e-07 cm^-3; n_e0 = 2.214e-07 cm^-3; f_p0 = 4.22 Hz; evanescent for 1+z > 1261
+PASS 1000.00000000000 == 1000.00000000000: symbolic
+f/f_p scaling: 35.5079859731844/sqrt(z + 1)
+SUMMARY: 3 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

@@ -1,0 +1,29 @@
+# math_run log
+command:  python3 runs/2026-10-13-gravitational-wave-decay-photon-pairs/math/dialectician/M-DIALECTICIAN-01.py
+started:  2026-10-13T17:44:04Z
+duration: 0.6 s
+exit:     0
+versions: python 3.13.16, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   12 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+PASS 3*E**2*G**2*sigma**2*w/(25*pi*c**10) == 3*E**2*G**2*sigma**2*w/(25*pi*c**10): symbolic
+PASS 0 == 0: symbolic
+PASS (6.674e-11 m^3/(kg s^2))^2 * (1 J)^2 * (1/s) * (1/s)^2 / (2.998e8 m/s)^10 has the dimension of frequency: dimensional analysis
+E = 3.5742e+47 J, R = 1.3974e-04 pairs/s
+PASS 0.00013974025579370532 / s == 1.397e-4 / s: within 0.003; 0.00013974 vs 0.0001397 (SI)
+tau = 1/(2R) = 3578.1 s
+PASS 3578.067015550166 s == 3578 s: within 0.003; 3578.07 vs 3578 (SI)
+T_eff = 0.02094 s, P = 2.9267e-06
+PASS 0.020943951023931952 s == 0.0209 s: within 0.003; 0.020944 vs 0.0209 (SI)
+PASS 2.9267130734150874e-06 == 2.9e-6: within 0.02; 2.92671e-06 vs 2.9e-06 (SI)
+t_prop = 4.2200e+16 s, R t_prop = 5.8971e+12, t_prop/T_eff = 2.0149e+18, tau sigma = 7.1561e+05
+PASS 4.220012127227899e+16 s == 4.22e16 s: within 0.003; 4.22001e+16 vs 4.22e+16 (SI)
+PASS 5897055741113.651 == 5.9e12: within 0.01; 5.89706e+12 vs 5.9e+12 (SI)
+PASS 2.0149073698681938e+18 == 2.0e18: within 0.02; 2.01491e+18 vs 2e+18 (SI)
+PASS 715613.4031100333 == 7.2e5: within 0.01; 715613 vs 720000 (SI)
+PASS lim sigma->0 of 3*E**2*G**2*sigma**2*w/(25*pi*c**10) == 0: symbolic limit 0
+SUMMARY: 12 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

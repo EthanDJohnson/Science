@@ -1,0 +1,48 @@
+# math_run log
+command:  python3 runs/2026-10-13-gravitational-wave-decay-photon-pairs/math/constraints/M-CONSTRAINTS-09.py
+started:  2026-10-13T17:54:56Z
+duration: 0.7 s
+exit:     0
+versions: python 3.13.16, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   19 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+PASS 8978.662820487434 Hz == 8980 Hz: within 0.001; 8978.66 vs 8980 (SI)
+PASS 2*w**2*(1 - cos(theta)) == 4*w**2*sin(theta/2)**2: symbolic
+PASS lim theta->pi of 2*w**2*(1 - cos(theta)) == 4*w**2: symbolic limit 4*w**2
+n_e=2.2e-07 cm^-3: f_pe=4.211 Hz
+PASS 4.211366159535494 Hz == 4.2 Hz: within 0.03; 4.21137 vs 4.2 (SI)
+n_e=2.75e-08 cm^-3: f_pe=1.489 Hz
+PASS 1.4889427847335477 Hz == 1.5 Hz: within 0.03; 1.48894 vs 1.5 (SI)
+n_e=0.003 cm^-3: f_pe=491.8 Hz
+PASS 491.7816163013925 Hz == 492 Hz: within 0.03; 491.782 vs 492 (SI)
+n_e=0.03 cm^-3: f_pe=1555 Hz
+PASS 1555.1500189113913 Hz == 1560 Hz: within 0.03; 1555.15 vs 1560 (SI)
+n_e=0.08 cm^-3: f_pe=2540 Hz
+PASS 2539.549346541679 Hz == 2540 Hz: within 0.03; 2539.55 vs 2540 (SI)
+theta_min at 150 Hz, mean IGM: 3.217669574317568 deg
+PASS 3.217669574317568 == 3.2: within 0.02; 3.21767 vs 3.2 (SI)
+r_max (n=2.2e-07) = 4.035e+08 m = 202 lambda
+PASS 403539533.4544277 m == 400000000.0 m: within 0.03; 4.0354e+08 vs 4e+08 (SI)
+r_max (n=2.75e-08) = 3.228e+09 m = 1615 lambda
+PASS 3228316267.6354227 m == 3200000000.0 m: within 0.03; 3.22832e+09 vs 3.2e+09 (SI)
+n_e threshold at 150 Hz: 0.0002790164731325738 cm^-3
+PASS 0.0002790164731325738 == 2.8e-4: within 0.01; 0.000279016 vs 0.00028 (SI)
+z=1100: hbar w_p = 6.363e-10 eV
+PASS 6.362819702354829e-10 == 6.4e-10: within 0.03; 6.36282e-10 vs 6.4e-10 (SI)
+z=10000: hbar w_p = 1.742e-08 eV
+PASS 1.7419423572869073e-08 == 1.7e-08: within 0.03; 1.74194e-08 vs 1.7e-08 (SI)
+z=100000: hbar w_p = 5.508e-07 eV
+PASS 5.507761844606573e-07 == 5.5e-07: within 0.03; 5.50776e-07 vs 5.5e-07 (SI)
+z=3e+06: hbar w_p = 9.050e-05 eV
+PASS 9.050044985046182e-05 == 9.1e-05: within 0.03; 9.05004e-05 vs 9.1e-05 (SI)
+z=100000: f0 > 1332 Hz
+PASS 1331.7575712467356 == 1300.0: within 0.03; 1331.76 vs 1300 (SI)
+z=2e+06: f0 > 5956 Hz
+PASS 5955.77262787679 == 6000.0: within 0.03; 5955.77 vs 6000 (SI)
+f0 threshold at z = 1100: 139.73868837075324 Hz (> 25 Hz, so LVK band makes none at z > 1100)
+PASS 4.211366159535494*sqrt(zz + 1) > 25: numeric at 50 points, zz in [1100, 1e+07]
+SUMMARY: 19 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

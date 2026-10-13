@@ -1,0 +1,24 @@
+# math_run log
+command:  python3 runs/2026-10-13-gravitational-wave-decay-photon-pairs/math/dialectician/M-DIALECTICIAN-08.py
+started:  2026-10-13T17:46:20Z
+duration: 0.7 s
+exit:     0
+versions: python 3.13.16, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   9 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+r^6 dR/dr ->  2*pi*G**2*w**2/k**4
+PASS lim r->oo of 4*pi*G**2*r**2*w**2*(1 - cos(1/(k*r)))/k**2 == 2*pi*G**2*w**2/k**4: symbolic limit 2*pi*G**2*w**2/k**4
+PASS 2*pi*G**2*w**2/k**4 == 2*pi*G**2*w**2/k**4: symbolic
+PASS r0**5/x**5 == r0**5/x**5: symbolic
+PASS 0.03125 == 0.03125: within 1e-09; 0.03125 vs 0.03125 (SI)
+PASS 1/x == 1/x: symbolic
+r0 = 3.1809e+05 m, c tau = 1.0727e+12 m, (r0/c tau)^5 = 2.293e-33, (r0/D)^5 = 1.005e-98
+PASS 318089.6772824628 m == 3.2e5 m: within 0.01; 318090 vs 320000 (SI)
+PASS 1072657414724.0 m == 1.07e12 m: within 0.005; 1.07266e+12 vs 1.07e+12 (SI)
+PASS 2.2932039532052263e-33 == 2.3e-33: within 0.03; 2.2932e-33 vs 2.3e-33 (SI)
+PASS 1.0047913041574273e-98 == 1e-98: within 0.5; 1.00479e-98 vs 1e-98 (SI)
+SUMMARY: 9 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

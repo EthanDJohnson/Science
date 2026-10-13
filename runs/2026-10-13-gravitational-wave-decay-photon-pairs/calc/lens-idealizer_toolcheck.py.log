@@ -1,0 +1,20 @@
+# math_run log
+command:  python3 runs/2026-10-13-gravitational-wave-decay-photon-pairs/calc/lens-idealizer_toolcheck.py
+started:  2026-10-13T17:19:56Z
+duration: 221.2 s
+exit:     0
+versions: python 3.13.16, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+=== (1) coherent caps vs kinetic beams x overlap ===
+delta = 0.04, sigma = 0.002: caps P = 8.09542e-20, kinetic beams x overlap = 8.24609e-20, ratio = 0.98173 (50.0 s)
+delta = 0.08, sigma = 0.004: caps P = 1.96475e-17, kinetic beams x overlap = 2.111e-17, ratio = 0.93072 (47.1 s)
+
+=== (2) pattern coefficients, top hat, photons ===
+bo_real_sign       c_tot = 0.16  c_rate = 0.0381972  rate/B&O = 1 (25.5 s)
+circular_binary    c_tot = 0.0899195  c_rate = 0.0214667  rate/B&O = 0.562 (49.1 s)
+linear_quadrupole  c_tot = 0.0499939  c_rate = 0.0119352  rate/B&O = 0.3125 (49.2 s)
+
+--- stderr ---
+

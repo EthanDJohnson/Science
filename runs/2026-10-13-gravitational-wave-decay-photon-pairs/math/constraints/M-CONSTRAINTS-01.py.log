@@ -1,0 +1,19 @@
+# math_run log
+command:  python3 runs/2026-10-13-gravitational-wave-decay-photon-pairs/math/constraints/M-CONSTRAINTS-01.py
+started:  2026-10-13T17:51:43Z
+duration: 1.1 s
+exit:     0
+versions: python 3.13.16, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   4 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+Gamma = 8*pi*G**2*n**2*w**2/15 ; Gamma/(G^2 rho^2) = 8*pi/15
+PASS 8*pi/15 == 8*pi/15: symbolic
+PASS 8*pi*G**2*(n1**2*w1**2 + 2*n1*n2*w1*w2 + n2**2*w2**2)/15 == 8*pi*G**2*(n1*w1 + n2*w2)**2/15: symbolic
+PASS lim n2->0 of 8*pi*(n1**2*w1**2 + 2*n1*n2*w1*w2 + n2**2*w2**2)/(15*n1**2*w1**2) == 8*pi/15: symbolic limit 8*pi/15
+Gauss-Legendre coefficient: 1.675516081914556  8pi/15 = 1.6755160819145563
+PASS 1.67551608191455603247277394985 == 1.67551608191455639384674313775: numeric at 48 points, constants
+SUMMARY: 4 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

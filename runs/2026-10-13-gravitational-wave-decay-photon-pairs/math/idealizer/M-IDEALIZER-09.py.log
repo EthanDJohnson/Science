@@ -1,0 +1,41 @@
+# math_run log
+command:  python3 runs/2026-10-13-gravitational-wave-decay-photon-pairs/math/idealizer/M-IDEALIZER-09.py
+started:  2026-10-13T18:09:41Z
+duration: 0.5 s
+exit:     0
+versions: python 3.13.16, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   19 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+P(2 Msun) = 2.9267e-06, P(3 Msun) = 6.5851e-06, rate = 1.3974e-04 /s, T_eff = 20.94 ms
+PASS 2.9267134540506125e-06 == 2.93e-6: within 0.005; 2.92671e-06 vs 2.93e-06 (SI)
+PASS 6.585105271613877e-06 == 6.59e-6: within 0.005; 6.58511e-06 vs 6.59e-06 (SI)
+PASS 0.00013974027396771292 == 1.40e-4: within 0.005; 0.00013974 vs 0.00014 (SI)
+PASS 0.020943951023931952 s == 20.9 ms: within 0.005; 0.020944 vs 0.0209 (SI)
+PASS (6.674e-11 m^3/(kg s^2))^2 * (2 Msun c^2)^2 * (942 /s) * (200 /s) / c^10 has the dimension of dimensionless: dimensional analysis
+circular: 1.645e-06 pairs, 3.270e-37 J, fraction 9.148e-85
+PASS 1.6448129611764444e-06 == 1.65e-6: within 0.005; 1.64481e-06 vs 1.65e-06 (SI)
+PASS 3.2695938173119608e-37 == 3.3e-37: within 0.02; 3.26959e-37 vs 3.3e-37 (SI)
+PASS 9.147795837138009e-85 == 9e-85: within 0.03; 9.1478e-85 vs 9e-85 (SI)
+1 + 2f = 7.5720e+08; stimulated pairs 1.2455e+03, energy 2.476e-28 J
+PASS 757202739.4056766 == 7.6e8: within 0.01; 7.57203e+08 vs 7.6e+08 (SI)
+PASS 1245.4568800127665 == 1.25e3: within 0.01; 1245.46 vs 1250 (SI)
+PASS 2.4757453952124803e-28 == 2.5e-28: within 0.02; 2.47575e-28 vs 2.5e-28 (SI)
+c/w = 3.1809e+05 m = 3.314 GM/c^2 (65 Msun)
+PASS 318089.6772824628 m == 318 km: within 0.003; 318090 vs 318000 (SI)
+PASS 3.314102699384966 == 3.31: within 0.003; 3.3141 vs 3.31 (SI)
+beyond lambda (kr = 6.28): 0.069 law 8.141e-10, exact-asymptote law 7.457e-10; lens 8.3e-10
+PASS 8.14122372752511e-10 == 8.3e-10: within 0.1; 8.14122e-10 vs 8.3e-10 (SI)
+beyond 1 AU (kr = 4.7e+05): 0.069 law 1.941e-24, exact-asymptote law 1.778e-24; lens 2.0e-24
+PASS 1.9413408143513546e-24 == 2e-24: within 0.1; 1.94134e-24 vs 2e-24 (SI)
+beyond 410 Mpc (kr = 3.98e+19): 0.069 law 3.210e-66, exact-asymptote law 2.940e-66; lens 3.3e-66
+PASS 3.2097766653758313e-66 == 3.3e-66: within 0.1; 3.20978e-66 vs 3.3e-66 (SI)
+profile-free L = 3.6e49 W for 5 ms: P = 6.996e-06
+PASS 6.9958688843052525e-06 == 7e-06: within 0.02; 6.99587e-06 vs 7e-06 (SI)
+profile-free L = 3.6e49 W for 10 ms: P = 1.399e-05
+PASS 1.3991737768610505e-05 == 1.4e-05: within 0.02; 1.39917e-05 vs 1.4e-05 (SI)
+PASS (6.674e-11 m^3/(kg s^2))^2 * (942 /s) * (3.6e49 W)^2 * (5 ms) / c^10 has the dimension of dimensionless: dimensional analysis
+SUMMARY: 19 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

@@ -1,0 +1,31 @@
+# math_run log
+command:  python3 runs/2026-10-13-gravitational-wave-decay-photon-pairs/math/constraints/M-CONSTRAINTS-02.py
+started:  2026-10-13T17:51:44Z
+duration: 0.5 s
+exit:     0
+versions: python 3.13.16, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   12 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+PASS G^2 * (1 J/m^3)^2 / c^7 has the dimension of 1/(m^3 s): dimensional analysis
+PASS G**2*rho**2/c**7 == G**2*rho**2/c**7: symbolic
+rho_gamma = 4.174782572296524e-14 J/m^3
+PASS 4.174782572296524e-14 J/m^3 == 4.17e-14 J/m^3: within 0.01; 4.17478e-14 vs 4.17e-14 (SI)
+DeltaN_eff=0.3: rho_GW=2.844e-15 J/m^3, pair rate=2.775e-109 m^-3 s^-1
+PASS 2.8443710154269283e-15 J/m^3 == 2.8e-15 J/m^3: within 0.03; 2.84437e-15 vs 2.8e-15 (SI)
+PASS 2.774518445183193e-109 1/(m^3 s) == 2.8e-109 1/(m^3 s): within 0.05; 2.77452e-109 vs 2.8e-109 (SI)
+DeltaN_eff=0.1: rho_GW=9.481e-16 J/m^3, pair rate=3.083e-110 m^-3 s^-1
+PASS 9.481236718089762e-16 J/m^3 == 9.5e-16 J/m^3: within 0.03; 9.48124e-16 vs 9.5e-16 (SI)
+PASS 3.082798272425771e-110 1/(m^3 s) == 3.1e-110 1/(m^3 s): within 0.05; 3.0828e-110 vs 3.1e-110 (SI)
+DeltaN_eff=0.05: rho_GW=4.741e-16 J/m^3, pair rate=7.707e-111 m^-3 s^-1
+PASS 4.740618359044881e-16 J/m^3 == 4.7e-16 J/m^3: within 0.03; 4.74062e-16 vs 4.7e-16 (SI)
+PASS 7.706995681064427e-111 1/(m^3 s) == 7.7e-111 1/(m^3 s): within 0.05; 7.707e-111 vs 7.7e-111 (SI)
+rho_GW/rho_gamma at DeltaN_eff = 0.3: 0.06813219529807168
+PASS 0.06813219529807168 == 0.068: within 0.01; 0.0681322 vs 0.068 (SI)
+rho_crit c^2 = 7.668947767821907e-10 J/m^3; LVK rho_GW = 2.147305374990134e-18 ; rate = 1.5812580513943371e-115
+PASS 7.668947767821907e-10 J/m^3 == 7.7e-10 J/m^3: within 0.02; 7.66895e-10 vs 7.7e-10 (SI)
+PASS 1.5812580513943371e-115 1/(m^3 s) == 1.6e-115 1/(m^3 s): within 0.1; 1.58126e-115 vs 1.6e-115 (SI)
+SUMMARY: 12 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

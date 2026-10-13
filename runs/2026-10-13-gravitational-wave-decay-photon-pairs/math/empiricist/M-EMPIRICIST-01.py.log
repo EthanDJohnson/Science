@@ -1,0 +1,24 @@
+# math_run log
+command:  python3 runs/2026-10-13-gravitational-wave-decay-photon-pairs/math/empiricist/M-EMPIRICIST-01.py
+started:  2026-10-13T17:39:47Z
+duration: 0.7 s
+exit:     0
+versions: python 3.13.16, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   8 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+Derived N_phi = 9*pi*H0**2*Omega_DM*x/(4*G*m**4*v**3)
+PASS 9*pi*H0**2*Omega_DM*x/(4*G*m**4*v**3) == 9*pi*H0**2*Omega_DM*x/(4*G*m**4*v**3): symbolic
+PASS 9*pi*G*H0**2*N0**2*Omega_DM*m**2*v**3*x/256 == 9*pi*G*H0**2*N0**2*Omega_DM*m**2*v**3*x/256: symbolic
+ratio W/W_BO = 1
+PASS lim v->0 of 9*pi*v**3/256 == 0: symbolic limit 0
+PASS 3*H0**2*Omega_DM*x/(8*pi*G) == 3*H0**2*Omega_DM*x/(8*pi*G): symbolic
+PASS 1 GeV/(1 m^3 * 1 eV) * (1 hbar / (1e-22 eV/c^2 * 1e-3 * c))^3 has the dimension of dimensionless: dimensional analysis
+PASS (G/(hbar*c^5))^2 * (1 eV)^5 / hbar has the dimension of Hz: dimensional analysis
+PASS (G/(hbar*c^5)) * (1 eV)^2 * (hbar * 1 Hz)^2 / hbar has the dimension of W: dimensional analysis
+rho_DM = 2.2540e-27 kg/m^3 = 1.2644e-06 GeV/cm^3; N_phi(1e-22 eV) = 5.7530e+87
+PASS 5.753038029624742e+87 == 5.75e87: within 0.02; 5.75304e+87 vs 5.75e+87 (SI)
+SUMMARY: 8 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

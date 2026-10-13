@@ -1,0 +1,27 @@
+# math_run log
+command:  python3 runs/2026-10-13-gravitational-wave-decay-photon-pairs/math/constraints/M-CONSTRAINTS-11.py
+started:  2026-10-13T17:54:57Z
+duration: 0.5 s
+exit:     0
+versions: python 3.13.16, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   9 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+PASS 0 == 0: symbolic
+10 eV: M=3.614e+18 kg, component T_H=5.85 eV, evaporation=4.962e+38 s = 1.14e+21 t_H
+PASS 3.6137745959537265e+18 == 3.6e+18: within 0.03; 3.61377e+18 vs 3.6e+18 (SI)
+PASS 5.851284672496151 == 5.9: within 0.03; 5.85128 vs 5.9 (SI)
+2.2e+06 eV: M=1.643e+13 kg, component T_H=1.29e+06 eV, evaporation=4.660e+22 s = 1.07e+05 t_H
+PASS 16426248163426.03 == 16000000000000.0: within 0.03; 1.64262e+13 vs 1.6e+13 (SI)
+1.98e+07 eV: M=1.825e+12 kg, component T_H=1.16e+07 eV, evaporation=6.392e+19 s = 1.47e+02 t_H
+PASS 1825138684825.1143 == 1800000000000.0: within 0.03; 1.82514e+12 vs 1.8e+12 (SI)
+1e+10 eV: M=3.614e+09 kg, component T_H=5.85e+09 eV, evaporation=4.962e+11 s = 1.14e-06 t_H
+PASS 3613774595.9537263 == 3600000000.0: within 0.03; 3.61377e+09 vs 3.6e+09 (SI)
+PASS 1.1380963064970649e-06 == 1.1e-6: within 0.05; 1.1381e-06 vs 1.1e-06 (SI)
+W_gamma = 6.250019788279913e-35 W ; W_H(65 Msun) = 2.1321082576227543e-32 W ; ratio = 341.1362411397322 ; two components: 2729.0899291178575
+PASS 341.1362411397322 == 341: within 0.03; 341.136 vs 341 (SI)
+PASS 2729.0899291178575 == 2.7e3: within 0.03; 2729.09 vs 2700 (SI)
+SUMMARY: 9 pass, 0 fail, 0 undecided
+
+--- stderr ---
+
