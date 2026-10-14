@@ -64,12 +64,15 @@ Assumptions and validity
     Tree level, flat background, no plasma (massless photons), s << M_Pl^2; narrow band: corrections O(sigma/w) and
     the angular pattern must vary on scales >> sigma/w rad (refused: sigma/w > 0.1); 2 graviton helicities only
     (TT); N >= 1, w > 0, sigma > 0; scalars m >= 0 with s > 4 m^2 (massive: toolkit refuses m^2/s < 1e-8 at a node).
-    G^2 N^2 w^3 sigma << 1 (perturbative; refused if P > 0.1). Quadrature (K = 2w sin u, Gauss in u and in the
-    polar angle of K). Measured for 'circular_binary' (c_tot, top hat): default grid 0.08992; n_K = n_cK = 11:
-    0.08994; n_phi = 48: 0.08984; photon grid 12 x 24: 0.09098 (+1.2%); an older cos-theta grid with every count
-    doubled gave 0.0932. Physical-pattern coefficients therefore carry a ~2-4% quadrature uncertainty dominated by
-    the CM photon-angle grid (raise n_cg, n_pg for more); the 'bo_real_sign' model is exact to ~1e-9.
-    Cost: ~100 microseconds per amplitude (qft_second_order), ~1 min per physical pattern at the default grid.
+    G^2 N^2 w^3 sigma << 1 (perturbative; refused if P > 0.1). Quadrature: K = 2w sin u, Gauss in u and in the
+    polar angle of K; trapezoid in the ring angle (n_phi) and photon azimuth (n_pg); Gauss in cos theta* in two
+    panels split at 0 (n_cg nodes each), because the ring-summed integrand has a cusp at cos theta* = 0. Converged
+    'circular_binary' (top hat, photons, rate/B&O): default grid 0.60458; n_pg 56: 0.60457; n_phi 96: 0.60428;
+    n_K = n_cK = 12: within 5e-4 of default; n_cg 4..12: within 2e-3. Physical-pattern coefficients therefore carry
+    ~0.1% quadrature uncertainty. Before 2026-10-14 a single Gauss rule in cos theta* (8 nodes, n_pg 14, n_phi 24)
+    under-estimated them by 6-11% (circular_binary 0.562, linear_quadrupole 0.3125, isotropic_plus 0.2253; now
+    about 0.6046, 0.338, 0.2408). The 'bo_real_sign' model is exact to ~1e-9 (no interference, no cusp).
+    Cost: ~100 microseconds per amplitude (qft_second_order), ~5 min per physical pattern at the default grid.
     B&O's own GW150914 inputs (sigma_w = 200 /s at w = 2 pi 150 /s, sigma/w = 0.21) are REFUSED as not narrow-band.
 
 Units
@@ -273,8 +276,19 @@ def _photon_pol(k, hel):
     return np.concatenate([np.zeros(v.shape[:-1] + (1,)), v], axis=-1)
 
 
-def _photon_grid(n_cg, n_pg):
-    c, wc = _gl(n_cg, -1.0, 1.0)
+def _photon_grid(n_cg, n_pg, split=True):
+    # Two Gauss panels split at cos theta* = 0: there the photon lies in the plane swept by the CM graviton axis,
+    # some ring graviton is collinear with it (t or u = 0, where the amplitude's phase winds), and the ring-summed
+    # |F|^2 has a cusp. One Gauss rule across the cusp converges only algebraically (circular_binary: 0.562,
+    # 0.594, 0.602 of B&O at 8, 16, 24 nodes); split panels converge at once. n_cg is the node count PER PANEL.
+    # split=False (one rule, n_cg nodes) is kept for the two-cap self-test route, whose graviton axis is nearly
+    # fixed (the collinear point is a spot, not the whole cos theta* = 0 circle) and which was validated with it.
+    if split:
+        ca, wa = _gl(n_cg, -1.0, 0.0)
+        cb, wb = _gl(n_cg, 0.0, 1.0)
+        c, wc = np.concatenate([ca, cb]), np.concatenate([wa, wb])
+    else:
+        c, wc = _gl(n_cg, -1.0, 1.0)
     p = (np.arange(n_pg) + 0.5) * 2 * PI / n_pg + 0.1234567   # offset: keeps photons off graviton axes (t, u = 0)
     C_, P_ = np.meshgrid(c, p, indexing="ij")
     W_ = np.outer(wc, np.full(n_pg, 2 * PI / n_pg))
@@ -289,7 +303,7 @@ def _sym(final, field):
 
 @functools.lru_cache(maxsize=None)
 def angular_integral(pattern: str, final: str = "photon", m_over_w: float = 0.0, field: str = "real",
-                     n_K: int = 8, n_cK: int = 8, n_phi: int = 24, n_cg: int = 8, n_pg: int = 14) -> float:
+                     n_K: int = 8, n_cK: int = 8, n_phi: int = 48, n_cg: int = 6, n_pg: int = 28) -> float:
     """I_ang / (G^2 w^5) for w = 1, G = 1: the pattern- and final-state-dependent factor of P = J_f I_ang.
 
     Uses axial symmetry of every pattern about z (|F|^2 independent of K's azimuth) and, for 'bo_real_sign', full
@@ -406,7 +420,7 @@ def _two_cap_yield(delta, sigma, n_lin=7, n_ring=7, n_cg=6, n_pg=6, width=1.5):
     bn, bw = trap(delta / 2)
     jr = np.arange(n_ring) - (n_ring - 1) / 2
     rn, rw = jr * width * delta, np.full(n_ring, width * delta)
-    cg, pg, wg = _photon_grid(n_cg, n_pg)
+    cg, pg, wg = _photon_grid(n_cg, n_pg, split=False)
     tot = 0.0
     for a, wa in zip(an, aw):
         if True:
@@ -519,6 +533,16 @@ def selftest(verbose: bool = True) -> bool:
     cp = coefficients("pure_circular", "tophat", "photon", n_K=4, n_cK=4, n_phi=16, n_cg=6, n_pg=12)
     check("pure circular packet: c_tot = 0 (relative to B&O's 0.16)", cp["c_tot"] / co["c_tot"], 0.0, 1e-20)
 
+    # 6b. Internal convergence (not a reference value): a physical pattern's interference integrand has a cusp at
+    #     cos theta* = 0; with the split-panel photon rule, halving n_cg must not move the coefficient. The former
+    #     single Gauss rule failed this by ~6% (circular_binary, 8 vs 16 nodes). On this cheap azimuth grid
+    #     (n_phi 16, n_pg 12) the residual is 0.75%, set by the coarse azimuths (0.17% at the default grid), so the
+    #     check is at 1.5%: it catches a return of the cusp error, not the last 0.1%.
+    cheap = dict(n_K=4, n_cK=4, n_phi=16, n_pg=12)
+    c4 = coefficients("circular_binary", "tophat", "photon", n_cg=4, **cheap)["c_tot"]
+    c8 = coefficients("circular_binary", "tophat", "photon", n_cg=8, **cheap)["c_tot"]
+    check("circular_binary c_tot: n_cg 4 vs 8 per panel (cusp-split photon rule converged)", c4, c8, 1.5e-2)
+
     # 7. Limit: two narrow crossing beams -> the toolkit's two-beam rate times the overlap 4-volume.
     #    P = Gamma(R, L, 90 deg) int d^4x |E_a|^2 |E_b|^2, Gamma from qft_second_order.beams_pair_rate (itself checked
     #    against Holstein 2006 eq. 66 and Bjerrum-Bohr et al.), overlap from the closed-form Gaussian integral.
@@ -588,8 +612,7 @@ def main(argv=None) -> int:
         print(f"caps P = {P:.8g}, beams x overlap = {ref:.8g}, ratio = {P / ref:.6f}  ({time.time() - t0:.1f} s)")
         return 0
     if a.cmd == "convergence":
-        for g in ({"n_K": 8, "n_cK": 8, "n_phi": 48, "n_cg": 8, "n_pg": 14}, {},
-                  {"n_K": 8, "n_cK": 8, "n_phi": 24, "n_cg": 12, "n_pg": 24}):
+        for g in ({"n_phi": 24, "n_pg": 14}, {}, {"n_cg": 10}, {"n_pg": 56}, {"n_phi": 96}):
             print(g or "default", coefficients(a.pattern, "tophat", "photon", **g)["c_tot"])
         return 0
     E = Q(a.E).expect("energy").si
