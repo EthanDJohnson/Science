@@ -1,0 +1,34 @@
+# math_run log
+command:  python3 runs/2026-10-13-gravitational-wave-decay-photon-pairs/calc/falsifier-C3-1_quadrupole_retarded.py
+started:  2026-10-13T20:34:58Z
+duration: 193.5 s
+exit:     0
+versions: python 3.13.16, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+Validation, l = 0 (examiner monopole): expect ret/sym = 1/12 = 0.0833 (p=0), 0.0200 (p=2)
+  eps=0.004: p=0 ret/sym = 0.0844;  p=2 ret/sym = 0.0206
+  eps=0.002: p=0 ret/sym = 0.0839;  p=2 ret/sym = 0.0203
+[time 8s]
+
+l = 2 (quadrupole), excision radius a in units of c/w; ratio = Y_ret / Y_sym (yield per unit time,
+same outgoing luminosity). Y_sym also excised at the same a.
+ k a   | p=0 ret/sym | p=2 ret/sym | (p=2: Y_ret, Y_sym raw)
+ 3.00  |     0.09662 |     0.02081 | 145.8, 7004
+ 2.00  |       0.182 |     0.07794 | 682.8, 8760
+ 1.50  |      0.4262 |      0.2893 | 2584, 8932
+ 1.00  |       3.309 |       2.347 | 2.102e+04, 8958
+ 0.70  |       29.27 |       16.76 | 1.502e+05, 8960
+ 0.50  |       232.8 |       114.7 | 1.027e+06, 8960
+ 0.30  |        5220 |        2289 | 2.051e+07, 8960
+ 0.20  |   6.038e+04 |   2.546e+04 | 2.282e+08, 8960
+[time 133s]
+
+convergence check at k a = 1.0 and 0.5, eps = 0.0015:
+  a=1.0: p=0 3.244; p=2 2.296
+  a=0.5: p=0 227.7; p=2 112
+[time 193s]
+
+--- stderr ---
+

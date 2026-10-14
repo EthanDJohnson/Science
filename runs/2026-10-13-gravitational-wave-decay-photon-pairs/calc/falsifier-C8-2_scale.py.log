@@ -1,0 +1,69 @@
+# math_run log
+command:  python3 runs/2026-10-13-gravitational-wave-decay-photon-pairs/calc/falsifier-C8-2_scale.py
+started:  2026-10-13T21:33:17Z
+duration: 0.1 s
+exit:     0
+versions: python 3.13.16, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+=== 1. Face value of eqs. 16-18 (B&O merger scaling, x = 1) ===
+m = 1e-21 eV: f_GW = 2.4180e-07 Hz, M = 1.8185e+10 Msun, N0 = 6.2413e+95, N_phi = 5.7530e+83
+  W_phi(face, x=1) = 3.8362e+13 W  (B&O eq.18: ~1e14 W x_MW);  scalars/s = 2.394e+53
+  check N_phi at 1e-22 eV: 5.7530e+87 (B&O eq.16: 6e87)
+
+=== 2. Required coherence vs achievable (Newtonian equal-mass chirp) ===
+m = 1e-22 eV: sigma = 7.5963e-14 rad/s, required 1/sigma = 1.3164e+13 s = 4.171e+05 yr; time in band = 1.2092e+02 s; achievable/required = 9.1856e-12
+m = 1e-21 eV: sigma = 7.5963e-13 rad/s, required 1/sigma = 1.3164e+12 s = 4.171e+04 yr; time in band = 1.2092e+01 s; achievable/required = 9.1856e-12
+m = 2e-20 eV: sigma = 1.5193e-11 rad/s, required 1/sigma = 6.5821e+10 s = 2.086e+03 yr; time in band = 6.0461e-01 s; achievable/required = 9.1856e-12
+
+=== 3. Corrected power, x = 1 (three corrections) ===
+m = 1e-22 eV: W_face = 3.836e+15 W; duty-cycle x9.186e-12 -> 3.524e+04 W; in-band (N_band/N0)^2 = 5.094e-14 -> 1.954e+02 W; both -> 1.795e-09 W
+    energy in resonance band = 2.257e+50 J = 2.257e-07 of E_rel
+m = 1e-21 eV: W_face = 3.836e+13 W; duty-cycle x9.186e-12 -> 3.524e+02 W; in-band (N_band/N0)^2 = 5.094e-14 -> 1.954e+00 W; both -> 1.795e-11 W
+    energy in resonance band = 2.257e+49 J = 2.257e-07 of E_rel
+m = 2e-20 eV: W_face = 9.590e+10 W; duty-cycle x9.186e-12 -> 8.809e-01 W; in-band (N_band/N0)^2 = 5.094e-14 -> 4.885e-03 W; both -> 4.487e-14 W
+    energy in resonance band = 1.128e+48 J = 2.257e-07 of E_rel
+
+=== 4. Geometry of the resonant kinematics (m = 1e-21 eV) ===
+hbar c/m = 1.9733e+14 m; lambda/2pi = c/omega = 1.9733e+14 m (identical by construction: omega = m)
+binary separation at f = 1.6112e+14 m; r_ISCO = 1.6112e+14 m; GM/c^2 = 2.6853e+13 m
+production radius / binary separation = 1.225; / r_ISCO = 1.225
+gravitational fine-structure alpha = G M m/(hbar c) = 0.136
+head-on window 2v = 2.0e-03 rad; isotropic pair-solid-angle fraction (2v)^2/4 = 1.0e-06
+
+=== 5. Bose-factor smearing (labelled order-of-magnitude estimate) ===
+R = 1 x hbar c/m: final momentum spread >= 5.000e-01 m c vs occupied |p| <= 1e-03 m c; occupied fraction of final states ~ 8.000e-09
+R = 10 x hbar c/m: final momentum spread >= 5.000e-02 m c vs occupied |p| <= 1e-03 m c; occupied fraction of final states ~ 8.000e-06
+R = 100 x hbar c/m: final momentum spread >= 5.000e-03 m c vs occupied |p| <= 1e-03 m c; occupied fraction of final states ~ 8.000e-03
+
+=== 6. Astrophysical relevance (m = 1e-21 eV) ===
+signal duration T = 1.399e+06 s; face-value converted fraction of E_rel per unit x = 5.366e-37
+  face: x for 1 Lsun = 9.979e+12; x for 10% amplitude loss (20% energy) = 3.727e+35
+  in-band: x for 1 Lsun = 1.959e+26; x for 10% amplitude loss (20% energy) = 7.317e+48
+  hard bound: Omega_phi produced <= frac * Omega_GW <= 5.37e-37 x (Omega_GW <= 1)
+  soliton (isolated, Schive 2014) in M_h = 1e+12 Msun halo, m = 1e-21 eV: M_c = 3.116e+07 Msun, x_c = 1.701e+01 pc, peak x = 6.812e+10; face W = 2.613e+24 W = 6.826e-03 Lsun; in-band = 3.477e-16 Lsun
+  soliton (isolated, Schive 2014) in M_h = 1e+14 Msun halo, m = 1e-21 eV: M_c = 1.446e+08 Msun, x_c = 3.665e+00 pc, peak x = 3.162e+13; face W = 1.213e+27 W = 3.168e+00 Lsun; in-band = 1.614e-13 Lsun
+  soliton (isolated, Schive 2014) in M_h = 1e+15 Msun halo, m = 1e-21 eV: M_c = 3.116e+08 Msun, x_c = 1.701e+00 pc, peak x = 6.812e+14; face W = 2.613e+28 W = 6.826e+01 Lsun; in-band = 3.477e-12 Lsun
+  binary mass / soliton mass (M_h = 1e15): 58.4
+
+=== 7. Best case over binary mass: any binary passing through f = m/(2 pi hbar), m = 1e-21 eV ===
+N_eff = gravitons in the resonance band within one coherence time 1/sigma = N_band * min(1, (1/sigma)/t_in);
+eq.17/18 W scales as N0^2 at fixed m, v, x, so W_best = W_face(1.8e10 Msun) * (N_eff/N0_face)^2.
+  Mc = 1.00e+01 Msun: t_in = 8.190e+15 s, N_band = 2.080e+74, N_eff = 3.343e+70, W = 1.101e-37 W (x=1), pre-ISCO = True
+  Mc = 1.00e+02 Msun: t_in = 1.764e+14 s, N_band = 9.653e+75, N_eff = 7.202e+73, W = 5.108e-31 W (x=1), pre-ISCO = True
+  Mc = 1.00e+03 Msun: t_in = 3.801e+12 s, N_band = 4.481e+77, N_eff = 1.552e+77, W = 2.371e-24 W (x=1), pre-ISCO = True
+  Mc = 1.00e+04 Msun: t_in = 8.190e+10 s, N_band = 2.080e+79, N_eff = 2.080e+79, W = 4.260e-20 W (x=1), pre-ISCO = True
+  Mc = 1.00e+05 Msun: t_in = 1.764e+09 s, N_band = 9.653e+80, N_eff = 9.653e+80, W = 9.177e-17 W (x=1), pre-ISCO = True
+  Mc = 1.00e+06 Msun: t_in = 3.801e+07 s, N_band = 4.481e+82, N_eff = 4.481e+82, W = 1.977e-13 W (x=1), pre-ISCO = True
+  Mc = 1.00e+07 Msun: t_in = 8.190e+05 s, N_band = 2.080e+84, N_eff = 2.080e+84, W = 4.260e-10 W (x=1), pre-ISCO = True
+  Mc = 1.00e+08 Msun: t_in = 1.764e+04 s, N_band = 9.653e+85, N_eff = 9.653e+85, W = 9.177e-07 W (x=1), pre-ISCO = True
+  Mc = 1.00e+09 Msun: t_in = 3.801e+02 s, N_band = 4.481e+87, N_eff = 4.481e+87, W = 1.977e-03 W (x=1), pre-ISCO = True
+  Mc = 1.00e+10 Msun: t_in = 8.190e+00 s, N_band = 2.080e+89, N_eff = 2.080e+89, W = 4.260e+00 W (x=1), pre-ISCO = False
+  Mc = 1.00e+11 Msun: t_in = 1.764e-01 s, N_band = 9.653e+90, N_eff = 9.653e+90, W = 9.177e+03 W (x=1), pre-ISCO = False
+  maximum over pre-ISCO binaries: W = 1.632e+00 W x_MW at Mc = 7.499e+09 Msun (t_in = 1.323e+01 s, N_eff = 1.287e+89)
+  B&O's own merger packet: fractional bandwidth sigma_w/omega_s = 0.212; eq.17 needs 5.0e-07; mismatch = 4.244e+05
+  generous merger bound (face rate for t_in only): energy per merger <= 4.639e+14 J x = 4.639e-42 of E_rel per unit x
+
+--- stderr ---
+

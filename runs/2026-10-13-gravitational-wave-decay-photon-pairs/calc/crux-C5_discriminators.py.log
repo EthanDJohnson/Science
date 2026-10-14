@@ -1,0 +1,37 @@
+# math_run log
+command:  python3 runs/2026-10-13-gravitational-wave-decay-photon-pairs/calc/crux-C5_discriminators.py
+started:  2026-10-13T21:39:46Z
+duration: 0.0 s
+exit:     0
+versions: python 3.13.16, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+1. Margin over C5's own survival threshold and P_lin for GW150914 (B&O inputs)
+   C5-2 v=0.8                     k = 0.0251  k/k_req =   79.7  P_lin = 2.33e-04 pairs  P_lin/P_BO =   79.8
+   C5-2 v=0.5                     k = 0.0310  k/k_req =   98.4  P_lin = 2.88e-04 pairs  P_lin/P_BO =   98.6
+   exact quadrupole 67/(630pi)    k = 0.0339  k/k_req =  107.5  P_lin = 3.14e-04 pairs  P_lin/P_BO =  107.7
+   C5-2 point                     k = 0.0357  k/k_req =  113.3  P_lin = 3.32e-04 pairs  P_lin/P_BO =  113.5
+   upper 1/(6pi)                  k = 0.0531  k/k_req =  168.4  P_lin = 4.93e-04 pairs  P_lin/P_BO =  168.7
+   conformal-scalar k (c_J = 4/3) = 2.82e-03  (C5-1 quotes 2.8e-3; Rahvar-implied ~14 -> ratio 5.0e+03)
+
+2. Total in-in yield / (eq. 8 x T_eff) predicted by each candidate (GW150914, B&O inputs)
+   C5: (P_lin + P_fus)/P_BO ~ 80 .. 114 (linear term alone)
+   C4: 0.3 .. 3 (x pattern 0.3-0.6 -> 0.09 .. 1.8)
+   C3: 0.02 .. 0.1
+   gap C5_low / C4_high = 27; C5_low / C3_high = 798
+
+3. Energy scaling at fixed w, sigma: d ln P / d ln E
+   fusion = B&O total      : P_fus/P_lin = 1.01e-02, slope = 1.0100  (C5 -> 1, C3/C4 fusion-dominated -> 2)
+   fusion = C3 0.1 x B&O   : P_fus/P_lin = 1.01e-03, slope = 1.0010  (C5 -> 1, C3/C4 fusion-dominated -> 2)
+   fusion = C4 3 x B&O     : P_fus/P_lin = 3.04e-02, slope = 1.0295  (C5 -> 1, C3/C4 fusion-dominated -> 2)
+   crossover luminosity-weighted <L> where fusion = linear: 0.0224 c^5/G = 8.14e+50 W
+   GW150914 L_peak = 3.6e49 W is 4.4e-02 of crossover
+
+4. Cosmic budget vs C6: source linear channel vs background eq.14 fusion (astrophysical SGWB)
+   Omega_GW = 9.0e-10: rho = 6.90e-19 J/m^3; kinetic pair rate 1.63e-116 m^-3 s^-1; linear-at-source 1.01e-70 vs background fusion 7.48e-99 pairs/m^3; ratio 1.4e+28
+   Omega_GW = 2.0e-09: rho = 1.53e-18 J/m^3; kinetic pair rate 8.07e-116 m^-3 s^-1; linear-at-source 2.25e-70 vs background fusion 3.69e-98 pairs/m^3; ratio 6.1e+27
+   (rho_c c^2 = 7.67e-10 J/m^3, t_H = 1/H0 = 4.58e+17 s; bandwidth and redshift ignored, order of magnitude only)
+
+--- stderr ---
+

@@ -1,0 +1,23 @@
+# math_run log
+command:  python3 runs/2026-10-13-gravitational-wave-decay-photon-pairs/calc/crux-C2_discriminators.py
+started:  2026-10-13T21:35:24Z
+duration: 0.0 s
+exit:     0
+versions: python 3.13.16, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+N0 = 3.597e+78 gravitons (D-42 quotes 3.6e78)
+[1] DeltaN_eff=0.3 ceiling [D-33]: Gamma_1 = 1.936e-125 1/s, lifetime = 5.165e+124 s, fraction over 410 Mpc = 8.170e-109
+[2]   worst-case crossover R_x(bound A) = 5.004e+27 m = 1.622e+11 pc = 2.504e+21 wavelengths
+[1] NANOGrav-level [C2-0]: Gamma_1 = 4.158e-128 1/s, lifetime = 2.405e+127 s, fraction over 410 Mpc = 1.755e-111
+[2]   worst-case crossover R_x(bound A) = 1.080e+29 m = 3.499e+12 pc = 5.403e+22 wavelengths
+[1] LVK upper limit [C2-0]: Gamma_1 = 1.500e-128 1/s, lifetime = 6.668e+127 s, fraction over 410 Mpc = 6.329e-112
+[2]   worst-case crossover R_x(bound A) = 1.798e+29 m = 5.827e+12 pc = 8.996e+22 wavelengths
+[3] pairs needed for 1e-2 energy loss = 1.799e+76; k needed = 1.934e+78
+[4] bound A P(>c/w) = 1.829e-05 pairs = 6.306 x B&O total 2.9e-6
+[4] bound A P(>lambda) = 2.911e-06 pairs = 1.004 x B&O total 2.9e-6
+[4] bound A P(>10 lambda) = 2.911e-07 pairs = 0.100 x B&O total 2.9e-6
+
+--- stderr ---
+

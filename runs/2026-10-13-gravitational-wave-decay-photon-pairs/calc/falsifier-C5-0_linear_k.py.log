@@ -1,0 +1,32 @@
+# math_run log
+command:  python3 runs/2026-10-13-gravitational-wave-decay-photon-pairs/calc/falsifier-C5-0_linear_k.py
+started:  2026-10-13T21:03:13Z
+duration: 12.8 s
+exit:     0
+versions: python 3.13.16, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+Part 1: Gamma(spin-2, m=1 -> gamma gamma), coupling kappa/2 with kappa=1, each of 5 pols:
+    [0.00099472 0.00099472 0.00099472 0.00099472 0.00099472]
+   expected kappa^2 m^3/(320 pi) = 0.0009947183943243459
+   ratio computed/expected = 0.9999999999999987
+Route A: P = A G^2 Int d4q/(2pi)^4 th(q0)th(m^2)|T^TT|^2,  A = 5.026548245743663  (8 pi/5 = 5.026548245743669 )
+Part 2: W(q).W(-q) / (m^4 |h^TT|^2) for random TT h at rest-frame time-like q: [0.5 0.5 0.5 0.5]
+Route B (Redi-Tesi, c_J=16): A = 5.026548245743669   ratio B/A = 1.0000000000000013
+Part 3 [circular binary]: Int_ball F d3q /(w^3 |S|^2) = 2.672847 (closed form 4pi*67/315 = 2.672847); Int dOmega Lambda/|S|^2 = 5.026548 (8pi/5 = 5.026548)
+   k = Pdot_pairs/(G w P_GW) = 0.033852   closed form 67/(630 pi) = 0.033852
+Part 3 [linear quadrupole]: Int_ball F d3q /(w^3 |S|^2) = 2.672847 (closed form 4pi*67/315 = 2.672847); Int dOmega Lambda/|S|^2 = 5.026548 (8pi/5 = 5.026548)
+   k = Pdot_pairs/(G w P_GW) = 0.033852   closed form 67/(630 pi) = 0.033852
+P_GW normalisation check: computed/(32/5 G mu^2 a^4 Omega^6) = 0.9999999999999665
+
+Part 4 (SI). k = 0.03385200376875234 ; required by C5 for GW150914: k >~ 3.15e-4 ; k/3.15e-4 = 107.4666786309598
+  GW150914 (E=2 Msun c^2, 150 Hz): P_lin = 3.138e-04 pairs vs N^2 fusion P_BO = 2.920e-06; P_lin/P_BO = 1.075e+02
+  GW170817 100 Hz bin: P_lin = 6.330e-08 pairs vs N^2 fusion P_BO = 5.600e-14; P_lin/P_BO = 1.130e+06
+  L_Planck = c^5/G = 3.629e+52 W; GW150914 L_peak/L_P = 9.920e-04
+  fusion/linear = (12 pi/(25 k)) * G <L>_L / c^5 <=  44.55 * L_peak/L_P = 4.419e-02
+  fusion would need <L>_L >  2.245e-02 L_P = 8.146e+50 W to beat the linear channel
+  inspiral-only illustration (assumed E = 1 Msun c^2 at f = 50 Hz): P_lin = 5.239e-05 pairs = 17.9 x whole-event fusion P_BO
+
+--- stderr ---
+

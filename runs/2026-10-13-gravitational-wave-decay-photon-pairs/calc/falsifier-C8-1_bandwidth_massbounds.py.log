@@ -1,0 +1,34 @@
+# math_run log
+command:  python3 runs/2026-10-13-gravitational-wave-decay-photon-pairs/calc/falsifier-C8-1_bandwidth_massbounds.py
+started:  2026-10-13T21:31:13Z
+duration: 0.0 s
+exit:     0
+versions: python 3.13.16, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+== (1) Bandwidth mismatch inside B&O ==
+eps = 0.1: required fractional band v^2/2 = 5.00e-07; ratio eps/(v^2/2) = 2.00e+05
+   in-band graviton fraction (flat spectrum) = 5.00e-06; N0^2 suppression = 2.50e-11
+   eq.18 at 1e-21 eV, x=1, in-band only: 9.60e+02 W
+eps = 0.15: required fractional band v^2/2 = 5.00e-07; ratio eps/(v^2/2) = 3.00e+05
+   in-band graviton fraction (flat spectrum) = 3.33e-06; N0^2 suppression = 1.11e-11
+   eq.18 at 1e-21 eV, x=1, in-band only: 4.27e+02 W
+w_s(1e-21 eV) = 1.519e-06 rad/s; 1/sigma_res = 1.316e+12 s; 1/sigma_merger(eps=0.1) = 6.582e+06 s; duration ratio = 5.00e-06
+
+== (2) Face-value eq. 18 at allowed masses (W propto m^-2, x = 1) ==
+B&O fiducial               m = 1e-21 eV: resonant M = 1.82e+10 Msun, f_GW = 2.42e-07 Hz, W(x=1) = 3.84e+13 W, W(x=1e5) = 3.84e+18 W = 1.00e-08 Lsun; x for 1 Lsun = 9.97e+12 -> rho = 1.26e+07 GeV/cm^3 = 3.31e+05 Msun/pc^3
+B&O eq.16 norm             m = 1e-22 eV: resonant M = 1.82e+11 Msun, f_GW = 2.42e-08 Hz, W(x=1) = 3.84e+15 W, W(x=1e5) = 3.84e+20 W = 1.00e-06 Lsun; x for 1 Lsun = 9.97e+10 -> rho = 1.26e+05 GeV/cm^3 = 3.31e+03 Msun/pc^3
+Rogers&Peiris 95% floor    m = 2e-20 eV: resonant M = 9.10e+08 Msun, f_GW = 4.84e-06 Hz, W(x=1) = 9.60e+10 W, W(x=1e5) = 9.60e+15 W = 2.51e-11 Lsun; x for 1 Lsun = 3.99e+15 -> rho = 5.02e+09 GeV/cm^3 = 1.32e+08 Msun/pc^3
+Dalal&Kravtsov 99% floor   m = 3e-19 eV: resonant M = 6.07e+07 Msun, f_GW = 7.25e-05 Hz, W(x=1) = 4.27e+08 W, W(x=1e5) = 4.27e+13 W = 1.11e-13 Lsun; x for 1 Lsun = 8.97e+17 -> rho = 1.13e+12 GeV/cm^3 = 2.98e+10 Msun/pc^3
+
+== check: 1 GeV/cm^3 in Msun/pc^3 ==
+0.0263 Msun/pc^3 per GeV/cm^3
+
+== (3) Face-value converted fraction at x=1e5 vs L_GW peak 3.6e49 W ==
+m = 1e-21 eV: W/L_GW = 1.07e-31
+m = 2e-20 eV: W/L_GW = 2.67e-34
+m = 3e-19 eV: W/L_GW = 1.19e-36
+
+--- stderr ---
+

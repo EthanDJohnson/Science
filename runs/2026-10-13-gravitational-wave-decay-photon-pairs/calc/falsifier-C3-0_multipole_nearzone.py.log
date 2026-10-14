@@ -1,0 +1,42 @@
+# math_run log
+command:  python3 runs/2026-10-13-gravitational-wave-decay-photon-pairs/calc/falsifier-C3-0_multipole_nearzone.py
+started:  2026-10-13T20:33:57Z
+duration: 182.6 s
+exit:     0
+versions: python 3.13.16, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+== check: monopole l = 0, a = 0.01 (regular interior); expect 1/12 = 0.08333 (p=0), 0.0200 (p=2)
+  eps = 0.02: p = 0: ret/PJ = 0.0873
+  eps = 0.02: p = 2: ret/PJ = 0.0223
+  eps = 0.01: p = 0: ret/PJ = 0.0855
+  eps = 0.01: p = 2: ret/PJ = 0.0213
+  [time 4 s]
+== l = 1: ratio ret/PJ of whole-space pair rate vs source radius a (units 1/k), eps = 0.01
+  ka = 1.00: p=0 ret/PJ =     0.2351  (hole interior      0.151);  p=2 ret/PJ =     0.1024
+  ka = 0.70: p=0 ret/PJ =     0.4879  (hole interior     0.3183);  p=2 ret/PJ =       0.21
+  ka = 0.50: p=0 ret/PJ =     0.9772  (hole interior     0.6534);  p=2 ret/PJ =     0.4138
+  ka = 0.30: p=0 ret/PJ =      2.775  (hole interior      1.897);  p=2 ret/PJ =      1.156
+  ka = 0.20: p=0 ret/PJ =      6.307  (hole interior      4.343);  p=2 ret/PJ =      2.609
+  ka = 0.10: p=0 ret/PJ =      25.45  (hole interior      17.63);  p=2 ret/PJ =      10.47
+  [time 50 s]
+== l = 2: ratio ret/PJ of whole-space pair rate vs source radius a (units 1/k), eps = 0.01
+  ka = 1.00: p=0 ret/PJ =      3.749  (hole interior      1.813);  p=2 ret/PJ =      2.691
+  ka = 0.70: p=0 ret/PJ =      32.26  (hole interior      15.09);  p=2 ret/PJ =      18.66
+  ka = 0.50: p=0 ret/PJ =      253.8  (hole interior      120.6);  p=2 ret/PJ =      126.1
+  ka = 0.30: p=0 ret/PJ =       5665  (hole interior       2743);  p=2 ret/PJ =       2501
+  ka = 0.20: p=0 ret/PJ =  6.551e+04  (hole interior  3.188e+04);  p=2 ret/PJ =   2.78e+04
+  ka = 0.10: p=0 ret/PJ =  4.236e+06  (hole interior  2.073e+06);  p=2 ret/PJ =  1.755e+06
+  [time 135 s]
+== eps convergence, l = 2, ka = 0.3 and 1.0, p = 0
+  ka = 0.3, eps = 0.02: ret/PJ = 6284
+  ka = 0.3, eps = 0.01: ret/PJ = 5665
+  ka = 0.3, eps = 0.005: ret/PJ = 5338
+  ka = 1.0, eps = 0.02: ret/PJ = 4.084
+  ka = 1.0, eps = 0.01: ret/PJ = 3.749
+  ka = 1.0, eps = 0.005: ret/PJ = 3.565
+  [time 182 s]
+
+--- stderr ---
+

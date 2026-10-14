@@ -1,0 +1,20 @@
+# math_run log
+command:  python3 runs/2026-10-13-gravitational-wave-decay-photon-pairs/calc/crux-C6_effvolume.py
+started:  2026-10-13T21:40:14Z
+duration: 0.5 s
+exit:     0
+versions: python 3.13.16, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+1 V_eff (natural units) = 40*pi**2/(9*sigma**2*w)  ; V*w*sigma^2 = 40*pi**2/9
+1 GW150914: V_eff = 3.135e+19 m^3 ; R_eq = 1.956e+06 m ; c/sigma = 1.499e+06 m ; R_eq/(c/sigma) = 1.305 ; k*R_eq = w R_eq/c = 6.15
+1 lambda = 1.999e+06 m ; R_eq/lambda = 0.979
+2 mu/H = 6*H*rho_GW/(omega*rho_tot)  (expect 6 rho_GW H/(rho_tot omega))
+3 pairs per Hubble volume per Hubble time at DeltaN_eff=0.3: 1.38e-12
+4 crossover merger rate for eq8 x T_eff (C4): 5.12e-26 Gpc^-3 yr^-1 (divide by k for C5)
+4 crossover merger rate for C5 linear, per unit k: 1.60e-29 Gpc^-3 yr^-1 (divide by k for C5)
+4 same at DeltaN_eff=0.3 ceiling: 8.89e-20 Gpc^-3 yr^-1
+
+--- stderr ---
+

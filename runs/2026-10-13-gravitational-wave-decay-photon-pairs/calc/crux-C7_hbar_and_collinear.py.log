@@ -1,0 +1,28 @@
+# math_run log
+command:  python3 runs/2026-10-13-gravitational-wave-decay-photon-pairs/calc/crux-C7_hbar_and_collinear.py
+started:  2026-10-13T21:42:20Z
+duration: 0.9 s
+exit:     0
+versions: python 3.13.16, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+eq.8 pair rate (SI): 3*E**2*G**2*omega*sigma**2/(25*pi*c**10)  dln/dln hbar = 0
+per-packet total P = R*T_eff (SI): 4*E**2*G**2*omega*sigma/(25*c**10)  dln/dln hbar = 0
+C5 P_lin (SI): E*G*k*omega/c**5  dln/dln hbar = 0
+P_BO/P_lin: 4*E*G*sigma/(25*c**5*k)  dln/dln hbar = 0
+stimulated pair number (RJ): 8*E**2*G**2*kT*sigma/(25*c**10*hbar)  dln/dln hbar = -1
+stimulated power 2*P_stim*hbar*w per packet: 16*E**2*G**2*kT*omega*sigma/(25*c**10)  dln/dln hbar = 0
+
+full second-order two-beam rate, R/L, omega=1, h=1e-3 (natural units)
+theta=1e-01: rate=4.965309e-20  closed-form(plus/plus) w^4h^4(1-cos)^2/(1280pi)=6.206636e-21
+theta=1e-02: rate=4.973509e-24  closed-form(plus/plus) w^4h^4(1-cos)^2/(1280pi)=6.216886e-25  slope dln/dln theta=3.9993
+theta=1e-03: rate=4.973591e-28  closed-form(plus/plus) w^4h^4(1-cos)^2/(1280pi)=6.216989e-29  slope dln/dln theta=4.0000
+G=1: R/L rate at theta=0.5 = 2.981375771339e-17
+G=0.001: R/L rate at theta=0.5 = 2.981375771339e-17
+
+GW150914: k * P_BO/P_lin = (4/25) G E sigma/c^5 = 3.152e-04 (dimensionless)
+R/L full rate / plus-plus closed form at theta=1e-3: 7.9999996783008624
+
+--- stderr ---
+

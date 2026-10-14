@@ -1,0 +1,18 @@
+# math_run log
+command:  python3 runs/2026-10-13-gravitational-wave-decay-photon-pairs/calc/crux-C3_numbers.py
+started:  2026-10-13T21:36:59Z
+duration: 0.0 s
+exit:     0
+versions: python 3.13.16, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+circular-pattern scalar-toy total: 8.32e-09 pairs
+monopole (harmonic-gauge h_ij proxy) at GW150914 bandwidth: 8.18e-08 pairs
+outgoing wave beyond kr~2: 8.7e-09 to 1.5e-07 pairs
+x2.25 for E = 3 Msun c^2: circular 1.87e-08, monopole 1.84e-07 pairs
+C5 linear channel dominates C3's fusion total if k > 8.9e-07 (circular) or k > 8.8e-06 (monopole proxy); vs B&O total: k > 3.1e-04
+gap between C3 upper value 0.1 and C4 lower value 0.3: factor 3; between circular toy 2.87e-3 and C4 lower 0.3: factor 105
+
+--- stderr ---
+

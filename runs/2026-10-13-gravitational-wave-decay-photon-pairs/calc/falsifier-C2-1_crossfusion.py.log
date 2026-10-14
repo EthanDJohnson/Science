@@ -1,0 +1,25 @@
+# math_run log
+command:  python3 runs/2026-10-13-gravitational-wave-decay-photon-pairs/calc/falsifier-C2-1_crossfusion.py
+started:  2026-10-13T20:28:26Z
+duration: 54.3 s
+exit:     0
+versions: python 3.13.16, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+(A) linear-in-h vertex for null total momentum
+  trial 0: q^2 = 7.44e-16, k.p = 1.83e-16, eps_mn T^mn = 0.00e+00
+  trial 1: q^2 = -2.20e-15, k.p = -3.96e-16, eps_mn T^mn = 1.11e-16
+  trial 2: q^2 = -1.01e-15, k.p = -5.87e-17, eps_mn T^mn = 0.00e+00
+  trial 3: q^2 = -1.74e-15, k.p = 5.65e-17, eps_mn T^mn = -1.91e-16
+  trial 4: q^2 = -1.47e-15, k.p = -4.95e-16, eps_mn T^mn = 0.00e+00
+  max |vertex| over trials = 1.91e-16 (zero: null q forces collinear pair, TT kills it)
+  non-collinear control: q^2 = 3.749 > 0 (needs time-like Fourier support of h)
+
+(B) cross-fusion of a 150 Hz wave with an isotropic SGWB, SI
+  LVK-band SGWB at 25 Hz, Omega = 1e-8 (near LVK O3 bound): h2 = 4.83e-24, Gamma per 150 Hz graviton = 5.24e-128 s^-1, fraction fused over 410 Mpc = 2.21e-111
+  PTA SGWB at 3.2e-8 Hz, Omega = 1e-8: h2 = 3.77e-15, Gamma per 150 Hz graviton = 5.24e-128 s^-1, fraction fused over 410 Mpc = 2.21e-111
+  (t_prop = 4.22e+16 s; this channel is R-linear but needs a second, non-collinear GW field; it is C6's multi-directional case, not self-decay)
+
+--- stderr ---
+

@@ -1,0 +1,28 @@
+# math_run log
+command:  python3 runs/2026-10-13-gravitational-wave-decay-photon-pairs/calc/falsifier-C4-1_offshell_channel.py
+started:  2026-10-13T20:53:43Z
+duration: 1.3 s
+exit:     0
+versions: python 3.13.16, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+Coefficient of G^2 Int_{q0>0, q^2>0} d^4q/(2pi)^4 T*P2T:
+  Redi-Tesi eq.6 (c_J=16): 8*pi/5 = 5.026548245743669
+  HLZ width + spectral   : 8*pi/5 = 5.026548245743669
+  agree: True
+massive-pol angular average <polsum>(x) = 4*x**4/45 - 2*x**2/3 + 1 ; massless TT average = 2/5
+MC <|A|^2>/|T|^2 = 0.1334 (2/15 = 0.1333);  <|B|^2>/|T|^2 = 0.3336 (1/3)
+Int_0^{w0^2} f ds / w0^2 = 67/63 = 1.0634920634920635
+k = I/(10 pi) = 67/(630*pi) = 0.03385200376875234
+
+SI numbers
+GW150914 merger, E = 2.0 Msun c^2: N_g = 3.597e+78, (hbar w/E_P)^2 = 2.581e-81, P_lin = 3.143e-04 (check 3.143e-04) pairs; B&O eq.8 x T_eff = 2.928e-06; ratio = 107.4
+GW150914 merger, E = 3.0 Msun c^2: N_g = 5.396e+78, (hbar w/E_P)^2 = 2.581e-81, P_lin = 4.715e-04 (check 4.715e-04) pairs; B&O eq.8 x T_eff = 6.587e-06; ratio = 71.6
+GW170817 30-1600 Hz: E_GW = 9.405e+45 J = 5.261e-02 Msun c^2; P_lin = 3.791e-05 pairs; fusion (M-IDEALIZER-10) = 2.83e-08; ratio = 1.34e+03
+GW150914 inspiral 35-68 Hz: E_GW = 8.542e+46 J = 4.778e-01 Msun c^2; P_lin = 2.548e-05 pairs; fusion (M-IDEALIZER-10) = 2.75e-08; ratio = 9.27e+02
+GW150914 merger: max |k| a = 2 v/c = 1.06
+GW170817 at 100 Hz: max |k| a = 2 v/c = 0.32
+
+--- stderr ---
+

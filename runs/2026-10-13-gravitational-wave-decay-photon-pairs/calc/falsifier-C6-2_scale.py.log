@@ -1,0 +1,34 @@
+# math_run log
+command:  python3 runs/2026-10-13-gravitational-wave-decay-photon-pairs/calc/falsifier-C6-2_scale.py
+started:  2026-10-13T21:18:47Z
+duration: 0.0 s
+exit:     0
+versions: python 3.13.16, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+[0] 3/(25pi) * 40pi^2/9 = 1.675516081915;  8pi/15 = 1.675516081915; equal: True
+[1] rho_gamma(T0) = 4.1748e-14 J/m^3
+    DeltaN_eff=0.3: rho_GW=2.844e-15 J/m^3, Gamma=2.775e-109 pairs m^-3 s^-1
+    DeltaN_eff=0.1: rho_GW=9.481e-16 J/m^3, Gamma=3.083e-110 pairs m^-3 s^-1
+    DeltaN_eff=0.05: rho_GW=4.741e-16 J/m^3, Gamma=7.707e-111 pairs m^-3 s^-1
+[2] Hubble radius 1.373e+26 m, V_H 1.083e+79 m^3, t_H 4.578e+17 s
+    pairs in whole Hubble volume over a Hubble time, DeltaN_eff=0.3: 1.376e-12
+    CMB stimulation factor at 25 Hz: 4.543e+09; stimulated pairs: 6.250e-03
+    energy into photons (<= 4 kT0 per stimulated pair): 9.407e-25 J;  vs rho_GW V_H = 3.080e+64 J
+[3] closed form vs direct at T=1e-3 M_Pl: 1.468271e-09 vs 1.468271e-09
+    x = rho_GW/rho_tot at T > 100 GeV for DeltaN_eff=0.3: 0.1050
+    T = BBN 1 MeV: F per Hubble time = 7.915e-67
+    T = EW 100 GeV: F per Hubble time = 7.915e-52
+    T = max reheating 1.4e16 GeV (inflation bound): F per Hubble time = 2.172e-09
+    T = 1e18 GeV: F per Hubble time = 7.915e-04
+    T = M_Pl: F per Hubble time = 1.440e+00
+    F = 1 needs T = 0.885 M_Pl (x = 0.105)
+    F = 1 needs T = 0.418 M_Pl (x = 1.000)
+[4] PIXIE: shortfall 5.00e+70; required rho_GW/rho_gamma = 1.52e+34 vs allowed 0.0681
+[4] FIRAS: shortfall 1.50e+74; required rho_GW/rho_gamma = 8.34e+35 vs allowed 0.0681
+[5] beam spread 0.1 rad: suppression vs isotropic ~ (dth^4/4)/(4/3) = 1.88e-05
+[5] beam spread 0.001 rad: suppression vs isotropic ~ (dth^4/4)/(4/3) = 1.88e-13
+
+--- stderr ---
+

@@ -1,0 +1,22 @@
+# math_run log
+command:  python3 runs/2026-10-13-gravitational-wave-decay-photon-pairs/calc/falsifier-C3-2_bandwidth.py
+started:  2026-10-13T20:45:31Z
+duration: 53.1 s
+exit:     0
+versions: python 3.13.16, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+check J_sym cross term (sigma=0.21, q0=2.05, q=0.7): brute = -115.16676  analytic = -115.16676
+narrow-band closed forms: p=0 -> 0.0833333 (1/12 = 0.0833333 )  p=2 -> 0.0200076
+sigma/w   ratio_ret/sym(p=0)   ratio_ret/sym(p=2)   [p=2 is the graviton-fusion weight |M|^2 ~ s^2]
+  0.01   0.0840               0.0203
+  0.10   0.0906               0.0235
+  0.21   0.1001               0.0282
+  0.30   0.1096               0.0327
+  0.50   0.1373               0.0428
+  0.70   0.1714               0.0516
+  1.00   0.2217               0.0615
+
+--- stderr ---
+

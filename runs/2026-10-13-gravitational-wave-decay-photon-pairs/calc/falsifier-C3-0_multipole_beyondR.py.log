@@ -1,0 +1,16 @@
+# math_run log
+command:  python3 runs/2026-10-13-gravitational-wave-decay-photon-pairs/calc/falsifier-C3-0_multipole_beyondR.py
+started:  2026-10-13T20:38:17Z
+duration: 45.6 s
+exit:     0
+versions: python 3.13.16, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+l = 0, p = 0: retarded yield beyond kR = 1, 2, 5 / whole-space PJ yield = 0.0382, 0.0168, 0.00571
+l = 0, p = 2: retarded yield beyond kR = 1, 2, 5 / whole-space PJ yield = 0.0128, 0.00444, 0.000668
+l = 2, p = 0: retarded yield beyond kR = 1, 2, 5 / whole-space PJ yield = 2, 0.156, 0.0275
+l = 2, p = 2: retarded yield beyond kR = 1, 2, 5 / whole-space PJ yield = 1.51, 0.0593, 0.00337
+
+--- stderr ---
+

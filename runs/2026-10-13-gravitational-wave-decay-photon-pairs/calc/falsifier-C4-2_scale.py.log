@@ -1,0 +1,24 @@
+# math_run log
+command:  python3 runs/2026-10-13-gravitational-wave-decay-photon-pairs/calc/falsifier-C4-2_scale.py
+started:  2026-10-13T21:00:35Z
+duration: 6.0 s
+exit:     0
+versions: python 3.13.16, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+[check] Weinberg power with this T_W: 6.400000; quadrupole (32/5) G mu^2 a^4 Om^6 = 6.400000; ratio 1.000000
+[grid nk=16,nc=16,nphi=24] N_lin/T_obs = 4.333056e-01 (natural units); k_lin = N_lin/(G w E_GW) = 3.385200e-02; max conservation residual 8.9e-17
+[grid nk=32,nc=24,nphi=40] N_lin/T_obs = 4.333056e-01 (natural units); k_lin = N_lin/(G w E_GW) = 3.385200e-02; max conservation residual 1.1e-16
+N_lin/P_fus = 2.2449e-02 x (L_P/L_GW)   [L_P = c^5/G]
+L_P = c^5/G = 3.6283e+52 W (SI)
+GW150914 E=2.0 Msun c^2: G w E/c^5 = 9.287e-03; N_lin = 3.144e-04 pairs; B&O top-hat total P = 2.928e-06; ratio N_lin/P = 1.074e+02
+GW150914 E=3.0 Msun c^2: G w E/c^5 = 1.393e-02; N_lin = 4.716e-04 pairs; B&O top-hat total P = 6.588e-06; ratio N_lin/P = 7.157e+01
+GW150914 at L = 3.6e49 W: N_lin/P_fus = 2.262e+01
+GW170817 chirp 30-1600 Hz: N_lin = 3.792e-05 pairs; B&O-model chirp total 2.83e-8 (M-IDEALIZER-10): ratio 1.340e+03
+GW150914 inspiral 35-68 Hz: N_lin = 2.549e-05 pairs; B&O-model 2.75e-8: ratio 9.268e+02
+WD binary L = 1.697e28 W: N_lin/P_fus = 4.800e+22; N_lin per year at f_GW = 3 mHz = 9.419e-21 pairs
+Envelope: N_lin = k_lin (G E/c^4)(w/c); for E <= M c^2 and w <~ c^3/(G M): N_lin <~ k_lin x O(1)
+
+--- stderr ---
+

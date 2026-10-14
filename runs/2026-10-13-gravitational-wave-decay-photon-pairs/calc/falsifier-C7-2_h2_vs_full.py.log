@@ -1,0 +1,31 @@
+# math_run log
+command:  python3 runs/2026-10-13-gravitational-wave-decay-photon-pairs/calc/falsifier-C7-2_h2_vs_full.py
+started:  2026-10-13T21:24:44Z
+duration: 129.3 s
+exit:     0
+versions: python 3.13.16, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+=== (1) s-channel (Maxwell on h^(2)) vs full tree amplitude, integrated over final phase space ===
+cases: (theta_deg, pol1, pol2): ratio R = int|M_s|^2 / int|M_full|^2 ; lab TT gauge for the waves
+theta= 180    R/L   : int|M_s|^2=6.4274e-60  int|M_full|^2=5.0801e+04  ratio=1.265e-64  (full-integral change 24->40 nodes: 1.2e-14)
+theta=  90    R/R   : int|M_s|^2=1.0491e+05  int|M_full|^2=2.0260e-26  ratio=inf  (full-integral change 24->40 nodes: 5.6e-02)
+theta=  90    R/L   : int|M_s|^2=1.2832e+04  int|M_full|^2=1.2700e+04  ratio=1.01  (full-integral change 24->40 nodes: 3.9e-15)
+theta= 180 plus/plus: int|M_s|^2=7.6201e+04  int|M_full|^2=2.5400e+04  ratio=3  (full-integral change 24->40 nodes: 8.9e-15)
+theta=  90 plus/plus: int|M_s|^2=6.8263e+04  int|M_full|^2=6.3501e+03  ratio=10.75  (full-integral change 24->40 nodes: 1.7e-05)
+theta=  30 plus/plus: int|M_s|^2=2.5339e+03  int|M_full|^2=1.1398e+02  ratio=22.23  (full-integral change 24->40 nodes: 3.6e-05)
+theta= 120    R/L   : int|M_s|^2=7.1624e+03  int|M_full|^2=2.8575e+04  ratio=0.2507  (full-integral change 24->40 nodes: 5.1e-15)
+
+=== (2) hbar scaling (SI) ===
+hbar x 1.0: eq.8 pair rate = 2.428903e-06 1/s, photon power (unstimulated) = 4.828224e-37 W
+hbar x 2.0: eq.8 pair rate = 2.428903e-06 1/s, photon power (unstimulated) = 9.656448e-37 W
+two-beam head-on plus/plus full-amplitude rate (tool, SI) = 2.912880e-101 /m^3/s; closed form w^4 h^4 (1-cos)^2/(1280 pi c^3) = 2.912880e-101 /m^3/s (no hbar, no G)
+
+=== (3) Rayleigh-Jeans CMB occupation at GW frequencies (extrapolated) ===
+f = 10 Hz: f_gamma = 5.679e+09; 1+2f = 1.136e+10; stimulated photon number scales as 1/hbar
+f = 150 Hz: f_gamma = 3.786e+08; 1+2f = 7.572e+08; stimulated photon number scales as 1/hbar
+f = 0.001 Hz: f_gamma = 5.679e+13; 1+2f = 1.136e+14; stimulated photon number scales as 1/hbar
+
+--- stderr ---
+

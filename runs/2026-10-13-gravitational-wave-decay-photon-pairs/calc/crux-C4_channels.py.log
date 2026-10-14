@@ -1,0 +1,21 @@
+# math_run log
+command:  python3 runs/2026-10-13-gravitational-wave-decay-photon-pairs/calc/crux-C4_channels.py
+started:  2026-10-13T21:37:33Z
+duration: 0.0 s
+exit:     0
+versions: python 3.13.16, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+k_lin = 67/(630 pi) = 0.03385
+E = 2.0 Msun c^2: G E w/c^5 = 9.2867e-03; N_lin = 3.144e-04 pairs; P_BO = 2.928e-06 pairs; N_lin/P_BO = 107.4
+   fusion would need a factor 107 above B&O to equal N_lin
+E = 3.0 Msun c^2: G E w/c^5 = 1.3930e-02; N_lin = 4.716e-04 pairs; P_BO = 6.588e-06 pairs; N_lin/P_BO = 71.6
+   fusion would need a factor 72 above B&O to equal N_lin
+Gaussian q0-overlap of h1 (w, sigma) and h1*h1 (2w, sqrt2 sigma) amplitudes: 1.526e-01
+  interference / fusion <= 2 sqrt(N_lin/P_fus) x O = 2.590 (N_lin/P_fus = 72.0)
+  interference / fusion <= 2 sqrt(N_lin/P_fus) x O = 3.157 (N_lin/P_fus = 107.0)
+same overlap at sigma/w = 0.1: 2.334e-04
+
+--- stderr ---
+

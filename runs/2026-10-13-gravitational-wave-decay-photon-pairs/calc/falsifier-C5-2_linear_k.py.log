@@ -1,0 +1,48 @@
+# math_run log
+command:  python3 runs/2026-10-13-gravitational-wave-decay-photon-pairs/calc/falsifier-C5-2_linear_k.py
+started:  2026-10-13T21:08:29Z
+duration: 56.9 s
+exit:     0
+versions: python 3.13.16, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+Linear channel coefficient k = P_lin / [(hbar w0/E_Pl)^2 N_GW] = P_lin/(G w0^2 N_GW), natural units, G = w0 = 1
+analytic point-source narrow-band prediction: k = 1/(6 pi) = 0.05305164769729845
+circular v = w0 R = 0.0: N_GW = 1.8617e-06, P_lin(60x60) = 6.64595e-08, P_lin(100x100) = 6.64595e-08, grid change 5.0e-10, k = 0.03570, semi-analytic k = 0.05594
+circular v = w0 R = 0.3: N_GW = 1.8617e-06, P_lin(60x60) = 6.31086e-08, P_lin(100x100) = 6.31086e-08, grid change 7.9e-10, k = 0.03390
+circular v = w0 R = 0.5: N_GW = 1.8617e-06, P_lin(60x60) = 5.76655e-08, P_lin(100x100) = 5.76655e-08, grid change 6.0e-10, k = 0.03097
+circular v = w0 R = 0.8: N_GW = 1.8617e-06, P_lin(60x60) = 4.67222e-08, P_lin(100x100) = 4.67222e-08, grid change 6.2e-10, k = 0.02510
+linear   v = w0 R = 0.0: N_GW = 2.7926e-06, P_lin(60x60) = 9.96893e-08, P_lin(100x100) = 9.96893e-08, grid change 2.0e-10, k = 0.03570, semi-analytic k = 0.05594
+linear   v = w0 R = 0.3: N_GW = 2.7926e-06, P_lin(60x60) = 9.46629e-08, P_lin(100x100) = 9.46629e-08, grid change 5.2e-10, k = 0.03390
+linear   v = w0 R = 0.5: N_GW = 2.7926e-06, P_lin(60x60) = 8.64982e-08, P_lin(100x100) = 8.64982e-08, grid change 4.1e-10, k = 0.03097
+linear   v = w0 R = 0.8: N_GW = 2.7926e-06, P_lin(60x60) = 7.00834e-08, P_lin(100x100) = 7.00834e-08, grid change 6.1e-10, k = 0.02510
+
+C5 threshold (candidates.md): k >= 3.2e-04 for GW150914
+  ('circular', 0.0): k = 0.0357, k/k_required = 112
+  ('circular', 0.3): k = 0.0339, k/k_required = 106
+  ('circular', 0.5): k = 0.0310, k/k_required = 97
+  ('circular', 0.8): k = 0.0251, k/k_required = 78
+  ('linear', 0.0): k = 0.0357, k/k_required = 112
+  ('linear', 0.3): k = 0.0339, k/k_required = 106
+  ('linear', 0.5): k = 0.0310, k/k_required = 97
+  ('linear', 0.8): k = 0.0251, k/k_required = 78
+
+GW150914, SI: P_lin = k * G E w / c^5 (since (hbar w/E_Pl)^2 N = G E w/c^5)
+  E = 2.0 Msun c^2, f = 150 Hz, ('circular', 0.0): (hbar w/E_Pl)^2 N = 9.286e-03 pairs/k, P_lin = 3.31e-04 pairs
+  E = 2.0 Msun c^2, f = 150 Hz, ('circular', 0.5): (hbar w/E_Pl)^2 N = 9.286e-03 pairs/k, P_lin = 2.88e-04 pairs
+  E = 2.0 Msun c^2, f = 150 Hz, ('linear', 0.5): (hbar w/E_Pl)^2 N = 9.286e-03 pairs/k, P_lin = 2.88e-04 pairs
+  E = 2.0 Msun c^2, f = 250 Hz, ('circular', 0.0): (hbar w/E_Pl)^2 N = 1.548e-02 pairs/k, P_lin = 5.52e-04 pairs
+  E = 2.0 Msun c^2, f = 250 Hz, ('circular', 0.5): (hbar w/E_Pl)^2 N = 1.548e-02 pairs/k, P_lin = 4.79e-04 pairs
+  E = 2.0 Msun c^2, f = 250 Hz, ('linear', 0.5): (hbar w/E_Pl)^2 N = 1.548e-02 pairs/k, P_lin = 4.79e-04 pairs
+  E = 3.0 Msun c^2, f = 150 Hz, ('circular', 0.0): (hbar w/E_Pl)^2 N = 1.393e-02 pairs/k, P_lin = 4.97e-04 pairs
+  E = 3.0 Msun c^2, f = 150 Hz, ('circular', 0.5): (hbar w/E_Pl)^2 N = 1.393e-02 pairs/k, P_lin = 4.31e-04 pairs
+  E = 3.0 Msun c^2, f = 150 Hz, ('linear', 0.5): (hbar w/E_Pl)^2 N = 1.393e-02 pairs/k, P_lin = 4.31e-04 pairs
+  E = 3.0 Msun c^2, f = 250 Hz, ('circular', 0.0): (hbar w/E_Pl)^2 N = 2.321e-02 pairs/k, P_lin = 8.29e-04 pairs
+  E = 3.0 Msun c^2, f = 250 Hz, ('circular', 0.5): (hbar w/E_Pl)^2 N = 2.321e-02 pairs/k, P_lin = 7.19e-04 pairs
+  E = 3.0 Msun c^2, f = 250 Hz, ('linear', 0.5): (hbar w/E_Pl)^2 N = 2.321e-02 pairs/k, P_lin = 7.19e-04 pairs
+  C4 fusion totals quoted in candidates.md: 7.0e-07 to 1.4e-05 pairs
+  ratio P_lin/P_fusion at B&O inputs (k = circular v=0.5): 21 to 411
+
+--- stderr ---
+

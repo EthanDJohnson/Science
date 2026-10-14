@@ -1,0 +1,53 @@
+# math_run log
+command:  python3 runs/2026-10-13-gravitational-wave-decay-photon-pairs/calc/falsifier-C1-2_scale.py
+started:  2026-10-13T20:22:56Z
+duration: 0.2 s
+exit:     0
+versions: python 3.13.16, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+== Inputs (SI) ==
+E = 3.5743e+47 J, w = 942.4778 rad/s, sigma = 200.0 rad/s, shell thickness l = c/sigma = 1.4990e+06 m
+lambda = 1.9986e+06 m, lambda/(2 pi) = 3.1809e+05 m, D = 410 Mpc = 1.2651e+25 m, t_prop = 4.2200e+16 s
+
+== B&O eq. 8 (SI) ==
+R = 1.3975e-04 pairs/s ; sustained over t_prop: R*t_prop = 5.8974e+12 pairs
+
+== Kinematic factor <(1 - n.n')^2> (dimensionless) ==
+random search max = 1.9805 (must be <= 2); antipodal pair = 2.0000; isotropic = 1.3333 (exact 4/3)
+
+== Achievable (upper bound, head-on kinematics everywhere) vs required R ==
+closed form ratio Ndot_max/R = (5 pi/3) c^2/(r^2 w sigma) for Omega = 4 pi, l = c/sigma
+r = 3.1809e+05 m (lambda/2pi): Ndot_max = 3.4482e-03 pairs/s ; Ndot_max/R = 2.4674e+01
+r = 1.9986e+06 m (lambda): Ndot_max = 8.7343e-05 pairs/s ; Ndot_max/R = 6.2500e-01
+r = 1.0000e+07 m (1e4 km): Ndot_max = 3.4889e-06 pairs/s ; Ndot_max/R = 2.4965e-02
+r = 6.4000e+06 m (1 R_earth-ish 6.4e6 m): Ndot_max = 8.5178e-06 pairs/s ; Ndot_max/R = 6.0951e-02
+r = 1.0726e+12 m (c*tau (B&O sphere, tau = 1/(2R))): Ndot_max = 3.0325e-16 pairs/s ; Ndot_max/R = 2.1700e-12
+r = 1.4960e+11 m (1 AU): Ndot_max = 1.5590e-14 pairs/s ; Ndot_max/R = 1.1155e-10
+r = 3.0857e+16 m (1 pc): Ndot_max = 3.6643e-25 pairs/s ; Ndot_max/R = 2.6220e-21
+r = 3.0857e+22 m (1 Mpc): Ndot_max = 3.6643e-37 pairs/s ; Ndot_max/R = 2.6220e-33
+r = 1.2651e+25 m (410 Mpc): Ndot_max = 2.1798e-42 pairs/s ; Ndot_max/R = 1.5598e-38
+crossover r* (bound = R) = 1.5800e+06 m = 0.791 wavelengths
+with beaming Omega = 0.4 pi: r* = 4.9965e+06 m
+
+== Pairs made beyond r: bound vs C1's sustained count ==
+N_max(>lambda) = 5.8229e-07 pairs ; C1 count over remaining path to 410 Mpc R*(D - r)/c = 5.8974e+12
+N_max(>1 AU) = 7.7793e-12 pairs ; C1 count over remaining path to 410 Mpc R*(D - r)/c = 5.8974e+12
+N_max(>410 Mpc) = 9.1988e-26 pairs ; C1 count over remaining path to 410 Mpc R*(D - r)/c = 0.0000e+00
+C1 sustained count R*t_prop / bound N_max(>lambda) = 1.0128e+19
+N_max(>r) falls as 1/r even with maximal (head-on) kinematics: it converges, slope -1; C1 needs slope +1 (count beyond R growing as the path).
+B&O per-packet total P = R*T_eff = 2.9269e-06 pairs; N_max(>lambda)/P = 1.9894e-01
+
+== Realistic outgoing kinematics, theta = c/(w r) (SI) ==
+r = lambda: Ndot = 7.0052e-09 pairs/s ; /R = 5.0127e-05
+r = 1 AU: Ndot = 3.9833e-38 pairs/s ; /R = 2.8503e-34
+r = 410 Mpc: Ndot = 1.0889e-121 pairs/s ; /R = 7.7919e-118
+
+== Plasma kinematic closure (SI) ==
+mean IGM 2.2e-7 cm^-3: f_p = 4.2120e+00 Hz ; 150 Hz is OPEN (head-on only); r_max = c w/w_p^2 = 4.0342e+08 m
+warm ISM 0.03 cm^-3: f_p = 1.5554e+03 Hz ; 150 Hz is CLOSED at every angle; r_max = c w/w_p^2 = 2.9584e+03 m
+VLISM 0.08 cm^-3: f_p = 2.5399e+03 Hz ; 150 Hz is CLOSED at every angle; r_max = c w/w_p^2 = 1.1094e+03 m
+
+--- stderr ---
+

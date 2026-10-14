@@ -1,0 +1,25 @@
+# math_run log
+command:  python3 runs/2026-10-13-gravitational-wave-decay-photon-pairs/calc/crux-C3_multipole_selection.py
+started:  2026-10-13T21:35:22Z
+duration: 54.2 s
+exit:     0
+versions: python 3.13.16, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+circular binary, dominant (2,+2)x(2,+2): M = 4
+   L = 4: Gaunt coeff = sqrt(70)/(14*sqrt(pi)) ~ 0.3372; small-r integrand ~ r^0; converges at r->0 (no near-zone divergence)
+circular binary cross (2,+2)x(3,+3): M = 5
+   L = 5: Gaunt coeff = 5*sqrt(66)/(66*sqrt(pi)) ~ 0.3472; small-r integrand ~ r^0; converges at r->0 (no near-zone divergence)
+circular binary cross (2,+2)x(2,+1) [mass asymmetry]: M = 3
+   L = 4: Gaunt coeff = sqrt(35)/(14*sqrt(pi)) ~ 0.2384; small-r integrand ~ r^0; converges at r->0 (no near-zone divergence)
+linear/head-on quadrupole (2,0)x(2,0): M = 0
+   L = 0: Gaunt coeff = 1/(2*sqrt(pi)) ~ 0.2821; small-r integrand ~ r^-4; diverges: yield ~ (ka)^-6
+   L = 2: Gaunt coeff = sqrt(5)/(7*sqrt(pi)) ~ 0.1802; small-r integrand ~ r^-2; diverges: yield ~ (ka)^-2
+   L = 4: Gaunt coeff = 3/(7*sqrt(pi)) ~ 0.2418; small-r integrand ~ r^0; converges at r->0 (no near-zone divergence)
+monopole (0,0)x(0,0): M = 0
+   L = 0: Gaunt coeff = 1/(2*sqrt(pi)) ~ 0.2821; small-r integrand ~ r^0; converges at r->0 (no near-zone divergence)
+Note: monopole retarded h0 ~ 1/(kr) gives r^0 for L=0 -> converges (finite 1/12 ratio).
+
+--- stderr ---
+

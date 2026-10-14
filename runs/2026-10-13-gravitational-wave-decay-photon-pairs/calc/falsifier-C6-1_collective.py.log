@@ -1,0 +1,30 @@
+# math_run log
+command:  python3 runs/2026-10-13-gravitational-wave-decay-photon-pairs/calc/falsifier-C6-1_collective.py
+started:  2026-10-13T21:17:37Z
+duration: 0.7 s
+exit:     0
+versions: python 3.13.16, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+A1 sigma(RL->gg) = 4*pi*G**2*s/5  expected 4*pi*G**2*s/5: True
+A2 Gamma/V / (G^2 rho^2) = 8*pi/15 = 8 pi/15 ? True
+B0 l_P^2 = 2.612e-70 m^2, H0 = 2.184e-18 s^-1, rho_c c^2 = 7.669e-10 J/m^3
+B DeltaNeff=0.3 at 25 Hz: rho=2.84e-15 J/m^3, n=1.71e+17 m^-3, mu=6.75e-43 s^-1, mu/H0=3.1e-25, T_B~lnN/mu=3.3e+44 s (lnN=220), kinetic/graviton=3.2e-126 s^-1, mu/kinetic=2.1e+83, IGM detuning=2.03e+00 rad/s (omega_p=25.2 rad/s)
+B LVK Omega=2.8e-9 at 25 Hz: rho=2.15e-18 J/m^3, n=1.30e+14 m^-3, mu=5.10e-46 s^-1, mu/H0=2.3e-28, T_B~lnN/mu=4.2e+47 s (lnN=213), kinetic/graviton=2.4e-129 s^-1, mu/kinetic=2.1e+83, IGM detuning=2.03e+00 rad/s (omega_p=25.2 rad/s)
+B PTA-like Omega=1e-8 at 3.2e-9 Hz: rho=7.67e-18 J/m^3, n=3.62e+24 m^-3, mu=1.42e-35 s^-1, mu/H0=6.5e-18, T_B~lnN/mu=1.7e+37 s (lnN=237), kinetic/graviton=1.1e-138 s^-1, mu/kinetic=1.3e+103, IGM detuning=inf rad/s (omega_p=25.2 rad/s)
+B DeltaNeff=0.3 all at 1e-10 Hz (extreme): rho=2.84e-15 J/m^3, n=4.29e+28 m^-3, mu=1.69e-31 s^-1, mu/H0=7.7e-14, T_B~lnN/mu=1.5e+33 s (lnN=246), kinetic/graviton=1.3e-137 s^-1, mu/kinetic=1.3e+106, IGM detuning=inf rad/s (omega_p=25.2 rad/s)
+C rho_GW/rho_tot=0.04, H/omega=1e-02: mu/H = 2.4e-03
+C rho_GW/rho_tot=0.04, H/omega=1e-10: mu/H = 2.4e-11
+C rho_GW/rho_tot=0.04, H/omega=1e-20: mu/H = 2.4e-21
+C rho_GW/rho_tot=1.0, H/omega=1e-02: mu/H = 6.0e-02
+C rho_GW/rho_tot=1.0, H/omega=1e-10: mu/H = 6.0e-10
+C rho_GW/rho_tot=1.0, H/omega=1e-20: mu/H = 6.0e-20
+C check identity (today, case 1): lhs=3.0895e-25, rhs=3.0895e-25, ratio=1.000000
+D1 sum|M|^2 (Compton) = 128*pi**2*G**2*(S**4 + U**4)/T**2
+D2 crossed s<->t, sum|M|^2 (gg->yy) = 128*pi**2*G**2*(T**4 + U**4)/S**2
+D3 sigma_unpol(gg->yy) from Compton crossing = 2*pi*G**2*ss/5  equals (2 pi/5) G^2 s: True
+D4 Gamma/V/(G^2 rho^2) via Compton crossing = 8*pi/15
+
+--- stderr ---
+

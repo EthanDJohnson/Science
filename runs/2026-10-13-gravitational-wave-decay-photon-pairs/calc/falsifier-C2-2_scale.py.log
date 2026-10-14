@@ -1,0 +1,45 @@
+# math_run log
+command:  python3 runs/2026-10-13-gravitational-wave-decay-photon-pairs/calc/falsifier-C2-2_scale.py
+started:  2026-10-13T20:30:56Z
+duration: 0.8 s
+exit:     0
+versions: python 3.13.16, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+A. symbolic P(>R) = E**2*G**2*K/(4*pi*R*T*c**9)
+   K_headon = 8pi/5 = 5.026548245743669 ; K_bound (x2.5 pattern) = 12.566370614359172 = 4 pi ? True
+   P(>R) <=  E**2*G**2/(R*T*c**9)   [ (G E/c^4)^2 / (c T R) ]
+   cross-check vs M-MECHANIST-03 (head-on, linear): ratio = 1
+
+GW150914, E = 2.0 Msun c^2 = 3.575e+47 J; GE/c^4 = 2.954e+03 m; cT = 1.499e+06 m; lambda = 1.999e+06 m; c/omega = 3.181e+05 m
+  R = c/omega   3.181e+05 m: A worst-case P(>R) <= 1.83e-05 pairs; B ray-geometry (a = 2c/w) <= nan; C energy fraction <= 1.0e-83 (x(1+2f): 7.7e-75)
+  R = lambda    1.999e+06 m: A worst-case P(>R) <= 2.91e-06 pairs; B ray-geometry (a = 2c/w) <= 5.98e-09; C energy fraction <= 1.6e-84 (x(1+2f): 1.2e-75)
+  R = 10 lambda 1.999e+07 m: A worst-case P(>R) <= 2.91e-07 pairs; B ray-geometry (a = 2c/w) <= 5.98e-14; C energy fraction <= 1.6e-85 (x(1+2f): 1.2e-76)
+  R = 1 AU      1.496e+11 m: A worst-case P(>R) <= 3.89e-11 pairs; B ray-geometry (a = 2c/w) <= 2.55e-33; C energy fraction <= 2.2e-89 (x(1+2f): 1.6e-80)
+  R = 1 pc      3.086e+16 m: A worst-case P(>R) <= 1.89e-16 pairs; B ray-geometry (a = 2c/w) <= 6.82e-60; C energy fraction <= 1.0e-94 (x(1+2f): 7.9e-86)
+  R = 410 Mpc   1.265e+25 m: A worst-case P(>R) <= 4.60e-25 pairs; B ray-geometry (a = 2c/w) <= 5.88e-103; C energy fraction <= 2.6e-103 (x(1+2f): 1.9e-94)
+
+GW150914, E = 3.0 Msun c^2 = 5.363e+47 J; GE/c^4 = 4.431e+03 m; cT = 1.499e+06 m; lambda = 1.999e+06 m; c/omega = 3.181e+05 m
+  R = c/omega   3.181e+05 m: A worst-case P(>R) <= 4.12e-05 pairs; B ray-geometry (a = 2c/w) <= nan; C energy fraction <= 1.5e-83 (x(1+2f): 1.2e-74)
+  R = lambda    1.999e+06 m: A worst-case P(>R) <= 6.55e-06 pairs; B ray-geometry (a = 2c/w) <= 1.35e-08; C energy fraction <= 2.4e-84 (x(1+2f): 1.8e-75)
+  R = 10 lambda 1.999e+07 m: A worst-case P(>R) <= 6.55e-07 pairs; B ray-geometry (a = 2c/w) <= 1.35e-13; C energy fraction <= 2.4e-85 (x(1+2f): 1.8e-76)
+  R = 1 AU      1.496e+11 m: A worst-case P(>R) <= 8.76e-11 pairs; B ray-geometry (a = 2c/w) <= 5.73e-33; C energy fraction <= 3.2e-89 (x(1+2f): 2.5e-80)
+  R = 1 pc      3.086e+16 m: A worst-case P(>R) <= 4.24e-16 pairs; B ray-geometry (a = 2c/w) <= 1.53e-59; C energy fraction <= 1.6e-94 (x(1+2f): 1.2e-85)
+  R = 410 Mpc   1.265e+25 m: A worst-case P(>R) <= 1.04e-24 pairs; B ray-geometry (a = 2c/w) <= 1.32e-102; C energy fraction <= 3.8e-103 (x(1+2f): 2.9e-94)
+
+C. worst-case fraction of GW energy lost beyond lambda (stimulated, any distance): 1.2e-75; standard-siren sensitivity ~1e-2 -> shortfall 8.2e+72
+
+D. <(1-cos)^2>_iso = 4/3; rho_gamma = 4.175e-14 J/m^3
+  DeltaNeff=0.3: rho_bg = 2.84e-15 J/m^3, Gamma = 1.94e-125 s^-1, lifetime = 5.16e+124 s (1.2e+107 t_H); x(1+2f)=7.57e8 -> lifetime 6.8e+115 s; loss over t_H (stim) = 6.4e-99
+  LVK Omega~1.7e-8 (h^2-free, indicative): rho_bg = 1.33e-17 J/m^3, Gamma = 9.04e-128 s^-1, lifetime = 1.11e+127 s (2.5e+109 t_H); x(1+2f)=7.57e8 -> lifetime 1.5e+118 s; loss over t_H (stim) = 3.0e-101
+
+E. lens M = 1e+00 Msun: 4GM/c^3 = 1.97e-05 s vs burst T = 5.0e-03 s; w*4GM/c^3 = 1.86e-02
+
+E. lens M = 1e+11 Msun: 4GM/c^3 = 1.97e+06 s vs burst T = 5.0e-03 s; w*4GM/c^3 = 1.86e+09
+E. continuous source, two overlapping lensed images at theta <= 1e-05 rad: (1-cos)^2 / head-on 4 = 6.3e-22 of the head-on rate
+
+F. N(hbar w/E_P)^2 = 9.29e-03; (r_s w/c)^2 (1 Msun) = 8.62e-05; n_compact <= 1.28e-59 m^-3; optical depth within c/w over 410 Mpc = 5.16e-23; pairs ~ 4.1e-29 (k = 1, dimensional)
+
+--- stderr ---
+
