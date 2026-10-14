@@ -1,0 +1,16 @@
+{
+  "slug": "2026-10-13-gravitational-wave-decay-photon-pairs",
+  "date": "2026-10-13",
+  "title": "Do gravitational waves decay into photon pairs in vacuum?",
+  "question": "Do gravitational waves decay into photon pairs in vacuum, as Blas & Oller claim in 'Gravitational waves decay in vacuum' (arXiv:2607.24930)? Test their central result, the coherent-state graviton-fusion rate for g g → γγ, dP/dt = 3G²N²ω_s³σ_ω²/(25π) (their eq. …",
+  "type": "mechanism",
+  "depth": "deep",
+  "status": "complete",
+  "source_checked": true,
+  "bottom_line": "No. Blas & Oller's arithmetic is right inside their model, but their eq. 8 is not a decay rate of a travelling wave. It is the total number of photon pairs (about three millionths of a pair for a GW150914-like merger) that their idealised, time-symmetric graviton packet makes once, near its focus, divided by the packet's duration. Reading it as a rate sustained along the path over-counts by 18 orders of magnitude and breaks the paper's own validity condition. Far from its source a wave becomes locally plane, plane waves make nothing, and whatever can fuse thins as 1/r². Confidence about 90%. Every consequence they draw falls or is unobservable by at least 30 orders of magnitude; near a real source the source's own field makes about 100 times more pairs than fusion, still unobservable.",
+  "prior": [],
+  "trust": "ok",
+  "notes": [],
+  "superseded_by": null,
+  "recorded": "2026-10-14"
+}
