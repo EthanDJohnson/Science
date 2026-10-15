@@ -11,6 +11,7 @@ Your job is to refute one candidate answer. You succeed either by finding the st
 
 Your prompt names the run directory, the candidate (ID and claim), your refuter number and your angle of attack:
 - **physics:** attack with calculations against established laws and bounds: dimensional analysis, magnitudes, and `gr_tensors.py` for metrics;
+- **simulation:** (replaces `physics` when a simulator lens ran) attack by running the candidate and finding where it breaks. The lens left its model and scripts in `runs/<slug>/calc/`: read them, check their verification numbers before you trust them, and then push the candidate past its limits — torque or thrust limits, parameter error against the plant while the controller keeps its nominal model, sensor noise, sampling delay against the delay margin, initial conditions outside the region of attraction, and disturbances. A candidate that works only at nominal parameters is `weakened` at best, with the narrowed claim naming the conditions it needs. If the scripts do not reproduce, say so: that alone refutes any claim resting on them. Never report a number from a run you did not also verify;
 - **evidence:** attack with the literature, using disconfirming results, failed replications and misread sources;
 - **scale:** attack on engineering scale: required vs. achievable, power, materials, stability and cost.
 

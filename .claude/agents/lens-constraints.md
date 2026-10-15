@@ -19,7 +19,15 @@ Your prompt gives the run directory. Read `runs/<slug>/brief.md` and `runs/<slug
    - conservation laws and thermodynamics;
    - causality and chronology (closed timelike curves, horizons, whether a bubble can be controlled from inside);
    - stability;
-   - for particle, nuclear and astrophysics questions: kinematic windows, nuclear stability, direct searches, stellar and neutron-star structure, Big Bang nucleosynthesis and the number of relativistic species, and precision Standard Model relations such as CKM unitarity.
+   - for particle, nuclear and astrophysics questions: kinematic windows, nuclear stability, direct searches, stellar and neutron-star structure, Big Bang nucleosynthesis
+   - for a controlled or mechanical system, a different list binds, and the energy conditions above say nothing about it. Work through these instead, with `control_tools.py` and `rigid_body.py`:
+     - **controllability and underactuation:** the number of actuators against the degrees of freedom, the Kalman rank AND the smallest singular value of the controllability matrix, which says how much effort the weak direction costs; whether the equilibrium being stabilised is one the actuators can hold at all (`Chain.equilibrium_torque` refuses the ones they cannot);
+     - **structural obstructions:** a nonholonomic constraint, for which Brockett's condition rules out any smooth time-invariant stabilising feedback; a non-minimum-phase zero or an unstable pole, which bound the achievable bandwidth from below and above; conservation of angular momentum for a free-floating body, which no internal torque can change;
+     - **actuator envelope:** peak and continuous torque or thrust, the torque-speed curve, power, and the thermal limit behind the continuous rating. Compute what the task demands at its worst instant, not on average;
+     - **sensing and timing:** the loop's delay margin against the real latency budget (a sample period contributes about half of itself, plus computation and communication); quantisation and noise against the resolution the gains need;
+     - **energy and thermodynamics:** the work the task needs against what the store holds, regeneration, and losses;
+     - **passivity and stability:** whether the controller preserves the plant's passivity, and whether the claimed region of attraction is certified, sampled or assumed.
+     Say which of these binds first. For a controlled system that is almost never the energy budget, and almost always the actuator envelope, the latency, or the region of attraction. and the number of relativistic species, and precision Standard Model relations such as CKM unitarity.
 2. **Compute what each candidate requires.** Cover every candidate in the dossier and the brief, plus any you add: required magnitudes, units and bounds. For anything involving a metric, use `gr_tensors.py`:
    - build 3+1 metrics with `Spacetime.from_adm` (or `metrics.alcubierre` / `metrics.van_den_broeck`), which keeps things fast;
    - `energy_density()` for the Eulerian density, and `integrate_parts` for total, negative and positive energy on a slice;
@@ -27,6 +35,8 @@ Your prompt gives the run directory. Read `runs/<slug>/brief.md` and `runs/<slug
    - `curvature_at` for the curvature radius that limits where quantum inequalities apply, and `qi.ford_roman_si` / `qi.lorentzian_average` for the bounds themselves;
    - `horizons_1p1` and `to_si.hawking_temperature_k` for horizons;
    - `precision_check` on any surprising value, since float64 can flip signs at large dynamic range.
+
+   For a mechanical or controlled system use `.claude/skills/conundrum/scripts/rigid_body.py` and `control_tools.py` rather than re-deriving: `linearize` (whose `residual` tells you whether the point is an equilibrium at all), `controllability`, `lqr`, `state_feedback_margins` for the gain, phase and delay margins, and `roa_sample`/`roa_simulated` for a region of attraction, which those functions label sampled rather than certified. Report a limit as the value that binds and the quantity it binds, not as a pass or fail.
 
    Check every numerical integral for convergence by comparing n with about 1.5n, and convert to SI with `to_si`.
 3. **Classify each candidate** as *violates*, *strained* or *consistent*, citing the calculation. State the assumptions under which each constraint applies: a bound whose assumptions don't hold in this regime is not violated.

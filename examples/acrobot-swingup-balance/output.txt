@@ -1,0 +1,105 @@
+
+==============================================================================
+1. MODEL VERIFICATION  (nothing below counts until these pass)
+==============================================================================
+energy drift, 20 s unforced and undamped, RK4 at 1 ms : 4.915e-13 (expected 0)
+passivity residual, max |Mdot - (C + C^T)|            : 2.773e-10 (expected 0)
+RK4 convergence order                                 : 4.00 (expected 4)
+compiled vs reference dynamics, max relative gap      : 3.969e-10 (expected ~1e-9, the reference's own differencing error)
+slow normal-mode period: linearised 2.8066 s, measured on that mode 2.8066 s (gap 0.00%)
+fast normal-mode period: linearised 1.0325 s, measured on that mode 1.0325 s (gap 0.00%)
+
+==============================================================================
+2. BALANCE CONTROLLER (LQR about the upright equilibrium)
+==============================================================================
+|f(x*, 0)| at the upright pose : 1.802e-15 (must be ~0, or it is not an equilibrium)
+step sensitivity of the Jacobian: 8.059e-11
+open-loop eigenvalues          : [-6.0853+0.j  6.0853+0.j -2.2387+0.j  2.2387+0.j]
+unstable modes                 : 2
+controllable                   : True (rank 4/4, sigma_min 7.620e-02, condition 3259)
+  one actuator for two degrees of freedom: controllable, and badly conditioned.
+K                              : [[-265.534 -107.128 -114.751  -54.245]]
+Riccati residual               : 7.899e-08
+closed-loop poles              : [-10.05  +0.j      -4.2478+0.j      -2.2408+0.0398j  -2.2408-0.0398j]
+gain margin  up inf, down 0.457  (LQR's guarantee: infinite up, <= 0.5 down)
+phase margin 63.9 deg at 17.52 rad/s; delay margin 63.7 ms
+  -> the loop cannot be run slower than about 8 Hz even with no computation delay.
+
+==============================================================================
+3. REGION OF ATTRACTION OF THE BALANCE CONTROLLER (simulated)
+==============================================================================
+shoulder angle           recovers out to  0.2770  ( 15.87 deg or rad/s)   cost-to-go at the edge 1153.31
+elbow angle              recovers out to  0.6168  ( 35.34 deg or rad/s)   cost-to-go at the edge 1174.06
+shoulder rate            recovers out to  0.3748  ( 21.48 deg or rad/s)   cost-to-go at the edge  405.20
+elbow rate               recovers out to  0.7863  ( 45.05 deg or rad/s)   cost-to-go at the edge  434.21
+both angles together     recovers out to  0.1945  ( 11.14 deg or rad/s)   cost-to-go at the edge 1199.51
+
+The basin is tens of degrees wide, and it is NOT a level set of the LQR cost: the cost-to-go at
+its edge spans 405 to 1200, a factor of 3.0, because the velocity directions reach
+further than the cost weights say. A cost sublevel set is still the convenient handover test, but
+it has to be set from the SMALLEST edge cost (405), not an average, and with margin below that.
+
+Does the basin move when the weights change?
+   R =        1: |K|max   265.5, shoulder basin 0.2770 rad (15.87 deg)
+   R =      100: |K|max   231.3, shoulder basin 0.2293 rad (13.14 deg)
+   R =    10000: |K|max   231.0, shoulder basin 0.2445 rad (14.01 deg)
+   Hardly at all: raising R by four orders of magnitude leaves the basin within 20 per cent and
+   the gain near the same floor. The plant's unstable pole at 6.09 rad/s forces a minimum gain, so the LQR cannot be
+   made gentle enough to widen its basin. A swing-up controller has to arrive accurately.
+
+simulated along the given directions only
+
+==============================================================================
+4. FULL RUN: HANGING -> SWING-UP -> BALANCED
+==============================================================================
+target energy E_d                 : 24.5250 J (hanging: -24.5250 J)
+peak energy reached               : 24.5628 J
+handover to LQR at               : 49.26 s
+final error from upright          : 1.094e-10 rad, rad/s
+peak |torque|                     : 18.93 N m
+RMS torque                        : 2.88 N m
+diverged                          : False
+
+handover time at a 4x coarser step: 49.272 s (the result is not an artefact of the step size)
+
+The handover threshold rho = 8.0 is about 51x inside the smallest measured edge cost, which costs time:
+   rho =   50.0: handover at 42.576 s, final error 7.17e-14
+   rho =  200.0: handover at 39.528 s, final error 3.81e-14
+   rho =  400.0: handover at 36.84 s, final error 4.36e-14
+   Handing over at the measured edge saves about a quarter of the swing-up time and still
+   converges, but it spends the whole basin on arrival accuracy and leaves nothing for the
+   model error and noise measured in step 5. The conservative threshold is the better trade.
+
+==============================================================================
+5. FAILURE BOUNDARY
+==============================================================================
+a. Torque limit. The nominal run peaks at 18.93 N m.
+   swing-up still reaches the basin down to about 8.04 N m (43% of the nominal peak);
+   below about 7.81 N m it never gets there. The peak torque is a requirement, not a preference.
+
+b. Model error. The controller keeps its nominal model while the plant changes.
+   +-5% on every parameter: 12/12 reach the basin, rate 1.00, 95% interval 0.76 to 1.00
+   +-10% on every parameter: 10/12 reach the basin, rate 0.83, 95% interval 0.55 to 0.95
+   +-20% on every parameter: 9/12 reach the basin, rate 0.75, 95% interval 0.47 to 0.91
+   The interval is what the trial count supports; the rate alone is not a result.
+
+c. Sensor noise on the measured state (the plant still integrates the truth).
+   sigma_q = 1e-04 rad, sigma_qdot = 1e-03 rad/s: handover 49.272, final error 3.283e-03
+   sigma_q = 1e-03 rad, sigma_qdot = 1e-02 rad/s: handover 46.032000000000004, final error 3.284e-02
+   sigma_q = 1e-02 rad, sigma_qdot = 1e-01 rad/s: handover 38.072, final error 3.365e-01
+   The balance controller's gains multiply velocity noise directly, so the noise floor it
+   tolerates is set by the same minimum gain that makes the basin narrow.
+
+==============================================================================
+WHAT THIS DOES AND DOES NOT SHOW
+==============================================================================
+Shown: in this model, with these parameters, Spong's energy swing-up reaches the
+LQR's basin and the LQR then balances the Acrobot; the basin is a few degrees wide and
+that is forced by the plant, not by the weights; the peak torque, the model error and the
+noise at which it stops working are measured, not asserted.
+
+Not shown: that this model matches any physical Acrobot. There is no joint friction beyond
+viscous damping, no actuator dynamics or torque-speed envelope, no backlash, no flexibility,
+no state estimator and no computation delay. Each of those costs margin, and the delay
+margin above says how little there is to spend. Nothing here is evidence about hardware;
+for that, the only evidence is hardware.

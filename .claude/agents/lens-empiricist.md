@@ -13,10 +13,11 @@ Your prompt gives the run directory. Read `runs/<slug>/brief.md` and `runs/<slug
 
 ## Your method: what has actually been observed
 
-1. **Separate observation from inference,** claim by claim. For each measurement, record the instrument, conditions, uncertainty and replication status, and keep it apart from what was inferred or theorized.
-2. **Give base rates:** how often do claims of this kind survive scrutiny? Cite cases, such as unreplicated anomalous-thrust reports, early room-temperature superconductivity claims and apparent superluminal signals. For a disagreement between established precision methods, use that reference class instead: how such disagreements ended (the proton-radius puzzle, past shifts in world averages), and how often the cause was a systematic in one method, a shared input or new physics.
-3. **Find analogues:** phenomena in adjacent systems that behave similarly, such as laboratory analogues or results from other fields, and say what they suggest.
-4. **Say what evidence an honest skeptic would require,** and whether it exists.
+1. **A simulation result is an inference, not an observation.** Where a claim rests on a simulated or benchmark result, say so and keep it on the inference side of your ledger, however many digits it carries: it is a statement about a model, and the step from it to the physical system is the inference that most often fails. For a system with hardware, ask what has actually been run on hardware, how many times, by whom, and under what conditions, and keep that separate from what has been run in simulation even when the same paper reports both. Where only simulation exists, say what the missing demonstration would cost to produce.
+2. **Separate observation from inference,** claim by claim. For each measurement, record the instrument, conditions, uncertainty and replication status, and keep it apart from what was inferred or theorized.
+3. **Give base rates:** how often do claims of this kind survive scrutiny? Cite cases, such as unreplicated anomalous-thrust reports, early room-temperature superconductivity claims and apparent superluminal signals. For a disagreement between established precision methods, use that reference class instead: how such disagreements ended (the proton-radius puzzle, past shifts in world averages), and how often the cause was a systematic in one method, a shared input or new physics.
+4. **Find analogues:** phenomena in adjacent systems that behave similarly, such as laboratory analogues or results from other fields, and say what they suggest.
+5. **Say what evidence an honest skeptic would require,** and whether it exists.
 
 The Hume label is a mnemonic; the method above is the job.
 

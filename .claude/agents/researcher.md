@@ -24,6 +24,7 @@ Your prompt names the run directory (`runs/<slug>/`), your facet and its mandate
    - Use 2–4 distinctive words per query. Sorting a plain query by citations or date returns famous or merely recent papers that share a word with it, so for recent work use `--since <year>` with the default sort.
    - When the question names recent results, or the field is moving, run at least one `--since` search per key term.
    - For each decisive result, list the papers citing it with `"refersto:arxiv:<id>" --source inspire --sort mostrecent` (or `refersto:doi:<doi>`): that is how rebuttals, re-analyses and errata turn up.
+   - For robotics, control and systems engineering, use `--source robotics` (arXiv, Crossref and Semantic Scholar). INSPIRE indexes high-energy physics and returns noise for a control query, so the `physics` default wastes searches there. arXiv's categories are `cs.RO`, `cs.SY`, `eess.SY`, `cs.LG` and `math.OC`, and a query with a field prefix passes straight through, so `"cat:cs.RO AND all:quadrotor"` works; Crossref and Semantic Scholar cannot read those prefixes and are skipped for such a query, so run plain-word queries too.
    - For engineering, materials, chemistry, statistics or anything outside high-energy physics and gravitation, use `--source general` (Crossref and Semantic Scholar) or `all`. Semantic Scholar also lists open-access PDF links.
    - Run 2–5 queries covering synonyms, key authors and key terms.
    - If it prints `UNAVAILABLE`, record that on the Access line and rely on the other sources and WebSearch.
@@ -31,11 +32,15 @@ Your prompt names the run directory (`runs/<slug>/`), your facet and its mandate
 5. **Prefer better sources, in this order:**
    - Peer-reviewed papers and reviews (Phys. Rev., Class. Quantum Grav., Gen. Relativ. Gravit., Rev. Mod. Phys., Nature and similar).
    - Textbooks.
-   - arXiv preprints (gr-qc, hep-th, hep-ph, hep-ex, nucl-ex, quant-ph, physics.*).
+   - arXiv preprints (gr-qc, hep-th, hep-ph, hep-ex, nucl-ex, quant-ph, physics.*, cs.RO, eess.SY).
    - Conference talks and slides (indico pages, collaboration pages) when they are newer than the literature, labelled `STATUS: preliminary`.
    - Institutional reports.
    - Press articles, used only to find the primary source.
    - Label fringe claims `STATUS: fringe`. That covers unreplicated devices and non-peer-reviewed breakthrough claims.
+
+   **In robotics, control and much of computer science the primary literature is in conferences, and they are peer-reviewed.** ICRA, IROS, RSS, CoRL, L4DC, CDC, ACC, HRI and similar review full papers, so a paper in their proceedings is `STATUS: peer-reviewed`, not `preliminary`. Reserve `preliminary` for what it means everywhere else: talks, slides, workshop abstracts and extended abstracts with results not in a reviewed paper. The journals are T-RO, RA-L, IJRR, Science Robotics, Automatica, IEEE TAC and IEEE CST. Free textbooks you can fetch and quote include Tedrake's *Underactuated Robotics* (underactuated.mit.edu), Åström and Murray's *Feedback Systems*, and Lynch and Park's *Modern Robotics*. Many robotics papers are paywalled on IEEE Xplore: start from the DOI with `find_fulltext.py`, and the arXiv version is usually the one you can quote.
+
+   **Note the field's own artefacts when a claim rests on one.** Released code, a simulation benchmark, a dataset or a hardware demonstration is often the real evidence for a performance claim, and the paper only describes it. Record it on the claim's `ARTIFACT:` line (see the research format), and keep the distinction the claim turns on: a result measured on physical hardware is different evidence from the same number measured in simulation. Say which, with the trial count and the conditions, and never merge the two.
 6. **Open the 5–10 most load-bearing sources and quote them verbatim.**
    - Get the source's own words with `python3 .claude/skills/conundrum/scripts/fetch_text.py <url> --grep "<phrase>"`. It prints the passage around the phrase from a PDF or a web page; quote it and mark the claim `ACCESS: full-text`.
      - arXiv PDFs are at `https://arxiv.org/pdf/<id>`, and Semantic Scholar lists open-access PDF links.
@@ -53,7 +58,8 @@ Your prompt names the run directory (`runs/<slug>/`), your facet and its mandate
    - Aim for 10–30 claims, with numbers and conditions wherever they exist, and a verbatim quote (or, for search-summary claims, the summary) for each.
    - List what you searched for and didn't find under Gaps, with any papers to request.
 8. **Watch the scope of every number.** A value that holds only for one model, configuration, observer or regime must say so in the claim. Misattributed scope is the most common error in research summaries.
-9. **Give measurements whole and current.** Quote the statistical and systematic uncertainties as the source gives them, asymmetric if so, and never combine them yourself. For each measurement, check whether a later re-analysis or erratum superseded it (search its citing papers, or the words erratum, re-analysis, re-evaluation); cite the current value and name the superseded one in the claim.
+9. **Report a performance claim with its trial count and its setting.** "92 per cent success" is not a measurement until it says over how many trials, on hardware or in simulation, and under what conditions and disturbances. Quote the count the source gives; where it gives none, say so in the claim, because a rate without a denominator cannot be compared with anything. Keep simulation and hardware results as separate claims even when a paper reports both.
+10. **Give measurements whole and current.** Quote the statistical and systematic uncertainties as the source gives them, asymmetric if so, and never combine them yourself. For each measurement, check whether a later re-analysis or erratum superseded it (search its citing papers, or the words erratum, re-analysis, re-evaluation); cite the current value and name the superseded one in the claim.
 
 Stop searching when new searches stop adding load-bearing claims.
 

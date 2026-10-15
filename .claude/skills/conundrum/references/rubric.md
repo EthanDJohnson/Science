@@ -7,23 +7,31 @@ The adjudicator reads `brief.md`, `dossier.md`, `candidates.md`, every `verdicts
 1. **Judge evidence, not eloquence.** A verdict counts for what its calculation, quote or inconsistency shows, not for its confidence, length or rhetoric. Read the calculations it cites; don't trust summaries of them. What a script printed is in `<file>.py.log` beside it. Several agents re-deriving the same model from the same inputs is one piece of evidence, not several.
 2. **Evidence hierarchy**, strongest first:
    - a theorem or a computed result with visible code;
+   - a measurement on the physical system in question (hardware, flight, bench or field), which outranks every simulation of it;
    - a peer-reviewed measurement;
    - a review or textbook;
    - a single preprint, or a conference talk with unpublished results (`preliminary`);
    - secondary press;
    - fringe sources.
    Evidence marked ACCESS: search-summary (a search tool's model-written summary, not the source's words), or flagged unverifiable, counts for less. Say where that changed a ranking.
+   **A simulation is evidence about its model, and about reality only as far as the model is verified.** A closed-loop run in `analyses/simulator.md` sits at the top of this list for the claim "this works in this model" and nowhere on it for the claim "this works on the real system". Promote it toward the second rung only as far as its verification table goes: a conserved quantity held, a known limit reproduced, two independent implementations agreeing, an integration error below the effect, and parameters taken from measurements rather than chosen. A run with no verification table is a demonstration, not evidence; weigh it like a plausibility argument whatever its numbers. Where a simulation and a hardware result disagree about hardware, the hardware wins and the gap between them is itself a finding: say what the model must be missing.
    Mathematics the math checks (`math/*.md`) refuted supports nothing: a candidate resting on it falls unless it survives with the corrected math. Math they left unverified counts for less. Say where a math check changed a ranking.
    Evidence carried from an earlier run has a `PRIOR` line. A re-verified claim counts like any other; one marked `not re-verified` counts as a search summary. Where newer evidence supersedes a carried claim, the newer one wins; say so.
 3. **Refutation beats support.** A computed violation of an established bound outweighs any number of plausibility arguments. Check the calculation's assumptions before accepting it.
 4. **Separate "in principle" from "in practice"** for feasibility and design questions. Foundations questions use rule 8 instead.
    - *In principle*: consistent with admissible physics, and under which assumptions?
    - *In practice*: how many orders of magnitude separate what is required from what has been demonstrated, and what is the technology readiness level (TRL 1–9)?
+   - **For a controller, an algorithm or anything whose performance is a closed-loop property, the orders-of-magnitude gap is usually zero and tells you nothing**: the hardware exists and the gap is in fidelity, not scale. Split those questions three ways instead, and never let an earlier rung stand for a later one:
+     1. *works in a verified model* — a simulator lens's runs, with its verification table;
+     2. *works under the model error that is actually present* — the failure boundary: the actuator limit, parameter error, sensor noise, sampling rate, latency and disturbance at which it stops working, against the real hardware's measured values;
+     3. *works on hardware* — a reported physical demonstration, with its conditions, how many trials and who ran it.
+     A candidate that clears (1) and fails (2) is not viable, however good its simulation looks: the published graveyard of controllers that worked in simulation is the base rate here. State which rung each candidate has reached, and treat the step from (2) to (3) as the one most often skipped in the literature.
 5. **Stay calibrated.**
    - Avoid 0 and 1.
    - Go below 0.05 only for a candidate that violates a computed, established bound.
    - Go above 0.95 only with a theorem or several independent measurements behind it.
    - For each headline number, say what would move it by 2×.
+   - **A success rate over trials is not a number until it has an interval.** Where a candidate rests on "succeeded in N of M runs", from the literature or from this run's own simulations, read the interval (`stats_tools.wilson_interval`), not the ratio: 10 of 10 is consistent with a true rate near 0.72, and two controllers at 94 per cent and 88 per cent over 50 trials each are not distinguishable. Where the trial count is not reported, say so and discount the comparison; where runs differ only by random seed, treat the seeds as the sample size, not the runs.
 6. **Mutually exclusive candidates** (explanations) get a probability distribution that sums to 1, including an explicit "none of these". If two candidates overlap, say how you split the probability between them.
    **Non-exclusive candidates** (options) each get an independent credence of viability, and the null candidate gets its own.
    Give one number per candidate, for its core claim, narrowed where a refuter's `narrowed:` line holds up. Never put two numbers in one cell.
@@ -61,6 +69,9 @@ IDs; explain any technical term you can't avoid in a few words.
 (For explanation-type questions, replace the two feasibility columns with "Fits the evidence?")
 (For anomaly questions use: | # | Candidate | Measurements it shifts, and by how much against the gap | Consistent with independent data? | Deciding measurement (who, when) | Probability |)
 (For foundations questions use: | # | Position | Internally consistent? | What it gives up | Empirically distinguishable? | Open problems | Rank or credence |)
+(Where performance is a closed-loop property, so the orders-of-magnitude gap is zero and rule 4's
+three rungs apply, use: | # | Candidate | Works in a verified model? | Holds under the model error
+present? (what breaks it first) | Demonstrated on hardware? (trials, who) | Credence |)
 Order the rows by probability or credence, highest first, with rank-only rows last. Keep each cell
 under about 25 words; detail goes under "Why".
 

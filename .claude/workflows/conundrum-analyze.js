@@ -13,7 +13,8 @@ export const meta = {
   ],
 }
 
-const LENSES = ['decomposer', 'constraints', 'examiner', 'engineer', 'mechanist', 'idealizer', 'empiricist', 'dialectician', 'statistician']
+const LENSES = ['decomposer', 'constraints', 'examiner', 'engineer', 'mechanist', 'idealizer', 'empiricist', 'dialectician', 'statistician',
+  'simulator']
 const DEFAULT_LENSES = {
   feasibility: ['decomposer', 'constraints', 'examiner', 'engineer', 'mechanist'],
   design: ['decomposer', 'constraints', 'engineer', 'mechanist', 'examiner'],
@@ -32,6 +33,11 @@ const ANGLES_BY_TYPE = {
   anomaly: ['magnitude', 'evidence', 'bounds'],
 }
 const DEFAULT_ANGLES = ['physics', 'evidence', 'scale']
+// When a simulator lens ran, the run holds a verified executable model and its scripts under
+// calc/, so the strongest attack on a candidate is to run it and find where it breaks rather
+// than to argue about whether it would. That replaces the 'physics' angle, not 'scale': a
+// simulation says nothing about whether the hardware can be built.
+const anglesWithSimulation = angles => angles.map(a => (a === 'physics' ? 'simulation' : a))
 const MAX_CANDIDATES = 8
 
 const SLATE = {
@@ -112,10 +118,9 @@ if (unknownLenses.length) log(`ignoring unknown lenses: ${unknownLenses.join(', 
 const chosen = [...new Set(requested.filter(l => LENSES.includes(l)))]
 // A relaunch after a failure replays the failed agent and every agent that started after it, even
 // completed ones. Start the calculation-heavy lenses last: they are the likeliest to run long or fail.
-const HEAVY = ['idealizer', 'engineer', 'constraints']
+const HEAVY = ['idealizer', 'engineer', 'constraints', 'simulator']
 const lenses = [...chosen.filter(l => !HEAVY.includes(l)), ...HEAVY.filter(l => chosen.includes(l))]
 const refuters = depth === 'deep' ? 3 : 1
-const ANGLES = ANGLES_BY_TYPE[type] || DEFAULT_ANGLES
 log(`depth ${depth}; type ${type}; lenses: ${lenses.join(', ')}; refuters per candidate: ${refuters}`)
 if (depth === 'deep' && lenses.length < 6) log(`warning: a deep run with only ${lenses.length} lenses; lenses.md adds 1–2 more at deep`)
 
@@ -157,6 +162,11 @@ lenses.forEach((l, i) => {
 const mathChecked = Object.keys(math)
 const mathFailed = checkingMath ? lensesDone.filter(l => !math[l]) : []
 if (mathFailed.length) log(`math checks that failed: ${mathFailed.join(', ')}`)
+// Angles are fixed here, once it is known which lenses actually produced an analysis: a
+// failed simulator lens leaves no model for a refuter to run.
+const ANGLES = ANGLES_BY_TYPE[type]
+  || (lensesDone.includes('simulator') ? anglesWithSimulation(DEFAULT_ANGLES) : DEFAULT_ANGLES)
+if (!ANGLES_BY_TYPE[type] && ANGLES !== DEFAULT_ANGLES) log(`refuter angles: ${ANGLES.join(', ')}`)
 const mathTally = mathChecked.map(l => `${l}: ${math[l].verified} verified, ${math[l].refuted} refuted, ` +
   `${math[l].unverified} unverified`).join('; ')
 if (mathChecked.length) log(`math checks: ${mathTally}`)

@@ -316,6 +316,38 @@ test('analyze, deep: three refuters with distinct angles, majority vote, judge a
   assert.match(judge.prompt, /cruxes/)
 })
 
+test('analyze: the simulator lens runs, and swaps the physics refuter angle for simulation', async () => {
+  const lenses = ['decomposer', 'constraints', 'examiner', 'engineer', 'mechanist', 'simulator', 'idealizer']
+  const { result, calls } = await run('conundrum-analyze', { slug: 's', depth: 'deep', type: 'design', lenses },
+    analyzeHandler())
+  assert.ok(result.lenses.includes('simulator'))
+  const sim = calls.find(c => typeOf(c) === 'lens-simulator')
+  assert.ok(sim, 'the simulator lens was not launched')
+  assert.match(sim.prompt, /analyses\/simulator\.md/)
+  // It is calculation-heavy, so it starts in the last group with the other heavy lenses.
+  const lensCalls = calls.filter(c => typeOf(c).startsWith('lens-')).map(c => c.opts.label)
+  assert.ok(lensCalls.indexOf('simulator') > lensCalls.indexOf('decomposer'))
+  const angles = [...new Set(byType(calls, 'falsifier').map(c => c.prompt.match(/angle: (\w+)/)[1]))]
+  assert.deepEqual(angles, ['simulation', 'evidence', 'scale'])
+})
+
+test('analyze: without a simulator lens the refuter angles are unchanged', async () => {
+  const lenses = ['decomposer', 'constraints', 'examiner', 'engineer', 'mechanist']
+  const { calls } = await run('conundrum-analyze', { slug: 's', depth: 'deep', type: 'feasibility', lenses },
+    analyzeHandler())
+  const angles = [...new Set(byType(calls, 'falsifier').map(c => c.prompt.match(/angle: (\w+)/)[1]))]
+  assert.deepEqual(angles, ['physics', 'evidence', 'scale'])
+})
+
+test('analyze: a simulator lens that fails leaves the angles alone', async () => {
+  const lenses = ['decomposer', 'constraints', 'examiner', 'simulator']
+  const { result, calls } = await run('conundrum-analyze', { slug: 's', depth: 'deep', type: 'design', lenses },
+    analyzeHandler({ fail: c => typeOf(c) === 'lens-simulator' }))
+  assert.deepEqual(result.lensesFailed, ['simulator'])
+  const angles = [...new Set(byType(calls, 'falsifier').map(c => c.prompt.match(/angle: (\w+)/)[1]))]
+  assert.deepEqual(angles, ['physics', 'evidence', 'scale'])
+})
+
 test('analyze, quick: three lenses, no crux, Opus judge', async () => {
   const { result, calls } = await run('conundrum-analyze', { slug: 's', depth: 'quick', type: 'anomaly' }, analyzeHandler())
   assert.deepEqual(calls.filter(c => typeOf(c).startsWith('lens-')).map(typeOf),
