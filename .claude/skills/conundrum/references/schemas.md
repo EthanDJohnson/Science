@@ -9,6 +9,8 @@ Every run lives in `runs/<slug>/`. Each agent writes only the file(s) it was ask
 - **Earlier runs.** `runs/<slug>/prior/<run>/` holds material from an earlier run that the user approved at framing. Its `PROVENANCE.md` says how it may be used: as leads only, or as claims a researcher may carry once re-verified. Researchers follow that file. Other agents leave `prior/` alone, except that its `calc/` scripts may be read for method. Any number you cite must come from a script in this run's own `calc/`, and nothing under `prior/` is ever cited.
 - **Math checks.** In standard and deep runs, `runs/<slug>/math/<lens>.md` holds an independent re-derivation of each lens's mathematics. A claim refuted there supports nothing. Say so when a claim you rely on is marked unverified.
 - **Put Python calculations in `runs/<slug>/calc/<agent>_<topic>.py`.** Run them with `python3 .claude/skills/conundrum/scripts/math_run.py runs/<slug>/calc/<file>.py`, which saves everything they print as `<file>.py.log` beside them, so the judge and the auditor can check a number against its output. Print inputs, units and results, and cite them as `[calc: runs/<slug>/calc/<file>.py]`. Don't run inline Python (`python3 -c` or heredocs): it isn't pre-approved, so it can stop an unattended run on a permission prompt, and it leaves nothing to cite.
+- **For multibody dynamics and control, use `.claude/skills/conundrum/scripts/rigid_body.py` and `control_tools.py`.** They cover manipulator-form dynamics with its verification checks, linearisation, LQR, margins, regions of attraction and parameter sweeps, and they are tested against published equations. Note `rigid_body.py`'s inertia convention (about each link's centre of mass) and its coordinate convention before passing parameters in.
+- **A simulation result carries its verification or it carries nothing.** Any claim resting on a run you performed must cite the log of a script that also printed its verification numbers: a conserved quantity, a known limit, a second implementation, and the integration error. Say which effects the model leaves out, and never let "works in my model" stand in for "works".
 - **For general relativity, use `.claude/skills/conundrum/scripts/gr_tensors.py`.** It is tested against Schwarzschild, FRW, Morris–Thorne and Alcubierre. Import it with `sys.path.insert(0, ".claude/skills/conundrum/scripts")`.
 - **Never invent a citation, number or quote.** Cite only sources you actually saw.
 - **Quotes are verbatim.** A quote is text that `fetch_text.py` printed from the source (`ACCESS: full-text`), or an abstract `lit_search.py` printed (`ACCESS: abstract`). You may close stray spaces inside words, which are PDF extraction artefacts, and change nothing else. Text from a free copy of a paywalled paper that `find_fulltext.py` opened is full text too: say in SOURCE which version it is (published, accepted manuscript or arXiv preprint). WebSearch and WebFetch pass pages through a model, so their output is a summary unless `fetch_text.py` confirms the wording: record such claims as `ACCESS: search-summary` with a `SUMMARY:` line, never as a quote.
@@ -60,6 +62,8 @@ Access: lit_search INSPIRE <ok|blocked>, arXiv <ok|blocked>; WebFetch domains th
   QUOTE: "<verbatim text supporting the claim>"   (or SUMMARY: "<search text>" when ACCESS is search-summary)
   ACCESS: full-text | abstract | search-summary
   STATUS: peer-reviewed | textbook-or-review | preprint | preliminary | secondary | fringe
+  SETTING: hardware | simulation | analysis | n/a   (only on a performance or behaviour claim; with the trial count in the claim)
+  ARTIFACT: code <url> | dataset <url> | benchmark <name> | video <url> | none   (only when one exists)
   CONFIDENCE: high | medium | low
   PRIOR: <run> (<its date>), was <old ID>; re-verified | not re-verified   (only on a claim carried from an earlier run)
 ## Gaps
@@ -71,7 +75,9 @@ Access: lit_search INSPIRE <ok|blocked>, arXiv <ok|blocked>; WebFetch domains th
 
 - **Measurements:** give the value with its statistical and systematic uncertainties exactly as the source quotes them, asymmetric if so; never combine them yourself. When a source shows internal tension (results that differ between run conditions, say), record the per-condition values too.
 - **Superseded values:** when a result has been superseded (a re-analysis of the same data, an erratum, or a later paper whose result includes the earlier data), cite the current value and name the superseded one and its reference in the CLAIM. A later run with only new data is a separate result, not a supersession: say that it shares the apparatus.
-- **`preliminary`** is a conference talk, slides or proceedings with results not yet in a paper.
+- **`preliminary`** is a conference talk, slides or proceedings with results not yet in a paper. In robotics, control and much of computer science, full papers in reviewed conference proceedings (ICRA, IROS, RSS, CoRL, L4DC, CDC, ACC) are `peer-reviewed`, not `preliminary`.
+- **`SETTING`** keeps a result measured on physical hardware apart from the same number measured in a simulator, which the rubric weighs differently (rules 2 and 4). `analysis` is a calculated or proved result with no run behind it. Where a paper reports both, write two claims.
+- **`ARTIFACT`** records released code, a dataset, a benchmark or a demonstration video when the claim rests on one rather than on the paper's text. A later agent can run code; it cannot run a sentence.
 
 A claim carried from an earlier run takes this run's ID and a `PRIOR` line. `re-verified` means you found the same words in the source during this run. A claim you couldn't re-verify is written as `ACCESS: search-summary` with a `SUMMARY:` line, however it was quoted before.
 

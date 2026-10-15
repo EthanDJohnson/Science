@@ -29,12 +29,17 @@ Your prompt gives the run directory. Read `runs/<slug>/brief.md` and `runs/<slug
    - when several measurements disagree, group them by method and use `grouped_chi2`: report the chi-squared within each group and between the groups, not only one pooled `weighted_mean`, whose scale factor spreads a split between methods over every measurement. Both take symmetric errors: symmetrize an asymmetric one (the mean of its two sides, or the side facing the other group) and say which;
    - where results share an apparatus or a correction, show the result with and without the correlation (for example rho = 0 and rho = 0.8) rather than asserting a value;
    - when a prediction combines inputs that share a correction (a lifetime from couplings with radiative corrections, say), use the form in which the shared part cancels, state the inputs' vintages, and show the result for each competing input.
-3. **Weigh the result against prior odds.**
+3. **Where the claim is a success rate over trials, not a signal over background,** the relevant statistics are different and `stats_tools.py` has them:
+   - use `wilson_interval` (or `clopper_pearson_interval` for a bound) rather than the ratio: 10 of 10 is consistent with a true rate near 0.72, and most reported controller and policy comparisons cannot support their own ranking;
+   - use `trials_to_distinguish` to say how many trials a claimed difference would actually need, and compare that with how many were run. Telling 95 per cent from 90 per cent apart takes over 400 trials per arm;
+   - treat random seeds as the unit of replication where a method is stochastic: three seeds is a sample of three, whatever the number of episodes inside each, and a spread across seeds that exceeds the gap between two methods means the comparison is undetermined;
+   - watch for the same flexibility you would in a physics analysis: tuning effort spent unequally on the two arms, the better of several runs reported, and the test condition chosen after seeing results. Say which applies.
+4. **Weigh the result against prior odds.**
    - Use `min_bayes_factor` for the most evidence the p-value can carry. Its p must be two-sided.
    - Give a base rate for claims of this kind. Examples: 3-sigma anomalies in particle physics, faster-than-light or reactionless-thrust claims, room-temperature superconductors. For a disagreement between established precision methods, use that reference class instead (the proton-radius puzzle, past shifts in world averages), not fringe claims.
    - Use `prior_needed` for the prior the claim needs before it is more likely real than not.
    - The p-value and its Bayes-factor bound only weigh a real effect against a fluctuation. Once the fluctuation is excluded, don't use them to rank the explanations of a real discrepancy (a systematic in one method, new physics of some kind): those explain the discrepancy equally well. Compare them by how well each predicts the data that separate them: other methods, related measured quantities and direct searches. Never apply `prior_needed` to one explanation as if a fluctuation were its only rival.
-4. **Check the usual failure modes, and say which apply:**
+5. **Check the usual failure modes, and say which apply:**
    - multiple comparisons and analysis flexibility;
    - optional stopping;
    - selection and publication bias;
@@ -42,7 +47,7 @@ Your prompt gives the run directory. Read `runs/<slug>/brief.md` and `runs/<slug
    - regression to the mean;
    - unmodelled systematics, such as thermal, electromagnetic, vibration or calibration effects;
    - the signal fading as data accumulate.
-5. **Say what data would settle it.**
+6. **Say what data would settle it.**
    - Use `exposure_to_reach` for how much more data a real effect needs to reach 5 sigma. When a measurement is limited by its systematics, pass `delta`, `sigma_stat` and `sigma_sys`: more data can't beat the systematic floor, so the answer may be "never". Then give the total precision a decisive test needs (`precision_needed`) and say whether any planned measurement reaches it.
    - Name the independent test that would distinguish a real signal from the likeliest artefact, and the one that would distinguish the leading explanations from each other.
 

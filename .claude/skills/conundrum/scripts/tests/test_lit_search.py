@@ -197,6 +197,9 @@ class GeneralSources(unittest.TestCase):
         self.assertEqual(lit_search.parse_sources("general"), ["crossref", "s2"])
         self.assertEqual(lit_search.parse_sources("all"), ["inspire", "arxiv", "crossref", "s2"])
         self.assertEqual(lit_search.parse_sources("s2, inspire,s2"), ["s2", "inspire"])
+        # Robotics and control: INSPIRE indexes high-energy physics, so it is left out.
+        self.assertEqual(lit_search.parse_sources("robotics"), ["arxiv", "crossref", "s2"])
+        self.assertNotIn("inspire", lit_search.parse_sources("robotics"))
         with self.assertRaises(lit_search.argparse.ArgumentTypeError):
             lit_search.parse_sources("astrology")
 
@@ -403,6 +406,16 @@ class SinceAndCitations(RelevanceAndRecency):
         self.assertEqual(code, 0)
         self.assertIn("NOT FOUND: INSPIRE has no record for arxiv:9999.99999", out)
         self.assertNotIn("UNAVAILABLE", out)
+
+    def test_arxiv_field_syntax_is_kept_off_crossref_and_s2(self):
+        # Crossref and Semantic Scholar match "cat:cs.RO" as plain words and return unrelated
+        # papers, which is worse than returning nothing.
+        for q in ("cat:cs.RO AND all:quadrotor", "abs:backstepping", "all:acrobot swingup",
+                  "CAT:eess.SY"):
+            self.assertTrue(lit_search.ARXIV_ONLY.search(q), q)
+        for q in ("quadrotor agile flight", "model predictive control legged",
+                  "refersto:arxiv:2307.06100", 't "neutron lifetime"'):
+            self.assertFalse(lit_search.ARXIV_ONLY.search(q), q)
 
     def test_more_inspire_syntax_stays_off_arxiv_but_plain_words_do_not(self):
         for q in ('a Wietfeldt and t "neutron lifetime"', "topcite 100+ and neutron", "collaboration:UCNtau",

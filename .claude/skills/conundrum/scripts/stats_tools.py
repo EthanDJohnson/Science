@@ -21,6 +21,9 @@ when significance is estimated by hand:
                                     with a systematic floor that more data can't beat
     z_after_exposure                the significance after k times the data, with that floor
     precision_needed                the total uncertainty a decisive test of a difference needs
+    wilson_interval                 interval for a success rate over N trials ("47 of 50 runs succeeded")
+    clopper_pearson_interval        the exact, conservative version of the same
+    trials_to_distinguish           trials per arm needed to tell two success rates apart
 
 Errors given as an (up, down) pair are asymmetric: +up / -down. tension() uses the side that faces the
 other value, the usual approximation; the exact treatment needs each result's likelihood.
@@ -332,6 +335,105 @@ def precision_needed(delta: float, z_target: float = 5.0) -> float:
     return abs(delta) / z_target
 
 
+# ---------------------------------------------------------------- success rates over trials
+# A claim of the form "it worked in 47 of 50 trials" needs an interval, not a ratio: at the
+# trial counts a simulation study or a hardware session can afford, the point estimate is
+# almost uninformative. 10 successes out of 10 is consistent with a true rate near 0.72.
+
+def wilson_interval(successes: int, trials: int, confidence: float = 0.95) -> tuple:
+    """Wilson score interval for a success rate, clipped to [0, 1].
+
+    The bounds are the two values of p solving |p_hat - p| / sqrt(p (1 - p) / n) = z, so the
+    interval is the set of rates the data cannot reject by the score test. Preferred over the
+    textbook p_hat +- z sqrt(p_hat q_hat / n), which gives a zero-width interval at 0 or 100
+    per cent success and under-covers badly at small n.
+    """
+    n = int(trials)
+    k = int(successes)
+    if n <= 0:
+        raise ValueError("trials must be positive")
+    if not 0 <= k <= n:
+        raise ValueError(f"successes must be in 0..{n}, got {k}")
+    if not 0.0 < confidence < 1.0:
+        raise ValueError("confidence must be in (0, 1)")
+    z = p_to_sigma(1.0 - confidence, two_sided=True)
+    p = k / n
+    denom = 1.0 + z * z / n
+    centre = (p + z * z / (2 * n)) / denom
+    half = (z / denom) * math.sqrt(p * (1 - p) / n + z * z / (4 * n * n))
+    # At k = 0 and k = n the score equation is degenerate at the boundary (0/0), and the
+    # interval reaches it exactly; pin those ends rather than leaving round-off behind.
+    low = 0.0 if k == 0 else max(0.0, centre - half)
+    high = 1.0 if k == n else min(1.0, centre + half)
+    return (low, high)
+
+
+def _binom_cdf_upper(k: int, n: int, p: float) -> float:
+    """P(X >= k) for X ~ Binomial(n, p), exactly, with math.comb."""
+    if k <= 0:
+        return 1.0
+    if k > n:
+        return 0.0
+    return sum(math.comb(n, i) * p ** i * (1 - p) ** (n - i) for i in range(k, n + 1))
+
+
+def clopper_pearson_interval(successes: int, trials: int, confidence: float = 0.95,
+                             tol: float = 1e-12) -> tuple:
+    """Exact (Clopper-Pearson) binomial interval, by bisection on the binomial tails.
+
+    The lower bound is the p with P(X >= k | p) = alpha/2 and the upper bound the p with
+    P(X <= k | p) = alpha/2, which is why it is conservative: its coverage is at least the
+    nominal level, at the cost of being wider than Wilson's. Use it when the claim is a
+    bound ("at least 90 per cent"), and Wilson when it is an estimate.
+    """
+    n, k = int(trials), int(successes)
+    if n <= 0:
+        raise ValueError("trials must be positive")
+    if not 0 <= k <= n:
+        raise ValueError(f"successes must be in 0..{n}, got {k}")
+    alpha = (1.0 - confidence) / 2.0
+
+    def bisect(target, lower_tail: bool):
+        lo, hi = 0.0, 1.0
+        for _ in range(200):
+            mid = 0.5 * (lo + hi)
+            value = (1.0 - _binom_cdf_upper(k + 1, n, mid)) if lower_tail \
+                else _binom_cdf_upper(k, n, mid)
+            if (value > target) == lower_tail:
+                lo = mid
+            else:
+                hi = mid
+            if hi - lo < tol:
+                break
+        return 0.5 * (lo + hi)
+
+    low = 0.0 if k == 0 else bisect(alpha, lower_tail=False)
+    high = 1.0 if k == n else bisect(alpha, lower_tail=True)
+    return (low, high)
+
+
+def trials_to_distinguish(p1: float, p2: float, confidence: float = 0.95,
+                          power: float = 0.80) -> int:
+    """Trials per arm needed to tell a success rate p1 from p2 (two-sided, normal approximation).
+
+    n = [z_alpha sqrt(2 p_bar q_bar) + z_beta sqrt(p1 q1 + p2 q2)]^2 / (p1 - p2)^2, the
+    standard two-proportion sample size. The answer is per arm, so comparing two controllers
+    costs 2n runs. Use it before a study, to find out whether the comparison is affordable:
+    telling 95 per cent from 90 per cent apart takes over 400 trials per arm, which is why
+    most published controller comparisons cannot support the ranking they assert.
+    """
+    if not (0 < p1 < 1 and 0 < p2 < 1):
+        raise ValueError("p1 and p2 must be strictly between 0 and 1")
+    if p1 == p2:
+        raise ValueError("p1 and p2 must differ: no finite number of trials separates equal rates")
+    z_a = p_to_sigma(1.0 - confidence, two_sided=True)
+    z_b = p_to_sigma(2.0 * (1.0 - power), two_sided=True)
+    bar = 0.5 * (p1 + p2)
+    num = (z_a * math.sqrt(2 * bar * (1 - bar))
+           + z_b * math.sqrt(p1 * (1 - p1) + p2 * (1 - p2))) ** 2
+    return int(math.ceil(num / (p1 - p2) ** 2))
+
+
 # ---------------------------------------------------------------- self-test
 def selftest(verbose: bool = True) -> bool:
     """Check against standard reference values. Returns True when every check passes."""
@@ -377,6 +479,39 @@ def selftest(verbose: bool = True) -> bool:
     check("grouped chi2: within", g["within_chi2"], 2.0)
     check("grouped chi2: between", g["between_chi2"], 6.0)
     check("grouped chi2: within + between = pooled", g["within_chi2"] + g["between_chi2"], g["pooled"]["chi2"])
+
+    # Success rates over trials.
+    # Clopper-Pearson at the extremes has an exact closed form: with k = 0, P(X = 0) =
+    # (1 - p)^n = alpha/2 gives upper = 1 - (alpha/2)^(1/n), and by symmetry k = n gives
+    # lower = (alpha/2)^(1/n).  For n = 10 at 95 per cent: 1 - 0.025^0.1 = 0.308024...
+    cp0 = clopper_pearson_interval(0, 10)
+    check("Clopper-Pearson 0/10 upper", cp0[1], 1 - 0.025 ** 0.1, rel=1e-9)
+    results.append(cp0[0] == 0.0)
+    if verbose:
+        print(f"{'PASS' if results[-1] else 'FAIL'}  Clopper-Pearson 0/10 lower bound is exactly 0")
+    cp10 = clopper_pearson_interval(10, 10)
+    check("Clopper-Pearson 10/10 lower", cp10[0], 0.025 ** 0.1, rel=1e-9)
+    # And in the interior, the bounds satisfy their defining tail equations exactly.
+    lo, hi = clopper_pearson_interval(7, 20)
+    check("Clopper-Pearson lower bound solves P(X >= k) = alpha/2", _binom_cdf_upper(7, 20, lo), 0.025, rel=1e-6)
+    check("Clopper-Pearson upper bound solves P(X <= k) = alpha/2",
+          1 - _binom_cdf_upper(8, 20, hi), 0.025, rel=1e-6)
+    # Wilson's bounds are the roots of |p_hat - p| = z sqrt(p(1-p)/n), which is independent
+    # of the closed form used to compute them.
+    for k, n_ in [(7, 20), (10, 10), (0, 10), (1, 3)]:
+        w = wilson_interval(k, n_)
+        for b in w:
+            if 1e-9 < b < 1.0 - 1e-9:
+                score = abs(k / n_ - b) / math.sqrt(b * (1 - b) / n_)
+                check(f"Wilson bound {b:.4f} for {k}/{n_} solves the score equation", score, 1.959964, rel=1e-6)
+    # Two-proportion sample size: 0.5 vs 0.7 at 95 per cent and 80 per cent power needs 93
+    # per arm, the standard tabulated value; the arithmetic is
+    # [1.95996 sqrt(2*0.6*0.4) + 0.84162 sqrt(0.25 + 0.21)]^2 / 0.04 = 93.0.
+    check("trials to tell 0.5 from 0.7", trials_to_distinguish(0.5, 0.7), 93, rel=0)
+    results.append(trials_to_distinguish(0.95, 0.90) > 400)
+    if verbose:
+        print(f"{'PASS' if results[-1] else 'FAIL'}  telling 0.95 from 0.90 needs over 400 trials per arm "
+              f"({trials_to_distinguish(0.95, 0.90)})")
     passed = all(results)
     if verbose:
         print(f"\n{sum(results)}/{len(results)} checks passed")

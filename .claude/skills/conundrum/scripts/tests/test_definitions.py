@@ -164,8 +164,8 @@ class WorkflowWiring(unittest.TestCase):
 
     def test_every_lens_has_an_agent_and_a_catalog_entry(self):
         src = workflow_source("conundrum-analyze")
-        lenses = re.findall(r"'(\w+)'", re.search(r"const LENSES = \[(.*?)\]", src).group(1))
-        self.assertEqual(len(lenses), 9)
+        lenses = re.findall(r"'(\w+)'", re.search(r"const LENSES = \[(.*?)\]", src, re.S).group(1))
+        self.assertEqual(len(lenses), 10)
         catalog = (SKILL / "references" / "lenses.md").read_text()
         for lens in lenses:
             with self.subTest(lens=lens):
@@ -176,7 +176,7 @@ class WorkflowWiring(unittest.TestCase):
 
     def test_default_lens_sets_only_use_known_lenses(self):
         src = workflow_source("conundrum-analyze")
-        lenses = set(re.findall(r"'(\w+)'", re.search(r"const LENSES = \[(.*?)\]", src).group(1)))
+        lenses = set(re.findall(r"'(\w+)'", re.search(r"const LENSES = \[(.*?)\]", src, re.S).group(1)))
         block = re.search(r"const DEFAULT_LENSES = \{(.*?)\n\}", src, re.S).group(1)
         for row in re.findall(r"\[(.*?)\]", block):
             self.assertTrue(set(re.findall(r"'(\w+)'", row)) <= lenses, row)
@@ -198,10 +198,50 @@ class WorkflowWiring(unittest.TestCase):
         block = re.search(r"const ANGLES_BY_TYPE = \{(.*?)\n\}", src, re.S).group(1)
         angles = set(re.findall(r"'(\w+)'", block))
         angles |= set(re.findall(r"'(\w+)'", re.search(r"const DEFAULT_ANGLES = \[(.*?)\]", src).group(1)))
+        # Angles substituted in at run time, not listed in a literal array.
+        angles |= set(re.findall(r"a === 'physics' \? '(\w+)'", src))
         self.assertIn("magnitude", angles)
+        self.assertIn("simulation", angles)
         falsifier = (AGENTS / "falsifier.md").read_text()
         for angle in sorted(angles):
             self.assertIn(f"- **{angle}:**", falsifier, f"the {angle} angle is used but never defined")
+
+    def test_simulator_lens_is_wired_through(self):
+        # It is opt-in on stated conditions, so the conditions must be written down where the
+        # main session chooses lenses, and the rubric must say what a simulation is evidence of.
+        src = workflow_source("conundrum-analyze")
+        self.assertIn("'simulator'", src)
+        self.assertIn("simulator", re.search(r"const HEAVY = \[(.*?)\]", src).group(1))
+        lenses_md = (SKILL / "references" / "lenses.md").read_text()
+        self.assertIn("**When to add the simulator lens.**", lenses_md)
+        for key in ("verified", "measured, not guessed", "budget"):
+            self.assertIn(key, lenses_md)
+        # No default lens set may include it: a question that cannot be simulated must not get it.
+        block = re.search(r"const DEFAULT_LENSES = \{(.*?)\n\}", src, re.S).group(1)
+        self.assertNotIn("'simulator'", block)
+        self.assertNotIn("simulator", re.search(r"const QUICK_THIRD = \{(.*?)\}", src, re.S).group(1))
+        rubric = (SKILL / "references" / "rubric.md").read_text()
+        self.assertIn("A simulation is evidence about its model", rubric)
+        self.assertIn("works on hardware", rubric)
+        agent = (AGENTS / "lens-simulator.md").read_text()
+        self.assertIn("## Verification", agent)
+        self.assertIn("rigid_body.py", agent)
+        self.assertIn("control_tools.py", agent)
+        self.assertIn("analyses/simulator.md", agent)
+
+    def test_the_dynamics_and_control_calculators_are_catalogued(self):
+        catalog = (SKILL / "references" / "tools.md").read_text()
+        for tool in ("rigid_body.py", "control_tools.py"):
+            self.assertIn(f"`{tool}`", catalog)
+            self.assertTrue((SKILL / "scripts" / tool).exists())
+        self.assertIn("Simulation quantities.", catalog)
+        schemas = (SKILL / "references" / "schemas.md").read_text()
+        self.assertIn("rigid_body.py", schemas)
+        self.assertIn("SETTING: hardware | simulation | analysis", schemas)
+        self.assertIn("ARTIFACT:", schemas)
+        researcher = (AGENTS / "researcher.md").read_text()
+        self.assertIn("--source robotics", researcher)
+        self.assertIn("peer-reviewed", researcher)
 
     def test_anomaly_type_is_wired_through(self):
         # One wording of the anomaly null everywhere; it must not swallow the method systematics.

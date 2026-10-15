@@ -8,6 +8,12 @@ Sources, chosen with --source (a comma-separated list or an alias):
     s2        Semantic Scholar: all fields, with abstracts, citation counts and open-access PDF links.
     physics   inspire,arxiv (the default; "both" is an alias)
     general   crossref,s2 (engineering, materials, chemistry, statistics, anything outside physics)
+    robotics  arxiv,crossref,s2 (robotics, control and systems engineering: INSPIRE indexes
+              high-energy physics only and returns noise for a control query, so it is left out.
+              arXiv's categories here are cs.RO, cs.SY, eess.SY, cs.LG and math.OC: a query with a
+              field prefix passes straight through, so cat:cs.RO AND all:quadrotor works, and
+              Crossref covers the field's conference proceedings, which are peer-reviewed
+              (ICRA, IROS, RSS, CoRL, L4DC) and are where much of the primary literature is)
     all       all four
 
 It prints compact records a researcher can cite. The abstracts are the papers' own text, so
@@ -260,6 +266,12 @@ INSPIRE_ONLY = re.compile(r'\b(refersto|citedby|exactauthor|collaboration|texkey
 INSPIRE_SORT = {"relevance": "bestmatch", "mostcited": "mostcited", "mostrecent": "mostrecent"}
 
 
+# arXiv's own field syntax, which Crossref and Semantic Scholar read as plain words: they then
+# match "cat" and "RO" as text and return unrelated papers rather than nothing, which is worse.
+# cat: is arXiv-only; the single-letter field prefixes are shared with INSPIRE and left alone.
+ARXIV_ONLY = re.compile(r'\b(cat|abs|all|co|jr|rn)\s*:', re.I)
+
+
 # INSPIRE answers refersto: only for a record ID; refersto:arxiv:<id> is silently ignored.
 REFERSTO = re.compile(r"\brefersto:(arxiv|eprint|doi):(\S+)", re.I)
 
@@ -336,6 +348,11 @@ SOURCE_SETS = {
     "physics": ["inspire", "arxiv"],
     "both": ["inspire", "arxiv"],
     "general": ["crossref", "s2"],
+    # Robotics and control: arXiv for preprints (cs.RO, cs.SY, eess.SY, cs.LG, math.OC),
+    # Crossref for the field's journals AND its peer-reviewed conference proceedings, and
+    # Semantic Scholar for citation counts and open-access PDFs. INSPIRE is deliberately
+    # absent: it indexes high-energy physics, so it contributes only false matches here.
+    "robotics": ["arxiv", "crossref", "s2"],
     "all": ["inspire", "arxiv", "crossref", "s2"],
 }
 
@@ -410,11 +427,16 @@ def main(argv=None) -> int:
     }
     sources = args.source if isinstance(args.source, list) else parse_sources(args.source)
     inspire_only = bool(INSPIRE_ONLY.search(args.query))
+    arxiv_only = bool(ARXIV_ONLY.search(args.query))
     searches = []
     for key in sources:
         if inspire_only and key != "inspire":
             print(f"SKIPPED: {SOURCES[key]} can't read INSPIRE search syntax; ask it in plain words "
                   "(use --since for dates).")
+            continue
+        if arxiv_only and key not in ("arxiv", "inspire"):
+            print(f"SKIPPED: {SOURCES[key]} can't read arXiv field syntax (cat:, abs:, all:) and "
+                  "would match it as plain words; rerun it without the prefixes.")
             continue
         searches.append((SOURCES[key], runners[key]))
     since_note = f" (since {args.since})" if args.since else ""

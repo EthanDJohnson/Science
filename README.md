@@ -190,8 +190,15 @@ Overrule it in plain words: "I don't trust that research, get it fresh", or "tha
 | Empiricist | what was actually measured |
 | Dialectician | resolves contradictions |
 | Statistician | is the signal real? significance, look-elsewhere effect, prior odds (anomaly questions) |
+| Simulator | builds an executable model, verifies it, runs each candidate in closed loop, and finds the failure boundary (only when the system can actually be simulated) |
 
 The philosopher labels in the agent files are mnemonics; the methods are the content.
+
+**The simulator lens** is the only one that settles anything by experiment, so it is opt-in and carries conditions. It is added when the system has equations that can be integrated from *measured* parameters, when the model can be verified against a conserved quantity or a known limit, and when a run fits the budget — which is true of robots, vehicles, circuits and control loops, and not of a warp bubble. Before any of its numbers count it must produce a verification table: energy conserved without input, a known limit reproduced, two independent implementations agreeing, the integration error measured, and the equilibrium it linearises about confirmed to be one. It then runs every candidate in closed loop and, more importantly, breaks them: the smallest torque that still works, the parameter error tolerated, the sensor noise, the latency against the loop's delay margin, the region of attraction, the largest disturbance survived. When it runs, the refuters' `physics` angle becomes `simulation` — the strongest attack on a controller is to run it past its limits using the lens's own scripts.
+
+The rubric keeps the three claims apart, because a simulation is evidence about its model and about reality only as far as the model is verified: *works in a verified model*, *holds under the model error actually present*, and *works on hardware*. A measurement on the physical system outranks every simulation of it, and where the two disagree the gap is itself a finding.
+
+**Not every question is a conundrum.** Framing checks first. A reproduction or build task ("reproduce this result in simulation", "implement this controller") wants a working artefact and a comparison against the paper, not a ranked slate with credences, and Claude offers to do it directly with the toolkit instead — a fraction of a run's cost. Same for a lookup, or a decision that turns on your own budget and deadline rather than on unsettled facts. A conundrum is the right tool for the question *behind* a reproduction, once it disagrees with the paper and nobody knows why.
 
 **Question types.** Framing classifies the question as feasibility, design, mechanism, anomaly or foundations, which sets the default lenses.
 - Foundations questions, such as the problem of time or the interpretations of quantum mechanics, get positions instead of options.
@@ -217,13 +224,18 @@ Formal proofs in Lean are planned, not built; [`docs/formal-math-plan.md`](docs/
 It is tested against Schwarzschild, FRW, Morris–Thorne, Painlevé–Gullstrand and Alcubierre closed forms. The other calculators:
 - `stats_tools.py` gives the statistics lens tested significance, look-elsewhere, counting-experiment and Bayes-factor calculations, plus the tools for disagreeing methods: tension with asymmetric errors, chi-squared within and between methods, and the data or precision a decisive test needs when systematics set a floor;
 - `unit_tools.py` parses, converts and dimension-checks quantities such as `"0.5 * 1 t * (3 km/s)^2"`;
-- `rocket_tools.py` covers classical and relativistic rocket equations and constant-acceleration trips.
+- `rocket_tools.py` covers classical and relativistic rocket equations and constant-acceleration trips;
+- `rigid_body.py` gives planar multibody dynamics in manipulator form — mass matrix, Coriolis, gravity torque, forward dynamics, energy, the exact symbolic equations, and RK4 simulation with torque limits and sensor noise — together with the four checks that decide whether a simulation can be trusted: energy drift, the passivity identity, the integrator's convergence order, and two independent implementations cross-checked. It is tested against *Underactuated Robotics*' published Acrobot and cart-pole matrices entry by entry, for arbitrary parameters;
+- `control_tools.py` covers linearisation (flagging a point that is not an equilibrium), controllability with its conditioning as well as its rank, LQR, Lyapunov equations, gain, phase and delay margins, sampled regions of attraction, and parameter sweeps that return a binomial interval rather than a bare success rate. It is tested against the double integrator's published LQR solution, closed-form margins, and LQR's own margin guarantee.
 
-Each checks itself against independent reference values, and `references/tools.md` catalogs them all.
+Both are built around the errors that make a simulation wrong while every number still looks plausible: an inertia quoted about the joint instead of the centre of mass, a published Coriolis matrix compared entry by entry when only its product is unique, a controller designed about a point the system cannot hold, a gain margin of 0.5 read as a failure when it is LQR's guarantee, a sampled region of attraction reported as certified, an angle error measured in a straight line instead of around a circle, and a conclusion that moves when the integration step halves.
+
+Each checks itself against independent reference values, and `references/tools.md` catalogs them all. [`examples/acrobot-swingup-balance/`](examples/acrobot-swingup-balance/) is the worked validation of the dynamics and control pair: one script that verifies its model, designs a balance controller, measures its region of attraction, swings the Acrobot up from hanging, and then finds the torque limit, parameter error and sensor noise at which the whole thing stops working.
 
 `lit_search.py` prints abstracts the agents can quote, from four sources:
 - INSPIRE-HEP and arXiv, the default for physics;
-- Crossref and Semantic Scholar (`--source general`) for engineering, materials, chemistry, statistics and other fields.
+- Crossref and Semantic Scholar (`--source general`) for engineering, materials, chemistry, statistics and other fields;
+- arXiv, Crossref and Semantic Scholar (`--source robotics`) for robotics, control and systems engineering, with INSPIRE left out because it indexes high-energy physics and returns only false matches there. Researchers are also told that full papers in reviewed conference proceedings (ICRA, IROS, RSS, CoRL) are peer-reviewed rather than preliminary, which is where most of that field's primary literature is.
 
 Results come best match first; `--since <year>` restricts every source to recent work, and `"refersto:arxiv:<id>"` lists the papers citing a result, which is how re-analyses and rebuttals turn up. Semantic Scholar also lists open-access PDF links. `fetch_text.py` prints a source's own words from a PDF or web page, around a phrase given with `--grep`, so agents quote the text itself: WebFetch passes pages through a model, whose answer can paraphrase. **Paywalls.** For a journal paper, `find_fulltext.py <doi>` finds a free, legal copy: the published version when it is open, otherwise an accepted manuscript (OSTI for US national-lab work, or a university repository) or the arXiv preprint.
 - It asks INSPIRE, OpenAlex, OSTI and Europe PMC.
@@ -327,9 +339,10 @@ python3 .claude/skills/conundrum/scripts/math_checks.py selftest          # math
     SKILL.md
     references/          lenses.md  schemas.md  rubric.md  tools.md (calculator catalog)
     scripts/             gr_tensors.py  stats_tools.py  unit_tools.py  rocket_tools.py
+                         rigid_body.py  control_tools.py  (dynamics and control)
                          math_checks.py  math_run.py
                          lit_search.py  fetch_text.py  find_fulltext.py  check_env.py  prior_runs.py  tests/
-  agents/                19 role definitions (model, effort, tools, method)
+  agents/                20 role definitions (model, effort, tools, method)
   workflows/             conundrum-research.js  conundrum-analyze.js
   hooks/                 turn_budget.py (counts each agent's turns and tool calls)
                          guard_pipeline.py (keeps pipeline agents from editing the pipeline)
@@ -338,6 +351,7 @@ dev/                     agent_rules.py (the single source of every agent's grou
                          run_costs.py (a run's turns, tokens and cost per agent, from the transcripts)
 docs/                    conundrum-skill-plan.md (the design)  formal-math-plan.md (math checks and Lean)
 examples/                smoke-test output of one lens, with provenance notes
+                         acrobot-swingup-balance/ (the dynamics and control toolkit, validated end to end)
 runs/                    one directory per investigation
 ```
 
