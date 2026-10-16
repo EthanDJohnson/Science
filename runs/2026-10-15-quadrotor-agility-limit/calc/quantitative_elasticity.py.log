@@ -1,0 +1,27 @@
+# math_run log
+command:  python3 runs/2026-10-15-quadrotor-agility-limit/calc/quantitative_elasticity.py
+started:  2026-10-15T23:30:34Z
+duration: 0.0 s
+exit:     0
+versions: python 3.13.16, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+Foehn 2021 time-optimal lap time vs TWR (s): [(2.5, 7.14), (3.15, 6.27), (3.3, 6.1), (3.6, 5.81)]
+  TWR 2.5->3.15: dlnT/dlnTWR = -0.562  (speed elasticity ~ 0.562)
+  TWR 3.15->3.3: dlnT/dlnTWR = -0.591  (speed elasticity ~ 0.591)
+  TWR 3.3->3.6: dlnT/dlnTWR = -0.560  (speed elasticity ~ 0.560)
+  overall TWR 2.5->3.6: dlnT/dlnTWR = -0.565  (speed elasticity ~ 0.565)
+Agilicious: latency (ms) vs positional RMSE (m): [(35.0, 0.322), (75.0, 0.474)] (75 ms is a lower bound)
+  d lnRMSE / d lnLatency <= 0.507  (upper bound because latency is >75 ms)
+  RMSE increase = 47.2 per cent for latency +40 ms
+Song 2023: 4.9/5.35 = 0.916  ; 4.92/5.35 = 0.92
+latency/tau: 35/39.1 = 0.895 ; 40/39.1 = 1.023
+30 Hz frame period (ms) = 33.33 ; 100 Hz VIO period (ms) = 10.0
+Swift static thrust 35 N / (0.870 kg * 9.81) = 4.101
+Song 63 N / (0.52 kg * 9.81) = 12.35
+Agilicious 131 km/h = 36.39 m/s ; 108 km/h = 30.0 m/s ; 65 km/h = 18.06 m/s
+check: power law T~w^-0.5 gives -0.5
+
+--- stderr ---
+

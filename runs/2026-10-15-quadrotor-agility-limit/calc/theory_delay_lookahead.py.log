@@ -1,0 +1,92 @@
+# math_run log
+command:  python3 runs/2026-10-15-quadrotor-agility-limit/calc/theory_delay_lookahead.py
+started:  2026-10-15T23:31:43Z
+duration: 0.3 s
+exit:     0
+versions: python 3.13.16, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+=== Inputs/units: SI; g = 9.81 m/s^2 ===
+
+[A] Verification: L = wc/s * exp(-s tau); closed form PM = pi/2 - wc*tau, delay margin = (pi/2)/wc
+  (loop_margins' delay_margin is the EXTRA delay beyond tau already in L; total tolerable delay = tau + tool dm.
+   Grid is offset so that wc is not exactly a grid point -- an exact hit makes the sign-change crossing search miss it.)
+  wc=  20.0 rad/s tau= 10.0 ms : PM tool=1.3708 rad  closed-form=1.3708 rad | total delay tolerated: tool tau+dm=0.07854 s closed-form pi/(2 wc)=0.07854 s
+  wc=  50.0 rad/s tau= 20.0 ms : PM tool=0.5708 rad  closed-form=0.5708 rad | total delay tolerated: tool tau+dm=0.03142 s closed-form pi/(2 wc)=0.03142 s
+  wc= 100.0 rad/s tau=  5.0 ms : PM tool=1.0708 rad  closed-form=1.0708 rad | total delay tolerated: tool tau+dm=0.01571 s closed-form pi/(2 wc)=0.01571 s
+
+  Max wc for integrator-like loop with phase margin PM, effective delay tau_eff (wc = (pi/2 - PM)/tau_eff):
+  tau_eff[ms]   wc(PM=45deg)[rad/s]  f=wc/2pi[Hz]   wc(PM=60deg)[rad/s]  f[Hz]
+     2.0           392.7             62.5           261.8             41.7
+     5.0           157.1             25.0           104.7             16.7
+    10.0            78.5             12.5            52.4              8.3
+    20.0            39.3              6.2            26.2              4.2
+    40.0            19.6              3.1            13.1              2.1
+
+  Effective delay budget: tau_eff = tau_sense + tau_compute + T/2 (ZOH half-sample) -- examples
+   tau_sense=  2.0 ms tau_compute= 1.0 ms T= 1.00 ms -> tau_eff=  3.50 ms
+   tau_sense=  2.0 ms tau_compute= 2.0 ms T= 2.00 ms -> tau_eff=  5.00 ms
+   tau_sense= 20.0 ms tau_compute= 5.0 ms T= 5.00 ms -> tau_eff= 27.50 ms
+   tau_sense= 50.0 ms tau_compute=10.0 ms T=16.70 ms -> tau_eff= 68.35 ms
+
+  PD on double integrator P=1/s^2: C = kp + kd s, delay tau. Max delay margin over wc for fixed zero placement wz = wc/3
+   wc=  10.0 rad/s: PM tool=71.565 deg closed-form atan(3)=71.565 deg | delay margin = 124.90 ms ; wc*delay_margin=1.2490 rad (closed form 1.2490)
+   wc=  30.0 rad/s: PM tool=71.565 deg closed-form atan(3)=71.565 deg | delay margin = 41.63 ms ; wc*delay_margin=1.2490 rad (closed form 1.2490)
+   wc= 100.0 rad/s: PM tool=71.565 deg closed-form atan(3)=71.565 deg | delay margin = 12.49 ms ; wc*delay_margin=1.2490 rad (closed form 1.2490)
+
+[B] Verification of stopping bound by direct integration (dt=1e-5 s): vehicle at speed v runs blind for tau then brakes at a
+   v=10.0 m/s tau= 50.0 ms a= 20.0 m/s^2 : closed form s=3.0000 m, simulated s=3.0000 m
+   v=20.0 m/s tau=100.0 ms a= 40.0 m/s^2 : closed form s=7.0000 m, simulated s=7.0003 m
+   v=30.0 m/s tau= 20.0 ms a= 30.0 m/s^2 : closed form s=15.6000 m, simulated s=15.6005 m
+   limit tau=0: v=sqrt(2 a s): s=10 m a=20 -> 20.0000 vs 20.0000
+
+  Max safe speed [m/s]: stop-before-obstacle bound v_stop, and Falanga lateral-dodge bound v_F (r=0.5 m)
+  a[m/s^2]=lateral/brake accel ; s=sensing range
+   s[m]  tau[ms]  a=10(1g)   a=20(2g)   a=40(4g) | Falanga: a=10    a=20    a=40
+    3.0      0       7.75     10.95     15.49 |          6.71    9.49   13.42
+    3.0     20       7.55     10.56     14.71 |          6.42    8.92   12.31
+    3.0     50       7.26     10.00     13.62 |          6.03    8.19   10.96
+    3.0    100       6.81      9.14     12.00 |          5.48    7.21    9.27
+    6.0      0      10.95     15.49     21.91 |         13.42   18.97   26.83
+    6.0     20      10.76     15.10     21.12 |         12.84   17.85   24.63
+    6.0     50      10.47     14.52     20.00 |         12.07   16.38   21.93
+    6.0    100      10.00     13.62     18.27 |         10.96   14.42   18.54
+   10.0      0      14.14     20.00     28.28 |         22.36   31.62   44.72
+   10.0     20      13.94     19.60     27.50 |         21.40   29.74   41.05
+   10.0     50      13.65     19.02     26.35 |         20.11   27.31   36.55
+   10.0    100      13.18     18.10     24.57 |         18.27   24.03   30.90
+
+[C] Elasticities d ln v / d ln x of the two bounds (finite difference 1e-4 vs analytic)
+   stop bound s=6.0 tau=50 ms a=20 : v=14.52 m/s | e_s FD=0.5322 an=0.5322 | e_tau FD=-0.0644 an=-0.0644 | e_a FD=0.4678 an=0.4678 | sum e_s... (v homogeneous check e_s+e_tau*? skip)
+   Falanga bound same inputs      : v=16.38 m/s | e_s=1.0000 | e_tau=-0.1365 | e_a=0.4317   (analytic e_s=1, e_tau=-tau/(tau+2sqrt(r/a)), e_a=+sqrt(r/a)/(tau+2sqrt(r/a)))
+      analytic Falanga e_tau=-0.1365 e_a=0.4317
+   stop bound s=6.0 tau=20 ms a=40 : v=21.12 m/s | e_s FD=0.5182 an=0.5182 | e_tau FD=-0.0365 an=-0.0365 | e_a FD=0.4818 an=0.4818 | sum e_s... (v homogeneous check e_s+e_tau*? skip)
+   Falanga bound same inputs      : v=24.63 m/s | e_s=1.0000 | e_tau=-0.0821 | e_a=0.4590   (analytic e_s=1, e_tau=-tau/(tau+2sqrt(r/a)), e_a=+sqrt(r/a)/(tau+2sqrt(r/a)))
+      analytic Falanga e_tau=-0.0821 e_a=0.4590
+   stop bound s=10.0 tau=100 ms a=20 : v=18.10 m/s | e_s FD=0.5498 an=0.5498 | e_tau FD=-0.0995 an=-0.0995 | e_a FD=0.4502 an=0.4502 | sum e_s... (v homogeneous check e_s+e_tau*? skip)
+   Falanga bound same inputs      : v=24.03 m/s | e_s=1.0000 | e_tau=-0.2403 | e_a=0.3799   (analytic e_s=1, e_tau=-tau/(tau+2sqrt(r/a)), e_a=+sqrt(r/a)/(tau+2sqrt(r/a)))
+      analytic Falanga e_tau=-0.2403 e_a=0.3799
+
+  Crossing speed where latency term equals braking term in the stop bound: v*tau = v^2/(2a)  ->  v_x = 2 a tau
+   a=20 m/s^2 tau=50 ms : v_x = 2.00 m/s (below this speed the blind-flight distance v*tau exceeds the braking distance; above it the braking distance v^2/(2a) dominates the look-ahead need)
+   a=20 m/s^2 tau=20 ms : v_x = 0.80 m/s (below this speed the blind-flight distance v*tau exceeds the braking distance; above it the braking distance v^2/(2a) dominates the look-ahead need)
+   a=40 m/s^2 tau=50 ms : v_x = 4.00 m/s (below this speed the blind-flight distance v*tau exceeds the braking distance; above it the braking distance v^2/(2a) dominates the look-ahead need)
+   a=10 m/s^2 tau=100 ms : v_x = 2.00 m/s (below this speed the blind-flight distance v*tau exceeds the braking distance; above it the braking distance v^2/(2a) dominates the look-ahead need)
+
+[D] Point-mass bound: a_h = g sqrt((T/W)^2 - 1) (level, altitude held); rest-to-rest bang-bang t = 2 sqrt(d/a_h); peak v = sqrt(a_h d)
+   Verification of bang-bang closed form by integration: d=10 m a=30 m/s^2 -> closed 1.1547 s, integrated 1.1547 s
+   limit T/W->1: a_h=0.000 (expect 0); T/W=sqrt(2): a_h=9.810 (expect g=9.810)
+   T/W    a_h[m/s^2]  a_h/g   t(d=10m)[s]   v_peak(d=10m)[m/s]   v_avg(d=10m)[m/s]
+     2      16.99     1.73     1.534        13.04                6.52
+     3      27.75     2.83     1.201        16.66                8.33
+     4      37.99     3.87     1.026        19.49                9.75
+     6      58.04     5.92     0.830        24.09               12.05
+     8      77.86     7.94     0.717        27.90               13.95
+   Elasticity of rest-to-rest time to a_h: d ln t/d ln a = -1/2 exactly; elasticity of a_h to T/W = (T/W)^2/((T/W)^2-1):
+      T/W=2 : 1.3333
+      T/W=4 : 1.0667
+      T/W=8 : 1.0159
+
+--- stderr ---
+
