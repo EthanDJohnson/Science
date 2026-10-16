@@ -206,6 +206,16 @@ class WorkflowWiring(unittest.TestCase):
         for angle in sorted(angles):
             self.assertIn(f"- **{angle}:**", falsifier, f"the {angle} angle is used but never defined")
 
+    def test_the_judge_may_not_overstate_a_verified_row(self):
+        # Added after the quadrotor run, where the judge wrote "proved for every parameter
+        # value" and |e| < 1/2 from rows that proved a sampled ordering and |e| < 1. The
+        # auditor caught it; the rubric now has to stop it being written.
+        rubric = (SKILL / "references" / "rubric.md").read_text()
+        self.assertIn("A verified row licenses its own statement and nothing wider.", rubric)
+        for drift in ("**Scope.**", "**Strength.**", "**Reach.**"):
+            self.assertIn(drift, rubric)
+        self.assertIn("write the weaker claim", rubric)
+
     def test_simulator_lens_is_wired_through(self):
         # It is opt-in on stated conditions, so the conditions must be written down where the
         # main session chooses lenses, and the rubric must say what a simulation is evidence of.
