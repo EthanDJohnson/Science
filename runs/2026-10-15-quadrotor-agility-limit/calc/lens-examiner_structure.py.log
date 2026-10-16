@@ -1,0 +1,212 @@
+# math_run log
+command:  python3 runs/2026-10-15-quadrotor-agility-limit/calc/lens-examiner_structure.py
+started:  2026-10-16T00:15:58Z
+duration: 0.7 s
+exit:     0
+versions: python 3.13.16, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+
+==============================================================================
+A  Thrust-to-weight ceiling (hidden premise 4: compute it first)
+==============================================================================
+TWR values from A-13 (onboard-only platforms 4.1-4.5; mocap platform 12.35)
+representative segment length = 10.70 m  (75 m lap / 7 gates, A-10)
+   TWR  a_h m/s^2   t_seg s  v_peak m/s  v_mean m/s
+  2.00      16.99     1.587       13.48        6.74
+  4.10      39.01     1.048       20.43       10.21
+  4.50      43.04     0.997       21.46       10.73
+ 12.35     120.76     0.595       35.95       17.97
+
+  d ln a_h / d ln TWR at TWR= 2.00: numeric 1.3333  closed form 1.3333  (match 9.62e-11)
+  d ln a_h / d ln TWR at TWR= 4.10: numeric 1.0633  closed form 1.0633  (match 1.22e-11)
+  d ln a_h / d ln TWR at TWR=12.35: numeric 1.0066  closed form 1.0066  (match 2.18e-12)
+  d ln v_mean / d ln a_h (bang-bang) = 0.5000   exact 0.5
+  -> at TWR 4.1, d ln v_mean / d ln TWR = 0.5316  (+10% TWR buys about +5% speed)
+  cross-check against the published planner sweep A-16: d ln(lap)/d ln(TWR) = -0.565,
+  i.e. d ln v / d ln TWR = +0.565. Same order as 0.534.
+
+==============================================================================
+B  Perception bounds, their elasticities, and the homogeneity identity
+==============================================================================
+stop bound v_max = a(-tau + sqrt(tau^2 + 2 s / a))
+case                                           v m/s     e_s     e_a    e_tau  e_s+e_a
+A-33 case 1   s=6 m,  a=20 m/s^2, tau=50 ms    14.52   0.532   0.468   -0.064    1.000
+A-33 case 2   s=6 m,  a=40 m/s^2, tau=20 ms    21.12   0.518   0.482   -0.036    1.000
+A-33 case 3   s=10 m, a=20 m/s^2, tau=100 ms   18.10   0.550   0.450   -0.100    1.000
+Swift-like    s=6 m,  a=39 m/s^2, tau=40 ms    20.13   0.536   0.464   -0.072    1.000
+
+verification of the stop bound against direct integration:
+  A-33 case 1   s=6 m,  a=20 m/s^2, tau=50 ms  closed  14.5242  integrated  14.5238  diff 3.40e-04 m/s
+  A-33 case 2   s=6 m,  a=40 m/s^2, tau=20 ms  closed  21.1235  integrated  21.1230  diff 5.09e-04 m/s
+  A-33 case 3   s=10 m, a=20 m/s^2, tau=100 ms closed  18.0998  integrated  18.0993  diff 4.07e-04 m/s
+  tau -> 0 limit: v_stop(6,20,0) = 15.4919 ; sqrt(2as) = 15.4919
+
+Homogeneity identity. v_stop(s,a,tau) obeys v(k^2 s, k^2 a... ) -- test the exact
+statement instead: at tau = 0, v = sqrt(2 a s) is homogeneous of degree 1/2 in each of
+a and s, so e_s = e_a = 1/2 exactly and e_s + e_a = 1. For tau > 0, e_s + e_a is still
+1 by Euler's theorem applied to the scaling (s,a,tau) -> (k s, k a, tau) :
+  A-33 case 1   s=6 m,  a=20 m/s^2, tau=50 ms  v(ks,ka,tau)= 19.8981  k*v= 19.8981  diff 0.00e+00
+  A-33 case 2   s=6 m,  a=40 m/s^2, tau=20 ms  v(ks,ka,tau)= 28.9392  k*v= 28.9392  diff 0.00e+00
+  A-33 case 3   s=10 m, a=20 m/s^2, tau=100 ms v(ks,ka,tau)= 24.7967  k*v= 24.7967  diff 0.00e+00
+  Swift-like    s=6 m,  a=39 m/s^2, tau=40 ms  v(ks,ka,tau)= 27.5774  k*v= 27.5774  diff 3.55e-15
+  => v is homogeneous of degree 1 in (s,a) jointly, hence e_s + e_a = 1 identically,
+     and e_s/e_a is pinned near 1 for every parameter set below.
+
+case                                          e_s/e_a
+A-33 case 1   s=6 m,  a=20 m/s^2, tau=50 ms     1.138
+A-33 case 2   s=6 m,  a=40 m/s^2, tau=20 ms     1.076
+A-33 case 3   s=10 m, a=20 m/s^2, tau=100 ms    1.221
+Swift-like    s=6 m,  a=39 m/s^2, tau=40 ms     1.155
+
+lateral-dodge bound (D-31), r = 0.5 m:
+case                                           v m/s     e_s    e_a2    e_tau
+A-33 case 1   s=6 m,  a=20 m/s^2, tau=50 ms    16.38   1.000   0.432   -0.137
+A-33 case 2   s=6 m,  a=40 m/s^2, tau=20 ms    24.63   1.000   0.459   -0.082
+A-33 case 3   s=10 m, a=20 m/s^2, tau=100 ms   24.03   1.000   0.380   -0.240
+Swift-like    s=6 m,  a=39 m/s^2, tau=40 ms    22.52   1.000   0.425   -0.150
+  e_s = 1 exactly by construction (v is linear in s).
+
+==============================================================================
+C  FoV / attitude coupling: the partial derivative the brief asks for does not exist
+==============================================================================
+body pitch required for a given horizontal acceleration (point mass, level flight):
+  a =   5.0 m/s^2  ->  pitch =  27.0 deg   (= 0.51 g horizontal)
+  a =   9.8 m/s^2  ->  pitch =  45.0 deg   (= 1.00 g horizontal)
+  a =  20.0 m/s^2  ->  pitch =  63.9 deg   (= 2.04 g horizontal)
+  a =  38.0 m/s^2  ->  pitch =  75.5 deg   (= 3.87 g horizontal)
+  a =  55.0 m/s^2  ->  pitch =  79.9 deg   (= 5.61 g horizontal)
+
+D435i-class depth camera, HFoV about 90 deg (A-20); A-20 tilts it 30 deg up above 7 m/s.
+ HFoV deg  tilt deg  a_fov m/s^2  a_fov/g  v=sqrt(2 a_fov s), s=6 m
+       90         0         9.81     1.00                     10.85
+       90        30        36.61     3.73                     20.96
+      120         0        16.99     1.73                     14.28
+      120        30          inf      inf                       inf
+      155         0        44.25     4.51                     23.04
+
+Reading: with a 90 deg untilted forward camera the flight direction leaves the FoV at
+1.00 g of braking, capping the usable stop bound at sqrt(2 * 9.81 * 6) = 10.85 m/s,
+which is where A-20's success falls to 60 per cent (10 m/s). With the 30 deg up-tilt the
+same geometry allows 3.73 g and 21.2 m/s. So s depends on a: ds/da < 0 through body
+attitude, and 'relax one limit holding the others fixed' is not an available operation.
+
+==============================================================================
+D  Delay-limited bandwidth mapped to a speed, and the delay that would bind
+==============================================================================
+wc <= (pi/2 - PM)/tau_eff  (A-32); PM = 45 deg -> wc*tau_eff <= 0.7854
+  tau_eff =    5.0 ms  ->  wc <=  157.08 rad/s =  25.00 Hz
+  tau_eff =   17.0 ms  ->  wc <=   46.20 rad/s =   7.35 Hz
+  tau_eff =   40.0 ms  ->  wc <=   19.63 rad/s =   3.12 Hz
+  tau_eff =  130.0 ms  ->  wc <=    6.04 rad/s =   0.96 Hz
+  tau_eff =  220.0 ms  ->  wc <=    3.57 rad/s =   0.57 Hz
+
+map to speed with v <= wc R / m   (R = turn radius, m = frequency separation factor)
+ tau_eff ms   R=3,m=3   R=5,m=3   R=5,m=5   R=10,m=5
+       17.0      46.2      77.0      46.2       92.4
+       40.0      19.6      32.7      19.6       39.3
+      130.0       6.0      10.1       6.0       12.1
+      220.0       3.6       5.9       3.6        7.1
+
+  latency that would make the delay bound bind at   5.0 m/s (R=5 m, m=3): tau_eff =  261.8 ms
+  latency that would make the delay bound bind at   5.0 m/s (R=5 m, m=5): tau_eff =  157.1 ms
+  latency that would make the delay bound bind at   7.0 m/s (R=5 m, m=3): tau_eff =  187.0 ms
+  latency that would make the delay bound bind at   7.0 m/s (R=5 m, m=5): tau_eff =  112.2 ms
+  latency that would make the delay bound bind at  10.0 m/s (R=5 m, m=3): tau_eff =  130.9 ms
+  latency that would make the delay bound bind at  10.0 m/s (R=5 m, m=5): tau_eff =   78.5 ms
+  latency that would make the delay bound bind at  20.0 m/s (R=5 m, m=3): tau_eff =   65.4 ms
+  latency that would make the delay bound bind at  20.0 m/s (R=5 m, m=5): tau_eff =   39.3 ms
+
+Retrodiction check: the 2019 onboard racing system had about 130 ms estimation latency
+and its planner was illustrated with a +/-7.5 m/s velocity cap (A-22). The bound above at
+130 ms, R=5 m, m=3 gives 10.1 m/s - the same order, so the
+construction is at least consistent with the one historical case where a team chose a cap.
+
+==============================================================================
+E  Is any single-limit bound active at the demonstrated onboard-only speeds?
+==============================================================================
+bound                                                v_bound m/s
+thrust/TWR bang-bang mean over 10.7 m, TWR 4.4             10.73
+thrust/TWR bang-bang peak over 10.7 m, TWR 4.4             21.46
+stop bound s=6 m, a=39 m/s^2, tau=40 ms                    20.13
+stop bound s=6 m, a=20 m/s^2, tau=50 ms                    14.52
+dodge bound s=6 m, r=0.5 m, a=39, tau=40 ms                22.52
+FoV-capped stop bound, 90 deg untilted, s=6 m              10.85
+FoV-capped stop bound, 90 deg +30 deg tilt, s=6 m          20.96
+delay bound tau=40 ms, R=5 m, m=3                          32.72
+delay bound tau=40 ms, R=5 m, m=5                          19.63
+paper's own latency+range bound (A-21, lowest of 3)        12.00
+
+ratio demonstrated / bound  (a ratio well below 1 means that bound is NOT active):
+demonstrated                                          v m/s      1      2      3      4      5      6      7      8      9     10
+unseen clutter, 100 per cent success (A-20)            5.00   0.47   0.23   0.25   0.34   0.22   0.46   0.24   0.15   0.25   0.42
+unseen clutter, 80 per cent (8/10) (A-20)              7.00   0.65   0.33   0.35   0.48   0.31   0.65   0.33   0.21   0.36   0.58
+unseen clutter, 60 per cent (A-20)                    10.00   0.93   0.47   0.50   0.69   0.44   0.92   0.48   0.31   0.51   0.83
+unseen perturbed-gate track, onboard depth (A-29)      5.30   0.49   0.25   0.26   0.36   0.24   0.49   0.25   0.16   0.27   0.44
+seen gate track, minimal sensors, peak (A-26)         32.20   3.00   1.50   1.60   2.22   1.43   2.97   1.54   0.98   1.64   2.68
+(columns 1-10 in the order of the bound table above)
+
+lowest of all bounds = 10.73 m/s; the best-documented >=90 per cent unseen-course
+result is 5 m/s, i.e. 0.47 of the lowest bound and 0.15 of the highest.
+
+==============================================================================
+F  Trial economics of the brief's own metric (is it measurable?)
+==============================================================================
+Q1: how many consecutive successes certify p >= 0.90 at 95 per cent one-sided?
+   smallest n with 0.05^(1/n) >= 0.90 : n = 29   (0.05^(1/29) = 0.9019, 0.05^(1/28) = 0.8985)
+   check via Clopper-Pearson k=n: cp_lower(29,29) = 0.9019
+
+Q2: what does the best-documented unseen-course data point actually certify?
+   10/10 successes -> point 1.000, 95 per cent one-sided lower bound 0.741   (A-20 / A-27 style)
+   8/10 successes -> point 0.800, 95 per cent one-sided lower bound 0.493   (A-20 / A-27 style)
+   6/10 successes -> point 0.600, 95 per cent one-sided lower bound 0.304   (A-20 / A-27 style)
+   38/43 successes -> point 0.884, 95 per cent one-sided lower bound 0.771   (A-20 / A-27 style)
+   1/4 successes -> point 0.250, 95 per cent one-sided lower bound 0.013   (A-20 / A-27 style)
+   5/7 successes -> point 0.714, 95 per cent one-sided lower bound 0.341   (A-20 / A-27 style)
+
+Q3: trials to distinguish a true 0.90 from a true 0.80 (one-sided, alpha=0.05, power 0.8):
+   normal approximation: n = 68.9 -> 69 trials
+   exact: n =   30  reject if failures >= 7  power against p=0.80 = 0.393
+   exact: n =   50  reject if failures >= 10  power against p=0.80 = 0.556
+   exact: n =   69  reject if failures >= 12  power against p=0.80 = 0.750
+   exact: n =   80  reject if failures >= 14  power against p=0.80 = 0.753
+   exact: n =  100  reject if failures >= 16  power against p=0.80 = 0.871
+   exact: n =  120  reject if failures >= 19  power against p=0.80 = 0.898
+
+Q4: the metric is a sup over speeds, so it needs this at several speed set-points.
+   3 speed points x 29 flights (certification only) = 87 flights;
+   3 speed points x 69 flights (discrimination) = 207 flights
+   5 speed points x 29 flights (certification only) = 145 flights;
+   5 speed points x 69 flights (discrimination) = 345 flights
+   at a 10 per cent crash rate and a racing airframe, that is tens of airframe repairs.
+
+==============================================================================
+G  Equal-per-cent (elasticity) versus equal-attainable-increment sensitivity
+==============================================================================
+baseline: s=6.0 m, a=39.0 m/s^2 (TWR 4.1), tau=40 ms -> v = 20.13 m/s
+
+(i) equal per cent: +10 per cent on each limit
+   range s                      v ->  21.18 m/s   change  +5.23 per cent
+   braking a (thrust)           v ->  21.04 m/s   change  +4.51 per cent
+   latency tau (-10 per cent)   v ->  20.26 m/s   change  +0.66 per cent
+
+(ii) equal attainable increment, using increments already demonstrated on hardware
+   tau 40 -> 13.8 ms (event-camera loop, A-23, 1-DOF analogy) v ->  21.10 m/s    +4.83 per cent
+   tau 40 -> 17 ms (MonoRace simulated image delay, A-28)     v ->  20.98 m/s    +4.23 per cent
+   TWR 4.1 -> 12.35 (A-11 platform exists, mocap)             v ->  33.54 m/s   +66.63 per cent
+   s 6 -> 10 m (better depth range)                           v ->  26.41 m/s   +31.21 per cent
+   s 6 -> 20 m (LiDAR class, D-39)                            v ->  37.97 m/s   +88.62 per cent
+   tau -> 0 (perfect, unattainable)                           v ->  21.63 m/s    +7.47 per cent
+
+The ranking flips between (i) and (ii): per cent for per cent, range beats latency by
+about an order of magnitude; per attainable move, thrust and range are both large and
+latency is capped at the gap between tau=40 ms and tau=0, which is only
+7.5 per cent on this bound.
+
+==============================================================================
+END
+==============================================================================
+
+--- stderr ---
+

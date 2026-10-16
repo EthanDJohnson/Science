@@ -1,0 +1,172 @@
+# math_run log
+command:  python3 runs/2026-10-15-quadrotor-agility-limit/calc/lens-empiricist_observations.py
+started:  2026-10-16T00:17:46Z
+duration: 0.1 s
+exit:     0
+versions: python 3.13.16, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+========================================================================
+1. EXACT BINOMIAL INTERVALS ON EVERY REPORTED HARDWARE SUCCESS RATE
+========================================================================
+case                                                     k/n      p  CP 95% lower   upper  90% excluded?
+Loquercio unseen forest, 7 m/s [A-20]                  8/10   0.800         0.444   0.975  NO
+Loquercio unseen, 10 m/s (60%, n assumed 10) [A-20]    6/10   0.600         0.262   0.878  yes (below)
+Loquercio unseen, 5 m/s (100%, n assumed 10) [A-20]   10/10   1.000         0.692   1.000  NO
+Loquercio unseen, 3 m/s (100%, n assumed 10) [A-20]   10/10   1.000         0.692   1.000  NO
+MonoRace M23 (seen track) [A-27]                      38/43   0.884         0.749   0.961  NO
+MonoRace M17 (seen track) [A-27]                       5/7    0.714         0.290   0.963  NO
+MonoRace M16 fastest policy (seen track) [A-27]        1/4    0.250         0.006   0.806  yes (below)
+Song RL policy, real, mocap state (n assumed 20) [A-14]  17/20   0.850         0.621   0.968  NO
+Song contouring MPC, real, mocap (n assumed 20) [A-14]  10/20   0.500         0.272   0.728  yes (below)
+
+Note: the per-speed trial counts for A-20 at 3, 5 and 10 m/s were NOT reported;
+n = 10 is assumed by analogy with the 7 m/s row (8 of 10). The A-14 counts (20)
+are likewise unsupported (dossier section 7). Rows so marked are illustrative of
+the resolving power of a 10- or 20-trial experiment, not of a stated result.
+
+========================================================================
+2. TRIALS NEEDED TO ESTABLISH OR REFUTE THE 90 PER CENT CRITERION
+========================================================================
+  n consecutive successes =  10: CP lower bound = 0.6915 (closed form 0.025^(1/n) = 0.6915, diff 4.49e-13)
+  n consecutive successes =  15: CP lower bound = 0.7820 (closed form 0.025^(1/n) = 0.7820, diff 6.86e-14)
+  n consecutive successes =  20: CP lower bound = 0.8316 (closed form 0.025^(1/n) = 0.8316, diff 6.72e-14)
+  n consecutive successes =  25: CP lower bound = 0.8628 (closed form 0.025^(1/n) = 0.8628, diff 3.32e-14)
+  n consecutive successes =  29: CP lower bound = 0.8806 (closed form 0.025^(1/n) = 0.8806, diff 3.64e-13)
+  n consecutive successes =  30: CP lower bound = 0.8843 (closed form 0.025^(1/n) = 0.8843, diff 2.09e-13)
+  n consecutive successes =  35: CP lower bound = 0.9000 (closed form 0.025^(1/n) = 0.9000, diff 1.97e-13)
+  n consecutive successes =  40: CP lower bound = 0.9119 (closed form 0.025^(1/n) = 0.9119, diff 4.07e-13)
+  n consecutive successes =  60: CP lower bound = 0.9404 (closed form 0.025^(1/n) = 0.9404, diff 4.37e-13)
+  -> smallest all-success n with a ONE-sided 95% lower bound >= 0.90: n = 29
+  -> smallest all-success n with a TWO-sided 95% (CP) lower bound >= 0.90: n = 36
+  trials per arm to tell p=0.9 from p=0.8 (95%, 80% power): 199
+  trials per arm to tell p=0.9 from p=0.6 (95%, 80% power): 32
+  trials per arm to tell p=0.95 from p=0.85 (95%, 80% power): 141
+
+========================================================================
+3. MEAN SPEED OF THE ONBOARD-ONLY DEMONSTRATIONS (course length / time)
+========================================================================
+  Swift, best three-lap time-to-finish = 17.465 s over 3 x 75.0 m -> mean 12.88 m/s
+  Swift, single lap 5.52 s over 75.0 m -> mean 13.59 m/s  (lowest median single-lap figure on the panel)
+  Swift, single lap 6.8 s over 75.0 m -> mean 11.03 m/s  (highest median single-lap figure on the panel)
+  (the panel's label-to-median mapping is garbled in extraction, so 11.0-13.6 m/s
+   is the bracket, and 12.88 m/s from the stated 17.465 s is the firm number)
+
+  MonoRace M16 (1/4 success)      lap   100 m -> mean 12.08 m/s
+  MonoRace M23 (38/43 = 88.4%)    lap   100 m -> mean  8.70 m/s
+  MonoRace M16 (1/4 success)      lap   150 m -> mean 18.12 m/s
+  MonoRace M23 (38/43 = 88.4%)    lap   150 m -> mean 13.04 m/s
+  MonoRace M16 (1/4 success)      lap   200 m -> mean 24.15 m/s
+  MonoRace M23 (38/43 = 88.4%)    lap   200 m -> mean 17.39 m/s
+  MonoRace M16 (1/4 success)      lap   250 m -> mean 30.19 m/s
+  MonoRace M23 (38/43 = 88.4%)    lap   250 m -> mean 21.74 m/s
+  A2RL 2025 press: 170 m course, two laps in 17 s -> mean 20.0 m/s if lap = course length [A-31, press only]
+
+  Best-documented onboard-only UNSEEN-course speed meeting >=90% point estimate: 5 m/s [A-20]
+  Onboard-only SEEN-course mean speeds: Swift 12.9 m/s; MonoRace 13-30 m/s (lap length unknown)
+    ratio seen/unseen at 5 m/s: 2.58
+    ratio seen/unseen at 5 m/s: 2.60
+    ratio seen/unseen at 5 m/s: 4.00
+    ratio seen/unseen at 5 m/s: 6.00
+
+========================================================================
+4. OBSERVED SPEED AS A FRACTION OF ITS OWN PUBLISHED BOUND
+========================================================================
+  v =  5.0 m/s (100% point estimate ) / perception bound 12.0 m/s (A-21 low) = 0.42
+  v =  7.0 m/s (80% (8/10)          ) / perception bound 12.0 m/s (A-21 low) = 0.58
+  v = 10.0 m/s (60%                 ) / perception bound 12.0 m/s (A-21 low) = 0.83
+  v =  5.0 m/s (100% point estimate ) / perception bound 13.5 m/s (A-21 high) = 0.37
+  v =  7.0 m/s (80% (8/10)          ) / perception bound 13.5 m/s (A-21 high) = 0.52
+  v = 10.0 m/s (60%                 ) / perception bound 13.5 m/s (A-21 high) = 0.74
+  T/W 4.4: a_h = 42.03 m/s^2; 40 m rest-to-rest bang-bang t = 1.95 s, mean 20.50 m/s, peak 41.00 m/s
+    observed  5.0 m/s / point-mass mean 20.50 m/s = 0.24
+    observed  7.0 m/s / point-mass mean 20.50 m/s = 0.34
+    observed 10.0 m/s / point-mass mean 20.50 m/s = 0.49
+    verification: integrated distance 40.0000 m vs 40.0000 m (rel err 7.92e-14), final speed 5.043e-15 m/s
+
+========================================================================
+5. MEASURED SIMULATION-TO-HARDWARE DISCOUNT (the base rate)
+========================================================================
+  A-29 compact perturbed-gate track: own sim 10.0 m/s vs real 5.3 m/s ratio 1.89
+  D-40 unseen clutter: sim 19.4 m/s vs best real unseen 8.0 m/s      ratio 2.42
+  D-40 unseen clutter: sim 19.4 m/s vs 90%-reliable real 5.0 m/s     ratio 3.88
+  A-20 vs its own sim forest at 10 m/s: 60% real vs 60% sim (success, not speed) ratio 1.00
+  speed discount factors: ['1.89', '2.42', '3.88']; geometric mean 2.61
+  success-rate collapse under domain shift [A-14]: tracking MPC 44.0% (nominal sim) -> 0.0% (realistic sim) -> 0.0% (real); contouring 76.0 -> 20.0 -> 50.0; RL 100 -> 100 -> 85
+  [D-18] all three Swift baselines: laps completed with ideal dynamics and ground-truth state, zero laps completed under domain shift (simulation ablation)
+
+========================================================================
+6. ELASTICITIES ON ONE AXIS (per cent speed per per cent limit)
+========================================================================
+limit                                                    |e| low  |e| high  basis
+perception range s, stop bound [A-33]                      0.520     0.530  own calc, point mass
+perception range s, dodge bound [A-33]                     1.000     1.000  own calc, point mass
+braking/lateral accel a [A-33]                             0.430     0.480  own calc, point mass
+thrust-to-weight, point mass [A-34]                        0.500     0.540  own calc (0.5 * e(a_h,TWR))
+thrust-to-weight, planner sweep on a real track [A-16]     0.565     0.565  mocap hardware + planner
+total perception latency tau [A-33]                        0.037     0.240  own calc, point mass
+closed-loop bandwidth vs delay [A-32]                      1.000     1.000  own calc; bandwidth, NOT speed
+
+  The course-known binary is not an elasticity but a step: 2.58x in mean speed on the same airframe class and sensing class,
+  observed, hardware, onboard-only on both sides.
+  To match a 2.58x speed gain through thrust alone at e = 0.5 needs a T/W factor of 6.7x, i.e. T/W 29 from 4.4.
+  To match it through perception range alone at e = 1.0 needs 2.6x range; at e = 0.52, 6.2x range.
+  To match it through latency alone at |e| = 0.24 needs tau reduced by a factor of 52 (impossible: tau > 0).
+
+========================================================================
+7. OBSERVED ELASTICITY OF LAP TIME TO SENSORIMOTOR LATENCY (cross-controller)
+========================================================================
+  latency ratio human/Swift = 5.50x  (220 ms vs 40 ms [A-07])
+  best three-lap, Swift 17.465 s vs Vanover 17.956 s     time ratio 1.028 -> |e(speed, tau)| = 0.016
+  best three-lap, Swift 17.465 s vs Bitmatta 18.746 s    time ratio 1.073 -> |e(speed, tau)| = 0.042
+  best three-lap, Swift 17.465 s vs Schaepper 21.160 s   time ratio 1.212 -> |e(speed, tau)| = 0.113
+  single-lap medians, extremes of the panel 5.52 s vs 6.80 s time ratio 1.232 -> |e(speed, tau)| = 0.122
+  (a controller swap, not a latency perturbation: it changes policy, camera rate and
+   information at once, so it bounds the JOINT effect of a 5.5x latency difference.)
+
+========================================================================
+8. WHERE LATENCY BEGINS TO MATTER: ITS SHARE OF THE REQUIRED LOOK-AHEAD
+========================================================================
+  required stopping distance s(v) = v*tau + v^2/(2a); latency share = v*tau / s
+  a = 20.0 m/s^2, tau =  40.0 ms: latency and braking terms equal at v =  1.60 m/s
+      v =  5.0 m/s: s =   0.82 m, latency share 24.2%, braking share 75.8%
+      v = 10.0 m/s: s =   2.90 m, latency share 13.8%, braking share 86.2%
+      v = 20.0 m/s: s =  10.80 m, latency share  7.4%, braking share 92.6%
+      v = 30.0 m/s: s =  23.70 m, latency share  5.1%, braking share 94.9%
+  a = 20.0 m/s^2, tau = 130.0 ms: latency and braking terms equal at v =  5.20 m/s
+      v =  5.0 m/s: s =   1.27 m, latency share 51.0%, braking share 49.0%
+      v = 10.0 m/s: s =   3.80 m, latency share 34.2%, braking share 65.8%
+      v = 20.0 m/s: s =  12.60 m, latency share 20.6%, braking share 79.4%
+      v = 30.0 m/s: s =  26.40 m, latency share 14.8%, braking share 85.2%
+  a = 40.0 m/s^2, tau =  40.0 ms: latency and braking terms equal at v =  3.20 m/s
+      v =  5.0 m/s: s =   0.51 m, latency share 39.0%, braking share 61.0%
+      v = 10.0 m/s: s =   1.65 m, latency share 24.2%, braking share 75.8%
+      v = 20.0 m/s: s =   5.80 m, latency share 13.8%, braking share 86.2%
+      v = 30.0 m/s: s =  12.45 m, latency share  9.6%, braking share 90.4%
+  a = 40.0 m/s^2, tau = 130.0 ms: latency and braking terms equal at v = 10.40 m/s
+      v =  5.0 m/s: s =   0.96 m, latency share 67.5%, braking share 32.5%
+      v = 10.0 m/s: s =   2.55 m, latency share 51.0%, braking share 49.0%
+      v = 20.0 m/s: s =   7.60 m, latency share 34.2%, braking share 65.8%
+      v = 30.0 m/s: s =  15.15 m, latency share 25.7%, braking share 74.3%
+
+========================================================================
+9. THE ANGULAR, NOT RADIAL, PERCEPTION LIMIT: TILT REQUIRED TO ACCELERATE
+========================================================================
+  A multirotor must tilt theta = atan(a_lat/g) to produce lateral acceleration a_lat
+  while holding altitude. A body-fixed forward camera of horizontal FoV H sees the
+  direction of travel only while theta <= H/2.
+  FoV  90.0 deg (half  45.0 deg): travel direction leaves the FoV at a_lat =   9.81 m/s^2 =  1.00 g
+  FoV 115.0 deg (half  57.5 deg): travel direction leaves the FoV at a_lat =  15.40 m/s^2 =  1.57 g
+  FoV 155.0 deg (half  77.5 deg): travel direction leaves the FoV at a_lat =  44.25 m/s^2 =  4.51 g
+  a_lat =  0.50 g =   4.91 m/s^2 -> tilt  26.6 deg (inside 90 deg FoV? yes; inside 155 deg FoV? yes)
+  a_lat =  1.00 g =   9.81 m/s^2 -> tilt  45.0 deg (inside 90 deg FoV? yes; inside 155 deg FoV? yes)
+  a_lat =  2.00 g =  19.62 m/s^2 -> tilt  63.4 deg (inside 90 deg FoV? NO; inside 155 deg FoV? yes)
+  a_lat =  4.00 g =  39.24 m/s^2 -> tilt  76.0 deg (inside 90 deg FoV? NO; inside 155 deg FoV? yes)
+  a_lat = 12.58 g = 123.41 m/s^2 -> tilt  85.5 deg (inside 90 deg FoV? NO; inside 155 deg FoV? NO)
+  Observed engineering response: the depth camera in [A-20] was tilted 30 deg
+  upward above 7 m/s, and [A-26] used a 155 x 115 deg camera. Both are this term.
+  Verification: at a_lat = g the tilt is exactly 45.000 deg -> 45.000 deg
+
+--- stderr ---
+
