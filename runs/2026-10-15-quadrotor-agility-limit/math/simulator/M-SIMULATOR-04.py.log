@@ -1,0 +1,55 @@
+# math_run log
+command:  python3 runs/2026-10-15-quadrotor-agility-limit/math/simulator/M-SIMULATOR-04.py
+started:  2026-10-16T02:01:47Z
+duration: 0.8 s
+exit:     1
+versions: python 3.13.16, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   13 PASS, 2 FAIL, 0 UNDECIDED
+
+--- stdout ---
+=== inputs (SI) ===
+tau_in = 2.00 ms (tau_imu 1 ms + half of a 500 Hz period), T_m = 39.1 ms
+actuator pole 1/T_m = 25.5754 rad/s
+
+=== numeric check of the phase-margin formula against a direct complex evaluation ===
+  w_c =   10.00 rad/s: formula PM =  67.4986 deg, direct arg L =  67.4986 deg
+  w_c =   27.30 rad/s: formula PM =  40.0036 deg, direct arg L =  40.0036 deg
+  w_c =  100.00 rad/s: formula PM =   2.8870 deg, direct arg L =   2.8870 deg
+
+=== achievable gain at PM = 40 deg ===
+  baseline tau = 2 ms, T_m = 39.1 ms            : w_c =    27.303 rad/s, w =    39.938 rad/s, PM = 40.000 deg
+  no actuator lag (T_m = 0)                     : w_c =   436.332 rad/s, w =   436.332 rad/s, PM = 40.000 deg
+  no inner delay at all (tau = 0)               : w_c =    30.480 rad/s, w =    47.418 rad/s, PM = 40.000 deg
+  tau = 1 ms (tau_imu -> 0, ZOH half-period kept): w_c =    28.758 rad/s, w =    43.275 rad/s, PM = 40.000 deg
+
+  phase split at the baseline crossover: delay 3.129 deg, lag 46.871 deg
+  gain ratio, tau = 0 vs baseline: 1.1873
+  gain ratio, tau = 1 ms vs baseline: 1.0835
+  gain ratio, T_m = 0 vs baseline: 10.9253 (before the 400 rad/s cap)
+
+=== pure-delay closed form w_c = (90 - PM) in rad / tau ===
+  tau = 2.0 ms: w_c = w = 436.332 rad/s
+  tau = 3.0 ms: w_c = w = 290.888 rad/s
+  tau = 4.0 ms: w_c = w = 218.166 rad/s
+  the lens's 291 rad/s corresponds to tau = 2.999 ms
+
+=== checks ===
+PASS 25.5754 rad/s == 25.6 rad/s: within 0.002; 25.5754 vs 25.6 (SI)
+PASS 39.9378 == 39.94: within 0.001; 39.9378 vs 39.94 (SI)
+PASS 27.3031 == 27.3: within 0.002; 27.3031 vs 27.3 (SI)
+FAIL 4.3454 == 4.3: relative tolerance 0.005; 4.3454 vs 4.3 (SI)
+FAIL 47.4179 == 43.3: relative tolerance 0.002; 47.4179 vs 43.3 (SI)
+PASS 43.2745 == 43.3: within 0.002; 43.2745 vs 43.3 (SI)
+PASS 436.332300000000 > 400: symbolic, constant
+PASS 290.8882 == 291: within 0.002; 290.888 vs 291 (SI)
+PASS 30.479632 == 30.479632: within 1e-06; 30.4796 vs 30.4796 (SI)
+PASS w_c*sqrt(T**2*w_c**2 + 1) == sqrt(T**2*w_c**4 + w_c**2): symbolic
+PASS atan(T*w_c) == -atan(1/(T*w_c)) + pi/2: numeric at 50 points, T in [0.1, 10], w_c in [0.1, 10]
+PASS lim tau->0 of -180*tau*w_c/pi - 180*atan(T*w_c)/pi + 90 == -180*atan(T*w_c)/pi + 90: symbolic limit (-180*atan(T*w_c) + 90*pi)/pi
+PASS lim T->0 of 180*atan(T*w_c)/pi == 0: symbolic limit 0
+PASS 1 / (0.0391 s) has the dimension of frequency: dimensional analysis
+PASS 27.3 s^-1 * 0.002 s has the dimension of dimensionless: dimensional analysis
+SUMMARY: 13 pass, 2 fail, 0 undecided
+
+--- stderr ---
+

@@ -1,0 +1,39 @@
+# math_run log
+command:  python3 runs/2026-10-15-quadrotor-agility-limit/math/examiner/M-EXAMINER-02.py
+started:  2026-10-16T01:05:30Z
+duration: 0.7 s
+exit:     0
+versions: python 3.13.16, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   15 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+PASS aa/gg == aa/gg: symbolic
+PASS gg*tan(half) == gg*tan(half): symbolic
+PASS series of atan(0.101936799184506*aa) about aa = 0 to order 2 == 100*aa/981: symbolic: 0.101936799184506*aa
+PASS lim aa->0 of gg*atan(aa/gg)/aa == 1: symbolic limit 1
+(i) tilt angle for horizontal acceleration a:
+   a = 1.00 g -> theta = 45.00 deg (claimed 45.0)
+PASS 45.0000000000000 == 45.0000000000000: symbolic
+   a = 2.04 g -> theta = 63.89 deg (claimed 63.9)
+PASS 63.9000000000000 == 63.9000000000000: symbolic
+   a = 3.87 g -> theta = 75.51 deg (claimed 75.5)
+PASS 75.5000000000000 == 75.5000000000000: symbolic
+
+(iii)-(iv) FoV cutoff and capped stop speed at s = 6 m:
+   90 deg, no tilt        half+tilt =  45.0 deg  a_fov =   9.81 m/s^2 (1.00 g)  v_stop =  10.85 m/s (claimed 9.81 m/s^2, 10.85 m/s)
+PASS 9.810000 m/s^2 == 9.81 m/s^2: within 0.002; 9.81 vs 9.81 (SI)
+PASS 10.849885 m/s == 10.85 m/s: within 0.002; 10.8499 vs 10.85 (SI)
+   90 deg + 30 deg tilt   half+tilt =  75.0 deg  a_fov =  36.61 m/s^2 (3.73 g)  v_stop =  20.96 m/s (claimed 36.61 m/s^2, 20.96 m/s)
+PASS 36.611418 m/s^2 == 36.61 m/s^2: within 0.002; 36.6114 vs 36.61 (SI)
+PASS 20.960368 m/s == 20.96 m/s: within 0.002; 20.9604 vs 20.96 (SI)
+   155 deg, no tilt       half+tilt =  77.5 deg  a_fov =  44.25 m/s^2 (4.51 g)  v_stop =  23.04 m/s (claimed 44.25 m/s^2, 23.04 m/s)
+PASS 44.250050 m/s^2 == 44.25 m/s^2: within 0.002; 44.2501 vs 44.25 (SI)
+PASS 23.043450 m/s == 23.04 m/s: within 0.002; 23.0434 vs 23.04 (SI)
+PASS 9.81 m/s^2 * 1 has the dimension of m/s^2: dimensional analysis
+PASS 2 * 36.61 m/s^2 * 6 m has the dimension of m^2/s^2: dimensional analysis
+
+caveat: with VFoV 58 deg (half 29 deg) instead, a_fov = 5.44 m/s^2, v_stop(6 m) = 8.08 m/s
+SUMMARY: 15 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

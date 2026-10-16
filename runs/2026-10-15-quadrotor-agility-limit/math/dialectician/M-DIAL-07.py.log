@@ -1,0 +1,29 @@
+# math_run log
+command:  python3 runs/2026-10-15-quadrotor-agility-limit/math/dialectician/M-DIAL-07.py
+started:  2026-10-16T01:36:31Z
+duration: 0.5 s
+exit:     0
+versions: python 3.13.16, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   6 PASS, 0 FAIL, 1 UNDECIDED
+
+--- stdout ---
+a_FoV = 16.327 m/s^2, r = 0.5 m
+  s =   6.0 m, tau =  50.0 ms: v =  15.00 m/s
+  s =   6.0 m, tau = 100.0 ms: v =  13.33 m/s
+  s =  12.0 m, tau =  50.0 ms: v =  30.00 m/s
+  s =  12.0 m, tau = 100.0 ms: v =  26.67 m/s
+'~26 m/s at 12 m' matches s = 12 m with tau = 100 ms (26.67 m/s), not with the tau = 50 ms used in the same sentence (30.00 m/s)
+option (i) perfect aero, s = 6 m, tau = 50 ms: 15.00 m/s
+option (ii) crude aero, s = 12 m, tau = 100 ms: 26.67 m/s -> (ii)/(i) = 1.778, i.e. +77.8 per cent (claim: >50 per cent)
+at equal latency the ratio is exactly the range ratio: 2.000
+PASS 2*s/(tau + 2*sqrt(r)/sqrt(a)) == 2*s/(tau + 2*sqrt(r)/sqrt(a)): symbolic
+PASS 2 == 2: symbolic
+PASS s/(tau/2 + 2*sqrt(r)/sqrt(a)) < 2*s/(tau + 2*sqrt(r)/sqrt(a)): numeric at 50 points, a in [1, 100], r in [0.05, 5], s in [0.5, 50], tau in [0.005, 0.5]
+UNDECIDED lim s->oo of s/(tau + 2*sqrt(r)/sqrt(a)) == oo: symbolic limit oo
+PASS 6 m / (0.05 s + 2*(0.5 m/(16.33 m/s^2))^0.5) == 15.00 m/s: within 0.002; 15.0014 vs 15 (SI)
+PASS 12 m / (0.1 s + 2*(0.5 m/(16.33 m/s^2))^0.5) == 26.67 m/s: within 0.002; 26.6689 vs 26.67 (SI)
+PASS 12 m / (0.1 s + 2*(0.5 m/(16.33 m/s^2))^0.5) has the dimension of speed: dimensional analysis
+SUMMARY: 6 pass, 0 fail, 1 undecided
+
+--- stderr ---
+

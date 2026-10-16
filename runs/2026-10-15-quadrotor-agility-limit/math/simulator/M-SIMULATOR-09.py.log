@@ -1,0 +1,34 @@
+# math_run log
+command:  python3 runs/2026-10-15-quadrotor-agility-limit/math/simulator/M-SIMULATOR-09.py
+started:  2026-10-16T02:05:55Z
+duration: 1.7 s
+exit:     0
+versions: python 3.13.16, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   9 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+=== (a) the h-force ===
+  V =  10.0 m/s: kh V^2 =  1.0000 N =  13.60 per cent of the 7.3550 N weight
+  V =  20.0 m/s: kh V^2 =  4.0000 N =  54.38 per cent of the 7.3550 N weight
+  V =  28.2 m/s: kh V^2 =  7.9524 N = 108.12 per cent of the 7.3550 N weight
+
+=== (b) steady level flight at full thrust ===
+  body eq. 9                  : V_top =   97.509 m/s at pitch  73.82 deg (z residual -1.78e-15 N)
+  body drag only (kh = 0)     : V_top =   79.685 m/s at pitch  70.46 deg (z residual 1.78e-15 N)
+  isotropic world drag        : V_top =  127.673 m/s at pitch  77.51 deg (z residual 2.66e-15 N)
+  closed-form orientation, T sin(theta_max)/kd_x = 127.673 m/s (no body-frame projection, no h-force)
+
+=== checks ===
+PASS 4.00000 N == 4.0 N: within 0.0001; 4 vs 4 (SI)
+PASS 54.3849 == 54.0: within 0.01; 54.3849 vs 54 (SI)
+PASS 97.509 m/s == 99.1 m/s: within 0.05; 97.509 vs 99.1 (SI)
+PASS 97.5090000000000 > 56.4000000000000: symbolic, constant
+PASS 1.77600000000000E-15 < 0.00000100000000000000: symbolic, constant
+PASS T*sqrt(1 - W**2/T**2)/k == sqrt(T**2 - W**2)/k: symbolic
+PASS sqrt(T**2 - W**2)/k1 > sqrt(T**2 - W**2)/k2: numeric at 50 points, T in [10, 100], W in [1, 9], k1 in [0.1, 0.5], k2 in [0.6, 1]
+PASS 0.01 kg/m * (20 m/s)^2 has the dimension of force: dimensional analysis
+PASS (34 N) / (0.26 kg/s) has the dimension of speed: dimensional analysis
+SUMMARY: 9 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

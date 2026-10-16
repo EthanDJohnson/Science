@@ -1,0 +1,61 @@
+# math_run log
+command:  python3 runs/2026-10-15-quadrotor-agility-limit/math/empiricist/M-EMP-01.py
+started:  2026-10-16T01:12:21Z
+duration: 1.9 s
+exit:     0
+versions: python 3.13.16, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   30 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+inputs: alpha = 0.05 two-sided, X ~ Binomial(n, p), p dimensionless in [0,1]
+k/n = 8/10: mine [0.4439, 0.9748]  claimed [0.444, 0.975]  point 0.800
+    I_pL(8, 3) = 0.02500000 (should be 0.025)
+PASS 0 < 1.00000000000000E-9: symbolic, constant
+PASS 0.0000954623080000050 < 0.000600000000000000: symbolic, constant
+PASS 0.000210726327000033 < 0.000600000000000000: symbolic, constant
+k/n = 10/10: mine [0.6915, 1.0000]  claimed [0.692, 1.000]  point 1.000
+    I_pL(10, 1) = 0.02500000 (should be 0.025)
+PASS 0 < 1.00000000000000E-9: symbolic, constant
+PASS 0.000497107818999920 < 0.000600000000000000: symbolic, constant
+PASS 0 < 0.000600000000000000: symbolic, constant
+k/n = 6/10: mine [0.2624, 0.8784]  claimed [0.262, 0.878]  point 0.600
+    I_pL(6, 5) = 0.02500000 (should be 0.025)
+PASS 0 < 1.00000000000000E-9: symbolic, constant
+PASS 0.000378076607000011 < 0.000600000000000000: symbolic, constant
+PASS 0.000447741879999963 < 0.000600000000000000: symbolic, constant
+k/n = 38/43: mine [0.7492, 0.9611]  claimed [0.749, 0.961]  point 0.884
+    I_pL(38, 6) = 0.02500000 (should be 0.025)
+PASS 0 < 1.00000000000000E-9: symbolic, constant
+PASS 0.000167574653999969 < 0.000600000000000000: symbolic, constant
+PASS 0.000147685222000038 < 0.000600000000000000: symbolic, constant
+k/n = 1/4: mine [0.0063, 0.8059]  claimed [0.006, 0.806]  point 0.250
+    I_pL(1, 4) = 0.02500000 (should be 0.025)
+PASS 0 < 1.00000000000000E-9: symbolic, constant
+PASS 0.000309463209710000 < 0.000600000000000000: symbolic, constant
+PASS 0.000120449683000068 < 0.000600000000000000: symbolic, constant
+k/n = 17/20: mine [0.6211, 0.9679]  claimed [0.621, 0.968]  point 0.850
+    I_pL(17, 4) = 0.02500000 (should be 0.025)
+PASS 0 < 1.00000000000000E-9: symbolic, constant
+PASS 0.0000731734550000196 < 0.000600000000000000: symbolic, constant
+PASS 0.0000709371849999529 < 0.000600000000000000: symbolic, constant
+k = n = 4: bisection 0.397635364384 vs closed form 0.397635364384
+PASS 0 < 1.00000000000000E-10: symbolic, constant
+k = n = 10: bisection 0.691502892181 vs closed form 0.691502892181
+PASS 0 < 1.00000000000000E-10: symbolic, constant
+k = n = 20: bisection 0.831566529017 vs closed form 0.831566529017
+PASS 0 < 1.00000000000000E-10: symbolic, constant
+k = n = 29: bisection 0.880555130930 vs closed form 0.880555130930
+PASS 0 < 1.00000000000000E-10: symbolic, constant
+k = n = 43: bisection 0.917788878846 vs closed form 0.917788878846
+PASS 0 < 1.00000000000000E-10: symbolic, constant
+PASS 0.025**(1/n) == exp(-3.68887945411394/n): numeric at 50 points, n in [1, 100]
+PASS lim n->oo of 0.025**(1/n) == 1: symbolic limit 1
+PASS lim n->1 of 0.025**(1/n) == 0.0250000000000000: symbolic limit 1/40
+PASS 0.974789273700000 > 0.900000000000000: symbolic, constant
+PASS 0.878447741900000 < 0.900000000000000: symbolic, constant
+PASS 0.691502892200000 < 0.900000000000000: symbolic, constant
+PASS (0.8 m) / (1 m) has the dimension of dimensionless: dimensional analysis
+SUMMARY: 30 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

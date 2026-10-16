@@ -1,0 +1,26 @@
+# math_run log
+command:  python3 runs/2026-10-15-quadrotor-agility-limit/math/mechanist/M-MECH-06.py
+started:  2026-10-16T01:27:19Z
+duration: 0.7 s
+exit:     0
+versions: python 3.13.16, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   8 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+inputs: 87 deg HFoV; f(640 px) = 337.21 px, f(848 px) = 446.80 px
+PASS 337.209640 m == 337 m: within 0.005; 337.21 vs 337 (SI)
+PASS sigma_d*z**2/(b*f) == sigma_d*z**2/(b*f): symbolic
+PASS lim z->0 of sigma_d*z**2/(b*f) == 0: symbolic limit 0
+PASS (4.1 m)^2 * 0.1/(337.2 * 0.05 m) has the dimension of length: dimensional analysis
+sigma_d = 0.1 px -> sigma_z = 0.1 m at z = 4.106 m   (lens: 4.1 m)
+PASS 4.106152 m == 4.1 m: within 0.01; 4.10615 vs 4.1 (SI)
+sigma_d = 0.05 px -> sigma_z = 0.1 m at z = 5.807 m   (lens: 5.8 m)
+PASS 5.806975 m == 5.8 m: within 0.01; 5.80698 vs 5.8 (SI)
+check scaling: z(0.05 px)/z(0.1 px) = 1.4142 (expect sqrt(2))
+PASS 1.414214 m == 1.414214 m: within 1e-06; 1.41421 vs 1.41421 (SI)
+10 cm spans 3 px at z = 14.893 m (f = 848 px row) / 11.240 m (f = 640 px row)   (lens: 11.2 m)
+PASS 11.240321 m == 11.2 m: within 0.01; 11.2403 vs 11.2 (SI)
+SUMMARY: 8 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

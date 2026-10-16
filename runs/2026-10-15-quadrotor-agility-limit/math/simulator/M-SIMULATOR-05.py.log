@@ -1,0 +1,42 @@
+# math_run log
+command:  python3 runs/2026-10-15-quadrotor-agility-limit/math/simulator/M-SIMULATOR-05.py
+started:  2026-10-16T02:06:34Z
+duration: 0.5 s
+exit:     0
+versions: python 3.13.16, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   14 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+=== inputs (SI) ===
+L_inner = 39.938/(s (1 + 0.0391 s)); L_outer = 4.438/s
+budgets: inner 2.00 ms, outer 22.50 ms
+
+=== inner loop ===
+w_c = 27.3032 rad/s (|L| = 1.000000000 there)
+PM = 43.1286 deg, delay margin = 27.5696 ms
+budget used = 7.254 per cent
+with the 2 ms delay already in the loop, PM = 40.000 deg and the remaining margin is 25.570 ms
+
+=== outer loop ===
+w_c = 4.4380 rad/s, PM = 90.0 deg, delay margin = 353.9424 ms (closed form pi/(2w) = 353.9424 ms)
+budget used = 6.357 per cent
+
+=== checks ===
+PASS 27.30316 == 27.303: within 0.0001; 27.3032 vs 27.303 (SI)
+PASS 43.1286 == 43.13: within 0.001; 43.1286 vs 43.13 (SI)
+PASS 0.0275696 s == 27.57 ms: within 0.001; 0.0275696 vs 0.02757 (SI)
+PASS 7.2544 == 7.3: within 0.01; 7.2544 vs 7.3 (SI)
+PASS 0.3539424 s == 354.0 ms: within 0.001; 0.353942 vs 0.354 (SI)
+PASS 0.353942390 s == 0.353942390 s: within 1e-09; 0.353942 vs 0.353942 (SI)
+PASS 6.3570 == 6.4: within 0.01; 6.357 vs 6.4 (SI)
+PASS 0.00200000000000000 < 0.0275700000000000: symbolic, constant
+PASS 0.0225000000000000 < 0.353942000000000: symbolic, constant
+PASS pi/(2*w) == pi/(2*w): symbolic
+PASS lim T->0 of (-atan(T*w_c) + pi/2)/w_c == pi/(2*w_c): symbolic limit pi/(2*w_c)
+PASS (-atan(T*w_c) + pi/2)/w_c < pi/(2*w_c): numeric at 50 points, T in [0.001, 1], w_c in [0.1, 100]
+PASS (1.5708) / (4.438 s^-1) has the dimension of time: dimensional analysis
+PASS (0.7527) / (27.303 s^-1) has the dimension of time: dimensional analysis
+SUMMARY: 14 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

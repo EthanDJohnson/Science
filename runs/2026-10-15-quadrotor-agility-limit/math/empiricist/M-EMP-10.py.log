@@ -1,0 +1,31 @@
+# math_run log
+command:  python3 runs/2026-10-15-quadrotor-agility-limit/math/empiricist/M-EMP-10.py
+started:  2026-10-16T01:14:58Z
+duration: 0.5 s
+exit:     0
+versions: python 3.13.16, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   13 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+  10.0 m/s sim / 5.3 m/s real = 1.8868 (claimed 1.89)
+PASS 0.00320799999999988 < 0.00600000000000000: symbolic, constant
+  19.4 m/s sim / 8.0 m/s real = 2.4250 (claimed 2.42)
+PASS 0.00499999999999989 < 0.00600000000000000: symbolic, constant
+  19.4 m/s sim / 5.0 m/s real = 3.8800 (claimed 3.88)
+PASS 0 < 0.00600000000000000: symbolic, constant
+product = 17.752830; geometric mean = 2.608690 (claimed 2.61); arithmetic 2.7306, harmonic 2.4998
+PASS 0.00130999999999970 < 0.00600000000000000: symbolic, constant
+PASS 2.60869000000000 > 1.88679200000000: symbolic, constant
+PASS 2.60869000000000 < 3.88000000000000: symbolic, constant
+PASS 2.60869000000000 > 2.49978500000000: symbolic, constant
+PASS 2.60869000000000 < 2.73059700000000: symbolic, constant
+1/gm = 0.3833 (claimed ~0.40)
+PASS 0.0166660000000000 < 0.0200000000000000: symbolic, constant
+PASS a**(1/3)*b**(1/3)*c**(1/3) == a**(1/3)*b**(1/3)*c**(1/3): symbolic
+PASS a**(1/3)*b**(1/3)*c**(1/3) <= a/3 + b/3 + c/3: numeric at 50 points, a in [0.1, 10], b in [0.1, 10], c in [0.1, 10]
+PASS lim a->2.61000000000000 of a == 2.61000000000000: symbolic limit 2.61000000000000
+PASS (19.4 m/s) / (5 m/s) has the dimension of dimensionless: dimensional analysis
+SUMMARY: 13 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

@@ -1,0 +1,41 @@
+# math_run log
+command:  python3 runs/2026-10-15-quadrotor-agility-limit/math/empiricist/probe.py
+started:  2026-10-16T01:08:37Z
+duration: 0.4 s
+exit:     1
+versions: python 3.13.16, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   2 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+PASS 0.0000939999999999830 < 0.00100000000000000: symbolic, constant
+PASS 12.88 m/s == 12.88 m/s: within 0.001; 12.88 vs 12.88 (SI)
+
+--- stderr ---
+Traceback (most recent call last):
+  File "/home/user/Science/runs/2026-10-15-quadrotor-agility-limit/math/empiricist/probe.py", line 9, in <module>
+    units("75 m / 5.8217 s", "velocity")
+    ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/Science/.claude/skills/conundrum/scripts/math_checks.py", line 341, in units
+    want_dims = next((d for d, k in U.KINDS.items() if k == expected), None) if expected in kinds else U.Q(f"1 {expected}").dims
+                                                                                                       ~~~^^^^^^^^^^^^^^^^^
+  File "/home/user/Science/.claude/skills/conundrum/scripts/unit_tools.py", line 333, in Q
+    return _Parser(str(text)).parse()
+           ~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/home/user/Science/.claude/skills/conundrum/scripts/unit_tools.py", line 260, in parse
+    q = self.expr()
+  File "/home/user/Science/.claude/skills/conundrum/scripts/unit_tools.py", line 266, in expr
+    q = self.term()
+  File "/home/user/Science/.claude/skills/conundrum/scripts/unit_tools.py", line 282, in term
+    q = q * self.power()              # juxtaposition
+            ~~~~~~~~~~^^
+  File "/home/user/Science/.claude/skills/conundrum/scripts/unit_tools.py", line 287, in power
+    base = self.unary()
+  File "/home/user/Science/.claude/skills/conundrum/scripts/unit_tools.py", line 311, in unary
+    return self.atom()
+           ~~~~~~~~~^^
+  File "/home/user/Science/.claude/skills/conundrum/scripts/unit_tools.py", line 318, in atom
+    return unit(val)
+  File "/home/user/Science/.claude/skills/conundrum/scripts/unit_tools.py", line 227, in unit
+    raise KeyError(f"unknown unit {name!r} (see --list)")
+KeyError: "unknown unit 'velocity' (see --list)"
+

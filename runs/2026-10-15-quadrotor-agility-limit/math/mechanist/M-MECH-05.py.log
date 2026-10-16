@@ -1,0 +1,30 @@
+# math_run log
+command:  python3 runs/2026-10-15-quadrotor-agility-limit/math/mechanist/M-MECH-05.py
+started:  2026-10-16T01:27:07Z
+duration: 0.5 s
+exit:     0
+versions: python 3.13.16, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   9 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+inputs: k_m = 2.37e-08 N m s^2/rad^2, omega_0 = 1103.0 rad/s
+0
+PASS 0 == 0: symbolic
+PASS lim t->0 of w0/(1 + k_m*t*w0/J_r) == w0: symbolic limit w0
+PASS lim t->oo of w0/(1 + k_m*t*w0/J_r) == 0: symbolic limit 0
+PASS series of w0/(1 + k_m*t*w0/J_r) about t = 0 to order 2 == w0 - k_m*t*w0**2/J_r: symbolic: w0 - k_m*t*w0**2/J_r
+PASS 1e-6 kg m^2/((2.37e-8 N m s^2)*(1103/s)) has the dimension of s: dimensional analysis
+t_c = 39.1 ms (thrust constant, read as t_c): J_r = 1.022e-06 kg m^2
+t_c = 33 ms (rotor-speed constant, read as t_c): J_r = 8.627e-07 kg m^2
+PASS 1.022117e-06 kg m^2 == 1.0e-6 kg m^2: within 0.03; 1.02212e-06 vs 1e-06 (SI)
+PASS 8.626563e-07 kg m^2 == 8.6e-7 kg m^2: within 0.03; 8.62656e-07 vs 8.6e-07 (SI)
+in units of t_c: omega -> 1/e at t = 1.7183 t_c, thrust -> 1/e at t = 0.6487 t_c
+if 39.1 ms is the THRUST 1/e time, t_c = 60.3 ms and J_r = 1.58e-06 kg m^2 (1.6x the lens's value)
+if 33 ms is the ROTOR-SPEED 1/e time, t_c = 19.2 ms and J_r = 5.02e-07 kg m^2
+J_r = 1e-5 kg m^2 -> t_c = 382.5 ms (lens 382 ms), 10 per cent of thrust shed in 20.69 ms (lens 20.7 ms)
+PASS 0.38253937 s == 382 ms: within 0.005; 0.382539 vs 0.382 (SI)
+PASS 0.02069253 s == 20.7 ms: within 0.01; 0.0206925 vs 0.0207 (SI)
+SUMMARY: 9 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

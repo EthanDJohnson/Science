@@ -1,0 +1,74 @@
+# math_run log
+command:  python3 runs/2026-10-15-quadrotor-agility-limit/math/constraints/M-CONSTRAINTS-04.py
+started:  2026-10-16T01:58:15Z
+duration: 8.6 s
+exit:     0
+versions: python 3.13.16, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   27 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+0. closed form for zero lag: t0 = 2 sqrt(D J/U)
+PASS 2*sqrt(dd)*sqrt(jj)/sqrt(uu) == 2*sqrt(dd)*sqrt(jj)/sqrt(uu): symbolic
+PASS 2 * (10 m / (39.0 m/s^2))^0.5 has the dimension of s: dimensional analysis
+1. rotational slew: theta = 152 deg, alpha = 396.23 rad/s^2
+  t0 (no lag) [ms]: got 163.65, lens 163.7
+PASS 0.050359695828318563 < 1.63700000000000: symbolic, constant
+  solver t (tc = 0) [ms]: got 163.65, lens 163.7
+PASS 0.050359695828318563 < 1.63700000000000: symbolic, constant
+   with tc = 39.1 ms: t = 207.09 ms (switch at 85.65 ms), end angle 2.652900 rad vs 2.652900, end rate 0.00e+00 rad/s
+   (first-order-torque model: 207.09 ms, 3 per cent above the lens's 201 ms; see 1b)
+PASS 4.440892098500626E-16 < 1.00000000000000E-9: symbolic, constant
+   RK4 dt = 2e-05: t = 207.080 ms, x = 2.652462 rad
+PASS 0.000013724550577687289 < 0.0000200000000000000: symbolic, constant
+   RK4 dt = 1e-05: t = 207.091 ms, x = 2.652795 rad
+PASS 0.000003290068304628857 < 0.0000200000000000000: symbolic, constant
+   d ln t_slew/d ln tc in the first-order-torque model: +0.1977
+2. translational segment: d = 10 m, A = 39.0 m/s^2
+  t0 (no lag) [ms]: got 1012.74, lens 1012.5
+PASS 0.23936708366660042 < 2.02500000000000: symbolic, constant
+   with tc = 39.1 ms: t = 1053.35 ms
+  segment penalty [ms]: got 40.6084, lens 40.6
+PASS 0.008383334619358251 < 2.03000000000000: symbolic, constant
+  segment penalty [%]: got 4.00976, lens 4
+PASS 0.009756572567849009 < 0.200000000000000: symbolic, constant
+  d ln t_seg / d ln tc: got 0.0399808, lens 0.04
+PASS 0.000019233325209456814 < 0.00200000000000000: symbolic, constant
+  d ln t_seg / d ln A: got -0.480026, lens -0.481
+PASS 0.0009739600062853848 < 0.0240500000000000: symbolic, constant
+  d ln t_seg / d ln A at tc = 0: got -0.500017, lens -0.5
+PASS 0.00001666766675520459 < 0.000500000000000000: symbolic, constant
+PASS -1/2 == -1/2: symbolic
+PASS lim uu->oo of 2*sqrt(dd)*sqrt(jj)/sqrt(uu) == 0: symbolic limit 0
+  time saved by halving tc [%]: got 1.96336, lens 2
+PASS 0.03663520543054599 < 0.400000000000000: symbolic, constant
+  time saved by tc = 10 ms [%]: got 2.89645, lens 3
+PASS 0.10355425856076430 < 0.600000000000000: symbolic, constant
+1b. the same slew with the rotor-speed lag acting through f = k_f omega^2
+   omega_h = 1188.7 rad/s, omega_hi_cmd = 1681.1 rad/s
+   quadratic-thrust model: t = 200.88 ms, phi_end = 2.652659 rad (target 2.652900)
+  slew with 39.1 ms rotor lag, f ~ omega^2 [ms]: got 200.885, lens 201
+PASS 0.11533759079225003 < 4.02000000000000: symbolic, constant
+PASS 0.0000035649559607386916 < 0.000100000000000000: symbolic, constant
+  lag penalty as a fraction of the lagged slew [%]: got 18.5355, lens 18.4
+PASS 0.13552265189229842 < 0.920000000000000: symbolic, constant
+   d ln t_slew/d ln tc in the quadratic-thrust model: +0.1792
+  d ln t_slew / d ln tc (quadratic model): got 0.179161, lens 0.177
+PASS 0.0021610311385993892 < 0.0141600000000000: symbolic, constant
+   (the first-order-torque model gives 207.1 ms: the quadratic map raises the initial torque slope by sqrt(2), shortening the slew)
+3. F5: distance travelled during the reversal and during the latency
+   v = 15.0 m/s: reversal 3.013 m, latency 0.600 m, ratio 5.02
+   v = 20.0 m/s: reversal 4.018 m, latency 0.800 m, ratio 5.02
+  reversal distance at 15 m/s [m]: got 3.01327, lens 3.02
+PASS 0.006730063861884017 < 0.0604000000000000: symbolic, constant
+  latency distance at 15 m/s [m]: got 0.6, lens 0.6
+PASS 0 < 0.00600000000000000: symbolic, constant
+  reversal distance at 20 m/s [m]: got 4.01769, lens 4.02
+PASS 0.0023067518158450748 < 0.0804000000000000: symbolic, constant
+  ratio reversal/latency: got 5.02212, lens 5
+PASS 0.02211656023019304 < 0.250000000000000: symbolic, constant
+PASS 15 m/s * 0.201 s == 3.015 m: within 0.001; 3.015 vs 3.015 (SI)
+PASS 20 m/s * 0.040 s has the dimension of m: dimensional analysis
+SUMMARY: 27 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

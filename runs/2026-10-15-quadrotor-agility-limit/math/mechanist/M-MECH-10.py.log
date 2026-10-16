@@ -1,0 +1,25 @@
+# math_run log
+command:  python3 runs/2026-10-15-quadrotor-agility-limit/math/mechanist/M-MECH-10.py
+started:  2026-10-16T01:27:42Z
+duration: 0.6 s
+exit:     0
+versions: python 3.13.16, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   8 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+solutions of v tau = v^2/(2a): [2*a*tau]
+PASS 2*a*tau == 2*a*tau: symbolic
+PASS x + 1 > 1: symbolic, x in [1e-06, 100]
+PASS v/(2*a*tau) == v/(2*a*tau): symbolic
+PASS lim v->0 of v/(2*a*tau) == 0: symbolic limit 0
+PASS 2 * 42 m/s^2 * 0.107 s has the dimension of m/s: dimensional analysis
+a =  42.034 m/s^2, tau =  40.0 ms -> v* =  3.363 m/s   (lens: 3.4 m/s)
+PASS 3.362756 m/s == 3.4 m/s: within 0.015; 3.36276 vs 3.4 (SI)
+a =  42.034 m/s^2, tau = 107.0 ms -> v* =  8.995 m/s   (lens: 9.0 m/s)
+PASS 8.995372 m/s == 9.0 m/s: within 0.015; 8.99537 vs 9 (SI)
+a =  16.327 m/s^2, tau = 150.0 ms -> v* =  4.898 m/s   (lens: 4.9 m/s)
+PASS 4.897980 m/s == 4.9 m/s: within 0.015; 4.89798 vs 4.9 (SI)
+SUMMARY: 8 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

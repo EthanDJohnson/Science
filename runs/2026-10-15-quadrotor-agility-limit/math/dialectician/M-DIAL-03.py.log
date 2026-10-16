@@ -1,0 +1,35 @@
+# math_run log
+command:  python3 runs/2026-10-15-quadrotor-agility-limit/math/dialectician/M-DIAL-03.py
+started:  2026-10-16T01:35:56Z
+duration: 0.6 s
+exit:     0
+versions: python 3.13.16, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   8 PASS, 0 FAIL, 1 UNDECIDED
+
+--- stdout ---
+w_c = (pi/2 - PM)/tau_eff at PM = 45 deg; v <= w_c L/(2 pi k)
+gate spacing from 75 m / 7 gates = 10.714 m (lens: 10.71 m)
+  gate track       tau =  40.0 ms, L = 10.71 m: w_c =  19.635 rad/s, v(k=1) =  33.48 m/s, v(k=2) =  16.74 m/s
+  clutter, 100 ms  tau = 100.0 ms, L =  4.00 m: w_c =   7.854 rad/s, v(k=1) =   5.00 m/s, v(k=2) =   2.50 m/s
+  clutter, 30 ms   tau =  30.0 ms, L =  4.00 m: w_c =  26.180 rad/s, v(k=1) =  16.67 m/s, v(k=2) =   8.33 m/s
+predicted seen:unseen ratio with L_gate = 10.71 m: 6.696  (lens: 8.52)
+  ratio is (L_gate/tau_gate)/(L_clutter/tau_clutter) = 6.696, independent of PM and k
+  L_gate = 10.71 m -> ratio 6.696; spacing-only factor L_gate/L_clutter = 2.679
+  L_gate = 12.00 m -> ratio 7.500; spacing-only factor L_gate/L_clutter = 3.000
+  L_gate = 13.60 m -> ratio 8.500; spacing-only factor L_gate/L_clutter = 3.400
+  L_gate = 14.00 m -> ratio 8.750; spacing-only factor L_gate/L_clutter = 3.500
+note: 8.52 requires L_gate = 13.6 m (ratio 8.50), not the 10.71 m stated in finding 5 (which gives 6.70); 10.71/4 = 2.68, not the 3.4 spacing factor quoted in contradiction 2
+elasticities: d ln v/d ln L = 1.000000 (claim +1), d ln v/d ln tau = -1.000000 (claim -1)
+PASS L*(-PM + pi/2)/(2*pi*k*tau) == L*(-PM + pi/2)/(2*pi*k*tau): symbolic
+PASS 1 == 1: symbolic
+PASS -1 == -1: symbolic
+PASS lim PM->0 of (-PM + pi/2)/tau == pi/(2*tau): symbolic limit pi/(2*tau)
+UNDECIDED lim tau->0 of L*(-PM + pi/2)/(2*pi*tau) == oo: symbolic limit oo*sign(-PM + pi/2)
+PASS (0.785398/0.040 /s) * 10.7142857 m / (2*pi) == 33.47 m/s: within 0.002; 33.4821 vs 33.47 (SI)
+PASS (0.785398/0.100 /s) * 4 m / (2*pi) == 5.00 m/s: within 0.002; 5 vs 5 (SI)
+PASS (0.785398/0.040 /s) * 10.7142857 m / (2*pi) has the dimension of speed: dimensional analysis
+PASS 0.785398/0.040 /s has the dimension of frequency: dimensional analysis
+SUMMARY: 8 pass, 0 fail, 1 undecided
+
+--- stderr ---
+

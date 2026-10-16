@@ -1,0 +1,94 @@
+# math_run log
+command:  python3 /home/user/Science/runs/2026-10-15-quadrotor-agility-limit/calc/lens-dialectician_syntheses.py
+started:  2026-10-16T00:30:58Z
+duration: 0.0 s
+exit:     0
+versions: python 3.13.16, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+========================================================================
+S1. FoV-limited acceleration: tilt vs field of view
+========================================================================
+thrust ceiling at T/W 4.4 (A-20 platform): 42.03 m/s^2 = 4.28 g
+thrust ceiling at T/W 12.35 (mocap platform): 120.76 m/s^2 = 12.31 g
+
+D435i depth, level mount                         mount=  0 VFoV=  58 -> a_FoV=    5.44 m/s^2 ( 0.55 g); binding a =   5.44 m/s^2 (0.55 g) [FoV]
+D435i depth, 30 deg up-tilt (A-20 above 7 m/s)   mount= 30 VFoV=  58 -> a_FoV=   16.33 m/s^2 ( 1.66 g); binding a =  16.33 m/s^2 (1.66 g) [FoV]
+D435i depth, 45 deg up-tilt                      mount= 45 VFoV=  58 -> a_FoV=   34.21 m/s^2 ( 3.49 g); binding a =  34.21 m/s^2 (3.49 g) [FoV]
+MonoRace-class wide cam 115 deg vert, level      mount=  0 VFoV= 115 -> a_FoV=   15.40 m/s^2 ( 1.57 g); binding a =  15.40 m/s^2 (1.57 g) [FoV]
+MonoRace-class wide cam, 30 deg up-tilt          mount= 30 VFoV= 115 -> a_FoV=  224.69 m/s^2 (22.90 g); binding a =  42.03 m/s^2 (4.28 g) [thrust]
+hemispherical / omnidirectional                  mount=  0 VFoV= 180 -> a_FoV=     inf m/s^2 (  inf g); binding a =  42.03 m/s^2 (4.28 g) [thrust]
+
+Loquercio-class inputs: s = 6.0 m, tau = 50 ms, r = 0.5 m
+  thrust-limited                       a =  42.03 m/s^2 -> v_dodge = 22.38 m/s, v_stop = 20.46 m/s
+  FoV-limited (30 deg, 58 deg VFoV)    a =  16.33 m/s^2 -> v_dodge = 15.00 m/s, v_stop = 13.20 m/s
+  ratio of accels  = 2.57;  ratio of dodge speeds = 1.49
+  observed hardware at 90% success (A-20): 5 m/s; 80% at 7 m/s; 60% at 10 m/s
+  range needed for v = 10 m/s, thrust-limited  : s =  2.68 m
+  range needed for v = 10 m/s, FoV-limited     : s =  4.00 m
+
+========================================================================
+S2. Delay-limited outer loop vs course feature spacing
+========================================================================
+Swift, seen gate track                       tau_eff= 40.0 ms  wc= 19.63 rad/s (3.12 Hz)  L=10.71 m -> v(k=1)= 33.48  v(k=2)= 16.74 m/s
+MonoRace, seen gate track                    tau_eff= 40.0 ms  wc= 19.63 rad/s (3.12 Hz)  L=13.64 m -> v(k=1)= 42.61  v(k=2)= 21.31 m/s
+Loquercio, unseen forest clutter             tau_eff=100.0 ms  wc=  7.85 rad/s (1.25 Hz)  L= 4.00 m -> v(k=1)=  5.00  v(k=2)=  2.50 m/s
+Loquercio, unseen forest clutter (L = 2 m)   tau_eff=100.0 ms  wc=  7.85 rad/s (1.25 Hz)  L= 2.00 m -> v(k=1)=  2.50  v(k=2)=  1.25 m/s
+unseen clutter with 17 ms image delay        tau_eff= 30.0 ms  wc= 26.18 rad/s (4.17 Hz)  L= 4.00 m -> v(k=1)= 16.67  v(k=2)=  8.33 m/s
+
+predicted seen:unseen speed ratio from L/tau alone = 8.52
+observed mean-speed ratio (MonoRace ~18 m/s seen vs A-20 7 m/s unseen) = 2.57; peak ratio 32.2/10 = 3.22
+=> the L/tau bound is TIGHT in clutter and SLACK by about 2.6x on the gate track: regime split, not a single limit
+
+elasticities of v_cap: d ln v / d ln L = +1 exactly; d ln v / d ln tau_eff = -1 exactly
+  numeric check Swift, seen gate track                       e_tau=-1.0000 e_L=+1.0000
+  numeric check MonoRace, seen gate track                    e_tau=-1.0000 e_L=+1.0000
+  numeric check Loquercio, unseen forest clutter             e_tau=-1.0000 e_L=+1.0000
+
+========================================================================
+S3. First-order actuator lag vs pure transport delay
+========================================================================
+tau = 39.1 ms (A-03 motor thrust time constant)
+  PM =   45 deg: wc with first-order lag =  25.58 rad/s ( 4.07 Hz);  with pure delay =  20.09 rad/s ( 3.20 Hz);  ratio = 1.27
+  PM =   60 deg: wc with first-order lag =  14.77 rad/s ( 2.35 Hz);  with pure delay =  13.39 rad/s ( 2.13 Hz);  ratio = 1.10
+  => as raw phase loss the lag and the delay are within a factor ~1.3:
+     the difference is INVERTIBILITY, not phase.
+  with the lag pole cancelled by lead and only 2 ms transport left: wc <=   392.7 rad/s (  62.5 Hz) at PM 45 deg
+  with the lag pole cancelled by lead and only 2 ms transport left: wc <=   261.8 rad/s (  41.7 Hz) at PM 60 deg
+
+actuator-lag accel loss over a manoeuvre of duration T (tau = 39.1 ms):
+  T =     50 ms -> a_eff/a_cmd = 0.436 (loss  56.4 %), speed cost ~  31.2 %
+  T =    100 ms -> a_eff/a_cmd = 0.639 (loss  36.1 %), speed cost ~  18.2 %
+  T =    160 ms -> a_eff/a_cmd = 0.760 (loss  24.0 %), speed cost ~  11.6 %
+  T =    230 ms -> a_eff/a_cmd = 0.830 (loss  17.0 %), speed cost ~   8.0 %
+  T =    500 ms -> a_eff/a_cmd = 0.922 (loss   7.8 %), speed cost ~   3.6 %
+  T =   1000 ms -> a_eff/a_cmd = 0.961 (loss   3.9 %), speed cost ~   1.8 %
+  dodge duration 2 sqrt(r/a): thrust-limited 218 ms (a_eff/a = 0.821); FoV-limited 350 ms (a_eff/a = 0.888)
+  => actuator lag becomes a first-order term only for manoeuvres below about 150 ms, i.e. r/a small: high speed in tight clutter.
+
+========================================================================
+Cross-check: which single relaxation buys the most speed in clutter?
+========================================================================
+baseline (s=6 m, tau=100 ms, a = FoV-limited 16.3 m/s^2): v = 13.33 m/s
+  +10 % in s   : v = 14.67 m/s, elasticity = +1.000
+  +10 % in tau : v = 13.04 m/s, elasticity = -0.231
+  +10 % in a   : v = 13.83 m/s, elasticity = +0.387
+  swap to a 115 deg-VFoV camera at 30 deg tilt (a = 42.0 m/s^2): v = 18.86 m/s (+41.5 %)
+  double the usable range to 12 m instead: v = 26.67 m/s (+100.0 %)
+  cut latency 100 -> 30 ms instead: v = 15.79 m/s (+18.4 %)
+
+========================================================================
+S1 corollary: thrust-to-weight at which the FoV cap takes over
+========================================================================
+a_FoV = g tan(theta_max) needs thrust T/W = sec(theta_max); above that,
+extra thrust cannot be used without losing the travel direction from the cone.
+  D435i depth, level mount                         theta_max= 29.0 deg -> T/W_saturation =   1.14
+  D435i depth, 30 deg up-tilt (A-20 above 7 m/s)   theta_max= 59.0 deg -> T/W_saturation =   1.94
+  D435i depth, 45 deg up-tilt                      theta_max= 74.0 deg -> T/W_saturation =   3.63
+  MonoRace-class wide cam 115 deg vert, level      theta_max= 57.5 deg -> T/W_saturation =   1.86
+  MonoRace-class wide cam, 30 deg up-tilt          theta_max= 87.5 deg -> T/W_saturation =  22.93
+  (platform T/W is 4.1-4.5 on every onboard-only vehicle in the dossier, A-13)
+
+--- stderr ---
+

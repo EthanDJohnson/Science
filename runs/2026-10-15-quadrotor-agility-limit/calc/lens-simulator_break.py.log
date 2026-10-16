@@ -1,0 +1,138 @@
+# math_run log
+command:  python3 runs/2026-10-15-quadrotor-agility-limit/calc/lens-simulator_break.py
+started:  2026-10-16T01:36:45Z
+duration: 207.1 s
+exit:     0
+versions: python 3.13.16, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+Part 3: BREAK IT.  The failure boundary of the baseline closed loop, and the perception-range
+and perception-latency elasticities measured on the verified plant.
+
+Six boundaries, each reported as the condition at which the loop stops working, not as an
+average: actuator authority, plant/model error (plant perturbed, controller nominal, with a
+binomial interval), sensor noise, loop delay against the computed delay margin, recoverable
+initial-condition set, and the largest disturbance survived.
+
+Then the two perception elasticities from the dodge experiment of lens-simulator_lookahead.py
+(re-measured here so this log carries them): d ln(v)/d ln(range) and d ln(v)/d ln(latency).
+
+SI units.  Seed fixed at 12345.  dt = 2 ms.  Plant verification: 24/24 PASS in
+lens-simulator_verify.py.log; the load-bearing rows are repeated below.
+
+MODEL CARD (SI units)
+  plant        : Sun2022-0.75kg  m=0.75 kg  J=diag(0.0025, 0.0021, 0.0043) kg m^2
+  arm          : l=0.14 m  beta=56.0 deg
+  rotors       : k_f=1.51e-06 N/(rad/s)^2  k_m=2.37e-08 N m/(rad/s)^2  f_i in [0.0, 8.5] N
+  actuator     : motor_tau=39.10 ms  slew_max=inf
+  aero (PLANT) : drag=True kd=(0.26, 0.28, 0.42) kg/s  h_force=True kh=0.01 kg/m
+  hover        : T/W=4.6227  a_max_horizontal=44.260 m/s^2  omega_hover=1103.50 rad/s
+  course       : y=3.0 sin(2pi x/30.0) m, z=2.0 m, x_end=90.0 m, 6 gates, tol=0.5 m
+  arc length   : 98.315 m
+  controller   : tau_imu=1.00 ms  tau_vio=20.00 ms  f_inner=500.0 Hz  f_outer=200.0 Hz
+                 w_rate=39.938 w_att=13.313 w_vel=4.438 w_pos=1.479 rad/s  know_drag=False lead=False
+
+  repeated verification: angular-momentum drift 7.10e-15, rotational-energy drift 9.92e-15, free-fall error 2.84e-14 m, RK4 order 4.005
+  nominal run at U = 12.0 m/s: ok=True, mean path speed 13.053 m/s, worst gate error 0.142 m, peak rotor thrust 4.76 N, rms 3.06 N
+
+================================================================================================
+1. ACTUATOR AUTHORITY: the smallest per-rotor thrust limit that still flies the course
+================================================================================================
+   thrust_max (N)    T/W  a_h (m/s^2)    ok  gate err (m)  sat (%)
+             8.50   4.62        44.26  True         0.142      0.0
+             6.00   3.26        30.46  True         0.142      0.0
+             5.00   2.72        24.80  True         0.139      0.7
+             4.50   2.45        21.91  True         0.138      4.1
+             4.00   2.18        18.95  True         0.138     10.0
+             3.50   1.90        15.88  True         0.422     53.3
+             3.00   1.63        12.64 False         0.409     89.4
+             2.50   1.36         9.03 False         0.616     91.2
+  BOUNDARY: the course at U = 12.0 m/s is still flown down to thrust_max = 3.5 N per rotor (T/W = 1.90)
+
+================================================================================================
+2. MODEL ERROR: the PLANT is perturbed, the controller keeps its nominal model
+================================================================================================
+  mass +/-20 %, inertia +/-30 %, k_thrust +/-15 %, kd +/-50 %, motor_tau +/-40 %, uniform, seed 12345
+  success 30/30 = 1.000, Wilson 95 % interval [0.886, 1.000]  [86 s]
+  one-at-a-time boundaries (the useful output):
+      mass      : fails first at x1.60 (survives x1.4)
+      k_thrust  : survives every value tested (to x0.5)
+      motor_tau : fails first at x1.80 (survives x1.4)
+      kd        : fails first at x3.00 (survives x2.0)
+
+================================================================================================
+3. SENSOR NOISE on the measured state (Gaussian, white, added at every control step)
+================================================================================================
+   sigma_p (m)  sigma_v (m/s)  sigma_att (deg)  sigma_om (deg/s)    ok  gate err (m)
+         0.000          0.000             0.00              0.00  True         0.142
+         0.010          0.050             0.10              0.50  True         0.141
+         0.030          0.150             0.30              2.00  True         0.133
+         0.100          0.500             1.00              5.00  True         0.129
+         0.200          1.000             2.00             10.00 False           inf
+
+================================================================================================
+4. LOOP DELAY against the computed delay margin
+================================================================================================
+  rate loop L(s) = (39.938/s)/(1 + 0.0391 s), no delay term:
+      gain crossover 27.303 rad/s, phase margin 43.13 deg, DELAY MARGIN 27.57 ms
+      the baseline inner-loop budget is tau_imu + T_inner/2 = 2.00 ms, i.e. 7.3 per cent of the margin
+  outer velocity loop L(s) = 4.438/s: crossover 4.438 rad/s, delay margin 354.0 ms (closed form pi/(2 w) = 354.0 ms)
+      the baseline outer budget tau_vio + T_outer/2 = 22.50 ms is 6.4 per cent of it
+  measured closed-loop boundary (from lens-simulator_sweep.py.log, tol 0.20 m):
+      tau_vio = 5 / 10 / 20 / 40 / 80 / 130 ms -> mean path speed
+      18.89 / 17.42 / 16.17 / 14.51 / 12.19 / 10.60 m/s: no instability anywhere in
+      that range, only a monotone loss of speed.  The outer loop never reaches its
+      delay margin because its bandwidth is already an order of magnitude below it.
+
+================================================================================================
+5. RECOVERABLE INITIAL CONDITIONS (hover recovery, angle-aware error)
+================================================================================================
+   initial roll (deg)  initial v_lat (m/s)   recovered  final tilt (deg)
+                   30                  0.0        True              0.01
+                   60                  0.0        True              0.01
+                   90                  0.0        True              0.02
+                  120                  0.0        True              0.03
+                  150                  0.0        True              0.02
+                  179                  0.0        True              0.01
+                    0                  5.0        True              0.12
+                    0                 15.0        True              0.65
+                    0                 25.0        True              2.39
+                   60                 10.0        True              0.18
+  note: the initial altitude is 10 m, so a failure is a ground contact within 3 s;
+  the recoverable set is limited by HEIGHT LOSS, not by the attitude loop.
+
+================================================================================================
+6. DISTURBANCE: a steady wind and a force impulse, during the course at U = 12 m/s
+================================================================================================
+    wind (m/s, +y)    ok  gate err (m)
+               0.0  True         0.142
+               2.0  True         0.155
+               5.0  True         0.370
+               8.0 False         0.583
+              12.0 False         0.862
+              16.0 False         1.146
+   impulse (N s, +y)    ok  gate err (m)
+                0.00  True         0.142
+                0.50  True         0.142
+                1.00  True         0.145
+                2.00  True         0.150
+                3.00  True         0.180
+                5.00  True         0.328
+
+================================================================================================
+7. PERCEPTION-RANGE AND PERCEPTION-LATENCY ELASTICITIES ON THE VERIFIED PLANT
+================================================================================================
+  from the dodge experiment in lens-simulator_lookahead.py.log (obstacle radius 0.5 m,
+  vehicle radius 0.25 m, so 0.75 m of lateral displacement is needed):
+      d ln(v)/d ln(range),   3 -> 6 m at tau = 50 ms : +0.9863
+      d ln(v)/d ln(range),   6 -> 10 m at tau = 50 ms: +1.0824
+      d ln(v)/d ln(latency), 20 -> 100 ms at s = 6 m : -0.1049
+      d ln(v)/d ln(latency), 50 -> 100 ms at s = 6 m : -0.1433
+      ratio |e_range / e_latency| = 9.40 (range 3-6 m, latency 20-100 ms)
+  dossier comparison A-33 (point-mass dodge bound): e_s = 1 exactly, e_tau = -0.08 to
+  -0.24; the simulated plant with rotational dynamics gives the same e_s and an e_tau
+  at the small end of that range, and a v that is 0.85-0.92 of the point-mass bound.
+
+--- stderr ---
+

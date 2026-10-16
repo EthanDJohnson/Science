@@ -1,0 +1,71 @@
+# math_run log
+command:  python3 runs/2026-10-15-quadrotor-agility-limit/math/constraints/M-CONSTRAINTS-01.py
+started:  2026-10-16T01:58:27Z
+duration: 0.6 s
+exit:     0
+versions: python 3.13.16, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   28 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+1. the level-flight envelope, derived from T cos(th) = m g, T sin(th) = m a
+PASS sqrt(tw**2 - 1) == tw*sqrt(1 - 1/tw**2): symbolic
+PASS lim tw->1 of sqrt(tw**2 - 1) == 0: symbolic limit 0
+PASS lim tw->oo of sqrt(tw**2 - 1)/tw == 1: symbolic limit 1
+PASS 9.81 m/s^2 * 3.977 has the dimension of m/s^2: dimensional analysis
+   Swift-like: T/W = 4.101, a_horiz = 39.02 m/s^2 (3.98 g) at 75.89 deg, hover throttle 24.38 %
+  Swift-like T/W: got 4.10091, lens 4.1
+PASS 0.00090571431919085621 < 0.0410000000000000: symbolic, constant
+  Swift-like a_horiz [m/s^2]: got 39.0155, lens 39
+PASS 0.01547836099603028 < 0.390000000000000: symbolic, constant
+  Swift-like hover throttle [%]: got 24.3849, lens 24.4
+PASS 0.015142857142855570 < 0.244000000000000: symbolic, constant
+  Swift-like tilt [deg]: got 75.8862, lens 75.9
+PASS 0.0137980954742005 < 0.759000000000000: symbolic, constant
+   Sun2022: T/W = 4.621, a_horiz = 44.26 m/s^2 (4.51 g) at 77.50 deg, hover throttle 21.64 %
+  Sun2022 T/W: got 4.62113, lens 4.62
+PASS 0.0011348963642543938 < 0.0462000000000000: symbolic, constant
+  Sun2022 a_horiz [m/s^2]: got 44.2592, lens 44.3
+PASS 0.04082003571335679 < 0.443000000000000: symbolic, constant
+  Sun2022 hover throttle [%]: got 21.6397, lens 21.6
+PASS 0.039705882352940591 < 0.216000000000000: symbolic, constant
+   0.52 kg hi-T/W: T/W = 12.350, a_horiz = 120.76 m/s^2 (12.31 g) at 85.36 deg, hover throttle 8.10 %
+  0.52 kg hi-T/W T/W: got 12.35, lens 12.35
+PASS 0.000035285815101357421 < 0.123500000000000: symbolic, constant
+  0.52 kg hi-T/W a_horiz [m/s^2]: got 120.756, lens 120.8
+PASS 0.043971836310277124 < 1.20800000000000: symbolic, constant
+  0.52 kg hi-T/W hover throttle [%]: got 8.09714, lens 8.1
+PASS 0.002857142857141559 < 0.0810000000000000: symbolic, constant
+  0.52 kg hi-T/W tilt [deg]: got 85.3556, lens 85.4
+PASS 0.04440565323501566 < 0.854000000000000: symbolic, constant
+2. jerk at the start of a full-throttle step from hover
+   j(0) = 8*kf*wh*(-wh + wm)/(mm*tc)
+PASS 8*kf*wh*(-wh + wm)/(mm*tc) == 8*kf*wh*(-wh + wm)/(mm*tc): symbolic
+PASS lim tc->oo of 8*kf*wh*(-wh + wm)/(mm*tc) == 0: symbolic limit 0
+PASS 8 * 1.51e-6 N*s^2 * 1188.7 /s * 1218.5 /s / (0.0391 s * 0.870 kg) has the dimension of m/s^3: dimensional analysis
+   Swift-like: omega_h = 1188.7, omega_max = 2407.2 rad/s, j_z(0) = 514.4 m/s^3 (52.4 g/s)
+  Swift-like j_z(0) [m/s^3]: got 514.37, lens 514
+PASS 0.369817945045952 < 5.14000000000000: symbolic, constant
+   Sun2022: omega_h = 1103.7, omega_max = 2372.6 rad/s, j_z(0) = 576.9 m/s^3 (58.8 g/s)
+  Sun2022 j_z(0) [m/s^3]: got 576.9, lens 577
+PASS 0.1004895677152007 < 5.77000000000000: symbolic, constant
+   0.52 kg hi-T/W: omega_h = 919.0, omega_max = 3229.6 rad/s, j_z(0) = 1261.6 m/s^3 (128.6 g/s)
+  0.52 kg hi-T/W j_z(0) [m/s^3]: got 1261.63, lens 1262
+PASS 0.36791495328679957 < 12.6200000000000: symbolic, constant
+  j_z(0) at tc = 10 ms [m/s^3]: got 2011.19, lens 2011
+PASS 0.18598816513030059 < 20.1100000000000: symbolic, constant
+  j_z(0) in g/s: got 52.4332, lens 52
+PASS 0.43321283843485497 < 1.04000000000000: symbolic, constant
+3. time to 95 per cent of maximum collective thrust
+   omega_95 = 2346.3 rad/s -> t95 = 117.1 ms
+  t95 [ms]: got 117.116, lens 117
+PASS 0.11602082433211003 < 2.34000000000000: symbolic, constant
+PASS 1 - exp(-1) < 0.950000000000000: symbolic, constant
+4. the rotational route to changing the acceleration vector
+  |da/dt| = a * omega [m/s^3]: got 858, lens 860
+PASS 2.00000000000000 < 8.60000000000000: symbolic, constant
+PASS 39.0 m/s^2 * 22.0 /s has the dimension of m/s^3: dimensional analysis
+PASS 1.6682869920279995 < 2: symbolic, constant
+SUMMARY: 28 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

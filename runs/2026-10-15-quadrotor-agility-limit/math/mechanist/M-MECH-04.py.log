@@ -1,0 +1,44 @@
+# math_run log
+command:  python3 runs/2026-10-15-quadrotor-agility-limit/math/mechanist/M-MECH-04.py
+started:  2026-10-16T01:27:04Z
+duration: 3.0 s
+exit:     1
+versions: python 3.13.16, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   7 PASS, 1 FAIL, 0 UNDECIDED
+
+--- stdout ---
+inputs: J_y = 0.0021 kg m^2, l cos(beta) = 0.078287 m, f_max = 8.5 N
+T/W = 4.6211, a_h = 44.259 m/s^2, theta_t = 77.50 deg
+tau_max = 1.3309 N m (lens 1.331), alpha_max = 633.8 rad/s^2 (lens 634)
+omega_hover = 1103.7 rad/s, omega_max = 2372.6 rad/s
+PASS 1.330879 N m == 1.331 N m: within 0.003; 1.33088 vs 1.331 (SI)
+PASS 633.751957 1/s^2 == 634 1/s^2: within 0.003; 633.752 vs 634 (SI)
+PASS 0.14 m * 0.5592 * 2 * 8.5 N / (2.1e-3 kg m^2) has the dimension of 1/s^2: dimensional analysis
+ideal rest-to-rest time 2 sqrt(theta/alpha) = 92.40 ms   (lens: 91.6 ms)
+PASS 0.09239891 s == 91.6 ms: within 0.02; 0.0923989 vs 0.0916 (SI)
+[omega ] lag = 0      : T =   92.36 ms (theta_end = 77.44 deg)
+[omega ] lag = 39.1 ms: T =  133.92 ms (theta_end = 77.56 deg)
+[torque] lag = 0      : T =   92.36 ms (theta_end = 77.44 deg)
+[torque] lag = 39.1 ms: T =  132.88 ms (theta_end = 77.50 deg)
+lag sweep (omega model), monotone approach to the closed form as the lag -> 0:
+   motor_tau =   0.0 ms -> T =   92.36 ms
+   motor_tau =   1.0 ms -> T =   93.40 ms
+   motor_tau =   5.0 ms -> T =   97.82 ms
+   motor_tau =  10.0 ms -> T =  103.70 ms
+   motor_tau =  20.0 ms -> T =  115.30 ms
+   motor_tau =  39.1 ms -> T =  133.92 ms
+   motor_tau =  60.0 ms -> T =  149.98 ms
+PASS 0.09340000 s == 0.09239891 s: within 0.05; 0.0934 vs 0.0923989 (SI)
+PASS 0.09236000 s == 0.09239891 s: within 0.005; 0.09236 vs 0.0923989 (SI)
+lens's claim for the lagged time: 95.6 ms; computed 133.92 ms
+FAIL 0.13392000 s == 95.6 ms: relative tolerance 0.05; 0.13392 vs 0.0956 (SI)
+cost of the motor lag = 41.56 ms (lens: 3-9 ms)
+tau_rot(39.1 ms) = 120.98 ms, tau_rot(43.0 ms) = 124.08 ms
+d ln tau_rot/d ln motor_tau = +0.265   (lens: +0.21)
+v = 11.5272 -> 11.5067 m/s; d ln v/d ln motor_tau = -0.0186   (lens: ~ -0.02)
+PASS 0.018614 m == 0.02 m: within 0.5; 0.018614 vs 0.02 (SI)
+halving motor_tau: v = 11.5272 -> 11.6475 m/s (+1.04 %)   (lens: 19.49 -> 19.70 m/s, +1.08 %)
+SUMMARY: 7 pass, 1 fail, 0 undecided
+
+--- stderr ---
+

@@ -1,0 +1,54 @@
+# math_run log
+command:  python3 runs/2026-10-15-quadrotor-agility-limit/math/statistician/M-STAT-08.py
+started:  2026-10-16T01:51:49Z
+duration: 1.7 s
+exit:     1
+versions: python 3.13.16, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   27 PASS, 1 FAIL, 0 UNDECIDED
+
+--- stdout ---
+=== M-STAT-08: multiplicity and cause-share intervals (dimensionless) ===
+p_local = 0.0100,  5 looks: Sidak global p = 0.0490 (Monte-Carlo 0.0481), z = Phi^-1(1 - p_glob) = 1.655
+p_local = 0.0100, 12 looks: Sidak global p = 0.1136 (Monte-Carlo 0.1126), z = Phi^-1(1 - p_glob) = 1.208
+p_local = 0.0500,  5 looks: Sidak global p = 0.2262 (Monte-Carlo 0.2277), z = Phi^-1(1 - p_glob) = 0.751
+p_local = 0.0500, 12 looks: Sidak global p = 0.4596 (Monte-Carlo 0.4586), z = Phi^-1(1 - p_glob) = 0.101
+p_local = 0.0128,  5 looks: Sidak global p = 0.0624 (Monte-Carlo 0.0622), z = Phi^-1(1 - p_glob) = 1.535
+p_local = 0.0128, 12 looks: Sidak global p = 0.1432 (Monte-Carlo 0.1438), z = Phi^-1(1 - p_glob) = 1.066
+p_local = 0.0037,  5 looks: Sidak global p = 0.0184 (Monte-Carlo 0.0185), z = Phi^-1(1 - p_glob) = 2.089
+p_local = 0.0037, 12 looks: Sidak global p = 0.0435 (Monte-Carlo 0.0421), z = Phi^-1(1 - p_glob) = 1.711
+Wilson 95 % for 2/2: [0.3424, 1.0000] (bisection) / [0.3424, 1.0000] (closed form); contains 0.5: True
+Wilson 95 % for 4/10: [0.1682, 0.6873] (bisection) / [0.1682, 0.6873] (closed form); contains 0.5: True
+Wilson 95 % for 2/10: [0.0567, 0.5098] (bisection) / [0.0567, 0.5098] (closed form); contains 0.5: True
+PASS 1 has the dimension of dimensionless: dimensional analysis
+PASS 0.049010 == 0.049: within 0.01; 0.04901 vs 0.049 (SI)
+PASS 0.113615 == 0.114: within 0.01; 0.113615 vs 0.114 (SI)
+PASS 0.226219 == 0.23: within 0.02; 0.226219 vs 0.23 (SI)
+PASS 0.459640 == 0.46: within 0.02; 0.45964 vs 0.46 (SI)
+PASS 2.0888 == 2.1: within 0.02; 2.0888 vs 2.1 (SI)
+FAIL 1.0659 == 1.7: relative tolerance 0.05; 1.0659 vs 1.7 (SI)
+NOTE S3: Sidak global p at 12 looks = 0.1432, one-sided z = 1.066, two-sided-equivalent z = 1.464; z = 1.7 would need 241.5 looks
+PASS 0.342380 == 0.34: within 0.06; 0.34238 vs 0.34 (SI)
+PASS 1.000000 == 1.0: within 0.02; 1 vs 1 (SI)
+PASS 0.00237999999999999 <= 0.00500000000000000: symbolic, constant
+PASS 0 <= 0.00500000000000000: symbolic, constant
+PASS 0.342380000000000 <= 0.500000000000000: symbolic, constant
+PASS 1.00000000000000 >= 0.500000000000000: symbolic, constant
+PASS 0.168180 == 0.17: within 0.06; 0.16818 vs 0.17 (SI)
+PASS 0.687326 == 0.69: within 0.02; 0.687326 vs 0.69 (SI)
+PASS 0.00182000000000002 <= 0.00500000000000000: symbolic, constant
+PASS 0.00267399999999995 <= 0.00500000000000000: symbolic, constant
+PASS 0.168180000000000 <= 0.500000000000000: symbolic, constant
+PASS 0.687326000000000 >= 0.500000000000000: symbolic, constant
+PASS 0.056682 == 0.06: within 0.06; 0.056682 vs 0.06 (SI)
+PASS 0.509838 == 0.51: within 0.02; 0.509838 vs 0.51 (SI)
+PASS 0.00331799999999999 <= 0.00500000000000000: symbolic, constant
+PASS 0.000161999999999995 <= 0.00500000000000000: symbolic, constant
+PASS 0.0566820000000000 <= 0.500000000000000: symbolic, constant
+PASS 0.509838000000000 >= 0.500000000000000: symbolic, constant
+PASS series of 1 - (1 - p)**5 about p = 0 to order 3 == -10*p**2 + 5*p: symbolic: -10*p**2 + 5*p
+PASS lim n->oo of 1 - 0.95**n == 1: symbolic limit 1
+PASS 0.113615128283871 <= 0.120000000000000: symbolic, constant
+SUMMARY: 27 pass, 1 fail, 0 undecided
+
+--- stderr ---
+

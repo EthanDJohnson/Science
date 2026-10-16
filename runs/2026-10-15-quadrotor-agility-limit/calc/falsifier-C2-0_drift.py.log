@@ -1,0 +1,88 @@
+# math_run log
+command:  python3 runs/2026-10-15-quadrotor-agility-limit/calc/falsifier-C2-0_drift.py
+started:  2026-10-16T02:21:56Z
+duration: 156.3 s
+exit:     0
+versions: python 3.13.16, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+Refuter 0 against C2 ("state estimation binds first through DRIFT and feature loss").
+
+Three experiments, all SI units.
+
+(0) REPRODUCTION CHECK of the simulator lens's plant and controller: the nominal run at
+    U = 12 m/s on the 0.50 m-tolerance slalom must give the logged mean path speed
+    13.053 m/s and the logged verification diagnostics.  If this fails, nothing below counts.
+
+(1) THE DRIFT ELASTICITY the slate does not have.  The lens's loop has latency and white
+    noise but no drift, and C2's own "evidence against" line concedes there is no measured
+    drift in m per m.  I add a position-drift channel of rate rho (metres of estimate error
+    per metre flown) and measure the largest flyable reference rate U* as a function of rho,
+    in TWO reference architectures:
+      GLOBAL   -- the reference is a world-frame trajectory, so the whole accumulated drift
+                  d(t) = rho * (distance flown) enters the gate error.  This is the MAPPED /
+                  SEEN-track regime (Swift, MonoRace), where gates have known world poses.
+      RELATIVE -- the gate is perceived at look-ahead distance s_look and its target is
+                  stored in the frame of the estimate AT THAT MOMENT, so the error that
+                  reaches the gate is only the drift accumulated between detection and
+                  passage, |d(t) - d(t - s_look/U)| <= rho * s_look.  This is the brief's
+                  UNSEEN-course regime: there is no world-frame target to miss.
+    Implementation: an estimate offset d(t) added to the measured position is exactly a
+    reference offset -d(t) (the loop drives p_true -> p_ref - d), so the drift is injected
+    through the reference wrapper and scored against the TRUE course geometry.
+
+(2) FEATURE LOSS, costed as IMU-only coasting.  During a blur/feature-loss event the
+    estimator coasts on the IMU.  I compute the velocity and position error that accrues
+    against the loop's own measured tolerance from the lens's failure boundary (survives
+    sigma_v = 0.50 m/s and sigma_p = 0.10 m; fails at 1.00 m/s and 0.20 m), for datasheet-
+    grade accelerometer noise density and post-calibration bias.
+
+Plant verification is the lens's 24/24 table in lens-simulator_verify.py.log; the
+load-bearing rows are repeated by the reproduction check below.
+
+(0) REPRODUCTION CHECK
+    angular-momentum drift 7.10e-15 (lens: 7.1e-15)
+    RK4 order 4.005 (lens: 4.005)
+    nominal U = 12 m/s: ok=True, mean path speed 13.053 m/s (lens logged 13.053 m/s), worst gate error 0.142 m
+    REPRODUCES: True   (one run costs 2.69 s at dt = 2 ms)
+
+(1) ELASTICITY OF ACHIEVABLE SPEED TO ESTIMATION DRIFT RATE rho (m of error per m flown)
+    course 98.315 m of path, 6 gates, 0.50 m tolerance; s_look = 6 m in RELATIVE mode
+     rho (m/m)  rho (%)   U* global  U* relative
+        0.0000     0.00      18.062       18.062
+        0.0050     0.50      12.438       18.062
+        0.0200     2.00         nan       17.500
+        0.0500     5.00         nan       14.688
+        0.2000    20.00         nan          nan
+
+    elasticities d ln U* / d ln rho:
+      rho 0.005 -> 0.020:  global +nan   relative -0.023
+      rho 0.020 -> 0.050:  global +nan   relative -0.191
+      rho 0.050 -> 0.200:  global +nan   relative +nan
+    reference elasticities from the same plant (lens findings 6 and 8):
+      perception range +0.986 to +1.082;  VIO latency -0.105 to -0.267; motor time constant -0.212 to -1.023
+
+    closed-form budget cross-check (error that reaches the gate):
+      rho =  0.50 %/m:  global  0.492 m over the 98.315 m lap;  relative  0.030 m over a 6 m look-ahead;  tolerance 0.500 m
+      rho =  2.00 %/m:  global  1.966 m over the 98.315 m lap;  relative  0.120 m over a 6 m look-ahead;  tolerance 0.500 m
+      rho =  5.00 %/m:  global  4.916 m over the 98.315 m lap;  relative  0.300 m over a 6 m look-ahead;  tolerance 0.500 m
+    ratio of the two budgets = lap length / look-ahead = 16.39
+
+    A-20's unseen-course demonstration allows 5 m of goal error over a 40 m line: 12.5 % of distance flown.
+
+(2) FEATURE LOSS PRICED AS IMU-ONLY COASTING
+    tolerated by the lens's own failure boundary: sigma_v = 0.50 m/s, sigma_p = 0.10 m
+    (fails at 1.00 m/s / 0.20 m), at U = 12 m/s on the 0.50 m gate.
+    case                                         dt to dv=0.5 m/s  dv at 0.3 s  dp at 0.3 s
+    ICM-42688-P class, noise density only                     inf       0.0004       0.0001
+    plus 5 mg residual bias                                  9.96       0.0154       0.0023
+    plus 20 mg residual bias                                 2.49       0.0604       0.0091
+    plus 100 mg uncalibrated bias                            0.51       0.2944       0.0442
+    A 0.3 s coast is already long: at 500 deg/s the blur event lasts the exposure, 1-10 ms,
+    and a full feature-loss interval in [D-12]-class flight is tens of ms.
+
+DONE
+
+--- stderr ---
+

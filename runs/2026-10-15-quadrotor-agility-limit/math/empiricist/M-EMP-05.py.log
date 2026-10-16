@@ -1,0 +1,29 @@
+# math_run log
+command:  python3 runs/2026-10-15-quadrotor-agility-limit/math/empiricist/M-EMP-05.py
+started:  2026-10-16T01:14:13Z
+duration: 0.7 s
+exit:     0
+versions: python 3.13.16, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   9 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+inputs: t_s = 17.465 s, pilots (17.956, 18.746, 21.16) s, tau 40 vs 220 ms, latency ratio = 5.5
+PASS 0 < 1.00000000000000E-9: symbolic, constant
+  t_h = 17.956 s: time penalty 2.81%, speed penalty 2.73%, |e| (log-log) = 0.0163
+  t_h = 18.746 s: time penalty 7.33%, speed penalty 6.83%, |e| (log-log) = 0.0415
+  t_h = 21.16 s: time penalty 21.16%, speed penalty 17.46%, |e| (log-log) = 0.1126
+log-log range: 0.0163 to 0.1126 (lens claims 0.016 to 0.122)
+PASS 0.000264000000000000 < 0.00100000000000000: symbolic, constant
+PASS 0.00942400000000000 < 0.0120000000000000: symbolic, constant
+PASS 0.112576000000000 < 0.500000000000000: symbolic, constant
+  arc elasticity for t_h = 17.956: 0.0200
+PASS 0.0200230000000000 < 0.500000000000000: symbolic, constant
+  arc elasticity for t_h = 21.16: 0.1382
+PASS 0.138181000000000 < 0.500000000000000: symbolic, constant
+PASS log(tau1**p/tau2**p)/log(tau1/tau2) == p: symbolic
+PASS lim t->17.4650000000000 of 0.586596931565969*log(0.0572573718866304*t) == 0: symbolic limit 0
+PASS (0.22 s) / (0.04 s) has the dimension of dimensionless: dimensional analysis
+SUMMARY: 9 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

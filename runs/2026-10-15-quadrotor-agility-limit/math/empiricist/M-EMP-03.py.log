@@ -1,0 +1,31 @@
+# math_run log
+command:  python3 runs/2026-10-15-quadrotor-agility-limit/math/empiricist/M-EMP-03.py
+started:  2026-10-16T01:14:30Z
+duration: 0.6 s
+exit:     0
+versions: python 3.13.16, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   11 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+inputs: L = 75.0 m, t3 = 17.465 s (three laps)
+per-lap time = 5.821667 s, mean speed = 12.882909 m/s (claimed 12.88 m/s)
+PASS (225.0 m) / (17.465 s) == 12.88 m/s: within 0.001; 12.8829 vs 12.88 (SI)
+PASS (225.0 m) / (17.465 s) has the dimension of speed: dimensional analysis
+ratio to 5.0 m/s unseen = 2.5766 (claimed 2.58)
+PASS 0.00341799999999992 < 0.00600000000000000: symbolic, constant
+ratio to 7.0 m/s unseen = 1.8404 (claimed 1.84)
+PASS 0.000415999999999972 < 0.00600000000000000: symbolic, constant
+MonoRace bracket 13.0 m/s / 5 m/s = 2.600 (claimed 2.6)
+PASS 0 < 0.0500000000000000: symbolic, constant
+MonoRace bracket 30.0 m/s / 5 m/s = 6.000 (claimed 6.0)
+PASS 0 < 0.0500000000000000: symbolic, constant
+single-lap bracket 11.0-13.6 m/s contains 12.883: True
+PASS 12.8829090000000 > 11.0000000000000: symbolic, constant
+PASS 12.8829090000000 < 13.6000000000000: symbolic, constant
+PASS 3*L/t == 3*L/t: symbolic
+PASS lim t->oo of 3*L/t == 0: symbolic limit 0
+PASS (225 m) / (9 s) == 25 m/s: within 1e-09; 25 vs 25 (SI)
+SUMMARY: 11 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

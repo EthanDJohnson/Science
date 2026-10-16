@@ -1,0 +1,178 @@
+# math_run log
+command:  python3 runs/2026-10-15-quadrotor-agility-limit/calc/lens-statistician_rates.py
+started:  2026-10-16T00:40:05Z
+duration: 0.0 s
+exit:     0
+versions: python 3.13.16, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+stats_tools selftest: True
+
+========================================================================
+PART 1  Success rates vs the brief's 90 per cent threshold
+========================================================================
+claim                                  k/n   rate       Wilson 95% CP95 lower p(H0:>=0.90)    z1
+A-20  3 m/s  unseen clutter         10/10   1.000 [0.722,1.000]       0.692       1.0000 -0.00
+A-20  5 m/s  unseen clutter         10/10   1.000 [0.722,1.000]       0.692       1.0000 -0.00
+A-20  7 m/s  unseen clutter          8/10   0.800 [0.490,0.943]       0.444       0.2639  0.63
+A-20 10 m/s  unseen clutter          6/10   0.600 [0.313,0.832]       0.262       0.0128  2.23
+A-27 M23 seen track (23 s)          38/43   0.884 [0.755,0.949]       0.749       0.4325  0.17
+A-27 M17 seen track                  5/7    0.714 [0.359,0.918]       0.290       0.1497  1.04
+A-27 M16 seen track (16.56 s)        1/4    0.250 [0.046,0.699]       0.006       0.0037  2.68
+A-29 '100% all envs' if n=5          5/5    1.000 [0.566,1.000]       0.478       1.0000 -0.00
+A-14 RL real (mocap) if n=20        17/20   0.850 [0.640,0.948]       0.621       0.3231  0.46
+A-14 contouring real if n=20        10/20   0.500 [0.299,0.701]       0.272       0.0000  4.34
+A-14 tracking MPC real if n=20       0/20   0.000 [0.000,0.161]       0.000       0.0000  9.26
+
+Reading: a 'p(H0:>=0.90)' below 0.05 rejects the brief's threshold for that row;
+a Clopper-Pearson lower bound below 0.90 means the row cannot *establish* it either.
+
+Trials needed to certify a true rate >= 0.90 with a 95% one-sided lower bound,
+  with ZERO failures: n >= ln(0.05)/ln(0.90) = 28.43 -> 29 consecutive successes
+  allowing 1 failure(s): n = 54  (k=53, CP95 lower = 0.901)
+  allowing 2 failure(s): n = 70  (k=68, CP95 lower = 0.901)
+  allowing 3 failure(s): n = 85  (k=82, CP95 lower = 0.900)
+
+========================================================================
+PART 2  Can the reported rankings support themselves?
+========================================================================
+90% vs 80% (7 m/s row vs threshold)        needs    199 trials per arm (95% conf, 80% power)
+90% vs 60% (10 m/s row vs threshold)       needs     32 trials per arm (95% conf, 80% power)
+85% vs 50% (A-14 RL vs contouring, real)   needs     27 trials per arm (95% conf, 80% power)
+100% vs 85% (A-14 RL sim vs real)          needs     58 trials per arm (95% conf, 80% power)
+88.4% vs 90% (MonoRace M23 vs threshold)   needs   5907 trials per arm (95% conf, 80% power)
+95% vs 90% (reference case)                needs    435 trials per arm (95% conf, 80% power)
+
+RL 17/20 vs contouring 10/20 (n=20 assumed)    z =  2.36, two-sided p = 1.81e-02
+RL 17/20 vs tracking 0/20 (n=20 assumed)       z =  5.44, two-sided p = 5.41e-08
+same ratios at n=10                            z =  1.95, two-sided p = 5.10e-02
+
+A-14 lap-time gap, nominal sim: tracking 4.92+/-0.10 s vs RL 5.14+/-0.09 s (s.d.)
+  treating s.d. as the uncertainty of one trial: z = 1.64 (two-sided p = 0.102)
+  if each mean rests on n =  5 trials (s.e.m.): z =   3.7
+  if each mean rests on n = 10 trials (s.e.m.): z =   5.2
+  if each mean rests on n = 25 trials (s.e.m.): z =   8.2
+  -> the LAP-TIME ordering is well determined for any plausible n;
+     the SUCCESS-RATE ordering is what is undetermined.
+
+========================================================================
+PART 3  Grouping the onboard speed claims by course type, not pooling them
+========================================================================
+sigma_ln v = 0.20  (20% fractional)
+   within seen gate track, onboard     chi2 =   2.97 / 2 dof, mean v =  26.16 m/s
+   within unseen clutter, onboard      chi2 =   5.28 / 3 dof, mean v =   7.38 m/s
+   within mocap state (not onboard)    chi2 =   0.47 / 1 dof, mean v =  33.05 m/s
+   BETWEEN groups chi2 =  104.21 / 2 dof, p = 2.35e-23, z = 9.96
+
+sigma_ln v = 0.40  (40% fractional)
+   within seen gate track, onboard     chi2 =   0.74 / 2 dof, mean v =  26.16 m/s
+   within unseen clutter, onboard      chi2 =   1.32 / 3 dof, mean v =   7.38 m/s
+   within mocap state (not onboard)    chi2 =   0.12 / 1 dof, mean v =  33.05 m/s
+   BETWEEN groups chi2 =   26.05 / 2 dof, p = 2.2e-06, z = 4.73
+
+sigma_ln v = 0.80  (80% fractional)
+   within seen gate track, onboard     chi2 =   0.19 / 2 dof, mean v =  26.16 m/s
+   within unseen clutter, onboard      chi2 =   0.33 / 3 dof, mean v =   7.38 m/s
+   within mocap state (not onboard)    chi2 =   0.03 / 1 dof, mean v =  33.05 m/s
+   BETWEEN groups chi2 =    6.51 / 2 dof, p = 0.0385, z = 2.07
+
+pooled (wrong) weighted mean of ln v: 2.754 -> 15.70 m/s, chi2 = 112.9/8 dof, PDG scale factor S = 3.76
+The pooled fit smears a 3-4x split between COURSE TYPES over every measurement:
+this is exactly the case the method warns about.
+
+========================================================================
+PART 4  Bayes-factor bounds and the prior each claim needs
+========================================================================
+A-27 M16 (16.56 s policy) is below 90%     p2 = 0.0074
+   min Bayes factor (null:alt) = 0.099 -> BF(alt:null) <= 10.13; prior needed for posterior 0.5 = 0.090
+      prior 0.20 -> posterior 0.717
+      prior 0.30 -> posterior 0.813
+      prior 0.50 -> posterior 0.910
+A-20 10 m/s row is below 90%               p2 = 0.0256
+   min Bayes factor (null:alt) = 0.255 -> BF(alt:null) <= 3.92; prior needed for posterior 0.5 = 0.203
+      prior 0.20 -> posterior 0.495
+      prior 0.30 -> posterior 0.627
+      prior 0.50 -> posterior 0.797
+A-20 7 m/s row is below 90%                p2 = 0.5278
+   min Bayes factor (null:alt) = 1.000 -> BF(alt:null) <= 1.00; prior needed for posterior 0.5 = 0.500
+      prior 0.20 -> posterior 0.200
+      prior 0.30 -> posterior 0.300
+      prior 0.50 -> posterior 0.500
+A-14 RL > contouring on hardware (n=20)    p2 = 0.0181
+   min Bayes factor (null:alt) = 0.198 -> BF(alt:null) <= 5.06; prior needed for posterior 0.5 = 0.165
+      prior 0.20 -> posterior 0.559
+      prior 0.30 -> posterior 0.684
+      prior 0.50 -> posterior 0.835
+
+precision needed on a 0.10 difference in success rate for a 5-sigma call: 0.0200 (i.e. s.e. of 2 percentage points -> n ~ 225 trials at p=0.9)
+
+========================================================================
+PART 5  Elasticities: which limit has the leverage, and in which regime
+========================================================================
+case                                v_stop    e_s    e_a   e_tau |e_s/e_tau|  v_dodge  e_tau_d
+depth cam, Swift-class latency       19.89  0.536  0.464  -0.071         7.5    22.27   -0.148
+depth cam, 2019 latency chain        16.98  0.613  0.387  -0.225         2.7    16.69   -0.362
+depth cam, MonoRace image delay      20.72  0.515  0.485  -0.030        17.0    24.35   -0.069
+long range (LiDAR-class 20 m)        37.50  0.519  0.481  -0.039        13.3    74.23   -0.148
+short range (3 m), fast loop         13.66  0.550  0.450  -0.100         5.5    11.14   -0.148
+low thrust T/W 2 (a_h = 17 m/s2)     13.62  0.524  0.476  -0.048        11.0    15.67   -0.104
+units: s in m, a in m/s^2, tau in s, v in m/s; elasticities dimensionless
+
+  a =   38 m/s^2, tau =  40.0 ms: latency term equals braking term at v = 2 a tau =  3.04 m/s
+  a =   38 m/s^2, tau = 130.0 ms: latency term equals braking term at v = 2 a tau =  9.88 m/s
+  a =   20 m/s^2, tau =  50.0 ms: latency term equals braking term at v = 2 a tau =  2.00 m/s
+
+  dodge bound, a =   17 m/s^2, r = 0.5 m: |e_tau| reaches 0.50 only at tau =  343.0 ms
+  dodge bound, a =   38 m/s^2, r = 0.5 m: |e_tau| reaches 0.50 only at tau =  229.4 ms
+  dodge bound, a =   77 m/s^2, r = 0.5 m: |e_tau| reaches 0.50 only at tau =  161.2 ms
+
+A-16 planner sweep: d ln(lap)/d ln(TWR) = -0.565 (two points, no uncertainty quoted)
+  -> elasticity of mean speed to TWR = 0.565
+  point-mass theory (D-33) at T/W = 4: d ln v / d ln(T/W) = 0.533
+  the two agree to about 6 per cent of each other; no uncertainty is quoted on either,
+  so no tension can be computed. Both are near +0.5.
+
+========================================================================
+PART 7  Shared apparatus: the same split with rho = 0 and rho = 0.8
+========================================================================
+rho = 0.0: group means (m/s) seen gate track 26.2+-12%, unseen clutter 7.4+-10%, mocap state (not onboard) 33.0+-14%
+   chi2 between the 3 group means = 104.21 / 2 dof, p = 2.35e-23, z = 9.96
+rho = 0.8: group means (m/s) seen gate track 26.2+-19%, unseen clutter 7.4+-18%, mocap state (not onboard) 33.0+-19%
+   chi2 between the 3 group means = 37.63 / 2 dof, p = 6.73e-09, z = 5.80
+   The seen/unseen split survives full correlation within each group.
+
+========================================================================
+PART 6  Multiplicity in the attributions, and the failure-count problem
+========================================================================
+  local p = 0.0500,  4 candidate attributions tried -> global p = 0.1855 (z_global = 0.89)
+  local p = 0.0500,  5 candidate attributions tried -> global p = 0.2262 (z_global = 0.75)
+  local p = 0.0500, 12 candidate attributions tried -> global p = 0.4596 (z_global = 0.10)
+  local p = 0.0100,  4 candidate attributions tried -> global p = 0.0394 (z_global = 1.76)
+  local p = 0.0100,  5 candidate attributions tried -> global p = 0.0490 (z_global = 1.65)
+  local p = 0.0100, 12 candidate attributions tried -> global p = 0.1136 (z_global = 1.21)
+  local p = 0.0037,  4 candidate attributions tried -> global p = 0.0147 (z_global = 2.18)
+  local p = 0.0037,  5 candidate attributions tried -> global p = 0.0184 (z_global = 2.09)
+  local p = 0.0037, 12 candidate attributions tried -> global p = 0.0435 (z_global = 1.71)
+  12 = the (speed x environment x pipeline) cells actually reported in this evidence base
+
+A-20 7 m/s: 2 crashes, both blamed on perception share =  1.00, Wilson 95% [0.34, 1.00]
+A-20 10 m/s: 4 crashes of 10 (cause mix unstated) share =  1.00, Wilson 95% [0.51, 1.00]
+A-10 Swift: 4 of 10 losses by gate collision     share =  0.40, Wilson 95% [0.17, 0.69]
+A-10 Swift: 2 of 10 losses by being slower       share =  0.20, Wilson 95% [0.06, 0.51]
+  A single cause can be called dominant only if its share's interval excludes 0.5;
+  none of these does except trivially (k = n on n = 2, lower bound 0.34).
+
+========================================================================
+VERIFICATION
+========================================================================
+PASS: binom_le(8,10,0.9) = 0.263901 vs closed form 0.263901
+PASS: CP lower for 10/10 at one-sided 95% = 0.741134 vs 0.05^(1/10) = 0.741134
+PASS: tau->0 limit gives e_s = 0.50000, e_a = 0.50000 (expect 0.5, 0.5)
+PASS: A-33 case reproduced: v = 14.524 m/s (dossier 14.5), e_tau = -0.0644 (dossier -0.064)
+PASS: within+between = 112.931475 = pooled chi2 112.931475
+
+PASS: all verification checks
+
+--- stderr ---
+

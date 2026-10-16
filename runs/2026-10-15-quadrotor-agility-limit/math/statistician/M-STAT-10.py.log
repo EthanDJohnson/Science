@@ -1,0 +1,40 @@
+# math_run log
+command:  python3 runs/2026-10-15-quadrotor-agility-limit/math/statistician/M-STAT-10.py
+started:  2026-10-16T01:51:51Z
+duration: 0.5 s
+exit:     0
+versions: python 3.13.16, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   18 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+=== M-STAT-10: lap-time tension (s), trial-count granularity, Bayes-factor bounds ===
+4.92 +/- 0.10 s vs 5.14 +/- 0.09 s: z = 1.635 (per-trial s.d.), z = 8.176 (means of n = 25)
+difference = 0.220 s, combined per-trial sigma = 0.1345 s
+smallest n for 44.0, 76.0, 20.0 per cent: 25
+smallest n for 85.0, 50.0 per cent      : 20
+  (check: 0.44*25 = 11.00, 0.76*25 = 19.00, 0.20*25 = 5.00, 0.85*20 = 17.00, 0.50*20 = 10.00)
+two-sided p = 0.0074: min BF_alt:null <= 10.133; prior for posterior 0.5 = 0.0898; posterior at prior 0.20 = 0.7170
+two-sided p = 0.0180: min BF_alt:null <= 5.087; prior for posterior 0.5 = 0.1643; posterior at prior 0.20 = 0.5598
+two-sided p = 0.0256: min BF_alt:null <= 3.921; prior for posterior 0.5 = 0.2032; posterior at prior 0.20 = 0.4950
+PASS 4.92 s has the dimension of time: dimensional analysis
+PASS 1 has the dimension of dimensionless: dimensional analysis
+PASS 0.2200 s == 0.22 s: within 0.001; 0.22 vs 0.22 (SI)
+PASS 1.6352 == 1.6: within 0.03; 1.6352 vs 1.6 (SI)
+PASS 8.17620000000000 > 7: symbolic, constant
+PASS 25 == 25: within 1e-06; 25 vs 25 (SI)
+PASS 20 == 20: within 1e-06; 20 vs 20 (SI)
+PASS 10.1326 == 10.1: within 0.005; 10.1326 vs 10.1 (SI)
+PASS 5.0873 == 5.1: within 0.005; 5.0873 vs 5.1 (SI)
+PASS 3.9208 == 3.9: within 0.01; 3.9208 vs 3.9 (SI)
+PASS 0.08983 == 0.090: within 0.005; 0.08983 vs 0.09 (SI)
+PASS 0.16428 == 0.165: within 0.005; 0.16428 vs 0.165 (SI)
+PASS 0.20322 == 0.203: within 0.005; 0.20322 vs 0.203 (SI)
+PASS 0.71697 == 0.72: within 0.005; 0.71697 vs 0.72 (SI)
+PASS lim p->0 of -E*p*log(p) == 0: symbolic limit 0
+PASS 1.000000 == 1.0: within 1e-06; 1 vs 1 (SI)
+PASS series of 1.6349/sqrt(x + 1) about x = 0 to order 2 == 1.6349 - 0.81745*x: symbolic: 1.6349 - 0.81745*x
+PASS lim n->oo of 1.6349/sqrt(n) == 0: symbolic limit 0
+SUMMARY: 18 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

@@ -1,0 +1,100 @@
+# math_run log
+command:  python3 runs/2026-10-15-quadrotor-agility-limit/calc/lens-constraints_budget.py
+started:  2026-10-16T00:54:46Z
+duration: 0.3 s
+exit:     0
+versions: python 3.13.16, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+==============================================================================
+1. MODEL-ERROR BUDGET vs SPEED (A-18 replayed-flight positional RMSE, power-law fit)
+==============================================================================
+  Fit: e_model(v) = 0.0439 * v^1.173 m  (log-log R^2 = 0.888); residuals [-0.0191  0.0457  0.0107 -0.0431]
+    with e_est = 0.151 m (T265 VIO 0.151 m (circle, <=7 m/s)): model error fills the remaining 0.449 m at v =  7.26 m/s; d ln v*/d ln(clearance) = +1.14, d ln v*/d ln(model error) = -0.85
+    with e_est = 0.114 m (T265 VIO 0.114 m (lemniscate)): model error fills the remaining 0.486 m at v =  7.77 m/s; d ln v*/d ln(clearance) = +1.05, d ln v*/d ln(model error) = -0.85
+    with e_est = 0.300 m (0.30 m onboard-VIO at racing speed (assumed)): model error fills the remaining 0.300 m at v =  5.15 m/s; d ln v*/d ln(clearance) = +1.71, d ln v*/d ln(model error) = -0.85
+    halving the model error (D-08 claims ~50 % force-error cut) moves v* from 7.26 to 13.12 m/s (+81 %)
+  BEM: e_model(v) = 0.0493 * v^0.858 m  (log-log R^2 = 0.827); residuals [-0.0176  0.0343  0.0119 -0.0271]
+    with e_est = 0.151 m (T265 VIO 0.151 m (circle, <=7 m/s)): model error fills the remaining 0.449 m at v = 13.14 m/s; d ln v*/d ln(clearance) = +1.56, d ln v*/d ln(model error) = -1.17
+    with e_est = 0.114 m (T265 VIO 0.114 m (lemniscate)): model error fills the remaining 0.486 m at v = 14.41 m/s; d ln v*/d ln(clearance) = +1.44, d ln v*/d ln(model error) = -1.17
+    with e_est = 0.300 m (0.30 m onboard-VIO at racing speed (assumed)): model error fills the remaining 0.300 m at v =  8.21 m/s; d ln v*/d ln(clearance) = +2.33, d ln v*/d ln(model error) = -1.17
+    halving the model error (D-08 claims ~50 % force-error cut) moves v* from 13.14 to 29.49 m/s (+124 %)
+  CAVEAT: A-18 is OPEN-LOOP replay prediction error over whole flights, so it is an upper
+  bound on the closed-loop consequence (F9 puts the feedback-rejected residual at ~1 mm);
+  it is the error a planner or a learned policy inherits through its model, not a measured
+  tracking error. The measured closed-loop tracking RMSE on the same platform class is
+  0.322 m at up to 16.7 m/s and 4 g with mocap state (A-06).
+
+==============================================================================
+2. LOOK-AHEAD BOUND WITH THE REORIENTATION TIME IN THE LATENCY
+   v tau_tot + v^2/(2 a) <= s,  tau_tot = tau_sense + t_reorient,
+   t_reorient = 2 sqrt(theta/alpha) for a rest-to-rest tilt to the braking attitude.
+==============================================================================
+  alpha(const. altitude) = 396.1 rad/s^2 -> rest-to-rest reorientation 76 deg in 116 ms, 90 deg in 126 ms (the full-plant simulation with the 39.1 ms lag gave 201 ms for 152 deg)
+  s=  6.0 m 6 m (A-21/A-33 pole experiment)  sense 40 ms only [A-07]                  tau_tot=  40.0 ms -> v_max= 20.13 m/s; e_tau=-0.072, e_s=+0.536, e_a=+0.464
+  s=  6.0 m 6 m (A-21/A-33 pole experiment)  sense 40 ms + 76 deg reorientation       tau_tot= 155.7 ms -> v_max= 16.40 m/s; e_tau=-0.270, e_s=+0.635, e_a=+0.365
+  s=  6.0 m 6 m (A-21/A-33 pole experiment)  sense 17 ms only [A-28]                  tau_tot=  17.0 ms -> v_max= 20.98 m/s; e_tau=-0.031, e_s=+0.515, e_a=+0.485
+  s=  6.0 m 6 m (A-21/A-33 pole experiment)  sense 17 ms + 76 deg reorientation       tau_tot= 132.7 ms -> v_max= 17.07 m/s; e_tau=-0.233, e_s=+0.616, e_a=+0.384
+  s= 10.0 m 10 m (depth-camera class)        sense 40 ms only [A-07]                  tau_tot=  40.0 ms -> v_max= 26.42 m/s; e_tau=-0.056, e_s=+0.528, e_a=+0.472
+  s= 10.0 m 10 m (depth-camera class)        sense 40 ms + 76 deg reorientation       tau_tot= 155.7 ms -> v_max= 22.51 m/s; e_tau=-0.212, e_s=+0.606, e_a=+0.394
+  s= 10.0 m 10 m (depth-camera class)        sense 17 ms only [A-28]                  tau_tot=  17.0 ms -> v_max= 27.28 m/s; e_tau=-0.024, e_s=+0.512, e_a=+0.488
+  s= 10.0 m 10 m (depth-camera class)        sense 17 ms + 76 deg reorientation       tau_tot= 132.7 ms -> v_max= 23.23 m/s; e_tau=-0.182, e_s=+0.591, e_a=+0.409
+  s= 20.0 m 20 m (LiDAR class, D-39)         sense 40 ms only [A-07]                  tau_tot=  40.0 ms -> v_max= 37.98 m/s; e_tau=-0.039, e_s=+0.520, e_a=+0.480
+  s= 20.0 m 20 m (LiDAR class, D-39)         sense 40 ms + 76 deg reorientation       tau_tot= 155.7 ms -> v_max= 33.90 m/s; e_tau=-0.152, e_s=+0.576, e_a=+0.424
+  s= 20.0 m 20 m (LiDAR class, D-39)         sense 17 ms only [A-28]                  tau_tot=  17.0 ms -> v_max= 38.85 m/s; e_tau=-0.017, e_s=+0.508, e_a=+0.492
+  s= 20.0 m 20 m (LiDAR class, D-39)         sense 17 ms + 76 deg reorientation       tau_tot= 132.7 ms -> v_max= 34.67 m/s; e_tau=-0.130, e_s=+0.565, e_a=+0.435
+  to run at  5.0 m/s you must see  1.10 m ahead (70.8 % of it is the reaction term, 29.2 % braking)
+  to run at 10.0 m/s you must see  2.84 m ahead (54.8 % of it is the reaction term, 45.2 % braking)
+  to run at 15.0 m/s you must see  5.22 m ahead (44.7 % of it is the reaction term, 55.3 % braking)
+  to run at 20.0 m/s you must see  8.24 m ahead (37.8 % of it is the reaction term, 62.2 % braking)
+
+==============================================================================
+3. POWER AND ENERGY: momentum theory, figure of merit, battery C-rate
+   P_ideal = T^(3/2) / sqrt(2 rho A) per rotor (hover induced power, no forward speed)
+==============================================================================
+  hover          T= 8.53 N  P_ideal=   70.7 W  FoM=0.65 -> P_elec=  108.8 W; on 14.8 V 1.8 Ah: I=   7.4 A =   4.1 C, pack energy 26.6 Wh, endurance at this power 14.69 min
+  hover          T= 8.53 N  P_ideal=   70.7 W  FoM=0.65 -> P_elec=  108.8 W; on 22.2 V 1.3 Ah: I=   4.9 A =   3.8 C, pack energy 28.9 Wh, endurance at this power 15.91 min
+  hover          T= 8.53 N  P_ideal=   70.7 W  FoM=0.75 -> P_elec=   94.3 W; on 14.8 V 1.8 Ah: I=   6.4 A =   3.5 C, pack energy 26.6 Wh, endurance at this power 16.95 min
+  hover          T= 8.53 N  P_ideal=   70.7 W  FoM=0.75 -> P_elec=   94.3 W; on 22.2 V 1.3 Ah: I=   4.2 A =   3.3 C, pack energy 28.9 Wh, endurance at this power 18.36 min
+
+  half throttle  T=17.50 N  P_ideal=  207.8 W  FoM=0.65 -> P_elec=  319.7 W; on 14.8 V 1.8 Ah: I=  21.6 A =  12.0 C, pack energy 26.6 Wh, endurance at this power  5.00 min
+  half throttle  T=17.50 N  P_ideal=  207.8 W  FoM=0.65 -> P_elec=  319.7 W; on 22.2 V 1.3 Ah: I=  14.4 A =  11.1 C, pack energy 28.9 Wh, endurance at this power  5.42 min
+  half throttle  T=17.50 N  P_ideal=  207.8 W  FoM=0.75 -> P_elec=  277.0 W; on 14.8 V 1.8 Ah: I=  18.7 A =  10.4 C, pack energy 26.6 Wh, endurance at this power  5.77 min
+  half throttle  T=17.50 N  P_ideal=  207.8 W  FoM=0.75 -> P_elec=  277.0 W; on 22.2 V 1.3 Ah: I=  12.5 A =   9.6 C, pack energy 28.9 Wh, endurance at this power  6.25 min
+
+  full throttle  T=35.00 N  P_ideal=  587.7 W  FoM=0.65 -> P_elec=  904.1 W; on 14.8 V 1.8 Ah: I=  61.1 A =  33.9 C, pack energy 26.6 Wh, endurance at this power  1.77 min
+  full throttle  T=35.00 N  P_ideal=  587.7 W  FoM=0.65 -> P_elec=  904.1 W; on 22.2 V 1.3 Ah: I=  40.7 A =  31.3 C, pack energy 28.9 Wh, endurance at this power  1.92 min
+  full throttle  T=35.00 N  P_ideal=  587.7 W  FoM=0.75 -> P_elec=  783.6 W; on 14.8 V 1.8 Ah: I=  52.9 A =  29.4 C, pack energy 26.6 Wh, endurance at this power  2.04 min
+  full throttle  T=35.00 N  P_ideal=  587.7 W  FoM=0.75 -> P_elec=  783.6 W; on 22.2 V 1.3 Ah: I=  35.3 A =  27.2 C, pack energy 28.9 Wh, endurance at this power  2.21 min
+
+  a 75 m lap [A-10] at 10.0 m/s takes 7.50 s; at the half-throttle power 297 W it costs 0.618 Wh of a 26.6 Wh 4S pack = 2.3 %
+  a 75 m lap [A-10] at 15.0 m/s takes 5.00 s; at the half-throttle power 297 W it costs 0.412 Wh of a 26.6 Wh 4S pack = 1.5 %
+  a 75 m lap [A-10] at 20.0 m/s takes 3.75 s; at the half-throttle power 297 W it costs 0.309 Wh of a 26.6 Wh 4S pack = 1.2 %
+  reading: ENERGY is not the binding constraint (a lap costs a few per cent of the pack);
+  the constraint on this axis is PEAK CURRENT and the voltage sag it causes, which the
+  literature names as a failure cause (D-14) rather than endurance.
+
+==============================================================================
+4. ELASTICITY TABLE (per cent change in the agility metric per per cent change in the
+   limit), each from the calculation named
+==============================================================================
+  perception range s (stop bound, unseen course)               +0.50 to +0.53   [this script, part 2]
+  perception range s (lateral-dodge bound)                      +1.00 exactly   [dossier A-33/D-31]
+  thrust-to-weight T/W (via a_max)                             +0.48 to +0.53   [actuator script part 5; A-16 gives -0.565 on lap time]
+  model (aero) error coefficient                                        -1.17   [this script, part 1 (BEM power law)]
+  sensing latency tau_sense (stop bound, with reorientation)   -0.04 to -0.19   [this script, part 2]
+  motor time constant (segment time)                                   -0.040   [actuator script part 5]
+  motor time constant (slew time)                                      -0.177   [actuator script part 4]
+  motor time constant (rate-loop bandwidth)                            -1.000   [loop script part 4]
+  tau_eff (feedback-only speed ceiling)                                -1.000   [loop script part 5]
+  tau_eff (feedforward residual error)                                 +2.000   [loop script part 5]
+
+  CONVERGENCE/VERIFICATION of this script:
+    n=1000: quadrature 5.218330 m vs closed form 5.218330 m (diff 0.00e+00)
+    n=1500: quadrature 5.218330 m vs closed form 5.218330 m (diff 0.00e+00)
+    v_stop inverse check: v_stop(s=10, a=39.016, tau=0.156) = 22.503180 m/s; substituting back gives s = 10.000000 m
+    reorientation closed form vs the actuator script's full-plant 152 deg slew: 2 sqrt(152 deg/alpha) = 163.7 ms (no lag) against 164.0 ms simulated (no lag) and 201.0 ms with the 39.1 ms lag
+
+--- stderr ---
+

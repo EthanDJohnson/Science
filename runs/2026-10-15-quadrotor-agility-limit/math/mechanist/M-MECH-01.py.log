@@ -1,0 +1,42 @@
+# math_run log
+command:  python3 runs/2026-10-15-quadrotor-agility-limit/math/mechanist/M-MECH-01.py
+started:  2026-10-16T01:26:37Z
+duration: 0.8 s
+exit:     0
+versions: python 3.13.16, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   19 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+PASS g_s*sqrt(W**2 - 1) == g_s*sqrt(W**2 - 1): symbolic
+PASS W*g_s*sqrt(1 - 1/W**2) == g_s*sqrt(W**2 - 1): symbolic
+inputs: g = 9.81 m/s^2, W = 4.4 and 4.621
+a_h(W=4.4)   = 42.034 m/s^2
+a_h(W=4.621) = 44.259 m/s^2
+PASS 42.034448 m/s^2 == 42.0 m/s^2: within 0.002; 42.0344 vs 42 (SI)
+PASS 9.81 m/s^2 * 4.28 has the dimension of acceleration: dimensional analysis
+PASS lim W->1 of g_s*sqrt(W**2 - 1) == 0: symbolic limit 0
+PASS lim W->oo of sqrt(W**2 - 1)/W == 1: symbolic limit 1
+s_req(v=7.0 m/s, tau=50 ms, a=42.03 m/s^2) = 0.9329 m
+s_req(v=7.0 m/s, tau=107 ms, a=42.03 m/s^2) = 1.3319 m
+PASS 0.932855 m == 0.93 m: within 0.005; 0.932855 vs 0.93 (SI)
+PASS 1.331855 m == 1.33 m: within 0.005; 1.33186 vs 1.33 (SI)
+PASS 7 m/s * 0.107 s + (7 m/s)^2/(2 * 42 m/s^2) has the dimension of length: dimensional analysis
+PASS s == s: symbolic
+PASS lim tau->0 of a*(-tau + sqrt(tau**2 + 2*s/a)) == sqrt(2)*sqrt(a)*sqrt(s): symbolic limit sqrt(2)*sqrt(a)*sqrt(s)
+PASS lim s->0 of a*(-tau + sqrt(tau**2 + 2*s/a)) == 0: symbolic limit 0
+v*(s=3.0 m, tau=107 ms, a=42.03 m/s^2) = 12.008 m/s   (lens: 12.0 m/s)
+PASS 12.007945 m/s == 12.0 m/s: within 0.005; 12.0079 vs 12 (SI)
+v*(s=6.0 m, tau=107 ms, a=42.03 m/s^2) = 18.407 m/s   (lens: 18.4 m/s)
+PASS 18.407391 m/s == 18.4 m/s: within 0.005; 18.4074 vs 18.4 (SI)
+v*(s=10.0 m, tau=107 ms, a=42.03 m/s^2) = 24.844 m/s   (lens: 24.9 m/s)
+PASS 24.843721 m/s == 24.9 m/s: within 0.005; 24.8437 vs 24.9 (SI)
+PASS 42 m/s^2 * 0.438 s has the dimension of m/s: dimensional analysis
+PASS (0.107 s)^2 + 2 * 6 m/(42 m/s^2) has the dimension of s^2: dimensional analysis
+PASS W**2/(W**2 - 1) == W**2/(W**2 - 1): symbolic
+d ln a_h/d ln W at W = 4   : 1.0667  (lens: 1.07)
+d ln a_h/d ln W at W = 4.4 : 1.0545
+PASS 1.066667 m == 1.0667 m: within 0.005; 1.06667 vs 1.0667 (SI)
+SUMMARY: 19 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

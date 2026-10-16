@@ -1,0 +1,49 @@
+# math_run log
+command:  python3 runs/2026-10-15-quadrotor-agility-limit/math/simulator/M-SIMULATOR-10.py
+started:  2026-10-16T02:06:36Z
+duration: 0.5 s
+exit:     1
+versions: python 3.13.16, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   11 PASS, 1 FAIL, 0 UNDECIDED
+
+--- stdout ---
+=== (a) mean path speed and t_opt fraction, row by row ===
+  baseline, 1.5 m gate              : t =   5.018 s -> S/t =  19.592 m/s (claim 19.592, off by 0.002 per cent); t_opt/t = 0.8972 (claim 0.897, off by 0.019 per cent)
+  baseline, 0.9 m gate              : t =   6.082 s -> S/t =  16.165 m/s (claim 16.165, off by 0.001 per cent); t_opt/t = 0.7402 (claim 0.74, off by 0.029 per cent)
+  motor_tau 10 ms                   : t =   4.950 s -> S/t =  19.862 m/s (claim 19.862, off by 0.002 per cent); t_opt/t = 0.9095 (claim 0.909, off by 0.054 per cent)
+  motor_tau 78.2 ms                 : t =  12.360 s -> S/t =   7.954 m/s (claim 7.954, off by 0.004 per cent); t_opt/t = 0.3642 (claim 0.364, off by 0.066 per cent)
+  tau_vio 5 ms                      : t =   5.204 s -> S/t =  18.892 m/s (claim 18.892, off by 0.001 per cent); t_opt/t = 0.8651 (claim 0.865, off by 0.012 per cent)
+  tau_vio 130 ms                    : t =   9.274 s -> S/t =  10.601 m/s (claim 10.601, off by 0.001 per cent); t_opt/t = 0.4854 (claim 0.485, off by 0.091 per cent)
+  aero removed                      : t =  10.122 s -> S/t =   9.713 m/s (claim 9.713, off by 0.000 per cent); t_opt/t = 0.4448 (claim 0.445, off by 0.051 per cent)
+  thrust 6 N/rotor                  : t =   5.838 s -> S/t =  16.841 m/s (claim 16.84, off by 0.003 per cent); t_opt/t = 0.7712 (claim 0.771, off by 0.020 per cent)
+  time-optimal profile alpha = 0.10 : t =  14.235 s -> S/t =   6.907 m/s (claim None, off by --); t_opt/t = 0.3163 (claim None, off by --)
+  worst relative discrepancy: speeds 0.004 per cent, fractions 0.091 per cent
+
+=== (b) the U = 12 m/s failure-boundary row ===
+  mean 13.053 m/s -> t = S/v = 7.5320 s -> t_opt/t = 0.5977 (i.e. 59.8 per cent, not 72 per cent)
+  13.053/21.838 (mean-speed ratio to the optimum) = 0.5977
+  13.053/18.05 (ratio to U* at the 0.50 m tolerance) = 0.7232
+  13.053/16.165 (ratio to the 0.20 m baseline mean)  = 0.8075
+  -> the stated 72 per cent matches none of the t_opt-based readings; the nearest quantity is 13.053/18.05 = 0.723, a ratio to U*, not to t_opt
+
+=== (c) Wilson 95 per cent interval for 30/30 ===
+  p = 1.0, centre = 0.943243, half-width = 0.056757
+  interval = [0.886487, 1.000000]
+
+=== checks ===
+PASS 19.5925 m/s == 19.592 m/s: within 0.001; 19.5925 vs 19.592 (SI)
+PASS 0.89717 == 0.897: within 0.001; 0.89717 vs 0.897 (SI)
+PASS 16.1649 m/s == 16.165 m/s: within 0.001; 16.1649 vs 16.165 (SI)
+PASS 0.36424 == 0.364: within 0.002; 0.36424 vs 0.364 (SI)
+PASS 0.48544 == 0.485: within 0.002; 0.48544 vs 0.485 (SI)
+PASS 9.7130 m/s == 9.713 m/s: within 0.001; 9.713 vs 9.713 (SI)
+PASS 0.886487 == 0.886: within 0.001; 0.886487 vs 0.886 (SI)
+PASS 1.000000 == 1.000: within 0.001; 1 vs 1 (SI)
+FAIL 0.122282000000000 < 0.0100000000000000: numeric, constant; counterexample value = 0.112282; value 0.112282
+PASS t_opt/t_run == t_opt/t_run: symbolic
+PASS 0.886487000000000 < 1: symbolic, constant
+PASS 0.886487000000000 > 0.800000000000000: symbolic, constant
+SUMMARY: 11 pass, 1 fail, 0 undecided
+
+--- stderr ---
+

@@ -1,0 +1,35 @@
+# math_run log
+command:  python3 runs/2026-10-15-quadrotor-agility-limit/math/empiricist/M-EMP-07.py
+started:  2026-10-16T01:14:56Z
+duration: 0.7 s
+exit:     0
+versions: python 3.13.16, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   11 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+inputs: tau = 40 ms, a = 40.0 m/s^2; s(v) = tau/(tau + v/(2a))
+  v =   5.0 m/s: latency share =  39.02%
+  v =   7.0 m/s: latency share =  31.37%
+  v =  10.0 m/s: latency share =  24.24%
+  v =  20.0 m/s: latency share =  13.79%
+  v =  30.0 m/s: latency share =   9.64%
+  v =  40.0 m/s: latency share =   7.41%
+  v =  60.0 m/s: latency share =   5.06%
+share = 24% at v = 10.13 m/s; share = 5% at v = 60.80 m/s
+over the regime the lens discusses (5-20 m/s) the share is 13.8-39.0%
+PASS 0.00333299999999959 < 0.0100000000000000: symbolic, constant
+PASS 60.8000000000000 > 50: symbolic, constant
+PASS 39.0243900000000 > 24: symbolic, constant
+PASS 39.0243900000000 < 40: symbolic, constant
+PASS 13.7931030000000 > 5: symbolic, constant
+PASS 39.0243900000000 < 50: symbolic, constant
+PASS t*v/(t*v + v**2/(2*a)) == t/(t + v/(2*a)): symbolic
+PASS lim v->0 of t/(t + v/(2*a)) == 1: symbolic limit 1
+PASS lim v->oo of t/(t + v/(2*a)) == 0: symbolic limit 0
+d s/d v = -0.0005/(0.0125*vv + 0.04)**2
+PASS 0.0005/(0.0125*v + 0.04)**2 > 0: symbolic, v in [0.1, 60]
+PASS ((5 m/s) * (0.04 s)) / (0.5125 m) has the dimension of dimensionless: dimensional analysis
+SUMMARY: 11 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

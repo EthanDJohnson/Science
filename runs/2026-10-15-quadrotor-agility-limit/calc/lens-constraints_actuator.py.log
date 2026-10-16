@@ -1,0 +1,157 @@
+# math_run log
+command:  python3 runs/2026-10-15-quadrotor-agility-limit/calc/lens-constraints_actuator.py
+started:  2026-10-16T00:46:01Z
+duration: 138.3 s
+exit:     0
+versions: python 3.13.16, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+==============================================================================
+1. STATIC ENVELOPE (closed form, quadrotor.hover())
+==============================================================================
+Sun2022-0.75kg                     m=0.750 kg  T/W=4.623  a_horiz_max=44.26 m/s^2 (4.51 g)  tilt=77.5 deg
+                                   a_up_max=35.53  a_down_max=-9.81 m/s^2 (thrust>=0 floor)  up/down asymmetry=3.62
+                                   hover throttle=21.6 % of per-rotor max; omega_hover=1104 rad/s of omega_max=2373
+Swift-like(0.87kg,35N)             m=0.870 kg  T/W=4.102  a_horiz_max=39.02 m/s^2 (3.98 g)  tilt=75.9 deg
+                                   a_up_max=30.42  a_down_max=-9.81 m/s^2 (thrust>=0 floor)  up/down asymmetry=3.10
+                                   hover throttle=24.4 % of per-rotor max; omega_hover=1189 rad/s of omega_max=2407
+HiThrust-like(0.52kg,63N)          m=0.520 kg  T/W=12.354  a_horiz_max=120.76 m/s^2 (12.31 g)  tilt=85.4 deg
+                                   a_up_max=111.35  a_down_max=-9.81 m/s^2 (thrust>=0 floor)  up/down asymmetry=11.35
+                                   hover throttle=8.1 % of per-rotor max; omega_hover=919 rad/s of omega_max=3230
+
+==============================================================================
+2. TORQUE CEILING vs COLLECTIVE THRUST (the unidirectional f_i >= 0 constraint)
+   Two rotors at f_lo, two at f_hi: T = 2(f_lo+f_hi), tau = lever*2(f_hi-f_lo),
+   0 <= f_lo, f_hi <= f_max  =>  tau_max(T) = lever * min(T, 4 f_max - T).
+   At hover collective T = m g this gives tau_max = lever * m g, INDEPENDENT of T/W;
+   the global maximum lever*T_max/2 sits at half throttle (and needs a climb).
+==============================================================================
+Sun2022-0.75kg                     lever=0.1161 m  f_hover=1.839 N  f_max=8.500 N  W=7.355 N
+                                   tau_roll(T=mg)=0.8537 N m -> alpha=341.5 rad/s^2
+                                   tau_roll(T=2 f_max, half throttle)=1.9731 N m -> alpha=789.2 rad/s^2  (ratio hover/peak 0.433)
+                                   cross-check vs hover()['torque_max_roll']=1.9731 N m (= lever*2*(f_max-f_min), collective 2.31 m g)
+                                   wrench_feasible(T=mg, tau_x=0.7683 N m) = True
+                                   wrench_feasible(T=mg, tau_x=0.8537 N m) = True
+                                   wrench_feasible(T=mg, tau_x=0.9390 N m) = False
+                                   T=0.5 m g: tau_max=0.4268 N m, alpha= 170.7 rad/s^2, feasible=True
+                                   T=1.0 m g: tau_max=0.8537 N m, alpha= 341.5 rad/s^2, feasible=True
+                                   T=1.5 m g: tau_max=1.2805 N m, alpha= 512.2 rad/s^2, feasible=True
+                                   T=2.0 m g: tau_max=1.7073 N m, alpha= 682.9 rad/s^2, feasible=True
+                                   T=3.0 m g: tau_max=1.3852 N m, alpha= 554.1 rad/s^2, feasible=True
+                                   T=4.0 m g: tau_max=0.5316 N m, alpha= 212.6 rad/s^2, feasible=True
+Swift-like(0.87kg,35N)             lever=0.1161 m  f_hover=2.133 N  f_max=8.750 N  W=8.532 N
+                                   tau_roll(T=mg)=0.9902 N m -> alpha=396.1 rad/s^2
+                                   tau_roll(T=2 f_max, half throttle)=2.0311 N m -> alpha=812.5 rad/s^2  (ratio hover/peak 0.488)
+                                   cross-check vs hover()['torque_max_roll']=2.0311 N m (= lever*2*(f_max-f_min), collective 2.05 m g)
+                                   wrench_feasible(T=mg, tau_x=0.8912 N m) = True
+                                   wrench_feasible(T=mg, tau_x=0.9902 N m) = True
+                                   wrench_feasible(T=mg, tau_x=1.0893 N m) = False
+                                   T=0.5 m g: tau_max=0.4951 N m, alpha= 198.0 rad/s^2, feasible=True
+                                   T=1.0 m g: tau_max=0.9902 N m, alpha= 396.1 rad/s^2, feasible=True
+                                   T=1.5 m g: tau_max=1.4854 N m, alpha= 594.1 rad/s^2, feasible=True
+                                   T=2.0 m g: tau_max=1.9805 N m, alpha= 792.2 rad/s^2, feasible=True
+                                   T=3.0 m g: tau_max=1.0916 N m, alpha= 436.6 rad/s^2, feasible=True
+                                   T=4.0 m g: tau_max=0.1013 N m, alpha=  40.5 rad/s^2, feasible=True
+HiThrust-like(0.52kg,63N)          lever=0.1161 m  f_hover=1.275 N  f_max=15.750 N  W=5.099 N
+                                   tau_roll(T=mg)=0.5919 N m -> alpha=348.2 rad/s^2
+                                   tau_roll(T=2 f_max, half throttle)=3.6561 N m -> alpha=2150.6 rad/s^2  (ratio hover/peak 0.162)
+                                   cross-check vs hover()['torque_max_roll']=3.6561 N m (= lever*2*(f_max-f_min), collective 6.18 m g)
+                                   wrench_feasible(T=mg, tau_x=0.5327 N m) = True
+                                   wrench_feasible(T=mg, tau_x=0.5919 N m) = True
+                                   wrench_feasible(T=mg, tau_x=0.6511 N m) = False
+                                   T=0.5 m g: tau_max=0.2959 N m, alpha= 174.1 rad/s^2, feasible=True
+                                   T=1.0 m g: tau_max=0.5919 N m, alpha= 348.2 rad/s^2, feasible=True
+                                   T=1.5 m g: tau_max=0.8878 N m, alpha= 522.2 rad/s^2, feasible=True
+                                   T=2.0 m g: tau_max=1.1837 N m, alpha= 696.3 rad/s^2, feasible=True
+                                   T=3.0 m g: tau_max=1.7756 N m, alpha=1044.5 rad/s^2, feasible=True
+                                   T=4.0 m g: tau_max=2.3675 N m, alpha=1392.6 rad/s^2, feasible=True
+
+==============================================================================
+3. JERK CEILING FROM THE ROTOR-SPEED LAG (thrust coefficient f = k_f omega^2)
+   Full-throttle step from hover: domega/dt|_0 = (omega_max-omega_h)/tau,
+   dT/dt|_0 = 4 * 2 k_f omega_h (omega_max-omega_h)/tau,  j = (1/m) dT/dt.
+==============================================================================
+Sun2022-0.75kg             tau=39.1 ms (A-03, thrust)         j_z(0)=   576.9 m/s^3 (  58.8 g/s)  t_95%_thrust=119.3 ms
+Sun2022-0.75kg             tau=33 ms (A-04, rotor speed)      j_z(0)=   683.5 m/s^3 (  69.7 g/s)  t_95%_thrust=100.7 ms
+Sun2022-0.75kg             tau=10 ms (5x faster, hypothetical) j_z(0)=  2255.6 m/s^3 ( 230.0 g/s)  t_95%_thrust= 30.5 ms
+                           a_horiz_max=44.26 m/s^2, so the time to build the full envelope at j_z(0) is 77 ms
+Swift-like(0.87kg,35N)     tau=39.1 ms (A-03, thrust)         j_z(0)=   514.4 m/s^3 (  52.5 g/s)  t_95%_thrust=117.1 ms
+Swift-like(0.87kg,35N)     tau=33 ms (A-04, rotor speed)      j_z(0)=   609.4 m/s^3 (  62.1 g/s)  t_95%_thrust= 98.9 ms
+Swift-like(0.87kg,35N)     tau=10 ms (5x faster, hypothetical) j_z(0)=  2011.2 m/s^3 ( 205.1 g/s)  t_95%_thrust= 30.0 ms
+                           a_horiz_max=39.02 m/s^2, so the time to build the full envelope at j_z(0) is 76 ms
+HiThrust-like(0.52kg,63N)  tau=39.1 ms (A-03, thrust)         j_z(0)=  1261.5 m/s^3 ( 128.6 g/s)  t_95%_thrust=130.6 ms
+HiThrust-like(0.52kg,63N)  tau=33 ms (A-04, rotor speed)      j_z(0)=  1494.7 m/s^3 ( 152.4 g/s)  t_95%_thrust=110.3 ms
+HiThrust-like(0.52kg,63N)  tau=10 ms (5x faster, hypothetical) j_z(0)=  4932.5 m/s^3 ( 503.0 g/s)  t_95%_thrust= 33.4 ms
+                           a_horiz_max=120.76 m/s^2, so the time to build the full envelope at j_z(0) is 96 ms
+
+==============================================================================
+4. ATTITUDE SLEW: time to rotate the thrust vector by 152 deg (reversal of the
+   maximum-horizontal-acceleration tilt) under bang-bang roll torque, with and
+   without the rotor lag.  Full nonlinear plant, RK4, quaternion state.
+==============================================================================
+Swift-like(0.87kg,35N)         motor_tau=  0.0 ms -> rest-to-rest 152 deg in  164.0 ms, peak rate    1857 deg/s, end angle 152.3 deg
+Swift-like(0.87kg,35N)         motor_tau= 10.0 ms -> rest-to-rest 152 deg in  172.5 ms, peak rate    1707 deg/s, end angle 151.8 deg
+Swift-like(0.87kg,35N)         motor_tau= 33.0 ms -> rest-to-rest 152 deg in  195.0 ms, peak rate    1445 deg/s, end angle 151.5 deg
+Swift-like(0.87kg,35N)         motor_tau= 39.1 ms -> rest-to-rest 152 deg in  201.0 ms, peak rate    1396 deg/s, end angle 151.6 deg
+Swift-like(0.87kg,35N)         motor_tau= 60.0 ms -> rest-to-rest 152 deg in  218.5 ms, peak rate    1263 deg/s, end angle 151.1 deg
+                               lag share of the slew time: 37.0 ms of 201.0 ms = 18.4 %  (the rest is the torque ceiling)
+                               d ln(t_slew)/d ln(motor_tau) = +0.177
+                               at v= 5.0 m/s the 152 deg reversal costs  1.01 m of travel with the thrust vector mis-aligned; a 40 ms sensorimotor latency costs 0.20 m
+                               at v=10.0 m/s the 152 deg reversal costs  2.01 m of travel with the thrust vector mis-aligned; a 40 ms sensorimotor latency costs 0.40 m
+                               at v=15.0 m/s the 152 deg reversal costs  3.02 m of travel with the thrust vector mis-aligned; a 40 ms sensorimotor latency costs 0.60 m
+                               at v=20.0 m/s the 152 deg reversal costs  4.02 m of travel with the thrust vector mis-aligned; a 40 ms sensorimotor latency costs 0.80 m
+                               thrust-vector rotation gives |da/dt| ~ a*omega = 860 m/s^3 at a=39.0 m/s^2, omega_peak=22.0 rad/s; the collective lag ceiling is j_z(0) above
+HiThrust-like(0.52kg,63N)      motor_tau=  0.0 ms -> rest-to-rest 152 deg in  175.0 ms, peak rate    1742 deg/s, end angle 152.4 deg
+HiThrust-like(0.52kg,63N)      motor_tau= 10.0 ms -> rest-to-rest 152 deg in  183.5 ms, peak rate    1610 deg/s, end angle 152.0 deg
+HiThrust-like(0.52kg,63N)      motor_tau= 33.0 ms -> rest-to-rest 152 deg in  206.5 ms, peak rate    1378 deg/s, end angle 152.6 deg
+HiThrust-like(0.52kg,63N)      motor_tau= 39.1 ms -> rest-to-rest 152 deg in  212.0 ms, peak rate    1327 deg/s, end angle 151.7 deg
+HiThrust-like(0.52kg,63N)      motor_tau= 60.0 ms -> rest-to-rest 152 deg in  230.5 ms, peak rate    1209 deg/s, end angle 152.3 deg
+                               lag share of the slew time: 37.0 ms of 212.0 ms = 17.5 %  (the rest is the torque ceiling)
+                               d ln(t_slew)/d ln(motor_tau) = +0.174
+                               at v= 5.0 m/s the 152 deg reversal costs  1.06 m of travel with the thrust vector mis-aligned; a 40 ms sensorimotor latency costs 0.20 m
+                               at v=10.0 m/s the 152 deg reversal costs  2.12 m of travel with the thrust vector mis-aligned; a 40 ms sensorimotor latency costs 0.40 m
+                               at v=15.0 m/s the 152 deg reversal costs  3.18 m of travel with the thrust vector mis-aligned; a 40 ms sensorimotor latency costs 0.60 m
+                               at v=20.0 m/s the 152 deg reversal costs  4.24 m of travel with the thrust vector mis-aligned; a 40 ms sensorimotor latency costs 0.80 m
+                               thrust-vector rotation gives |da/dt| ~ a*omega = 2548 m/s^3 at a=120.8 m/s^2, omega_peak=21.1 rad/s; the collective lag ceiling is j_z(0) above
+
+==============================================================================
+5. SEGMENT TIME WITH A FIRST-ORDER ACCELERATION LAG (1-D bang-bang)
+   a_cmd = +A up to t_s then -A; a follows da/dt = (a_cmd - a)/tau_a.
+   tau_a is the thrust lag alone (39.1 ms) or thrust lag + measured slew time.
+==============================================================================
+platform Swift-like(0.87kg,35N): A = a_horiz_max = 39.02 m/s^2
+  d=  5.0 m  tau_a= 39.1 ms: t=0.7573 s (ideal bang-bang 0.7160 s, penalty  41.3 ms =  5.8 %), x_end=5.0014 m
+  d=  5.0 m  tau_a= 33.0 ms: t=0.7506 s (ideal bang-bang 0.7160 s, penalty  34.6 ms =  4.8 %), x_end=5.0016 m
+  d=  5.0 m  tau_a= 10.0 ms: t=0.7261 s (ideal bang-bang 0.7160 s, penalty  10.1 ms =  1.4 %), x_end=4.9985 m
+  d=  5.0 m  tau_a= 80.0 ms: t=0.8042 s (ideal bang-bang 0.7160 s, penalty  88.2 ms = 12.3 %), x_end=5.0013 m
+  d=  5.0 m  d ln(t_seg)/d ln(tau_a) = +0.0579   d ln(t_seg)/d ln(a_max) = -0.4715
+  d= 10.0 m  tau_a= 39.1 ms: t=1.0531 s (ideal bang-bang 1.0125 s, penalty  40.6 ms =  4.0 %), x_end=9.9993 m
+  d= 10.0 m  tau_a= 33.0 ms: t=1.0469 s (ideal bang-bang 1.0125 s, penalty  34.4 ms =  3.4 %), x_end=10.0039 m
+  d= 10.0 m  tau_a= 10.0 ms: t=1.0229 s (ideal bang-bang 1.0125 s, penalty  10.4 ms =  1.0 %), x_end=10.0034 m
+  d= 10.0 m  tau_a= 80.0 ms: t=1.0989 s (ideal bang-bang 1.0125 s, penalty  86.4 ms =  8.5 %), x_end=10.0037 m
+  d= 10.0 m  d ln(t_seg)/d ln(tau_a) = +0.0401   d ln(t_seg)/d ln(a_max) = -0.4808
+  d= 20.0 m  tau_a= 39.1 ms: t=1.4722 s (ideal bang-bang 1.4319 s, penalty  40.3 ms =  2.8 %), x_end=20.0001 m
+  d= 20.0 m  tau_a= 33.0 ms: t=1.4659 s (ideal bang-bang 1.4319 s, penalty  34.0 ms =  2.4 %), x_end=20.0031 m
+  d= 20.0 m  tau_a= 10.0 ms: t=1.4423 s (ideal bang-bang 1.4319 s, penalty  10.4 ms =  0.7 %), x_end=20.0056 m
+  d= 20.0 m  tau_a= 80.0 ms: t=1.5164 s (ideal bang-bang 1.4319 s, penalty  84.5 ms =  5.9 %), x_end=20.0002 m
+  d= 20.0 m  d ln(t_seg)/d ln(tau_a) = +0.0283   d ln(t_seg)/d ln(a_max) = -0.4863
+
+==============================================================================
+6. CONVERGENCE AND VERIFICATION
+==============================================================================
+  integrator angular_momentum_drift: 7.102e-15
+  integrator rotational_energy_drift: 9.919e-15
+  integrator quat_norm_drift: 2.220e-16
+  integrator free_fall_error: 2.842e-14
+  integrator rk4_order: 4.005e+00
+  seg_time(10 m, tau=39.1 ms) at dt=1.00e-04: t=1.053100 s, x_end=9.999282 m
+  seg_time(10 m, tau=39.1 ms) at dt=6.67e-05: t=1.053133 s, x_end=9.999282 m
+  seg_time(10 m, tau=39.1 ms) at dt=3.33e-05: t=1.053100 s, x_end=9.999282 m
+  seg_time with tau -> 0: t=1.012700 s vs closed form 2 sqrt(d/A) = 1.012528 s
+  slew_rest_to_rest(152 deg, tau=39.1 ms) at dt=5.00e-04: t=201.000 ms, phi=151.618 deg
+  slew_rest_to_rest(152 deg, tau=39.1 ms) at dt=3.33e-04: t=201.333 ms, phi=152.385 deg
+  closed-form bang-bang slew (no lag, no gyroscopic coupling): alpha=396.1 rad/s^2, t = 2 sqrt(theta/alpha) = 163.7 ms
+
+--- stderr ---
+

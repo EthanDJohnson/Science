@@ -1,0 +1,33 @@
+# math_run log
+command:  python3 runs/2026-10-15-quadrotor-agility-limit/math/mechanist/M-MECH-08.py
+started:  2026-10-16T01:27:21Z
+duration: 0.6 s
+exit:     0
+versions: python 3.13.16, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   11 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+inputs: m = 0.75 kg, a_h = 42.034 m/s^2
+F_err = 0.352 N -> a_err = 0.4693 m/s^2
+F_err = 0.365 N -> a_err = 0.4867 m/s^2
+F_err = 2.0 N -> a_err = 2.6667 m/s^2
+PASS 0.486667 m/s^2 == 0.48 m/s^2: within 0.02; 0.486667 vs 0.48 (SI)
+PASS 0.365 N/(0.75 kg) has the dimension of acceleration: dimensional analysis
+PASS a_err*v**2/(2*a_h**2) == a_err*v**2/(2*a_h**2): symbolic
+PASS lim v->0 of a_err*v**2/(2*a_h**2) == 0: symbolic limit 0
+PASS lim a_h->oo of a_err*v**2/(2*a_h**2) == 0: symbolic limit 0
+PASS 0.4867 m/s^2 * (20 m/s)^2/(2*(42 m/s^2)^2) has the dimension of length: dimensional analysis
+v =  7.0 m/s, F_err = 0.365 N: t_b = 166.5 ms, dx = 0.675 cm   (lens: 0.7 cm)
+PASS 0.00674819 m == 0.7 cm: within 0.05; 0.00674819 vs 0.007 (SI)
+v = 10.0 m/s, F_err = 0.365 N: t_b = 237.9 ms, dx = 1.377 cm   (lens: 1.4 cm)
+PASS 0.01377181 m == 1.4 cm: within 0.05; 0.0137718 vs 0.014 (SI)
+v = 20.0 m/s, F_err = 0.365 N: t_b = 475.8 ms, dx = 5.509 cm   (lens: 5.4 cm)
+PASS 0.05508723 m == 5.4 cm: within 0.05; 0.0550872 vs 0.054 (SI)
+v = 20 m/s, F_err = 2 N: dx = 30.2 cm   (lens: 30 cm)
+PASS 0.30184781 m == 30 cm: within 0.05; 0.301848 vs 0.3 (SI)
+dx(20)/dx(7) = 8.163  (expect (20/7)^2 = 8.163)
+PASS 8.163265 m == 8.163265 m: within 1e-09; 8.16327 vs 8.16327 (SI)
+SUMMARY: 11 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

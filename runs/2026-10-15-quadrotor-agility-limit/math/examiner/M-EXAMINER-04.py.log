@@ -1,0 +1,48 @@
+# math_run log
+command:  python3 runs/2026-10-15-quadrotor-agility-limit/math/examiner/M-EXAMINER-04.py
+started:  2026-10-16T01:05:32Z
+duration: 0.6 s
+exit:     0
+versions: python 3.13.16, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   18 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+w_c = pi/(4*tau)
+PASS pi/(4*tau) == pi/(4*tau): symbolic
+PASS lim tau->0 of 4*tau/pi == 0: symbolic limit 0
+PASS lim tau->oo of pi/(4*tau) == 0: symbolic limit 0
+tau_bind = pi*R/(4*mm*vv)
+PASS pi*R/(4*mm*vv) == pi*R/(4*mm*vv): symbolic
+PASS vv == vv: symbolic
+
+(i) bandwidth at tau = 40 ms:
+   w_c = 19.6350 rad/s = 3.1250 Hz (claimed 19.63 rad/s, 3.12 Hz)
+PASS 19.63495 rad/s == 19.63 rad/s: within 0.001; 19.6349 vs 19.63 (SI)
+PASS 3.12500 Hz == 3.12 Hz: within 0.002; 3.125 vs 3.12 (SI)
+
+(ii) speed cap v = w_c R / m, R = 5 m:
+   tau =    40 ms, m = 5: v =  19.63 m/s (claimed 19.6)
+PASS 19.63495 m/s == 19.6 m/s: within 0.012; 19.6349 vs 19.6 (SI)
+   tau =    40 ms, m = 3: v =  32.72 m/s (claimed 32.7)
+PASS 32.72492 m/s == 32.7 m/s: within 0.012; 32.7249 vs 32.7 (SI)
+   tau =   130 ms, m = 5: v =   6.04 m/s (claimed 6.0)
+PASS 6.04152 m/s == 6.0 m/s: within 0.012; 6.04152 vs 6 (SI)
+   tau =   130 ms, m = 3: v =  10.07 m/s (claimed 10.1)
+PASS 10.06921 m/s == 10.1 m/s: within 0.012; 10.0692 vs 10.1 (SI)
+
+(iii) latency that would make the bound bind, R = 5 m:
+   v =  7.0 m/s, m = 5: tau =  112.2 ms (claimed 112.0)
+PASS 112.1997 ms == 112.0 ms: within 0.006; 0.1122 vs 0.112 (SI)
+   v =  7.0 m/s, m = 3: tau =  187.0 ms (claimed 187.0)
+PASS 186.9996 ms == 187.0 ms: within 0.006; 0.187 vs 0.187 (SI)
+   v = 10.0 m/s, m = 5: tau =   78.5 ms (claimed 79.0)
+PASS 78.5398 ms == 79.0 ms: within 0.006; 0.0785398 vs 0.079 (SI)
+   v = 10.0 m/s, m = 3: tau =  130.9 ms (claimed 131.0)
+PASS 130.8997 ms == 131.0 ms: within 0.006; 0.1309 vs 0.131 (SI)
+PASS 19.635 rad/s has the dimension of 1/s: dimensional analysis
+PASS 19.63 rad/s * 5 m has the dimension of m/s: dimensional analysis
+PASS 3.1416/4 * 5 m / (3 * 7 m/s) has the dimension of s: dimensional analysis
+SUMMARY: 18 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

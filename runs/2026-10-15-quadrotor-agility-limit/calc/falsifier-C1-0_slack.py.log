@@ -1,0 +1,140 @@
+# math_run log
+command:  python3 /home/user/Science/runs/2026-10-15-quadrotor-agility-limit/calc/falsifier-C1-0_slack.py
+started:  2026-10-16T02:21:12Z
+duration: 0.8 s
+exit:     0
+versions: python 3.13.16, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+Refuter 0 vs C1 ("the perceived volume ahead binds first").
+
+Attack: an elasticity of a BOUND is not an elasticity of the METRIC.  The metric is
+min over active bounds, so d ln v_metric / d ln s = 0 wherever the range bound sits
+ABOVE the speed at which the vehicle actually stops meeting 90 per cent.  Everything
+here uses C1's own numbers and the A-20 platform's own published optics.
+
+SI units throughout (m, s, m/s, m/s^2, deg).  g = 9.80665 m/s^2.
+
+Sections
+  A  required look-ahead vs usable range at the measured operating point (A-20)
+  B  the A-20 paper's OWN perception bound (A-21) against its own failure curve
+  C  how small the usable range must be for the range leg to be ACTIVE at 7 m/s
+  D  the solid-angle (1b) leg with the A-20 platform's real optics, both tilt signs
+  E  does the banked dodge move the velocity out of a forward cone at all?
+  F  the e_s = 1 identity: structural, not measured
+
+============================================================================================
+A.  REQUIRED LOOK-AHEAD vs USABLE RANGE, at the A-20 operating point
+============================================================================================
+  A-20 platform T/W = 4.4  ->  a_h = g sqrt(TW^2-1) = 42.02 m/s^2
+   v (m/s)  s_stop (m)  s_dodge (m)  slack vs 6 m (stop)  slack vs 4.1 m (stop)
+       3.0        0.43         1.12                14.02                   9.59
+       5.0        0.83         1.87                 7.21                   4.93
+       7.0        1.33         2.62                 4.50                   3.08
+      10.0        2.26         3.74                 2.65                   1.82
+      15.0        4.28         5.61                 1.40                   0.96
+  (tau_sense = 107 ms, the mechanist's own value used in M-MECH-02/03;
+   6 m = C1's lower usable depth range; 4.106 m = C1's own stereo-noise
+   ceiling for a 50 mm baseline [M-MECH-06 verified].)
+
+  Same table read as a SPEED bound (what range permits):
+    s (m)  v_stop (m/s)  v_dodge (m/s)
+     4.11         14.62          10.97
+     5.81         18.05          15.52
+     6.00         18.40          16.03
+    10.00         24.84          26.72
+  OBSERVED: 100 % at 3 and 5 m/s, 80 % at 7 m/s, 60 % at 10 m/s [A-20].
+  The brief's 90-per-cent metric is therefore met at <= 5 m/s and lost by 7 m/s.
+      range leg at s =  4.11 m exceeds the 7 m/s ceiling by 2.09x (stop) and 1.57x (dodge)
+      range leg at s =  6.00 m exceeds the 7 m/s ceiling by 2.63x (stop) and 2.29x (dodge)
+      range leg at s = 10.00 m exceeds the 7 m/s ceiling by 3.55x (stop) and 3.82x (dodge)
+
+============================================================================================
+B.  THE A-20 PAPER'S OWN PERCEPTION BOUND [A-21] AGAINST ITS OWN FAILURE CURVE
+============================================================================================
+  method 1: v_max from sensing range + latency = 12.0 m/s; ratio to the 7 m/s 90-per-cent ceiling = 1.71x, to the 10 m/s 60-per-cent point = 1.20x
+  method 2: v_max from sensing range + latency = 13.2 m/s; ratio to the 7 m/s 90-per-cent ceiling = 1.89x, to the 10 m/s 60-per-cent point = 1.32x
+  method 3: v_max from sensing range + latency = 13.5 m/s; ratio to the 7 m/s 90-per-cent ceiling = 1.93x, to the 10 m/s 60-per-cent point = 1.35x
+  A-21 is the SAME paper and the SAME platform as A-20 (1.5 m pole at 6 m,
+  0.2 m sphere, rotational dynamics included).  Its own perception-limited
+  speed is 1.7-1.9x above the speed at which its hardware already fails 20 %
+  of the time, so the perception-volume bound is NOT the active constraint there.
+
+============================================================================================
+C.  HOW SMALL MUST THE USABLE RANGE BE FOR THE RANGE LEG TO BE ACTIVE AT 7 m/s?
+============================================================================================
+    a (m/s^2)   tau (s)   s_req stop (m)   s_req dodge (m)
+        42.02     0.040             0.86              2.15
+        42.02     0.107             1.33              2.62
+        42.02     0.150             1.63              2.92
+        16.33     0.107             2.25              3.75
+        16.33     0.150             2.55              4.05
+         5.44     0.107             5.25              5.95
+         5.44     0.150             5.55              6.25
+  Even with C1's most pessimistic FoV-capped acceleration (5.44 m/s^2) and a
+  150 ms chain, the range the bound needs to be active at 7 m/s is 5.55 m (stop)
+  -- i.e. the leg becomes active only at the very bottom of its own quoted
+  6-10 m usable range, and only if the acceleration is simultaneously capped to
+  0.55 g, which is the leg (1b) whose own math check inverted its ranking
+  [M-MECH-03 refuted].
+
+============================================================================================
+D.  LEG (1b) WITH THE A-20 PLATFORM'S REAL OPTICS, BOTH TILT SIGNS
+============================================================================================
+  A-20 sensor: D435i depth, ~90 deg HFoV, 58 deg VFoV, tilted 30 deg above 7 m/s.
+  C1 uses the 58 deg VERTICAL FoV with the tilt ADDED: a_u = g tan(29+30).
+                                            case  phi (deg)  a_u (m/s^2)   a_u/g  v_stop at 6 m (m/s)
+  vertical half-FoV 29, level mount (C1's own 1a/1b)       29.0         5.44    0.55                 7.52
+  vertical half-FoV 29 + 30 up-tilt (C1's headline)       59.0        16.32    1.66                12.36
+  vertical half-FoV 29 - 30 up-tilt (BRAKING sign)       -1.0          n/a     n/a      no forward view
+  horizontal half-FoV 45 (A-20's ~90 deg HFoV), level       45.0         9.81    1.00                 9.85
+   horizontal half-FoV 45 + 30 (as C1 adds tilt)       75.0        36.60    3.73                17.40
+  The dilemma: a quadrotor DECELERATES by pitching NOSE-UP, so a camera already
+  tilted 30 deg up has phi = 29 - 30 < 0 deg of usable braking cone -- the bound
+  would forbid braking at ANY speed, contradicting 100 per cent success at 3 and
+  5 m/s [A-20].  With the tilt added (C1's reading) the coupled bound is 11.8 m/s,
+  ABOVE the 7 m/s failure onset.  Neither sign makes leg (1b) active at 7 m/s.
+  With the horizontal FoV that a lateral dodge actually uses, the cap is
+  9.81-36.60 m/s^2 and the bound is 9.85-17.40 m/s.
+
+============================================================================================
+E.  DOES THE BANKED DODGE PUSH THE VELOCITY OUT OF A FORWARD CONE?
+============================================================================================
+  The simulator's dodge (the manoeuvre that carries e_range = +0.986/+1.082)
+  rolls about the body-x axis, which stays along the flight direction: a roll
+  does NOT move the optical axis off the velocity vector.  The only angular
+  excursion is the velocity's own side-slip at the end of the manoeuvre.
+   a_lat (m/s^2)   v (m/s)  v_lat at completion  deflection (deg)   inside 45 deg half-HFoV?
+           44.26     16.92                 5.76             18.80                       True
+           44.26     29.41                 5.76             11.08                       True
+           42.03      7.00                 5.61             38.73                       True
+           16.33      7.00                 3.50             26.56                       True
+  So for the dodge manoeuvre the solid-angle leg is inactive by construction:
+  leg (1b) cannot be what caps the dodge whose elasticity leg (1a) quotes.
+
+============================================================================================
+F.  e_s = 1 IS A STRUCTURAL IDENTITY OF THE BOUND, NOT A MEASUREMENT
+============================================================================================
+  dodge bound v = s/(tau + 2 sqrt(d/a)):  d ln v/d ln s = 1  (identically 1)
+                                          d ln v/d ln a = sqrt(d)/(sqrt(a)*tau + 2*sqrt(d))
+  stop bound:   d ln v/d ln s + d ln v/d ln a = 1
+  Both hold for EVERY (s, a, tau) > 0, including values where the bound sits
+  far above the speed the vehicle achieves.  An elasticity of 1 therefore
+  carries no information about which limit binds; it is the statement that the
+  bound is homogeneous of degree 1 in the range.
+
+  The metric is the MINIMUM over active bounds.  Elasticity of min(v_perc, v_other):
+   v_perc (m/s)  v_other (m/s)   d ln v_metric/d ln s
+          16.92           7.00                   0.00
+          12.00           7.00                   0.00
+           6.00           7.00                   1.00
+           6.90           7.00                   1.00
+  With the measured 90-per-cent ceiling at <= 5-7 m/s and every perception bound
+  computed above at 10-29 m/s, the metric's elasticity to range at the operating
+  point is 0, not 1.  The simulator's own attempt to measure a range elasticity
+  ON A COURSE (rather than on an isolated dodge) returned nan: every run failed
+  at 5 m/s for an unrelated controller reason [simulator F13].
+
+--- stderr ---
+

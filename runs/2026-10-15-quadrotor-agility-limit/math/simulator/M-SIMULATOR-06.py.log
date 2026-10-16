@@ -1,0 +1,54 @@
+# math_run log
+command:  python3 runs/2026-10-15-quadrotor-agility-limit/math/simulator/M-SIMULATOR-06.py
+started:  2026-10-16T02:06:35Z
+duration: 0.5 s
+exit:     0
+versions: python 3.13.16, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   8 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+=== inputs (SI) ===
+PM target 40.0 deg, total phase budget 50.0 deg
+baseline tau = 2.0 ms, T_m = 39.1 ms -> w_c = 27.3031 rad/s, w = 39.9378 rad/s
+phase split there: delay 3.129 deg vs lag 46.871 deg -> ratio 15.0
+actuator pole 1/T_m = 25.5754 rad/s; crossover/pole = 1.0676
+
+=== reading R1: equal phase contributions ===
+  T_m =   5.0 ms: w_c* =   93.262 rad/s, tau* =   4.679 ms (re-solved w_c =   93.262 rad/s)
+  T_m =  10.0 ms: w_c* =   46.631 rad/s, tau* =   9.357 ms (re-solved w_c =   46.631 rad/s)
+  T_m =  39.1 ms: w_c* =   11.926 rad/s, tau* =  36.587 ms (re-solved w_c =   11.926 rad/s)
+
+=== reading R2: delay alone matched to the baseline achievable gain ===
+  tau* with no actuator lag = 50.0 deg in rad / 39.938 rad/s = 21.851 ms
+  tau =   5.00 ms, no lag: achievable w =   174.533 rad/s (above the 39.938 rad/s baseline)
+  tau =  14.50 ms, no lag: achievable w =    60.184 rad/s (above the 39.938 rad/s baseline)
+  tau =  20.00 ms, no lag: achievable w =    43.633 rad/s (above the 39.938 rad/s baseline)
+  tau =  21.85 ms, no lag: achievable w =    39.939 rad/s (above the 39.938 rad/s baseline)
+
+=== sensitivity of the achievable gain, one term at a time ===
+  tau =   0.0 ms, T_m = 39.1 ms: w =   47.418 rad/s
+  tau =   1.0 ms, T_m = 39.1 ms: w =   43.275 rad/s
+  tau =   2.0 ms, T_m = 39.1 ms: w =   39.938 rad/s
+  tau =   5.0 ms, T_m = 39.1 ms: w =   32.837 rad/s
+  tau =  10.0 ms, T_m = 39.1 ms: w =   25.853 rad/s
+  tau =  20.0 ms, T_m = 39.1 ms: w =   18.674 rad/s
+  T_m =  0.00 ms, tau = 2 ms: w =   436.332 rad/s
+  T_m =  5.00 ms, tau = 2 ms: w =   165.491 rad/s
+  T_m = 10.00 ms, tau = 2 ms: w =   111.122 rad/s
+  T_m = 19.55 ms, tau = 2 ms: w =    69.685 rad/s
+  T_m = 39.10 ms, tau = 2 ms: w =    39.938 rad/s
+  T_m = 78.20 ms, tau = 2 ms: w =    21.637 rad/s
+
+=== checks ===
+PASS 4.6786 == 5.0: within 0.07; 4.6786 vs 5 (SI)
+PASS 21.8506 == 20.0: within 0.1; 21.8506 vs 20 (SI)
+PASS 25.5754 == 25.6: within 0.002; 25.5754 vs 25.6 (SI)
+PASS 46.8713000000000 > 3.12870000000000: symbolic, constant
+PASS 5*pi*T_m/(36*tan(5*pi/36)) == 5*pi*T_m/(36*tan(5*pi/36)): symbolic
+PASS atan(T*w) < T*w: numeric at 50 points, T in [0.001, 0.1], w in [0.1, 100]
+PASS (0.43633) / (93.26 s^-1) has the dimension of time: dimensional analysis
+PASS 0.0391 s * 25.5754 s^-1 has the dimension of dimensionless: dimensional analysis
+SUMMARY: 8 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

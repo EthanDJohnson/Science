@@ -1,0 +1,72 @@
+# math_run log
+command:  python3 runs/2026-10-15-quadrotor-agility-limit/math/constraints/M-CONSTRAINTS-03.py
+started:  2026-10-16T01:58:27Z
+duration: 0.6 s
+exit:     1
+versions: python 3.13.16, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   25 PASS, 2 FAIL, 0 UNDECIDED
+
+--- stdout ---
+A_disc = 0.012668 m^2 per rotor
+1. momentum theory from first principles: T = 2 rho A v_i^2, P = T v_i
+PASS sqrt(2)*tt**(3/2)/(2*sqrt(aa)*sqrt(rh)) == sqrt(2)*tt**(3/2)/(2*sqrt(aa)*sqrt(rh)): symbolic
+PASS lim aa->oo of sqrt(2)/(2*sqrt(aa)*sqrt(rh)) == 0: symbolic limit 0
+PASS (2.1337 N)^1.5 / (2 * 1.225 kg/m^3 * 0.012668 m^2)^0.5 has the dimension of W: dimensional analysis
+  pack energy [Wh]: got 26.64, lens 26.6
+PASS 0.0399999999999991 < 0.266000000000000: symbolic, constant
+   hover: T = 8.535 N -> P_ideal = 70.8 W, electrical 94-109 W, 3.54-4.09 C, 6.4-7.4 A
+  hover P_ideal [W]: got 70.7654, lens 71
+PASS 0.2346448649300594 < 0.710000000000000: symbolic, constant
+  hover P_elec at FoM 0.75 [W]: got 94.3538, lens 94
+PASS 0.3538068467599196 < 0.940000000000000: symbolic, constant
+  hover P_elec at FoM 0.65 [W]: got 108.87, lens 109
+PASS 0.13022286912317005 < 1.09000000000000: symbolic, constant
+  hover C-rate at FoM 0.65: got 4.0867, lens 4.1
+PASS 0.01329665424636461 < 0.123000000000000: symbolic, constant
+  hover C-rate at FoM 0.75: got 3.54181, lens 3.5
+PASS 0.04180956631981703 < 0.105000000000000: symbolic, constant
+   half throttle: T = 17.500 N -> P_ideal = 207.8 W, electrical 277-320 W, 10.40-12.00 C, 18.7-21.6 A
+  half throttle P_ideal [W]: got 207.776, lens 208
+PASS 0.224003659214986 < 2.08000000000000: symbolic, constant
+  half throttle P_elec at FoM 0.75 [W]: got 277.035, lens 277
+PASS 0.034661787713329950 < 2.77000000000000: symbolic, constant
+  half throttle P_elec at FoM 0.65 [W]: got 319.655, lens 320
+PASS 0.34462101417694013 < 3.20000000000000: symbolic, constant
+  half throttle C-rate at FoM 0.65: got 11.9991, lens 12
+PASS 0.00092421224387899403 < 0.360000000000000: symbolic, constant
+  half throttle C-rate at FoM 0.75: got 10.3992, lens 9.6
+FAIL 0.79919901605530635 < 0.288000000000000: numeric, constant; counterexample value = 0.5111990161; value 0.5111990161
+   full throttle: T = 35.000 N -> P_ideal = 587.7 W, electrical 784-904 W, 29.41-33.94 C, 52.9-61.1 A
+  full throttle P_ideal [W]: got 587.679, lens 588
+PASS 0.3207360785584967 < 5.88000000000000: symbolic, constant
+  full throttle P_elec at FoM 0.75 [W]: got 783.572, lens 784
+PASS 0.4276481047447049 < 7.84000000000000: symbolic, constant
+  full throttle P_elec at FoM 0.65 [W]: got 904.122, lens 904
+PASS 0.1219444945252945 < 9.04000000000000: symbolic, constant
+  full throttle C-rate at FoM 0.65: got 33.9385, lens 34
+PASS 0.061488570025324985 < 1.02000000000000: symbolic, constant
+  full throttle C-rate at FoM 0.75: got 29.4134, lens 27
+FAIL 2.413376572644720 < 0.810000000000000: numeric, constant; counterexample value = 1.603376573; value 1.603376573
+2. full-throttle current at 14.8 V
+  current at FoM 0.75 [A]: got 52.9441, lens 53
+PASS 0.05592216923951021 < 1.06000000000000: symbolic, constant
+  current at FoM 0.65 [A]: got 61.0893, lens 61
+PASS 0.08932057395441007 < 1.22000000000000: symbolic, constant
+PASS 14.8 V * 1.8 A * 3600 s has the dimension of J: dimensional analysis
+   NOTE: C = P/(V*Ah) with V = 14.8 V gives 10.40 C (half) and 29.41 C (full) at FoM 0.75,
+   against the lens's 9.6 C and 27 C: its lower C-rate bounds are 8 per cent low, while
+   its hover 3.5 C and its upper bounds 12.0/34 C match 14.8 V exactly.
+3. lap energy: 75 m at 15 m/s
+   at 277 W: 0.385 Wh = 1.44 % of the pack
+   at 320 W: 0.444 Wh = 1.67 % of the pack
+  lap energy at ~295 W [Wh]: got 0.409722, lens 0.41
+PASS 0.0002777777777777726 < 0.00820000000000000: symbolic, constant
+  lap energy as a fraction of the pack [%]: got 1.538, lens 1.5
+PASS 0.037996329662996400 < 0.0750000000000000: symbolic, constant
+PASS 1.5379963296629964 < 5: symbolic, constant
+PASS 295 W * 5 s has the dimension of J: dimensional analysis
+PASS 295 W * 5 s == 0.4097 W*h: within 0.001; 1475 vs 1474.92 (SI)
+SUMMARY: 25 pass, 2 fail, 0 undecided
+
+--- stderr ---
+

@@ -1,0 +1,41 @@
+# math_run log
+command:  python3 runs/2026-10-15-quadrotor-agility-limit/math/examiner/M-EXAMINER-03.py
+started:  2026-10-16T01:05:31Z
+duration: 0.8 s
+exit:     0
+versions: python 3.13.16, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   19 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+PASS sqrt(gg**2*twr**2 - gg**2) == gg*sqrt(twr**2 - 1): symbolic
+PASS lim twr->oo of sqrt(gg**2*twr**2 - gg**2)/(gg*twr) == 1: symbolic limit 1
+PASS gg == gg: symbolic
+t_tot = 2*sqrt(d)/sqrt(a)  v_mean = sqrt(a)*sqrt(d)/2  v_peak = sqrt(a)*sqrt(d)
+PASS sqrt(a)*sqrt(d)/2 == sqrt(a)*sqrt(d)/2: symbolic
+PASS sqrt(a)*sqrt(d) == sqrt(a)*sqrt(d): symbolic
+PASS 2 == 2: symbolic
+PASS twr**2/(twr**2 - 1) == twr**2/(twr**2 - 1): symbolic
+PASS 1/2 == 1/2: symbolic
+PASS lim twr->oo of twr**2/(twr**2 - 1) == 1: symbolic limit 1
+
+numbers (g = 9.81 m/s^2, d = 10.7 m):
+  TWR 4.1: a_h = 39.01 m/s^2, v_mean = 10.215 m/s, v_peak = 20.43 m/s (claimed 39.0, 10.21, 20.4)
+PASS 39.00632 m/s^2 == 39.0 m/s^2: within 0.003; 39.0063 vs 39 (SI)
+PASS 10.21479 m/s == 10.21 m/s: within 0.003; 10.2148 vs 10.21 (SI)
+PASS 20.42958 m/s == 20.4 m/s: within 0.005; 20.4296 vs 20.4 (SI)
+  TWR 4.5: a_h = 43.04 m/s^2, v_mean = 10.730 m/s, v_peak = 21.46 m/s (claimed 43.0, 10.73, 21.5)
+PASS 43.04120 m/s^2 == 43.0 m/s^2: within 0.003; 43.0412 vs 43 (SI)
+PASS 10.73011 m/s == 10.73 m/s: within 0.003; 10.7301 vs 10.73 (SI)
+PASS 21.46022 m/s == 21.5 m/s: within 0.005; 21.4602 vs 21.5 (SI)
+
+d ln a_h/d ln TWR at 4.1 = 1.063251 (claimed 1.063)
+d ln v/d ln TWR = 0.531626 (claimed 0.532)
+gap to published sweep 0.565: 5.91% (claimed within 6 per cent)
+PASS 1.06330000000000 == 1.06330000000000: symbolic
+PASS 0.531600000000000 == 0.531600000000000: symbolic
+PASS 9.81 m/s^2 * 3.9762 has the dimension of m/s^2: dimensional analysis
+PASS 39.02 m/s^2 * 10.7 m has the dimension of m^2/s^2: dimensional analysis
+SUMMARY: 19 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

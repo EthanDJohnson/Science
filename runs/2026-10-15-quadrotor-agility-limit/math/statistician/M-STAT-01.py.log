@@ -1,0 +1,38 @@
+# math_run log
+command:  python3 runs/2026-10-15-quadrotor-agility-limit/math/statistician/M-STAT-01.py
+started:  2026-10-16T01:48:06Z
+duration: 1.9 s
+exit:     0
+versions: python 3.13.16, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   13 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+=== M-STAT-01: binomial intervals and certification counts (all dimensionless) ===
+CP one-sided 95 % lower bound, k = n = 10 : 0.741134   (closed form 0.05^(1/10) = 0.741134)
+Wilson 95 % interval, 10/10 (bisection)   : [0.7225, 1.0000]
+Wilson 95 % interval, 10/10 (closed form) : [0.7225, 1.0000]
+ln(0.05)/ln(0.90)                         : 28.4332
+failures f = 0: smallest n with CP lower >= 0.90 -> one-sided 95 %: n = 29;  lower end of two-sided 95 %: n = 36
+failures f = 1: smallest n with CP lower >= 0.90 -> one-sided 95 %: n = 46;  lower end of two-sided 95 %: n = 54
+failures f = 3: smallest n with CP lower >= 0.90 -> one-sided 95 %: n = 76;  lower end of two-sided 95 %: n = 85
+P(X >= 53 | n = 54, p = 0.9) = 0.02367 (<= 0.025 rule)
+P(X >= 82 | n = 85, p = 0.9) = 0.02451 (<= 0.025 rule)
+true rate 0.75 is inside the 10/10 Wilson interval: True
+PASS 1 has the dimension of dimensionless: dimensional analysis
+PASS 0.74113445 == 0.741: within 0.002; 0.741134 vs 0.741 (SI)
+PASS 0.72246720 == 0.722: within 0.002; 0.722467 vs 0.722 (SI)
+PASS 1.00000000 == 1.000: within 0.002; 1 vs 1 (SI)
+PASS 0 < 1.00000000000000E-9: symbolic, constant
+PASS 28.433159 == 28.43: within 0.002; 28.4332 vs 28.43 (SI)
+PASS 29 == 29: within 1e-06; 29 vs 29 (SI)
+PASS 54 == 54: within 1e-06; 54 vs 54 (SI)
+PASS 85 == 85: within 1e-06; 85 vs 85 (SI)
+NOTE one-sided-95 % counts: f=1 -> 46, f=3 -> 76
+PASS lim n->oo of 1 - 0.05**(1/n) == 0: symbolic limit 0
+PASS 0 < 1.00000000000000E-9: symbolic, constant
+PASS 0.901855372300000 >= 0.900000000000000: symbolic, constant
+PASS 0.898534264400000 < 0.900000000000000: symbolic, constant
+SUMMARY: 13 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

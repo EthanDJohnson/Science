@@ -1,0 +1,46 @@
+# math_run log
+command:  python3 runs/2026-10-15-quadrotor-agility-limit/math/mechanist/M-MECH-02.py
+started:  2026-10-16T01:24:03Z
+duration: 0.4 s
+exit:     0
+versions: python 3.13.16, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   17 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+inputs: a_h = 44.259 m/s^2 (T/W = 4.621), tau_max = 1.3309 N m, alpha_max = 633.8 rad/s^2
+PASS a_x/g_s == a_x/g_s: symbolic
+theta(a_x=5.0 m/s^2) = 27.01 deg   (lens: 27.0)
+PASS 27.007211 m == 27.0 m: within 0.005; 27.0072 vs 27 (SI)
+theta(a_x=10.0 m/s^2) = 45.55 deg   (lens: 45.5)
+PASS 45.549514 m == 45.5 m: within 0.005; 45.5495 vs 45.5 (SI)
+theta(a_x=20.0 m/s^2) = 63.87 deg   (lens: 63.9)
+PASS 63.872049 m == 63.9 m: within 0.005; 63.872 vs 63.9 (SI)
+theta(a_x=38.0 m/s^2) = 75.52 deg   (lens: 75.5)
+PASS 75.524690 m == 75.5 m: within 0.005; 75.5247 vs 75.5 (SI)
+PASS g_s*tan(phi) == g_s*tan(phi): symbolic
+PASS lim phi->0 of g_s*tan(phi) == 0: symbolic limit 0
+a_u(phi=29.0 deg) = 5.438 m/s^2   (lens: 5.44)
+PASS 5.437772 m/s^2 == 5.44 m/s^2: within 0.005; 5.43777 vs 5.44 (SI)
+a_u(phi=59.0 deg) = 16.327 m/s^2   (lens: 16.3)
+PASS 16.326582 m/s^2 == 16.3 m/s^2: within 0.005; 16.3266 vs 16.3 (SI)
+a_u(phi=77.5 deg) = 44.250 m/s^2   (lens: 44.3)
+PASS 44.250050 m/s^2 == 44.3 m/s^2: within 0.005; 44.2501 vs 44.3 (SI)
+PASS 9.81 m/s^2 * 1.664 has the dimension of acceleration: dimensional analysis
+phi= 29.0 deg: a_u= 5.438 m/s^2, theta=29.00 deg, tau_rot= 56.5 ms -> v =  7.517 (tau_sense only),  7.376 (half rotation),  7.238 m/s (full rotation)
+phi= 59.0 deg: a_u=16.327 m/s^2, theta=59.00 deg, tau_rot= 80.6 ms -> v = 12.359 (tau_sense only), 11.797 (half rotation), 11.265 m/s (full rotation)
+phi= 57.5 deg: a_u=15.399 m/s^2, theta=57.50 deg, tau_rot= 79.6 ms -> v = 12.045 (tau_sense only), 11.520 (half rotation), 11.021 m/s (full rotation)
+phi= 77.5 deg: a_u=44.250 m/s^2, theta=77.50 deg, tau_rot= 92.4 ms -> v = 18.790 (tau_sense only), 17.241 (half rotation), 15.852 m/s (full rotation)
+PASS 7.375850 m/s == 7.35 m/s: within 0.01; 7.37585 vs 7.35 (SI)
+PASS 11.797171 m/s == 11.76 m/s: within 0.01; 11.7972 vs 11.76 (SI)
+FoV  58.0 deg -> a_u =  5.438 m/s^2, v =  7.376 m/s   (lens: 7.4 m/s)
+PASS 7.375850 m/s == 7.4 m/s: within 0.02; 7.37585 vs 7.4 (SI)
+FoV 115.0 deg -> a_u = 15.399 m/s^2, v = 11.520 m/s   (lens: 11.5 m/s)
+PASS 11.519745 m/s == 11.5 m/s: within 0.02; 11.5197 vs 11.5 (SI)
+FoV 155.0 deg -> a_u = 44.250 m/s^2, v = 17.241 m/s   (lens: 17.0 m/s)
+PASS 17.240860 m/s == 17.0 m/s: within 0.02; 17.2409 vs 17 (SI)
+a_u(phi=85 deg) = 44.259 m/s^2 = a_h = 44.259 m/s^2 (cap inactive)
+PASS 44.259180 m/s^2 == 44.259180 m/s^2: within 1e-09; 44.2592 vs 44.2592 (SI)
+SUMMARY: 17 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

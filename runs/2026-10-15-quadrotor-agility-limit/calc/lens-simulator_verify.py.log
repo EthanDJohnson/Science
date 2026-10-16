@@ -1,0 +1,156 @@
+# math_run log
+command:  python3 runs/2026-10-15-quadrotor-agility-limit/calc/lens-simulator_verify.py
+started:  2026-10-16T00:52:59Z
+duration: 50.7 s
+exit:     0
+versions: python 3.13.16, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+MODEL CARD (SI units)
+  plant        : Sun2022-0.75kg  m=0.75 kg  J=diag(0.0025, 0.0021, 0.0043) kg m^2
+  arm          : l=0.14 m  beta=56.0 deg
+  rotors       : k_f=1.51e-06 N/(rad/s)^2  k_m=2.37e-08 N m/(rad/s)^2  f_i in [0.0, 8.5] N
+  actuator     : motor_tau=39.10 ms  slew_max=inf
+  aero (PLANT) : drag=True kd=(0.26, 0.28, 0.42) kg/s  h_force=True kh=0.01 kg/m
+  hover        : T/W=4.6227  a_max_horizontal=44.260 m/s^2  omega_hover=1103.50 rad/s
+  course       : y=3.0 sin(2pi x/30.0) m, z=2.0 m, x_end=90.0 m, 6 gates, tol=0.5 m
+  arc length   : 98.315 m
+
+==============================================================================
+VERIFICATION TABLE
+==============================================================================
+[PASS] energy conservation (unforced, no drag, no thrust), dt=1 ms
+       method   : 20 s RK4; E = 0.5 m|v|^2 + 0.5 om.J om + m g z
+       got      : 5.949389791e-12
+       expected : 0   (tol 1e-09)
+       note     : ballistic + torque-free tumble: E is an exact invariant
+[PASS] energy conservation (unforced, no drag, no thrust), dt=0.5 ms
+       method   : 20 s RK4; E = 0.5 m|v|^2 + 0.5 om.J om + m g z
+       got      : 5.511359775e-11
+       expected : 0   (tol 1e-09)
+       note     : ballistic + torque-free tumble: E is an exact invariant
+[PASS] angular momentum conservation (torque-free)
+       method   : quadrotor.diagnostics: max |J om|_world drift / |J om|_0 over 2 s
+       got      : 7.102414938e-15
+       expected : 0   (tol 1e-09)
+[PASS] rotational kinetic energy (torque-free)
+       method   : quadrotor.diagnostics: max drift of 0.5 om.J om
+       got      : 9.918813221e-15
+       expected : 0   (tol 1e-09)
+[PASS] quaternion norm
+       method   : max |‖q‖ - 1| over the 2 s tumble
+       got      : 2.220446049e-16
+       expected : 0   (tol 1e-12)
+[PASS] independent implementation: vdot, quaternion path vs Euler path
+       method   : same physical state in two parameterisations and two code paths
+       got      : 8.881784197e-16
+       expected : 0   (tol 1e-12)
+[PASS] independent implementation: omegadot, quaternion path vs Euler path
+       method   : same state, two code paths
+       got      : 0
+       expected : 0   (tol 1e-12)
+[PASS] independent implementation: hover A matrix, analytic vs numerical Jacobian
+       method   : quadrotor.hover_linearization vs control_tools.linearize
+       got      : 1.634443692e-10
+       expected : 0   (tol 1e-06)
+[PASS] independent implementation: hover B matrix, analytic vs numerical Jacobian
+       method   : quadrotor.hover_linearization vs control_tools.linearize
+       got      : 7.460476681e-12
+       expected : 0   (tol 1e-06)
+[PASS] rotor map round trip (thrust)
+       method   : wrench(rotor_speeds_from_wrench(T, tau))
+       got      : 9
+       expected : 9   (tol 1e-09)
+[PASS] rotor map round trip (torque)
+       method   : same, max component error
+       got      : 5.551115123e-17
+       expected : 0   (tol 1e-12)
+[PASS] mixer null direction: equal thrust on all four rotors makes pure collective
+       method   : max |M @ [1,1,1,1]| over the three torque rows
+       got      : 0
+       expected : 0   (tol 1e-12)
+       note     : this is what the torque-priority mixer relies on
+[PASS] known limit: free fall
+       method   : zero thrust from z=100 m for 1 s vs z0 - g t^2/2
+       got      : 2.842170943e-14
+       expected : 0   (tol 1e-09)
+[PASS] known limit: small-angle hover xddot = g*theta
+       method   : theta = 1e-05 rad, drag off
+       got      : 9.80665
+       expected : 9.80665   (tol 0.0001)
+[PASS] known limit: T/W horizontal acceleration ceiling
+       method   : full throttle at tilt acos(1/(T/W)) = 77.51 deg, drag off; simulated a_x vs g sqrt((T/W)^2 - 1)
+       got      : 44.25992236
+       expected : 44.25992236   (tol 1e-06)
+       note     : T/W = 4.6227; a_z residual 0.00e+00 m/s^2
+[PASS] known limit: that ceiling holds altitude
+       method   : a_z at the same state
+       got      : 0
+       expected : 0   (tol 1e-09)
+[PASS] known limit: motor_tau -> 0 equals instantaneous thrust
+       method   : 17-state plant at rotor speeds = command vs 13-state plant, max |dv, dom| difference
+       got      : 0
+       expected : 0   (tol 1e-12)
+[PASS] known limit: time-optimal solver on a straight path (rest to rest)
+       method   : S=100.0 m, a_max=20.0 m/s^2 vs t = 2 sqrt(S/a_max)
+       got      : 4.472135955
+       expected : 4.472135955   (tol 0.002)
+[PASS] known limit: time-optimal solver on a circle (cruise speed)
+       method   : kappa = 1/25.0 1/m, a_max=20.0; max speed vs sqrt(a_max R)
+       got      : 22.36067977
+       expected : 22.36067977   (tol 1e-06)
+[PASS] delay margin of L = 10/s
+       method   : control_tools.loop_margins vs pi/(2 wc)
+       got      : 0.1570796327
+       expected : 0.1570796327   (tol 1e-09)
+[PASS] delay margin of L = 100/s
+       method   : control_tools.loop_margins vs pi/(2 wc)
+       got      : 0.01570796327
+       expected : 0.01570796327   (tol 1e-09)
+[PASS] RK4 convergence order
+       method   : Richardson self-convergence at base step 20 ms on the tumble
+       got      : 4.00523942
+       expected : 4   (tol 0.25)
+       closed-loop worst gate error at U=12 m/s: dt=2 ms 0.142276 m, dt=1 ms 0.137897 m, dt=0.5 ms 0.137897 m
+[PASS] integration error, closed loop (1 ms vs 0.5 ms)
+       method   : worst gate error at U=12 m/s, relative difference
+       got      : 1.170417883e-07
+       expected : 0   (tol 0.02)
+       note     : dt = 1 ms is the step used for every headline number; 2 ms is used only in sweeps, where its error is 0.0318
+[PASS] linearisation equilibrium residual |f(x0, u0)| at hover
+       method   : control_tools.linearize residual, 12-state Euler form, wrench input
+       got      : 0
+       expected : 0   (tol 1e-12)
+       note     : step_sensitivity 2.57e-13; unstable modes 0
+       controllability: rank 12/12, keys ['condition', 'controllable', 'min_singular_value', 'n', 'rank', 'uncontrollable_modes']
+
+VERIFICATION: 24/24 rows PASS
+
+==============================================================================
+THE PLATFORM'S TIME-OPTIMAL TRAVERSAL TIME (the agility metric's denominator)
+==============================================================================
+  isotropic horizontal acceleration ceiling a_h = g sqrt((T/W)^2 - 1) = 44.260 m/s^2
+  drag-limited steady level-flight top speed v_cap = 99.107 m/s (solved from the plant's own thrust limit and kd, kh)
+  point-mass time-optimal, with the plant's drag-limited speed cap:
+      t_opt = 4.5020 s over 98.315 m of path, mean path speed 21.838 m/s, v in [18.34, 28.21] m/s
+  point-mass time-optimal, with no speed cap (pure point mass):
+      t_opt = 4.5020 s over 98.315 m of path, mean path speed 21.838 m/s, v in [18.34, 28.21] m/s
+  best dynamically feasible member of the reference family (constant x-rate):
+      U_feas = 18.3394 m/s (peak reference |a| = a_h exactly), t = 4.9075 s, mean path speed 20.034 m/s
+      this family is 9.01 per cent slower than the point-mass optimum -> the reference family costs that much of the denominator
+  DENOMINATOR USED BELOW: t_opt = 4.5020 s (mean path speed 21.838 m/s)
+  caveat: this is a point-mass optimum on a FIXED path with an isotropic horizontal
+  acceleration bound, so it is a LOWER bound on the true platform optimum (the true
+  optimum must also respect rotation time, per-rotor limits and motor lag; the
+  published full-model penalty for exactly this is 2.00-2.68 per cent, dossier A-17).
+
+  control margin along the reference (what is left for feedback):
+      U =  8.000 m/s: peak reference lateral |a| =   8.422 m/s^2 =  19.0 per cent of a_h; margin for feedback =  35.838 m/s^2
+      U = 12.000 m/s: peak reference lateral |a| =  18.950 m/s^2 =  42.8 per cent of a_h; margin for feedback =  25.310 m/s^2
+      U = 15.000 m/s: peak reference lateral |a| =  29.609 m/s^2 =  66.9 per cent of a_h; margin for feedback =  14.651 m/s^2
+      U = 18.000 m/s: peak reference lateral |a| =  42.637 m/s^2 =  96.3 per cent of a_h; margin for feedback =   1.623 m/s^2
+      U = 18.339 m/s: peak reference lateral |a| =  44.260 m/s^2 = 100.0 per cent of a_h; margin for feedback =  -0.000 m/s^2
+
+--- stderr ---
+

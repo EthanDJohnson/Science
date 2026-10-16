@@ -1,0 +1,29 @@
+# math_run log
+command:  python3 runs/2026-10-15-quadrotor-agility-limit/math/dialectician/M-DIAL-08.py
+started:  2026-10-16T01:36:32Z
+duration: 0.5 s
+exit:     0
+versions: python 3.13.16, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   8 PASS, 0 FAIL, 1 UNDECIDED
+
+--- stdout ---
+d = 10 m rest-to-rest segment, bang-bang, no drag
+  T/W =  2.00: a_h =  16.99 m/s^2, v_avg =   6.52 m/s, d ln a_h/d ln(T/W) = 1.3333, d ln v/d ln(T/W) = 0.6667
+  T/W =  4.00: a_h =  37.99 m/s^2, v_avg =   9.75 m/s, d ln a_h/d ln(T/W) = 1.0667, d ln v/d ln(T/W) = 0.5333
+  T/W =  4.40: a_h =  42.03 m/s^2, v_avg =  10.25 m/s, d ln a_h/d ln(T/W) = 1.0545, d ln v/d ln(T/W) = 0.5272
+  T/W = 12.35: a_h = 120.76 m/s^2, v_avg =  17.37 m/s, d ln a_h/d ln(T/W) = 1.0066, d ln v/d ln(T/W) = 0.5033
+analytic: (1/2)(T/W)^2/((T/W)^2-1) = 0.5333 at T/W = 4, 0.5272 at T/W = 4.4  (lens: ~+0.5; dossier D-33 elasticity 1.07)
+the planner sweep d ln(lap)/d ln(TWR) = -0.565 corresponds to d ln v/d ln(TWR) = +0.565, within 5.9% of the point-mass value at T/W = 4 (same order, as D-33 states)
+PASS sqrt(a)*sqrt(d)/2 == sqrt(a)*sqrt(d)/2: symbolic
+PASS 1/2 == 1/2: symbolic
+PASS w**2/(w**2 - 1) == w**2/(w**2 - 1): symbolic
+PASS lim w->oo of w**2/(w**2 - 1) == 1: symbolic limit 1
+PASS lim w->oo of w**2/(2*w**2 - 2) == 1/2: symbolic limit 1/2
+UNDECIDED lim w->1 of w**2/(2*w**2 - 2) == oo: symbolic limit oo
+PASS w**2/(2*w**2 - 2) > 1/2: numeric at 50 points, w in [1.05, 20]
+PASS 9.81 m/s^2 * (4.4^2 - 1)^0.5 == 42.03 m/s^2: within 0.002; 42.0344 vs 42.03 (SI)
+PASS 0.5 * (42.03 m/s^2 * 10 m)^0.5 has the dimension of speed: dimensional analysis
+SUMMARY: 8 pass, 0 fail, 1 undecided
+
+--- stderr ---
+

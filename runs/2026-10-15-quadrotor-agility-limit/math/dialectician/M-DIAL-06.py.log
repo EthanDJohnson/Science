@@ -1,0 +1,38 @@
+# math_run log
+command:  python3 runs/2026-10-15-quadrotor-agility-limit/math/dialectician/M-DIAL-06.py
+started:  2026-10-16T01:35:59Z
+duration: 0.7 s
+exit:     0
+versions: python 3.13.16, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   12 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+baseline: s = 6.0 m, tau = 100 ms, r = 0.5 m, a = 16.33 m/s^2
+  denominator D = 0.449963 s, v = 13.3344 m/s  (lens: 13.33 m/s)
+analytic elasticities: e_s = 1.000000, e_a = 0.388880, e_tau = -0.222241
+10 per cent perturbations, one at a time:
+  s   : forward +1.0000, central +1.0000, analytic +1.000000
+  a   : forward +0.3868, central +0.3891, analytic +0.388880
+  tau : forward -0.2306, central -0.2215, analytic -0.222241
+  (the lens's +0.387 and -0.231 are forward 10 per cent differences; the analytic values are +0.389 and -0.222)
+finite swaps:
+  range 6 -> 12 m                     : v = 26.669 m/s, change +100.00 per cent
+  wide-FoV camera, a -> thrust cap    : v = 18.860 m/s, change +41.44 per cent
+  latency 100 -> 30 ms                : v = 15.791 m/s, change +18.42 per cent
+elasticity spread |e_s/e_tau| = 4.500 (lens: 4.3x), |e_s/e_a| = 2.571 (lens quotes 2.6x from the forward values)
+PASS 1 == 1: symbolic
+PASS -sqrt(a)*tau/(sqrt(a)*tau + 2*sqrt(r)) == -tau/(tau + 2*sqrt(r)/sqrt(a)): symbolic
+PASS sqrt(r)/(sqrt(a)*tau + 2*sqrt(r)) == sqrt(r)/(sqrt(a)*(tau + 2*sqrt(r)/sqrt(a))): symbolic
+PASS sqrt(r)/(sqrt(a)*(tau + 2*sqrt(r)/sqrt(a))) < 1/2: numeric at 50 points, a in [1, 100], r in [0.05, 5], tau in [0.005, 0.5]
+PASS tau/(tau + 2*sqrt(r)/sqrt(a)) < 1: numeric at 50 points, a in [1, 100], r in [0.05, 5], tau in [0.005, 0.5]
+PASS lim tau->0 of sqrt(r)/(sqrt(a)*(tau + 2*sqrt(r)/sqrt(a))) == 1/2: symbolic limit 1/2
+PASS lim tau->0 of tau/(tau + 2*sqrt(r)/sqrt(a)) == 0: symbolic limit 0
+PASS lim a->oo of s/(tau + 2*sqrt(r)/sqrt(a)) == s/tau: symbolic limit s/tau
+PASS 6 m / (0.1 s + 2*(0.5 m/(16.33 m/s^2))^0.5) == 13.334 m/s: within 0.002; 13.3344 vs 13.334 (SI)
+PASS 6 m / (0.03 s + 2*(0.5 m/(16.33 m/s^2))^0.5) == 15.791 m/s: within 0.002; 15.791 vs 15.791 (SI)
+PASS 6 m / (0.1 s + 2*(0.5 m/(42.03 m/s^2))^0.5) == 18.86 m/s: within 0.002; 18.8596 vs 18.86 (SI)
+PASS 6 m / (0.1 s + 2*(0.5 m/(16.33 m/s^2))^0.5) has the dimension of speed: dimensional analysis
+SUMMARY: 12 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

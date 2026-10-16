@@ -1,0 +1,117 @@
+# math_run log
+command:  python3 runs/2026-10-15-quadrotor-agility-limit/calc/lens-simulator_sweep.py
+started:  2026-10-16T01:21:44Z
+duration: 585.0 s
+exit:     124 (timed out after 585 s)
+versions: python 3.13.16, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+Closed-loop agility and the ELASTICITY of it to each candidate limit, one at a time.
+
+REFERENCE FAMILY.  p_ref(t) = (U t, A sin(2 pi U t / L), z0): the course flown at a constant
+rate along x.  It is C-infinity, its peak demand is |a| = A k^2 U^2 at the gates, and its own
+dynamic-feasibility ceiling is U_feas = sqrt(a_h / (A k^2)) = 18.339 m/s, at which the
+reference uses 100 per cent of the platform's horizontal acceleration ceiling and leaves zero
+margin for feedback.  Flown at U_feas it takes 4.9075 s, i.e. 91.7 per cent of the platform's
+point-mass time-optimal 4.5020 s on the same path, so the family itself costs 9 per cent of
+the denominator.  (The platform's OWN time-optimal profile was also built and flown: see the
+TRACKABILITY section -- its acceleration is discontinuous at every switching point and this
+cascade cannot track it at ANY speed, which is a result, not a bug.)
+
+MEASURE.  The largest U at which the closed loop passes all six gates, at two gate tolerances:
+  tol = 0.50 m  -- a 1.5 m MonoRace gate minus a 0.25 m vehicle radius (dossier A-26)
+  tol = 0.20 m  -- a 0.9 m gate, or the same gate with a tighter clearance demand
+The loose tolerance shows WHICH limit binds; the tight one has the resolution to measure HOW
+MUCH, because at the loose tolerance several conditions sit against the family ceiling.
+
+The limit is perturbed in the PLANT (or the sensing chain); the controller keeps its nominal
+model.  Bandwidth is retuned by the model's closed-form rule (largest rate-loop gain with
+40 deg phase margin for L = (w/s) e^{-s tau_in}/(1 + s motor_tau)).  A fixed-gain control run
+shows the sign does not come from the retuning rule.
+
+Verification: lens-simulator_verify.py, 24/24 PASS; load-bearing rows repeated below.
+SI units, seeds fixed.  dt = 2 ms for the sweep, load-bearing rows repeated at 1 ms.
+
+MODEL CARD (SI units)
+  plant        : Sun2022-0.75kg  m=0.75 kg  J=diag(0.0025, 0.0021, 0.0043) kg m^2
+  arm          : l=0.14 m  beta=56.0 deg
+  rotors       : k_f=1.51e-06 N/(rad/s)^2  k_m=2.37e-08 N m/(rad/s)^2  f_i in [0.0, 8.5] N
+  actuator     : motor_tau=39.10 ms  slew_max=inf
+  aero (PLANT) : drag=True kd=(0.26, 0.28, 0.42) kg/s  h_force=True kh=0.01 kg/m
+  hover        : T/W=4.6227  a_max_horizontal=44.260 m/s^2  omega_hover=1103.50 rad/s
+  course       : y=3.0 sin(2pi x/30.0) m, z=2.0 m, x_end=90.0 m, 6 gates, tol=0.2 m
+  arc length   : 98.315 m
+
+  REPEATED VERIFICATION (all 24 rows in lens-simulator_verify.py.log):
+      angular-momentum drift 7.10e-15, free-fall error 2.84e-14 m, RK4 order 4.005
+      DENOMINATOR t_opt = 4.5020 s over 98.315 m (mean path speed 21.838 m/s); a_h = 44.260 m/s^2; T/W = 4.6227; U_feas = 18.3394 m/s
+      tuning rule (closed form): tau_in = 2 ms, T_m = 39.1 ms -> w_rate = 39.938 rad/s; T_m = 0 -> 400.0 rad/s (400 rad/s cap)
+
+======================================================================================================
+BASELINE, BOTH TOLERANCES (seen course, full preview -- the Swift/MonoRace regime)
+======================================================================================================
+  w_rate=39.938 w_att=13.313 w_vel=4.438 w_pos=1.479 rad/s  know_drag=False lead=False
+  baseline, gate tol 0.50 m                 U*=18.050  v=19.592 m/s  t=5.018 s  frac=0.897  err=0.422 m  pk= 8.46 N  rms=6.17 N  sat=32.0%  w_r= 39.94  [loss_of_control, 21s]
+  baseline, gate tol 0.20 m                 U*=14.875  v=16.165 m/s  t=6.082 s  frac=0.740  err=0.193 m  pk= 7.32 N  rms=4.30 N  sat= 0.0%  w_r= 39.94  [gate_miss, 21s]
+
+  ALSO at gate tol 0.50 m, the two axes that bind there:
+  tol 0.50, motor_tau = 19.55 ms            U*=17.150  v=18.719 m/s  t=5.252 s  frac=0.857  err=0.178 m  pk= 8.49 N  rms=5.37 N  sat=13.3%  w_r= 60.00  [loss_of_control, 19s]
+  tol 0.50, motor_tau = 39.10 ms            U*=18.050  v=19.592 m/s  t=5.018 s  frac=0.897  err=0.422 m  pk= 8.46 N  rms=6.17 N  sat=32.0%  w_r= 39.94  [loss_of_control, 22s]
+  tol 0.50, motor_tau = 78.20 ms            U*=13.312  v=14.220 m/s  t=6.914 s  frac=0.651  err=0.492 m  pk= 5.35 N  rms=3.83 N  sat= 0.0%  w_r= 21.64  [gate_miss, 20s]
+  tol 0.50, thrust_max =   6.0 N (T/W  3.26)  U*=15.500  v=16.840 m/s  t=5.838 s  frac=0.771  err=0.463 m  pk= 6.00 N  rms=4.60 N  sat=35.2%  w_r= 39.94  [gate_miss, 22s]
+  tol 0.50, thrust_max =   7.5 N (T/W  4.08)  U*=17.450  v=18.943 m/s  t=5.190 s  frac=0.867  err=0.497 m  pk= 7.48 N  rms=5.70 N  sat=41.9%  w_r= 39.94  [gate_miss, 22s]
+  tol 0.50, thrust_max =   8.5 N (T/W  4.62)  U*=18.050  v=19.592 m/s  t=5.018 s  frac=0.897  err=0.422 m  pk= 8.46 N  rms=6.17 N  sat=32.0%  w_r= 39.94  [loss_of_control, 22s]
+  tol 0.50, thrust_max =  10.0 N (T/W  5.44)  U*=18.050  v=19.600 m/s  t=5.016 s  frac=0.898  err=0.400 m  pk= 9.61 N  rms=6.26 N  sat= 7.3%  w_r= 39.94  [loss_of_control, 21s]
+  tol 0.50 thrust-to-weight elasticity (6 -> 10 N): +0.2971  (hardware reference A-16: +0.565)
+
+======================================================================================================
+TRACKABILITY OF THE PLATFORM'S OWN TIME-OPTIMAL PROFILE (alpha = fraction of a_h)
+======================================================================================================
+  alpha = 0.10 (t_ref = 14.235 s): ok=True  worst gate error =  0.140 m  mode = none
+  alpha = 0.25 (t_ref = 9.003 s): ok=False  worst gate error =    inf m  mode = loss_of_control
+  the time-optimal profile is bang-bang in tangential acceleration, so the required
+  attitude is discontinuous at every switching point: a finite-bandwidth cascade
+  cannot track it even at a tenth of the acceleration budget.  This is why planners
+  stay inside a thrust margin (dossier D-36) and why smooth references are used (D-03).
+
+======================================================================================================
+ONE LIMIT AT A TIME, gate tol 0.20 m (plant perturbed, controller nominal, retuned)
+======================================================================================================
+
+[1] ACTUATOR BANDWIDTH   motor_tau (A-03 39.1 ms thrust, A-04 33 ms rotor speed)
+  motor_tau =  5.00 ms                      U*=18.200  v=19.862 m/s  t=4.950 s  frac=0.909  err=0.161 m  pk= 8.50 N  rms=5.81 N  sat= 2.4%  w_r= 60.00  [AT FAMILY CEILING, 18s]
+  motor_tau = 10.00 ms                      U*=18.200  v=19.862 m/s  t=4.950 s  frac=0.909  err=0.163 m  pk= 8.50 N  rms=5.83 N  sat= 3.2%  w_r= 60.00  [AT FAMILY CEILING, 17s]
+  motor_tau = 19.55 ms                      U*=17.150  v=18.719 m/s  t=5.252 s  frac=0.857  err=0.178 m  pk= 8.49 N  rms=5.37 N  sat=13.3%  w_r= 60.00  [loss_of_control, 18s]
+  motor_tau = 39.10 ms                      U*=14.875  v=16.165 m/s  t=6.082 s  frac=0.740  err=0.193 m  pk= 7.32 N  rms=4.30 N  sat= 0.0%  w_r= 39.94  [gate_miss, 21s]
+  motor_tau = 78.20 ms                      U*= 7.375  v= 7.954 m/s  t=12.360 s  frac=0.364  err=0.199 m  pk= 2.31 N  rms=2.06 N  sat= 0.0%  w_r= 21.64  [gate_miss, 22s]
+
+[2] ESTIMATION LATENCY, OUTER (VIO) LOOP   (A-28 17 ms, A-07 40 ms, A-22 130 ms)
+  tau_vio =    5.0 ms                       U*=17.450  v=18.892 m/s  t=5.204 s  frac=0.865  err=0.192 m  pk= 8.33 N  rms=5.61 N  sat= 5.8%  w_r= 39.94  [loss_of_control, 20s]
+  tau_vio =   10.0 ms                       U*=16.062  v=17.419 m/s  t=5.644 s  frac=0.798  err=0.195 m  pk= 7.44 N  rms=4.85 N  sat= 0.5%  w_r= 39.94  [gate_miss, 22s]
+  tau_vio =   20.0 ms                       U*=14.875  v=16.165 m/s  t=6.082 s  frac=0.740  err=0.193 m  pk= 7.32 N  rms=4.30 N  sat= 0.0%  w_r= 39.94  [gate_miss, 20s]
+  tau_vio =   40.0 ms                       U*=13.312  v=14.514 m/s  t=6.774 s  frac=0.665  err=0.199 m  pk= 7.01 N  rms=3.67 N  sat= 0.0%  w_r= 39.94  [gate_miss, 21s]
+  tau_vio =   80.0 ms                       U*=11.125  v=12.192 m/s  t=8.064 s  frac=0.558  err=0.198 m  pk= 5.62 N  rms=2.92 N  sat= 0.0%  w_r= 39.94  [gate_miss, 20s]
+  tau_vio =  130.0 ms                       U*= 9.625  v=10.601 m/s  t=9.274 s  frac=0.485  err=0.197 m  pk= 4.99 N  rms=2.56 N  sat= 0.0%  w_r= 39.94  [gate_miss, 20s]
+
+[3] ESTIMATION LATENCY, INNER (IMU) LOOP
+  tau_imu =   0.5 ms                        U*=15.500  v=16.852 m/s  t=5.834 s  frac=0.772  err=0.198 m  pk= 7.85 N  rms=4.63 N  sat= 5.0%  w_r= 41.52  [gate_miss, 22s]
+  tau_imu =   1.0 ms                        U*=14.875  v=16.165 m/s  t=6.082 s  frac=0.740  err=0.193 m  pk= 7.32 N  rms=4.30 N  sat= 0.0%  w_r= 39.94  [gate_miss, 21s]
+  tau_imu =   2.0 ms                        U*=14.250  v=15.468 m/s  t=6.356 s  frac=0.708  err=0.186 m  pk= 6.63 N  rms=4.01 N  sat= 0.0%  w_r= 37.18  [gate_miss, 21s]
+  tau_imu =   5.0 ms                        U*=10.375  v=11.249 m/s  t=8.740 s  frac=0.515  err=0.192 m  pk= 3.29 N  rms=2.60 N  sat= 0.0%  w_r= 31.09  [gate_miss, 21s]
+
+[4a] UNMODELLED DRAG   plant kd scaled, kh off; the controller models no aerodynamics
+  kd x  0.0, kh = 0 (unmodelled)            U*= 8.875  v= 9.713 m/s  t=10.122 s  frac=0.445  err=0.186 m  pk= 3.15 N  rms=2.35 N  sat= 0.0%  w_r= 39.94  [gate_miss, 19s]
+  kd x  0.5, kh = 0 (unmodelled)            U*=11.125  v=12.141 m/s  t=8.098 s  frac=0.556  err=0.180 m  pk= 4.38 N  rms=3.00 N  sat= 0.0%  w_r= 39.94  [gate_miss, 19s]
+  kd x  1.0, kh = 0 (unmodelled)            U*=14.562  v=15.811 m/s  t=6.218 s  frac=0.724  err=0.199 m  pk= 7.55 N  rms=4.63 N  sat= 0.0%  w_r= 39.94  [gate_miss, 20s]
+  kd x  2.0, kh = 0 (unmodelled)            fails at U = 7.0 m/s, mode = gate_miss, gate error 0.217 m  w_r= 39.94
+  kd x  4.0, kh = 0 (unmodelled)            fails at U = 7.0 m/s, mode = gate_miss, gate error 0.576 m  w_r= 39.94
+
+[4b] UNMODELLED TRANSLATIONAL LIFT   plant kh scaled, kd nominal.  Sun et al. eq. 9,
+     quoted verbatim: f_a^B = [-kd,x vx; -kd,y vy; -kd,z vz + kh(vx^2+vy^2)], kh > 0,
+     so this unmodelled aerodynamic term ADDS body-z force at speed (4.0 N at 20 m/s,
+     54 per cent of the vehicle's weight): the dominant unmodelled aerodynamic term in
+     the one published parameter set for this class HELPS rather than hurts.
+
+--- stderr ---
+

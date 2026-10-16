@@ -1,0 +1,31 @@
+# math_run log
+command:  python3 runs/2026-10-15-quadrotor-agility-limit/math/statistician/M-STAT-11.py
+started:  2026-10-16T01:50:58Z
+duration: 1.6 s
+exit:     1
+versions: python 3.13.16, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   10 PASS, 2 FAIL, 0 UNDECIDED
+
+--- stdout ---
+=== M-STAT-11: smallest n certifying p >= 0.90 with f failures (dimensionless) ===
+f = 0: one-sided 95 % (alpha = 0.05) -> n = 29  [CP lower = 0.9019];  two-sided 95 % lower end (alpha = 0.025) -> n = 36 [CP lower = 0.9026]
+f = 1: one-sided 95 % (alpha = 0.05) -> n = 46  [CP lower = 0.9010];  two-sided 95 % lower end (alpha = 0.025) -> n = 54 [CP lower = 0.9011]
+f = 3: one-sided 95 % (alpha = 0.05) -> n = 76  [CP lower = 0.9011];  two-sided 95 % lower end (alpha = 0.025) -> n = 85 [CP lower = 0.9003]
+at the lens's n = 54 with one failure, the one-sided 95 % CP lower bound is 0.9151; at n = 46 it is 0.9010
+at the lens's n = 85 with three failures, the one-sided 95 % CP lower bound is 0.9113; at n = 76 it is 0.9011
+PASS 1 has the dimension of dimensionless: dimensional analysis
+PASS 29 == 29: within 1e-06; 29 vs 29 (SI)
+FAIL 46 == 54: relative tolerance 1e-06; 46 vs 54 (SI)
+FAIL 76 == 85: relative tolerance 1e-06; 76 vs 85 (SI)
+PASS 46 == 46: within 1e-06; 46 vs 46 (SI)
+PASS 76 == 76: within 1e-06; 76 vs 76 (SI)
+PASS 54 == 54: within 1e-06; 54 vs 54 (SI)
+PASS 85 == 85: within 1e-06; 85 vs 85 (SI)
+PASS 76 > 46: symbolic, constant
+PASS 54 > 46: symbolic, constant
+PASS 0.901855372300000 >= 0.900000000000000: symbolic, constant
+PASS 0.898534264400000 < 0.900000000000000: symbolic, constant
+SUMMARY: 10 pass, 2 fail, 0 undecided
+
+--- stderr ---
+

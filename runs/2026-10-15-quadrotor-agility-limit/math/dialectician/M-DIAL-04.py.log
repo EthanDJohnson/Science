@@ -1,0 +1,42 @@
+# math_run log
+command:  python3 runs/2026-10-15-quadrotor-agility-limit/math/dialectician/M-DIAL-04.py
+started:  2026-10-16T01:39:02Z
+duration: 1.0 s
+exit:     0
+versions: python 3.13.16, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   12 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+tau = 39.1 ms, PM = 45.0 deg: w_c(lag) =  25.575 rad/s, w_c(delay) =  20.087 rad/s, ratio 1.2732
+tau = 39.1 ms, PM = 60.0 deg: w_c(lag) =  14.766 rad/s, w_c(delay) =  13.391 rad/s, ratio 1.1027
+  pure transport 1 ms at PM 45 deg: w_c <=  785.40 rad/s = 125.00 Hz
+  pure transport 1 ms at PM 60 deg: w_c <=  523.60 rad/s =  83.33 Hz
+  pure transport 2 ms at PM 45 deg: w_c <=  392.70 rad/s =  62.50 Hz
+  pure transport 2 ms at PM 60 deg: w_c <=  261.80 rad/s =  41.67 Hz
+  pure transport 3 ms at PM 45 deg: w_c <=  261.80 rad/s =  41.67 Hz
+  pure transport 3 ms at PM 60 deg: w_c <=  174.53 rad/s =  27.78 Hz
+note: '260-390 rad/s (42-63 Hz)' corresponds to a 2 ms transport delay at PM 60-45 deg, not to 1-2 ms at a fixed PM (1 ms at PM 45 deg gives 785 rad/s)
+phase of the lag loop at w_c = 25.575 rad/s: -135.000 deg -> PM = 45.000 deg
+delivered fraction 1 - (tau/T)(1 - exp(-T/tau)), tau = 39.1 ms:
+  T =   50.0 ms: fraction = 0.4357 (loss 56.43 %); quadrature mean = 0.4357
+  T =  100.0 ms: fraction = 0.6393 (loss 36.07 %); quadrature mean = 0.6393
+  T =  150.0 ms: fraction = 0.7450 (loss 25.50 %); quadrature mean = 0.7450
+  T =  160.0 ms: fraction = 0.7597 (loss 24.03 %); quadrature mean = 0.7597
+  T =  230.0 ms: fraction = 0.8305 (loss 16.95 %); quadrature mean = 0.8305
+  T = 1000.0 ms: fraction = 0.9609 (loss  3.91 %); quadrature mean = 0.9609
+PASS 1 - tau/T + tau*exp(-T/tau)/T == 1 - tau*(1 - exp(-T/tau))/T: symbolic
+PASS tan(x)/x == tan(x)/x: symbolic
+PASS tan(x)/x > 1: numeric at 50 points, x in [0.01, 1.5]
+PASS lim T->oo of 1 - tau*(1 - exp(-T/tau))/T == 1: symbolic limit 1
+PASS series of 1 - tau*(1 - exp(-T/tau))/T about T = 0 to order 3 == -T**2/(6*tau**2) + T/(2*tau): symbolic: -T**2/(6*tau**2) + T/(2*tau)
+PASS lim PM->0 of (-PM + pi/2)/tau == pi/(2*tau): symbolic limit pi/(2*tau)
+PASS 1.0 / 0.0391 /s has the dimension of frequency: dimensional analysis
+PASS 0.0391 s / (0.230 s) has the dimension of dimensionless: dimensional analysis
+PASS 0.785398 / 0.002 /s == 392.7 /s: within 0.001; 392.699 vs 392.7 (SI)
+PASS 1.0 / 0.0391 /s == 25.575 /s: within 0.001; 25.5754 vs 25.575 (SI)
+PASS 0.830473996896808 == 0.8304739968968085: numeric at 48 points, constants
+PASS 0.435692248665687 == 0.43569224866568657: numeric at 48 points, constants
+SUMMARY: 12 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

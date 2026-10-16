@@ -1,0 +1,39 @@
+# math_run log
+command:  python3 runs/2026-10-15-quadrotor-agility-limit/math/mechanist/M-MECH-03.py
+started:  2026-10-16T01:24:11Z
+duration: 0.9 s
+exit:     1
+versions: python 3.13.16, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   11 PASS, 1 FAIL, 0 UNDECIDED
+
+--- stdout ---
+inputs: a_h = 44.259 m/s^2, alpha_max = 633.8 rad/s^2, s = 6.0 m, tau_sense = 107 ms, half-FoV = 29.0 deg, mount = 30.0 deg
+baseline: a_u = 16.327 m/s^2, tau_eff = 172.1 ms, v = 11.467 m/s
+half-FoV +10 % (half-FoV alone, 29 -> 31.9 deg)      v = 12.0024 m/s   change  +4.67 %
+phi +10 % (half-FoV + mount, 59 -> 64.9 deg)         v = 12.6149 m/s   change +10.01 %
+range +10 % (6 -> 6.6 m)                             v = 12.1373 m/s   change  +5.85 %
+sensing latency -10 % (107 -> 96.3 ms)               v = 11.6082 m/s   change  +1.23 %
+motor tau -10 % (39.1 -> 35.2 ms)                    v = 11.4890 m/s   change  +0.19 %
+thrust-to-weight +10 % (a_h 44.25 -> 49.2 m/s^2)     v = 11.4668 m/s   change  +0.00 %
+PASS 5.846673 m == 5.7 m: within 0.03; 5.84667 vs 5.7 (SI)
+PASS 1.232651 m == 1.2 m: within 0.1; 1.23265 vs 1.2 (SI)
+PASS 0.000000 m == 0.0 m: within 1e-09; 0 vs 0 (SI)
+FAIL 4.670911 m == 10.5 m: relative tolerance 0.05; 4.67091 vs 10.5 (SI)
+PASS 10.012034 m == 10.5 m: within 0.05; 10.012 vs 10.5 (SI)
+RANKING: half-FoV 4.67 % vs range 5.85 % -> RANGE wins; ratio 0.799
+PASS s/(-sqrt(a)*tau*sqrt(a*tau**2 + 2*s) + a*tau**2 + 2*s) == (tau + sqrt(tau**2 + 2*s/a))/(2*sqrt(tau**2 + 2*s/a)): symbolic
+PASS (a**(3/2)*tau**2 + sqrt(a)*s - a*tau*sqrt(a*tau**2 + 2*s))/(a**(3/2)*tau**2 + 2*sqrt(a)*s - a*tau*sqrt(a*tau**2 + 2*s)) == -(tau + sqrt(tau**2 + 2*s/a))/(2*sqrt(tau**2 + 2*s/a)) + 1: symbolic
+PASS -sqrt(a)*tau/sqrt(a*tau**2 + 2*s) == -tau/sqrt(tau**2 + 2*s/a): symbolic
+d ln v/d ln s   = +0.5984   (lens: +0.58..0.60)
+d ln v/d ln a   = +0.4016   (lens: +0.40)
+d ln v/d ln tau = -0.1968   (lens: -0.08..-0.20)
+PASS 0.598396 m == 0.59 m: within 0.05; 0.598396 vs 0.59 (SI)
+PASS 0.401604 m == 0.40 m: within 0.05; 0.401604 vs 0.4 (SI)
+d ln v/d ln(half-FoV) at 29.0 deg (level mount) = +0.522   (lens: 0.55)
+PASS 0.521907 m == 0.55 m: within 0.15; 0.521907 vs 0.55 (SI)
+d ln v/d ln(half-FoV) at 70.0 deg (level mount) = +1.379   (lens: 1.6)
+PASS 1.379352 m == 1.6 m: within 0.15; 1.37935 vs 1.6 (SI)
+SUMMARY: 11 pass, 1 fail, 0 undecided
+
+--- stderr ---
+

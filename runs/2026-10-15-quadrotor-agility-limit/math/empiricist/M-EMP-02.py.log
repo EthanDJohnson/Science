@@ -1,0 +1,32 @@
+# math_run log
+command:  python3 runs/2026-10-15-quadrotor-agility-limit/math/empiricist/M-EMP-02.py
+started:  2026-10-16T01:12:15Z
+duration: 0.7 s
+exit:     0
+versions: python 3.13.16, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   14 PASS, 0 FAIL, 1 UNDECIDED
+
+--- stdout ---
+alpha = 0.05: smallest n = 29 (closed form ceil = 29); bound at n   = 0.901855, at n-1 = 0.898534
+PASS 29 >= 29: symbolic, constant
+PASS 29 <= 29: symbolic, constant
+PASS 0.901855372322704 >= 0.900000000000000: symbolic, constant
+PASS 0.898534264427275 < 0.900000000000000: symbolic, constant
+alpha = 0.025: smallest n = 36 (closed form ceil = 36); bound at n   = 0.902606, at n-1 = 0.899968
+PASS 36 >= 36: symbolic, constant
+PASS 36 <= 36: symbolic, constant
+PASS 0.902606244085508 >= 0.900000000000000: symbolic, constant
+PASS 0.899967564427895 < 0.900000000000000: symbolic, constant
+two-sided n = 35 bound: 0.8999675644278949
+PASS 0.899967564400000 < 0.900000000000000: symbolic, constant
+PASS 0.899967564400000 > 0.899900000000000: symbolic, constant
+two-proportion n per arm = 198.963 -> 199 (claimed ~199)
+PASS 0.0365869999999973 < 1.00000000000000: symbolic, constant
+PASS -9.4912215810299*log(a) == -9.4912215810299*log(a): symbolic
+PASS lim n->oo of alpha**(1/n) == 1: symbolic limit 1
+UNDECIDED lim p->1 of -2.99573227355399/log(p) == oo: symbolic limit oo
+PASS (29 m) / (1 m) has the dimension of dimensionless: dimensional analysis
+SUMMARY: 14 pass, 0 fail, 1 undecided
+
+--- stderr ---
+

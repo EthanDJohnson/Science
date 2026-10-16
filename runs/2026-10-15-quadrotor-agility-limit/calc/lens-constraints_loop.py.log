@@ -1,0 +1,136 @@
+# math_run log
+command:  python3 runs/2026-10-15-quadrotor-agility-limit/calc/lens-constraints_loop.py
+started:  2026-10-16T00:53:11Z
+duration: 2.1 s
+exit:     0
+versions: python 3.13.16, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+==============================================================================
+1. UNDERACTUATION AND CONTROLLABILITY AT HOVER (12-state Euler form, wrench input)
+==============================================================================
+  equilibrium residual |f(x0,u0)| = 0.000e+00 (must be ~0 for a true equilibrium)
+  linearize step study: {'residual': 0.0, 'step_sensitivity': 2.574239488239982e-13, 'eigenvalues': array([ 0.        +0.j,  0.        +0.j,  0.        +0.j, -0.29885057+0.j,
+       -0.32183908+0.j, -0.48275862+0.j,  0.        +0.j,  0.        +0.j,
+        0.        +0.j,  0.        +0.j,  0.        +0.j,  0.        +0.j]), 'unstable_modes': 0}
+  states n = 12 (6 DOF x 2), inputs m = 4 (T, tau_x, tau_y, tau_z) -> underactuated by 2 DOF in the 6-DOF sense
+  drag=True: Kalman rank 12/12, controllable=True, sigma_min(C) = 9.439e-01, condition = 5.908e+03
+  drag=False: Kalman rank 12/12, controllable=True, sigma_min(C) = 1.149e+00, condition = 4.063e+03
+  scaled (tolerance units): sigma_min = 1.9590, condition = 4.949e+03
+  weakest left-singular direction of the scaled controllability matrix (states p,v,eul,omega):
+    [-0.     0.     0.049 -0.     0.     0.999 -0.    -0.     0.    -0.
+  0.    -0.   ]
+  reading: Kalman rank is full (12), so no mode is uncontrollable and Brockett's
+  condition is NOT an obstruction: a smooth time-invariant stabilising feedback exists at
+  hover. The vehicle is underactuated (4 inputs, 6 DOF) but not nonholonomic in that
+  sense. sigma_min in tolerance units is order 1, i.e. no direction is effort-starved;
+  the weak direction identified depends on the tolerance scaling, so the substantive
+  result is the rank and the order-1 sigma_min, not which axis comes out weakest.
+
+==============================================================================
+2. TRANSMISSION ZEROS: is the lateral position loop minimum-phase? (tests [D-28])
+==============================================================================
+  drag=False: tau_x -> y  zeros = [0. 0. 0. 0. 0. 0. 0. 0.]
+             poles (12) = [0.+0.j 0.+0.j 0.+0.j 0.+0.j 0.+0.j 0.+0.j 0.+0.j 0.+0.j 0.+0.j 0.+0.j
+ 0.+0.j 0.+0.j]
+             RHP zeros: 0, RHP poles: 0
+  drag=True: tau_x -> y  zeros = [-0.4828 -0.2989  0.      0.      0.      0.      0.      0.    ]
+             poles (12) = [-0.4828+0.j -0.3218+0.j -0.2989+0.j  0.    +0.j  0.    +0.j  0.    +0.j
+  0.    +0.j  0.    +0.j  0.    +0.j  0.    +0.j  0.    +0.j  0.    +0.j]
+             RHP zeros: 0, RHP poles: 0
+
+==============================================================================
+3. LQR ON THE LATERAL CHAIN (y, vy, phi, p) <- tau_x: THE DELAY MARGIN OF THE
+   UNDERACTUATED DIRECTION, against the measured latency budget
+==============================================================================
+  A4 =
+[[ 0.      1.      0.      0.    ]
+ [ 0.     -0.3218 -9.8066  0.    ]
+ [ 0.      0.      0.      1.    ]
+ [ 0.      0.      0.      0.    ]]
+  B4^T = [  0.   0.   0. 400.]  (1/Jx = 400.0)
+  Bryson weights: tolerances y 0.5 m, vy 5 m/s, phi 0.2 rad, p 10 rad/s; tau_x 0.990 N m (= the constant-altitude ceiling)
+  R scale   1e+05: closed-loop |pole|max    2.25 rad/s, PM  61.1 deg, GM 0.321, crossover    5.94 rad/s, DELAY MARGIN  179.37 ms
+  R scale   1e+04: closed-loop |pole|max    4.40 rad/s, PM  62.0 deg, GM 0.254, crossover    8.98 rad/s, DELAY MARGIN  120.59 ms
+  R scale   1e+03: closed-loop |pole|max    7.91 rad/s, PM  63.2 deg, GM 0.175, crossover   14.38 rad/s, DELAY MARGIN   76.74 ms
+  R scale   1e+02: closed-loop |pole|max   14.07 rad/s, PM  64.6 deg, GM 0.109, crossover   24.19 rad/s, DELAY MARGIN   46.58 ms
+  R scale   1e+01: closed-loop |pole|max   25.03 rad/s, PM  66.6 deg, GM 0.0628, crossover   42.65 rad/s, DELAY MARGIN   27.25 ms
+  R scale   1e+00: closed-loop |pole|max   44.50 rad/s, PM  70.5 deg, GM 0.0328, crossover   80.70 rad/s, DELAY MARGIN   15.26 ms
+  R scale   1e-02: closed-loop |pole|max  392.88 rad/s, PM  84.0 deg, GM 0.00567, crossover  447.99 rad/s, DELAY MARGIN    3.27 ms
+  R scale   1e-04: closed-loop |pole|max 3960.66 rad/s, PM  89.3 deg, GM 0.000629, crossover 4013.49 rad/s, DELAY MARGIN    0.39 ms
+  latency budget to fit inside the delay margin (the sum of [D-26]):
+    Swift onboard, position loop tau_eff =   84.1 ms  = 40.0 (camera+VIO+policy (A-07/A-08)) + 5.0 (ZOH at 100 Hz / 2) + 39.1 (motor lag (A-03))
+      -> largest closed-loop bandwidth whose delay margin still covers it: 4.40 rad/s (0.70 Hz) at R scale 1e+04
+    MonoRace-class               tau_eff =   57.1 ms  = 17.0 (image delay (A-28)) + 1.0 (ZOH at 500 Hz / 2) + 39.1 (motor lag (A-03))
+      -> largest closed-loop bandwidth whose delay margin still covers it: 7.91 rad/s (1.26 Hz) at R scale 1e+03
+    AlphaPilot 2019              tau_eff =  179.1 ms  = 130.0 (camera+VIO chain (A-22)) + 10.0 (ZOH at 50 Hz / 2) + 39.1 (motor lag (A-03))
+      -> largest closed-loop bandwidth whose delay margin still covers it: 2.25 rad/s (0.36 Hz) at R scale 1e+05
+  (LQR state feedback has >= 60 deg phase margin at the plant input of the exact model:
+   Safonov & Athans 1977. The delay margin is the quantity the latency budget must fit.)
+
+==============================================================================
+4. RATE-LOOP BANDWIDTH WITH THE MOTOR LAG AND A TRANSPORT DELAY
+   L(s) = k/(J s) * 1/(1 + tau_m s) * exp(-theta s);  k chosen for PM = 45 deg.
+==============================================================================
+  Jx = 2.50e-03 kg m^2
+  no lag, no delay                                       wc = 100000.00 rad/s (15915.49 Hz), k = 250.0000 N m/(rad/s); tool: wc      inf, PM   inf deg, delay margin    inf ms
+  motor lag 39.1 ms only [A-03]                          wc =    25.58 rad/s (  4.07 Hz), k = 0.0904 N m/(rad/s); tool: wc    25.58, PM  45.0 deg, delay margin  30.71 ms
+  motor lag 33 ms only [A-04]                            wc =    30.30 rad/s (  4.82 Hz), k = 0.1071 N m/(rad/s); tool: wc    30.30, PM  45.0 deg, delay margin  25.92 ms
+  motor lag 10 ms only                                   wc =   100.00 rad/s ( 15.92 Hz), k = 0.3536 N m/(rad/s); tool: wc   100.00, PM  45.0 deg, delay margin   7.85 ms
+  lag 39.1 ms + 2 ms (1 kHz IMU + 500 Hz ZOH/2 + compute) wc =    23.30 rad/s (  3.71 Hz), k = 0.0788 N m/(rad/s); tool: wc    23.30, PM  45.0 deg, delay margin  33.71 ms
+  lag 39.1 ms + 5 ms                                     wc =    20.75 rad/s (  3.30 Hz), k = 0.0668 N m/(rad/s); tool: wc    20.75, PM  45.0 deg, delay margin  37.85 ms
+  lag 10 ms + 2 ms                                       wc =    74.04 rad/s ( 11.78 Hz), k = 0.2303 N m/(rad/s); tool: wc    74.04, PM  45.0 deg, delay margin  10.61 ms
+  d ln(wc_rate)/d ln(tau_motor) = -1.000 (pure delay would give exactly -1; a first-order lag gives the same -1 here)
+
+==============================================================================
+5. WHAT BANDWIDTH DOES THE TASK NEED? FEEDBACK-ONLY vs FEEDFORWARD + FEEDBACK
+   Feedback-only: a circular turn of radius Rc at speed v is a reference at
+   omega = v/Rc with amplitude Rc; for L = wc/s the tracking error is
+   e = |S(j omega)| Rc = Rc omega/sqrt(omega^2+wc^2) -> v/wc for omega << wc.
+   Feedforward (differential flatness, [D-01]): the reference is supplied open loop and
+   the loop only rejects the model-error disturbance a_d, giving e ~ a_d/wc^2.
+==============================================================================
+  e_allow = 0.6 m (1.5 m gate [A-26] half-width minus 0.15 m vehicle radius)
+  a_d = 0.460 m/s^2 (0.40 N unmodelled aerodynamic force on 0.87 kg [A-18])
+  40 ms sensorimotor latency [A-07]              PM 45 deg: wc <=   19.63 rad/s ( 3.12 Hz) -> feedback-only v_max =  11.78 m/s; feedforward residual error =   1.193 mm
+  40 ms sensorimotor latency [A-07]              PM 60 deg: wc <=   13.09 rad/s ( 2.08 Hz) -> feedback-only v_max =   7.85 m/s; feedforward residual error =   2.683 mm
+  17.5 ms (MonoRace image 17 ms + IMU 0.5 ms) [A-28] PM 45 deg: wc <=   44.88 rad/s ( 7.14 Hz) -> feedback-only v_max =  26.93 m/s; feedforward residual error =   0.228 mm
+  17.5 ms (MonoRace image 17 ms + IMU 0.5 ms) [A-28] PM 60 deg: wc <=   29.92 rad/s ( 4.76 Hz) -> feedback-only v_max =  17.95 m/s; feedforward residual error =   0.514 mm
+  130 ms (AlphaPilot 2019) [A-22]                PM 45 deg: wc <=    6.04 rad/s ( 0.96 Hz) -> feedback-only v_max =   3.62 m/s; feedforward residual error =  12.596 mm
+  130 ms (AlphaPilot 2019) [A-22]                PM 60 deg: wc <=    4.03 rad/s ( 0.64 Hz) -> feedback-only v_max =   2.42 m/s; feedforward residual error =  28.342 mm
+  5 ms (event camera + 1 kHz estimator) [A-23/A-24] PM 45 deg: wc <=  157.08 rad/s (25.00 Hz) -> feedback-only v_max =  94.25 m/s; feedforward residual error =   0.019 mm
+  5 ms (event camera + 1 kHz estimator) [A-23/A-24] PM 60 deg: wc <=  104.72 rad/s (16.67 Hz) -> feedback-only v_max =  62.83 m/s; feedforward residual error =   0.042 mm
+  Bandwidth actually required to hold the model-error disturbance inside e_allow: wc >= sqrt(a_d/e_allow) = 0.875 rad/s (0.139 Hz), which a pure delay of up to 897 ms still permits at PM 45 deg
+  margin factor on the measured 40 ms budget: 22.4x
+  elasticity of the feedback-only speed ceiling to tau_eff = -1 exactly (v = e wc, wc ~ 1/tau_eff); of the feedforward residual error to tau_eff = +2.
+
+==============================================================================
+6. ESTIMATION ERROR IS NOT REJECTED BY THE LOOP: the error budget
+   e_allow >= e_estimate + e_feedforward_model + e_feedback_residual
+==============================================================================
+  e_est=0.050 m, e_model=0.049 m -> slack +0.501 m  OK
+  e_est=0.050 m, e_model=0.146 m -> slack +0.404 m  OK
+  e_est=0.050 m, e_model=0.232 m -> slack +0.318 m  OK
+  e_est=0.050 m, e_model=0.381 m -> slack +0.169 m  OK
+  e_est=0.114 m, e_model=0.049 m -> slack +0.437 m  OK
+  e_est=0.114 m, e_model=0.146 m -> slack +0.340 m  OK
+  e_est=0.114 m, e_model=0.232 m -> slack +0.254 m  OK
+  e_est=0.114 m, e_model=0.381 m -> slack +0.105 m  OK
+  e_est=0.151 m, e_model=0.049 m -> slack +0.400 m  OK
+  e_est=0.151 m, e_model=0.146 m -> slack +0.303 m  OK
+  e_est=0.151 m, e_model=0.232 m -> slack +0.217 m  OK
+  e_est=0.151 m, e_model=0.381 m -> slack +0.068 m  OK
+  e_est=0.300 m, e_model=0.049 m -> slack +0.251 m  OK
+  e_est=0.300 m, e_model=0.146 m -> slack +0.154 m  OK
+  e_est=0.300 m, e_model=0.232 m -> slack +0.068 m  OK
+  e_est=0.300 m, e_model=0.381 m -> slack -0.081 m  INFEASIBLE
+  e_est=0.500 m, e_model=0.049 m -> slack +0.051 m  OK
+  e_est=0.500 m, e_model=0.146 m -> slack -0.046 m  INFEASIBLE
+  e_est=0.500 m, e_model=0.232 m -> slack -0.132 m  INFEASIBLE
+  e_est=0.500 m, e_model=0.381 m -> slack -0.281 m  INFEASIBLE
+  (e_est values: T265 VIO 0.114-0.151 m at <=7 m/s, section 7 of the dossier; e_model
+   values: A-18 positional RMSE 0.049 m at 1.67 m/s to 0.381 m at 6.92 m/s mean speed.)
+
+--- stderr ---
+

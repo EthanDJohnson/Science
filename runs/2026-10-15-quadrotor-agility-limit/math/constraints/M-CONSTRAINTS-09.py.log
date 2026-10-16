@@ -1,0 +1,74 @@
+# math_run log
+command:  python3 runs/2026-10-15-quadrotor-agility-limit/math/constraints/M-CONSTRAINTS-09.py
+started:  2026-10-16T01:53:39Z
+duration: 1.2 s
+exit:     0
+versions: python 3.13.16, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   31 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+1. v* satisfies v tau + v^2/(2a) = s identically
+PASS s == s: symbolic
+2. limits
+PASS lim tau->0 of -a*tau + sqrt(a**2*tau**2 + 2*a*s) == sqrt(2)*sqrt(a)*sqrt(s): symbolic limit sqrt(2)*sqrt(a)*sqrt(s)
+PASS lim a->oo of -a*tau + sqrt(a**2*tau**2 + 2*a*s) == s/tau: symbolic limit s/tau
+PASS 5 m/s * 0.1557 s + (5 m/s)^2/(2 * 39.0 m/s^2) has the dimension of m: dimensional analysis
+PASS 1.3265 rad / (396.2 rad/s^2) has the dimension of s^2: dimensional analysis
+3. t_reorient = 2 sqrt(theta/alpha), alpha = 396.2 rad/s^2
+  t_reorient(76 deg) [s]: got 0.115723, lens 0.116
+PASS 0.00027738470716306594 < 0.00232000000000000: symbolic, constant
+  t_reorient(90 deg) [s]: got 0.125931, lens 0.126
+PASS 0.000068986506643750872 < 0.00252000000000000: symbolic, constant
+PASS 2*sqrt(th)/sqrt(al) == 2*sqrt(th)/sqrt(al): symbolic
+4. a = 39.0 m/s^2, tau_sense = 0.04 s, tau_tot = 0.15572 s
+  v*(s=10 m, sensing only) [m/s]: got 26.412, lens 26.4
+PASS 0.012014586010785422 < 0.396000000000000: symbolic, constant
+  v*(s=10 m, + reorient) [m/s]: got 22.508, lens 22.5
+PASS 0.0079925693953659949 < 0.337500000000000: symbolic, constant
+  v*(s=6 m, sensing only) [m/s]: got 20.1295, lens 20.1
+PASS 0.029481321599185567 < 0.301500000000000: symbolic, constant
+  v*(s=6 m, + reorient) [m/s]: got 16.3964, lens 16.4
+PASS 0.0035683023303965666 < 0.246000000000000: symbolic, constant
+PASS 22.507993 m/s == 22.5 m/s: within 0.003; 22.508 vs 22.5 (SI)
+5. elasticities  d ln v*/d ln tau = tau*(-a**(3/2)*sqrt(a*tau**2 + 2*s) + a**2*tau)/(-a**(3/2)*tau*sqrt(a*tau**2 + 2*s) + a**2*tau**2 + 2*a*s)    d ln v*/d ln s = sqrt(a)*s/(a**(3/2)*tau**2 + 2*sqrt(a)*s - a*tau*sqrt(a*tau**2 + 2*s))
+  e_tau (s=10, sensing only): got -0.05577, lens -0.056
+PASS 0.0002299733112473409 < 0.00168000000000000: symbolic, constant
+  e_tau (s=10, with reorient): got -0.212489, lens -0.212
+PASS 0.0004888878319353057 < 0.00424000000000000: symbolic, constant
+  e_tau_sense alone = e_tau * tau_s/tau_tot: got -0.0545814, lens -0.054
+PASS 0.000581381755591304 < 0.00162000000000000: symbolic, constant
+  e_s (s=10, sensing only): got 0.527885, lens 0.53
+PASS 0.002114986655623721 < 0.0106000000000000: symbolic, constant
+  e_s (s=6, with reorient): got 0.635142, lens 0.64
+PASS 0.00485789032461303 < 0.0128000000000000: symbolic, constant
+  e_tau by finite difference: got -0.212489, lens -0.212489
+PASS 1.5604169649116595E-11 < 0.00002124888878319353: symbolic, constant
+PASS a*tau/sqrt(a**2*tau**2 + 2*a*s) < 1: numeric at 50 points, a in [1, 100], s in [0.5, 50], tau in [0.001, 1]
+6. required look-ahead s(v) = v tau_tot + v^2/(2a)
+  s_req(5.0 m/s) [m]: got 1.09913, lens 1.1
+PASS 0.00087410302299488832 < 0.0110000000000000: symbolic, constant
+  reaction fraction at 5.0 m/s [%]: got 70.8393, lens 71
+PASS 0.1607013713667396 < 1.42000000000000: symbolic, constant
+  s_req(10.0 m/s) [m]: got 2.83928, lens 2.84
+PASS 0.00072256502034835635 < 0.0284000000000000: symbolic, constant
+  reaction fraction at 10.0 m/s [%]: got 54.8459, lens 55
+PASS 0.154139086815597 < 1.10000000000000: symbolic, constant
+  s_req(15.0 m/s) [m]: got 5.22045, lens 5.22
+PASS 0.0004546140079382255 < 0.0522000000000000: symbolic, constant
+  reaction fraction at 15.0 m/s [%]: got 44.744, lens 45
+PASS 0.2560188316771299 < 0.900000000000000: symbolic, constant
+  s_req(20.0 m/s) [m]: got 8.24266, lens 8.24
+PASS 0.002657434061866804 < 0.0824000000000000: symbolic, constant
+  reaction fraction at 20.0 m/s [%]: got 37.7846, lens 38
+PASS 0.2154343939296801 < 0.760000000000000: symbolic, constant
+7. elasticity-to-factor arithmetic in CONSTRAINTS-A
+  2^0.53: got 1.44393, lens 1.44
+PASS 0.0039291955224962528 < 0.0144000000000000: symbolic, constant
+  5 m/s * 2^0.53 [m/s]: got 7.21965, lens 7.2
+PASS 0.019645977612481325 < 0.0720000000000000: symbolic, constant
+  2^0.040: got 1.02811, lens 1.03
+PASS 0.0018861733439335272 < 0.0103000000000000: symbolic, constant
+SUMMARY: 31 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

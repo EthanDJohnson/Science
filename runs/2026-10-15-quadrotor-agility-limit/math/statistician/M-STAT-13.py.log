@@ -1,0 +1,27 @@
+# math_run log
+command:  python3 runs/2026-10-15-quadrotor-agility-limit/math/statistician/M-STAT-13.py
+started:  2026-10-16T01:52:42Z
+duration: 0.5 s
+exit:     0
+versions: python 3.13.16, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   6 PASS, 0 FAIL, 1 UNDECIDED
+
+--- stdout ---
+=== M-STAT-13: two-point log-log slope of RMSE (m) against delay (s) ===
+slope with tau in ms: 0.5073; with tau in s: 0.5073 (must be identical)
+  if tau_2 =  75.0 ms, slope = 0.5073
+  if tau_2 = 100.0 ms, slope = 0.3683
+  if tau_2 = 130.0 ms, slope = 0.2947
+  if tau_2 = 220.0 ms, slope = 0.2103
+RMSE ratio = 1.4720, delay ratio (75/35) = 2.1429
+PASS 0.322 m has the dimension of length: dimensional analysis
+PASS 0.035 s has the dimension of time: dimensional analysis
+PASS 1 has the dimension of dimensionless: dimensional analysis
+PASS 0.507329 == 0.51: within 0.01; 0.507329 vs 0.51 (SI)
+PASS 0 < 1.00000000000000E-12: symbolic, constant
+PASS 0.210336000000000 < 0.507329000000000: symbolic, constant
+UNDECIDED lim x->0 of 0.386622020306684/log(x + 1) == oo: symbolic limit oo
+SUMMARY: 6 pass, 0 fail, 1 undecided
+
+--- stderr ---
+

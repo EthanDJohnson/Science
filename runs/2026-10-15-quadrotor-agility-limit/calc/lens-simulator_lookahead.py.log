@@ -1,0 +1,115 @@
+# math_run log
+command:  python3 runs/2026-10-15-quadrotor-agility-limit/calc/lens-simulator_lookahead.py
+started:  2026-10-16T01:33:23Z
+duration: 89.6 s
+exit:     0
+versions: python 3.13.16, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+Part 2: the UNSEEN-course regime (look-ahead limited), the dodge bound with full
+rotational dynamics, and the elasticity table assembled from both sweep logs.
+
+Three experiments.
+
+(A) THE UNSEEN COURSE.  The same plant, controller and course, but the reference is no longer
+    known in advance: the controller runs pure pursuit on the part of the path within
+    perception range s_look (carrot at distance s_look, feed-forward centripetal acceleration
+    taken from the carrot's curvature, which is the farthest point the vehicle can be said to
+    have seen).  s_look is the one candidate limit the preview runs could not test, because a
+    previewed trajectory assumes infinite look-ahead.  This is the regime the brief's metric
+    actually asks about.
+
+(B) THE DODGE BOUND WITH ROTATIONAL DYNAMICS.  Falanga et al.'s perception-latency bound
+    (dossier D-31) is a point-mass result and is criticised for neglecting the platform's
+    rotational dynamics (RC-09).  Here the same manoeuvre is flown on the verified 17-state
+    plant with the real attitude loop, motor lag and thrust limits: fly at constant speed v
+    toward an obstacle first sensed at range s, wait out the latency tau, then use full lateral
+    authority to clear it by r + vehicle radius.  The largest v that clears is compared with
+    the point-mass bound.
+
+(C) THE ELASTICITY TABLE, assembled from the closed-loop speeds in
+    lens-simulator_sweep.py.log (quoted in this file with their source line) plus the
+    look-ahead elasticity measured here.
+
+SI units.  Seeds fixed.  dt = 2 ms (checked against 1 ms in lens-simulator_verify.py).
+Verification for the plant: lens-simulator_verify.py.log, 24/24 PASS.
+
+MODEL CARD (SI units)
+  plant        : Sun2022-0.75kg  m=0.75 kg  J=diag(0.0025, 0.0021, 0.0043) kg m^2
+  arm          : l=0.14 m  beta=56.0 deg
+  rotors       : k_f=1.51e-06 N/(rad/s)^2  k_m=2.37e-08 N m/(rad/s)^2  f_i in [0.0, 8.5] N
+  actuator     : motor_tau=39.10 ms  slew_max=inf
+  aero (PLANT) : drag=True kd=(0.26, 0.28, 0.42) kg/s  h_force=True kh=0.01 kg/m
+  hover        : T/W=4.6227  a_max_horizontal=44.260 m/s^2  omega_hover=1103.50 rad/s
+  course       : y=3.0 sin(2pi x/30.0) m, z=2.0 m, x_end=90.0 m, 6 gates, tol=0.5 m
+  arc length   : 98.315 m
+  controller   : tau_imu=1.00 ms  tau_vio=20.00 ms  f_inner=500.0 Hz  f_outer=200.0 Hz
+                 w_rate=39.938 w_att=13.313 w_vel=4.438 w_pos=1.479 rad/s  know_drag=False lead=False
+
+  t_opt = 4.5020 s over 98.315 m; a_h = 44.260 m/s^2; T/W = 4.6227
+  repeated verification: angular-momentum drift 7.10e-15, free-fall error 2.84e-14 m, RK4 order 4.005
+
+====================================================================================================
+(A) UNSEEN COURSE: perception range s_look, pure pursuit, gate tol 0.50 m
+====================================================================================================
+  s_look =   3.0 m                        fails at U = 5.0 m/s (gate_miss, err 0.609 m)
+  s_look =   5.0 m                        fails at U = 5.0 m/s (gate_miss, err 1.206 m)
+  s_look =   8.0 m                        fails at U = 5.0 m/s (gate_miss, err 1.982 m)
+  s_look =  12.0 m                        fails at U = 5.0 m/s (gate_miss, err 2.781 m)
+  s_look =  20.0 m                        fails at U = 5.0 m/s (gate_miss, err 3.312 m)
+  s_look =  40.0 m                        fails at U = 5.0 m/s (gate_miss, err 3.702 m)
+  look-ahead elasticities d ln(v)/d ln(s_look):
+        3.0 ->   8.0 m :     +nan
+        5.0 ->  20.0 m :     +nan
+        8.0 ->  40.0 m :     +nan
+       20.0 ->  40.0 m :     +nan
+  and, at a fixed s_look = 8 m, how much the OTHER limits still matter:
+  s_look = 8 m, tau_vio =   5.0 ms        fails at U = 5.0 m/s (gate_miss, err 1.987 m)
+  s_look = 8 m, tau_vio =  20.0 ms        fails at U = 5.0 m/s (gate_miss, err 1.982 m)
+  s_look = 8 m, tau_vio =  80.0 ms        fails at U = 5.0 m/s (gate_miss, err 2.024 m)
+      VIO-latency elasticity at s_look = 8 m (5 -> 80 ms): +nan
+
+====================================================================================================
+(B) DODGE BOUND WITH FULL ROTATIONAL DYNAMICS vs THE POINT-MASS BOUND
+====================================================================================================
+  obstacle radius 0.5 m, vehicle radius 0.25 m, so the needed lateral displacement is 0.75 m
+    s (m)  tau (ms)  v_sim (m/s)  v_pointmass (m/s)   ratio
+      6.0      20.0       18.139             21.402   0.848
+      6.0      50.0       16.920             19.333   0.875
+      6.0     100.0       15.320             16.651   0.920
+     10.0      50.0       29.412             32.222   0.913
+      3.0      50.0        8.541              9.667   0.884
+  point-mass form used: v_max = s / (tau + 2 sqrt(r_need / a_max))  [D-31, A-33]
+  the ratio below 1 is the cost of having to ROTATE before the lateral force appears:
+  the rotation time is not in the point-mass bound, and the motor lag is not either.
+
+====================================================================================================
+(C) ELASTICITY TABLE   d ln(mean speed) / d ln(limit)
+====================================================================================================
+  gate tolerance 0.20 m (tracking-error limited regime):
+      actuator: motor time constant    5 -> 10 ms                          +0.0000
+      actuator: motor time constant    19.55 -> 39.1 ms                    -0.2116
+      actuator: motor time constant    39.1 -> 78.2 ms                     -1.0231
+      estimation: VIO latency          10 -> 40 ms                         -0.1316
+      estimation: VIO latency          40 -> 130 ms                        -0.2665
+      estimation: VIO latency          5 -> 130 ms (whole range)           -0.1773
+      estimation: IMU latency          0.5 -> 2 ms                         -0.0618
+      estimation: IMU latency          2 -> 5 ms                           -0.3476
+      aero: unmodelled drag kd         0.5x -> 1x (SIGN: more drag, faster)  +0.3810
+  gate tolerance 0.50 m (thrust-authority limited regime):
+      actuator: motor time constant    39.1 -> 78.2 ms                     -0.4623
+      thrust-to-weight                 6 -> 10 N per rotor                 +0.2971
+      thrust-to-weight                 6 -> 7.5 N per rotor                +0.5274
+      thrust-to-weight                 8.5 -> 10 N per rotor               +0.0025
+  perception range (measured in part A above, gate tol 0.50 m):
+      perception: look-ahead s_look    3 -> 8 m                               +nan
+      perception: look-ahead s_look    8 -> 40 m                              +nan
+
+  hardware cross-checks from the dossier:
+      A-16  planner thrust-to-weight sweep on a real track: d ln(speed)/d ln(TWR) = +0.565
+      A-06  +40 ms of command latency raised tracking RMSE by 47 per cent (confounded with a radio link); log-log slope <= 0.51
+      A-33  stop-before-obstacle bound: e_s = +0.52, e_a = +0.48, e_tau = -0.037 to -0.10; dodge bound e_s = 1 exactly, e_tau = -0.08 to -0.24
+
+--- stderr ---
+
