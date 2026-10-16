@@ -1,0 +1,93 @@
+# math_run log
+command:  python3 runs/2026-10-15-quadrotor-agility-limit/calc/falsifier-C7-0_relaxation.py
+started:  2026-10-16T02:47:23Z
+duration: 37.8 s
+exit:     0
+versions: python 3.13.16, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+Refuter C7-0: the RELAXATION-direction sensitivities at the measured hardware operating point.
+
+C7 (null) says the leading limits sit within a factor of about two at the operating point.
+The brief defines "binds first" as the limit whose RELAXATION, holding the others fixed,
+produces the largest improvement in the agility metric.  The slate's clustered elasticities are
+arc elasticities taken mostly in the TIGHTENING direction and across intervals that straddle or
+sit below the measured hardware value (motor_tau 39.1 -> 78.2 ms; thrust 6 -> 7.5 N against a
+hardware 8.5 N; tau_vio 40 -> 130 ms against a hardware 20 ms).  This script measures the same
+limits one at a time in the IMPROVING direction, at the hardware values, on the verified
+17-state plant, and reports the speed gain from an equal 20 per cent relaxation of each.
+
+Two tasks:
+  (A) the dodge manoeuvre (the unseen-obstacle regime the brief's metric selects): the largest
+      constant forward speed at which an obstacle first seen at range s is cleared by
+      r_obs + r_veh = 0.75 m, with the real attitude loop, motor lag and per-rotor thrust
+      limits.  Reproduction check against lens-simulator_lookahead.py.log first.
+  (B) the seen-course preview task (the regime C7's leg (iii) uses): U*, the largest reference
+      speed that still flies the 6-gate slalom at the 0.50 m tolerance, by bisection.
+
+All SI units.  dt = 1 ms in (A), 2 ms in (B), as in the lens's own scripts.
+
+  plant: m = 0.75 kg, motor_tau = 39.10 ms, f_max = 8.5 N/rotor, T/W = 4.6227, a_h = 44.260 m/s^2
+  plant re-verification: ang-mom drift 7.10e-15, free-fall err 2.84e-14 m, RK4 order 4.005
+
+================================================================================================
+(A0) REPRODUCTION of the lens's dodge table (lens-simulator_lookahead.py.log)
+================================================================================================
+    s (m)  tau (ms)  mine (m/s)  lens (m/s)   rel err
+      6.0      20.0      18.139      18.139    0.002 %  PASS
+      6.0      50.0      16.920      16.920    0.000 %  PASS
+      6.0     100.0      15.320      15.320    0.002 %  PASS
+     10.0      50.0      29.412      29.412    0.000 %  PASS
+      3.0      50.0       8.541       8.541    0.000 %  PASS
+  range elasticity 3 -> 6 m (lens +0.9863): +0.9862
+
+================================================================================================
+(A) DODGE TASK: speed gain from an equal 20 per cent RELAXATION of each limit
+    operating point: s = 6 m, tau_perc = 50 ms, motor_tau = 39.1 ms, f_max = 8.5 N
+================================================================================================
+  baseline v = 16.9199 m/s
+  perception range s (m)                     6 -> 7.2       v =  20.475 m/s  gain  +21.01 %  |e| = 1.0459  
+  per-rotor thrust limit (N)               8.5 -> 10.2      v =  18.516 m/s  gain   +9.43 %  |e| = 0.4943  T/W 5.547, a_h 53.51
+  motor time constant (s)               0.0391 -> 0.03128   v =  16.902 m/s  gain   -0.10 %  |e| = 0.0047  w_rate 48.1 rad/s
+  perception latency tau (s)              0.05 -> 0.04      v =  17.248 m/s  gain   +1.94 %  |e| = 0.0861  
+  unmodelled drag kd (kg/s)                  1 -> 0.8       v =  17.018 m/s  gain   +0.58 %  |e| = 0.0258  limit decreases, so x2 < x1
+
+  ranking by speed gain from a 20 per cent relaxation:
+      perception range s (m)              +21.01 %   |e| = 1.0459
+      per-rotor thrust limit (N)           +9.43 %   |e| = 0.4943
+      perception latency tau (s)           +1.94 %   |e| = 0.0861
+      unmodelled drag kd (kg/s)            +0.58 %   |e| = 0.0258
+      motor time constant (s)              -0.10 %   |e| = 0.0047
+  largest gain / second-largest gain  = 2.23
+  largest gain / smallest gain        = 210088883.76
+  largest |e| / second-largest |e|    = 2.12
+  C7's trigger is 'within a factor of about two': FAILS (>2)
+
+================================================================================================
+(A2) FEASIBLE relaxation, each taken to what 2026 hardware actually offers
+================================================================================================
+  range 6 -> 12 m (stereo/event depth at 12 m)       v =  36.838 m/s  gain +117.72 %
+  latency 50 -> 10 ms (event camera)                 v =  18.746 m/s  gain  +10.79 %
+  motor_tau 39.1 -> 5 ms (direct-drive/INDI limit)   v =  20.705 m/s  gain  +22.37 %
+  f_max 8.5 -> 12 N (T/W 4.62 -> 6.53)               v =  19.668 m/s  gain  +16.24 %
+  perfect aero model (plant drag off)                v =  16.557 m/s  gain   -2.15 %
+  largest / second-largest feasible gain = 5.26
+
+================================================================================================
+(B) SEEN-COURSE PREVIEW TASK: U* by bisection, gate tol 0.50 m (C7 leg (iii)'s own regime)
+================================================================================================
+  case                              U* (m/s)  mean path speed (m/s)     gain
+  baseline (hardware values)          18.125                 19.679   +0.00 %
+  thrust limit +20 %                  18.000                 19.546   -0.68 %
+  motor_tau -20 %                     17.375                 18.921   -3.85 %
+  tau_vio -20 % (20 -> 16 ms)         18.000                 19.530   -0.75 %
+  (bisection on U in [10, 26] m/s, 7 steps -> resolution 0.125 m/s)
+  NOTE: the look-ahead-limited (unseen) version of this same task could not be scored:
+  the lens's pure-pursuit runs fail at U = 5 m/s for EVERY s_look from 3 to 40 m, so
+  its look-ahead elasticity row is 'nan' in lens-simulator_lookahead.py.log.
+
+DONE
+
+--- stderr ---
+

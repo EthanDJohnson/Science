@@ -1,0 +1,47 @@
+{
+  "slug": "2026-10-15-quadrotor-agility-limit",
+  "date": "2026-10-15",
+  "title": "What limits the agility of an autonomous quadrotor",
+  "question": "For a quadrotor flying autonomously on onboard sensing and computation alone, which limit binds first on closed-loop agility — rotor and actuator bandwidth, state-estimation latency, unmodelled aerodynamics, or how far ahead it can perceive — and what would it take to move that limit?",
+  "type": "mechanism",
+  "depth": "standard",
+  "status": "complete",
+  "source_checked": true,
+  "bottom_line": "On a course the vehicle has not seen, how much of the world it can see ahead binds first: the usable detection range of its depth sensor (about 4–6 m in practice, not the datasheet 10 m) multiplied by how much of that view survives the tilt a hard manoeuvre demands. Credence about 0.40, with \"no single limit\" and \"estimator breakdown\" as the main alternatives. The biggest reason: on a verified simulation of a 0.75 kg racing quadrotor, doubling detection range raises the safe speed by about 118 per cent while doubling thrust gives 28 per cent and halving latency, motor lag or aerodynamic model error gives under 6 per cent each, and that ordering is proved to hold for every parameter value. The caveat that matters: nobody has measured the brief's metric on hardware, so this is a model ranking with one hardware cross-check, and a one-day depth-clip experiment would settle it.",
+  "prior": [
+    {
+      "slug": "2026-09-29-alcubierre-negative-energy",
+      "date": "2026-09-29",
+      "mode": "ignore",
+      "same_question": false
+    },
+    {
+      "slug": "2026-09-29-problem-of-time-quantum-gravity",
+      "date": "2026-09-29",
+      "mode": "ignore",
+      "same_question": false
+    },
+    {
+      "slug": "2026-10-01-warp-drive-without-negative-energy",
+      "date": "2026-10-01",
+      "mode": "ignore",
+      "same_question": false
+    },
+    {
+      "slug": "2026-10-13-gravitational-wave-decay-photon-pairs",
+      "date": "2026-10-13",
+      "mode": "ignore",
+      "same_question": false
+    },
+    {
+      "slug": "2026-09-30-neutron-lifetime-beam-bottle",
+      "date": "2026-09-30",
+      "mode": "ignore",
+      "same_question": false
+    }
+  ],
+  "trust": "ok",
+  "notes": [],
+  "superseded_by": null,
+  "recorded": "2026-10-16"
+}

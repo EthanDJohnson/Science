@@ -1,0 +1,109 @@
+# math_run log
+command:  python3 runs/2026-10-15-quadrotor-agility-limit/calc/falsifier-C3-0_split.py
+started:  2026-10-16T02:36:20Z
+duration: 0.8 s
+exit:     0
+versions: python 3.13.16, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+=== falsifier-C3-0: C3's seen/unseen split under a unit audit and one omitted row ===
+
+--- (0) M-STAT-04 as published: peak(seen) vs mean(unseen) vs peak(mocap) (sigma_x = 0.2, rho = 0.0) ---
+  within seen gate track (PEAK)            : chi2 =    2.974 / 2 dof, geo-mean =  26.16 m/s
+  within unseen clutter (MEAN)             : chi2 =    5.280 / 3 dof, geo-mean =   7.38 m/s
+  within mocap (PEAK)                      : chi2 =    0.467 / 1 dof, geo-mean =  33.05 m/s
+  between groups: chi2 =   104.21 / 2 dof, p = 2.35e-23, z(one-sided) = 9.89
+  group geo-means ['26.16', '7.38', '33.05'] m/s, max/min ratio = 4.477
+
+=== (A) UNIT AUDIT: peak -> mean on the seen group ===
+A-34 bang-bang peak/mean ratios = [2.     1.9898 1.9929]; mean = 1.9942 (exact value for a rest-to-rest bang-bang profile is 2)
+seen-group geometric mean of PEAK speeds = 26.16 m/s
+Swift mapped-track MEAN speed            = 12.8829 m/s  [M-EMP-03 verified]
+implied peak/mean on a seen gate track   = 2.031  <-- C3's own two numbers reproduce A-34's factor 2 to 1.8 per cent
+seen group converted to means (divide by 2) = [13.9, 16.1, 10.0] m/s
+
+--- (A1) mean-vs-mean: seen/2 vs unseen (sigma_x = 0.2, rho = 0.0) ---
+  within seen gate track (mean)            : chi2 =    2.974 / 2 dof, geo-mean =  13.08 m/s
+  within unseen clutter (mean)             : chi2 =    5.280 / 3 dof, geo-mean =   7.38 m/s
+  between groups: chi2 =    14.03 / 1 dof, p = 0.00018, z(one-sided) = 3.57
+  group geo-means ['13.08', '7.38'] m/s, max/min ratio = 1.772
+
+--- (A2) mean-vs-mean using Swift's measured mapped mean only (sigma_x = 0.2, rho = 0.0) ---
+  within seen gate track (mean)            : chi2 =    0.000 / 0 dof, geo-mean =  12.88 m/s
+  within unseen clutter (mean)             : chi2 =    5.280 / 3 dof, geo-mean =   7.38 m/s
+  between groups: chi2 =     6.20 / 1 dof, p = 0.0127, z(one-sided) = 2.23
+  group geo-means ['12.88', '7.38'] m/s, max/min ratio = 1.745
+
+seen:unseen group ratio as published (peak vs mean) = 3.544
+seen:unseen group ratio, mean vs mean               = 1.772
+inflation factor of C3's headline effect size       = 2.000
+
+=== (A3) ROW-BY-ROW UNIT AUDIT: split computed inside each speed class ===
+  The brief's metric is 'maximum average speed', so the mean class is the metric's own class.
+  MEAN class : seen 16.05 m/s vs unseen 8.37 m/s -> ratio 1.919
+  MEAN class, dropping the press row: 12.88 vs 8.37 m/s -> ratio 1.540
+  PEAK class : seen 29.92 m/s vs unseen 6.51 m/s -> ratio 4.595  (two 2026 preprints on the unseen side, one of them a perturbed-GATE track, and peaks are not the brief's metric)
+  C3's published grouped ratio, seen PEAKS over unseen MEANS = 3.544 <- neither class's own value
+
+  Reliability audit of C3's 'firm within-apparatus leg' (12.88 vs 5-7 m/s = 2.58x):
+   - 12.8829 m/s is Swift's BEST THREE LAPS (17.465 s) [M-EMP-03], a best case with no stated success rate; Swift won 15 of 25 races = 60 per cent [A-10].
+   - 5-7 m/s is the band where A-20 still meets ~90 per cent reliability.
+   - best-case vs best-case, same quantity class: 12.8829 / 10.0 (A-20's fastest average) = 1.288x, not 2.58x
+   - 2.58x therefore compares a best-of-three-laps mean with a reliability-thresholded mean; the inflation is 1.429x from the threshold alone
+
+=== (B) Adding SUPER (onboard LiDAR, UNKNOWN environment, no map, >20 m/s) ===
+
+--- (B) abstract reading, 20 m/s (sigma_x = 0.2, rho = 0.0) ---
+  within seen gate track (mean)            : chi2 =    2.974 / 2 dof, geo-mean =  13.08 m/s
+  within unseen (mean) + SUPER             : chi2 =   25.153 / 4 dof, geo-mean =   9.01 m/s
+  between groups: chi2 =     6.52 / 1 dof, p = 0.0107, z(one-sided) = 2.30
+  group geo-means ['13.08', '9.01'] m/s, max/min ratio = 1.452
+  seen:unseen ratio with SUPER included = 1.452 (C3 claims 2.58-6.4x for 'course knowledge')
+  SUPER alone vs the unseen-clutter geometric mean (7.38 m/s) = 2.710x, bought with NO map
+  SUPER vs Swift's mapped-track mean 12.88 m/s = 1.552x
+
+--- (B) conservative, 20 m/s read as a peak -> mean 10 m/s (sigma_x = 0.2, rho = 0.0) ---
+  within seen gate track (mean)            : chi2 =    2.974 / 2 dof, geo-mean =  13.08 m/s
+  within unseen (mean) + SUPER             : chi2 =    7.125 / 4 dof, geo-mean =   7.84 m/s
+  between groups: chi2 =    12.26 / 1 dof, p = 0.000462, z(one-sided) = 3.31
+  group geo-means ['13.08', '7.84'] m/s, max/min ratio = 1.668
+  seen:unseen ratio with SUPER included = 1.668 (C3 claims 2.58-6.4x for 'course knowledge')
+  SUPER alone vs the unseen-clutter geometric mean (7.38 m/s) = 1.355x, bought with NO map
+  SUPER vs Swift's mapped-track mean 12.88 m/s = 0.776x
+
+=== (C) RIVAL PARTITION on the same onboard-only numbers ===
+
+--- (C1) partition by COURSE KNOWLEDGE (C3's variable) (sigma_x = 0.2, rho = 0.0) ---
+  within course known                      : chi2 =    2.974 / 2 dof, geo-mean =  26.16 m/s
+  within course unseen                     : chi2 =   25.153 / 4 dof, geo-mean =   9.01 m/s
+  between groups: chi2 =    53.26 / 1 dof, p = 2.92e-13, z(one-sided) = 7.20
+  group geo-means ['26.16', '9.01'] m/s, max/min ratio = 2.904
+
+--- (C2) partition by SENSOR RANGE CLASS (C1's variable) (sigma_x = 0.2, rho = 0.0) ---
+  within long-range sensing                : chi2 =    4.325 / 3 dof, geo-mean =  24.46 m/s
+  within short-range depth cam             : chi2 =    5.280 / 3 dof, geo-mean =   7.38 m/s
+  between groups: chi2 =    71.78 / 1 dof, p = 2.4e-17, z(one-sided) = 8.39
+  group geo-means ['24.46', '7.38'] m/s, max/min ratio = 3.314
+
+between-group chi2: course knowledge = 53.26, sensor range = 71.78; sensor/knowledge = 1.35
+Same eight numbers, same model: the partition that fits better is the one with the larger between-group chi2 and the smaller within-group chi2.
+
+=== (D) The range route to 2.58x ===
+  elasticity +1.000 (dodge bound [M-STAT-06 verified]): factor needed in the limit = 2.58^(1/1.000) = 2.58x
+  elasticity +0.527 (stop bound): factor needed in the limit = 2.58^(1/0.527) = 6.04x
+  elasticity +0.500 (T/W route): factor needed in the limit = 2.58^(1/0.500) = 6.66x
+  usable depth-camera range 6 m -> required 15.5 m on the dodge bound; a 3-D LiDAR of the class SUPER flies is described by its authors as giving 'accurate, long-range obstacle detection' and is the only sensor change in that result.
+
+=== (E) Mean-class split with SUPER, the metric's own units ===
+  SUPER at 20 m/s: seen 12.88 m/s vs unseen 11.19 m/s -> ratio 1.152
+  SUPER read as a peak -> 10 m/s: seen 12.88 m/s vs unseen 8.88 m/s -> ratio 1.451
+  honesty check, PEAK class with SUPER added to the unseen side: seen 29.92 vs unseen 9.47 m/s -> ratio 3.161 (the peak class is NOT the brief's metric, which is maximum average speed)
+
+=== SUMMARY ===
+1. C3's z = 9.89 split compares PEAK (seen) with MEAN (unseen) speeds; inside the metric's own mean class the ratio is 1.92x (or 1.54x on full-text rows only), not 3.54x; the uniform factor-2 conversion gives 1.77x and z = 3.57.
+2. One published onboard-only UNSEEN-environment result at >20 m/s (no map) exceeds Swift's mapped-track mean of 12.88 m/s by 1.55x; even read as a peak (mean 10 m/s) it leaves at most 1.29x for course knowledge, not 2.58x.
+3. The same numbers separate by sensor range class at chi2 = 71.8 against 53.3 for course knowledge.
+
+--- stderr ---
+

@@ -1,0 +1,80 @@
+# math_run log
+command:  python3 /home/user/Science/runs/2026-10-15-quadrotor-agility-limit/calc/falsifier-C4-0_hardware_active.py
+started:  2026-10-16T02:31:38Z
+duration: 23.7 s
+exit:     0
+versions: python 3.13.16, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+Refuter C4-0, simulation angle.  Does a HARDWARE limit bind at the brief's operating point?
+
+C4 claims: "No hardware limit is active ... the bounds sit 2-7x above the operating point", and
+predicts "no single hardware relaxation at its *attainable* increment moves the unseen-course
+metric by more than about 20 per cent".
+
+Three tests, all on the simulator lens's own verified 17-state plant (24/24 verification rows,
+lens-simulator_verify.py.log), with the controller keeping its NOMINAL model throughout:
+
+ (A) reproduce the lens's dodge ceilings at s = 3, 6, 10 m (tau = 50 ms) before trusting them;
+ (B) hardware arm 1, perception range: the attainable 6 -> 10 m sensor swap, per-cent gain
+     against C4's own 20 per cent falsification threshold;
+ (C) hardware arm 2, two pure-hardware caps evaluated AT the operating point:
+       - usable stereo range 4.1 and 5.8 m (M-MECH-06 verified: depth noise equals a 0.1 m
+         obstacle's size there for a 50 mm baseline), and
+       - the lateral acceleration a body-fixed 58 deg vertical FoV at 30 deg up-tilt permits,
+         a_u = g tan(29 + 30 deg) = 16.33 m/s^2 (M-MECH-02 verified),
+     each compared with the measured unseen-course points 7 m/s (8/10) and 10 m/s (6/10) [A-20].
+ (D) arithmetic on C4's own bound table (M-EXAMINER-08 verified anchors).
+
+SI units.  dt = 1 ms.  Obstacle radius 0.5 m, vehicle radius 0.25 m (the lens's geometry).
+
+platform: m = 0.75 kg, T/W = 4.6227, a_h = 44.260 m/s^2, motor_tau = 39.1 ms
+
+============================================================================================
+(A) REPRODUCTION of the lens's dodge ceilings (tau = 50 ms, full a_h, nominal hardware)
+============================================================================================
+  s =   3.0 m: v_max =   8.541 m/s   lens   8.541 m/s   rel diff  0.00 %  REPRODUCES
+  s =   6.0 m: v_max =  16.920 m/s   lens  16.920 m/s   rel diff  0.00 %  REPRODUCES
+  s =  10.0 m: v_max =  29.450 m/s   lens  29.412 m/s   rel diff  0.13 %  REPRODUCES
+
+============================================================================================
+(B) HARDWARE ARM 1 -- perception range, attainable increment 6 -> 10 m
+============================================================================================
+  elasticity d ln v / d ln s (6 -> 10 m) = +1.085
+  per-cent change in the metric from this ONE hardware swap = +74.1 per cent
+  C4's own falsification threshold is 'more than about 20 per cent': EXCEEDED -> C4 prediction refuted
+  for reference, 3 -> 6 m: elasticity +0.986, gain +98.1 per cent
+
+============================================================================================
+(C) HARDWARE CAPS EVALUATED AT THE OPERATING POINT (unseen course, [A-20])
+============================================================================================
+  FoV-permitted lateral acceleration a_u = g tan(59 deg) = 16.321 m/s^2 (1.66 g), against a_h = 44.26 m/s^2
+  usable stereo range 4.1 m, full a_h       : v_max = 11.569 m/s   margin over 7 m/s =  1.65x,  over 10 m/s =  1.16x
+  usable stereo range 5.8 m, full a_h       : v_max = 16.368 m/s   margin over 7 m/s =  2.34x,  over 10 m/s =  1.64x
+  range 6 m, FoV-capped lateral a_u         : v_max = 14.254 m/s   margin over 7 m/s =  2.04x,  over 10 m/s =  1.43x
+  range 4.1 m, FoV-capped lateral a_u       : v_max =  9.550 m/s   margin over 7 m/s =  1.36x,  over 10 m/s =  0.96x
+  LOWEST hardware-capped ceiling = 9.550 m/s; C4 asserts every bound sits 2-7x above the operating point.
+  ratio to the 7 m/s point (8/10 success, [A-20]) = 1.36x  -> BELOW 2x: C4 claim refuted at this point
+  ratio to the 10 m/s point (6/10 success, [A-20]) = 0.96x
+
+============================================================================================
+(D) HARDWARE ARM 2 -- thrust authority at fixed range (controller nominal-model kept)
+============================================================================================
+  thrust_max  8.5 N/rotor (T/W 4.62, a_h  44.26 m/s^2): v_max at s = 6 m = 16.920 m/s
+  thrust_max  6.0 N/rotor (T/W 3.26, a_h  30.46 m/s^2): v_max at s = 6 m = 14.406 m/s
+  thrust_max  4.5 N/rotor (T/W 2.45, a_h  21.91 m/s^2): v_max at s = 6 m = 12.616 m/s
+
+============================================================================================
+(E) C4's OWN BOUND TABLE, read at the speed where success actually fails
+============================================================================================
+    5.0 m/s (10/10): 0.466 of the lowest bound, 0.153 of the highest
+    7.0 m/s (8/10): 0.652 of the lowest bound, 0.214 of the highest
+   10.0 m/s (6/10): 0.932 of the lowest bound, 0.306 of the highest
+  C4's headline reads 'a quarter to a half of EVERY limit'; at the speed where the 90-per-cent
+  clause actually fails (10 m/s) the system is at 0.93 of the lowest bound, i.e. 6.8 per cent short of it.
+  The two lowest of the ten bounds are the thrust bang-bang mean (10.7301 m/s) and the FoV-capped
+  stop bound (10.8499 m/s) -- both HARDWARE bounds -- agreeing to 1.11 per cent [M-EXAMINER-08].
+
+--- stderr ---
+

@@ -1,0 +1,78 @@
+# math_run log
+command:  python3 runs/2026-10-15-quadrotor-agility-limit/calc/falsifier-C8-0_partials.py
+started:  2026-10-16T02:50:46Z
+duration: 1.4 s
+exit:     0
+versions: python 3.13.16, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+==============================================================================
+TEST A -- do the partials exist, and are range and braking 'exact substitutes'?
+==============================================================================
+stop bound solved from v*tau + v^2/(2a) = s :  v = sqrt(a)*sqrt(a*tau**2 + 2*s) - a*tau
+dv/ds   = sqrt(a)/sqrt(a*tau**2 + 2*s)
+dv/da   = sqrt(a)*tau**2/sqrt(a*tau**2 + 2*s) - tau + s/(sqrt(a)*sqrt(a*tau**2 + 2*s))
+dv/dtau = a**(3/2)*tau/sqrt(a*tau**2 + 2*s) - a
+all three partials are finite closed-form expressions: the operation exists
+e_s   - (W+tau)/(2W)  simplifies to 0
+e_a   - (W-tau)/(2W)  simplifies to 0
+e_tau - (-tau/W)      simplifies to 0
+e_s + e_a - 1         simplifies to 0
+homogeneity check  v(ks,ka,tau) - k v(s,a,tau) = 0   -> degree-1 homogeneous in (s,a), so Euler gives e_s + e_a = 1
+MRS (dv/ds)/(dv/da) = a*sqrt(a*tau**2 + 2*s)/(-sqrt(a)*tau*(a*tau**2 + 2*s) + a*tau**2*sqrt(a*tau**2 + 2*s) + s*sqrt(a*tau**2 + 2*s))
+d/dtau of MRS = a*(a*tau*(-sqrt(a)*tau*(a*tau**2 + 2*s) + a*tau**2*sqrt(a*tau**2 + 2*s) + s*sqrt(a*tau**2 + 2*s)) - sqrt(a*tau**2 + 2*s)*(a**2*tau**3 + a*s*tau + sqrt(a*tau**2 + 2*s)*(-2*a**(3/2)*tau**2 - sqrt(a)*(a*tau**2 + 2*s) + 2*a*tau*sqrt(a*tau**2 + 2*s))))/(sqrt(a*tau**2 + 2*s)*(-sqrt(a)*tau*(a*tau**2 + 2*s) + a*tau**2*sqrt(a*tau**2 + 2*s) + s*sqrt(a*tau**2 + 2*s))**2)  -> not identically zero, so the MRS is NOT constant: not exact substitutes
+
+==============================================================================
+TEST B -- is there an ordering, and over what regime does it hold?
+==============================================================================
+operating point s=6.0 m, a=39.0 m/s^2, tau=40 ms -> v = 20.1295 m/s
+  e_s = 0.5360   e_a = 0.4640   e_tau = -0.0719
+  e_s/e_a = 1.1550   e_s/|e_tau| = 7.452
+  strict ordering e_s > e_a > |e_tau| at the operating point: True
+box of 80 operating points: strict ordering e_s > e_a > |e_tau| holds at 80/80
+  e_s > e_a everywhere in the box: True
+  points where latency overtakes braking (the regime boundary):
+
+==============================================================================
+TEST C -- arc elasticities of the simulator lens's one-at-a-time table
+    source: calc/lens-simulator_sweep.py.log, gate tol 0.20 m; the elasticity table
+    was independently re-derived and marked 'verified' in M-SIMULATOR-07
+==============================================================================
+  motor_tau   local 19.55->39.1 ms  e = -0.2116
+  motor_tau   wide  5->78.2 ms      e = -0.3328
+  tau_vio     local 20->40 ms       e = -0.1554
+  tau_vio     wide  10->130 ms      e = -0.1936
+  tau_imu     local 0.5->2 ms       e = -0.0618
+  tau_imu     wide  0.5->5 ms       e = -0.1755
+  thrust_max  6->10 N (tol 0.50)    e = +0.2971
+  |e| ranking, local perturbations : thrust > motor_tau > tau_vio > tau_imu
+  |e| ranking, wide  perturbations : motor_tau > tau_vio > tau_imu
+  ranking of the three shared axes invariant to perturbation span: True
+  spread of the four local elasticities (max|e|/min|e|) = 4.81x
+  so one-at-a-time perturbation on the verified 17-state plant returns distinct, ordered numbers
+
+==============================================================================
+TEST D -- what would it cost to make the metric an observation?
+    C8's own decisive test: 29 flawless flights per speed bin, 4 bins
+==============================================================================
+  one traversal at  5.0 m/s over 98.3 m =  19.7 s of flight
+  one traversal at  7.0 m/s over 98.3 m =  14.0 s of flight
+  one traversal at  9.0 m/s over 98.3 m =  10.9 s of flight
+  one traversal at 11.0 m/s over 98.3 m =   8.9 s of flight
+  29 flights x 4 bins = 116 traversals, 1554 s = 25.9 min of cumulative air time
+  with a 3.0 min usable hover endurance per pack: 8.6 pack-equivalents of flight energy
+  at 8 trials/hour including turnaround: 14 h of range time
+  Clopper-Pearson lower bound at 29/29, one-sided 95 per cent: 0.9019  (>= 0.90: True)
+  the quantity is therefore measurable with 2026 hardware at a cost of tens of
+  minutes of air time: it is UNMEASURED, not unobservable
+
+==============================================================================
+TEST E -- C8 defect (4): is the IMU-vs-VIO latency gap 'a factor of 20'?
+==============================================================================
+  elasticity ratio                     = 2.129x   (C8 says 20)
+  per-millisecond derivative ratio     = 9.394x   (matches the 9.39 that M-SIMULATOR-07 verified)
+  neither route gives 20: C8's own factor is wrong by 2.1x to 9.4x
+
+--- stderr ---
+

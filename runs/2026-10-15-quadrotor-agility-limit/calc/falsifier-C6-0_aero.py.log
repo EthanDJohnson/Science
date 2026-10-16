@@ -1,0 +1,75 @@
+# math_run log
+command:  python3 runs/2026-10-15-quadrotor-agility-limit/calc/falsifier-C6-0_aero.py
+started:  2026-10-16T02:40:39Z
+duration: 164.0 s
+exit:     0
+versions: python 3.13.16, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+MODEL CARD (SI units)
+  plant        : Sun2022-0.75kg  m=0.75 kg  J=diag(0.0025, 0.0021, 0.0043) kg m^2
+  arm          : l=0.14 m  beta=56.0 deg
+  rotors       : k_f=1.51e-06 N/(rad/s)^2  k_m=2.37e-08 N m/(rad/s)^2  f_i in [0.0, 8.5] N
+  actuator     : motor_tau=39.10 ms  slew_max=inf
+  aero (PLANT) : drag=True kd=(0.26, 0.28, 0.42) kg/s  h_force=True kh=0.01 kg/m
+  hover        : T/W=4.6227  a_max_horizontal=44.260 m/s^2  omega_hover=1103.50 rad/s
+  course       : y=3.0 sin(2pi x/30.0) m, z=2.0 m, x_end=90.0 m, 6 gates, tol=0.2 m
+  arc length   : 98.315 m
+  controller   : tau_imu=1.00 ms  tau_vio=20.00 ms  f_inner=500.0 Hz  f_outer=200.0 Hz
+                 w_rate=39.938 w_att=13.313 w_vel=4.438 w_pos=1.479 rad/s  know_drag=False lead=False
+
+====================================================================================================
+0. REPRODUCTION of the simulator lens's own rows (lens-simulator_sweep.py.log)
+====================================================================================================
+  A BLIND, tol 0.20 m  [lens 14.875] U*= 14.961  v=16.256 m/s  t=6.048 s  worst gate err=0.199 m  w_rate= 39.94  [20s]
+  A BLIND, tol 0.50 m  [lens 18.050] U*= 18.148  v=19.702 m/s  t=4.990 s  worst gate err=0.420 m  w_rate= 39.94  [16s]
+  C NO-AERO, tol 0.20 m [lens 8.875] U*=  8.984  v= 9.833 m/s  t=9.998 s  worst gate err=0.193 m  w_rate= 39.94  [28s]
+  [PASS] reproduce baseline U* at tol 0.20 m: got 14.9609, want 14.8750 (rel err 0.00578 <= 0.02)
+  [PASS] reproduce baseline U* at tol 0.50 m: got 18.1484, want 18.0500 (rel err 0.00545 <= 0.02)
+  [PASS] reproduce aero-off U* at tol 0.20 m: got 8.9844, want 8.8750 (rel err 0.0123 <= 0.03)
+
+====================================================================================================
+1. C6's OWN DISCRIMINATOR: closed-loop lateral/vertical gate error at 13-20 m/s
+   against C6's open-loop power laws e(v) = 0.0493 v^0.858 (BEM) and
+   0.0439 v^1.173 (poly fit) [M-CONSTRAINTS-08 verified], clearance budget 0.449 m
+====================================================================================================
+  A BLIND (max model error)          U=13.00  ok=True   worst lat/vert gate err=0.1505 m  mode=none             v_mean=14.134
+      C6 predicts at 13 m/s: e_BEM=0.445 m, e_fit=0.889 m; measured closed-loop=0.151 m  ratio to e_BEM=0.338
+  A BLIND (max model error)          U=15.00  ok=True   worst lat/vert gate err=0.2019 m  mode=none             v_mean=16.299
+      C6 predicts at 15 m/s: e_BEM=0.503 m, e_fit=1.052 m; measured closed-loop=0.202 m  ratio to e_BEM=0.401
+  A BLIND (max model error)          U=18.00  ok=True   worst lat/vert gate err=0.4226 m  mode=none             v_mean=19.546
+      C6 predicts at 18 m/s: e_BEM=0.589 m, e_fit=1.303 m; measured closed-loop=0.423 m  ratio to e_BEM=0.718
+  A BLIND (max model error)          U=20.00  ok=False  worst lat/vert gate err=inf m  mode=loss_of_control  v_mean=nan
+      C6 predicts at 20 m/s: e_BEM=0.644 m, e_fit=1.474 m; measured closed-loop=inf m  ratio to e_BEM=inf
+
+====================================================================================================
+2. THE AERO-MODEL-ON/OFF ARM (C6 predicts a better aero model buys 1.8-2.2x speed)
+   B EXACT = exact feedforward of the plant's own aero force = zero model error
+====================================================================================================
+  B EXACT aero model, tol 0.20 m     U*=  8.852  v= 9.686 m/s  t=10.150 s  worst gate err=0.197 m  w_rate= 39.94  [28s]
+  B EXACT aero model, tol 0.50 m     U*= 14.031  v=15.371 m/s  t=6.396 s  worst gate err=0.496 m  w_rate= 39.94  [20s]
+  B' lens know_drag=True, tol 0.20   U*=  9.781  v=10.707 m/s  t=9.182 s  worst gate err=0.198 m  w_rate= 39.94  [26s]
+  GAIN from removing ALL aerodynamic model error, tol 0.20 m: U* 14.961 -> 8.852 m/s, factor 0.5916 (-40.8 per cent); C6 needs 1.8-2.2x
+  GAIN from removing ALL aerodynamic model error, tol 0.50 m: U* 18.148 -> 14.031 m/s, factor 0.7731 (-22.7 per cent); C6 needs 1.8-2.2x
+  GAIN from the lens's own know_drag arm, tol 0.20 m: factor 0.6538
+
+====================================================================================================
+3. SIGN TEST: does unmodelled aerodynamics help or hurt in this plant?
+====================================================================================================
+  C NO-AERO, tol 0.50 m              U*= 13.102  v=14.352 m/s  t=6.850 s  worst gate err=0.493 m  w_rate= 39.94  [23s]
+  tol 0.20 m: zero-model-error (no aero at all) U*=8.984 m/s vs full unmodelled aero U*=14.961 m/s -> removing the unmodelled aerodynamics changes speed by -39.9 per cent
+  tol 0.50 m: zero-model-error (no aero at all) U*=13.102 m/s vs full unmodelled aero U*=18.148 m/s -> removing the unmodelled aerodynamics changes speed by -27.8 per cent
+
+====================================================================================================
+4. WHERE THE AERO FORCE ACTS: body-frame components at the measured kd, kh
+====================================================================================================
+  v_B = (7.0, 0, 0) m/s -> f_aero_B = (-1.820, +0.000, +0.490) N;  |along-track| = 1.820 N = 24.7 per cent of weight; lateral = 0.000 N
+  v_B = (13.0, 0, 0) m/s -> f_aero_B = (-3.380, +0.000, +1.690) N;  |along-track| = 3.380 N = 46.0 per cent of weight; lateral = 0.000 N
+  v_B = (15.0, 0, 0) m/s -> f_aero_B = (-3.900, +0.000, +2.250) N;  |along-track| = 3.900 N = 53.0 per cent of weight; lateral = 0.000 N
+  v_B = (20.0, 0, 0) m/s -> f_aero_B = (-5.200, +0.000, +4.000) N;  |along-track| = 5.200 N = 70.7 per cent of weight; lateral = 0.000 N
+
+SUMMARY: 3/3 reproduction checks PASS
+
+--- stderr ---
+

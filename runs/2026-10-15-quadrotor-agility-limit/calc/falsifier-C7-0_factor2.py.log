@@ -1,0 +1,65 @@
+# math_run log
+command:  python3 runs/2026-10-15-quadrotor-agility-limit/calc/falsifier-C7-0_factor2.py
+started:  2026-10-16T02:49:35Z
+duration: 10.1 s
+exit:     0
+versions: python 3.13.16, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+Refuter C7-0, part 2: equal FACTOR-OF-TWO relaxation of each limit, dodge task, and the
+asymptotics that decide whether the range/thrust near-tie survives a finite relaxation.
+
+C7's "within a factor of about two" is a statement about local elasticities.  On the dodge
+bound the range elasticity is exactly 1 for all parameters while the acceleration elasticity is
+provably below 1/2 and FALLS as a grows (M-DIAL-06, verified).  So any tie between them is
+local only: it must widen for a finite relaxation.  Here each limit is relaxed by the same
+factor of two on the verified 17-state plant, and the point-mass asymptotics are printed.
+
+SI units.  dt = 1 ms.  Plant: Sun et al. 2022, 0.75 kg.
+
+  baseline v (s = 6 m, tau = 50 ms) = 16.8926 m/s (10-step bisection; 9-step value was 16.9199)
+
+================================================================================================
+EQUAL FACTOR-OF-TWO RELAXATION, one limit at a time, dodge task
+================================================================================================
+  perception range  6 -> 12 m                      v =  36.797 m/s   gain  +117.83 %  
+  per-rotor thrust  8.5 -> 17 N (T/W 4.62 -> 9.25) v =  21.676 m/s   gain   +28.32 %  a_h 90.1 m/s^2
+  perception latency 50 -> 25 ms                   v =  17.818 m/s   gain    +5.48 %  
+  motor time constant 39.1 -> 19.55 ms             v =  17.896 m/s   gain    +5.94 %  w_rate 60.0 rad/s
+  unmodelled drag kd  1x -> 0.5x                   v =  17.201 m/s   gain    +1.83 %  
+
+  ranking: perception +117.8%, per-rotor +28.3%, motor +5.9%, perception +5.5%, unmodelled +1.8%
+  largest / second-largest gain = 4.16
+  largest / third-largest gain  = 19.85
+  C7's 'within a factor of about two' at a factor-2 relaxation: FAILS
+
+================================================================================================
+WHY THE TIE CANNOT SURVIVE: point-mass asymptotics v = s/(tau + 2 sqrt(r/a))  [D-31]
+================================================================================================
+    a (m/s^2)  T/W needed      e_a    e_s  v_pm (m/s)
+         44.3        4.62  +0.4194  +1.00       19.33
+         88.5        9.08  +0.3932  +1.00       25.63
+        177.0       18.08  +0.3612  +1.00       33.30
+        708.2       72.22  +0.2828  +1.00       52.13
+     442599.2    45132.56  +0.0247  +1.00      114.06
+  e_a = (1/2) * 2sqrt(r/a) / (tau + 2sqrt(r/a)) < 1/2 always and -> 0 as a -> oo;
+  e_s = 1 identically.  Hard cap as a -> oo: v -> s/tau = 120.0 m/s.
+  So at the measured operating point e_s/e_a = 2.38 and the ratio GROWS with every further unit of thrust.
+  (M-DIAL-06, verified: e_s = 1, 0 < e_a < 1/2, |e_tau| < 1 over the whole domain.)
+
+================================================================================================
+C7's OWN CITED SPREADS, as verified by the math checks
+================================================================================================
+  elasticity endpoints (range/accel/TWR)       2.326  >2   [M-EMP-11 verified]
+  seen-course table largest/smallest           3.992  >2   [M-SIMULATOR-07 verified]
+  ten independent speed bounds                 3.050  >2   [M-EXAMINER-08 verified]
+  dodge range vs in-vehicle rivals (max)       7.570  >2   [M-SIMULATOR-12]
+  my 20 % relaxation, dodge                    2.230  >2   [this refuter, part 1]
+  my factor-2 relaxation, dodge                4.161  >2   [this script]
+  my feasible-hardware relaxation              5.260  >2   [this refuter, part 1]
+
+DONE
+
+--- stderr ---
+
