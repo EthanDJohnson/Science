@@ -130,3 +130,10 @@ That quick run (sources unchecked) asked how to *supply* negative energy for a s
 - **The causal reframe went from 0.25 as stated (0.85 narrowed) to 0.65 narrowed (now C8),** with Krasnikov's round-trip qualifier: a tube laid outbound gives an 8.7 yr return-leg advance but needs NEC violation and 37–70 orders more negative energy (falsifier-C8-0).
 - **New answers:** partial interior dragging of a pushed shell (C4, 0.60) and theorem-hypothesis loopholes (C6, 0.05).
 - **Superseded:** the shell's quoted 0.04 c: its energy-condition-checked case is β = 0.02, and 0.04 c fails the NEC at 100/850 points in our rebuild [D-08; lens-constraints_shell]. The "Le 2026" boundary critique the earlier run used was v1/v2 of arXiv:2605.25417; v3 is a different paper on elastic shells [D-74], and Le's current test passes a regularized shell [D-26, D-84] (v1/v2's tail Type IV stays unresolved against our clean tail). World energy 620 EJ → 592.2 EJ [D-46].
+
+## Prior-art check added 2026-10-27
+*Added by the main session; the judge never saw it.* The findings about the Fuchs et al. shell were checked against the literature (`checks/2026-10-27-prior-art/fuchs-shell.md`). The verdict is **partly anticipated**: the paper itself says a shift limit exists ("a future direction of work"), and Le's preprints reproduced its β = 0.02 pass. Not in print: the cap's value and scaling (β_crit ≈ 0.024 ≈ 0.07 C), its fall with wall thickness, the 0.04c NEC failure, the superluminality margins, and the 0.539 stress ratio.
+
+Two items remain open:
+- The paper's 7.6 ns light-timing value is not reconciled with our 6.86 ns (β = 0.02) and 13.72 ns (β = 0.04); under the convention that reproduces their Alcubierre row, it matches β of about 0.022.
+- Le's tail type IV against our clean tail is a regularisation difference.

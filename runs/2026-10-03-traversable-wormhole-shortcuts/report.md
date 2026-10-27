@@ -141,3 +141,11 @@ Construction table (energy conditions and transit, as computed or reproduced):
 - **Practice gaps similar:** the warp shell was 22–28 orders beyond demonstrated capability. Here, SM-MMP is 24–29 orders short of 1 kg (34 in field), and classical throats are 38–57 orders beyond Casimir. The warp run's Krasnikov-tube negative energy (37–70 orders above its causal-access step) brackets the classical-throat figure.
 - **New evidence behind the differences:** K-02 (Hochberg–Visser), K-07 (the achronal ANEC family), K-13 (Everett–Roman: two tubes, or a moved mouth, make a time machine), K-17 (Andréasson doesn't apply to σ < 0 shells), Q-20 and Q-21 (Ford–Roman: a 1 m throat's negative energy fits in a band of about 10⁻²¹ m; the lenses compute ≤ 1.84×10⁻²¹ m), and Q-22 (the Pfenning–Ford warp-wall bound, carried as the analogue).
 - **Superseded or unconfirmed in the warp run's evidence:** its dossier's "∼0.05c" dynamical-Casimir speed is not in the source, which says "a few percent of c" (Q-36). Its GEO 600 "all observatories since 2019" remark was dropped (Q-35). Its report's Archimedes gap (0.78–0.85 orders) uses a 5×10⁻¹⁶ N design force that this run could not re-verify (Q-48, source blocked). None of these moves either run's ranking.
+
+## Prior-art check added 2026-10-27
+*Added by the main session; the judge never saw it.* The C6 finding on rotated or misaligned mouths was checked against the literature (`checks/2026-10-27-prior-art/wormhole-mouth-rotation.md`). The verdict is **partly anticipated**: Dias, Frassino, Paccoia and Rocha (PRD 107, 124056, 2023) raised the twist escape and left it open. The finite-mouth result is not in print, and the judge's independent script confirms it, finding the mirror gluing to be the worst case.
+
+Corrections:
+- Graham and Olum prove the line only for simply connected spacetimes and never say "shortcut".
+- "No published theorem" should acknowledge Galloway's null-line construction.
+- The band bound "at most 1.5a/c" holds only for a ≤ 0.1d: 1.86a at a = 0.3d, and about 1.14a for a ≪ d.
