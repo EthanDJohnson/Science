@@ -50,7 +50,7 @@ def save(fig, name):
     plt.close(fig)
 
 
-# Figure 1. Yield of the outgoing half of B&O's own packet, produced beyond r_min, as a fraction
+# Figure 4 in the summary. Yield of the outgoing half of B&O's own packet, produced beyond r_min, as a fraction
 # of B&O's exact S-matrix total (x C_coh). notes/taskB_outgoing.log, section (h).
 r_min = np.array([0.159, 0.318, 0.5, 1, 2, 5, 10, 30, 100, 300, 1000])
 frac = np.array([1.752e-3, 4.662e-4, 1.530e-4, 2.401e-5, 3.364e-6, 2.305e-7,
@@ -71,10 +71,10 @@ ax.annotate("1.8e-3 at λ/2π", (0.159, 1.752e-3), (0.45, 1.2e-2), color=INK, fo
 ax.annotate("3e-11 at 100λ", (100, 3.007e-11), (8, 3e-12), color=INK, fontsize=8.5,
             arrowprops=dict(arrowstyle="-", color=REF, lw=0.8))
 ax.set_ylim(1e-14, 1e-1)
-save(fig, "fig1_yield_vs_rmin")
+save(fig, "fig4_yield_vs_rmin")
 
 
-# Figure 2. Coefficient of eq. 8 for physical coherent shells, as a fraction of B&O's 3/(25 pi).
+# Figure 1 in the summary. Coefficient of eq. 8 for physical coherent shells, as a fraction of B&O's 3/(25 pi).
 # notes/taskA3b_bo_plus_grid2.log (literal real-f shell) and notes/taskA3b_smooth.log (binary,
 # linear); circular polarisation is exactly 0 (report section 4.1).
 labels = ["Circular-binary quadrupole", "Linear quadrupole", "B&O's literal shell, physical phases",
@@ -93,10 +93,10 @@ ax.set_yticklabels(labels)
 ax.set_xlim(0, 1.05)
 ax.set_xlabel("coefficient ÷ B&O's 3/(25π)")
 ax.grid(axis="y", visible=False)
-save(fig, "fig2_coefficients")
+save(fig, "fig1_coefficients")
 
 
-# Figure 3. Time profile of pair production for B&O's own state: R(t)/R(0) = sinc^4(sigma t/2),
+# Figure 3 in the summary. Time profile of pair production for B&O's own state: R(t)/R(0) = sinc^4(sigma t/2),
 # whose area equals a rectangle of height 1 and width 4 pi/(3 sigma). Exact-kinematics points:
 # notes/taskC1.log, part (d), at sigma/omega = 0.1.
 st = np.linspace(-14, 14, 1401)
@@ -120,7 +120,7 @@ ax.set_ylim(0, 1.12)
 save(fig, "fig3_time_profile")
 
 
-# Figure 4. Where B&O's probability is generated: share of the total produced inside a sphere of
+# Figure 2 in the summary. Where B&O's probability is generated: share of the total produced inside a sphere of
 # radius r around the focus. notes/taskB_where_grid.log ("window in ...").
 r = np.array([0.5, 1, 2, 4, 8])
 l0 = np.array([0.6078, 0.8499, 0.9526, 0.9870, 0.9967])
@@ -137,6 +137,6 @@ ax.set_xticklabels(["λ/2", "λ", "2λ", "4λ", "8λ"])
 ax.set_xlabel("radius of the sphere around the focus")
 ax.set_ylabel("share of the total")
 ax.set_ylim(0, 1.05)
-save(fig, "fig4_where_generated")
+save(fig, "fig2_where_generated")
 
 print("wrote", sorted(p.name for p in OUT.glob("*.svg")))

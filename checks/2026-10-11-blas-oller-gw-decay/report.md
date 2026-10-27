@@ -344,6 +344,7 @@ Found while writing the reader's summary (`summary/`), by two adversarial review
 - **Section 2, abstract.** The truncated quote ends "and the coherence of the wave" (fetch_text.py on the arXiv abstract page, 2026-10-27).
 - **Item 13, binning.** The overestimate (σt_ε)²/(4π²) is computed only for bins lasting many cycles (σt_ε > 50 in `challenge_delta_1_usage.py`). The median allowed bin has σt_ε = 2.684, where the formula does not apply and no ratio was computed. "Refuted" should be read as "not a guaranteed lower bound", and the size is open, not just contested.
 - **Section 5 and the README.** No script imports `qft_production.py`. Fourteen import `qft_second_order.py`. The README sentence saying otherwise is fixed.
+- **Section 1 and item 12, the binary factor.** The near-zone 0.3-0.7 includes the binary helicity factor g = 0.0397 (`notes/challenge_spacetime_1_nearzone.log`: "x C_coh x g_binary ... ratio 0.70"). B&O's eq. 8 has no such factor. Without g the same estimate is about 7.6-17.5 times B&O's number. g is a far-zone polarisation pattern applied at r ~ 1/ω, so near the source the comparison is open in both directions.
 - **Item 9.** ε = 0.1 is this check's choice. B&O's worked examples use ε = 0.15, where V_eff = 7.86 λ³ (`notes/taskB_pj_exact.log`).
 
 === END CONTENT ===
