@@ -123,3 +123,10 @@ def scan(alpha, Rt, Dt, N=4000, label=""):
 print("PART C: QI tests")
 scan("1e34", "1e-32", "1e-32", label="v1-v4 eq.(7)")
 scan("1e17", "1e-15", "1e-15", label="v5 / CQG eq.(7)")
+
+print("PART D: scale argument (rho_pk = k_rho/Dt^2, r_c = Dt/k_c, tau0 = 0.1 r_c): largest Dt for which the QI holds")
+for k_rho, k_c, lab in ((490, 72.5, "paper constants (4.9e2, 72.5)"), (492.0, 72.46, "alpha=1e34 scan"), (522.2, 74.64, "alpha=1e35 (Dt=1e-33)")):
+    k_rho, k_c = mp.mpf(k_rho), mp.mpf(k_c)
+    Dt_max = mp.sqrt(3 * mp.mpf(10) ** 4 * k_c**4 / (32 * mp.pi**2 * k_rho)) * LP
+    print(f"  {lab}: Dt < {fmt(Dt_max,3)} m = {fmt(Dt_max/LP,4)} L_P ; r_c < {fmt(Dt_max/k_c/LP,3)} L_P")
+print("  check: 72.5 * 1.4e-34 m =", fmt(mp.mpf('72.5') * mp.mpf('1.4e-34'), 4), "m  (so the printed r_c implies Dt ~ 1.0e-32 m, not 1e-15 m)")
