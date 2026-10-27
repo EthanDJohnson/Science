@@ -175,3 +175,8 @@ Credences are independent (candidates.md: not mutually exclusive). For options, 
 - Loup, Waite & Halerewicz 2001: https://arxiv.org/abs/gr-qc/0107097
 - Antimatter production (search summary): https://www.symmetrymagazine.org/article/april-2015/ten-things-you-might-not-know-about-antimatter
 - URLs not recorded in the run files: Olum 1998 [D-50]; Bobrick & Martire 2021, CQG 38 105009 [D-07, U-04]; Krasnikov 1998, PRD 57 4760; Rodal 2026 [D-28].
+## Source check added 2026-10-27
+*Added by the main session; the judge never saw it.* The caveat above, "Quick run, no source check", no longer holds. Every research claim, every quote in the verdicts and every factual claim in this report has since been checked (`source-check.md`, `audit.md`, `research/*.check.md`, `verdicts/*.check.md`). Nothing in the report was contradicted, and no ranking changes. The main corrections:
+- **The Loup lapse (C7)** does have a published critique: Bobrick and Martire 2021, App. A.1, show it is the Alcubierre metric in a rescaled time, which supports C7's point.
+- **The thick-wall floor v²R/12** comes from the lenses' Cauchy–Schwarz derivation (confirmed numerically and rechecked by hand), not from a source.
+- **Smaller fixes:** Olum's theorem also assumes the generic condition; Maclay and Davis 2019 is peer-reviewed; Sopova and Ford allow a net-negative gap between dielectric half-spaces; and the C4 kink-sheet mechanism has been superseded by the deep warp run (2026-10-01).

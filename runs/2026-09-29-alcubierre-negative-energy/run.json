@@ -1,0 +1,18 @@
+{
+  "slug": "2026-09-29-alcubierre-negative-energy",
+  "date": "2026-09-29",
+  "title": "Negative-energy options for a superluminal Alcubierre-type drive",
+  "question": "Considering Alcubierre drives, what are viable engineering options for the negative energy required to travel at superluminal effective speeds?",
+  "type": "feasibility",
+  "depth": "quick",
+  "status": "complete",
+  "source_checked": true,
+  "bottom_line": "- **There is no viable engineering option, and none is buildable by 2100.** Credence in the null (C1) is 0.85. - **Every superluminal warp metric needs energy-condition-violating matter.** This rests on theorems: Olum 1998 and Santiago–Schuster–Visser 2022. - **None of the proposed sources survives its own decisive test:** - Casimir plates, squeezed light and \"negative effective mass\" media fail. - Van Den Broeck's pocket fails. - The positive-energy solitons of Lentz and Fell–Heisenberg fail. - **The single biggest reason is scale.** Even with the quantum-inequality (QI) limit set aside, the smallest known budget at the reference case is: - about 1e28–1e30 kg of negative energy (0.006–0.56 M_sun) at R = 100 m and v = 10c; - roughly 24–26 orders of magnitude more than a year of world primary energy; - about 60 orders more than any demonstrated Casimir energy. - **Horizons add a separate obstacle.** They stop the ship from creating or steering the bubble. - **One qualification.** Established physics does not strictly prove the drive impossible: - The quantum inequalities that force Planck-thin walls are proven only for free fields, and interacting fields are known to evade them. - What would close the door completely is a conjecture, the self-consistent achronal averaged null energy condition (ANEC). - **The answerable nearby goal is sub-light travel.** A relativistic rocket needs no negative energy and is about 23 orders of magnitude closer to feasible.",
+  "prior": [],
+  "trust": "ok",
+  "notes": [
+    "2026-10-27: sources checked and report audited after the fact (source-check.md, audit.md): no claim contradicted, no ranking changed; the Van Den Broeck QI finding (verdicts/C3-0.md) is confirmed against arXiv v1-v5."
+  ],
+  "superseded_by": null,
+  "recorded": "2026-10-27"
+}

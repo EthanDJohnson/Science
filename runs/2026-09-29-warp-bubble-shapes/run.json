@@ -6,7 +6,7 @@
   "type": "design",
   "depth": "quick",
   "status": "partial",
-  "source_checked": false,
+  "source_checked": true,
   "bottom_line": "",
   "prior": [],
   "trust": "ok",
@@ -14,7 +14,9 @@
     "2026-09-29: A single researcher run by hand, outside the pipeline; its sources were never checked.",
     "2026-09-29: RS-05 was corrected by hand after rendering White's slide; its values were read off the plot by eye.",
     "2026-09-29: RS-03 (White's JBIS version) rests on a search summary, and RS-13's 'two orders of magnitude' was not checked against the paper's text.",
-    "2026-09-29: calc/wall_thickness.py section 2 uses a wrong tidal measure; calc/interior_tides.py computes the tidal tensor correctly."
+    "2026-09-29: calc/wall_thickness.py section 2 uses a wrong tidal measure; calc/interior_tides.py computes the tidal tensor correctly.",
+    "2026-10-27: all 26 claims source-checked (research/shapes.check.md). RS-12 is contradicted: Bobrick and Martire 2021 App. A.1 do critique the Loup lapse drive. RS-08 is misattributed (Bobrick and Martire make a weaker QI point than claimed); RS-03, RS-06 and RS-13 are unverifiable."
   ],
-  "superseded_by": null
+  "superseded_by": null,
+  "recorded": "2026-10-27"
 }

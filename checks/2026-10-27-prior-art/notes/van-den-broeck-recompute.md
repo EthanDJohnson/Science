@@ -17,3 +17,14 @@
 
 ### Step 2: independent calculation
 - Script: checks/2026-10-27-prior-art/calc/vdb_qi_recompute.py (own sympy derivation of G_00 and orthonormal Riemann for ds^2 = -dt^2 + B(r)^2 (dr^2 + r^2 dOmega^2); mpmath 60-digit evaluation; cross-check of one point with toolkit gr_tensors curvature_at).
+- Run 1 results (copied from stdout):
+  - Step A: sympy derivation of G_00/8pi equals eq. 11 exactly (difference 0); derived orthonormal R_(r th r th) equals eq. 19 exactly (difference 0). Other component R_(th ph th ph) = -B'(rB'+2B)/(rB^4); R_0i0j = 0 (ultrastatic). Nonzero: (1,2,1,2),(1,3,1,3),(2,3,2,3).
+  - v1-v4 params (alpha 1e34, Dt=Rt=1e-32 m): T00 peak w = 0.34896, -492.03/Dt^2 = -6.6257e93 kg/m^3; max|R_rtrt| at w=0.348 -> r_c = Dt/72.457 = 1.3801e-34 m = 8.54 L_P (R_thph gives only Dt/55.3); tau0 = 1.38e-35 m; RHS -9.21e94 kg/m^3 -> QI SATISFIED, |LHS|/|RHS| = 0.0719 (margin 13.9). E_II,- = -1.38e30 kg, E_II,+ = 4.865e30 kg, sign change w = 0.98119. => reproduces every printed number of the paper's QI section (w=0.349, 4.9e2/Dt^2, w=0.348, Dt/72.5, 1.4e-34 m, ~10 L_P, -6.6e93, -9.2e94).
+  - v5 params (alpha 1e17, Dt=Rt=1e-15 m): T00 peak w = 0.57577, -175.93/Dt^2 = -2.369e59 kg/m^3; max|R_rtrt| at w = 0.57417 = 1.8824e33 m^-2 -> r_c = Dt/43.386 = 2.3049e-17 m = 1.426e18 L_P; tau0 = 2.305e-18 m; RHS = -1.184e26 kg/m^3 -> QI VIOLATED by |LHS|/|RHS| = 2.001e33. E_II,- = -1.38e30 kg, E_II,+ = 4.865e30 kg (match v5 eqs 15-16).
+  - Printed eqs 14/20 naively evaluated at Dt = 1e-15 m: LHS -6.598e59, rc 1.379e-17 m, RHS -9.232e26 -> ratio 7.15e32.
+  - Pass condition (same w-profile, beta 0.1): r_c < 31.84 L_P at alpha 1e34 (Dt < 3.73e-32 m); r_c < 31.88 L_P at alpha 1e17 (Dt < 2.24e-32 m).
+  - alpha 1e17 with Dt = 1e-32 m: peak -175.93/Dt^2, r_c = Dt/43.386 = 14.26 L_P -> satisfied (ratio 0.200). So the violation is driven by Dt (the 1e17 x larger length scale), not by alpha; alpha only moves the peak w and the O(1) coefficients.
+  - Run 1 crashed at the zero-crossing for the alpha 1e17/Dt 1e-32 case (absolute tolerance on m^-2 values); fixed by making the function dimensionless; rerun in background (second foreground attempt timed out at 590 s, the toolkit cross-check Step C is slow).
+
+### Step 3: literature
+- Search: lit_search.py "refersto:arxiv:gr-qc/9905084" --source inspire --max 100 --sort mostcited -> 96 citers (list saved in scratchpad vdb_citers.txt). Candidates to grep for VdB QI/parameters: VdB gr-qc/9906050 (own follow-up), Krasnikov gr-qc/0207057, Lobo&Visser gr-qc/0406083, Lobo&Crawford gr-qc/0204038, Lobo 0710.4474, Loup et al gr-qc/0107097, Barzegar et al 2407.00720 and 2602.16495, Mansouryar gr-qc/0511086, Le 2602.18023, Santos-Pereira thesis 2508.20348, Kar et al gr-qc/0405103, Alcubierre&Lobo 2017 (no arXiv).
