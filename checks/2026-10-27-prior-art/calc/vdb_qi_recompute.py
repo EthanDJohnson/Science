@@ -179,6 +179,9 @@ for beta in ("1", "0.1", "0.01", "0.001"):
     print(f" beta={beta}: ratio |LHS|/|RHS| = {mp.nstr(Bres['rho']/bnd,4)}")
 
 # ---------------- Step C: toolkit cross-check at one point -------------------------------
+if "--toolkit" not in sys.argv:
+    print("\n== Step C skipped by default (symbolic Riemann of the explicit n=80 profile takes >7 min); see vdb_toolkit_crosscheck.py, or pass --toolkit ==")
+    sys.exit(0)
 print("\n== Step C: toolkit gr_tensors.curvature_at cross-check (Dt = 1 units) ==")
 sys.path.insert(0, ".claude/skills/conundrum/scripts")
 try:

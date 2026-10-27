@@ -1,0 +1,65 @@
+=== 1. Monotonicity of g(Theta) in Theta (lam = 11.6) ===
+  Theta =    0.0 deg : g = 9.600000
+  Theta =   15.0 deg : g = 9.602520
+  Theta =   30.0 deg : g = 9.610076
+  Theta =   45.0 deg : g = 9.622661
+  Theta =   60.0 deg : g = 9.640263
+  Theta =   75.0 deg : g = 9.662864
+  Theta =   90.0 deg : g = 9.690442
+  Theta =  105.0 deg : g = 9.722969
+  Theta =  120.0 deg : g = 9.760414
+  Theta =  135.0 deg : g = 9.802740
+  Theta =  150.0 deg : g = 9.849907
+  Theta =  165.0 deg : g = 9.901871
+  Theta =  180.0 deg : g = 9.958581
+  non-decreasing: True
+
+=== 2. Thresholds from the reduction, a = 0.1 d (u = D-hat) ===
+  a = 0.1   aligned (Theta=0): L* = 1.2000 d ; (L*-d)/a = 2.0000 ; band (pi a - (L*-d))/a = 1.1416
+  a = 0.1   worst  (Theta=pi): L* = 1.1643 d ; (L*-d)/a = 1.6425 ; band (pi a - (L*-d))/a = 1.4991
+  a = 0.3   aligned (Theta=0): L* = 1.6000 d ; (L*-d)/a = 2.0000 ; band (pi a - (L*-d))/a = 1.1416
+  a = 0.3   worst  (Theta=pi): L* = 1.3857 d ; (L*-d)/a = 1.2857 ; band (pi a - (L*-d))/a = 1.8559
+  a = 0.01  aligned (Theta=0): L* = 1.0200 d ; (L*-d)/a = 2.0000 ; band (pi a - (L*-d))/a = 1.1416
+  a = 0.01  worst  (Theta=pi): L* = 1.0195 d ; (L*-d)/a = 1.9525 ; band (pi a - (L*-d))/a = 1.1891
+
+=== 3. Direct brute force, a = 0.1 d, L = 1.16 d (just below the claimed worst L* = 1.1643 d) ===
+  a line must exist for every gluing if L*(G) >= 1.1643 d for all G
+  G #00 det=-1: best line margin F - D.u = -0.01972 d
+  G #01 det=+1: best line margin F - D.u = -0.02879 d
+  G #02 det=-1: best line margin F - D.u = -0.03164 d
+  G #03 det=-1: best line margin F - D.u = -0.02173 d
+  G #04 det=-1: best line margin F - D.u = -0.02261 d
+  G #05 det=+1: best line margin F - D.u = -0.03774 d
+  G #06 det=-1: best line margin F - D.u = -0.03840 d
+  G #07 det=+1: best line margin F - D.u = -0.02197 d
+  G #08 det=-1: best line margin F - D.u = -0.03992 d
+  G #09 det=-1: best line margin F - D.u = -0.01765 d
+  G #10 det=-1: best line margin F - D.u = -0.01989 d
+  G #11 det=+1: best line margin F - D.u = -0.03597 d
+  G #12 det=+1: best line margin F - D.u = -0.03254 d
+  G #13 det=-1: best line margin F - D.u = -0.03436 d
+  G #14 det=+1: best line margin F - D.u = -0.02539 d
+  G #15 det=-1: best line margin F - D.u = -0.02025 d
+  G #16 det=+1: best line margin F - D.u = -0.01609 d
+  G #17 det=+1: best line margin F - D.u = -0.02564 d
+  G #18 det=+1: best line margin F - D.u = -0.03513 d
+  G #19 det=+1: best line margin F - D.u = -0.03487 d
+  G #20 det=+1: best line margin F - D.u = -0.03655 d
+  G #21 det=-1: best line margin F - D.u = -0.02773 d
+  G #22 det=-1: best line margin F - D.u = -0.01120 d
+  G #23 det=-1: best line margin F - D.u = -0.02447 d
+  G #24 det=+1: best line margin F - D.u = -0.03558 d
+  mirror G=+I: margin at L=1.16 d = -0.00414 d ; at L=1.17 d = +0.00560 d
+  aligned G=-I: margin at L=1.16 d = -0.04000 d ; at L=1.17 d = -0.03000 d
+  largest (least negative) margin over the random gluings: -0.01120 d (negative => line exists)
+
+=== 4. Worst-gluing band width (pi a - (L*-d)) / a versus a/d ===
+  a = 0.001  d : worst band = 1.1465 a
+  a = 0.01   d : worst band = 1.1891 a
+  a = 0.05   d : worst band = 1.3481 a
+  a = 0.09   d : worst band = 1.4721 a
+  a = 0.1    d : worst band = 1.4991 a
+  a = 0.11   d : worst band = 1.5247 a
+  a = 0.15   d : worst band = 1.6161 a
+  a = 0.2    d : worst band = 1.7106 a
+  a = 0.3    d : worst band = 1.8559 a
