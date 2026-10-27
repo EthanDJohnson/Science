@@ -337,6 +337,15 @@ All scripts are in `calc/` and all logs in `notes/`. Run them from the check fol
 - **Notes**
   - `notes/taskA_derivation_notes.md`: normalisation and helicity-label derivation.
 
+## 8. Corrections (2026-10-27)
+
+Found while writing the reader's summary (`summary/`), by two adversarial reviewers checking it against this report and the logs.
+- **Section 1, near-source production.** The 0.3-0.7 estimate counts pairs made *beyond* r_min = λ/2π by the quadrupole wave with its near-field terms. Production *inside* λ/2π is what was not computed. "A crude quadrupole estimate there" should read "just outside it".
+- **Section 2, abstract.** The truncated quote ends "and the coherence of the wave" (fetch_text.py on the arXiv abstract page, 2026-10-27).
+- **Item 13, binning.** The overestimate (σt_ε)²/(4π²) is computed only for bins lasting many cycles (σt_ε > 50 in `challenge_delta_1_usage.py`). The median allowed bin has σt_ε = 2.684, where the formula does not apply and no ratio was computed. "Refuted" should be read as "not a guaranteed lower bound", and the size is open, not just contested.
+- **Section 5 and the README.** No script imports `qft_production.py`. Fourteen import `qft_second_order.py`. The README sentence saying otherwise is fixed.
+- **Item 9.** ε = 0.1 is this check's choice. B&O's worked examples use ε = 0.15, where V_eff = 7.86 λ³ (`notes/taskB_pj_exact.log`).
+
 === END CONTENT ===
 
 Files written or changed this pass, all in `/home/user/Science/checks/2026-10-11-blas-oller-gw-decay/`:
