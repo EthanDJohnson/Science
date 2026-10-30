@@ -1,0 +1,20 @@
+# math_run log
+command:  python3 runs/2026-10-30-hubble-tension-h0-discrepancy/math/mechanist/M-MECHANIST-03.py
+started:  2026-10-30T15:41:24Z
+duration: 0.5 s
+exit:     0
+versions: python 3.13.17, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   5 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+PASS c*z*(-1 + (c*z + v)/(c*z)) == v: symbolic
+PASS lim r->1 of c*z*(r - 1) == 0: symbolic limit 0
+PASS 0.0904 * 299792.458 km/s * 0.05 == 1355 km/s: within 0.002; 1.35506e+06 vs 1.355e+06 (SI)
+  v at z=0.05 km/s: recomputed 1355.07, lens claims 1355, tol 3
+PASS 0.0672643935099586 <= 3: symbolic, constant
+  v at z=0.07 km/s: recomputed 1897.09, lens claims 1897, tol 3
+PASS 0.09417015091401026 <= 3: symbolic, constant
+SUMMARY: 5 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

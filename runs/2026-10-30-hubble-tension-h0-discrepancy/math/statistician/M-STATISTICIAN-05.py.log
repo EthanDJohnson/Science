@@ -1,0 +1,71 @@
+# math_run log
+command:  python3 runs/2026-10-30-hubble-tension-h0-discrepancy/math/statistician/M-STATISTICIAN-05.py
+started:  2026-10-30T15:32:50Z
+duration: 0.9 s
+exit:     0
+versions: python 3.13.17, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   27 PASS, 0 FAIL, 1 UNDECIDED
+
+--- stdout ---
+  non-SN class within chi2: mine = 0.0111408, lens = 0.01, tol = 0.006
+PASS 0.0011408199643493758 <= 0.00600000000000000: symbolic, constant
+  between-class chi2: mine = 49.867, lens = 49.87, tol = 0.15
+PASS 0.002960915039687428 <= 0.150000000000000: symbolic, constant
+    z (7 dof): mine = 5.65772, lens = 5.66, tol = 0.02
+PASS 0.002277853242418137 <= 0.0200000000000000: symbolic, constant
+  pooled mean: mine = 68.428, lens = 68.43, tol = 0.01
+PASS 0.001990297673176045 <= 0.0100000000000000: symbolic, constant
+  pooled sigma: mine = 0.290839, lens = 0.29, tol = 0.005
+PASS 0.0008392240181669189 <= 0.00500000000000000: symbolic, constant
+  PDG S = sqrt(chi2/(N-1)), N = 9: mine = 2.49695, lens = 2.5, tol = 0.01
+PASS 0.0030473596570592988 <= 0.0100000000000000: symbolic, constant
+P1 early/late: within 6.491/6 (p = 0.371); between 43.38/1, z = 6.586
+  P1 early/late within: mine = 6.49052, lens = 6.5, tol = 0.05
+PASS 0.009479748398902976 <= 0.0500000000000000: symbolic, constant
+  P1 early/late between z: mine = 6.58609, lens = 6.59, tol = 0.02
+PASS 0.003914756597875879 <= 0.0200000000000000: symbolic, constant
+  P1 late mean: mine = 72.7723, lens = 72.77, tol = 0.01
+PASS 0.002342270378393962 <= 0.0100000000000000: symbolic, constant
+  P1 late sigma: mine = 0.720895, lens = 0.72, tol = 0.01
+PASS 0.0008951438576847298 <= 0.0100000000000000: symbolic, constant
+  P1 between chi2: mine = 43.3765, lens = 43.4, tol = 0.1
+PASS 0.02348116664078859 <= 0.100000000000000: symbolic, constant
+P2 SH0ES/rest: within 17.029/6 (p = 0.009); between 32.84/1, z = 5.730
+  P2 SH0ES/rest within: mine = 17.0292, lens = 17.0, tol = 0.1
+PASS 0.02924106087542988 <= 0.100000000000000: symbolic, constant
+  P2 SH0ES/rest between z: mine = 5.73043, lens = 5.73, tol = 0.02
+PASS 0.0004273858138075237 <= 0.0200000000000000: symbolic, constant
+P3 three-way: within 4.999/5 (p = 0.416); between 44.87/2, z = 6.377
+  P3 three-way within: mine = 4.99858, lens = 5.01, tol = 0.05
+PASS 0.01141894797644882 <= 0.0500000000000000: symbolic, constant
+  P3 three-way between z: mine = 6.37691, lens = 6.38, tol = 0.02
+PASS 0.003085841747581863 <= 0.0200000000000000: symbolic, constant
+  P3 other-local mean: mine = 71.692, lens = 71.69, tol = 0.01
+PASS 0.001958732618962955 <= 0.0100000000000000: symbolic, constant
+  P3 other-local sigma: mine = 1.14107, lens = 1.14, tol = 0.01
+PASS 0.00107251371070016 <= 0.0100000000000000: symbolic, constant
+  P3 other vs early z: mine = 3.46852, lens = 3.5, tol = 0.05
+PASS 0.031475816885244701 <= 0.0500000000000000: symbolic, constant
+  P3 other vs SH0ES z: mine = 1.22145, lens = 1.2, tol = 0.05
+PASS 0.021449630389049644 <= 0.0500000000000000: symbolic, constant
+P4 r_s / no r_s: within 11.939/7 (p = 0.103); between 38.24/1, z = 6.184
+  P4 r_s / no r_s within: mine = 11.9391, lens = 11.95, tol = 0.05
+PASS 0.010890889050582289 <= 0.0500000000000000: symbolic, constant
+  P4 r_s / no r_s between z: mine = 6.18388, lens = 6.18, tol = 0.02
+PASS 0.003884876937182313 <= 0.0200000000000000: symbolic, constant
+  Delta chi2_within P2 - P1: mine = 10.5387, lens = 10.5, tol = 0.15
+PASS 0.038720809274333995 <= 0.150000000000000: symbolic, constant
+  no-SN local mean: mine = 72.3852, lens = 72.39, tol = 0.01
+PASS 0.00477540593510639 <= 0.0100000000000000: symbolic, constant
+  no-SN local sigma: mine = 1.41257, lens = 1.41, tol = 0.01
+PASS 0.0025717919684304803 <= 0.0100000000000000: symbolic, constant
+  no-SN vs early z: mine = 3.31642, lens = 3.32, tol = 0.01
+PASS 0.003575139764078861 <= 0.0100000000000000: symbolic, constant
+no-SN within chi2 = 0.747/4 (table A says 4.32/5)
+PASS w1*(x1 - (w1*x1 + w2*x2)/(w1 + w2))**2 + w2*(x2 - (w1*x1 + w2*x2)/(w1 + w2))**2 == (x1 - x2)**2/(1/w2 + 1/w1): symbolic
+UNDECIDED lim c->n - 1 of sqrt(c)*sqrt(1/(n - 1)) == 1: symbolic limit sqrt(n - 1)*sqrt(1/(n - 1))
+PASS (5.2 km/s/Mpc)**2 / (0.72 km/s/Mpc)**2 has the dimension of dimensionless: dimensional analysis
+SUMMARY: 27 pass, 0 fail, 1 undecided
+
+--- stderr ---
+

@@ -1,0 +1,56 @@
+# math_run log
+command:  python3 runs/2026-10-30-hubble-tension-h0-discrepancy/calc/lens-constraints_late.py
+started:  2026-10-30T15:34:10Z
+duration: 0.9 s
+exit:     0
+versions: python 3.13.17, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+Base CMB-LCDM: H0 = 67.35, Omega_m = 0.3153, r_d = 147.06 Mpc, z_* = 1089.9
+
+(1) constant w = -1.194 at fixed theta_*, omega_b, omega_c: true H0 = 73.26, Omega_m = 0.2664, 100theta_* = 1.04110 (+0.0 sigma), min w_eff(DE) = -1.194 -> NEC VIOLATED
+   BAO residuals vs CMB-LCDM (same r_d): z=0.295: DM -4.90% DH -2.19%, z=0.51: DM -3.38% DH +0.05%, z=0.706: DM -2.43% DH +1.10%, z=0.934: DM -1.68% DH +1.61%, z=1.321: DM -0.95% DH +1.70%, z=1.484: DM -0.76% DH +1.61%, z=2.33: DM -0.28% DH +1.05%
+   SN shape residual (mag, offset set by z>=0.3): z=0.023: -0.108, z=0.05: -0.100, z=0.1: -0.086, z=0.15: -0.073, z=0.3: -0.040, z=0.5: -0.008, z=0.7: +0.014, z=1.0: +0.035
+   H0 a ladder would infer from 0.023<z<0.15 (q0=-0.55): 72.49 (base model: 67.42)
+   reference: CPL (w0, wa) = (-0.42, -1.75) [D-51] at fixed theta_*: H0 = 63.70 (direction: down)
+
+(2) step at z_t = 0.01: omega_x amplitude = 0.08466, Lambda kept: True (omega_de0 0.31058 vs 0.31058)
+
+(2) step in H^2 below z_t = 0.01: true H0 = 73.26, Omega_m = 0.2664, 100theta_* = 1.04138 (+0.9 sigma), min w_eff(DE) = -8.697 -> NEC VIOLATED
+   BAO residuals vs CMB-LCDM (same r_d): z=0.295: DM -0.31% DH +0.00%, z=0.51: DM -0.19% DH +0.00%, z=0.706: DM -0.14% DH +0.00%, z=0.934: DM -0.12% DH +0.00%, z=1.321: DM -0.09% DH +0.00%, z=1.484: DM -0.08% DH +0.00%, z=2.33: DM -0.07% DH +0.00%
+   SN shape residual (mag, offset set by z>=0.3): z=0.023: -0.077, z=0.05: -0.033, z=0.1: -0.015, z=0.15: -0.009, z=0.3: -0.003, z=0.5: -0.000, z=0.7: +0.001, z=1.0: +0.002
+   H0 a ladder would infer from 0.023<z<0.15 (q0=-0.55): 68.29 (base model: 67.42)
+
+(2) step at z_t = 0.05: omega_x amplitude = 0.08336, Lambda kept: True (omega_de0 0.31058 vs 0.31058)
+
+(2) step in H^2 below z_t = 0.05: true H0 = 73.26, Omega_m = 0.2664, 100theta_* = 1.04243 (+4.4 sigma), min w_eff(DE) = -3.366 -> NEC VIOLATED
+   BAO residuals vs CMB-LCDM (same r_d): z=0.295: DM -1.46% DH -0.00%, z=0.51: DM -0.89% DH +0.00%, z=0.706: DM -0.68% DH +0.00%, z=0.934: DM -0.55% DH +0.00%, z=1.321: DM -0.43% DH +0.00%, z=1.484: DM -0.40% DH +0.00%, z=2.33: DM -0.31% DH +0.00%
+   SN shape residual (mag, offset set by z>=0.3): z=0.023: -0.159, z=0.05: -0.140, z=0.1: -0.071, z=0.15: -0.041, z=0.3: -0.012, z=0.5: -0.000, z=0.7: +0.004, z=1.0: +0.008
+   H0 a ladder would infer from 0.023<z<0.15 (q0=-0.55): 71.03 (base model: 67.42)
+
+(2) step at z_t = 0.15: omega_x amplitude = 0.08327, Lambda kept: True (omega_de0 0.31058 vs 0.31058)
+
+(2) step in H^2 below z_t = 0.15: true H0 = 73.26, Omega_m = 0.2664, 100theta_* = 1.04482 (+12.4 sigma), min w_eff(DE) = -1.899 -> NEC VIOLATED
+   BAO residuals vs CMB-LCDM (same r_d): z=0.295: DM -4.05% DH -0.03%, z=0.51: DM -2.49% DH -0.00%, z=0.706: DM -1.90% DH -0.00%, z=0.934: DM -1.53% DH -0.00%, z=1.321: DM -1.20% DH -0.00%, z=1.484: DM -1.11% DH +0.00%, z=2.33: DM -0.86% DH +0.00%
+   SN shape residual (mag, offset set by z>=0.3): z=0.023: -0.126, z=0.05: -0.124, z=0.1: -0.116, z=0.15: -0.099, z=0.3: -0.034, z=0.5: -0.001, z=0.7: +0.013, z=1.0: +0.023
+   H0 a ladder would infer from 0.023<z<0.15 (q0=-0.55): 72.94 (base model: 67.42)
+
+(2) step at z_t = 0.3: omega_x amplitude = 0.08325, Lambda kept: True (omega_de0 0.31058 vs 0.31058)
+
+(2) step in H^2 below z_t = 0.3: true H0 = 73.26, Omega_m = 0.2664, 100theta_* = 1.04774 (+22.1 sigma), min w_eff(DE) = -1.490 -> NEC VIOLATED
+   BAO residuals vs CMB-LCDM (same r_d): z=0.295: DM -6.48% DH -3.34%, z=0.51: DM -4.42% DH -0.12%, z=0.706: DM -3.38% DH -0.00%, z=0.934: DM -2.72% DH -0.00%, z=1.321: DM -2.13% DH -0.00%, z=1.484: DM -1.97% DH -0.00%, z=2.33: DM -1.53% DH -0.00%
+   SN shape residual (mag, offset set by z>=0.3): z=0.023: -0.087, z=0.05: -0.084, z=0.1: -0.080, z=0.15: -0.075, z=0.3: -0.050, z=0.5: -0.006, z=0.7: +0.019, z=1.0: +0.037
+   H0 a ladder would infer from 0.023<z<0.15 (q0=-0.55): 73.08 (base model: 67.42)
+
+(3) M_B transition (Hubble-flow SNe brighter than calibrators by |dM|)
+   |dM| = 0.146 mag: luminosity ratio far/near = 1.1439; G_far/G_near = 0.9143 if L ∝ G^-3/2 (Chandrasekhar, Marra-Perivolaropoulos [D-92]); = 1.0938 if standardised L rises with G (Wright & Li 2018 sign; exponent ~+1.5 read roughly from their Fig. 7)
+   |dM| = 0.172 mag: luminosity ratio far/near = 1.1717; G_far/G_near = 0.8998 if L ∝ G^-3/2 (Chandrasekhar, Marra-Perivolaropoulos [D-92]); = 1.1114 if standardised L rises with G (Wright & Li 2018 sign; exponent ~+1.5 read roughly from their Fig. 7)
+   |dM| = 0.188 mag: luminosity ratio far/near = 1.1890; G_far/G_near = 0.8910 if L ∝ G^-3/2 (Chandrasekhar, Marra-Perivolaropoulos [D-92]); = 1.1224 if standardised L rises with G (Wright & Li 2018 sign; exponent ~+1.5 read roughly from their Fig. 7)
+   lookback time to z = 0.005: 72 Myr (n=2001); check n=3001: 72; comoving distance 22.2 Mpc
+   lookback time to z = 0.01: 144 Myr (n=2001); check n=3001: 144; comoving distance 44.4 Mpc
+   lookback time to z = 0.0233: 333 Myr (n=2001); check n=3001: 333; comoving distance 103.1 Mpc
+   lookback time to z = 0.15: 1957 Myr (n=2001); check n=3001: 1957; comoving distance 643.4 Mpc
+
+--- stderr ---
+

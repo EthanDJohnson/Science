@@ -1,0 +1,35 @@
+{
+  "slug": "2026-10-30-hubble-tension-h0-discrepancy",
+  "date": "2026-10-30",
+  "title": "The Hubble tension: local (~73) versus early-universe (~67–68) H0",
+  "question": "Hubble tension",
+  "type": "anomaly",
+  "depth": "deep",
+  "status": "complete",
+  "source_checked": true,
+  "bottom_line": "The likeliest cause of the gap between the local Hubble constant (about 73 km/s/Mpc, from the distance ladder) and the early-universe value (67–68.5) is an error on the ladder side, at about 45 percent confidence. The main reason: the early value is reproduced by three independent telescopes and by a method using no microwave-background maps, while the 5-sigma claim rests on one team's ladder. But ladders that skip supernovae read just as high, so the error must sit in something every local method shares, or part of the gap is real. Pre-recombination new physics (about 20 percent) and a half-and-half mixture (about 20 percent) stay open. A 1-percent expansion-rate measurement using neither ladder nor sound horizon would decide it.",
+  "prior": [
+    {
+      "slug": "2026-09-30-neutron-lifetime-beam-bottle",
+      "date": "2026-09-30",
+      "mode": "ignore",
+      "same_question": false
+    },
+    {
+      "slug": "2026-09-29-problem-of-time-quantum-gravity",
+      "date": "2026-09-29",
+      "mode": "ignore",
+      "same_question": false
+    },
+    {
+      "slug": "2026-10-13-gravitational-wave-decay-photon-pairs",
+      "date": "2026-10-13",
+      "mode": "ignore",
+      "same_question": false
+    }
+  ],
+  "trust": "ok",
+  "notes": [],
+  "superseded_by": null,
+  "recorded": "2026-10-30"
+}

@@ -1,0 +1,59 @@
+# math_run log
+command:  python3 runs/2026-10-30-hubble-tension-h0-discrepancy/calc/falsifier-C8-2_bounds.py
+started:  2026-10-30T17:01:38Z
+duration: 0.0 s
+exit:     0
+versions: python 3.13.17, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+[1] non-SH0ES mean (CCHP,SBF,TF,TD,masers,sirens): 71.692 +- 1.141  (check vs M-EXAMINER-03 71.692 +- 1.141)
+
+[2] non-SH0ES mean vs each early reference: gap, sigma
+   CMB-SPA 67.19+-0.38 (D-44)                       gap  4.50  z = 3.74
+   Planck PR4 67.64+-0.52 (D-41)                    gap  4.05  z = 3.23
+   ACT DR6 alone 66.51+-0.64 (D-42)                 gap  5.18  z = 3.96
+   SPT-3G alone 66.66+-0.60 (D-43)                  gap  5.03  z = 3.90
+   SPT+ACT (no Planck) 66.59+-0.46 (D-43)           gap  5.10  z = 4.15
+   DESI BAO+BBN 68.50+-0.58 (D-45)                  gap  3.19  z = 2.49
+   inverse ladder 67.19+-0.65 (D-48)                gap  4.50  z = 3.43
+   inverse ladder flat LCDM 67.67+-0.685 (D-48)     gap  4.02  z = 3.02
+   pooled CMB-SPA + BAO+BBN 67.58+-0.318            gap  4.11  z = 3.47
+   range over references: 2.49 - 4.15 sigma
+
+[3] Variants of the 'team-independent' set vs CMB-SPA (67.19+-0.38) and vs SPT+ACT (66.59+-0.46)
+   drop TF (Cepheid/TRGB zero points via SH0ES-type hosts)  71.56 +- 1.19  z_SPA = 3.50  z_SPT+ACT = 3.90  z_BAO+BBN = 2.31
+   drop TF and SBF (only CCHP + one-step)              70.83 +- 1.37  z_SPA = 2.57  z_SPT+ACT = 2.94  z_BAO+BBN = 1.57
+   one-step only (TD, masers, sirens)                  71.27 +- 1.93  z_SPA = 2.07  z_SPT+ACT = 2.36  z_BAO+BBN = 1.37
+   Cepheid-free, SH0ES-side TRGB replaces CCHP         72.51 +- 1.11  z_SPA = 4.53  z_SPT+ACT = 4.92  z_BAO+BBN = 3.20
+   H0DN no-Cepheid V08 alone                           72.51 +- 1.30  z_SPA = 3.94  z_SPT+ACT = 4.30  z_BAO+BBN = 2.82
+   H0DN no-Cepheid V08 + one-step                      72.12 +- 1.08  z_SPA = 4.32  z_SPT+ACT = 4.73  z_BAO+BBN = 2.96
+
+[4] Is the team-independent gap 'smaller' than the SH0ES gap?
+   rest-vs-SPA gap = 4.50 +- 1.20 km/s/Mpc; SH0ES gap = 6.30
+   SH0ES vs rest: diff 1.80 +- 1.47, z = 1.22
+   the rest-only gap is below the SH0ES gap by only 1.50 sigma (of its own error)
+   in mag: rest 0.141, SH0ES 0.195
+
+[5] Why the significance drops: precision, not disagreement
+   sigma_local needed for 5 sigma at the current non-SH0ES centre vs SPA: 0.816 (now 1.141; ratio 1.40)
+   sigma_local needed for 3 sigma at the current non-SH0ES centre vs SPA: 1.452 (now 1.141; ratio 0.79)
+   non-SH0ES error with SH0ES centre 73.49: z = 5.24
+   SH0ES centre with SH0ES error but rest's centre 71.69: z = 4.48
+
+[3b] Robustness of the Cepheid-free near-5-sigma routes
+   SH0ES-side TRGB 72.1 +- 1.8, no TF: 72.19 +- 1.15  z_SPA = 4.12  z_SPT+ACT = 4.51
+   SH0ES-side TRGB 73.3 +- 1.8, no TF: 72.69 +- 1.15  z_SPA = 4.52  z_SPT+ACT = 4.91
+   H0DN V08 shifted -0.2 + one-step: 71.99 +- 1.08  z_SPA = 4.20  z_SPT+ACT = 4.61
+   H0DN V08 shifted -0.4 + one-step: 71.85 +- 1.08  z_SPA = 4.08  z_SPT+ACT = 4.49
+   GLS Cepheid-free (SH0ES-side TRGB, SBF share NGC 4258): 72.40 +- 1.18  z_SPA = 4.20  z_SPT+ACT = 4.58
+
+[6] p-values of the candidate's band endpoints and of the computed range
+   z = 3.00: two-sided p = 2.70e-03
+   z = 3.70: two-sided p = 2.16e-04
+   z = 2.49: two-sided p = 1.26e-02
+   z = 4.15: two-sided p = 3.37e-05
+   z = 5.00: two-sided p = 5.73e-07
+
+--- stderr ---
+

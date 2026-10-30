@@ -1,0 +1,118 @@
+# math_run log
+command:  python3 runs/2026-10-30-hubble-tension-h0-discrepancy/calc/lens-examiner_partitions.py
+started:  2026-10-30T15:17:26Z
+duration: 0.0 s
+exit:     0
+versions: python 3.13.17, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+Inputs (km/s/Mpc, symmetrised 68% errors):
+  SH0ES_Ceph_SN       73.49 +-  0.93
+  CCHP_TRGB_SN        70.39 +-  1.94
+  SBF                 73.80 +-  2.40
+  TullyFisher         73.30 +-  4.08
+  TDCOSMO2026         71.10 +-  2.35
+  Masers              71.60 +-  3.70
+  Sirens_GWTC5        71.70 +-  8.45
+  BAO_no_rd_Zab       69.60 +-  1.55
+  Equality_Philcox    65.60 +-  4.45
+  CMB_SPA             67.19 +-  0.38
+  BAO_BBN_DESI        68.50 +-  0.58
+  InvLadder           67.19 +-  0.65
+
+Partition test: a good partition has a large between-group chi2 AND acceptable within-group chi2.
+
+== P1 early (incl. r_s-free shape) vs late ==
+  group early                  n= 5 mean= 67.57 +- 0.28 chi2_within=  5.82/4 p=0.213
+  group late                   n= 7 mean= 72.77 +- 0.72 chi2_within=  2.93/6 p=0.817
+  between chi2=45.27 dof=1 z=6.73; within chi2=8.76/10 p_within=0.555; pooled chi2=54.03/11
+
+== P2 uses r_s vs does not use r_s ==
+  group uses_rs                n= 3 mean= 67.51 +- 0.29 chi2_within=  3.86/2 p=0.145
+  group no_rs                  n= 9 mean= 72.07 +- 0.65 chi2_within=  8.53/8 p=0.383
+  between chi2=41.63 dof=1 z=6.45; within chi2=12.40/10 p_within=0.259; pooled chi2=54.03/11
+
+== P3 SH0ES Cepheid-SN vs everything else ==
+  group SH0ES                  n= 1 mean= 73.49 +- 0.93 chi2_within=  0.00/0 p=1
+  group rest                   n=11 mean= 67.80 +- 0.27 chi2_within= 19.58/10 p=0.0335
+  between chi2=34.44 dof=1 z=5.87; within chi2=19.58/10 p_within=0.0335; pooled chi2=54.03/11
+
+== P4 NGC4258/LMC-anchored ladders vs everything else ==
+  group ladders                n= 4 mean= 73.02 +- 0.78 chi2_within=  2.21/3 p=0.53
+  group rest                   n= 8 mean= 67.64 +- 0.28 chi2_within=  9.43/7 p=0.223
+  between chi2=42.38 dof=1 z=6.51; within chi2=11.64/10 p_within=0.31; pooled chi2=54.03/11
+
+== P5 three groups: r_s | ladders | one-step+r_s-free ==
+  group uses_rs                n= 3 mean= 67.51 +- 0.29 chi2_within=  3.86/2 p=0.145
+  group ladders                n= 4 mean= 73.02 +- 0.78 chi2_within=  2.21/3 p=0.53
+  group onestep_rsfree         n= 5 mean= 69.93 +- 1.17 chi2_within=  1.49/4 p=0.829
+  between chi2=46.46 dof=2 z=6.50; within chi2=7.56/9 p_within=0.579; pooled chi2=54.03/11
+
+== Null test: one common H0, all 12 classes, quoted errors ==
+  pooled mean 68.25 +- 0.26; chi2=54.03/11; p=1.17e-07; PDG scale factor S=2.22 (uniform error inflation the null needs)
+
+== Pairwise tensions vs CMB-SPA 67.19 +- 0.38 (independent approx.) ==
+  SH0ES_Ceph_SN      diff= +6.30 sigma=1.00 z=6.27
+  CCHP_TRGB_SN       diff= +3.20 sigma=1.97 z=1.62
+  SBF                diff= +6.61 sigma=2.43 z=2.72
+  TullyFisher        diff= +6.11 sigma=4.10 z=1.49
+  TDCOSMO2026        diff= +3.91 sigma=2.38 z=1.64
+  Masers             diff= +4.41 sigma=3.72 z=1.19
+  Sirens_GWTC5       diff= +4.51 sigma=8.46 z=0.53
+  BAO_no_rd_Zab      diff= +2.41 sigma=1.60 z=1.51
+  Equality_Philcox   diff= -1.59 sigma=4.47 z=0.36
+  BAO_BBN_DESI       diff= +1.31 sigma=0.69 z=1.89
+
+== Local combinations without SH0ES Cepheids (independent approx.) ==
+  non-Cepheid local (CCHP,SBF,TF,TD,masers,sirens)    71.69 +- 1.14 (S=1.00) vs CMB_SPA: z=3.74
+  non-Cepheid local (CCHP,SBF,TF,TD,masers,sirens)    71.69 +- 1.14 (S=1.00) vs BAO_BBN: z=2.49
+  non-Cepheid local (CCHP,SBF,TF,TD,masers,sirens)    71.69 +- 1.14 (S=1.00) vs SH0ES: z=1.22
+  one-step only (TD, masers, sirens)                  71.27 +- 1.93 (S=1.00) vs CMB_SPA: z=2.07
+  one-step only (TD, masers, sirens)                  71.27 +- 1.93 (S=1.00) vs BAO_BBN: z=1.37
+  one-step only (TD, masers, sirens)                  71.27 +- 1.93 (S=1.00) vs SH0ES: z=1.04
+  no SN at all (SBF,TF,TD,masers,sirens)              72.39 +- 1.41 (S=1.00) vs CMB_SPA: z=3.55
+  no SN at all (SBF,TF,TD,masers,sirens)              72.39 +- 1.41 (S=1.00) vs BAO_BBN: z=2.54
+  no SN at all (SBF,TF,TD,masers,sirens)              72.39 +- 1.41 (S=1.00) vs SH0ES: z=0.65
+  all local incl. SH0ES                               72.77 +- 0.72 (S=1.00) vs CMB_SPA: z=6.85
+  all local incl. SH0ES                               72.77 +- 0.72 (S=1.00) vs BAO_BBN: z=4.62
+
+== Rough NGC 4258 correlation: CCHP + SBF + TD + masers + sirens (GLS) ==
+  shared anchor fraction 1.45% -> shared err CCHP 1.02, SBF 1.07
+  GLS mean 71.47 +- 1.26; vs CMB-SPA z=3.25
+
+== Magnitude and sound-horizon restatements (premise 8) ==
+  H0_loc= 73.49 vs 67.19: gap  9.38% , delta M_B = 5log10 ratio = 0.195 mag; r_d needed at fixed r_d*H0 = 134.4 Mpc (from 147.00), reduction 8.57%
+  H0_loc= 73.49 vs 68.50: gap  7.28% , delta M_B = 5log10 ratio = 0.153 mag; r_d needed at fixed r_d*H0 = 137.0 Mpc (from 147.00), reduction 6.79%
+  H0_loc= 73.26 vs 67.19: gap  9.04% , delta M_B = 5log10 ratio = 0.188 mag; r_d needed at fixed r_d*H0 = 134.8 Mpc (from 147.00), reduction 8.29%
+  H0_loc= 73.26 vs 68.50: gap  6.95% , delta M_B = 5log10 ratio = 0.146 mag; r_d needed at fixed r_d*H0 = 137.4 Mpc (from 147.00), reduction 6.50%
+  H0_loc= 70.39 vs 67.19: gap  4.76% , delta M_B = 5log10 ratio = 0.101 mag; r_d needed at fixed r_d*H0 = 140.3 Mpc (from 147.00), reduction 4.55%
+  H0_loc= 70.39 vs 68.50: gap  2.76% , delta M_B = 5log10 ratio = 0.059 mag; r_d needed at fixed r_d*H0 = 143.1 Mpc (from 147.00), reduction 2.69%
+  Published M_B: ladder R22 -19.253 +- 0.027 (Pantheon+ system); inverse ladder DES5Y+DESI -19.375 (cosmography) / -19.394 (LCDM) mag (D-21, different SN systems)
+    naive difference +0.122 mag (NOT comparable: SN zero points differ)
+    naive difference +0.141 mag (NOT comparable: SN zero points differ)
+
+== Premise 3: spread of 'CMB H0' across late-time models (D-51, D-52, D-53) ==
+  LCDM CMB-SPA                  67.19
+  w0wa DESI+CMB                 63.60
+  wCDM DESI+CMB                 69.51
+  w0wa +DESY5                   66.74
+  w0wa +Pantheon+               67.51
+  EDE P-ACT-LB                  69.90
+  EDE Poulin 2026 profile       71.00
+  spread max-min = 7.40 km/s/Mpc
+
+== Fraction of gap closed by best early-time fits WITHOUT SH0ES prior ==
+  EDE P-ACT-LB           H0=69.90: closes   43% of SH0ES-CMB_SPA gap; residual vs SH0ES z=2.43
+  EDE Poulin 2026        H0=71.00: closes   60% of SH0ES-CMB_SPA gap; residual vs SH0ES z=1.73
+  eROSITA EDE            H0=71.40: closes   67% of SH0ES-CMB_SPA gap; residual vs SH0ES z=1.24
+  mod. recomb P-ACT-LB   H0=69.60: closes   38% of SH0ES-CMB_SPA gap; residual vs SH0ES z=2.85
+  PMF ACT                H0=69.10: closes   30% of SH0ES-CMB_SPA gap; residual vs SH0ES z=4.16
+
+== Precision a deciding measurement needs ==
+  73.3 vs 67.2 (real gap)            delta=6.1: total sigma for 3 sig 2.03 (2.77%), for 5 sig 1.22 (1.66%) km/s/Mpc
+  73.3 vs 70 (SH0ES vs CCHP-like)    delta=3.3: total sigma for 3 sig 1.10 (1.50%), for 5 sig 0.66 (0.90%) km/s/Mpc
+  73.3 vs 68.5 (vs BAO+BBN)          delta=4.8: total sigma for 3 sig 1.60 (2.18%), for 5 sig 0.96 (1.31%) km/s/Mpc
+
+--- stderr ---
+

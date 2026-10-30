@@ -1,0 +1,86 @@
+# math_run log
+command:  python3 runs/2026-10-30-hubble-tension-h0-discrepancy/calc/lens-statistician_robust_future.py
+started:  2026-10-30T15:10:39Z
+duration: 5.5 s
+exit:     0
+versions: python 3.13.17, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+== (a) Student-t tails: P(|z| > z0) for a single pair ==
+  z0 = 4.55: Gaussian 5.36e-06; t(nu=2) 0.045; t(nu=3) 0.0199; t(nu=5) 0.00611
+  z0 = 5.49: Gaussian 4.02e-08; t(nu=2) 0.032; t(nu=3) 0.0119; t(nu=5) 0.00274
+  z0 = 6.27: Gaussian 3.61e-10; t(nu=2) 0.025; t(nu=3) 0.0082; t(nu=5) 0.00151
+
+== (a) Likelihood ratio: local values centred on early H0 (67.58, fixed) vs free local mean, t errors ==
+  all 7 local classes, nu = 2: best local mu = 72.92, -2 ln LR = 18.19, z ~ 4.27
+  all 7 local classes, nu = 3: best local mu = 72.87, -2 ln LR = 20.01, z ~ 4.47
+  all 7 local classes, nu = 1000: best local mu = 72.77, -2 ln LR = 51.13, z ~ 7.15
+  6 local classes without SH0ES, nu = 2: best local mu = 71.61, -2 ln LR = 10.70, z ~ 3.27
+  6 local classes without SH0ES, nu = 3: best local mu = 71.64, -2 ln LR = 10.94, z ~ 3.31
+  6 local classes without SH0ES, nu = 1000: best local mu = 71.70, -2 ln LR = 12.98, z ~ 3.60
+  no-SN local (SBF, TF, TD, MAS, GW), nu = 2: best local mu = 72.37, -2 ln LR = 9.41, z ~ 3.07
+  no-SN local (SBF, TF, TD, MAS, GW), nu = 3: best local mu = 72.38, -2 ln LR = 9.63, z ~ 3.10
+  no-SN local (SBF, TF, TD, MAS, GW), nu = 1000: best local mu = 72.39, -2 ln LR = 11.58, z ~ 3.40
+  one-step only, nu = 2: best local mu = 71.27, -2 ln LR = 3.96, z ~ 1.99
+  one-step only, nu = 3: best local mu = 71.27, -2 ln LR = 3.84, z ~ 1.96
+  one-step only, nu = 1000: best local mu = 71.27, -2 ln LR = 3.65, z ~ 1.91
+
+== (b) Calibrator-subsample variance (sigma_SN per calibrator assumed 0.10-0.15 mag) ==
+  sigma_SN = 0.1: subset 24 of 42: sigma(diff) = 0.013 mag = 0.45 km/s/Mpc; 2.5 km/s/Mpc offset = 5.6 sigma
+  sigma_SN = 0.1: subset 11 of 42: sigma(diff) = 0.026 mag = 0.87 km/s/Mpc; 2.5 km/s/Mpc offset = 2.9 sigma
+  sigma_SN = 0.1: subset 11 of 35: sigma(diff) = 0.025 mag = 0.84 km/s/Mpc; 2.5 km/s/Mpc offset = 3.0 sigma
+  sigma_SN = 0.13: subset 24 of 42: sigma(diff) = 0.017 mag = 0.58 km/s/Mpc; 2.5 km/s/Mpc offset = 4.3 sigma
+  sigma_SN = 0.13: subset 11 of 42: sigma(diff) = 0.034 mag = 1.13 km/s/Mpc; 2.5 km/s/Mpc offset = 2.2 sigma
+  sigma_SN = 0.13: subset 11 of 35: sigma(diff) = 0.032 mag = 1.09 km/s/Mpc; 2.5 km/s/Mpc offset = 2.3 sigma
+  sigma_SN = 0.15: subset 24 of 42: sigma(diff) = 0.020 mag = 0.67 km/s/Mpc; 2.5 km/s/Mpc offset = 3.7 sigma
+  sigma_SN = 0.15: subset 11 of 42: sigma(diff) = 0.039 mag = 1.31 km/s/Mpc; 2.5 km/s/Mpc offset = 1.9 sigma
+  sigma_SN = 0.15: subset 11 of 35: sigma(diff) = 0.037 mag = 1.26 km/s/Mpc; 2.5 km/s/Mpc offset = 2.0 sigma
+
+== (c) Residual tension with SH0ES after best early-time fits (no SH0ES prior) ==
+  Poulin 2026 EDE profile 71.0+-1.1 (D-53): SH0ES - model = 2.49, z = 1.73; gap closed vs CMB-SPA 67.19: 60%
+  ACT P-ACT-LB EDE 69.9 +0.8/-1.5 (D-52): SH0ES - model = 3.59, z = 2.93; gap closed vs CMB-SPA 67.19: 43%
+  eROSITA+CMB EDE 71.4+-1.4 (D-94): SH0ES - model = 2.09, z = 1.24; gap closed vs CMB-SPA 67.19: 67%
+  ACT PMF 69.1+-0.5 (D-52): SH0ES - model = 4.39, z = 4.16; gap closed vs CMB-SPA 67.19: 30%
+  ACT mod. recomb 69.6+-1.0 (D-52): SH0ES - model = 3.89, z = 2.85; gap closed vs CMB-SPA 67.19: 38%
+  ACT+SPT e-density 69.3+-0.5 (D-95): SH0ES - model = 4.19, z = 3.97; gap closed vs CMB-SPA 67.19: 33%
+  ACT EDE vs ACT LCDM baseline 68.2: closes 32% of SH0ES gap
+  EDE P-ACT: dchi2 = 4.3 for 3 extra params: p = 0.231, z(2-sided) = 1.20
+  EDE P-ACT-LB: dchi2 = 6.6 for 3 extra params: p = 0.0858, z(2-sided) = 1.72
+  EDE with SH0ES (Poulin): dchi2 = 35.4 for 3 extra params: p = 1e-07, z(2-sided) = 5.33
+  DESI w0wa: largest of 3 SN samples (4.2 sigma) with Sidak N=3: 3.94 sigma
+
+== (c) Local void within LCDM cosmic variance sigma = 0.31 (D-10, D-37) ==
+  gap 6.30: 20.3 sigma of cosmic variance
+  gap 5.19: 16.7 sigma of cosmic variance
+  gap 3.20: 10.3 sigma of cosmic variance
+
+== (d) Precision a deciding measurement needs (total 1-sigma on H0 or on a difference) ==
+  ladder-systematic world (67.6) vs SH0ES-real (73.3): delta = 5.72: 3 sigma needs 1.91 (2.7%), 5 sigma needs 1.14 (1.6%)
+  67.6 vs CCHP 70.4: delta = 2.82: 3 sigma needs 0.94 (1.3%), 5 sigma needs 0.56 (0.8%)
+  SH0ES 73.5 vs CCHP 70.4: delta = 3.10: 3 sigma needs 1.03 (1.5%), 5 sigma needs 0.62 (0.9%)
+  67.6 vs best EDE-like 71.0: delta = 3.42: 3 sigma needs 1.14 (1.6%), 5 sigma needs 0.68 (1.0%)
+  71.0 vs 73.3: delta = 2.30: 3 sigma needs 0.77 (1.1%), 5 sigma needs 0.46 (0.7%)
+
+== (d) Exposure to reach significance ==
+  TD: 73.3 vs 67.58, sys floor 0.00: x1.6 lenses (17 lenses) for 3 sigma
+  TD: 73.3 vs 67.58, sys floor 0.00: x4.6 lenses (50 lenses) for 5 sigma
+  TD: 73.3 vs 67.58, sys floor 0.71: x1.7 lenses (18 lenses) for 3 sigma
+  TD: 73.3 vs 67.58, sys floor 0.71: x7.2 lenses (79 lenses) for 5 sigma
+  TD: 73.3 vs 67.58, sys floor 1.07: x1.8 lenses (20 lenses) for 3 sigma
+  TD: 73.3 vs 67.58, sys floor 1.07: x63.6 lenses (700 lenses) for 5 sigma
+  TD: 71.0 vs 67.58, sys floor 0.00: x4.6 lenses (51 lenses) for 3 sigma
+  TD: 71.0 vs 67.58, sys floor 0.00: x15.1 lenses (166 lenses) for 5 sigma
+  TD: 71.0 vs 67.58, sys floor 0.71: x7.3 lenses (80 lenses) for 3 sigma
+  TD: 71.0 vs 67.58, sys floor 0.71: never reaches 5 sigma
+  TD: 71.0 vs 67.58, sys floor 1.07: x73.4 lenses (807 lenses) for 3 sigma
+  TD: 71.0 vs 67.58, sys floor 1.07: never reaches 5 sigma
+  SH0ES vs CCHP, CCHP sys 1.33 floor: never for 3 sigma; ceiling z = 2.33
+     with CCHP sys halved (0.67): x4.6 for 3 sigma
+  SH0ES vs CCHP, CCHP sys 1.33 floor: never for 5 sigma; ceiling z = 2.33
+     with CCHP sys halved (0.67): never for 5 sigma
+  bright sirens at ~15% each: N = 30 for 3 sigma between 67.6 and 73.3 (sigma needed 1.91)
+  bright sirens at ~15% each: N = 84 for 5 sigma between 67.6 and 73.3 (sigma needed 1.14)
+
+--- stderr ---
+

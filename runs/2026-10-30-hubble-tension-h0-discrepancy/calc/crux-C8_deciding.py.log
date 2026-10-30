@@ -1,0 +1,37 @@
+# math_run log
+command:  python3 runs/2026-10-30-hubble-tension-h0-discrepancy/calc/crux-C8_deciding.py
+started:  2026-10-30T17:11:25Z
+duration: 0.0 s
+exit:     0
+versions: python 3.13.17, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+[1] current state
+  rest vs SH0ES  z = 1.22
+  rest vs SPA    z = 3.74
+  rest vs BBN    z = 2.49
+  rest vs SPT+ACT z = 4.15
+[2] two-measurement test of 'smaller' (SH0ES error kept)
+  gap 1.80; max z with sigma_new = 0: 1.93
+  point-null 73.49 vs centre 71.69 at 2 sigma: sigma_new <= 0.90
+  point-null 73.49 vs centre 71.69 at 3 sigma: sigma_new <= 0.60
+[3] sigma_new for 3-sigma separation of predicted centres (point values)
+  C8 71.0 vs C1 68.5: sigma <= 0.83 (1.17% of 71.0)
+  C8 71.0 vs C1 67.5: sigma <= 1.17 (1.64% of 71.0)
+  C8 71.0 vs C3/C7 73.0: sigma <= 0.67 (0.94% of 71.0)
+  C8 71.7 vs SH0ES 73.49: sigma <= 0.60 (0.83% of 71.7)
+[4] C4(ii) split between one-step and team-independent ladder
+  split 5.5; sigma on difference for 3 sigma 1.83; each arm (equal) 1.30
+[5] outcome windows (C8 holds if value <= SH0ES - 3 s_new and value >= SPA + 3 s_comb)
+  s_new 1.14: smaller-at-3sig if <= 70.07; excess-at-3sig(SPA) if >= 70.79; (BBN) >= 72.34; >=5sig vs SPA if >= 73.20
+  s_new 0.80: smaller-at-3sig if <= 71.09; excess-at-3sig(SPA) if >= 69.85; (BBN) >= 71.46; >=5sig vs SPA if >= 71.62
+  s_new 0.60: smaller-at-3sig if <= 71.69; excess-at-3sig(SPA) if >= 69.32; (BBN) >= 71.00; >=5sig vs SPA if >= 70.74
+  s_new 0.50: smaller-at-3sig if <= 71.99; excess-at-3sig(SPA) if >= 69.07; (BBN) >= 70.80; >=5sig vs SPA if >= 70.33
+[6] time-delay lenses needed, no systematic floor (ASSUMED 1/sqrt(N) scaling)
+  sigma 1.06: N ~ 54
+  sigma 0.67: N ~ 135
+  sigma 0.60: N ~ 169
+
+--- stderr ---
+

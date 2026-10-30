@@ -1,0 +1,101 @@
+# math_run log
+command:  python3 runs/2026-10-30-hubble-tension-h0-discrepancy/calc/lens-decomposer_partitions.py
+started:  2026-10-30T15:21:18Z
+duration: 0.0 s
+exit:     0
+versions: python 3.13.17, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+=== 1. Gap sizes (km/s/Mpc, %, mag in 5 log10 H0) ===
+SH0ES Riess2025 Ceph HST+JWST [D-20]   - CMB-SPA [D-44]          : dH0=+6.30 +- 1.00 (6.27 sigma uncorrelated), 9.38%, dmag=0.195 mag
+SH0ES Riess2025 Ceph HST+JWST [D-20]   - Planck PR4 [D-41]       : dH0=+5.85 +- 1.07 (5.49 sigma uncorrelated), 8.65%, dmag=0.180 mag
+SH0ES Riess2025 Ceph HST+JWST [D-20]   - DESI DR2 BAO+BBN [D-45] : dH0=+4.99 +- 1.10 (4.55 sigma uncorrelated), 7.28%, dmag=0.153 mag
+H0DN corrected [D-22]                  - CMB-SPA [D-44]          : dH0=+6.07 +- 0.89 (6.82 sigma uncorrelated), 9.04%, dmag=0.188 mag
+H0DN corrected [D-22]                  - Planck PR4 [D-41]       : dH0=+5.62 +- 0.96 (5.86 sigma uncorrelated), 8.31%, dmag=0.173 mag
+H0DN corrected [D-22]                  - DESI DR2 BAO+BBN [D-45] : dH0=+4.76 +- 0.99 (4.80 sigma uncorrelated), 6.95%, dmag=0.146 mag
+CCHP TRGB [D-24]                       - CMB-SPA [D-44]          : dH0=+3.20 +- 1.97 (1.62 sigma uncorrelated), 4.76%, dmag=0.101 mag
+CCHP TRGB [D-24]                       - Planck PR4 [D-41]       : dH0=+2.75 +- 2.00 (1.37 sigma uncorrelated), 4.07%, dmag=0.087 mag
+CCHP TRGB [D-24]                       - DESI DR2 BAO+BBN [D-45] : dH0=+1.89 +- 2.02 (0.94 sigma uncorrelated), 2.76%, dmag=0.059 mag
+CCHP JWST-only TRGB [D-25]             - CMB-SPA [D-44]          : dH0=+1.62 +- 2.26 (0.72 sigma uncorrelated), 2.41%, dmag=0.052 mag
+CCHP JWST-only TRGB [D-25]             - Planck PR4 [D-41]       : dH0=+1.17 +- 2.28 (0.51 sigma uncorrelated), 1.73%, dmag=0.037 mag
+CCHP JWST-only TRGB [D-25]             - DESI DR2 BAO+BBN [D-45] : dH0=+0.31 +- 2.30 (0.13 sigma uncorrelated), 0.45%, dmag=0.010 mag
+
+=== 2. Partition test (premise 2) on a minimal-overlap set ===
+One common H0: mean=68.43 +- 0.29; chi2=49.65 for 9 dof; p=1.25e-07 (~5.29 sigma)
+P1 early(all CMB/BAO/equality/rs-free) vs local(all ladders+one-step)
+   group A mean 67.65+-0.31 (chi2 5.56/3), group B mean 72.76+-0.73 (chi2 2.92/5); total chi2=8.48/8 p=0.388; delta-chi2 vs one-mean=41.17; A-B split 6.42 sigma
+P2 r_s-using (CMB, BAO+BBN) vs everything not using r_s
+   group A mean 67.58+-0.32 (chi2 3.57/1), group B mean 72.01+-0.65 (chi2 9.08/7); total chi2=12.64/8 p=0.125; delta-chi2 vs one-mean=37.01; A-B split 6.08 sigma
+P3 SH0ES Cepheid-SN vs everything else
+   group A mean 73.49+-0.93 (chi2 0.00/0), group B mean 67.90+-0.30 (chi2 16.94/8); total chi2=16.94/8 p=0.031; delta-chi2 vs one-mean=32.71; A-B split 5.72 sigma
+P4 all distance ladders (SH0ES, CCHP, SBF) vs everything else
+   group A mean 73.01+-0.79 (chi2 2.21/2), group B mean 67.74+-0.31 (chi2 9.00/6); total chi2=11.21/8 p=0.190; delta-chi2 vs one-mean=38.45; A-B split 6.20 sigma
+P5 SH0ES+SBF (high ladders) vs everything else
+   group A mean 73.53+-0.87 (chi2 0.01/1), group B mean 67.81+-0.30 (chi2 10.82/7); total chi2=10.84/8 p=0.211; delta-chi2 vs one-mean=38.81; A-B split 6.23 sigma
+Ranking by residual chi2 (lower = better 2-group description, same parameter count):
+     8.48  P1 early(all CMB/BAO/equality/rs-free) vs local(all ladders+one-step)
+    10.84  P5 SH0ES+SBF (high ladders) vs everything else
+    11.21  P4 all distance ladders (SH0ES, CCHP, SBF) vs everything else
+    12.64  P2 r_s-using (CMB, BAO+BBN) vs everything not using r_s
+    16.94  P3 SH0ES Cepheid-SN vs everything else
+Best five unrestricted 2-group splits (group containing SH0ES listed):
+   chi2=8.48  {SH0ES, CCHP_TRGB, SBF, TDCOSMO, Masers, Sirens} vs rest
+   chi2=8.69  {SH0ES, SBF, TDCOSMO, Masers, Sirens} vs rest
+   chi2=8.69  {SH0ES, CCHP_TRGB, SBF, TDCOSMO, Masers} vs rest
+   chi2=8.88  {SH0ES, SBF, TDCOSMO, Masers} vs rest
+   chi2=9.51  {SH0ES, CCHP_TRGB, SBF, TDCOSMO, Sirens} vs rest
+
+=== 3. Tension without each block (load-bearing test) ===
+one-step only (TDCOSMO, masers, sirens)         : 71.27 +- 1.93; vs CMB-SPA: 2.07 sigma, vs BAO+BBN: 1.37 sigma
+all local except SH0ES                          : 71.56 +- 1.19; vs CMB-SPA: 3.50 sigma, vs BAO+BBN: 2.31 sigma
+all local except any SN ladder (SBF + one-step) : 72.26 +- 1.51; vs CMB-SPA: 3.27 sigma, vs BAO+BBN: 2.33 sigma
+all local                                       : 72.76 +- 0.73; vs CMB-SPA: 6.74 sigma, vs BAO+BBN: 4.55 sigma
+
+=== 4. Required effect size vs published levers (mag, % H0) ===
+Gap to explain (H0DN corrected vs CMB-SPA): 0.188 mag = 9.04% in H0
+   JWST-HST Cepheid photometry bound [D-09,D-78] |-0.01 +- 0.03| 2-sigma upper                    : 0.070 mag =  37.2% of gap
+   Cepheid reddening total correction [D-15]                                                      : 0.030 mag =  16.0% of gap
+   Drop Cepheid metallicity term: H0DN 73.50->73.080 [D-23]                                       : 0.012 mag =   6.6% of gap
+   Efstathiou 2020 needed P-L intercept bias (upper) [D-79b]                                      : 0.150 mag =  79.8% of gap
+   Wojtak-Hjorth 2025 SN two-population (73.49->70.59) [D-35]                                     : 0.087 mag =  46.5% of gap
+   Percival 2026 selection sum -2.6 km/s/Mpc on 73.49 [D-88]                                      : 0.078 mag =  41.6% of gap
+   Dong 2026 PV, forward 74.30->71.37 [D-82]                                                      : 0.087 mag =  46.5% of gap
+   MW parallax residual offset ~0.9% distance [D-86] (if whole ladder; MW is 1 of 3-4 anchors)    : 0.019 mag =  10.4% of gap
+   LCDM cosmic variance 1 sigma 0.31 km/s/Mpc [D-10]                                              : 0.010 mag =   5.3% of gap
+   cosmic variance: gap/sigma_CV = 19.6 sigma
+
+=== 5. Fraction of the gap closed by new-physics fits WITHOUT a SH0ES prior ===
+   ACT DR6 EDE P-ACT-LB 69.9 [D-52] (vs its own LCDM 68.2)           : closes   44.6% of 67.19->73.26 gap;   33.6% relative to its own LCDM (68.2); residual 3.36 km/s/Mpc
+   ACT DR6 PMF 69.1 [D-52]                                           : closes   31.4% of 67.19->73.26 gap;   17.8% relative to its own LCDM (68.2); residual 4.16 km/s/Mpc
+   ACT DR6 modified recombination 69.6 [D-52]                        : closes   39.7% of 67.19->73.26 gap;   27.6% relative to its own LCDM (68.2); residual 3.66 km/s/Mpc
+   Planck NPIPE EDE 95% upper 69.5 [D-53]                            : closes   38.0% of 67.19->73.26 gap;   33.1% relative to its own LCDM (67.64); residual 3.76 km/s/Mpc
+   Poulin 2026 EDE profile 71.0 [D-53]                               : closes   62.7% of 67.19->73.26 gap;   55.3% relative to its own LCDM (68.2); residual 2.26 km/s/Mpc
+   eROSITA+ EDE 71.4 [D-94]                                          : closes   69.3% of 67.19->73.26 gap;   63.2% relative to its own LCDM (68.2); residual 1.86 km/s/Mpc
+   electron-density fluct. ACT+SPT 69.3 (with ladder prior!) [D-95]  : closes   34.7% of 67.19->73.26 gap;   21.7% relative to its own LCDM (68.2); residual 3.96 km/s/Mpc
+   DESI DR2 w0wa DESI+CMB 63.6 [D-51]                                : closes  -59.1% of 67.19->73.26 gap;  -89.7% relative to its own LCDM (68.17); residual 9.66 km/s/Mpc
+   DESI DR2 w0wa DESI+CMB+Pantheon+ 67.51 [D-51]                     : closes    5.3% of 67.19->73.26 gap;  -13.0% relative to its own LCDM (68.17); residual 5.75 km/s/Mpc
+
+=== 6. Null model: error inflation needed ===
+   H0DN vs CMB-SPA to 3.0 sigma: total sigma 2.02; ladder sigma 1.99 = x2.47 of quoted 0.806
+   H0DN vs CMB-SPA to 2.0 sigma: total sigma 3.04; ladder sigma 3.01 = x3.74 of quoted 0.806
+   ladder errors x1.0: one-mean 68.43, chi2=49.65/9, p=0.000
+   ladder errors x1.5: one-mean 68.07, chi2=28.40/9, p=0.001
+   ladder errors x2.0: one-mean 67.93, chi2=20.21/9, p=0.017
+   ladder errors x2.5: one-mean 67.87, chi2=16.26/9, p=0.062
+   ladder errors x3.0: one-mean 67.83, chi2=14.08/9, p=0.120
+   early (CMB, BAO+BBN) errors x1.0: one-mean 68.43, chi2=49.65/9, p=0.000
+   early (CMB, BAO+BBN) errors x1.5: one-mean 69.12, chi2=40.54/9, p=0.000
+   early (CMB, BAO+BBN) errors x2.0: one-mean 69.73, chi2=33.49/9, p=0.000
+   early (CMB, BAO+BBN) errors x3.0: one-mean 70.59, chi2=24.11/9, p=0.004
+
+=== 7. Reframe arithmetic: r_d and M_B ===
+   CMB-SPA H0*r_d = 67.19*147.00/100 = 98.77 Mpc: r_d needed for H0=73.264: 134.8 Mpc (8.29% below 147.00)
+   CMB-SPA H0*r_d = 67.19*147.00/100 = 98.77 Mpc: r_d needed for H0=70.39: 140.3 Mpc (4.55% below 147.00)
+   DESI DR2 h*r_d [D-45] = 101.54 Mpc: r_d needed for H0=73.264: 138.6 Mpc (5.72% below 147.00)
+   DESI DR2 h*r_d [D-45] = 101.54 Mpc: r_d needed for H0=70.39: 144.3 Mpc (1.87% below 147.00)
+   M_B ladder(R22) - inverse-ladder(flat LCDM, DES-SN5YR) = 0.141 mag; cosmography 0.122 mag (different SN systems; indicative only) [D-21]
+   gap in 5log10H0, SH0ES 73.49 vs CMB-SPA: 0.195 mag
+
+--- stderr ---
+

@@ -1,0 +1,50 @@
+# math_run log
+command:  python3 runs/2026-10-30-hubble-tension-h0-discrepancy/calc/falsifier-C7-2_bounds.py
+started:  2026-10-30T16:57:01Z
+duration: 0.0 s
+exit:     0
+versions: python 3.13.17, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+=== 1. Internal consistency of the two calibrator groups (C7's own prediction) ===
+r_d group (CMB-SPA, BAO+BBN, independent): 67.58 +- 0.32, chi2=3.57/1, p=0.059, z=1.89
+anchor group (SH0ES, CCHP total, SBF, TF): 73.02 +- 0.78, chi2=2.20/3, p=0.531
+CCHP JWST JAGB 67.8 +- 2.72 vs SH0ES: z = 1.98; vs r_d group 67.51+-0.29: z = 0.11
+CCHP total 70.39+-1.94 vs SH0ES: z = 1.44
+
+=== 2. Does late-time H(z) freedom move the r_d-side H0? (DESI DR2, D-45, D-51) ===
+LCDM DESI+CMB gap to H0DN: 5.09 +- 0.85 (5.97 sigma)
+w0wa DESI+CMB (no SN)    H0= 63.60  dH0 vs LCDM=-4.57  gap= 9.66+-2.02 (4.79 sig)  gap change = -5.36 x sigma_gap(LCDM)  frac of gap 0.90
+w0wa +Pantheon+          H0= 67.51  dH0 vs LCDM=-0.66  gap= 5.75+-1.00 (5.76 sig)  gap change = -0.77 x sigma_gap(LCDM)  frac of gap 0.13
+w0wa +Union3             H0= 65.91  dH0 vs LCDM=-2.26  gap= 7.35+-1.16 (6.32 sig)  gap change = -2.65 x sigma_gap(LCDM)  frac of gap 0.44
+w0wa +DESY5              H0= 66.74  dH0 vs LCDM=-1.43  gap= 6.52+-0.98 (6.65 sig)  gap change = -1.68 x sigma_gap(LCDM)  frac of gap 0.28
+wCDM DESI+CMB (no SN)    H0= 69.51  dH0 vs LCDM=+1.34  gap= 3.75+-1.22 (3.07 sig)  gap change = +1.57 x sigma_gap(LCDM)  frac of gap 0.26
+wCDM +Pantheon+          H0= 67.97  dH0 vs LCDM=-0.20  gap= 5.29+-0.99 (5.36 sig)  gap change = -0.23 x sigma_gap(LCDM)  frac of gap 0.04
+wCDM +Union3             H0= 68.01  dH0 vs LCDM=-0.16  gap= 5.25+-1.05 (4.98 sig)  gap change = -0.19 x sigma_gap(LCDM)  frac of gap 0.03
+wCDM +DESY5              H0= 67.34  dH0 vs LCDM=-0.83  gap= 5.92+-0.97 (6.11 sig)  gap change = -0.97 x sigma_gap(LCDM)  frac of gap 0.16
+Only fits WITHOUT SNe move H0 up; every fit with SNe moves the r_d-side H0 DOWN (gap widens).
+
+=== 3. M_B closure: is the H0 gap fully an M_B gap? (D-21, D-48, D-85) ===
+R22 73.04 vs inverse ladder 67.19: gap in mag 0.181; quoted dM_B 0.122; residual +0.059 mag
+R22 73.04 vs inverse ladder 67.67: gap in mag 0.166; quoted dM_B 0.141; residual +0.025 mag
+D-85: DES5Y vs Pantheon+ common-SN offset ~0.04 mag -> residual is of the size of a SN-system mismatch
+
+=== 4. Is the 'r_d-free' arbiter calibration-free? Equality-scale H0 under Delta N_eff ===
+equality-scale H0 67.19->73.264: needs N_eff = 4.45 (dN = 1.41); ACT DR6 2.86+-0.13 -> 12.2 sigma
+equality-scale H0 68.5->73.264: needs N_eff = 4.12 (dN = 1.07); ACT DR6 2.86+-0.13 -> 9.7 sigma
+Under Delta N_eff the equality route moves WITH r_d (both early calibrations shift), so it is not a clean arbiter for that variant; N_eff bound closes it.
+
+=== 5. Arbiters: anchor-free, r_d-free values vs the two calibrator groups (67.51+-0.29 r_d; 73.02+-0.78 anchors; M-EXAMINER-06) ===
+one-step mean (TD, masers, sirens) M-DIAL-07  z(vs r_d grp)=+1.93  z(vs anchor grp)=-0.84  position frac=0.68
+TDCOSMO-2026 [D-31]                           z(vs r_d grp)=+1.52  z(vs anchor grp)=-0.78  position frac=0.65
+Zaborowski r_d-free mean-ish 69.6 [D-49]      z(vs r_d grp)=+1.33  z(vs anchor grp)=-1.97  position frac=0.38
+2411.16677 r_d-free DESY5 [D-49]              z(vs r_d grp)=-0.44  z(vs anchor grp)=-3.22  position frac=-0.15
+equality BOSS [D-50]                          z(vs r_d grp)=-0.57  z(vs anchor grp)=-1.85  position frac=-0.44
+
+=== 6. Age bound (D-55): calibration-free clock ===
+LCDM t0 at H0=67.19: 14.02 Gyr; GC 13.81+-0.34 -> z=+0.63
+LCDM t0 at H0=73.264: 12.86 Gyr; GC 13.81+-0.34 -> z=-2.79
+
+--- stderr ---
+

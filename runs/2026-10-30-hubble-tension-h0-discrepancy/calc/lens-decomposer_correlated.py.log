@@ -1,0 +1,39 @@
+# math_run log
+command:  python3 runs/2026-10-30-hubble-tension-h0-discrepancy/calc/lens-decomposer_correlated.py
+started:  2026-10-30T15:22:35Z
+duration: 0.1 s
+exit:     0
+versions: python 3.13.17, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+=== (a) partition chi2 with a common ladder offset sigma_c (km/s/Mpc) ===
+sigma_c=0.0: one mean: 49.65; P1 local vs early-type: 8.48; P4 ladders vs rest: 11.21; P2 r_s-using vs rest: 12.64; P3 SH0ES vs rest: 16.94
+      P1 means local 72.76+-0.73, early 67.65+-0.31; local-early = 6.42 sigma; delta-chi2(one mean - P1) = 41.17
+sigma_c=0.5: one mean: 39.75; P1 local vs early-type: 8.44; P4 ladders vs rest: 11.21; P2 r_s-using vs rest: 12.08; P3 SH0ES vs rest: 16.30
+      P1 means local 72.67+-0.84, early 67.65+-0.31; local-early = 5.60 sigma; delta-chi2(one mean - P1) = 31.31
+sigma_c=1.0: one mean: 27.31; P1 local vs early-type: 8.35; P4 ladders vs rest: 11.21; P2 r_s-using vs rest: 10.96; P3 SH0ES vs rest: 14.95
+      P1 means local 72.48+-1.06, early 67.65+-0.31; local-early = 4.35 sigma; delta-chi2(one mean - P1) = 18.96
+sigma_c=1.5: one mean: 20.53; P1 local vs early-type: 8.24; P4 ladders vs rest: 11.21; P2 r_s-using vs rest: 9.98; P3 SH0ES vs rest: 13.67
+      P1 means local 72.25+-1.27, early 67.65+-0.31; local-early = 3.51 sigma; delta-chi2(one mean - P1) = 12.29
+sigma_c=2.0: one mean: 17.07; P1 local vs early-type: 8.15; P4 ladders vs rest: 11.21; P2 r_s-using vs rest: 9.29; P3 SH0ES vs rest: 12.72
+      P1 means local 72.04+-1.44, early 67.65+-0.31; local-early = 2.99 sigma; delta-chi2(one mean - P1) = 8.93
+
+=== (b) one-step H0 precision needed to separate candidate predictions ===
+ladder systematic / M_B-G_eff transition vs early new physics closing whole gap (tru: dH0=6.07; 3 sigma needs sigma(H0) <= 2.02 km/s/Mpc = 2.89% of 70
+ladder systematic / M_B-G_eff transition vs early new physics closing whole gap (tru: dH0=6.07; 5 sigma needs sigma(H0) <= 1.21 km/s/Mpc = 1.74% of 70
+ladder systematic / M_B-G_eff transition vs early new physics, best surviving fit (P: dH0=3.81; 3 sigma needs sigma(H0) <= 1.27 km/s/Mpc = 1.81% of 70
+ladder systematic / M_B-G_eff transition vs early new physics, best surviving fit (P: dH0=3.81; 5 sigma needs sigma(H0) <= 0.76 km/s/Mpc = 1.09% of 70
+true = BAO+BBN LCDM                      vs early new physics, best surviving fit (P: dH0=2.50; 3 sigma needs sigma(H0) <= 0.83 km/s/Mpc = 1.19% of 70
+true = BAO+BBN LCDM                      vs early new physics, best surviving fit (P: dH0=2.50; 5 sigma needs sigma(H0) <= 0.50 km/s/Mpc = 0.71% of 70
+early new physics, best surviving fit (P vs early new physics closing whole gap (tru: dH0=2.26; 3 sigma needs sigma(H0) <= 0.75 km/s/Mpc = 1.08% of 70
+early new physics, best surviving fit (P vs early new physics closing whole gap (tru: dH0=2.26; 5 sigma needs sigma(H0) <= 0.45 km/s/Mpc = 0.65% of 70
+time delays: naive N lenses for 2.0% = 30 (from 3.3% with 11; ignores systematic floor)
+time delays: naive N lenses for 1.5% = 53 (from 3.3% with 11; ignores systematic floor)
+time delays: naive N lenses for 1.0% = 120 (from 3.3% with 11; ignores systematic floor)
+sirens: naive scale-up factor in information for 3.0% = 15x GWTC-5.0 (from 11.8%)
+sirens: naive scale-up factor in information for 2.0% = 35x GWTC-5.0 (from 11.8%)
+sirens: naive scale-up factor in information for 1.0% = 139x GWTC-5.0 (from 11.8%)
+
+--- stderr ---
+

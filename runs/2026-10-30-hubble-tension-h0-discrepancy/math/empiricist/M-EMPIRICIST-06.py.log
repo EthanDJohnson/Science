@@ -1,0 +1,22 @@
+# math_run log
+command:  python3 runs/2026-10-30-hubble-tension-h0-discrepancy/math/empiricist/M-EMPIRICIST-06.py
+started:  2026-10-30T15:39:56Z
+duration: 0.6 s
+exit:     1
+versions: python 3.13.17, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   3 PASS, 1 FAIL, 0 UNDECIDED
+
+--- stdout ---
+PASS 0.407301567035948 == 0.407301567035948: symbolic
+  SBF only: groups [(73.49, 0.93), (70.39, 1.94), (73.8, 2.4), (71.27, 1.93)], chi2 = 2.894, p = 0.408, 0.83 sigma
+  chi2 (SBF-only non-SN class): computed 2.89356, lens 2.9
+FAIL 2.8935587533888154 == 2.9: relative tolerance 0.00206897; 2.89356 vs 2.9 (SI)
+  p: computed 0.408329, lens 0.41
+PASS 0.40832913389544306 == 0.41: within 0.0146341; 0.408329 vs 0.41 (SI)
+  sigma equivalent: computed 0.826838, lens 0.83
+PASS 0.8268375672499022 == 0.83: within 0.00722892; 0.826838 vs 0.83 (SI)
+  SBF + TF: groups [(73.49, 0.93), (70.39, 1.94), (73.67, 2.07), (71.27, 1.93)], chi2 = 2.899, p = 0.407, 0.83 sigma
+SUMMARY: 3 pass, 1 fail, 0 undecided
+
+--- stderr ---
+

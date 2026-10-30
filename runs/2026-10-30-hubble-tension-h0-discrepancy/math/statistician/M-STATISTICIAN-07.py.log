@@ -1,0 +1,67 @@
+# math_run log
+command:  python3 runs/2026-10-30-hubble-tension-h0-discrepancy/math/statistician/M-STATISTICIAN-07.py
+started:  2026-10-30T15:32:52Z
+duration: 0.9 s
+exit:     1
+versions: python 3.13.17, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   18 PASS, 9 FAIL, 0 UNDECIDED
+
+--- stdout ---
+SH0ES vs CMB-SPA, D = 6.30, s = 1.0046392387319938
+    integral vs closed form tau=3 (rel): mine = 2.29589e-41, lens = 0, tol = 1e-08
+PASS 2.2958874039497803E-41 <= 1.00000000000000E-8: symbolic, constant
+    BF tau=3 (x1e7): mine = 1.51325, lens = 1.5, tol = 0.15
+PASS 0.013252757668300400 <= 0.150000000000000: symbolic, constant
+    integral vs closed form tau=6 (rel): mine = 0, lens = 0, tol = 1e-08
+PASS 0 <= 1.00000000000000E-8: symbolic, constant
+    BF tau=6 (x1e7): mine = 3.34302, lens = 3.3, tol = 0.33
+PASS 0.0430171901051102 <= 0.330000000000000: symbolic, constant
+    integral vs closed form tau=10 (rel): mine = 2.29589e-41, lens = 0, tol = 1e-08
+PASS 2.2958874039497803E-41 <= 1.00000000000000E-8: symbolic, constant
+    BF tau=10 (x1e7): mine = 2.84227, lens = 2.8, tol = 0.28
+PASS 0.04226589511575518 <= 0.280000000000000: symbolic, constant
+  SH0ES vs BAO+BBN BF tau=3 (x1e3), lens 3-4e3: mine = 3.20934, lens = 3.5, tol = 0.6
+PASS 0.29065809755040870 <= 0.600000000000000: symbolic, constant
+  SH0ES vs BAO+BBN BF tau=6 (x1e3), lens 3-4e3: mine = 4.07521, lens = 3.5, tol = 0.6
+PASS 0.5752094845927670 <= 0.600000000000000: symbolic, constant
+  SH0ES vs BAO+BBN BF tau=10 (x1e3), lens 3-4e3: mine = 3.05318, lens = 3.5, tol = 0.6
+PASS 0.4468231347294710 <= 0.600000000000000: symbolic, constant
+Sellke bounds
+  p2(z=6.271) = 3.590e-10; bound = 2.122e-08; max odds = 4.712e+07
+    bound at the lens's rounded p2 = 3e-10 (x1e8): mine = 1.78813, lens = 1.8, tol = 0.05
+PASS 0.011867569594331344 <= 0.0500000000000000: symbolic, constant
+    bound at the actual p2 for z = 6.27 (x1e8), lens 1.8: mine = 2.12209, lens = 1.8, tol = 0.05
+FAIL 0.32209237401963816 <= 0.0500000000000000: numeric, constant; counterexample value = 0.272092374; value 0.272092374
+    max odds at z = 3.9: mine = 413.486, lens = 413, tol = 3
+PASS 0.4864628950235996 <= 3.00000000000000: symbolic, constant
+    max odds at z = 3.94 (H0DN no-Ceph actual z): mine = 476.685, lens = 413, tol = 3
+FAIL 63.68463238706840 <= 3.00000000000000: numeric, constant; counterexample value = 60.68463239; value 60.68463239
+    prior for P = 0.5 at z = 3.9 (x1e3): mine = 2.41846, lens = 2.4, tol = 0.05
+PASS 0.018458860777459889 <= 0.0500000000000000: symbolic, constant
+    one-step: max odds at z = 1.88, lens 2.6: mine = 2.18445, lens = 2.6, tol = 0.1
+FAIL 0.4155520348959811 <= 0.100000000000000: numeric, constant; counterexample value = 0.3155520349; value 0.3155520349
+    one-step: max odds at heavy-tail z = 2.0: mine = 2.61654, lens = 2.6, tol = 0.1
+PASS 0.016543151125622612 <= 0.100000000000000: symbolic, constant
+    SH0ES-CCHP max odds at z = 1.4435, lens <= 1.4: mine = 1.29737, lens = 1.4, tol = 0.05
+FAIL 0.10263407410508661 <= 0.0500000000000000: numeric, constant; counterexample value = 0.05263407411; value 0.05263407411
+    SH0ES-CCHP max odds at z = 1.65, lens <= 1.4: mine = 1.60733, lens = 1.4, tol = 0.05
+FAIL 0.20733087908055189 <= 0.0500000000000000: numeric, constant; counterexample value = 0.1573308791; value 0.1573308791
+    SH0ES-CCHP max odds at z = 1.85, lens <= 1.4: mine = 2.08459, lens = 1.4, tol = 0.05
+FAIL 0.6845931866306251 <= 0.0500000000000000: numeric, constant; counterexample value = 0.6345931866; value 0.6345931866
+    SH0ES-CCHP max odds at z = 2.36, lens <= 1.4: mine = 5.02977, lens = 1.4, tol = 0.05
+FAIL 3.6297707854960986 <= 0.0500000000000000: numeric, constant; counterexample value = 3.579770785; value 3.579770785
+    CCHP vs SPA BF tau=3: mine = 1.37633, lens = 1.05, tol = 0.35
+PASS 0.3263343905588850 <= 0.350000000000000: symbolic, constant
+    TD vs SPA BF tau=3: mine = 1.47491, lens = 1.05, tol = 0.35
+FAIL 0.4249143842271079 <= 0.350000000000000: numeric, constant; counterexample value = 0.07491438423; value 0.07491438423
+    CCHP vs SPA BF tau=10: mine = 0.686545, lens = 1.05, tol = 0.35
+FAIL 0.3634549032540027 <= 0.350000000000000: numeric, constant; counterexample value = 0.01345490325; value 0.01345490325
+    TD vs SPA BF tau=10: mine = 0.861943, lens = 1.05, tol = 0.35
+PASS 0.1880570777827063 <= 0.350000000000000: symbolic, constant
+PASS lim t->0 of s*exp(D**2*(-1/(s**2 + t**2) + s**(-2))/2)/sqrt(s**2 + t**2) == 1: symbolic limit 1
+PASS s*exp(D**2/(2*s**2))*exp(-D**2/(2*s**2 + 2*t**2))/sqrt(s**2 + t**2) == s*exp(D**2*(-1/(s**2 + t**2) + s**(-2))/2)/sqrt(s**2 + t**2): symbolic
+PASS (6.30 km/s/Mpc)**2 / (1.0 km/s/Mpc)**2 has the dimension of dimensionless: dimensional analysis
+SUMMARY: 18 pass, 9 fail, 0 undecided
+
+--- stderr ---
+

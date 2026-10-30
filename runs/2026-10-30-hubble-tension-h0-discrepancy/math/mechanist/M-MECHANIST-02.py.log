@@ -1,0 +1,38 @@
+# math_run log
+command:  python3 runs/2026-10-30-hubble-tension-h0-discrepancy/math/mechanist/M-MECHANIST-02.py
+started:  2026-10-30T15:41:23Z
+duration: 0.6 s
+exit:     1
+versions: python 3.13.17, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   12 PASS, 1 FAIL, 0 UNDECIDED
+
+--- stdout ---
+PASS -dm*log(10)/5 is positive: numeric at 50 points, dm in [-1, -1e-06]
+crowding: sigma with D-78 sign = 5.93; with lens's flipped sign = 6.60
+  crowding sigma (dossier convention) vs lens 6.6: recomputed 5.931, lens claims 6.6, tol 0.15
+FAIL 0.6690024843521386 <= 0.150000000000000: numeric, constant; counterexample value = 0.5190024844; value 0.5190024844
+  crowding sigma (lens convention) reproduces 6.6: recomputed 6.59766, lens claims 6.6, tol 0.05
+PASS 0.002335817685471642 <= 0.0500000000000000: symbolic, constant
+PASS L*dgamma == L*dgamma: symbolic
+  metallicity lever mag: recomputed 0.012444, lens claims 0.012, tol 0.0006
+PASS 0.00044400201847370775 <= 0.000600000000000000: symbolic, constant
+  lever dex: recomputed 0.0531795, lens claims 0.05, tol 0.004
+PASS 0.003179495805443187 <= 0.00400000000000000: symbolic, constant
+  slope error needed mag/dex: recomputed 3.53388, lens claims 3.5, tol 0.05
+PASS 0.033879413918780400 <= 0.0500000000000000: symbolic, constant
+  slope error in sigma: recomputed 67.9592, lens claims 68, tol 1.0
+PASS 0.04078050156191004 <= 1.00000000000000: symbolic, constant
+  dust ratio: recomputed 6.26433, lens claims 6.3, tol 0.05
+PASS 0.03566915101880586 <= 0.0500000000000000: symbolic, constant
+  distance scale error %: recomputed 9.04004, lens claims 9.0, tol 0.05
+PASS 0.04003571960112495 <= 0.0500000000000000: symbolic, constant
+  NGC4258 precision %: recomputed 0.965864, lens claims 0.97, tol 0.005
+PASS 0.004136014818735073 <= 0.00500000000000000: symbolic, constant
+  NGC4258 sigma: recomputed 9.35953, lens claims 9.0, tol 0.5
+PASS 0.3595328724308631 <= 0.500000000000000: symbolic, constant
+  MW sigma: recomputed 10.0445, lens claims 10.0, tol 0.1
+PASS 0.044484132890139000 <= 0.100000000000000: symbolic, constant
+SUMMARY: 12 pass, 1 fail, 0 undecided
+
+--- stderr ---
+

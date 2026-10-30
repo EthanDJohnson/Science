@@ -1,0 +1,52 @@
+# math_run log
+command:  python3 runs/2026-10-30-hubble-tension-h0-discrepancy/calc/crux-C6_balance.py
+started:  2026-10-30T17:07:48Z
+duration: 0.9 s
+exit:     0
+versions: python 3.13.17, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+gap = 6.074 km/s/Mpc, half = 3.037, sigma_gap = 0.891, midpoint = 70.227
+
+1. With L at the C6 ceiling (half gap), fluctuation needed for C6:
+  Planck NPIPE EDE 95% upper H0 69.5 [D-53]: E = 2.31 -> fluctuation 0.73 km/s/Mpc = 0.82 sigma (one-sided p = 0.207)
+  P-ACT-LB EDE centre 69.9 [D-52]: E = 2.71 -> fluctuation 0.33 km/s/Mpc = 0.37 sigma (one-sided p = 0.357)
+  modified recombination 69.6 [D-52]: E = 2.41 -> fluctuation 0.63 km/s/Mpc = 0.70 sigma (one-sided p = 0.241)
+  PMF 69.1 [D-52]: E = 1.91 -> fluctuation 1.13 km/s/Mpc = 1.26 sigma (one-sided p = 0.103)
+  DESI BAO+BBN offset 68.50 [D-45]: E = 1.31 -> fluctuation 1.73 km/s/Mpc = 1.94 sigma (one-sided p = 0.0263)
+  no early shift: E = 0.00 -> fluctuation 3.04 km/s/Mpc = 3.41 sigma (one-sided p = 0.000327)
+
+2. Posterior class probabilities (flat L in [0,10]; E flat in [0, Emax]):
+ E unconstrained (refuter C6-0 prior):
+   no independent T probe: P(C6)=0.057 P(C1)=0.472 P(C3)=0.471
+   one-step 71.27+-1.93: P(C6)=0.067 P(C1)=0.316 P(C3)=0.617
+   one-step + r_s-free 70.25+-1.21: P(C6)=0.104 P(C1)=0.451 P(C3)=0.445
+   +CCHP,SBF,TF 70.96+-0.92: P(C6)=0.081 P(C1)=0.215 P(C3)=0.704
+ E <= 2.71 (P-ACT-LB EDE centre):
+   no independent T probe: P(C6)=0.078 P(C1)=0.922 P(C3)=0.000
+   one-step 71.27+-1.93: P(C6)=0.137 P(C1)=0.863 P(C3)=0.000
+   one-step + r_s-free 70.25+-1.21: P(C6)=0.153 P(C1)=0.847 P(C3)=0.000
+   +CCHP,SBF,TF 70.96+-0.92: P(C6)=0.261 P(C1)=0.739 P(C3)=0.000
+ E <= 2.31 (Planck NPIPE 95% upper):
+   no independent T probe: P(C6)=0.044 P(C1)=0.956 P(C3)=0.000
+   one-step 71.27+-1.93: P(C6)=0.079 P(C1)=0.921 P(C3)=0.000
+   one-step + r_s-free 70.25+-1.21: P(C6)=0.093 P(C1)=0.907 P(C3)=0.000
+   +CCHP,SBF,TF 70.96+-0.92: P(C6)=0.169 P(C1)=0.831 P(C3)=0.000
+
+3. Precision needed (combined sigma of the difference):
+  E(C6 low end 2.3) vs 0 at 3 sigma: sigma(E) <= 0.77 km/s/Mpc
+  E(C6 low end 2.3) vs 0 at 5 sigma: sigma(E) <= 0.46 km/s/Mpc
+  T = 69.43: r_d = 142.3 Mpc (3.2% cut) at fixed H0*r_d of CMB-SPA
+  T = 70.2: r_d = 140.7 Mpc (4.3% cut) at fixed H0*r_d of CMB-SPA
+  T = 70.6: r_d = 139.9 Mpc (4.8% cut) at fixed H0*r_d of CMB-SPA
+  anchor-free T at window centre 70.02: exclude both edges at 2 sigma needs sigma_T <= 0.29
+  anchor-free T at window centre 70.02: exclude both edges at 3 sigma needs sigma_T <= 0.19
+  C1 central 67.75 vs C6 centre 70.02 at 5 sigma: sigma_T <= 0.45
+  C3 (EDE detections) 71.0 vs C6 centre 70.02 at 3 sigma: sigma_T <= 0.33
+  C6 maximal ladder share in mag: 0.092 mag; C4(ii) needs >= 0.146 mag
+  separating 0.146 from 0.092 mag at 3 sigma: sigma <= 0.018 mag
+  C8 non-SH0ES local 71.56 vs C6 upper edge 70.6 at 3 sigma: sigma <= 0.32
+
+--- stderr ---
+

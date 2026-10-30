@@ -1,0 +1,61 @@
+# math_run log
+command:  python3 runs/2026-10-30-hubble-tension-h0-discrepancy/calc/falsifier-C4-0_magnitude.py
+started:  2026-10-30T16:30:47Z
+duration: 0.0 s
+exit:     0
+versions: python 3.13.17, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+=== A. Reference gap (H0DN-corrected vs CMB-SPA) ===
+gap = 6.074 km/s/Mpc = 0.1879 mag; midpoint (dominance line) = 70.227
+
+=== B. Variant (i): smooth H(z) changes, standard r_d ===
+IDL cosmography: H0=67.19+-0.650; fraction of gap carried = 0.0% (2-sigma upper 21.4%); reaching the midpoint 70.23 needs a 4.67 sigma upward fluctuation
+IDL flat LCDM: H0=67.67+-0.685; fraction of gap carried = 7.9% (2-sigma upper 30.5%); reaching the midpoint 70.23 needs a 3.73 sigma upward fluctuation
+  w0wa DESI+CMB            H0=63.60: shift vs CMB-SPA LCDM -3.59 -> fraction of gap -59.1%
+  w0wa +Pantheon+          H0=67.51: shift vs CMB-SPA LCDM +0.32 -> fraction of gap +5.3%
+  w0wa +Union3             H0=65.91: shift vs CMB-SPA LCDM -1.28 -> fraction of gap -21.1%
+  w0wa +DESY5              H0=66.74: shift vs CMB-SPA LCDM -0.45 -> fraction of gap -7.4%
+  wCDM +Pantheon+          H0=67.97: shift vs CMB-SPA LCDM +0.78 -> fraction of gap +12.8%
+  wCDM +Union3             H0=68.01: shift vs CMB-SPA LCDM +0.82 -> fraction of gap +13.5%
+  wCDM +DESY5              H0=67.34: shift vs CMB-SPA LCDM +0.15 -> fraction of gap +2.5%
+  wCDM DESI+CMB (no SN)    H0=69.51: shift vs CMB-SPA LCDM +2.32 -> fraction of gap +38.2%
+  w=-1.194 solution Omega_m=0.2664 vs DESI DR2 BAO 0.2975+-0.0086: 3.62 sigma
+  w=-1.194 solution Omega_m=0.2664 vs SN (DES-SN5YR, flat LCDM) 0.322+-0.012: 4.63 sigma
+
+=== C. Variant (ii), G_eff form: what a 9-12% G step 145-333 Myr ago does to Earth ===
+Chandrasekhar sign, dm=0.146: G ratio 0.9143; L_sun ratio G^7 = 0.534; insolation ratio G^9 = 0.446; absorbed-flux change -132 W/m^2; T factor G^2.25 = 0.817
+     no-feedback GMST before step: from today's 288 K -> 236 K (-38 C); scaling the PhanDA extremes -> 232-253 K (-41 to -20 C) vs PhanDA 11 to 36 C
+     greenhouse offset needed: 132 W/m^2 = 36 CO2 doublings (5.35 ln C/C0 law; illustrative)
+Chandrasekhar sign, dm=0.188: G ratio 0.8910; L_sun ratio G^7 = 0.446; insolation ratio G^9 = 0.354; absorbed-flux change -154 W/m^2; T factor G^2.25 = 0.771
+     no-feedback GMST before step: from today's 288 K -> 222 K (-51 C); scaling the PhanDA extremes -> 219-238 K (-54 to -35 C) vs PhanDA 11 to 36 C
+     greenhouse offset needed: 154 W/m^2 = 42 CO2 doublings (5.35 ln C/C0 law; illustrative)
+M&P headline mu_G=0.9: G ratio 0.9000; L_sun ratio G^7 = 0.478; insolation ratio G^9 = 0.387; absorbed-flux change -146 W/m^2; T factor G^2.25 = 0.789
+     no-feedback GMST before step: from today's 288 K -> 227 K (-46 C); scaling the PhanDA extremes -> 224-244 K (-49 to -29 C) vs PhanDA 11 to 36 C
+     greenhouse offset needed: 146 W/m^2 = 39 CO2 doublings (5.35 ln C/C0 law; illustrative)
+opposite (Wright-Li) sign, dm=0.146: G ratio 1.0938; L_sun ratio G^7 = 1.873; insolation ratio G^9 = 2.241; absorbed-flux change +296 W/m^2; T factor G^2.25 = 1.223
+     no-feedback GMST before step: from today's 288 K -> 353 K (+79 C); scaling the PhanDA extremes -> 348-378 K (+75 to +105 C) vs PhanDA 11 to 36 C
+opposite sign, dm=0.188: G ratio 1.1224; L_sun ratio G^7 = 2.243; insolation ratio G^9 = 2.826; absorbed-flux change +435 W/m^2; T factor G^2.25 = 1.297
+     no-feedback GMST before step: from today's 288 K -> 374 K (+100 C); scaling the PhanDA extremes -> 368-401 K (+95 to +128 C) vs PhanDA 11 to 36 C
+step lookback window 144.5-333.3 Myr (M-CONSTRAINTS-11); Mesozoic 252-66 Myr ago lies inside/around it; pre-step epoch includes everything older than 144.5 Myr
+
+=== D. Variant (ii), SN-only (non-gravitational) step: predicted vs observed non-SN H0 ===
+one-step (TD, masers, sirens): mean 71.27+-1.93; vs (ii)'s true H0 = CMB-SPA 67.19: 2.07 sigma; chi2 of all points to prediction = 4.39 for 3 dof
+one-step (TD, masers, sirens): mean 71.27+-1.93; vs (ii)'s true H0 = BAO+BBN 68.5: 1.37 sigma; chi2 of all points to prediction = 1.98 for 3 dof
+   fraction of gap these classes put on the LOCAL side (not carried by an SN step): 67% (vs CMB-SPA)
+one-step + SBF: mean 72.26+-1.51; vs (ii)'s true H0 = CMB-SPA 67.19: 3.27 sigma; chi2 of all points to prediction = 11.76 for 4 dof
+one-step + SBF: mean 72.26+-1.51; vs (ii)'s true H0 = BAO+BBN 68.5: 2.33 sigma; chi2 of all points to prediction = 6.57 for 4 dof
+   fraction of gap these classes put on the LOCAL side (not carried by an SN step): 83% (vs CMB-SPA)
+one-step + SBF + TF: mean 72.38+-1.41; vs (ii)'s true H0 = CMB-SPA 67.19: 3.55 sigma; chi2 of all points to prediction = 13.96 for 5 dof
+one-step + SBF + TF: mean 72.38+-1.41; vs (ii)'s true H0 = BAO+BBN 68.5: 2.54 sigma; chi2 of all points to prediction = 7.92 for 5 dof
+   fraction of gap these classes put on the LOCAL side (not carried by an SN step): 86% (vs CMB-SPA)
+
+=== E. Variant (iii): Cepheid-only screened fifth force ===
+needed Cepheid-specific brightening = 0.188 mag; observed |JAGB-Cepheid| = 0.03 +- 0.054 mag -> prediction off by 2.93 sigma
+SH0ES JWST D<=25 Mpc: Cepheid 73.4 vs TRGB 72.1: Cepheid-specific part 0.039 mag = 21% of the gap
+SH0ES JWST D<=25 Mpc: Cepheid 73.4 vs JAGB 72.2: Cepheid-specific part 0.036 mag = 19% of the gap
+SH0ES 73.49 vs CCHP TRGB 70.39 (different hosts/SNe): Cepheid-specific part 0.094 mag = 50% of the gap
+
+--- stderr ---
+

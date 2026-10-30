@@ -1,0 +1,26 @@
+# math_run log
+command:  python3 runs/2026-10-30-hubble-tension-h0-discrepancy/math/dialectician/M-DIALECTICIAN-06.py
+started:  2026-10-30T15:51:27Z
+duration: 0.6 s
+exit:     0
+versions: python 3.13.17, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   11 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+PASS 10**(M1/5 - M2/5) == 10**(M1/5 - M2/5): symbolic
+PASS lim d->0 of 10**(d/5) == 1: symbolic limit 1
+PASS 101.54 Mpc / 0.73264 == 138.6 Mpc: within 0.0005; 4.27658e+24 vs 4.27675e+24 (SI)
+PASS 0.73 Mpc / 0.73264 == 1.0 Mpc: within 0.01; 3.07456e+22 vs 3.08568e+22 (SI)
+r_d(73.264) = 138.59 Mpc; cut vs 147.00 = 5.72%; r_d(68.50) = 148.23 Mpc; cut = 6.50%
+PASS 0.033576642335791274 <= 0.0600000000000000: symbolic, constant
+PASS 0.01791066284560383 <= 0.0500000000000000: symbolic, constant
+PASS 0.002511465385451994 <= 0.0500000000000000: symbolic, constant
+dM_B = 0.122, 0.141 mag -> H0 ratio 1.0578, 1.0671
+PASS 0.00020867750049925228 <= 0.000600000000000000: symbolic, constant
+PASS 0.000087420013097552068 <= 0.000600000000000000: symbolic, constant
+PASS 1.0577913224995008 > 1: symbolic, constant
+PASS 101.54 Mpc / 0.73264 has the dimension of length: dimensional analysis
+SUMMARY: 11 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

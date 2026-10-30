@@ -1,0 +1,59 @@
+# math_run log
+command:  python3 runs/2026-10-30-hubble-tension-h0-discrepancy/calc/lens-constraints_geometry.py
+started:  2026-10-30T15:29:32Z
+duration: 2.5 s
+exit:     0
+versions: python 3.13.17, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+=== A. The gap (naive, uncorrelated) ===
+H0DN corrected [D-22]    - CMB-SPA [D-44]                  : dH0 =  6.07 km/s/Mpc =  9.0% of early, 5log10 ratio = 0.188 mag, naive  6.8 sigma
+H0DN corrected [D-22]    - Planck PR4 [D-41]               : dH0 =  5.62 km/s/Mpc =  8.3% of early, 5log10 ratio = 0.173 mag, naive  5.9 sigma
+H0DN corrected [D-22]    - DESI DR2 BAO+BBN [D-45]         : dH0 =  4.76 km/s/Mpc =  7.0% of early, 5log10 ratio = 0.146 mag, naive  4.8 sigma
+H0DN corrected [D-22]    - inverse ladder flat LCDM [D-48] : dH0 =  5.59 km/s/Mpc =  8.3% of early, 5log10 ratio = 0.172 mag, naive  5.3 sigma
+SH0ES HST+JWST [D-20]    - CMB-SPA [D-44]                  : dH0 =  6.30 km/s/Mpc =  9.4% of early, 5log10 ratio = 0.195 mag, naive  6.3 sigma
+SH0ES HST+JWST [D-20]    - Planck PR4 [D-41]               : dH0 =  5.85 km/s/Mpc =  8.6% of early, 5log10 ratio = 0.180 mag, naive  5.5 sigma
+SH0ES HST+JWST [D-20]    - DESI DR2 BAO+BBN [D-45]         : dH0 =  4.99 km/s/Mpc =  7.3% of early, 5log10 ratio = 0.153 mag, naive  4.6 sigma
+SH0ES HST+JWST [D-20]    - inverse ladder flat LCDM [D-48] : dH0 =  5.82 km/s/Mpc =  8.6% of early, 5log10 ratio = 0.179 mag, naive  5.0 sigma
+
+=== B. Inverse distance ladder: r_d required for a local H0 ===
+DESI DR2 LCDM h r_d: h*r_d = 101.54 +- 0.73 Mpc; with r_d = 147.00 -> H0 = 69.07 km/s/Mpc
+   H0DN corrected [D-22]   : r_d required = 138.59 +- 1.82 Mpc; reduction vs 147.00 = 5.72%; tension with CMB r_d = 4.6 sigma
+   SH0ES HST+JWST [D-20]   : r_d required = 138.17 +- 2.01 Mpc; reduction vs 147.00 = 6.01%; tension with CMB r_d = 4.4 sigma
+CMB-SPA h r_d (0.6719*147.00): h*r_d = 98.77 +- 0.00 Mpc; with r_d = 147.00 -> H0 = 67.19 km/s/Mpc
+   H0DN corrected [D-22]   : r_d required = 134.81 +- 1.48 Mpc; reduction vs 147.00 = 8.29%; tension with CMB r_d = 8.1 sigma
+   SH0ES HST+JWST [D-20]   : r_d required = 134.40 +- 1.70 Mpc; reduction vs 147.00 = 8.57%; tension with CMB r_d = 7.3 sigma
+Knox-Millea beta (BOSS+Pantheon): h*r_d = 101.49 +- 1.39 Mpc; with r_d = 147.00 -> H0 = 69.04 km/s/Mpc
+   H0DN corrected [D-22]   : r_d required = 138.52 +- 2.44 Mpc; reduction vs 147.00 = 5.77%; tension with CMB r_d = 3.5 sigma
+   SH0ES HST+JWST [D-20]   : r_d required = 138.10 +- 2.58 Mpc; reduction vs 147.00 = 6.06%; tension with CMB r_d = 3.4 sigma
+
+=== C. theta_* budget: r_* reduction needed when late-time LCDM is kept ===
+CMB-SPA-like LCDM: omega_c = 0.12032, z_* = 1089.95, r_* = 144.350 Mpc, D_M(z_*) = 13867.13 Mpc, 100 theta_* = 1.04095
+  check: D_M quad = 13867.1257 (rel diff 7.3e-11); r_* quad(from lna=-35) = 144.3498 (rel diff 4.7e-10)
+H0DN corrected [D-22]: to keep theta_* at H0 = 73.264: r_* must fall by 8.23% (Omega_m fixed at 0.3175; omega_c -> 0.1474, +22.5%) or by 1.69% (omega_c fixed; then Omega_m = 0.267)
+SH0ES HST+JWST [D-20]: to keep theta_* at H0 = 73.49: r_* must fall by 8.51% (Omega_m fixed at 0.3175; omega_c -> 0.1485, +23.4%) or by 1.75% (omega_c fixed; then Omega_m = 0.265)
+
+=== D. CMB-side systematic: what LCDM parameter shift gives H0_local from theta_* ===
+LCDM omega_b = 0.02237, omega_c = 0.1200, 100theta_* = 1.0411 -> H0 = 67.35 km/s/Mpc
+H0DN corrected [D-22]: needs omega_c = 0.1045 (shift -0.0155 = -13 x Planck sigma 0.0012; Omega_m = 0.238) at fixed theta_*; or 100theta_* = 1.0585 (+58 sigma) at fixed omega_c
+SH0ES HST+JWST [D-20]: needs omega_c = 0.1040 (shift -0.0160 = -13 x Planck sigma 0.0012; Omega_m = 0.235) at fixed theta_*; or 100theta_* = 1.0591 (+60 sigma) at fixed omega_c
+
+=== E. BAO+BBN side: Omega_m that DESI h r_d needs for H0_local (LCDM, BBN omega_b) ===
+omega_b = 0.02218: at DESI Omega_m = 0.2975, h r_d = 101.54 -> H0 = 68.59, r_d = 148.03 Mpc
+   H0DN corrected [D-22]: Omega_m needed = 0.3378 (+4.7 sigma from DESI 0.2975+-0.0086); r_d = 138.59 Mpc
+   SH0ES HST+JWST [D-20]: Omega_m needed = 0.3398 (+4.9 sigma from DESI 0.2975+-0.0086); r_d = 138.17 Mpc
+   d ln H0 / d ln Omega_m along DESI h r_d = const, BBN omega_b fixed: 0.519
+omega_b = 0.02166: at DESI Omega_m = 0.2975, h r_d = 101.54 -> H0 = 68.17, r_d = 148.95 Mpc
+   H0DN corrected [D-22]: Omega_m needed = 0.3419 (+5.2 sigma from DESI 0.2975+-0.0086); r_d = 138.59 Mpc
+   SH0ES HST+JWST [D-20]: Omega_m needed = 0.3439 (+5.4 sigma from DESI 0.2975+-0.0086); r_d = 138.17 Mpc
+   d ln H0 / d ln Omega_m along DESI h r_d = const, BBN omega_b fixed: 0.519
+
+=== F. Ages t0 (LCDM background, radiation included) ===
+CMB-SPA LCDM              : H0 = 67.19, Omega_m = 0.3175 -> t0 = 13.804 Gyr (GC age 13.81 +- 0.34 Gyr [D-55]: -0.0 sigma)
+H0DN H0, Omega_m CMB      : H0 = 73.26, Omega_m = 0.3175 -> t0 = 12.661 Gyr (GC age 13.81 +- 0.34 Gyr [D-55]: -3.4 sigma)
+H0DN H0, Omega_m DESI     : H0 = 73.26, Omega_m = 0.2975 -> t0 = 12.894 Gyr (GC age 13.81 +- 0.34 Gyr [D-55]: -2.7 sigma)
+H0DN H0, Omega_m 0.30     : H0 = 73.26, Omega_m = 0.3000 -> t0 = 12.864 Gyr (GC age 13.81 +- 0.34 Gyr [D-55]: -2.8 sigma)
+
+--- stderr ---
+

@@ -1,0 +1,32 @@
+# math_run log
+command:  python3 runs/2026-10-30-hubble-tension-h0-discrepancy/calc/falsifier-C8-1_evidence.py
+started:  2026-10-30T17:01:45Z
+duration: 0.0 s
+exit:     0
+versions: python 3.13.17, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+Non-SH0ES local combinations (inverse-variance, independent):
+  A: lens set (CCHP,SBF,TF,TD,masers,sirens): 71.69 +- 1.14 | vs CMB-SPA: d=+4.50, z=3.74, vs Planck PR4: d=+4.05, z=3.23, vs BAO+BBN: d=+3.19, z=2.49
+  B: drop TF (zero point via SH0ES-type Cepheids): 71.56 +- 1.19 | vs CMB-SPA: d=+4.37, z=3.50, vs Planck PR4: d=+3.92, z=3.02, vs BAO+BBN: d=+3.06, z=2.31
+  C: B with CCHP JWST-only instead of CCHP: 70.84 +- 1.15 | vs CMB-SPA: d=+3.65, z=3.00, vs Planck PR4: d=+3.20, z=2.53, vs BAO+BBN: d=+2.34, z=1.81
+  D: one-step only (TD,masers,sirens): 71.27 +- 1.93 | vs CMB-SPA: d=+4.08, z=2.07, vs Planck PR4: d=+3.63, z=1.81, vs BAO+BBN: d=+2.77, z=1.37
+  E: B plus Stiskalek Cepheid-only 71.1+-1.4 (SH0ES data, other team): 71.36 +- 0.91 | vs CMB-SPA: d=+4.17, z=4.25, vs Planck PR4: d=+3.72, z=3.57, vs BAO+BBN: d=+2.86, z=2.66
+
+Single routes vs CMB-SPA 67.19 +- 0.38 (H0DN variants from D-23, original Pantheon+):
+  SH0ES 73.49 +- 0.93: z_SPA = 6.27, z_PR4 = 5.49, z_BAO = 4.55
+  H0DN V08 no Cepheids 72.509 +- 1.296: z_SPA = 3.94, z_PR4 = 3.49, z_BAO = 2.82
+  H0DN V08B custom baseline (same 35 SN calibrators) 72.873 +- 0.874: z_SPA = 5.96, z_PR4 = 5.15, z_BAO = 4.17
+  H0DN V13 no SNe Ia 73.434 +- 1.795: z_SPA = 3.40, z_PR4 = 3.10, z_BAO = 2.62
+  Stiskalek 2026 Cepheids-only, no SNe 71.1 +- 1.4: z_SPA = 2.70, z_PR4 = 2.32, z_BAO = 1.72
+  SH0ES-side TRGB (Li 2026) 72.7 +- 1.8 (mid of 72.1-73.3): z_SPA = 3.00, z_PR4 = 2.70, z_BAO = 2.22
+
+Precision a non-SH0ES local mean at 71.5 would need for 5 sigma vs CMB-SPA:
+  sigma_local <= 0.774 km/s/Mpc (1.08%)
+
+Freedman 2025 3.0 sigma check (their own construction: R22 74.03-2.00, sigma 1.44 vs Planck 67.4+-0.5):
+  z = 3.04
+
+--- stderr ---
+

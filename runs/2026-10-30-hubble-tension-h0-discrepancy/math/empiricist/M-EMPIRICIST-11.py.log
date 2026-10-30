@@ -1,0 +1,23 @@
+# math_run log
+command:  python3 runs/2026-10-30-hubble-tension-h0-discrepancy/math/empiricist/M-EMPIRICIST-11.py
+started:  2026-10-30T15:40:55Z
+duration: 0.7 s
+exit:     0
+versions: python 3.13.17, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   5 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+PASS z**2/(n*(1 + z**2/n)) == z**2/(n + z**2): symbolic
+PASS lim n->oo of z**2/(n + z**2) == 0: symbolic limit 0
+  Wilson 95% upper bound, 0/12: computed 0.242494, lens 0.24
+PASS 0.24249400674145447 == 0.24: within 0.025; 0.242494 vs 0.24 (SI)
+  cases 21, resolved 18
+  resolved count: computed 18, lens 18
+PASS 18.0 == 18.0: within 0.000555556; 18 vs 18 (SI)
+  new-physics weight 3.5; purely non-new-physics 14; mixed 1; 18 - 3.5 = 14.5
+  purely systematics/shared input/statistics (mixed case excluded): computed 14, lens 14
+PASS 14.0 == 14.0: within 0.000714286; 14 vs 14 (SI)
+SUMMARY: 5 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

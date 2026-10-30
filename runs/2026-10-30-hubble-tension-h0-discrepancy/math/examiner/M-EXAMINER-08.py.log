@@ -1,0 +1,31 @@
+# math_run log
+command:  python3 runs/2026-10-30-hubble-tension-h0-discrepancy/math/examiner/M-EXAMINER-08.py
+started:  2026-10-30T15:46:46Z
+duration: 0.6 s
+exit:     1
+versions: python 3.13.17, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   11 PASS, 1 FAIL, 0 UNDECIDED
+
+--- stdout ---
+PASS 0 == 0: symbolic
+PASS 1 == 1: symbolic
+EDE P-ACT-LB: closed 43.0% (lens 43); residual facing 2.926, symmetrised 2.427 (lens 2.43)
+PASS 43.01587301587316 == 43: within 0.012; 43.0159 vs 43 (SI)
+FAIL 2.926446759681712 == 2.43: relative tolerance 0.005; 2.92645 vs 2.43 (SI)
+Poulin 2026: closed 60.5% (lens 60); residual facing 1.729, symmetrised 1.729 (lens 1.73)
+PASS 60.47619047619054 == 60: within 0.012; 60.4762 vs 60 (SI)
+PASS 1.728624889020195 == 1.73: within 0.005; 1.72862 vs 1.73 (SI)
+eROSITA EDE: closed 66.8% (lens 67); residual facing 1.243, symmetrised 1.243 (lens 1.24)
+PASS 66.82539682539698 == 67: within 0.012; 66.8254 vs 67 (SI)
+PASS 1.243497014166721 == 1.24: within 0.005; 1.2435 vs 1.24 (SI)
+Mod. recomb.: closed 38.3% (lens 38); residual facing 2.849, symmetrised 2.849 (lens 2.85)
+PASS 38.25396825396822 == 38: within 0.012; 38.254 vs 38 (SI)
+PASS 2.8485367502008634 == 2.85: within 0.005; 2.84854 vs 2.85 (SI)
+PMF: closed 30.3% (lens 30); residual facing 4.158, symmetrised 4.158 (lens 4.16)
+PASS 30.317460317460277 == 30: within 0.012; 30.3175 vs 30 (SI)
+PASS 4.157636940354005 == 4.16: within 0.005; 4.15764 vs 4.16 (SI)
+P-ACT-LB closure vs its own LCDM 68.2: 32.136105860113524 %
+SUMMARY: 11 pass, 1 fail, 0 undecided
+
+--- stderr ---
+

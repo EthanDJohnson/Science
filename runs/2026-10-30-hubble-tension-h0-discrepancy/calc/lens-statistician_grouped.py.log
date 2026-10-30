@@ -1,0 +1,92 @@
+# math_run log
+command:  python3 runs/2026-10-30-hubble-tension-h0-discrepancy/calc/lens-statistician_grouped.py
+started:  2026-10-30T15:08:14Z
+duration: 0.3 s
+exit:     0
+versions: python 3.13.17, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+
+== CMB experiments alone (Planck PR4, ACT DR6, SPT-3G D1) vs BAO+BBN ==
+  CMB: mean = 67.03 +- 0.33, chi2 = 2.42/2, p = 0.299
+  BAO+BBN: mean = 68.50 +- 0.58, chi2 = 0.00/0, p = 1.000
+  within chi2 = 2.42/2 (p = 0.299); between chi2 = 4.85/1 (p = 2.77e-02, z = 2.20)
+  pooled: 67.39 +- 0.29, chi2 = 7.26/3, S = 1.56, p = 6.39e-02
+
+== P1 early (CMB-SPA, BAO+BBN) vs late (all local classes, CCHP for TRGB) ==
+  early: mean = 67.58 +- 0.32, chi2 = 3.57/1, p = 0.059
+  late: mean = 72.77 +- 0.72, chi2 = 2.93/6, p = 0.817
+  within chi2 = 6.50/7 (p = 0.483); between chi2 = 43.38/1 (p = 4.52e-11, z = 6.59)
+  pooled: 68.43 +- 0.29, chi2 = 49.88/8, S = 2.50, p = 4.31e-08
+
+== P2 SH0ES Cepheid-SN vs everything else ==
+  Ceph-SN: mean = 73.49 +- 0.93, chi2 = 0.00/0, p = 1.000
+  rest: mean = 67.88 +- 0.31, chi2 = 17.04/7, p = 0.017
+  within chi2 = 17.04/7 (p = 0.017); between chi2 = 32.84/1 (p = 1.00e-08, z = 5.73)
+  pooled: 68.43 +- 0.29, chi2 = 49.88/8, S = 2.50, p = 4.31e-08
+
+== P3 early | Ceph-SN | other local ==
+  early: mean = 67.58 +- 0.32, chi2 = 3.57/1, p = 0.059
+  Ceph-SN: mean = 73.49 +- 0.93, chi2 = 0.00/0, p = 1.000
+  other local: mean = 71.69 +- 1.14, chi2 = 1.44/5, p = 0.920
+  within chi2 = 5.01/6 (p = 0.543); between chi2 = 44.87/2 (p = 1.81e-10, z = 6.38)
+  pooled: 68.43 +- 0.29, chi2 = 49.88/8, S = 2.50, p = 4.31e-08
+
+== P4 uses r_s (CMB-SPA, BAO+BBN) vs no r_s (all local + sound-horizon-free BAO D-49) ==
+  r_s: mean = 67.58 +- 0.32, chi2 = 3.57/1, p = 0.059
+  no r_s: mean = 71.98 +- 0.64, chi2 = 8.38/7, p = 0.300
+  within chi2 = 11.95/8 (p = 0.153); between chi2 = 38.24/1 (p = 6.25e-10, z = 6.18)
+  pooled: 68.46 +- 0.28, chi2 = 50.19/9, S = 2.36, p = 9.92e-08
+
+== Per-class groups ==
+  CMB-SPA: mean = 67.19 +- 0.38, chi2 = 0.00/0, p = 1.000
+  BAO+BBN: mean = 68.50 +- 0.58, chi2 = 0.00/0, p = 1.000
+  Ceph-SN: mean = 73.49 +- 0.93, chi2 = 0.00/0, p = 1.000
+  TRGB-SN (CCHP): mean = 70.39 +- 1.94, chi2 = 0.00/0, p = 1.000
+  non-SN ladders: mean = 73.67 +- 2.07, chi2 = 0.01/1, p = 0.916
+  time delays: mean = 71.10 +- 2.35, chi2 = 0.00/0, p = 1.000
+  masers: mean = 71.60 +- 3.70, chi2 = 0.00/0, p = 1.000
+  sirens: mean = 71.70 +- 8.45, chi2 = 0.00/0, p = 1.000
+  within chi2 = 0.01/1 (p = 0.916); between chi2 = 49.87/7 (p = 1.53e-08, z = 5.66)
+  pooled: 68.43 +- 0.29, chi2 = 49.88/8, S = 2.50, p = 4.31e-08
+
+== Per-class groups, SH0ES-side TRGB (72.7+-1.8, D-27) in place of CCHP ==
+  early: mean = 67.58 +- 0.32, chi2 = 3.57/1, p = 0.059
+  Ceph-SN: mean = 73.49 +- 0.93, chi2 = 0.00/0, p = 1.000
+  TRGB-SN (Li 2026): mean = 72.70 +- 1.80, chi2 = 0.00/0, p = 1.000
+  other local: mean = 72.39 +- 1.41, chi2 = 0.75/4, p = 0.945
+  within chi2 = 4.32/5 (p = 0.505); between chi2 = 50.11/3 (p = 7.56e-11, z = 6.51)
+  pooled: 68.50 +- 0.29, chi2 = 54.43/8, S = 2.61, p = 5.70e-09
+
+== Local without Cepheids and without SNe (SBF, TF, TD, masers, sirens) vs early ==
+  early: mean = 67.58 +- 0.32, chi2 = 3.57/1, p = 0.059
+  no-SN local: mean = 72.39 +- 1.41, chi2 = 0.75/4, p = 0.945
+  within chi2 = 4.32/5 (p = 0.505); between chi2 = 11.00/1 (p = 9.12e-04, z = 3.32)
+  pooled: 67.81 +- 0.31, chi2 = 15.32/6, S = 1.60, p = 1.79e-02
+
+== One-step only (TD, masers, sirens) vs early ==
+  early: mean = 67.58 +- 0.32, chi2 = 3.57/1, p = 0.059
+  one-step: mean = 71.27 +- 1.93, chi2 = 0.02/2, p = 0.992
+  within chi2 = 3.59/3 (p = 0.310); between chi2 = 3.54/1 (p = 5.98e-02, z = 1.88)
+  pooled: 67.68 +- 0.31, chi2 = 7.13/4, S = 1.33, p = 1.29e-01
+
+== GLS local combination with shared NGC 4258 anchor ==
+  anchor frac = 0.0: local GLS = 72.77 +- 0.72, chi2 = 2.93/6 (p = 0.817); vs CMB-SPA z = 6.85; vs BAO+BBN z = 4.62
+  anchor frac = 0.015: local GLS = 72.86 +- 0.80, chi2 = 3.67/6 (p = 0.722); vs CMB-SPA z = 6.40; vs BAO+BBN z = 4.41
+  anchor frac = 0.025: local GLS = 73.24 +- 0.83, chi2 = 7.76/6 (p = 0.256); vs CMB-SPA z = 6.66; vs BAO+BBN z = 4.70
+
+== Early combination ==
+  CMB-SPA + BAO+BBN (indep.): 67.58 +- 0.32, chi2 = 3.57/1 (z = 1.89), S = 1.89
+  + inverse ladder, rho(CMB,inv) = 0.0: 67.51 +- 0.29, chi2 = 3.86/2
+  + inverse ladder, rho(CMB,inv) = 0.5: 67.58 +- 0.32, chi2 = 3.58/2
+  + inverse ladder, rho(CMB,inv) = 0.8: 67.55 +- 0.30, chi2 = 3.70/2
+
+== Bayes factor two-values vs one-value, Gaussian prior on offset of width tau ==
+  SH0ES vs CMB-SPA: d = 6.30 +- 1.00; BF(two/one) tau=3: 1.51e+07, tau=6: 3.34e+07, tau=10: 2.84e+07
+  SH0ES vs BAO+BBN: d = 4.99 +- 1.10; BF(two/one) tau=3: 3.21e+03, tau=6: 4.08e+03, tau=10: 3.05e+03
+  CCHP vs CMB-SPA: d = 3.20 +- 1.97; BF(two/one) tau=3: 1.38, tau=6: 1.02, tau=10: 0.687
+  TDCOSMO vs CMB-SPA: d = 3.91 +- 2.38; BF(two/one) tau=3: 1.42, tau=6: 1.18, tau=10: 0.83
+
+--- stderr ---
+

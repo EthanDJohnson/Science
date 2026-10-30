@@ -1,0 +1,47 @@
+# math_run log
+command:  python3 runs/2026-10-30-hubble-tension-h0-discrepancy/math/constraints/M-CONSTRAINTS-14.py
+started:  2026-10-30T15:53:32Z
+duration: 0.6 s
+exit:     0
+versions: python 3.13.17, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   16 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+one-step 71.26755424981015 1.9312054445013869 0.015775789955470507
+  mean: got 71.2676, lens 71.27, tol 0.03
+PASS 0.002445750189846052 <= 0.0300000000000000: symbolic, constant
+  err: got 1.93121, lens 1.93, tol 0.03
+PASS 0.0012054445013869614 <= 0.0300000000000000: symbolic, constant
+  chi2: got 0.0157758, lens 0.02, tol 0.02
+PASS 0.0042242100445294934 <= 0.0200000000000000: symbolic, constant
+  vs SPA: got 2.07168, lens 2.1, tol 0.06
+PASS 0.028320866322036689 <= 0.0600000000000000: symbolic, constant
+  vs H0DN: got 0.954027, lens 1, tol 0.06
+PASS 0.04597315329421280 <= 0.0600000000000000: symbolic, constant
++SBF 72.2607547615389 1.5056093779632538 0.6901797800317309
+  mean: got 72.2608, lens 72.26, tol 0.03
+PASS 0.000754761538900084 <= 0.0300000000000000: symbolic, constant
+  err: got 1.50561, lens 1.51, tol 0.03
+PASS 0.0043906220367462088 <= 0.0300000000000000: symbolic, constant
+  vs SPA: got 3.26551, lens 3.3, tol 0.06
+PASS 0.03449297512538685 <= 0.0600000000000000: symbolic, constant
+  vs BAO+BBN: got 2.33086, lens 2.3, tol 0.06
+PASS 0.030860460693820577 <= 0.0600000000000000: symbolic, constant
+  vs H0DN: got 0.587457, lens 0.6, tol 0.06
+PASS 0.01254251119763428 <= 0.0600000000000000: symbolic, constant
++TRGB 71.55562907959205 1.1884586290329413 1.2720937316328877
+  mean: got 71.5556, lens 71.56, tol 0.03
+PASS 0.004370920407952283 <= 0.0300000000000000: symbolic, constant
+  err: got 1.18846, lens 1.19, tol 0.03
+PASS 0.0015413709670586469 <= 0.0300000000000000: symbolic, constant
+  chi2: got 1.27209, lens 1.27, tol 0.03
+PASS 0.0020937316328876830 <= 0.0300000000000000: symbolic, constant
+  vs SPA: got 3.49885, lens 3.5, tol 0.06
+PASS 0.001147036847190974 <= 0.0600000000000000: symbolic, constant
+  vs H0DN: got 1.18968, lens 1.2, tol 0.06
+PASS 0.010319131891446655 <= 0.0600000000000000: symbolic, constant
+PASS s**2*(a/s**2 + b/s**2)/2 == a/2 + b/2: symbolic
+SUMMARY: 16 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

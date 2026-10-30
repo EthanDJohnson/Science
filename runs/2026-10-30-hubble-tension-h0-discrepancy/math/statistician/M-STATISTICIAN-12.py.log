@@ -1,0 +1,51 @@
+# math_run log
+command:  python3 runs/2026-10-30-hubble-tension-h0-discrepancy/math/statistician/M-STATISTICIAN-12.py
+started:  2026-10-30T15:34:43Z
+duration: 0.5 s
+exit:     0
+versions: python 3.13.17, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   17 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+  sigma needed 67.58 vs 73.3 at 3 sigma: mine = 1.90667, lens = 1.91, tol = 0.01
+PASS 0.0033333333333332195 <= 0.0100000000000000: symbolic, constant
+  sigma needed 67.58 vs 73.3 at 5 sigma: mine = 1.144, lens = 1.14, tol = 0.01
+PASS 0.00400000000000000 <= 0.0100000000000000: symbolic, constant
+  sigma needed 67.58 vs 71.0 at 3 sigma: mine = 1.14, lens = 1.14, tol = 0.01
+PASS 0 <= 0.0100000000000000: symbolic, constant
+  sigma needed 67.58 vs 71.0 at 5 sigma: mine = 0.684, lens = 0.68, tol = 0.01
+PASS 0.00400000000000000 <= 0.0100000000000000: symbolic, constant
+  sigma needed 71.0 vs 73.3 at 3 sigma: mine = 0.766667, lens = 0.77, tol = 0.01
+PASS 0.003333333333333313 <= 0.0100000000000000: symbolic, constant
+  sigma needed 71.0 vs 73.3 at 5 sigma: mine = 0.46, lens = 0.46, tol = 0.01
+PASS 0 <= 0.0100000000000000: symbolic, constant
+11-lens error 2.35, ref err 0.0: N = 16.7, 46.4, 46.7, 75.5, inf
+11-lens error 2.35, ref err 0.318: N = 17.2, 50.3, 50.7, 86.3, inf
+11-lens error 2.4, ref err 0.0: N = 17.4, 48.4, 48.8, 78.7, inf
+11-lens error 2.4, ref err 0.318: N = 17.9, 52.5, 52.9, 90.1, inf
+  lenses, 3 sigma 67.6 vs 73.3 (lens 17): mine = 17.1882, lens = 17, tol = 1.5
+PASS 0.18821109620374399 <= 1.50000000000000: symbolic, constant
+  lenses, 5 sigma 67.6 vs 73.3 (lens ~50): mine = 50.3038, lens = 50, tol = 4
+PASS 0.3038227510160603 <= 4.00000000000000: symbolic, constant
+  lenses, 3 sigma 67.6 vs 71.0 (lens ~51): mine = 50.6873, lens = 51, tol = 4
+PASS 0.31271047563739501 <= 4.00000000000000: symbolic, constant
+  lenses, 5 sigma 67.6 vs 73.3 with 1% floor (lens 79): mine = 78.7437, lens = 79, tol = 5
+PASS 0.2563196277571507 <= 5.00000000000000: symbolic, constant
+  67.6 vs 71.0 at 5 sigma with floor 0.71 > 0.684 -> never: +inf
+  sirens 3 sigma (lens ~30): mine = 30.327, lens = 30, tol = 1.5
+PASS 0.3269719790698802 <= 1.50000000000000: symbolic, constant
+  sirens 5 sigma (lens ~84): mine = 84.2416, lens = 84, tol = 3
+PASS 0.2415888307496594 <= 3.00000000000000: symbolic, constant
+CCHP cap
+  max z, sys only: mine = 2.33083, lens = 2.33, tol = 0.005
+PASS 0.0008270676691729539 <= 0.00500000000000000: symbolic, constant
+  data factor with halved sys (lens 4.6): mine = 4.54526, lens = 4.6, tol = 0.1
+PASS 0.05474002992908467 <= 0.100000000000000: symbolic, constant
+  difference error for 5 sigma: mine = 0.62, lens = 0.62, tol = 0.001
+PASS 0 <= 0.00100000000000000: symbolic, constant
+PASS lim f->0 of s1**2/(d**2/k**2 - f**2) == k**2*s1**2/d**2: symbolic limit k**2*s1**2/d**2
+PASS 10.5 km/s/Mpc / 30^0.5 has the dimension of km/s/Mpc: dimensional analysis
+SUMMARY: 17 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

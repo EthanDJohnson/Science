@@ -1,0 +1,61 @@
+# math_run log
+command:  python3 runs/2026-10-30-hubble-tension-h0-discrepancy/math/mechanist/M-MECHANIST-04.py
+started:  2026-10-30T15:42:57Z
+duration: 0.5 s
+exit:     1
+versions: python 3.13.17, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   23 PASS, 1 FAIL, 0 UNDECIDED
+
+--- stdout ---
+  W&H 73.04->70.59: recomputed 0.0740879, lens claims 0.074, tol 0.0008
+PASS 0.0000879131527940086 <= 0.000800000000000000: symbolic, constant
+  W&H 73.04->71.45: recomputed 0.0477927, lens claims 0.048, tol 0.0008
+PASS 0.0002073430037326310 <= 0.000800000000000000: symbolic, constant
+  W&H 73.04->70.5: recomputed 0.0768582, lens claims 0.077, tol 0.0008
+PASS 0.0001417623257806283 <= 0.000800000000000000: symbolic, constant
+  W&H frac low: recomputed 0.254311, lens claims 0.25, tol 0.006
+PASS 0.0043110517225218299 <= 0.00600000000000000: symbolic, constant
+  W&H frac high: recomputed 0.408973, lens claims 0.41, tol 0.006
+PASS 0.001027147580499078 <= 0.00600000000000000: symbolic, constant
+Percival base 73.04
+  cut-off -1.4: recomputed 0.0420259, lens claims 0.042, tol 0.0008
+PASS 0.00002593674624322764 <= 0.000800000000000000: symbolic, constant
+  prior -1.0: recomputed 0.0299353, lens claims 0.03, tol 0.0008
+PASS 0.00006469810626595889 <= 0.000800000000000000: symbolic, constant
+  all -2.6: recomputed 0.0787071, lens claims 0.078, tol 0.0012
+PASS 0.0007070861550159697 <= 0.00120000000000000: symbolic, constant
+  all -2.6 frac: recomputed 0.418811, lens claims 0.42, tol 0.01
+PASS 0.001189180177605186 <= 0.0100000000000000: symbolic, constant
+Percival base 73.264
+  cut-off -1.4: recomputed 0.0418962, lens claims 0.042, tol 0.0008
+PASS 0.0001038024467831123 <= 0.000800000000000000: symbolic, constant
+  prior -1.0: recomputed 0.0298431, lens claims 0.03, tol 0.0008
+PASS 0.000156855203716000 <= 0.000800000000000000: symbolic, constant
+  all -2.6: recomputed 0.078462, lens claims 0.078, tol 0.0012
+PASS 0.0004620437738625804 <= 0.00120000000000000: symbolic, constant
+  all -2.6 frac: recomputed 0.417507, lens claims 0.42, tol 0.01
+PASS 0.0024930831113252343 <= 0.0100000000000000: symbolic, constant
+  compilation 1.2 at base 68.8: recomputed 0.037548, lens claims 0.038, tol 0.002
+PASS 0.0004519911062723187 <= 0.00200000000000000: symbolic, constant
+  compilation 1.2 at base 70.0: recomputed 0.0369098, lens claims 0.038, tol 0.002
+PASS 0.001090231887002339 <= 0.00200000000000000: symbolic, constant
+  compilation 1.2 at base 73.0: recomputed 0.0354052, lens claims 0.038, tol 0.002
+FAIL 0.00259477420714430 <= 0.00200000000000000: numeric, constant; counterexample value = 0.0005947742071; value 0.0005947742071
+  Dong mag: recomputed 0.0873656, lens claims 0.087, tol 0.0008
+PASS 0.0003655850182329758 <= 0.000800000000000000: symbolic, constant
+  Dong frac: recomputed 0.464884, lens claims 0.46, tol 0.006
+PASS 0.0048838379518314498 <= 0.00600000000000000: symbolic, constant
+  naive sum mag: recomputed 0.177184, lens claims 0.177, tol 0.001
+PASS 0.00018417876074355941 <= 0.00100000000000000: symbolic, constant
+  naive sum frac: recomputed 0.94282, lens claims 0.94, tol 0.01
+PASS 0.002820459903604258 <= 0.0100000000000000: symbolic, constant
+PASS g == g: symbolic
+  env offset 0.17*0.5: recomputed 0.085, lens claims 0.085, tol 1e-12
+PASS 0 <= 1.00000000000000E-12: symbolic, constant
+  env frac: recomputed 0.452296, lens claims 0.45, tol 0.005
+PASS 0.0022962470595140291 <= 0.00500000000000000: symbolic, constant
+PASS 1.1054701498202106 > 1: symbolic, constant
+SUMMARY: 23 pass, 1 fail, 0 undecided
+
+--- stderr ---
+

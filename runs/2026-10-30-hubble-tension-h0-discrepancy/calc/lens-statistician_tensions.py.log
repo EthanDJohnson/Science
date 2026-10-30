@@ -1,0 +1,246 @@
+# math_run log
+command:  python3 runs/2026-10-30-hubble-tension-h0-discrepancy/calc/lens-statistician_tensions.py
+started:  2026-10-30T15:07:38Z
+duration: 0.0 s
+exit:     0
+versions: python 3.13.17, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+== Total errors used ==
+  SH0ES Ceph-SN 2025 (D-20): 73.49 +- 0.93
+  SH0ES Ceph+TRGB 2025 (D-20, same data): 73.18 +- 0.88
+  H0DN corrected (D-22): 73.264 +- 0.806
+  H0DN no-Cepheid (D-23, orig. Pantheon+): 72.509 +- 1.296
+  CCHP TRGB 2025 (D-24), stat+sys+sigSN: 70.39 +- 1.935794410571536
+  CCHP JWST-only TRGB (D-25): 68.81 +- 2.224072840533781
+  CCHP JWST JAGB (D-26): 67.8 +- 2.7200183822908257
+  SH0ES-side JAGB 2.0 (D-26): 73.3 +- 2.4413111231467406
+  SBF Jensen 2025 (D-29): 73.8 +- 2.4041630560342613
+  Tully-Fisher CF4 (D-30): 73.3 +- 4.08166632639171
+  TDCOSMO-2026 (D-31): 71.1 +- (2.4, 2.3)
+  Masers Stiskalek 2026 stat-only (D-32): 71.6 +- 3.7
+  Sirens GWTC-5 (D-33): 71.7 +- (9.4, 7.5)
+  Wojtak&Hjorth 2025 alt SN std (D-35, same data as SH0ES): 70.59 +- 1.15
+  R22 superseded, for check only (D-20): 73.04 +- 1.04
+
+== Pairwise tensions local vs early (two-sided, uncorrelated) ==
+SH0ES Ceph-SN 2025 (D-20):
+     vs Planck PR4 (D-41): z = 5.49
+     vs Planck PR3 (D-41, superseded): z = 5.70
+     vs ACT DR6 alone (D-42): z = 6.18
+     vs SPT-3G D1 alone (D-43): z = 6.17
+     vs CMB-SPA (D-44): z = 6.27
+     vs CMB SPT+ACT+Planck as quoted by H0DN (D-22/D-44): z = 6.29
+     vs DESI DR2 BAO+BBN (D-45): z = 4.55
+     vs DESI+CMB LCDM (D-45, joint): z = 5.48
+     vs Inverse ladder cosmography (D-48): z = 5.52
+     vs Inverse ladder flat LCDM (D-48): z = 5.03
+SH0ES Ceph+TRGB 2025 (D-20, same data):
+     vs Planck PR4 (D-41): z = 5.42
+     vs Planck PR3 (D-41, superseded): z = 5.64
+     vs ACT DR6 alone (D-42): z = 6.13
+     vs SPT-3G D1 alone (D-43): z = 6.12
+     vs CMB-SPA (D-44): z = 6.25
+     vs CMB SPT+ACT+Planck as quoted by H0DN (D-22/D-44): z = 6.27
+     vs DESI DR2 BAO+BBN (D-45): z = 4.44
+     vs DESI+CMB LCDM (D-45, joint): z = 5.43
+     vs Inverse ladder cosmography (D-48): z = 5.45
+     vs Inverse ladder flat LCDM (D-48): z = 4.93
+H0DN corrected (D-22):
+     vs Planck PR4 (D-41): z = 5.86
+     vs Planck PR3 (D-41, superseded): z = 6.09
+     vs ACT DR6 alone (D-42): z = 6.56
+     vs SPT-3G D1 alone (D-43): z = 6.57
+     vs CMB-SPA (D-44): z = 6.82
+     vs CMB SPT+ACT+Planck as quoted by H0DN (D-22/D-44): z = 6.86
+     vs DESI DR2 BAO+BBN (D-45): z = 4.80
+     vs DESI+CMB LCDM (D-45, joint): z = 5.97
+     vs Inverse ladder cosmography (D-48): z = 5.83
+     vs Inverse ladder flat LCDM (D-48): z = 5.27
+H0DN no-Cepheid (D-23, orig. Pantheon+):
+     vs Planck PR4 (D-41): z = 3.49
+     vs Planck PR3 (D-41, superseded): z = 3.67
+     vs ACT DR6 alone (D-42): z = 4.15
+     vs SPT-3G D1 alone (D-43): z = 4.10
+     vs CMB-SPA (D-44): z = 3.94
+     vs CMB SPT+ACT+Planck as quoted by H0DN (D-22/D-44): z = 3.92
+     vs DESI DR2 BAO+BBN (D-45): z = 2.82
+     vs DESI+CMB LCDM (D-45, joint): z = 3.27
+     vs Inverse ladder cosmography (D-48): z = 3.66
+     vs Inverse ladder flat LCDM (D-48): z = 3.30
+CCHP TRGB 2025 (D-24), stat+sys+sigSN:
+     vs Planck PR4 (D-41): z = 1.37
+     vs Planck PR3 (D-41, superseded): z = 1.51
+     vs ACT DR6 alone (D-42): z = 1.90
+     vs SPT-3G D1 alone (D-43): z = 1.84
+     vs CMB-SPA (D-44): z = 1.62
+     vs CMB SPT+ACT+Planck as quoted by H0DN (D-22/D-44): z = 1.60
+     vs DESI DR2 BAO+BBN (D-45): z = 0.94
+     vs DESI+CMB LCDM (D-45, joint): z = 1.14
+     vs Inverse ladder cosmography (D-48): z = 1.56
+     vs Inverse ladder flat LCDM (D-48): z = 1.32
+CCHP JWST-only TRGB (D-25):
+     vs Planck PR4 (D-41): z = 0.51
+     vs Planck PR3 (D-41, superseded): z = 0.63
+     vs ACT DR6 alone (D-42): z = 0.99
+     vs SPT-3G D1 alone (D-43): z = 0.93
+     vs CMB-SPA (D-44): z = 0.72
+     vs CMB SPT+ACT+Planck as quoted by H0DN (D-22/D-44): z = 0.70
+     vs DESI DR2 BAO+BBN (D-45): z = 0.13
+     vs DESI+CMB LCDM (D-45, joint): z = 0.29
+     vs Inverse ladder cosmography (D-48): z = 0.70
+     vs Inverse ladder flat LCDM (D-48): z = 0.49
+CCHP JWST JAGB (D-26):
+     vs Planck PR4 (D-41): z = 0.06
+     vs Planck PR3 (D-41, superseded): z = 0.16
+     vs ACT DR6 alone (D-42): z = 0.46
+     vs SPT-3G D1 alone (D-43): z = 0.41
+     vs CMB-SPA (D-44): z = 0.22
+     vs CMB SPT+ACT+Planck as quoted by H0DN (D-22/D-44): z = 0.20
+     vs DESI DR2 BAO+BBN (D-45): z = 0.25
+     vs DESI+CMB LCDM (D-45, joint): z = 0.14
+     vs Inverse ladder cosmography (D-48): z = 0.22
+     vs Inverse ladder flat LCDM (D-48): z = 0.05
+SH0ES-side JAGB 2.0 (D-26):
+     vs Planck PR4 (D-41): z = 2.27
+     vs Planck PR3 (D-41, superseded): z = 2.38
+     vs ACT DR6 alone (D-42): z = 2.69
+     vs SPT-3G D1 alone (D-43): z = 2.64
+     vs CMB-SPA (D-44): z = 2.47
+     vs CMB SPT+ACT+Planck as quoted by H0DN (D-22/D-44): z = 2.46
+     vs DESI DR2 BAO+BBN (D-45): z = 1.91
+     vs DESI+CMB LCDM (D-45, joint): z = 2.09
+     vs Inverse ladder cosmography (D-48): z = 2.42
+     vs Inverse ladder flat LCDM (D-48): z = 2.22
+SBF Jensen 2025 (D-29):
+     vs Planck PR4 (D-41): z = 2.50
+     vs Planck PR3 (D-41, superseded): z = 2.61
+     vs ACT DR6 alone (D-42): z = 2.93
+     vs SPT-3G D1 alone (D-43): z = 2.88
+     vs CMB-SPA (D-44): z = 2.72
+     vs CMB SPT+ACT+Planck as quoted by H0DN (D-22/D-44): z = 2.70
+     vs DESI DR2 BAO+BBN (D-45): z = 2.14
+     vs DESI+CMB LCDM (D-45, joint): z = 2.33
+     vs Inverse ladder cosmography (D-48): z = 2.65
+     vs Inverse ladder flat LCDM (D-48): z = 2.45
+Tully-Fisher CF4 (D-30):
+     vs Planck PR4 (D-41): z = 1.38
+     vs Planck PR3 (D-41, superseded): z = 1.44
+     vs ACT DR6 alone (D-42): z = 1.64
+     vs SPT-3G D1 alone (D-43): z = 1.61
+     vs CMB-SPA (D-44): z = 1.49
+     vs CMB SPT+ACT+Planck as quoted by H0DN (D-22/D-44): z = 1.48
+     vs DESI DR2 BAO+BBN (D-45): z = 1.16
+     vs DESI+CMB LCDM (D-45, joint): z = 1.25
+     vs Inverse ladder cosmography (D-48): z = 1.48
+     vs Inverse ladder flat LCDM (D-48): z = 1.36
+TDCOSMO-2026 (D-31):
+     vs Planck PR4 (D-41): z = 1.47
+     vs Planck PR3 (D-41, superseded): z = 1.58
+     vs ACT DR6 alone (D-42): z = 1.92
+     vs SPT-3G D1 alone (D-43): z = 1.87
+     vs CMB-SPA (D-44): z = 1.68
+     vs CMB SPT+ACT+Planck as quoted by H0DN (D-22/D-44): z = 1.66
+     vs DESI DR2 BAO+BBN (D-45): z = 1.10
+     vs DESI+CMB LCDM (D-45, joint): z = 1.26
+     vs Inverse ladder cosmography (D-48): z = 1.63
+     vs Inverse ladder flat LCDM (D-48): z = 1.43
+Masers Stiskalek 2026 stat-only (D-32):
+     vs Planck PR4 (D-41): z = 1.06
+     vs Planck PR3 (D-41, superseded): z = 1.13
+     vs ACT DR6 alone (D-42): z = 1.36
+     vs SPT-3G D1 alone (D-43): z = 1.32
+     vs CMB-SPA (D-44): z = 1.19
+     vs CMB SPT+ACT+Planck as quoted by H0DN (D-22/D-44): z = 1.17
+     vs DESI DR2 BAO+BBN (D-45): z = 0.83
+     vs DESI+CMB LCDM (D-45, joint): z = 0.92
+     vs Inverse ladder cosmography (D-48): z = 1.17
+     vs Inverse ladder flat LCDM (D-48): z = 1.04
+Sirens GWTC-5 (D-33):
+     vs Planck PR4 (D-41): z = 0.54
+     vs Planck PR3 (D-41, superseded): z = 0.58
+     vs ACT DR6 alone (D-42): z = 0.69
+     vs SPT-3G D1 alone (D-43): z = 0.67
+     vs CMB-SPA (D-44): z = 0.60
+     vs CMB SPT+ACT+Planck as quoted by H0DN (D-22/D-44): z = 0.59
+     vs DESI DR2 BAO+BBN (D-45): z = 0.43
+     vs DESI+CMB LCDM (D-45, joint): z = 0.47
+     vs Inverse ladder cosmography (D-48): z = 0.60
+     vs Inverse ladder flat LCDM (D-48): z = 0.54
+Wojtak&Hjorth 2025 alt SN std (D-35, same data as SH0ES):
+     vs Planck PR4 (D-41): z = 2.34
+     vs Planck PR3 (D-41, superseded): z = 2.54
+     vs ACT DR6 alone (D-42): z = 3.10
+     vs SPT-3G D1 alone (D-43): z = 3.03
+     vs CMB-SPA (D-44): z = 2.81
+     vs CMB SPT+ACT+Planck as quoted by H0DN (D-22/D-44): z = 2.79
+     vs DESI DR2 BAO+BBN (D-45): z = 1.62
+     vs DESI+CMB LCDM (D-45, joint): z = 2.04
+     vs Inverse ladder cosmography (D-48): z = 2.56
+     vs Inverse ladder flat LCDM (D-48): z = 2.18
+R22 superseded, for check only (D-20):
+     vs Planck PR4 (D-41): z = 4.64
+     vs Planck PR3 (D-41, superseded): z = 4.85
+     vs ACT DR6 alone (D-42): z = 5.35
+     vs SPT-3G D1 alone (D-43): z = 5.31
+     vs CMB-SPA (D-44): z = 5.28
+     vs CMB SPT+ACT+Planck as quoted by H0DN (D-22/D-44): z = 5.29
+     vs DESI DR2 BAO+BBN (D-45): z = 3.81
+     vs DESI+CMB LCDM (D-45, joint): z = 4.52
+     vs Inverse ladder cosmography (D-48): z = 4.75
+     vs Inverse ladder flat LCDM (D-48): z = 4.30
+
+== Selected pairs with difference, sigma, p ==
+  SH0ES Ceph-SN 2025 (D-20)  vs  Planck PR4 (D-41): diff = +5.85, sigma = 1.07, z = 5.49, p2 = 4.01e-08
+  SH0ES Ceph-SN 2025 (D-20)  vs  CMB-SPA (D-44): diff = +6.30, sigma = 1.00, z = 6.27, p2 = 3.59e-10
+  SH0ES Ceph-SN 2025 (D-20)  vs  DESI DR2 BAO+BBN (D-45): diff = +4.99, sigma = 1.10, z = 4.55, p2 = 5.29e-06
+  SH0ES Ceph-SN 2025 (D-20)  vs  DESI+CMB LCDM (D-45, joint): diff = +5.32, sigma = 0.97, z = 5.48, p2 = 4.31e-08
+  R22 superseded, for check only (D-20)  vs  Planck PR3 (D-41, superseded): diff = +5.68, sigma = 1.17, z = 4.85, p2 = 1.25e-06
+  H0DN corrected (D-22)  vs  CMB-SPA (D-44): diff = +6.07, sigma = 0.89, z = 6.82, p2 = 9.34e-12
+  H0DN corrected (D-22)  vs  CMB SPT+ACT+Planck as quoted by H0DN (D-22/D-44): diff = +6.02, sigma = 0.88, z = 6.86, p2 = 7.11e-12
+  H0DN corrected (D-22)  vs  DESI DR2 BAO+BBN (D-45): diff = +4.76, sigma = 0.99, z = 4.80, p2 = 1.61e-06
+  CCHP TRGB 2025 (D-24), stat+sys+sigSN  vs  Planck PR4 (D-41): diff = +2.75, sigma = 2.00, z = 1.37, p2 = 1.70e-01
+  CCHP TRGB 2025 (D-24), stat+sys+sigSN  vs  CMB-SPA (D-44): diff = +3.20, sigma = 1.97, z = 1.62, p2 = 1.05e-01
+  CCHP TRGB 2025 (D-24), stat+sys+sigSN  vs  DESI DR2 BAO+BBN (D-45): diff = +1.89, sigma = 2.02, z = 0.94, p2 = 3.50e-01
+  TDCOSMO-2026 (D-31)  vs  CMB-SPA (D-44): diff = +3.91, sigma = 2.33, z = 1.68, p2 = 9.35e-02
+  TDCOSMO-2026 (D-31)  vs  Planck PR4 (D-41): diff = +3.46, sigma = 2.36, z = 1.47, p2 = 1.42e-01
+  TDCOSMO-2026 (D-31)  vs  H0DN corrected (D-22): diff = -2.16, sigma = 2.53, z = 0.85, p2 = 3.93e-01
+  TDCOSMO-2026 (D-31)  vs  SH0ES Ceph-SN 2025 (D-20): diff = -2.39, sigma = 2.57, z = 0.93, p2 = 3.53e-01
+  CCHP TRGB 2025 (D-24), stat+sys+sigSN  vs  SH0ES Ceph-SN 2025 (D-20): diff = -3.10, sigma = 2.15, z = 1.44, p2 = 1.49e-01
+  CCHP JWST JAGB (D-26)  vs  SH0ES-side JAGB 2.0 (D-26): diff = -5.50, sigma = 3.65, z = 1.50, p2 = 1.32e-01
+  Wojtak&Hjorth 2025 alt SN std (D-35, same data as SH0ES)  vs  CMB-SPA (D-44): diff = +3.40, sigma = 1.21, z = 2.81, p2 = 5.00e-03
+
+== SH0ES (73.49+-0.93) vs CCHP (70.39+-1.94) with correlation rho ==
+  rho = 0.0: sigma_diff = 2.15, z = 1.44
+  rho = 0.3: sigma_diff = 1.88, z = 1.65
+  rho = 0.5: sigma_diff = 1.68, z = 1.85
+  rho = 0.8: sigma_diff = 1.32, z = 2.36
+
+== M_B framing (D-21) ==
+  R22 M_B -19.253+-0.027 vs inverse ladder cosmography -19.375: diff = +0.122 mag, z = 3.76
+  R22 M_B -19.253+-0.027 vs inverse ladder flat LCDM -19.394: diff = +0.141 mag, z = 4.42
+  5 log10(73.49/67.19) = 0.195 mag; fractional gap 9.38%
+  5 log10(73.264/67.19) = 0.188 mag; fractional gap 9.04%
+  5 log10(70.39/67.19) = 0.101 mag; fractional gap 4.76%
+  5 log10(73.49/68.5) = 0.153 mag; fractional gap 7.28%
+
+== Look-elsewhere over choice of pair (Sidak; conservative because choices are highly correlated) ==
+  SH0ES vs CMB-SPA: z_local = 6.27 (p2 = 3.59e-10); N = 10: p_global = 3.59e-09, z_global = 5.90
+  SH0ES vs CMB-SPA: z_local = 6.27 (p2 = 3.59e-10); N = 30: p_global = 1.08e-08, z_global = 5.72
+  SH0ES vs CMB-SPA: z_local = 6.27 (p2 = 3.59e-10); N = 100: p_global = 3.59e-08, z_global = 5.51
+  H0DN vs BAO+BBN: z_local = 4.80 (p2 = 1.61e-06); N = 10: p_global = 1.61e-05, z_global = 4.31
+  H0DN vs BAO+BBN: z_local = 4.80 (p2 = 1.61e-06); N = 30: p_global = 4.82e-05, z_global = 4.06
+  H0DN vs BAO+BBN: z_local = 4.80 (p2 = 1.61e-06); N = 100: p_global = 1.61e-04, z_global = 3.77
+  H0DN-noCepheid vs CMB-SPA: z_local = 3.94 (p2 = 8.20e-05); N = 10: p_global = 8.20e-04, z_global = 3.35
+  H0DN-noCepheid vs CMB-SPA: z_local = 3.94 (p2 = 8.20e-05); N = 30: p_global = 2.46e-03, z_global = 3.03
+  H0DN-noCepheid vs CMB-SPA: z_local = 3.94 (p2 = 8.20e-05); N = 100: p_global = 8.17e-03, z_global = 2.64
+
+== Min Bayes factors (null = one common H0) ==
+  SH0ES vs CMB-SPA ~ z = 6.3: p2 = 2.98e-10, Sellke BF_null >= 1.77e-08 (max odds vs null 5.63e+07), Gaussian bound 2.41e-09; prior needed for P(real)=0.5: 1.77e-08
+  no-Cepheid local vs CMB ~ z = 3.9: p2 = 9.62e-05, Sellke BF_null >= 2.42e-03 (max odds vs null 413), Gaussian bound 4.98e-04; prior needed for P(real)=0.5: 2.41e-03
+  one-step only vs CMB ~ z = 2.0: p2 = 4.55e-02, Sellke BF_null >= 3.82e-01 (max odds vs null 2.62), Gaussian bound 1.35e-01; prior needed for P(real)=0.5: 2.77e-01
+  CCHP vs SH0ES ~ z = 1.5: p2 = 1.34e-01, Sellke BF_null >= 7.31e-01 (max odds vs null 1.37), Gaussian bound 3.25e-01; prior needed for P(real)=0.5: 4.22e-01
+
+--- stderr ---
+

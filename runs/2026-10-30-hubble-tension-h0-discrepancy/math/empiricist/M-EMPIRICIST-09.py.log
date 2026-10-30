@@ -1,0 +1,32 @@
+# math_run log
+command:  python3 runs/2026-10-30-hubble-tension-h0-discrepancy/math/empiricist/M-EMPIRICIST-09.py
+started:  2026-10-30T15:39:58Z
+duration: 0.6 s
+exit:     0
+versions: python 3.13.17, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   11 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+PASS k == k: symbolic
+PASS lim r->0 of sqrt(d**2/k**2 - r**2) == d/k: symbolic limit d/k
+PASS (((5.81 km/s/Mpc)/3)^2 - (0.38 km/s/Mpc)^2)^0.5 has the dimension of km/s/Mpc: dimensional analysis
+  σ needed, Δ = 5.81, 3σ: computed 1.89902 km/s/Mpc, lens 1.9 km/s/Mpc
+PASS 1.899020215210407 km/s/Mpc == 1.9 km/s/Mpc: within 0.00315789; 6.15431e-20 vs 6.15748e-20 (SI)
+    as % of 73: computed 2.6014, lens 2.6
+PASS 2.601397555082749 == 2.6: within 0.0230769; 2.6014 vs 2.6 (SI)
+  σ needed, Δ = 5.81, 5σ: computed 1.09811 km/s/Mpc, lens 1.1 km/s/Mpc
+PASS 1.0981092841789477 km/s/Mpc == 1.1 km/s/Mpc: within 0.00545455; 3.55873e-20 vs 3.56486e-20 (SI)
+    as % of 73: computed 1.50426, lens 1.5
+PASS 1.5042592933958188 == 1.5: within 0.04; 1.50426 vs 1.5 (SI)
+  σ needed, Δ = 3.00, 3σ: computed 1 km/s/Mpc, lens 1.0 km/s/Mpc
+PASS 1.0 km/s/Mpc == 1.0 km/s/Mpc: within 0.006; 3.24078e-20 vs 3.24078e-20 (SI)
+    as % of 73: computed 1.36986, lens 1.4
+PASS 1.36986301369863 == 1.4: within 0.0428571; 1.36986 vs 1.4 (SI)
+  σ needed, Δ = 3.00, 5σ: computed 0.6 km/s/Mpc, lens 0.6 km/s/Mpc
+PASS 0.6 km/s/Mpc == 0.6 km/s/Mpc: within 0.01; 1.94447e-20 vs 1.94447e-20 (SI)
+    as % of 73: computed 0.821918, lens 0.8
+PASS 0.821917808219178 == 0.8: within 0.075; 0.821918 vs 0.8 (SI)
+SUMMARY: 11 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

@@ -1,0 +1,23 @@
+# math_run log
+command:  python3 runs/2026-10-30-hubble-tension-h0-discrepancy/math/examiner/M-EXAMINER-04b.py
+started:  2026-10-30T15:45:04Z
+duration: 0.6 s
+exit:     0
+versions: python 3.13.17, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   1 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+mismatch 0.120: 71.561 +- 1.288, share ['CCHP', 'SBF', 'TF', 'MASER'], f 0.0145, diag False, H_i H_j
+mismatch 0.120: 71.571 +- 1.241, share ['CCHP', 'SBF', 'TF'], f 0.0145, diag False, H_i H_j
+mismatch 0.124: 71.567 +- 1.287, share ['CCHP', 'SBF', 'TF', 'MASER'], f 0.0145, diag False, H_mean^2
+mismatch 0.126: 71.575 +- 1.239, share ['CCHP', 'SBF', 'TF'], f 0.0145, diag False, H_mean^2
+mismatch 0.173: 71.631 +- 1.248, share ['CCHP', 'SBF', 'MASER'], f 0.0145, diag False, H_i H_j
+mismatch 0.177: 71.633 +- 1.247, share ['CCHP', 'SBF', 'MASER'], f 0.0145, diag False, H_mean^2
+mismatch 0.183: 71.613 +- 1.300, share ['CCHP', 'SBF', 'TF'], f 0.0145, diag True, H_i H_j
+mismatch 0.193: 71.625 +- 1.298, share ['CCHP', 'SBF', 'TF'], f 0.0145, diag True, H_mean^2
+implied correlation coefficient CCHP-SBF (stated case, off-diag only): 0.23468221618022292
+PASS 0.23468221618022292 < 1: symbolic, constant
+SUMMARY: 1 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

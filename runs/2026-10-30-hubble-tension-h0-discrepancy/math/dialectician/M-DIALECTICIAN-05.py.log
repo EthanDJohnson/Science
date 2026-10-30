@@ -1,0 +1,25 @@
+# math_run log
+command:  python3 runs/2026-10-30-hubble-tension-h0-discrepancy/math/dialectician/M-DIALECTICIAN-05.py
+started:  2026-10-30T15:51:27Z
+duration: 0.5 s
+exit:     0
+versions: python 3.13.17, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   7 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+PASS lim b->0 of d/sqrt(a**2 + b**2) == d/a: symbolic limit d/a
+CCHP total sigma = 1.936
+PASS 0.0042055894284642459 <= 0.00500000000000000: symbolic, constant
+70.39 vs SH0ES: z = 1.443 (lens 1.44)
+PASS 0.0034695541197577538 <= 0.00600000000000000: symbolic, constant
+70.39 vs SPA: z = 1.622 (lens 1.62)
+PASS 0.0021099980897793941 <= 0.00600000000000000: symbolic, constant
+68.81 vs SH0ES: z = 2.310 (lens 2.31)
+PASS 0.0000926421706899383 <= 0.00600000000000000: symbolic, constant
+68.81 vs SPA: z = 0.881 (lens 0.88)
+PASS 0.0005908557831935946 <= 0.00600000000000000: symbolic, constant
+PASS 3.10 km/s/Mpc / (2.15 km/s/Mpc) has the dimension of dimensionless: dimensional analysis
+SUMMARY: 7 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

@@ -1,0 +1,23 @@
+# math_run log
+command:  python3 runs/2026-10-30-hubble-tension-h0-discrepancy/math/dialectician/M-DIALECTICIAN-08.py
+started:  2026-10-30T15:51:29Z
+duration: 0.5 s
+exit:     0
+versions: python 3.13.17, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   8 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+PASS lim p->0 of sqrt(D**2/k**2 - p**2) == D/k: symbolic limit D/k
+Delta = 6.074; sigma(3) = 2.025 (2.88%); sigma(5) = 1.215 (1.73%); midpoint 70.23: sigma = 1.012 (1.44%)
+PASS 0.004666666666665986 <= 0.00600000000000000: symbolic, constant
+PASS 0.0047999999999997350 <= 0.00600000000000000: symbolic, constant
+PASS 0.002333333333332993 <= 0.00600000000000000: symbolic, constant
+PASS 0.01696830753603890 <= 0.0500000000000000: symbolic, constant
+PASS 0.00018098452162338199 <= 0.0200000000000000: symbolic, constant
+PASS 0.0084841537680193559 <= 0.0200000000000000: symbolic, constant
+with pole errors, midpoint exclusion at 3 sigma needs sigma <= 0.938 (CMB side), 0.613 (H0DN side) km/s/Mpc = 0.87%
+PASS 6.074 km/s/Mpc / 3 has the dimension of km/s/Mpc: dimensional analysis
+SUMMARY: 8 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

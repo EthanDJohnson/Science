@@ -1,0 +1,75 @@
+# math_run log
+command:  python3 runs/2026-10-30-hubble-tension-h0-discrepancy/calc/falsifier-C3-2_bounds.py
+started:  2026-10-30T16:25:07Z
+duration: 1.0 s
+exit:     0
+versions: python 3.13.17, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+=== 1. Each r_d-free / non-ladder probe: sigma-distance of C3's true-H0 values ===
+rdfree Zaborowski CMBlens x unWISE (D-49)      69.20: (H-c)/sigma at 70.2 +0.77, 71.0 +1.38, 73.26 +3.13; P(H>70.2) = 0.213
+rdfree Zaborowski DES Y3 6x2pt (D-49)          70.30: (H-c)/sigma at 70.2 -0.08, 71.0 +0.50, 73.26 +2.12; P(H>70.2) = 0.569
+rdfree Zaborowski CMBlens+DESY5 (D-49)         69.60: (H-c)/sigma at 70.2 +0.46, 71.0 +1.08, 73.26 +2.82; P(H>70.2) = 0.270
+rdfree 2411.16677 DESY5 (D-49)                 66.70: (H-c)/sigma at 70.2 +2.06, 71.0 +2.53, 73.26 +3.86; P(H>70.2) = 0.019
+rdfree 2411.16677 Pantheon+ (D-49)             67.90: (H-c)/sigma at 70.2 +1.21, 71.0 +1.63, 73.26 +2.82; P(H>70.2) = 0.107
+rdfree 2411.16677 Union3 (D-49)                67.80: (H-c)/sigma at 70.2 +1.20, 71.0 +1.60, 73.26 +2.73; P(H>70.2) = 0.110
+equality BOSS Pantheon prior (D-50)            65.10: (H-c)/sigma at 70.2 +1.70, 71.0 +1.97, 73.26 +2.72; P(H>70.2) = 0.032
+equality BOSS uncal-BAO Om (D-50)              65.60: (H-c)/sigma at 70.2 +1.35, 71.0 +1.59, 73.26 +2.25; P(H>70.2) = 0.067
+equality BOSS + BAO-lensing (D-50)             70.60: (H-c)/sigma at 70.2 -0.08, 71.0 +0.11, 73.26 +0.72; P(H>70.2) = 0.462
+time delays TDCOSMO-2026 (D-31)                71.10: (H-c)/sigma at 70.2 -0.39, 71.0 -0.04, 73.26 +0.90; P(H>70.2) = 0.660
+masers stat only (D-32)                        71.60: (H-c)/sigma at 70.2 -0.38, 71.0 -0.16, 73.26 +0.45; P(H>70.2) = 0.647
+sirens GWTC-5 (D-33)                           71.70: (H-c)/sigma at 70.2 -0.20, 71.0 -0.09, 73.26 +0.17; P(H>70.2) = 0.627
+
+=== 2. Inverse-variance combinations of r_d-free, non-ladder probes (symmetrised errors) ===
+A: rdfree high (Zab 6x2pt) + equality BAO-lensing [most favourable to C3]
+   mean 70.32 +- 1.25; chi2 0.00/1; midpoint 70.2 at -0.10 sigma, P(H>70.2) = 0.540; 71.0 at +0.54; 73.26 at +2.36; 67.19 at -2.52
+B: rdfree mid (Zab unWISE) + equality uncal-BAO
+   mean 68.90 +- 1.29; chi2 0.60/1; midpoint 70.2 at +1.01 sigma, P(H>70.2) = 0.157; 71.0 at +1.63; 73.26 at +3.38; 67.19 at -1.32
+C: rdfree low (2411 Pantheon+) + equality Pantheon
+   mean 67.38 +- 1.81; chi2 0.36/1; midpoint 70.2 at +1.56 sigma, P(H>70.2) = 0.059; 71.0 at +2.00; 73.26 at +3.26; 67.19 at -0.11
+D: A + one-step (TD, masers, sirens)
+   mean 70.60 +- 1.05; chi2 0.19/4; midpoint 70.2 at -0.38 sigma, P(H>70.2) = 0.649; 71.0 at +0.38; 73.26 at +2.54; 67.19 at -3.26
+E: B + one-step
+   mean 69.63 +- 1.07; chi2 1.66/4; midpoint 70.2 at +0.53 sigma, P(H>70.2) = 0.298; 71.0 at +1.28; 73.26 at +3.38; 67.19 at -2.27
+F: C + one-step
+   mean 69.19 +- 1.32; chi2 2.54/4; midpoint 70.2 at +0.76 sigma, P(H>70.2) = 0.223; 71.0 at +1.37; 73.26 at +3.09; 67.19 at -1.52
+
+=== 3. GC age bound on the true H0 (EDE leaves t0(H0, Om) unchanged) ===
+check t0(67.19, 0.3175) = 13.803 Gyr (D-44 quotes 13.805): PASS
+check EdS limit t0 = 9.701 vs 2/(3H0) = 9.702: PASS
+  Om 0.2975: H0  70.20 -> t0 13.455 Gyr, +1.05 sigma below GC t_U
+  Om 0.2975: H0  71.00 -> t0 13.303 Gyr, +1.49 sigma below GC t_U
+  Om 0.2975: H0  71.40 -> t0 13.229 Gyr, +1.71 sigma below GC t_U
+  Om 0.2975: H0  73.26 -> t0 12.892 Gyr, +2.70 sigma below GC t_U
+  Om 0.2975: age-implied H0 = 68.39 (+1.73/-1.64)
+  Om 0.3175: H0  70.20 -> t0 13.212 Gyr, +1.76 sigma below GC t_U
+  Om 0.3175: H0  71.00 -> t0 13.063 Gyr, +2.20 sigma below GC t_U
+  Om 0.3175: H0  71.40 -> t0 12.990 Gyr, +2.41 sigma below GC t_U
+  Om 0.3175: H0  73.26 -> t0 12.659 Gyr, +3.39 sigma below GC t_U
+  Om 0.3175: age-implied H0 = 67.16 (+1.69/-1.61)
+
+=== 4. EDE posteriors without a ladder prior: mass above the 70.2 midpoint ===
+  ACT P-ACT-LB EDE (D-52)                                  69.9: P(H>70.2) = 0.246; fraction of 67.19->73.264 gap = 0.45
+  ACT P-ACT EDE (D-52)                                     69.3: P(H>70.2) = 0.119; fraction of 67.19->73.264 gap = 0.35
+  ACT alone EDE (D-52)                                     67.5: P(H>70.2) = 0.001; fraction of 67.19->73.264 gap = 0.05
+  Poulin 2026 profile (D-53)                               71.0: P(H>70.2) = 0.766; fraction of 67.19->73.264 gap = 0.63
+  eROSITA+ext (D-94)                                       71.4: P(H>70.2) = 0.804; fraction of 67.19->73.264 gap = 0.69
+  Reeves 2026 multiprobe EDE (D-53, not source-checked)    70.5: P(H>70.2) = 0.599; fraction of 67.19->73.264 gap = 0.54
+  ACT modified recombination (D-52)                        69.6: P(H>70.2) = 0.274; fraction of 67.19->73.264 gap = 0.40
+  ACT PMF (D-52)                                           69.1: P(H>70.2) = 0.014; fraction of 67.19->73.264 gap = 0.31
+  e-density fluct. ACT+SPT WITH ladder prior (D-95)        69.3: P(H>70.2) = 0.036; fraction of 67.19->73.264 gap = 0.35
+  Planck NPIPE EDE 95% upper H0 = 69.5 (D-53/D-75) < 70.2: P(H>70.2) < 0.025 by construction
+
+=== 5. Joint: Poulin profile (71.0+-1.1) vs r_d-free set B and C (independent data?) ===
+  B: rdfree mid (Zab unWISE) + equality uncal-BAO: 71.0 - 68.90 = 2.10 +- 1.70 -> 1.24 sigma
+  C: rdfree low (2411 Pantheon+) + equality Pantheon: 71.0 - 67.38 = 3.62 +- 2.11 -> 1.71 sigma
+
+=== 6. r_d-free + one-step sets combined with the GC-age-implied H0 (Om = 0.2975, DESI) ===
+  A: + age: 69.64 +- 1.00; P(H>70.2) = 0.288; 73.26 at +3.62 sigma; 71.0 at +1.36
+  D: + age: 69.99 +- 0.89; P(H>70.2) = 0.405; 73.26 at +3.69 sigma; 71.0 at +1.14
+  E: + age: 69.27 +- 0.91; P(H>70.2) = 0.153; 73.26 at +4.41 sigma; 71.0 at +1.91
+  F: + age: 68.89 +- 1.04; P(H>70.2) = 0.103; 73.26 at +4.21 sigma; 71.0 at +2.03
+
+--- stderr ---
+

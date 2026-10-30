@@ -1,0 +1,29 @@
+# math_run log
+command:  python3 runs/2026-10-30-hubble-tension-h0-discrepancy/math/examiner/M-EXAMINER-03.py
+started:  2026-10-30T15:44:45Z
+duration: 0.7 s
+exit:     0
+versions: python 3.13.17, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   12 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+PASS s**2*(a/s**2 + b/s**2)/2 == a/2 + b/2: symbolic
+PASS sqrt(2)*s/2 == sqrt(2)*s/2: symbolic
+PASS lim s2->0 of (a/s**2 + b/s2**2)/(s2**(-2) + s**(-2)) == b: symbolic limit b
+non-SH0ES local: 71.692 +- 1.141, chi2 1.44/5
+  vs CMB-SPA 3.743, vs BAO+BBN 2.494, below SH0ES 1.221
+PASS 71.69195873261896 == 71.69: within 0.0002; 71.692 vs 71.69 (SI)
+PASS 1.1410725137106998 == 1.14: within 0.005; 1.14107 vs 1.14 (SI)
+PASS 3.743262857597935 == 3.74: within 0.003; 3.74326 vs 3.74 (SI)
+PASS 2.4936823871197173 == 2.49: within 0.003; 2.49368 vs 2.49 (SI)
+PASS 1.221449630389051 == 1.22: within 0.005; 1.22145 vs 1.22 (SI)
+one-step: 71.268 +- 1.931; vs CMB 2.072; below SH0ES 1.037
+PASS 71.26755424981015 == 71.27: within 0.0002; 71.2676 vs 71.27 (SI)
+PASS 1.9312054445013869 == 1.93: within 0.005; 1.93121 vs 1.93 (SI)
+PASS 2.0716791336779634 == 2.07: within 0.005; 2.07168 vs 2.07 (SI)
+PASS 1.0368458474117608 == 1.04: within 0.006; 1.03685 vs 1.04 (SI)
+sensitivity (lower-side errors): (71.6859558435065, 1.132456420137834, 1.44322323148763)
+SUMMARY: 12 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

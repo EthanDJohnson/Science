@@ -1,0 +1,50 @@
+# math_run log
+command:  python3 runs/2026-10-30-hubble-tension-h0-discrepancy/calc/falsifier-C4-2_bounds.py
+started:  2026-10-30T16:35:53Z
+duration: 0.0 s
+exit:     0
+versions: python 3.13.17, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+=== A. Variant (i): inverse ladder vs anchored ladder ===
+inverse ladder, cosmography (D-48): 67.19 +- 0.65; H0DN 73.264 +- 0.806 -> difference 6.07 km/s/Mpc = 5.87 sigma
+inverse ladder, flat LCDM (D-48): 67.67 +- 0.685; H0DN 73.264 +- 0.806 -> difference 5.59 km/s/Mpc = 5.29 sigma
+Any H(z) change with standard r_d leaves the inverse-ladder H0 (SN-shape anchored at z->0) at these values.
+
+=== B. Earth radius response and days per year across a G step ===
+upper mantle ~400 km: P = 13.0 GPa, K = 200.0 GPa, gamma = K/P = 15.38, dlnR/dlnG = -0.024
+mid mantle ~1500 km: P = 60.0 GPa, K = 350.0 GPa, gamma = K/P = 5.83, dlnR/dlnG = -0.074
+lowermost mantle (CMB): P = 136.0 GPa, K = 656.0 GPa, gamma = K/P = 4.82, dlnR/dlnG = -0.096
+outer core top: P = 136.0 GPa, K = 644.0 GPa, gamma = K/P = 4.74, dlnR/dlnG = -0.098
+centre: P = 364.0 GPa, K = 1425.0 GPa, gamma = K/P = 3.91, dlnR/dlnG = -0.129
+gamma needed for R ∝ G^-1 (rebuttal eq. 12): 3*gamma-4 = 1 -> gamma = 5/3 = 1.667, i.e. K = 1.667 P
+  -> at CMB pressure 136 GPa that needs K = 227 GPa vs ~650 GPa (factor ~2.9 too stiff); at centre 607 vs ~1425 GPa
+GSM 4% (G higher before step; rebuttal): G_pre/G_post = 1.04; change in days/year (pre vs post): gamma=1.67: +0.0%; gamma=2.50: -5.4%; gamma=3.50: -6.4%; gamma=4.00: -6.6%; gamma=5.00: -6.9%
+Banik/Sakstein 11% at 130 Myr: G_pre/G_post = 1.11; change in days/year (pre vs post): gamma=1.67: +0.0%; gamma=2.50: -13.9%; gamma=3.50: -16.2%; gamma=4.00: -16.7%; gamma=5.00: -17.3%
+C4 (ii) Chandrasekhar sign low: G_pre/G_post = 0.914; change in days/year (pre vs post): gamma=1.67: +0.0%; gamma=2.50: +13.7%; gamma=3.50: +16.4%; gamma=4.00: +17.0%; gamma=5.00: +17.8%
+C4 (ii) Chandrasekhar sign high: G_pre/G_post = 0.891; change in days/year (pre vs post): gamma=1.67: +0.0%; gamma=2.50: +17.9%; gamma=3.50: +21.6%; gamma=4.00: +22.4%; gamma=5.00: +23.3%
+C4 (ii) opposite sign low: G_pre/G_post = 1.094; change in days/year (pre vs post): gamma=1.67: +0.0%; gamma=2.50: -12.0%; gamma=3.50: -14.1%; gamma=4.00: -14.5%; gamma=5.00: -15.1%
+C4 (ii) opposite sign high: G_pre/G_post = 1.122; change in days/year (pre vs post): gamma=1.67: +0.0%; gamma=2.50: -15.2%; gamma=3.50: -17.7%; gamma=4.00: -18.2%; gamma=5.00: -18.9%
+check: gamma = 5/3 gives exactly 0% (rebuttal's result is recovered only at gamma = 5/3)
+check: limit gamma -> inf (incompressible): days/year ∝ G^-2 -> 4% step gives -7.5%
+
+=== C. Insolation step at Earth (L ∝ G^a, r ∝ 1/G => flux ∝ G^(a+2)) ===
+a = 4.0: 4% (pre-step G higher): insolation ratio 1.265; absorbed-flux change +64 W/m^2 = +17.2 CO2-doubling equivalents; no-feedback surface dT +17.5 K; with 3 K/doubling +52 K
+a = 4.0: 11%: insolation ratio 1.870; absorbed-flux change +209 W/m^2 = +56.5 CO2-doubling equivalents; no-feedback surface dT +48.8 K; with 3 K/doubling +169 K
+a = 4.0: 9% lower (Chandrasekhar sign): insolation ratio 0.568; absorbed-flux change -104 W/m^2 = -28.0 CO2-doubling equivalents; no-feedback surface dT -38.0 K; with 3 K/doubling -84 K
+a = 5.6: 4% (pre-step G higher): insolation ratio 1.347; absorbed-flux change +83 W/m^2 = +22.5 CO2-doubling equivalents; no-feedback surface dT +22.3 K; with 3 K/doubling +68 K
+a = 5.6: 11%: insolation ratio 2.210; absorbed-flux change +290 W/m^2 = +78.5 CO2-doubling equivalents; no-feedback surface dT +63.2 K; with 3 K/doubling +236 K
+a = 5.6: 9% lower (Chandrasekhar sign): insolation ratio 0.488; absorbed-flux change -123 W/m^2 = -33.2 CO2-doubling equivalents; no-feedback surface dT -47.2 K; with 3 K/doubling -100 K
+a = 7.0: 4% (pre-step G higher): insolation ratio 1.423; absorbed-flux change +102 W/m^2 = +27.5 CO2-doubling equivalents; no-feedback surface dT +26.6 K; with 3 K/doubling +82 K
+a = 7.0: 11%: insolation ratio 2.558; absorbed-flux change +374 W/m^2 = +101.1 CO2-doubling equivalents; no-feedback surface dT +76.2 K; with 3 K/doubling +303 K
+a = 7.0: 9% lower (Chandrasekhar sign): insolation ratio 0.428; absorbed-flux change -137 W/m^2 = -37.1 CO2-doubling equivalents; no-feedback surface dT -55.1 K; with 3 K/doubling -111 K
+
+=== D. Non-gravitational SN-only step: non-SN probes vs true H0 ===
+TD+masers+sirens: 71.27 +- 1.93; vs true 67.19: 2.07 sigma
+TD+masers+sirens: 71.27 +- 1.93; vs true 68.5: 1.37 sigma
+TD+masers+sirens+SBF: 72.26 +- 1.51; vs true 67.19: 3.27 sigma
+TD+masers+sirens+SBF: 72.26 +- 1.51; vs true 68.5: 2.33 sigma
+
+--- stderr ---
+

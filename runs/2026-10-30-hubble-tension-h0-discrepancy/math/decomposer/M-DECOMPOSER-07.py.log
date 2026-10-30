@@ -1,0 +1,33 @@
+# math_run log
+command:  python3 runs/2026-10-30-hubble-tension-h0-discrepancy/math/decomposer/M-DECOMPOSER-07.py
+started:  2026-10-30T15:49:02Z
+duration: 0.6 s
+exit:     0
+versions: python 3.13.17, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   11 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+  r_d (CMB-SPA product) at H=73.26 [Mpc]: computed 134.82, lens 134.8
+PASS 134.82022932022932 == 134.8: within 0.000445104; 134.82 vs 134.8 (SI)
+  r_d (DESI h r_d) at H=73.26 [Mpc]: computed 138.602, lens 138.6
+PASS 138.6022386022386 == 138.6: within 0.0004329; 138.602 vs 138.6 (SI)
+  fractional reduction vs 147.00 (CMB-SPA) at H=73.26 [%]: computed 8.28556, lens 8.3
+PASS 8.285558285558292 == 8.3: within 0.00722892; 8.28556 vs 8.3 (SI)
+  fractional reduction vs 147.00 (DESI) at H=73.26 [%]: computed 5.71276, lens 5.7
+PASS 5.712762855620001 == 5.7: within 0.0105263; 5.71276 vs 5.7 (SI)
+  fractional reduction vs 147.00 (CMB-SPA) at H=70.39 [%]: computed 4.5461, lens 4.6
+PASS 4.546100298337841 == 4.6: within 0.0130435; 4.5461 vs 4.6 (SI)
+  fractional reduction vs 147.00 (DESI) at H=70.39 [%]: computed 1.8684, lens 1.9
+PASS 1.8684046995698256 == 1.9: within 0.0315789; 1.8684 vs 1.9 (SI)
+  Delta M_B ladder - inverse (cosmography) [mag]: computed 0.122, lens 0.122
+PASS 0.12199999999999989 == 0.122: within 0.00491803; 0.122 vs 0.122 (SI)
+  Delta M_B ladder - inverse (flat LCDM) [mag]: computed 0.141, lens 0.141
+PASS 0.14099999999999824 == 0.141: within 0.00425532; 0.141 vs 0.141 (SI)
+  ratio 0.122/0.188 = 0.648936170212766 ; 0.141/0.195 = 0.723076923076923
+PASS Hr/H == Hr/H: symbolic
+PASS 147.00 Mpc * 67.19 / 73.26 == 134.82 Mpc: within 0.001; 4.16012e+24 vs 4.16011e+24 (SI)
+PASS (101.54 Mpc) / (73.26 / 100) has the dimension of length: dimensional analysis
+SUMMARY: 11 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

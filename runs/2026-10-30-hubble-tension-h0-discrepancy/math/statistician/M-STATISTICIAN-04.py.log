@@ -1,0 +1,32 @@
+# math_run log
+command:  python3 runs/2026-10-30-hubble-tension-h0-discrepancy/math/statistician/M-STATISTICIAN-04.py
+started:  2026-10-30T15:31:46Z
+duration: 0.6 s
+exit:     0
+versions: python 3.13.17, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   11 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+PASS 5*log(H1)/log(10) - 5*log(H2)/log(10) == 5*log(H1/H2)/log(10): symbolic
+PASS series of 5*log(x + 1)/log(10) about x = 0 to order 2 == 5*x/log(10): symbolic: 5*x/log(10)
+PASS 5 * 1 has the dimension of dimensionless: dimensional analysis
+  gap vs CMB-SPA, mag: mine = 0.194618, lens = 0.195, tol = 0.001
+PASS 0.0003819685504387084 <= 0.00100000000000000: symbolic, constant
+  gap vs CMB-SPA, %: mine = 9.3764, lens = 9.4, tol = 0.05
+PASS 0.02360470308081930 <= 0.0500000000000000: symbolic, constant
+  gap vs BAO+BBN, mag: mine = 0.152688, lens = 0.153, tol = 0.001
+PASS 0.00031162056389194711 <= 0.00100000000000000: symbolic, constant
+  gap vs BAO+BBN, %: mine = 7.28467, lens = 7.3, tol = 0.05
+PASS 0.01532846715329084 <= 0.0500000000000000: symbolic, constant
+  dM_B cosmography: mine = 0.122, lens = 0.122, tol = 0.0005
+PASS 1.0733601507606494E-16 <= 0.000500000000000000: symbolic, constant
+    z: mine = 3.75963, lens = 3.76, tol = 0.01
+PASS 0.0003653366956727910 <= 0.0100000000000000: symbolic, constant
+  dM_B flat LCDM: mine = 0.141, lens = 0.141, tol = 0.0005
+PASS 1.7464328594396505E-15 <= 0.000500000000000000: symbolic, constant
+    z: mine = 4.41922, lens = 4.42, tol = 0.01
+PASS 0.0007840573091358882 <= 0.0100000000000000: symbolic, constant
+SUMMARY: 11 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

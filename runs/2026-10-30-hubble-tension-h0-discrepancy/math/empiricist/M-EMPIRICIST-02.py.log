@@ -1,0 +1,40 @@
+# math_run log
+command:  python3 runs/2026-10-30-hubble-tension-h0-discrepancy/math/empiricist/M-EMPIRICIST-02.py
+started:  2026-10-30T15:39:04Z
+duration: 0.5 s
+exit:     0
+versions: python 3.13.17, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   12 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+PASS (a - b)**2/(sa**2 + sb**2) == (-a + b)**2/(sa**2 + sb**2): symbolic
+PASS lim sb->0 of d/sqrt(sa**2 + sb**2) == d/sa: symbolic limit d/sa
+PASS (73.49 km/s/Mpc - 67.19 km/s/Mpc)/((0.93 km/s/Mpc)^2 + (0.38 km/s/Mpc)^2)^0.5 has the dimension of dimensionless: dimensional analysis
+  SH0ES: symmetrised 6.271, directional 6.271
+  SH0ES vs CMB-SPA (directional/lens convention) [sigma]: computed 6.27091, lens 6.27
+PASS 6.270907761826571 == 6.27: within 0.000956938; 6.27091 vs 6.27 (SI)
+  CCHP: symmetrised 1.619, directional 1.619
+  CCHP vs CMB-SPA (directional/lens convention) [sigma]: computed 1.61872, lens 1.62
+PASS 1.618723608519347 == 1.62: within 0.0037037; 1.61872 vs 1.62 (SI)
+  SBF: symmetrised 2.720, directional 2.720
+  SBF vs CMB-SPA (directional/lens convention) [sigma]: computed 2.72028, lens 2.72
+PASS 2.720279781934054 == 2.72: within 0.00220588; 2.72028 vs 2.72 (SI)
+  TDCOSMO: symmetrised 1.642, directional 1.677
+  TDCOSMO vs CMB-SPA (directional/lens convention) [sigma]: computed 1.67726, lens 1.68
+PASS 1.6772621887692056 == 1.68: within 0.00357143; 1.67726 vs 1.68 (SI)
+  masers: symmetrised 1.186, directional 1.186
+  masers vs CMB-SPA (directional/lens convention) [sigma]: computed 1.18566, lens 1.19
+PASS 1.1856552406248757 == 1.19: within 0.00504202; 1.18566 vs 1.19 (SI)
+  sirens: symmetrised 0.533, directional 0.601
+  sirens vs CMB-SPA (directional/lens convention) [sigma]: computed 0.600563, lens 0.6
+PASS 0.600562971479061 == 0.6: within 0.01; 0.600563 vs 0.6 (SI)
+  SH0ES vs CCHP [sigma]: computed 1.44093, lens 1.44
+PASS 1.4409256084380628 == 1.44: within 0.00416667; 1.44093 vs 1.44 (SI)
+  non-SH0ES mean 71.56+-1.19 vs BAO+BBN [sigma]: computed 2.31149, lens 2.31
+PASS 2.3114920982775256 == 2.31: within 0.0025974; 2.31149 vs 2.31 (SI)
+  correlated mean 71.47+-1.27 vs BAO+BBN [sigma] (lower end of '2.1-2.3'): computed 2.12724, lens 2.1
+PASS 2.1272430230188073 == 2.1: within 0.0238095; 2.12724 vs 2.1 (SI)
+SUMMARY: 12 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

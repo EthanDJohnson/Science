@@ -1,0 +1,41 @@
+# math_run log
+command:  python3 runs/2026-10-30-hubble-tension-h0-discrepancy/math/constraints/M-CONSTRAINTS-11.py
+started:  2026-10-30T15:56:59Z
+duration: 0.6 s
+exit:     0
+versions: python 3.13.17, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   14 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+  L ratio dm=0.146: got 1.14393, lens 1.14, tol 0.006
+PASS 0.0039314495393067972 <= 0.00600000000000000: symbolic, constant
+  G ratio (Chandrasekhar) dm=0.146: got 0.914254, lens 0.914, tol 0.006
+PASS 0.0002535738090875678 <= 0.00600000000000000: symbolic, constant
+  opposite-sign G ratio = 1.0938
+  L ratio dm=0.188: got 1.18905, lens 1.19, tol 0.006
+PASS 0.0009503210149019448 <= 0.00600000000000000: symbolic, constant
+  G ratio (Chandrasekhar) dm=0.188: got 0.890977, lens 0.891, tol 0.006
+PASS 0.00002264401759510815 <= 0.00600000000000000: symbolic, constant
+  opposite-sign G ratio = 1.1224
+  opposite sign, dm=0.146: got 1.09379, lens 1.09, tol 0.006
+PASS 0.0037884506523327196 <= 0.00600000000000000: symbolic, constant
+  opposite sign, dm=0.188: got 1.12236, lens 1.12, tol 0.006
+PASS 0.002362979581433888 <= 0.00600000000000000: symbolic, constant
+PASS G == G: symbolic
+lookback z=0.01: 144.5 Myr; z=0.0233: 333.3 Myr; window 188.9 Myr = 0.0137 of t0
+  lookback 0.01 (Myr): got 144.459, lens 144, tol 2
+PASS 0.4585787245812014 <= 2.00000000000000: symbolic, constant
+  lookback 0.0233 (Myr): got 333.325, lens 333, tol 3
+PASS 0.32537738486984980 <= 3.00000000000000: symbolic, constant
+  window (Myr): got 188.867, lens 190, tol 4
+PASS 1.1332013397113501 <= 4.00000000000000: symbolic, constant
+  fraction of t0: got 0.013683, lens 0.014, tol 0.0006
+PASS 0.00031697563894300130 <= 0.000600000000000000: symbolic, constant
+  D_M(0.01) Mpc: got 44.5121, lens 44, tol 1
+PASS 0.51212365783804598 <= 1.00000000000000: symbolic, constant
+PASS lim z->0 of log(z + 1)/z == 1: symbolic limit 1
+PASS 0.01 / (67.19 km/s/Mpc) == 145.5 Myr: within 0.003; 4.59247e+15 vs 4.59163e+15 (SI)
+SUMMARY: 14 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

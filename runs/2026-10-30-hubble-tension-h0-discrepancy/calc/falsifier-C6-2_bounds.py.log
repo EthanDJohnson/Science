@@ -1,0 +1,67 @@
+# math_run log
+command:  python3 runs/2026-10-30-hubble-tension-h0-discrepancy/calc/falsifier-C6-2_bounds.py
+started:  2026-10-30T16:48:51Z
+duration: 0.9 s
+exit:     0
+versions: python 3.13.17, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+gap G = 6.074 km/s/Mpc, half = 3.037, midpoint = 70.227
+
+(A) C6 window: true H0 T at which no cause exceeds half the gap, cost in fluctuation chi2
+  1 sigma (dchi2<=1): T in [69.43, 70.60] km/s/Mpc
+  2 sigma (dchi2<=4): T in [68.62, 70.98] km/s/Mpc
+  3 sigma (dchi2<=9): T in [67.81, 71.36] km/s/Mpc
+  T = 68.50: min fluct chi2 =   4.59; ladder systematic S_L = 3.04 (50%), early coherent shift S_E = 1.31 (22%); F_L = +1.73, F_E = +0.00
+  T = 69.00: min fluct chi2 =   2.32; ladder systematic S_L = 3.04 (50%), early coherent shift S_E = 1.81 (30%); F_L = +1.23, F_E = +0.00
+  T = 69.50: min fluct chi2 =   0.81; ladder systematic S_L = 3.04 (50%), early coherent shift S_E = 2.31 (38%); F_L = +0.73, F_E = +0.00
+  T = 70.00: min fluct chi2 =   0.08; ladder systematic S_L = 3.04 (50%), early coherent shift S_E = 2.81 (46%); F_L = +0.23, F_E = +0.00
+  T = 70.20: min fluct chi2 =   0.00; ladder systematic S_L = 3.04 (50%), early coherent shift S_E = 3.01 (50%); F_L = +0.03, F_E = +0.00
+  T = 70.50: min fluct chi2 =   0.52; ladder systematic S_L = 2.76 (46%), early coherent shift S_E = 3.04 (50%); F_L = +0.00, F_E = -0.27
+  T = 71.00: min fluct chi2 =   4.14; ladder systematic S_L = 2.26 (37%), early coherent shift S_E = 3.04 (50%); F_L = +0.00, F_E = -0.77
+
+  minimum early coherent shift anywhere in the 2-sigma C6 window: S_E = 1.26 km/s/Mpc at T = 68.73 (chi2 3.99); i.e. 21% of the gap
+  at the midpoint T = 70.2 with no fluctuation: S_E = 3.01 km/s/Mpc (50%)
+
+(B) r_s-route residuals if the true H0 is T and r_d is standard (no early physics)
+  T = 69.5: CMB-SPA 6.1sig, BAO+BBN (DESI DR2) 1.7sig, inverse ladder (cosmography) 3.5sig, inverse ladder (flat LCDM) 2.7sig
+  T = 70.2: CMB-SPA 7.9sig, BAO+BBN (DESI DR2) 2.9sig, inverse ladder (cosmography) 4.6sig, inverse ladder (flat LCDM) 3.7sig
+  T = 70.9: CMB-SPA 9.8sig, BAO+BBN (DESI DR2) 4.1sig, inverse ladder (cosmography) 5.6sig, inverse ladder (flat LCDM) 4.7sig
+  T = 69.5: summed chi2 of CMB-SPA + BAO+BBN + inverse ladder = 52.2 for 3 dof
+  T = 70.2: summed chi2 of CMB-SPA + BAO+BBN + inverse ladder = 92.1 for 3 dof
+
+(C) r_d the hybrid needs (H0 r_d held at the inverse-ladder value)
+  T = 68.73: r_d = 144.2 Mpc, reduction 1.9%
+  T = 69.50: r_d = 142.6 Mpc, reduction 3.0%
+  T = 70.20: r_d = 141.2 Mpc, reduction 3.9%
+  T = 70.90: r_d = 139.8 Mpc, reduction 4.9%
+
+(D) Dark-radiation route: dN_eff per 1% r_d cut = 0.167
+  r_d cut 1.9% -> N_eff = 3.36, vs ACT DR6 2.86 +- 0.13: 3.8 sigma; vs 2.89 +- 0.11 (with He, D): 4.3 sigma
+  r_d cut 3.0% -> N_eff = 3.54, vs ACT DR6 2.86 +- 0.13: 5.2 sigma; vs 2.89 +- 0.11 (with He, D): 5.9 sigma
+  r_d cut 3.9% -> N_eff = 3.70, vs ACT DR6 2.86 +- 0.13: 6.5 sigma; vs 2.89 +- 0.11 (with He, D): 7.4 sigma
+
+  early-physics posteriors vs the C6 window (T above the posterior uses the + error)
+  P-ACT-LB EDE 69.9 +0.8/-1.5 [D-52]: T=69.5: -0.3sig, T=70.2: +0.4sig, T=70.9: +1.2sig
+  P-ACT EDE 69.3 +0.9/-1.5 [D-52]: T=69.5: +0.2sig, T=70.2: +1.0sig, T=70.9: +1.8sig
+  ACT-alone EDE 67.5 +0.9/-1.7 [D-52]: T=69.5: +2.2sig, T=70.2: +3.0sig, T=70.9: +3.8sig
+  Poulin 2026 profile EDE 71.0 +-1.1 [D-53]: T=69.5: -1.4sig, T=70.2: -0.7sig, T=70.9: -0.1sig
+  eROSITA+CMB+BAO EDE 71.4 +-1.4 [D-94]: T=69.5: -1.4sig, T=70.2: -0.9sig, T=70.9: -0.4sig
+  modified recombination 69.6 +-1.0 [D-52]: T=69.5: -0.1sig, T=70.2: +0.6sig, T=70.9: +1.3sig
+  PMF 69.1 +-0.5 [D-52]: T=69.5: +0.8sig, T=70.2: +2.2sig, T=70.9: +3.6sig
+  Planck NPIPE EDE: 66.9 < H0 < 69.5 (95%) [D-53] -> C6 midpoint 70.2 lies outside this 95% range; the C6 2-sigma window lower end is compared above
+
+(E) age check (flat LCDM, Omega_m = 0.3175; check t0(67.19) vs CMB-SPA 13.805 Gyr)
+  t0(67.19) = 13.809 Gyr
+  T = 69.5: t0 = 13.35 Gyr; GC 13.81 +- 0.34: -1.4 sigma
+  T = 70.2: t0 = 13.22 Gyr; GC 13.81 +- 0.34: -1.7 sigma
+  T = 70.9: t0 = 13.09 Gyr; GC 13.81 +- 0.34: -2.1 sigma
+  T = 73.26: t0 = 12.66 Gyr; GC 13.81 +- 0.34: -3.4 sigma
+
+(F) (b) unmodelled common ladder shift 4.29 km/s/Mpc vs CMB-SPA = 71% of the gap -> above the half-gap 'dominant' threshold
+
+(F) (b) unmodelled common ladder shift 2.78 km/s/Mpc vs BAO+BBN = 46% of the gap -> below the half-gap 'dominant' threshold
+
+--- stderr ---
+

@@ -1,0 +1,37 @@
+# math_run log
+command:  python3 runs/2026-10-30-hubble-tension-h0-discrepancy/math/empiricist/M-EMPIRICIST-12.py
+started:  2026-10-30T15:40:56Z
+duration: 0.6 s
+exit:     1
+versions: python 3.13.17, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   4 PASS, 3 FAIL, 0 UNDECIDED
+
+--- stdout ---
+PASS 5*log(a/c)/log(10) == 5*log(a/b)/log(10) + 5*log(b/c)/log(10): symbolic
+  total SH0ES-CMB gap 0.1946 mag, 6.30 km/s/Mpc
+  rest = 71.56: SH0ES-rest 1.93 km/s/Mpc = 0.0578 mag; rest-CMB 4.37 km/s/Mpc = 0.1368 mag (6.5%); sum 0.1946
+  rest = 71.47: SH0ES-rest 2.02 km/s/Mpc = 0.0605 mag; rest-CMB 4.28 km/s/Mpc = 0.1341 mag (6.4%); sum 0.1946
+  rest = 71.21: SH0ES-rest 2.28 km/s/Mpc = 0.0684 mag; rest-CMB 4.02 km/s/Mpc = 0.1262 mag (6.0%); sum 0.1946
+  SH0ES vs CCHP alone: 3.10 km/s/Mpc = 0.0936 mag
+PASS 0.230000000000000 > 0.1946180314495613: symbolic, constant
+  lens piece 2: rest-vs-CMB [mag] (rest = 71.21-71.56): computed 0.131968, lens 0.13
+PASS 0.13196785343219736 == 0.13: within 0.0769231; 0.131968 vs 0.13 (SI)
+  lens piece 1: SH0ES-vs-rest [mag], rest = 71.56: computed 0.0577896, lens 0.1
+FAIL 0.05778957742155877 == 0.1: relative tolerance 0.2; 0.0577896 vs 0.1 (SI)
+  lens piece 1: SH0ES-vs-rest [km/s/Mpc], rest = 71.56: computed 1.93 km/s/Mpc, lens 3.0 km/s/Mpc
+FAIL 1.9299999999999926 km/s/Mpc == 3.0 km/s/Mpc: relative tolerance 0.166667; 6.2547e-20 vs 9.72234e-20 (SI)
+  M-EMPIRICIST-14: fraction of the 0.195 mag gap removed if the true local value is H:
+    H = 70.0: removes 0.1057 mag = 0.54 of the gap
+    H = 70.39: removes 0.0936 mag = 0.48 of the gap
+    H = 71.0: removes 0.0748 mag = 0.38 of the gap
+    H = 71.21: removes 0.0684 mag = 0.35 of the gap
+    H = 71.56: removes 0.0578 mag = 0.30 of the gap
+    H = 72.0: removes 0.0445 mag = 0.23 of the gap
+  fraction removed at H = 71 (midpoint of 70-72): computed 0.384597, lens 0.5
+FAIL 0.3845969088545531 == 0.5: relative tolerance 0.2; 0.384597 vs 0.5 (SI)
+  fraction removed at H = 70 (low end): computed 0.542864, lens 0.5
+PASS 0.5428635570920013 == 0.5: within 0.2; 0.542864 vs 0.5 (SI)
+SUMMARY: 4 pass, 3 fail, 0 undecided
+
+--- stderr ---
+

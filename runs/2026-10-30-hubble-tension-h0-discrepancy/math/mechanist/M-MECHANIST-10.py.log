@@ -1,0 +1,35 @@
+# math_run log
+command:  python3 runs/2026-10-30-hubble-tension-h0-discrepancy/math/mechanist/M-MECHANIST-10.py
+started:  2026-10-30T15:43:57Z
+duration: 0.7 s
+exit:     0
+versions: python 3.13.17, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   10 PASS, 0 FAIL, 1 UNDECIDED
+
+--- stdout ---
+PASS (N - n)**2*(s**2/(N - n) + s**2/n)/N**2 == s**2*(1/n - 1/N): symbolic
+UNDECIDED lim n->Ntot of s**2*(1/n - 1/Ntot) == 0: symbolic limit s**2*(-Ntot + Ntot)/(Ntot*Ntot)
+  per-SN scatter mag: recomputed 0.105791, lens claims 0.105, tol 0.002
+PASS 0.00079058319911135390 <= 0.00200000000000000: symbolic, constant
+  subset 24 of 35 sigma mag: recomputed 0.0139176, lens claims 0.014, tol 0.0012
+PASS 0.000082380025678605286 <= 0.00120000000000000: symbolic, constant
+  subset 11 of 35 sigma mag: recomputed 0.0303657, lens claims 0.03, tol 0.0012
+PASS 0.0003657163076103212 <= 0.00120000000000000: symbolic, constant
+  subset 11 of 55 sigma mag: recomputed 0.0327987, lens claims 0.033, tol 0.0012
+PASS 0.0002012777481604318 <= 0.00120000000000000: symbolic, constant
+  split 70.39: recomputed 0.0844072, lens claims 0.084, tol 0.0006
+PASS 0.0004071997367030740 <= 0.000600000000000000: symbolic, constant
+  split 68.81: recomputed 0.133704, lens claims 0.134, tol 0.0006
+PASS 0.00029576347901888803 <= 0.000600000000000000: symbolic, constant
+split/σ: 0.084 mag = 6.1σ (24 of 35), 2.8σ (11 of 35); 0.134 mag = 4.4σ (11 of 35)
+'~2σ' of sampling noise = 0.028 mag (24/35) or 0.061 mag (11/35)
+  JAGB 0.11 mag fraction: recomputed 0.585325, lens claims 0.59, tol 0.006
+PASS 0.004675444981805374 <= 0.00600000000000000: symbolic, constant
+  JAGB 0.11 mag in H0 %: recomputed 5.19619, lens claims 5.2, tol 0.05
+PASS 0.0038126176777186771 <= 0.0500000000000000: symbolic, constant
+  0.17 mag fraction: recomputed 0.904592, lens claims 0.9, tol 0.006
+PASS 0.004592494119028082 <= 0.00600000000000000: symbolic, constant
+SUMMARY: 10 pass, 0 fail, 1 undecided
+
+--- stderr ---
+

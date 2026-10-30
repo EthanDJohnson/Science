@@ -1,0 +1,54 @@
+# math_run log
+command:  python3 runs/2026-10-30-hubble-tension-h0-discrepancy/math/statistician/M-STATISTICIAN-10.py
+started:  2026-10-30T15:34:43Z
+duration: 0.6 s
+exit:     0
+versions: python 3.13.17, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   20 PASS, 0 FAIL, 1 UNDECIDED
+
+--- stdout ---
+  dchi2 = 4.3, 3 dof: p: mine = 0.230839, lens = 0.23, tol = 0.003
+PASS 0.00083874820887630997 <= 0.00300000000000000: symbolic, constant
+    z: mine = 1.1982, lens = 1.2, tol = 0.03
+PASS 0.001798928104238956 <= 0.0300000000000000: symbolic, constant
+  dchi2 = 6.6, 3 dof: p: mine = 0.0858011, lens = 0.086, tol = 0.003
+PASS 0.0001989125998770724 <= 0.00300000000000000: symbolic, constant
+    z: mine = 1.71798, lens = 1.7, tol = 0.03
+PASS 0.017975482287079644 <= 0.0300000000000000: symbolic, constant
+  PMF gap fraction %: mine = 30.3175, lens = 30, tol = 0.6
+PASS 0.31746031746027700 <= 0.600000000000000: symbolic, constant
+  PMF residual vs SH0ES (tol 0.06: lens rounds to 1 decimal): mine = 4.15764, lens = 4.2, tol = 0.06
+PASS 0.04236305964599518 <= 0.0600000000000000: symbolic, constant
+  e-density (D-95) gap fraction %: mine = 33.4921, lens = 33, tol = 0.6
+PASS 0.492063492063501 <= 0.600000000000000: symbolic, constant
+  e-density (D-95) residual vs SH0ES (tol 0.06: lens rounds to 1 decimal): mine = 3.96822, lens = 4.0, tol = 0.06
+PASS 0.031777043261213701 <= 0.0600000000000000: symbolic, constant
+  mod. recombination gap fraction %: mine = 38.254, lens = 38, tol = 0.6
+PASS 0.2539682539682202 <= 0.600000000000000: symbolic, constant
+  mod. recombination residual vs SH0ES (tol 0.06: lens rounds to 1 decimal): mine = 2.84854, lens = 2.9, tol = 0.06
+PASS 0.05146324979913691 <= 0.0600000000000000: symbolic, constant
+  ACT EDE P-ACT-LB gap fraction %: mine = 43.0159, lens = 43, tol = 0.6
+PASS 0.01587301587315970 <= 0.600000000000000: symbolic, constant
+  ACT EDE P-ACT-LB residual vs SH0ES (tol 0.06: lens rounds to 1 decimal): mine = 2.92645, lens = 2.9, tol = 0.06
+PASS 0.02644675968171206 <= 0.0600000000000000: symbolic, constant
+  Poulin EDE gap fraction %: mine = 60.4762, lens = 60, tol = 0.6
+PASS 0.4761904761905402 <= 0.600000000000000: symbolic, constant
+  Poulin EDE residual vs SH0ES (tol 0.06: lens rounds to 1 decimal): mine = 1.72862, lens = 1.7, tol = 0.06
+PASS 0.028624889020194744 <= 0.0600000000000000: symbolic, constant
+  eROSITA EDE (D-94) gap fraction %: mine = 66.8254, lens = 67, tol = 0.6
+PASS 0.1746031746030194 <= 0.600000000000000: symbolic, constant
+  eROSITA EDE (D-94) residual vs SH0ES (tol 0.06: lens rounds to 1 decimal): mine = 1.2435, lens = 1.2, tol = 0.06
+PASS 0.04349701416672105 <= 0.0600000000000000: symbolic, constant
+Cosmic-variance multiples (sigma_loc = 0.31)
+  SH0ES - CMB-SPA: mine = 20.3226, lens = 20.3, tol = 0.05
+PASS 0.02258064516127911 <= 0.0500000000000000: symbolic, constant
+  local late mean - early mean: mine = 16.7384, lens = 16.7, tol = 0.05
+PASS 0.038387096774208707 <= 0.0500000000000000: symbolic, constant
+  CCHP - CMB-SPA: mine = 10.3226, lens = 10.3, tol = 0.05
+PASS 0.022580645161298291 <= 0.0500000000000000: symbolic, constant
+UNDECIDED lim h->b of (-a + h)/(-a + b) == 1: symbolic limit (-a + b)/(-a + b)
+PASS 6.30 km/s/Mpc / (0.31 km/s/Mpc) has the dimension of dimensionless: dimensional analysis
+SUMMARY: 20 pass, 0 fail, 1 undecided
+
+--- stderr ---
+

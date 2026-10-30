@@ -1,0 +1,47 @@
+# math_run log
+command:  python3 runs/2026-10-30-hubble-tension-h0-discrepancy/math/decomposer/M-DECOMPOSER-04.py
+started:  2026-10-30T15:47:35Z
+duration: 0.6 s
+exit:     0
+versions: python 3.13.17, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   18 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+  gap mag: computed 0.18793, lens 0.188
+PASS 0.18792992546943582 == 0.188: within 0.00319149; 0.18793 vs 0.188 (SI)
+  Cepheid photometry 0.07 mag fraction %: computed 37.2479, lens 37
+PASS 37.24792622843057 == 37: within 0.0162162; 37.2479 vs 37 (SI)
+  reddening 0.03 mag fraction %: computed 15.9634, lens 16
+PASS 15.963396955041672 == 16: within 0.0375; 15.9634 vs 16 (SI)
+  metallicity term mag: computed 0.012444, lens 0.012
+PASS 0.012444002018473708 == 0.012: within 0.05; 0.012444 vs 0.012 (SI)
+  metallicity fraction %: computed 6.62162, lens 7
+PASS 6.621618131007853 == 7: within 0.0857143; 6.62162 vs 7 (SI)
+  cosmic variance in mag: 0.01002 (at 67.19), 0.00919 (at 73.264)
+  cosmic variance mag per sigma (at 67.19): computed 0.0100187, lens 0.01
+PASS 0.010018699909957436 == 0.01: within 0.06; 0.0100187 vs 0.01 (SI)
+  gap in cosmic-variance sigmas: computed 19.5935, lens 19.6
+PASS 19.593548387096767 == 19.6: within 0.00306122; 19.5935 vs 19.6 (SI)
+  Wojtak-Hjorth mag: computed 0.0874253, lens 0.087
+PASS 0.08742532741981698 == 0.087: within 0.00689655; 0.0874253 vs 0.087 (SI)
+  Wojtak-Hjorth fraction %: computed 46.5202, lens 47
+PASS 46.520173517567585 == 47: within 0.012766; 46.5202 vs 47 (SI)
+  Percival summed mag: computed 0.0782164, lens 0.078
+PASS 0.07821635513807931 == 0.078: within 0.00769231; 0.0782164 vs 0.078 (SI)
+  Percival fraction %: computed 41.62, lens 42
+PASS 41.61995751485578 == 42: within 0.0142857; 41.62 vs 42 (SI)
+  Dong PV mag: computed 0.0873656, lens 0.087
+PASS 0.08736558501823297 == 0.087: within 0.00689655; 0.0873656 vs 0.087 (SI)
+  Dong fraction %: computed 46.4884, lens 47
+PASS 46.48838379518315 == 47: within 0.012766; 46.4884 vs 47 (SI)
+  MW parallax 0.9% distance in mag: computed 0.0194558, lens 0.019
+PASS 0.019455831184552387 == 0.019: within 0.0315789; 0.0194558 vs 0.019 (SI)
+  MW fraction of gap: 10.35% (lens: <= 10%)
+PASS 0.08742532741981698 < 0.18792992546943582: symbolic, constant
+PASS 0.1656416825578963 >= 0.15974043664902043: symbolic, constant
+PASS series of 5*log(f + 1)/log(10) about f = 0 to order 2 == 5*f/log(10): symbolic: 5*f/log(10)
+PASS (0.31 km/s/Mpc)/(67.19 km/s/Mpc) has the dimension of dimensionless: dimensional analysis
+SUMMARY: 18 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

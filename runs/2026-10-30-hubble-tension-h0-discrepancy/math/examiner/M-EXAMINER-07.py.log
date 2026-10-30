@@ -1,0 +1,29 @@
+# math_run log
+command:  python3 runs/2026-10-30-hubble-tension-h0-discrepancy/math/examiner/M-EXAMINER-07.py
+started:  2026-10-30T15:47:22Z
+duration: 0.4 s
+exit:     0
+versions: python 3.13.17, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   8 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+Z-lensxunWISE (69.2, 1.3, 1.4): vs SH0ES 2.684 (sym 2.617), vs CMB-SPA 1.386 (sym 1.433)
+Z-DES6x2 (70.3, 1.4, 1.2): vs SH0ES 1.898 (sym 1.996), vs CMB-SPA 2.471 (sym 2.296)
+Z-lens+DESY5 (69.6, 1.3, 1.8): vs SH0ES 2.434 (sym 2.152), vs CMB-SPA 1.310 (sym 1.510)
+2411-DESY5 (66.7, 1.7, 1.9): vs SH0ES 3.504 (sym 3.351), vs CMB-SPA 0.281 (sym 0.266)
+2411-PP (67.9, 1.9, 2.1): vs SH0ES 2.643 (sym 2.534), vs CMB-SPA 0.333 (sym 0.349)
+2411-U3 (67.8, 2.0, 2.2): vs SH0ES 2.580 (sym 2.477), vs CMB-SPA 0.273 (sym 0.286)
+D-49 range vs SH0ES 1.8979691268860561 3.504052355915028 ; vs CMB-SPA 0.27322686013888914 2.4707452673673433
+PASS 1.8979691268860561 == 1.90: within 0.003; 1.89797 vs 1.9 (SI)
+PASS 3.504052355915028 == 3.50: within 0.003; 3.50405 vs 3.5 (SI)
+PASS 0.27322686013888914 == 0.27: within 0.015; 0.273227 vs 0.27 (SI)
+PASS 2.4707452673673433 == 2.47: within 0.003; 2.47075 vs 2.47 (SI)
+D-50 vs SH0ES [2.671256655534555, 0.7575184759393646]
+PASS 2.671256655534555 == 2.67: within 0.003; 2.67126 vs 2.67 (SI)
+PASS 0.7575184759393646 == 0.76: within 0.006; 0.757518 vs 0.76 (SI)
+PASS (73.3 - 67.5)/1.0 == 5.8: within 1e-09; 5.8 vs 5.8 (SI)
+PASS 100*1.0/67.5 == 1.5: within 0.02; 1.48148 vs 1.5 (SI)
+SUMMARY: 8 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

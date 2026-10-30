@@ -1,0 +1,28 @@
+# math_run log
+command:  python3 runs/2026-10-30-hubble-tension-h0-discrepancy/math/constraints/M-CONSTRAINTS-04.py
+started:  2026-10-30T15:55:57Z
+duration: 0.6 s
+exit:     0
+versions: python 3.13.17, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   5 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+my 100theta at Planck best fit = 1.03909 (CAMB 1.04110); calibration factor 1.00193
+run 1 (uncalibrated) baseline H0 = 68.03441524505615
+run 1 omega_c needed = 0.10624840915203095
+run 2: omega_c needed 0.10458; Omega_m 0.2377; shift -0.01542 = 12.9 sigma
+  omega_c needed: got 0.104577, lens 0.1045, tol 0.001
+PASS 0.000077261805534374357 <= 0.00100000000000000: symbolic, constant
+  Omega_m: got 0.237706, lens 0.238, tol 0.002
+PASS 0.00029389711812793928 <= 0.00200000000000000: symbolic, constant
+  n sigma(omega_c): got 12.8523, lens 13, tol 1
+PASS 0.1477181712786400 <= 1.00000000000000: symbolic, constant
+run 2: 100theta_* at h = 0.7326, omega_c fixed: 1.0584409264496268 n sigma 57.80308816542309
+  100 theta_*: got 1.05844, lens 1.0585, tol 0.0015
+PASS 0.000059073550373196435 <= 0.00150000000000000: symbolic, constant
+  n sigma theta: got 57.8031, lens 58, tol 5
+PASS 0.1969118345769099 <= 5.00000000000000: symbolic, constant
+SUMMARY: 5 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

@@ -1,0 +1,34 @@
+# math_run log
+command:  python3 runs/2026-10-30-hubble-tension-h0-discrepancy/math/constraints/M-CONSTRAINTS-13.py
+started:  2026-10-30T15:53:26Z
+duration: 0.6 s
+exit:     0
+versions: python 3.13.17, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   9 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+H0DN-SPA sL'=3.013 factor=3.738 shift=4.292
+  sL': got 3.01313, lens 3.01, tol 0.006
+PASS 0.003132755123809228 <= 0.00600000000000000: symbolic, constant
+  factor: got 3.73838, lens 3.7, tol 0.06
+PASS 0.038378108094055324 <= 0.0600000000000000: symbolic, constant
+  shift: got 4.29183, lens 4.3, tol 0.06
+PASS 0.008173953350235852 <= 0.0600000000000000: symbolic, constant
+H0DN-BAO+BBN sL'=2.310 factor=2.866 shift=2.778
+  factor: got 2.86639, lens 2.9, tol 0.06
+PASS 0.03361264944465592 <= 0.0600000000000000: symbolic, constant
+  shift: got 2.77801, lens 2.8, tol 0.06
+PASS 0.021986908315363422 <= 0.0600000000000000: symbolic, constant
+SH0ES-SPA sL'=3.127 factor=3.362 shift=4.291
+  factor: got 3.36236, lens 3.4, tol 0.06
+PASS 0.03763939466208494 <= 0.0600000000000000: symbolic, constant
+SH0ES-BAO+BBN sL'=2.427 factor=2.609 shift=2.798
+  factor: got 2.6093, lens 2.6, tol 0.06
+PASS 0.009299918201943924 <= 0.0600000000000000: symbolic, constant
+PASS 2 == 2: symbolic
+  one-sided p(3.3 sigma): got 0.000483424, lens 0.0005, tol 5e-05
+PASS 0.00001657585761622241 <= 0.0000500000000000000: symbolic, constant
+SUMMARY: 9 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

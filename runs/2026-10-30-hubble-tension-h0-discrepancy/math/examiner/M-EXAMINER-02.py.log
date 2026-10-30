@@ -1,0 +1,29 @@
+# math_run log
+command:  python3 runs/2026-10-30-hubble-tension-h0-discrepancy/math/examiner/M-EXAMINER-02.py
+started:  2026-10-30T15:44:44Z
+duration: 0.7 s
+exit:     0
+versions: python 3.13.17, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   9 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+PASS (a - b)/sqrt(sa**2 + sb**2) == (a - b)/sa: numeric at 50 points, a in [60, 80], b in [60, 80], sa in [0.1, 10], sb in [0, 0]
+CCHP: H 70.39 +1.9358/-1.9358; z facing 1.622, z symmetrised 1.622, lens 1.62
+PASS 1.6221099980897793 == 1.62: within 0.006; 1.62211 vs 1.62 (SI)
+SBF: H 73.8 +2.4042/-2.4042; z facing 2.716, z symmetrised 2.716, lens 2.72
+PASS 2.715684245689747 == 2.72: within 0.006; 2.71568 vs 2.72 (SI)
+TF: H 73.3 +4.0817/-4.0817; z facing 1.490, z symmetrised 1.490, lens 1.49
+PASS 1.4904921907059192 == 1.49: within 0.006; 1.49049 vs 1.49 (SI)
+TD: H 71.1 +2.4000/-2.3000; z facing 1.677, z symmetrised 1.642, lens 1.64
+PASS 1.6424947228451305 == 1.64: within 0.006; 1.64249 vs 1.64 (SI)
+MASER: H 71.6 +3.7000/-3.7000; z facing 1.186, z symmetrised 1.186, lens 1.19
+PASS 1.1856552406248757 == 1.19: within 0.006; 1.18566 vs 1.19 (SI)
+SIREN: H 71.7 +9.4000/-7.5000; z facing 0.601, z symmetrised 0.533, lens 0.53
+PASS 0.533188938791612 == 0.53: within 0.006; 0.533189 vs 0.53 (SI)
+range facing: 0.600562971479061 2.715684245689747
+PASS 0.600562971479061 >= 0.500000000000000: symbolic, constant
+PASS 2.715684245689747 <= 2.75000000000000: symbolic, constant
+SUMMARY: 9 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

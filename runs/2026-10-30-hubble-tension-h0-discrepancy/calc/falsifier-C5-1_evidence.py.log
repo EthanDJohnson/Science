@@ -1,0 +1,40 @@
+# math_run log
+command:  python3 runs/2026-10-30-hubble-tension-h0-discrepancy/calc/falsifier-C5-1_evidence.py
+started:  2026-10-30T16:40:11Z
+duration: 0.3 s
+exit:     0
+versions: python 3.13.17, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+gap vs CMB-SPA = 6.074; vs BAO+BBN = 4.764
+
+=== A: share of gap in published void estimates ===
+Stiskalek exp (disfavoured by evidence): local 72.1 -> void boost 4.70; share of (73.2-67.4)=5.8: 81%; share of run gap 6.074: 77%
+Stiskalek Gaussian: local 70.4 -> void boost 3.00; share of (73.2-67.4)=5.8: 52%; share of run gap 6.074: 49%
+Stiskalek Maxwell-Boltzmann: local 70.2 -> void boost 2.80; share of (73.2-67.4)=5.8: 48%; share of run gap 6.074: 46%
+Boehringer central 5.5%: dH = 3.70 -> share 61% (undiluted, inside ~100-140 Mpc only)
+Boehringer upper 7.6%: dH = 5.11 -> share 84% (undiluted, inside ~100-140 Mpc only)
+Boehringer lower 2.7%: dH = 1.81 -> share 30% (undiluted, inside ~100-140 Mpc only)
+
+=== B: R22 z<0.8 variant vs void prediction ===
+share f=1.0: weight beyond edge 0.63; predicted shift -3.82, observed +0.5; discrepancy 8.6 sigma for nested-shift sigma 0.5
+share f=1.0: weight beyond edge 0.63; predicted shift -3.82, observed +0.5; discrepancy 4.3 sigma for nested-shift sigma 1.0
+share f=0.8: weight beyond edge 0.63; predicted shift -3.06, observed +0.5; discrepancy 7.1 sigma for nested-shift sigma 0.5
+share f=0.8: weight beyond edge 0.63; predicted shift -3.06, observed +0.5; discrepancy 3.6 sigma for nested-shift sigma 1.0
+share f=0.6: weight beyond edge 0.63; predicted shift -2.29, observed +0.5; discrepancy 5.6 sigma for nested-shift sigma 0.5
+share f=0.6: weight beyond edge 0.63; predicted shift -2.29, observed +0.5; discrepancy 2.8 sigma for nested-shift sigma 1.0
+share f=0.5: weight beyond edge 0.63; predicted shift -1.91, observed +0.5; discrepancy 4.8 sigma for nested-shift sigma 0.5
+share f=0.5: weight beyond edge 0.63; predicted shift -1.91, observed +0.5; discrepancy 2.4 sigma for nested-shift sigma 1.0
+max share allowed at 2 sigma (sigma_shift=0.5): 13% of gap
+max share allowed at 2 sigma (sigma_shift=1.0): 39% of gap
+
+=== C: TDCOSMO-2026 vs global H0 implied by the candidate ===
+share f=1.0: global H0 = 67.19; TD 71.1 sits +1.70 sigma from it
+share f=0.8: global H0 = 68.40; TD 71.1 sits +1.17 sigma from it
+share f=0.6: global H0 = 69.62; TD 71.1 sits +0.64 sigma from it
+share f=0.5: global H0 = 70.23; TD 71.1 sits +0.38 sigma from it
+TD vs local ladder 73.264: -0.90 sigma
+
+--- stderr ---
+

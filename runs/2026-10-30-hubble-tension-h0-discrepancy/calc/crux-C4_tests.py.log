@@ -1,0 +1,33 @@
+# math_run log
+command:  python3 runs/2026-10-30-hubble-tension-h0-discrepancy/calc/crux-C4_tests.py
+started:  2026-10-30T17:08:47Z
+duration: 0.0 s
+exit:     0
+versions: python 3.13.17, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+== Near-volume two-rung H0 vs C4(ii) prediction (true H0 = early value) ==
+Huang2025 two-rung: vs CMB-SPA 5.81 sigma; vs BAO+BBN 4.24 sigma
+Kenworthy2022 two-rung (lower err): vs CMB-SPA 2.54 sigma; vs BAO+BBN 1.94 sigma
+== Newman 2026 early-type-host TRGB-SN ladder 75.3+-2.9 ==
+vs C1(a)-host-type prediction 67.19: 2.77 sigma; vs 68.50: 2.30 sigma
+vs C4(ii) prediction 73.264 (ladder value): 0.68 sigma
+== SBF 73.8 +- 2.4 (stat+sys in quadrature) vs C4(ii-SN) true H0 ==
+sigma_SBF = 2.40; vs 67.19: 2.72 sigma; vs 68.50: 2.14 sigma
+== One-step mean 71.27 +- 1.93 vs C4 upper prediction 68.50 (no pole error) ==
+1.44 sigma; vs 67.19: 2.11 sigma
+== 4% G-step (GSM) SN-only magnitude with L_SN ∝ G^1.46 ==
+|dm| = 0.0622 mag = 33.1% of the 0.188 mag gap (SN part only; Cepheid part not computed)
+== Deciding-test precisions ==
+vs C3: anchor-free one-step, C3 71.0 vs C4 68.50: diff 2.50; sigma<= 0.83 (3sig, 1.19%) / 0.50 (5sig, 0.71%); no-floor TD lens count ~85 / ~235
+vs C3: C3 71.0 vs C4 67.19: diff 3.81; sigma<= 1.27 (3sig, 1.81%) / 0.76 (5sig, 1.09%); no-floor TD lens count ~36 / ~101
+vs C8: non-SH0ES 71.2 vs C4 68.50: diff 2.70; sigma<= 0.90 (3sig, 1.29%) / 0.54 (5sig, 0.77%); no-floor TD lens count ~72 / ~201
+vs C7: SN-free anchor ladder 73.02 vs C4 68.50: diff 4.52; sigma<= 1.51 (3sig, 2.15%) / 0.90 (5sig, 1.29%); no-floor TD lens count ~26 / ~72
+== M_B step test (vs C1, C6) ==
+step 0.146 vs none (C1 e/f, or C1 a at fixed host type): sigma(dM)<= 0.049 mag (3sig) / 0.029 mag (5sig); N per side at ASSUMED 0.15 mag/SN: 19 / 53
+step 0.146 vs C6 ceiling 0.094 (half gap): sigma(dM)<= 0.017 mag (3sig) / 0.010 mag (5sig); N per side at ASSUMED 0.15 mag/SN: 150 / 416
+half-gap ceiling = 0.094 mag
+
+--- stderr ---
+

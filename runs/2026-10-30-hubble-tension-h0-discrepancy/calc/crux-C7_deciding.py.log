@@ -1,0 +1,55 @@
+# math_run log
+command:  python3 runs/2026-10-30-hubble-tension-h0-discrepancy/calc/crux-C7_deciding.py
+started:  2026-10-30T17:11:59Z
+duration: 0.0 s
+exit:     0
+versions: python 3.13.17, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+== 1. Arbiter (anchor-free, r_d-free H0): landing at one pole, excluding the other ==
+group means: separation 5.510 km/s/Mpc
+  arbiter at anchor pole excludes r_d pole at 3sigma: sigma_arb <= 1.81
+  arbiter at r_d pole excludes anchor pole at 3sigma: sigma_arb <= 1.66
+  arbiter at anchor pole excludes r_d pole at 5sigma: sigma_arb <= 1.06
+  arbiter at r_d pole excludes anchor pole at 5sigma: sigma_arb <= 0.78
+  midpoint 70.27; C6-type midpoint excluding both poles at 3sigma: sigma_arb <= 0.48
+H0DN vs CMB-SPA: separation 6.074 km/s/Mpc
+  arbiter at anchor pole excludes r_d pole at 3sigma: sigma_arb <= 1.99
+  arbiter at r_d pole excludes anchor pole at 3sigma: sigma_arb <= 1.86
+  arbiter at anchor pole excludes r_d pole at 5sigma: sigma_arb <= 1.15
+  arbiter at r_d pole excludes anchor pole at 5sigma: sigma_arb <= 0.91
+  midpoint 70.23; C6-type midpoint excluding both poles at 3sigma: sigma_arb <= 0.61
+
+== 1b. Arbiter values at sigma_arb = 1.2 that reach 3sigma from each pole ==
+  3sigma above CMB-SPA 67.19+-0.38: >= 70.97
+  3sigma below H0DN 73.264+-0.806: <= 68.93
+
+== 2. Najera et al. 2026 free-legacy-offset case ==
+  71.03+-1.99 vs H0DN: 1.04 sigma
+  71.03+-1.99 vs CMB-SPA: 1.90 sigma
+  legacy offset significance now: 1.65 sigma
+  sigma(dM_legacy) to separate 0.0646 mag from 0 at 3sigma: <= 0.0215 mag
+  sigma(dM_legacy) to separate 0.0646 mag from 0 at 5sigma: <= 0.0129 mag
+  offset as fraction of the 0.188 mag gap: 0.34
+
+== 3. C8 test: independent full-sample TRGB/JAGB ladder vs SH0ES 73.49+-0.93 ==
+  sigma_ind=1.1: combined 1.44; split 2sigma needs result <= 70.61, 3sigma <= 69.17
+     result 70.0: split 2.42 sigma from SH0ES
+     result 71.0: split 1.73 sigma from SH0ES
+     result 72.0: split 1.03 sigma from SH0ES
+  sigma_ind=0.8: combined 1.23; split 2sigma needs result <= 71.04, 3sigma <= 69.81
+     result 70.0: split 2.84 sigma from SH0ES
+     result 71.0: split 2.03 sigma from SH0ES
+     result 72.0: split 1.21 sigma from SH0ES
+  sigma_ind=0.6: combined 1.11; split 2sigma needs result <= 71.28, 3sigma <= 70.17
+     result 70.0: split 3.15 sigma from SH0ES
+     result 71.0: split 2.25 sigma from SH0ES
+     result 72.0: split 1.35 sigma from SH0ES
+  to tell 71.0 from 73.02 at 2sigma (vs anchor-group error 0.78): sigma_ind <= 0.64
+  to tell 71.0 from 73.02 at 2sigma (pure measurement error): sigma_ind <= 1.01
+  to tell 71.0 from 73.02 at 3sigma (vs anchor-group error 0.78): sigma_ind <= impossible
+  to tell 71.0 from 73.02 at 3sigma (pure measurement error): sigma_ind <= 0.67
+
+--- stderr ---
+

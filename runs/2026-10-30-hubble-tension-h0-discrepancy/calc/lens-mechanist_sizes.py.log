@@ -1,0 +1,93 @@
+# math_run log
+command:  python3 runs/2026-10-30-hubble-tension-h0-discrepancy/calc/lens-mechanist_sizes.py
+started:  2026-10-30T15:18:26Z
+duration: 0.3 s
+exit:     0
+versions: python 3.13.17, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+=== A. The gap in magnitudes (5 log10 H_loc/H_early) ===
+SH0ES 2025 73.49 (D-20) vs CMB-SPA 67.19 (D-44): dH0 = 6.30 km/s/Mpc = 9.38 % = 0.195 mag; naive 6.3 sigma
+SH0ES 2025 73.49 (D-20) vs BAO+BBN 68.50 (D-45): dH0 = 4.99 km/s/Mpc = 7.28 % = 0.153 mag; naive 4.6 sigma
+SH0ES 2025 73.49 (D-20) vs inverse ladder 67.19 (D-48): dH0 = 6.30 km/s/Mpc = 9.38 % = 0.195 mag; naive 5.6 sigma
+H0DN corrected 73.264 (D-22) vs CMB-SPA 67.19 (D-44): dH0 = 6.07 km/s/Mpc = 9.04 % = 0.188 mag; naive 6.8 sigma
+H0DN corrected 73.264 (D-22) vs BAO+BBN 68.50 (D-45): dH0 = 4.76 km/s/Mpc = 6.95 % = 0.146 mag; naive 4.8 sigma
+H0DN corrected 73.264 (D-22) vs inverse ladder 67.19 (D-48): dH0 = 6.07 km/s/Mpc = 9.04 % = 0.188 mag; naive 5.9 sigma
+SH0ES R22 73.04 (D-20) vs CMB-SPA 67.19 (D-44): dH0 = 5.85 km/s/Mpc = 8.71 % = 0.181 mag; naive 5.3 sigma
+SH0ES R22 73.04 (D-20) vs BAO+BBN 68.50 (D-45): dH0 = 4.54 km/s/Mpc = 6.63 % = 0.139 mag; naive 3.8 sigma
+SH0ES R22 73.04 (D-20) vs inverse ladder 67.19 (D-48): dH0 = 5.85 km/s/Mpc = 8.71 % = 0.181 mag; naive 4.8 sigma
+CCHP TRGB 70.39 (D-24, quad sum 1.94) vs CMB-SPA 67.19 (D-44): dH0 = 3.20 km/s/Mpc = 4.76 % = 0.101 mag; naive 1.6 sigma
+CCHP TRGB 70.39 (D-24, quad sum 1.94) vs BAO+BBN 68.50 (D-45): dH0 = 1.89 km/s/Mpc = 2.76 % = 0.059 mag; naive 0.9 sigma
+CCHP TRGB 70.39 (D-24, quad sum 1.94) vs inverse ladder 67.19 (D-48): dH0 = 3.20 km/s/Mpc = 4.76 % = 0.101 mag; naive 1.6 sigma
+Reference gap used below: H0DN-corrected vs CMB-SPA = 0.188 mag
+SH0ES-CCHP difference 73.49 vs 70.39 = 0.094 mag (50% of reference gap)
+Distance-scale error equivalent to the gap: 9.0 % (anchor distances too short)
+
+=== B. Ladder sub-hypotheses: required size vs published bound ===
+B1 crowding: need +0.188 mag HST bias; JWST check -0.01 +- 0.03 -> needed value is 6.6 sigma from the measured offset
+B2 metallicity: removing the term moves H0 by 0.012 mag -> effective anchor-host [O/H] lever 0.053 dex; to make 0.188 mag the slope must be wrong by 3.53 mag/dex = 68 sigma of gamma
+B3 Cepheid dust/R: total correction ~0.03 mag -> need 6.3x the entire correction; host-specific R moves H0 UP by 0.8 (wrong sign)
+B4 SN colour/2-population: SH0ES 73.04 -> 70.59: 0.074 mag = 39% of gap
+B4 SN colour/2-population: SH0ES 73.04 -> 71.45: 0.048 mag = 25% of gap
+B4 SN colour/2-population: SH0ES 73.04 -> 70.5: 0.077 mag = 41% of gap
+B5 env step 0.05 mag, young-fraction difference 0.3: offset 0.015 mag = 8% of gap
+B5 env step 0.05 mag, young-fraction difference 0.5: offset 0.025 mag = 13% of gap
+B5 env step 0.1 mag, young-fraction difference 0.3: offset 0.030 mag = 16% of gap
+B5 env step 0.1 mag, young-fraction difference 0.5: offset 0.050 mag = 27% of gap
+B6 anchor NGC4258 maser 7.558+-0.073 Mpc (D-32): quoted 0.97 % vs needed 9.0 % -> 9.4 sigma, and all anchors must shift together
+B6 anchor LMC DEB ~1% (assumed typical): quoted 1.20 % vs needed 9.0 % -> 7.5 sigma, and all anchors must shift together
+B6 anchor MW Gaia parallax offset 14 us ~0.9% (D-86): quoted 0.90 % vs needed 9.0 % -> 10.0 sigma, and all anchors must shift together
+B7 coherent outflow needed at z~0.05: 1355 km/s (vs typical bulk flows ~ few 100 km/s; ASSUMED reference)
+B7 coherent outflow needed at z~0.07: 1897 km/s (vs typical bulk flows ~ few 100 km/s; ASSUMED reference)
+B7 Dong 2026 host-PV correction 74.30->71.37: 0.087 mag = 46% of gap; Laniakea +0.6 goes the other way (D-36)
+B8 selection Cepheid cut-off: -1.4 km/s/Mpc = 0.042 mag = 22% of gap
+B8 selection SN selection: -0.2 km/s/Mpc = 0.006 mag = 3% of gap
+B8 selection distance prior: -1.0 km/s/Mpc = 0.030 mag = 16% of gap
+B8 selection all three if additive: -2.6 km/s/Mpc = 0.078 mag = 42% of gap
+B9 Pantheon+ vs CSP compilation shift +2 vs +0.8 km/s/Mpc: difference 1.2 km/s/Mpc = 0.038 mag
+B10 W&H(conservative)+Percival cut-off+Dong PV naive sum: 0.177 mag = 94% of gap (overlap unknown; upper envelope)
+
+=== C. Early-side systematics: size of shift needed in the CMB/BAO inference ===
+C0 baseline: theta=1.04110, omega_b=0.02237, omega_c=0.1200 -> h = 0.6735
+C1 dln h / dln theta_* (fixed omega_b, omega_c) = 5.12
+C1 theta_* shift needed for 67.19->73.26: 1.69 % vs 0.03 % precision (D-40) -> 56x... i.e. 59 sigma
+C2 dln h / dln omega_c at fixed theta_* = -0.62; need omega_c change -13.9 % (Planck sigma(omega_c) ~0.0012 = 1.0 %, ASSUMED) -> 14 sigma
+C3 BAO+BBN: r_d must fall 6.50 % (BAO h r_d precision 0.72 %) -> BAO error of 9 sigma
+C3 or via omega_b: needs omega_b x 1.69 (D/H gives omega_b to ~1 %, D-46) -> excluded
+C4 Planck PR4 67.64+-0.52: needs its own +5.62 km/s/Mpc bias = 10.8 sigma, same sign in three instruments
+C4 ACT DR6 66.51+-0.64: needs its own +6.75 km/s/Mpc bias = 10.6 sigma, same sign in three instruments
+C4 SPT-3G 66.66+-0.6: needs its own +6.60 km/s/Mpc bias = 11.0 sigma, same sign in three instruments
+
+=== D. Local channels that share no Cepheid/SN mechanism ===
+D1 no-ladder one-step mean (TD+masers+sirens): 71.27 +- 1.93; vs CMB-SPA 67.19+-0.38: 2.1 sigma; vs H0DN 73.264: 1.0 sigma
+D2 no-SN-Ia set (+SBF+TF, which share anchors): 72.39 +- 1.41; vs CMB-SPA 3.6 sigma
+D3 fraction of the gap carried by the one-step mean: 67 % (+- 32 %)
+
+=== E. Late-time G_eff / M_B transition ===
+E1 Hubble-flow SNe must be 0.188 mag brighter (L ratio 1.189); with L ∝ M_Ch ∝ G^-1.5 (ASSUMED Arnett scaling): G_HF/G_local = 0.891 (D-92 quotes mu_G ~ 0.9)
+E1b ladder vs inverse-ladder M_B (D-21): 0.122 mag (cosmography) / 0.141 mag (flat LCDM)
+E2 transition must sit between calibrators (D<~40 Mpc, z<0.01) and Hubble flow (z>0.023): 41-94 Mpc
+
+=== F. Local void ===
+F1 needed local expansion excess 9.0 %; ΛCDM sigma 0.31 km/s/Mpc (D-37) -> 20 sigma
+
+=== G. Fraction of the gap closed by early-time models fitted WITHOUT a SH0ES prior ===
+G ACT DR6 EDE P-ACT-LB 69.9 (D-52): closes 45 % of the 67.19->73.26 gap; residual 0.102 mag
+G ACT DR6 PMF 69.1 (D-52): closes 31 % of the 67.19->73.26 gap; residual 0.127 mag
+G ACT DR6 mod. recomb. 69.6 (D-52): closes 40 % of the 67.19->73.26 gap; residual 0.111 mag
+G Planck NPIPE EDE 95% upper 69.5 (D-53): closes 38 % of the 67.19->73.26 gap; residual 0.115 mag
+G Poulin 2026 EDE profile 71.0 (D-53): closes 63 % of the 67.19->73.26 gap; residual 0.068 mag
+G eROSITA+ EDE 71.4 (D-94): closes 69 % of the 67.19->73.26 gap; residual 0.056 mag
+G electron-density fluct. ACT+SPT 69.3 (D-95): closes 35 % of the 67.19->73.26 gap; residual 0.121 mag
+
+=== H. SH0ES-CCHP split: sampling noise vs calibration choices ===
+H1 per-SN scatter implied by CCHP sigma_SN = 0.70 km/s/Mpc over 24 SNe: 0.105 mag
+H2 subset of 11 drawn from 35: sigma(subset mean - full mean) = 0.030 mag; split 70.39 vs 73.18 = 0.084 mag; 68.81 vs 73.18 = 0.134 mag
+H2 subset of 24 drawn from 35: sigma(subset mean - full mean) = 0.014 mag; split 70.39 vs 73.18 = 0.084 mag; 68.81 vs 73.18 = 0.134 mag
+H2 subset of 11 drawn from 55: sigma(subset mean - full mean) = 0.033 mag; split 70.39 vs 73.18 = 0.084 mag; 68.81 vs 73.18 = 0.134 mag
+H3 JAGB NGC 4258 field-to-field difference 0.11 mag (D-26) = 59% of gap = 5.2% in H0; CCHP uses NGC 4258 as sole anchor (D-24)
+H4 Anand 2025 ground JAGB vs HST TRGB offset 0.17 mag (D-81) = 90% of gap
+
+--- stderr ---
+

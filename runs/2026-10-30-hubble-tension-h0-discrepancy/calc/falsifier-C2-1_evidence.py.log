@@ -1,0 +1,24 @@
+# math_run log
+command:  python3 runs/2026-10-30-hubble-tension-h0-discrepancy/calc/falsifier-C2-1_evidence.py
+started:  2026-10-30T16:16:19Z
+duration: 0.0 s
+exit:     0
+versions: python 3.13.17, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+midpoint (dominance threshold) = 70.227 km/s/Mpc
+PR4 TE: 68.49±0.76; gap to 73.264 = 4.77 = 6.28 sigma; to midpoint 1.74 = 2.29 sigma
+PR4 EE: 68.49±1.91; gap to 73.264 = 4.77 = 2.50 sigma; to midpoint 1.74 = 0.91 sigma
+PR4 TT: 67.89±1.11; gap to 73.264 = 5.37 = 4.84 sigma; to midpoint 2.34 = 2.11 sigma
+BBN: conservative omega_b = 0.02218±0.00055 (2.48%); x1.26 -> 0.02795, 10.5 sigma of the rate-marginalised error
+BBN to reach midpoint 70.23 from DESI+BBN 68.51: omega_b x1.089 = 3.6 sigma (log-linear interpolation of x1.26)
+BAO: needed 6.5% common shift = 36 x alpha_AP fiducial-cosmology sys (DR2) 0.18%
+BAO: needed 6.5% common shift = 22 x Lya theoretical sys 0.3%
+DESI+BBN 68.51: fraction of gap from CMB-SPA = 0.217
+P-ACT+DESI DR2 68.43: fraction of gap from CMB-SPA = 0.204
+likelihood-choice shift 0.24 = 0.040 of the gap; needs x12.7 to reach the midpoint
+PR3->PR4 shift 0.28 = 0.046 of the gap
+
+--- stderr ---
+

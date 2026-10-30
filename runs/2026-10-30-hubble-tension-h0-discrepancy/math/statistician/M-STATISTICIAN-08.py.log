@@ -1,0 +1,26 @@
+# math_run log
+command:  python3 runs/2026-10-30-hubble-tension-h0-discrepancy/math/statistician/M-STATISTICIAN-08.py
+started:  2026-10-30T15:32:53Z
+duration: 0.7 s
+exit:     0
+versions: python 3.13.17, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   7 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+  nu=2 quad vs closed 1 - t/sqrt(t^2+2): mine = 2.51113e-42, lens = 0, tol = 1e-12
+PASS 2.5111268480700722E-42 <= 1.00000000000000E-12: symbolic, constant
+  nu=3 quad vs closed form: mine = 1.79366e-42, lens = 0, tol = 1e-12
+PASS 1.793662034335766E-42 <= 1.00000000000000E-12: symbolic, constant
+  nu=2 p2: mine = 0.024499, lens = 0.025, tol = 0.001
+PASS 0.00050099611810182739 <= 0.00100000000000000: symbolic, constant
+  nu=3 p2: mine = 0.00818627, lens = 0.008, tol = 0.0005
+PASS 0.0001862662600661238 <= 0.000500000000000000: symbolic, constant
+  nu=5 p2: mine = 0.00151375, lens = 0.0015, tol = 0.0001
+PASS 0.000013747181591728168 <= 0.000100000000000000: symbolic, constant
+  nu=1e6 vs Gaussian at t=3 (rel): mine = 2.46234e-05, lens = 0, tol = 0.0001
+PASS 0.00002462340119413629 <= 0.000100000000000000: symbolic, constant
+PASS lim n->oo of (1 + x**2/n)**(-n/2 - 1/2) == exp(-x**2/2): symbolic limit exp(-x**2/2)
+SUMMARY: 7 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

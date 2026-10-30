@@ -1,0 +1,48 @@
+# math_run log
+command:  python3 runs/2026-10-30-hubble-tension-h0-discrepancy/math/mechanist/M-MECHANIST-01.py
+started:  2026-10-30T15:40:52Z
+duration: 0.6 s
+exit:     0
+versions: python 3.13.17, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   19 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+PASS 5*(-log(H_e) + log(cz) - log(d10))/log(10) - 5*(-log(H_l) + log(cz) - log(d10))/log(10) == 5*log(H_l/H_e)/log(10): symbolic
+PASS lim x->0 of 5*log(x + 1)/log(10) == 0: symbolic limit 0
+PASS series of 5*log(x + 1)/log(10) about x = 0 to order 2 == 5*x/log(10): symbolic: 5*x/log(10)
+PASS 73.264 km/s/Mpc / (67.19 km/s/Mpc) == 1.0904: within 0.0001; 1.0904 vs 1.0904 (SI)
+Gap numbers
+  H0DN vs CMB-SPA dH: recomputed 6.074, lens claims 6.07, tol 0.006
+PASS 0.003999999999997672 <= 0.00600000000000000: symbolic, constant
+  H0DN vs CMB-SPA percent: recomputed 9.04004, lens claims 9.0, tol 0.05
+PASS 0.04003571960112495 <= 0.0500000000000000: symbolic, constant
+  H0DN vs CMB-SPA mag: recomputed 0.18793, lens claims 0.188, tol 0.0006
+PASS 0.000070074530564180528 <= 0.000600000000000000: symbolic, constant
+  H0DN vs CMB-SPA naive sigma: recomputed 6.81639, lens claims 6.8, tol 0.05
+PASS 0.01639408833435418 <= 0.0500000000000000: symbolic, constant
+  SH0ES 2025 vs CMB-SPA mag: recomputed 0.194618, lens claims 0.195, tol 0.0006
+PASS 0.0003819685504387084 <= 0.000600000000000000: symbolic, constant
+  R22 vs CMB-SPA mag: recomputed 0.181281, lens claims 0.181, tol 0.0006
+PASS 0.00028061718253805578 <= 0.000600000000000000: symbolic, constant
+  H0DN vs BAO+BBN mag: recomputed 0.146, lens claims 0.146, tol 0.0006
+PASS 2.7345598243916011E-7 <= 0.000600000000000000: symbolic, constant
+  SH0ES 2025 vs BAO+BBN mag: recomputed 0.152688, lens claims 0.153, tol 0.0006
+PASS 0.00031162056389194711 <= 0.000600000000000000: symbolic, constant
+  CCHP vs CMB-SPA mag: recomputed 0.101032, lens claims 0.101, tol 0.0006
+PASS 0.000031620567566223510 <= 0.000600000000000000: symbolic, constant
+  CCHP vs CMB-SPA naive sigma: recomputed 1.61872, lens claims 1.6, tol 0.05
+PASS 0.01872360851934690 <= 0.0500000000000000: symbolic, constant
+  CCHP quad-sum error: recomputed 1.93579, lens claims 1.94, tol 0.01
+PASS 0.0042055894284642459 <= 0.0100000000000000: symbolic, constant
+  SH0ES 2025 - CCHP mag: recomputed 0.0935864, lens claims 0.094, tol 0.0006
+PASS 0.0004135891180046310 <= 0.000600000000000000: symbolic, constant
+  SH0ES-CCHP fraction of gap: recomputed 0.497986, lens claims 0.5, tol 0.01
+PASS 0.002014324497692101 <= 0.0100000000000000: symbolic, constant
+  M_B gap cosmography: recomputed 0.122, lens claims 0.122, tol 1e-09
+PASS 1.0733601507606494E-16 <= 1.00000000000000E-9: symbolic, constant
+  M_B gap flat LCDM: recomputed 0.141, lens claims 0.141, tol 1e-09
+PASS 1.7464328594396505E-15 <= 1.00000000000000E-9: symbolic, constant
+SUMMARY: 19 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

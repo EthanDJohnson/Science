@@ -1,0 +1,68 @@
+# math_run log
+command:  python3 runs/2026-10-30-hubble-tension-h0-discrepancy/calc/falsifier-C1-0_magnitude.py
+started:  2026-10-30T16:09:22Z
+duration: 0.0 s
+exit:     0
+versions: python 3.13.17, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+=== 1. Required ladder shift to reach C1's true-H0 band ===
+  SH0ES 73.49 (D-20) -> 67.0: 0.2008 mag
+  SH0ES 73.49 (D-20) -> 67.19: 0.1946 mag
+  SH0ES 73.49 (D-20) -> 68.5: 0.1527 mag
+  H0DN corrected 73.264 (D-22) -> 67.0: 0.1941 mag
+  H0DN corrected 73.264 (D-22) -> 67.19: 0.1879 mag
+  H0DN corrected 73.264 (D-22) -> 68.5: 0.1460 mag
+  H0DN baseline 73.50 (D-22) -> 67.0: 0.2011 mag
+  H0DN baseline 73.50 (D-22) -> 67.19: 0.1949 mag
+  H0DN baseline 73.50 (D-22) -> 68.5: 0.1530 mag
+  reference gap H0DN-CMB-SPA = 0.1879 mag; half = 0.0940 mag
+  fraction of gap removed if true H0 = 68.5: 0.777; =67.0: 1.033
+
+=== 2. Named SN-step levers vs requirement (D-35, D-25, M-MECHANIST-04) ===
+  (a) W&H: 0.0611-0.0874 mag; (a') env step at df=0.5: 0.0850 mag; (d) compilation: 0.0380 mag
+  SN-step-only coherent max (a)+(d) = 0.1254 mag -> H0DN 73.264 falls to 69.15
+  using max((a),(a')) + (d) = 0.1254 mag -> 69.15
+  (a)+(a')+(d) if all independent and additive = 0.2104 mag -> 66.50
+
+=== 3. Internal SN-vs-no-SN consistency of the same network (D-22, D-23) ===
+  SN-channel minus SN-free channel: +0.066 +- 1.602 km/s/Mpc = +0.0020 +- 0.0474 mag
+  implied SN-channel-only H0 = 73.517 +- 0.908; SN minus no-SN = +0.083 +- 2.011
+  in mag: +0.0024 +- 0.0595
+  SN-only bias needed to more than half the gap (C1 'most'): 0.0940 mag; tension with measured SN-minus-noSN offset: 1.54 sigma (one-sided p 6.19e-02)
+  SN-only bias needed to reach 68.5: 0.1530 mag; tension with measured SN-minus-noSN offset: 2.53 sigma (one-sided p 5.69e-03)
+  SN-only bias needed to reach 67.19: 0.1949 mag; tension with measured SN-minus-noSN offset: 3.24 sigma (one-sided p 6.06e-04)
+
+=== 4. Channels an SN-step bias cannot move, tested against C1's true H0 ===
+  SBF,TF,TD,MAS,GW: mean 72.39 +- 1.41 | Ht=67.19: mean-z 3.68, chi2 14.27/5 p=0.014 (z_eq 2.46) | Ht=68.5: mean-z 2.75, chi2 8.31/5 p=0.14 (z_eq 1.48) | Ht=70.2: mean-z 1.55, chi2 3.14/5 p=0.678 (z_eq 0.41)
+  one-step TD,MAS,GW: mean 71.27 +- 1.93 | Ht=67.19: mean-z 2.11, chi2 4.47/3 p=0.215 (z_eq 1.24) | Ht=68.5: mean-z 1.43, chi2 2.07/3 p=0.558 (z_eq 0.59) | Ht=70.2: mean-z 0.55, chi2 0.32/3 p=0.956 (z_eq 0.06)
+  SBF alone: mean 73.80 +- 2.40 | Ht=67.19: mean-z 2.75, chi2 7.56/1 p=0.00597 (z_eq 2.75) | Ht=68.5: mean-z 2.20, chi2 4.86/1 p=0.0275 (z_eq 2.20) | Ht=70.2: mean-z 1.50, chi2 2.24/1 p=0.134 (z_eq 1.50)
+  H0DN no-SN (D-23) + TD + GW: mean 72.55 +- 1.41 | Ht=67.19: mean-z 3.81, chi2 15.15/3 p=0.00169 (z_eq 3.14) | Ht=68.5: mean-z 2.88, chi2 8.92/3 p=0.0303 (z_eq 2.17) | Ht=70.2: mean-z 1.67, chi2 3.42/3 p=0.331 (z_eq 0.97)
+
+=== 5. Flow lever (c), the only one reaching SBF/TF: size vs LCDM cosmic variance ===
+  Dong (c) shift 0.0874 mag = 8.7 x LCDM local-H0 cosmic variance (0.0100 mag)
+  as a physical coherent flow it would be 8.7 sigma; as a method correction it is a contested re-analysis (same data)
+  combined (a)max+(c)+(d) = 0.2128 mag (113% of gap), overlap unknown
+  with (c) alone acting on SBF: SBF 73.8 -> 70.89
+
+=== 6. 'Same SN-step amount' applied to the TRGB/JAGB-SN ladders (C1 prediction-matrix row) ===
+  needed for SH0ES->68.5 (0.1527 mag): CCHP 70.39 (D-24) -> 65.61 +- 1.81; vs CMB-SPA 67.19+-0.38: -0.85 sigma
+  needed for SH0ES->68.5 (0.1527 mag): CCHP JWST 68.81 (D-25) -> 64.14 +- 2.13; vs CMB-SPA 67.19+-0.38: -1.41 sigma
+  needed for SH0ES->68.5 (0.1527 mag): JAGB CCHP 67.80 (D-26) -> 63.20 +- 2.54; vs CMB-SPA 67.19+-0.38: -1.56 sigma
+  needed for SH0ES->68.5 (0.1527 mag): SH0ES-side TRGB 72.1 (D-27) -> 67.20 +- 1.68; vs CMB-SPA 67.19+-0.38: +0.01 sigma
+  needed for SH0ES->68.5 (0.1527 mag): SH0ES-side TRGB 73.3 (D-27) -> 68.32 +- 1.68; vs CMB-SPA 67.19+-0.38: +0.66 sigma
+  needed for SH0ES->67.19 (0.1946 mag): CCHP 70.39 (D-24) -> 64.36 +- 1.77; vs CMB-SPA 67.19+-0.38: -1.56 sigma
+  needed for SH0ES->67.19 (0.1946 mag): CCHP JWST 68.81 (D-25) -> 62.91 +- 2.09; vs CMB-SPA 67.19+-0.38: -2.01 sigma
+  needed for SH0ES->67.19 (0.1946 mag): JAGB CCHP 67.80 (D-26) -> 61.99 +- 2.49; vs CMB-SPA 67.19+-0.38: -2.07 sigma
+  needed for SH0ES->67.19 (0.1946 mag): SH0ES-side TRGB 72.1 (D-27) -> 65.92 +- 1.65; vs CMB-SPA 67.19+-0.38: -0.75 sigma
+  needed for SH0ES->67.19 (0.1946 mag): SH0ES-side TRGB 73.3 (D-27) -> 67.02 +- 1.65; vs CMB-SPA 67.19+-0.38: -0.10 sigma
+
+=== 7. Narrowed endpoint scan: true H0 69.0-70.2 ===
+  Ht=69.0: SN-step bias 0.1372 mag (69% of gap); SN-vs-noSN 2.27 sigma; SN-free means 2.40 / 2.52 sigma
+  Ht=69.5: SN-step bias 0.1215 mag (61% of gap); SN-vs-noSN 2.00 sigma; SN-free means 2.05 / 2.16 sigma
+  Ht=70.0: SN-step bias 0.1059 mag (53% of gap); SN-vs-noSN 1.74 sigma; SN-free means 1.70 / 1.81 sigma
+  Ht=70.2: SN-step bias 0.0998 mag (49% of gap); SN-vs-noSN 1.64 sigma; SN-free means 1.55 / 1.67 sigma
+
+--- stderr ---
+
