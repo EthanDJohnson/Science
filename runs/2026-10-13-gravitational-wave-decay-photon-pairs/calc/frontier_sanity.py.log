@@ -1,0 +1,22 @@
+# math_run log
+command:  python3 runs/2026-10-13-gravitational-wave-decay-photon-pairs/calc/frontier_sanity.py
+started:  2026-10-30T01:29:18Z
+duration: 0.0 s
+exit:     0
+versions: python 3.13.17, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+r_m = 5907 m ; l = c*t_m = 1.499e+06 m ; r_m/l = 0.003941
+hbar*omega = 9.939e-32 J = 6.204e-13 eV
+W_gamma (eq.12, no CMB factor) = 2.778e-35 W
+L_gamma = W/(hbar omega) = 0.0002795 photons/s
+f_gamma(omega_s) at T0=2.7255 K = 3.786e+08 ; (1+2f) = 7.572e+08
+L_gamma with (1+2f) = 2.116e+05 photons/s   [B&O quote ~1e6 s^-1 at nominal merger frequency]
+W_gamma from eq.(11) SI form with delta_omega=1/t_m = 2.778e-35 W (compare eq.12 2.778e-35 W)
+graviton number N0 = Erel/(hbar omega) = 3.596e+78
+photon number emitted in t_m with no CMB factor ~ L*t_m = 1.397e-06 (B&O: N_gamma << N0 required)
+source: B&O arXiv:2607.24930v2 eqs. (10)-(12), merger scalings p.3
+
+--- stderr ---
+

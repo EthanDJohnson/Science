@@ -1,0 +1,58 @@
+# math_run log
+command:  python3 runs/2026-10-13-gravitational-wave-decay-photon-pairs/calc/theory_helicity_selection.py
+started:  2026-10-30T01:17:28Z
+duration: 0.5 s
+exit:     0
+versions: python 3.13.17, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+Inputs: s = 4.000 (energy^2, natural units), G = 1.0
+
+theta = 0.7000 rad, t = -0.4703, u = -3.5297
+  predicted |M| = 8 pi G t^2/s = 1.389820 ; 8 pi G u^2/s = 78.280144
+  nonzero (l1,l2,s1,s2) [physical helicities, each along own momentum]:
+     (-2, 2, -1, 1) |M| = 78.280144
+     (-2, 2, 1, -1) |M| = 1.389820
+     (2, -2, -1, 1) |M| = 1.389820
+     (2, -2, 1, -1) |M| = 78.280144
+  number nonzero: 4 of 16
+  nonzero entries with SAME graviton helicity: 0 ; with same photon helicity: 0
+
+theta = 1.0000 rad, t = -0.9194, u = -3.0806
+  predicted |M| = 8 pi G t^2/s = 5.311100 ; 8 pi G u^2/s = 59.628213
+  nonzero (l1,l2,s1,s2) [physical helicities, each along own momentum]:
+     (-2, 2, -1, 1) |M| = 59.628213
+     (-2, 2, 1, -1) |M| = 5.311100
+     (2, -2, -1, 1) |M| = 5.311100
+     (2, -2, 1, -1) |M| = 59.628213
+  number nonzero: 4 of 16
+  nonzero entries with SAME graviton helicity: 0 ; with same photon helicity: 0
+
+theta = 1.5708 rad, t = -2.0000, u = -2.0000
+  predicted |M| = 8 pi G t^2/s = 25.132741 ; 8 pi G u^2/s = 25.132741
+  nonzero (l1,l2,s1,s2) [physical helicities, each along own momentum]:
+     (-2, 2, -1, 1) |M| = 25.132741
+     (-2, 2, 1, -1) |M| = 25.132741
+     (2, -2, -1, 1) |M| = 25.132741
+     (2, -2, 1, -1) |M| = 25.132741
+  number nonzero: 4 of 16
+  nonzero entries with SAME graviton helicity: 0 ; with same photon helicity: 0
+
+theta = 2.2000 rad, t = -3.1770, u = -0.8230
+  predicted |M| = 8 pi G t^2/s = 63.418346 ; 8 pi G u^2/s = 4.255761
+  nonzero (l1,l2,s1,s2) [physical helicities, each along own momentum]:
+     (-2, 2, -1, 1) |M| = 4.255761
+     (-2, 2, 1, -1) |M| = 63.418346
+     (2, -2, -1, 1) |M| = 63.418346
+     (2, -2, 1, -1) |M| = 4.255761
+  number nonzero: 4 of 16
+  nonzero entries with SAME graviton helicity: 0 ; with same photon helicity: 0
+
+Cross-check of unpolarised total cross section sigma(gg->gamma gamma) at s=4.00
+  Route 2 (crossed Bjerrum-Bohr eq 5.4): sigma_unpol = 5.02654825 ; 2 pi G^2 s/5 = 5.02654825
+  Route 1 (toolkit): sigma(R,L) = 10.05309649 ; (4/5) pi G^2 s = 10.05309649 ; unpolarised = half = 5.02654825
+  sigma(R,R) same-helicity (toolkit) = 1.878e-30
+
+--- stderr ---
+

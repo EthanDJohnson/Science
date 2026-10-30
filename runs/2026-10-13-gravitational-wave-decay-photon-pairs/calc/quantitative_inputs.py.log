@@ -1,0 +1,60 @@
+# math_run log
+command:  python3 runs/2026-10-13-gravitational-wave-decay-photon-pairs/calc/quantitative_inputs.py
+started:  2026-10-30T01:13:21Z
+duration: 0.0 s
+exit:     0
+versions: python 3.13.17, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+G_nat [J^-2] = 2.613521325844123e-19
+M_P c^2 [GeV] = 1.2208901282098643e+19  1/(MPc^2)^2 = 2.6135213258441225e-19 (should equal G_nat)
+H0 [s^-1] = 2.1842852410855023e-18  rho_crit energy density [J/m^3] = 7.668947767821908e-10  (check: 1.8788e-26 h^2 kg/m^3 * c^2 = 7.670819267535006e-10 )
+
+GW150914: L_peak [W] = 3.6e+49  E_rad [J] = 5.361443130788399e+47  d_L [m] = 1.2651278084114605e+25
+  peak flux at Earth [W/m^2] = 0.01789879660282743  peak GW energy density at Earth [J/m^3] = 5.970395893957889e-11
+
+[B&O merger anchor eps=0.15] E_rel=3.574e+47 J, nu=150 Hz, hbar*omega_s=6.204e-13 eV, N0=3.596e+78, eps=0.15
+  eq.8 pair rate = 6.983e-05 /s ; photon rate = 1.397e-04 /s ; tau(eq.10) = 7.161e+03 s (2.269e-04 yr)
+  coherence time 1/(eps*omega) = 7.074e-03 s
+
+[B&O merger anchor eps=0.10] E_rel=3.574e+47 J, nu=150 Hz, hbar*omega_s=6.204e-13 eV, N0=3.596e+78, eps=0.1
+  eq.8 pair rate = 3.103e-05 /s ; photon rate = 6.207e-05 /s ; tau(eq.10) = 1.611e+04 s (5.105e-04 yr)
+  coherence time 1/(eps*omega) = 1.061e-02 s
+
+[GW150914 full E_rad=3.0 Msun c^2] E_rel=5.361e+47 J, nu=150 Hz, hbar*omega_s=6.204e-13 eV, N0=5.394e+78, eps=0.15
+  eq.8 pair rate = 1.571e-04 /s ; photon rate = 3.142e-04 /s ; tau(eq.10) = 3.183e+03 s (1.008e-04 yr)
+  coherence time 1/(eps*omega) = 7.074e-03 s
+  CMB occupation f_gamma at omega_s=2pi*150Hz*hbar: kT0/hbar w = 3.786e+08; f = 3.786e+08; 1+2f = 7.572e+08
+  merger-phase duration t_m = 0.005 s; number of photons in t_m w/o stimulation: 6.983e-07
+
+eq.14 sizes (B&O formula as printed):
+  BBN-type bound dNeff=0.1 (h^2Omega=5.6e-6*dNeff=5.60e-07, Omega=1.23e-06): rho_GW=9.454e-16 J/m^3 -> dP/dtdV=3.065e-110 pairs m^-3 s^-1; photons 2x = 6.130e-110
+  BBN-type bound dNeff=0.17 (h^2Omega=5.6e-6*dNeff=9.52e-07, Omega=2.10e-06): rho_GW=1.607e-15 J/m^3 -> dP/dtdV=8.858e-110 pairs m^-3 s^-1; photons 2x = 1.772e-109
+  BBN-type bound dNeff=0.3 (h^2Omega=5.6e-6*dNeff=1.68e-06, Omega=3.70e-06): rho_GW=2.836e-15 J/m^3 -> dP/dtdV=2.758e-109 pairs m^-3 s^-1; photons 2x = 5.517e-109
+  LVK O3 flat Omega_GW<=5.8e-9 (per log f; 95% CL): rho_GW=4.448e-18 J/m^3 -> dP/dtdV=6.785e-115 pairs m^-3 s^-1; photons 2x = 1.357e-114
+  NANOGrav 15yr A=2.4e-15 @1/yr: Omega_GW(f=1/yr)=2pi^2 f^2 A^2/(3H0^2) = 7.976e-09
+  PTA Omega ~ 1 log-band at 1/yr: rho_GW=6.117e-18 J/m^3 -> dP/dtdV=1.283e-114 pairs m^-3 s^-1; photons 2x = 2.566e-114
+  GW150914 peak energy density at Earth (not a stochastic bkg; scale check only): rho_GW=5.970e-11 J/m^3 -> dP/dtdV=1.222e-100 pairs m^-3 s^-1; photons 2x = 2.445e-100
+
+Plasma: n_b0=0.252 m^-3 ; n_e0=0.221 m^-3 = 2.207e-07 cm^-3 ; omega_p0 = 1.745e-14 eV (f_p = 4.218e+00 Hz)
+  z=1: omega_p = 4.934e-14 eV  (fully ionised assumption; z>~1100 correct, z<~1100 only if reionised, mean IGM)
+  z=10: omega_p = 6.365e-13 eV  (fully ionised assumption; z>~1100 correct, z<~1100 only if reionised, mean IGM)
+  z=1100: omega_p = 6.373e-10 eV  (fully ionised assumption; z>~1100 correct, z<~1100 only if reionised, mean IGM)
+  z=1000: omega_p = 5.525e-10 eV  (fully ionised assumption; z>~1100 correct, z<~1100 only if reionised, mean IGM)
+  z=100000: omega_p = 5.517e-07 eV  (fully ionised assumption; z>~1100 correct, z<~1100 only if reionised, mean IGM)
+  z=3e+06: omega_p = 9.065e-05 eV  (fully ionised assumption; z>~1100 correct, z<~1100 only if reionised, mean IGM)
+  Galactic ISM n_e=0.03 cm^-3: f_p = 1.555e+03 Hz ; omega_p = 6.432e-12 eV
+  Ionosphere F-layer peak n_e~1e12 m^-3: f_p = 8.979e+06 Hz (check: 8.98 MHz*sqrt(1e6 cm^-3)/1e3... expect ~9 MHz)
+  photon energy at 150 Hz: 6.204e-13 eV ; at 1 kHz: 4.136e-12 eV
+  CMB peak ~ 2.82 kT0 = 6.623e-04 eV ; kT0 = 2.349e-04 eV
+
+ULDM: N_phi eq16 at m=1e-22 eV v=0.001: 3.840e+89 (x_MW=1)  with x_MW=1e5: 3.840e+94
+
+ULDM: N_phi eq16 at m=1e-22 eV v=0.004: 6.000e+87 (x_MW=1)  with x_MW=1e5: 6.000e+92
+
+ULDM m=1e-22 eV, rho=0.4 GeV/cm^3: n=4.000e+36 m^-3 ; de Broglie lambda (v=1e-3 c) = 1.240e+19 m = 4.018e-01 kpc ; occupation per mode ~ n*lam^3 = 7.624e+93
+  cosmological mean DM density 0.26*rho_c = 1.245e-06 GeV/cm^3 (expect ~1.3e-6)
+
+--- stderr ---
+

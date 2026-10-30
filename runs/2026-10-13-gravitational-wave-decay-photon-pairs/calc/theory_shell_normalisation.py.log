@@ -1,0 +1,27 @@
+# math_run log
+command:  python3 runs/2026-10-13-gravitational-wave-decay-photon-pairs/calc/theory_shell_normalisation.py
+started:  2026-10-30T01:19:55Z
+duration: 0.0 s
+exit:     0
+versions: python 3.13.17, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+Inputs: N = 1.0, omega_s = 1.0, sigma_omega = 1.0 (natural units, arbitrary energy unit; ratio only)
+B&O Theta^2 = 2 pi^2 N/(omega_s sigma_omega) = 19.73920880
+  full sphere, 2 helicities                Theta^2 = 19.73920880  ratio to B&O = 1.000000
+  full sphere, 1 helicity                  Theta^2 = 39.47841760  ratio to B&O = 2.000000
+  hemisphere, 2 helicities                 Theta^2 = 39.47841760  ratio to B&O = 2.000000
+  beam half-angle 0.1 rad, 2 helicities    Theta^2 = 7902.26654831  ratio to B&O = 400.333500
+Verification: full sphere + 2 helicities reproduces B&O's Theta^2 to 0.0
+
+Relation s = 4 w^2 - K^2 (B&O S6): opening angle psi vs s/(4 w^2)
+  psi = 3.142 rad: s/(4w^2) = 1 ; check 4w^2-K^2 -> 1
+  psi = 1.571 rad: s/(4w^2) = 0.5 ; check 4w^2-K^2 -> 0.5
+  psi = 1 rad: s/(4w^2) = 0.2298 ; check 4w^2-K^2 -> 0.2298
+  psi = 0.1 rad: s/(4w^2) = 0.002498 ; check 4w^2-K^2 -> 0.002498
+  psi = 0.01 rad: s/(4w^2) = 2.5e-05 ; check 4w^2-K^2 -> 2.5e-05
+  psi = 0.001 rad: s/(4w^2) = 2.5e-07 ; check 4w^2-K^2 -> 2.5e-07
+
+--- stderr ---
+

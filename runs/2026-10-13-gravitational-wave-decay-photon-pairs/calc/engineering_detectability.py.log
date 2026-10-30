@@ -1,0 +1,53 @@
+# math_run log
+command:  python3 runs/2026-10-13-gravitational-wave-decay-photon-pairs/calc/engineering_detectability.py
+started:  2026-10-30T01:27:05Z
+duration: 0.0 s
+exit:     0
+versions: python 3.13.17, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+== verification of f_p against 8.98 kHz*sqrt(n/cm^-3) ==
+f_p(1 cm^-3) = 8978.7 Hz (textbook 8980 Hz)
+
+== photon at the GW frequency nu = 150.0 Hz ==
+h nu = 9.939e-32 J = 6.204e-13 eV ; wavelength = 1.999e+06 m ; lambda/2pi = 3.181e+05 m
+
+== plasma cutoff: electron density above which a 150 Hz wave is evanescent ==
+n_crit = 2.791e+02 m^-3 = 2.791e-04 cm^-3
+outer heliosphere (Gurnett 2013): n_e = 2.000e-03 cm^-3, f_p = 4.015e+02 Hz, f_p/150Hz = 2.68
+local ISM at Voyager 1 (Gurnett 2013): n_e = 8.000e-02 cm^-3, f_p = 2.540e+03 Hz, f_p/150Hz = 16.9
+mean IGM today (Omega_b h^2=0.0224,h=0.674,Y=0.245, fully ionised): n_e = 2.206e-07 cm^-3, f_p = 4.217e+00 Hz, f_p/150Hz = 0.0281
+mean-IGM f_p0 = 4.217 Hz ; a photon observed at 150 Hz today was opaque-blocked at z > 1.26e+03 (mean density only)
+
+== flux of B&O's photons at Earth (GW150914-like, d=410 Mpc) ==
+photon power at source = 9.939e-26 W ; flux at Earth = 4.942e-77 W/m^2
+photon arrival rate = 4.972e-46 photons m^-2 s^-1
+equivalent E_rms = 1.364e-37 V/m ; B_rms = 4.551e-46 T
+photons emitted per event = L*t_m = 5.000e+03; energy 4.970e-28 J vs GW energy 2 Msun c^2 = 3.574e+47 J (ratio 1.390e-75)
+photons crossing an Earth-sized disk (area 1.275e+14 m^2) during t_m: 3.170e-34
+
+== versus the thermal CMB occupation at 150 Hz (Rayleigh-Jeans) ==
+x = h nu/kT = 2.641e-09; occupation n = 3.786e+08 (kT/h nu = 3.786e+08); 1+2f = 7.572e+08
+CMB specific intensity at 150 Hz (RJ) = 1.884e-35 W m^-2 sr^-1 Hz^-1 (if it could propagate; it cannot in the ISM)
+signal spectral flux density if spread over 1% fractional band (1.5 Hz): 3.294e-77 W m^-2 Hz^-1 ; CMB over 4 pi: 2.368e-34
+
+== instrument bands versus 150 Hz ==
+COBE/FIRAS low end (0.4 cm^-1; Fixsen 1996): 1.199e+10 Hz ; ratio to 150 Hz = 7.994e+07
+ARCADE 2 lowest channel: 3.000e+09 Hz ; ratio to 150 Hz = 2.000e+07
+LuSEE-Night lowest: 1.000e+05 Hz ; ratio to 150 Hz = 6.667e+02
+Earth ionosphere F-layer peak (~10 MHz): 1.000e+07 Hz ; ratio to 150 Hz = 6.667e+04
+
+== energy-injection sensitivity of spectral distortions vs B&O eq.14 stochastic-background emissivity ==
+rho_gamma(T0=2.7255 K) = 4.175e-14 J/m^3
+Delta N_eff = 0.1: rho_GW = 9.481e-16 J/m^3 ; pair emissivity = 3.083e-110 m^-3 s^-1 ; photons = 6.166e-110
+  photon energy 1e-13 eV: injected energy over t_H = 4.297e-124 J/m^3 = 1.029e-110 of rho_CMB
+  photon energy 1e-10 eV: injected energy over t_H = 4.297e-121 J/m^3 = 1.029e-107 of rho_CMB
+  photon energy 1e+06 eV: injected energy over t_H = 4.297e-105 J/m^3 = 1.029e-91 of rho_CMB
+  photon energy 1e+10 eV: injected energy over t_H = 4.297e-101 J/m^3 = 1.029e-87 of rho_CMB
+FIRAS mu<9e-5  (dE/E = mu/1.4): fractional CMB energy injection limit = 6.429e-05 -> 2.684e-18 J/m^3
+FIRAS y<1.5e-5 (dE/E = 4y): fractional CMB energy injection limit = 6.000e-05 -> 2.505e-18 J/m^3
+PIXIE 5-sigma mu<1e-8 (dE/E = mu/1.4): fractional CMB energy injection limit = 7.143e-09 -> 2.982e-22 J/m^3
+
+--- stderr ---
+
