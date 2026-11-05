@@ -29,7 +29,9 @@
     }
   ],
   "trust": "ok",
-  "notes": [],
+  "notes": [
+    "2026-11-05: User questioned C5 (local void) at 0.02 when it needs an 84-sigma LCDM void. The 84-sigma bound covers only the LCDM-growth branch; the enhanced-growth branch is capped by the SN Hubble diagram (4-5 sigma), the CF4 field test and the Hubble-flow fits. Both eliminated candidates (C2, C5) look over-weighted at 0.02; about 0.003-0.005 each is defensible. The ranking is unchanged."
+  ],
   "superseded_by": null,
   "recorded": "2026-10-30"
 }
