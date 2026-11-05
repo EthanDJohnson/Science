@@ -1,0 +1,47 @@
+# math_run log
+command:  python3 runs/2026-10-30-hubble-tension-h0-discrepancy/math/decomposer/M-DECOMPOSER-03.py
+started:  2026-10-30T15:46:55Z
+duration: 0.6 s
+exit:     0
+versions: python 3.13.17, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   18 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+  one-step mean: computed 71.2676, lens 71.27
+PASS 71.26755424981015 == 71.27: within 8.41869e-05; 71.2676 vs 71.27 (SI)
+  one-step sigma: computed 1.93121, lens 1.93
+PASS 1.9312054445013869 == 1.93: within 0.00310881; 1.93121 vs 1.93 (SI)
+  one-step z vs SPA: computed 2.07168, lens 2.1
+PASS 2.0716791336779634 == 2.1: within 0.0285714; 2.07168 vs 2.1 (SI)
+  one-step z vs BAO+BBN: computed 1.37251, lens 1.4
+PASS 1.3725080084282981 == 1.4: within 0.0428571; 1.37251 vs 1.4 (SI)
+  all local except SH0ES mean: computed 71.5556, lens 71.56
+PASS 71.55562907959205 == 71.56: within 8.38457e-05; 71.5556 vs 71.56 (SI)
+  all local except SH0ES sigma: computed 1.18846, lens 1.19
+PASS 1.1884586290329413 == 1.19: within 0.00504202; 1.18846 vs 1.19 (SI)
+  all local except SH0ES z vs SPA: computed 3.49885, lens 3.5
+PASS 3.498852963152809 == 3.5: within 0.0171429; 3.49885 vs 3.5 (SI)
+  all local except SH0ES z vs BAO+BBN: computed 2.31061, lens 2.3
+PASS 2.310608418017893 == 2.3: within 0.026087; 2.31061 vs 2.3 (SI)
+  SBF + one-step mean: computed 72.2608, lens 72.26
+PASS 72.2607547615389 == 72.26: within 8.30335e-05; 72.2608 vs 72.26 (SI)
+  SBF + one-step sigma: computed 1.50561, lens 1.51
+PASS 1.5056093779632538 == 1.51: within 0.00397351; 1.50561 vs 1.51 (SI)
+  SBF + one-step z vs SPA: computed 3.26551, lens 3.3
+PASS 3.2655070248746125 == 3.3: within 0.0181818; 3.26551 vs 3.3 (SI)
+  SBF + one-step z vs BAO+BBN: computed 2.33086, lens 2.3
+PASS 2.3308604606938204 == 2.3: within 0.026087; 2.33086 vs 2.3 (SI)
+  all local mean: computed 72.7554, lens 72.76
+PASS 72.75535261273407 == 72.76: within 8.24629e-05; 72.7554 vs 72.76 (SI)
+  all local sigma: computed 0.732409, lens 0.73
+PASS 0.7324089792808065 == 0.73: within 0.00821918; 0.732409 vs 0.73 (SI)
+  all local z vs SPA: computed 6.7449, lens 6.7
+PASS 6.744901380962829 == 6.7: within 0.00895522; 6.7449 vs 6.7 (SI)
+  all local z vs BAO+BBN: computed 4.55483, lens 4.6
+PASS 4.554833264476672 == 4.6: within 0.0130435; 4.55483 vs 4.6 (SI)
+PASS lim s1->0 of (x2/s2**2 + x1/s1**2)/(s2**(-2) + s1**(-2)) == x1: symbolic limit x1
+PASS (72.76 km/s/Mpc - 67.19 km/s/Mpc)/(0.83 km/s/Mpc) has the dimension of dimensionless: dimensional analysis
+SUMMARY: 18 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

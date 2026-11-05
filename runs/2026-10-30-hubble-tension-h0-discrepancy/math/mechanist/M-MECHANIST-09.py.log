@@ -1,0 +1,34 @@
+# math_run log
+command:  python3 runs/2026-10-30-hubble-tension-h0-discrepancy/math/mechanist/M-MECHANIST-09.py
+started:  2026-10-30T15:43:43Z
+duration: 0.8 s
+exit:     0
+versions: python 3.13.17, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   11 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+PASS (x2/s2**2 + x1/s1**2)/(s2**(-2) + s1**(-2)) == (s1**2*x2 + s2**2*x1)/(s1**2 + s2**2): symbolic
+limit s2 -> oo gives x1: x1
+PASS lim s2->oo of (x2/s2**2 + x1/s1**2)/(s2**(-2) + s1**(-2)) == x1: symbolic limit x1
+  one-step mean: recomputed 71.2676, lens claims 71.27, tol 0.01
+PASS 0.002445750189846052 <= 0.0100000000000000: symbolic, constant
+  one-step sigma: recomputed 1.93121, lens claims 1.93, tol 0.01
+PASS 0.0012054445013869614 <= 0.0100000000000000: symbolic, constant
+  vs CMB-SPA: recomputed 2.07168, lens claims 2.1, tol 0.05
+PASS 0.028320866322036689 <= 0.0500000000000000: symbolic, constant
+  vs H0DN: recomputed 0.954027, lens claims 1.0, tol 0.1
+PASS 0.04597315329421280 <= 0.100000000000000: symbolic, constant
+  gap fraction: recomputed 0.671313, lens claims 0.67, tol 0.01
+PASS 0.001312849820571255 <= 0.0100000000000000: symbolic, constant
+  gap fraction sigma: recomputed 0.317946, lens claims 0.32, tol 0.01
+PASS 0.002053762841391610 <= 0.0100000000000000: symbolic, constant
+  no-SN mean: recomputed 72.3852, lens claims 72.39, tol 0.015
+PASS 0.00477540593510639 <= 0.0150000000000000: symbolic, constant
+  no-SN sigma: recomputed 1.41257, lens claims 1.41, tol 0.01
+PASS 0.0025717919684304803 <= 0.0100000000000000: symbolic, constant
+  no-SN vs CMB-SPA: recomputed 3.55158, lens claims 3.6, tol 0.05
+PASS 0.048417646160600687 <= 0.0500000000000000: symbolic, constant
+SUMMARY: 11 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

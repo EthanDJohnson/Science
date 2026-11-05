@@ -1,0 +1,51 @@
+# math_run log
+command:  python3 runs/2026-10-30-hubble-tension-h0-discrepancy/math/decomposer/M-DECOMPOSER-02.py
+started:  2026-10-30T15:46:53Z
+duration: 1.1 s
+exit:     0
+versions: python 3.13.17, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   17 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+  chi2 one mean (9 dof): computed 49.653, lens 49.65
+PASS 49.65302182719088 == 49.65: within 0.0020141; 49.653 vs 49.65 (SI)
+  p one mean: computed 1.25176e-07, lens 1.3e-07
+PASS 1.251757894521425e-07 == 1.3e-07: within 0.0769231; 1.25176e-07 vs 1.3e-07 (SI)
+  z equivalent of p (two-sided): computed 5.28577, lens 5.3
+PASS 5.285771904037273 == 5.3: within 0.0113208; 5.28577 vs 5.3 (SI)
+    8.480  group with SH0ES: ('SH0ES', 'CCHP', 'SBF', 'TD', 'MASER', 'SIREN')
+    8.689  group with SH0ES: ('SH0ES', 'SBF', 'TD', 'MASER', 'SIREN')
+    8.693  group with SH0ES: ('SH0ES', 'CCHP', 'SBF', 'TD', 'MASER')
+    8.881  group with SH0ES: ('SH0ES', 'SBF', 'TD', 'MASER')
+    9.509  group with SH0ES: ('SH0ES', 'CCHP', 'SBF', 'TD', 'SIREN')
+    9.598  group with SH0ES: ('SH0ES', 'SBF', 'TD', 'SIREN')
+  best split: ('SH0ES', 'CCHP', 'SBF', 'TD', 'MASER', 'SIREN')
+PASS 1 == 1: symbolic
+  best split chi2 (local vs early): computed 8.47961, lens 8.48
+PASS 8.47960831074622 == 8.48: within 0.00117925; 8.47961 vs 8.48 (SI)
+  p best split (8 dof): computed 0.388075, lens 0.39
+PASS 0.3880750962305585 == 0.39: within 0.025641; 0.388075 vs 0.39 (SI)
+  all ladders vs rest: computed 11.2054, lens 11.2
+PASS 11.20536631111477 == 11.2: within 0.00446429; 11.2054 vs 11.2 (SI)
+  r_s-using (CMB, BAO+BBN) vs not: 12.644
+  r_s-using vs not: computed 12.6444, lens 12.6
+PASS 12.644388140498464 == 12.6: within 0.00396825; 12.6444 vs 12.6 (SI)
+  SH0ES vs rest: computed 16.942, lens 16.9
+PASS 16.942017749810002 == 16.9: within 0.00295858; 16.942 vs 16.9 (SI)
+  p SH0ES vs rest: computed 0.0307185, lens 0.03
+PASS 0.030718539093930124 == 0.03: within 0.166667; 0.0307185 vs 0.03 (SI)
+  Delta chi2 SH0ES-vs-rest minus local-vs-early: computed 8.46241, lens 8.5
+PASS 8.462409439063782 == 8.5: within 0.00705882; 8.46241 vs 8.5 (SI)
+  Delta chi2 ladders-vs-rest minus local-vs-early (Q2a 2.7): computed 2.72576, lens 2.7
+PASS 2.7257580003685487 == 2.7: within 0.0222222; 2.72576 vs 2.7 (SI)
+  local minus CCHP: chi2 = 8.689, delta = 0.210
+PASS 0.2095937006105988 <= 0.400000000000000: symbolic, constant
+  local minus SIREN: chi2 = 8.693, delta = 0.214
+PASS 0.2136023428299172 <= 0.400000000000000: symbolic, constant
+PASS (x2 - (x2/s2**2 + x1/s1**2)/(s2**(-2) + s1**(-2)))**2/s2**2 + (x1 - (x2/s2**2 + x1/s1**2)/(s2**(-2) + s1**(-2)))**2/s1**2 == (x1 - x2)**2/(s1**2 + s2**2): symbolic
+PASS lim s2->oo of (x1 - x2)**2/(s1**2 + s2**2) == 0: symbolic limit 0
+PASS ((73.49 km/s/Mpc - 67.19 km/s/Mpc)/(0.93 km/s/Mpc))^2 has the dimension of dimensionless: dimensional analysis
+SUMMARY: 17 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

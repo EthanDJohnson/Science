@@ -1,0 +1,45 @@
+# math_run log
+command:  python3 runs/2026-10-30-hubble-tension-h0-discrepancy/math/decomposer/M-DECOMPOSER-09.py
+started:  2026-10-30T15:49:13Z
+duration: 0.5 s
+exit:     0
+versions: python 3.13.17, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   17 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+  sigma for 67.19 vs 73.264 at 3 sigma: computed 2.02467, lens 2
+PASS 2.024666666666666 == 2.0: within 0.015; 2.02467 vs 2 (SI)
+    as % of midpoint 70.23: computed 2.88303, lens 2.9
+PASS 2.883031692463961 == 2.9: within 0.0206897; 2.88303 vs 2.9 (SI)
+  sigma for 67.19 vs 73.264 at 5 sigma: computed 1.2148, lens 1.2
+PASS 1.2147999999999997 == 1.2: within 0.025; 1.2148 vs 1.2 (SI)
+    as % of midpoint 70.23: computed 1.72982, lens 1.7
+PASS 1.7298190154783766 == 1.7: within 0.0352941; 1.72982 vs 1.7 (SI)
+  sigma for 67.19 vs 71.0 at 3 sigma: computed 1.27, lens 1.27
+PASS 1.2700000000000007 == 1.27: within 0.023622; 1.27 vs 1.27 (SI)
+    as % of midpoint 69.09: computed 1.83805, lens 1.8
+PASS 1.8380490628844355 == 1.8: within 0.0333333; 1.83805 vs 1.8 (SI)
+  sigma for 67.19 vs 71.0 at 5 sigma: computed 0.762, lens 0.76
+PASS 0.7620000000000005 == 0.76: within 0.0394737; 0.762 vs 0.76 (SI)
+    as % of midpoint 69.09: computed 1.10283, lens 1.1
+PASS 1.1028294377306613 == 1.1: within 0.0545455; 1.10283 vs 1.1 (SI)
+  sigma for 68.5 vs 71.0 at 3 sigma: computed 0.833333, lens 0.83
+PASS 0.8333333333333334 == 0.83: within 0.0361446; 0.833333 vs 0.83 (SI)
+    as % of midpoint 69.75: computed 1.19474, lens 1.2
+PASS 1.1947431302270013 == 1.2: within 0.05; 1.19474 vs 1.2 (SI)
+  lenses for 2.0% from 3.3% with 11: computed 29.9475, lens 30
+PASS 29.947499999999998 == 30.0: within 0.02; 29.9475 vs 30 (SI)
+  lenses for 1.5% from 3.3% with 11: computed 53.24, lens 53
+PASS 53.23999999999999 == 53.0: within 0.0113208; 53.24 vs 53 (SI)
+  lenses for 1.0% from 3.3% with 11: computed 119.79, lens 120
+PASS 119.78999999999999 == 120.0: within 0.005; 119.79 vs 120 (SI)
+  GWTC-5.0 fractional error (symmetrised) %: computed 11.7852, lens 11.8
+PASS 11.785216178521615 == 11.8: within 0.00508475; 11.7852 vs 11.8 (SI)
+  siren information factor for 2%: computed 34.81, lens 35
+PASS 34.81 == 35.0: within 0.0171429; 34.81 vs 35 (SI)
+PASS lim p->oo of N0*p0**2/p**2 == 0: symbolic limit 0
+PASS (73.264 km/s/Mpc - 67.19 km/s/Mpc)/3 has the dimension of km/s/Mpc: dimensional analysis
+SUMMARY: 17 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

@@ -1,0 +1,67 @@
+# math_run log
+command:  python3 runs/2026-10-30-hubble-tension-h0-discrepancy/math/decomposer/M-DECOMPOSER-08.py
+started:  2026-10-30T15:49:26Z
+duration: 0.7 s
+exit:     1
+versions: python 3.13.17, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   26 PASS, 3 FAIL, 0 UNDECIDED
+
+--- stdout ---
+Convention A:
+  sigma_c=0.0: mu_L=72.755 mu_E=67.651 z=6.417 (lens 6.4); chi2 local/early=8.480; best=local/early; SH0ES-vs-rest chi2=16.942; SH0ES-vs-rest is worst named: True
+  z local vs early at sigma_c=0.0: computed 6.41665, lens 6.4
+PASS 6.4166512696612115 == 6.4: within 0.009375; 6.41665 vs 6.4 (SI)
+    exhaustive best chi2 = 8.480 (('SH0ES', 'CCHP', 'SBF', 'TD', 'MASER', 'SIREN')); local/early - best = 0.000; named: local/early 8.480, ladders/rest 11.205, rs-using/not 12.644, SH0ES/rest 16.942
+PASS 8.479608310746222 <= 8.479608310746222: symbolic, constant
+PASS 0.0 <= 0.400000000000000: symbolic, constant
+PASS 8.479608310746222 >= 8.10000000000000: symbolic, constant
+PASS 8.479608310746222 <= 8.55000000000000: symbolic, constant
+  sigma_c=0.5: mu_L=72.675 mu_E=67.651 z=5.595 (lens 5.6); chi2 local/early=8.442; best=('SH0ES', 'SBF', 'TD', 'MASER', 'SIREN'); SH0ES-vs-rest chi2=16.300; SH0ES-vs-rest is worst named: True
+  z local vs early at sigma_c=0.5: computed 5.59529, lens 5.6
+PASS 5.595291554440362 == 5.6: within 0.0107143; 5.59529 vs 5.6 (SI)
+    exhaustive best chi2 = 8.359 (('SH0ES', 'SBF', 'TD', 'MASER', 'SIREN')); local/early - best = 0.083; named: local/early 8.442, ladders/rest 11.205, rs-using/not 12.082, SH0ES/rest 16.300
+PASS 8.441983121642965 <= 8.441983121642965: symbolic, constant
+PASS 0.08342125051229488 <= 0.400000000000000: symbolic, constant
+PASS 8.441983121642965 >= 8.10000000000000: symbolic, constant
+PASS 8.441983121642965 <= 8.55000000000000: symbolic, constant
+  sigma_c=1.0: mu_L=72.478 mu_E=67.651 z=4.354 (lens 4.4); chi2 local/early=8.350; best=('SH0ES', 'SBF', 'TD', 'MASER', 'SIREN'); SH0ES-vs-rest chi2=14.946; SH0ES-vs-rest is worst named: True
+  z local vs early at sigma_c=1.0: computed 4.3539, lens 4.4
+PASS 4.3539031044398095 == 4.4: within 0.0136364; 4.3539 vs 4.4 (SI)
+    exhaustive best chi2 = 7.690 (('SH0ES', 'SBF', 'TD', 'MASER', 'SIREN')); local/early - best = 0.660; named: local/early 8.350, ladders/rest 11.205, rs-using/not 10.961, SH0ES/rest 14.946
+PASS 8.350181792046191 <= 8.350181792046191: symbolic, constant
+FAIL 0.6603521025034809 <= 0.400000000000000: numeric, constant; counterexample value = 0.2603521025; value 0.2603521025
+PASS 8.350181792046191 >= 8.10000000000000: symbolic, constant
+PASS 8.350181792046191 <= 8.55000000000000: symbolic, constant
+  sigma_c=1.5: mu_L=72.249 mu_E=67.651 z=3.505 (lens 3.5); chi2 local/early=8.244; best=('SH0ES', 'SBF', 'TD', 'MASER', 'SIREN', 'RSFREE'); SH0ES-vs-rest chi2=13.666; SH0ES-vs-rest is worst named: True
+  z local vs early at sigma_c=1.5: computed 3.50539, lens 3.5
+PASS 3.505386113273657 == 3.5: within 0.0171429; 3.50539 vs 3.5 (SI)
+    exhaustive best chi2 = 7.082 (('SH0ES', 'SBF', 'TD', 'MASER', 'SIREN', 'RSFREE')); local/early - best = 1.162; named: local/early 8.244, ladders/rest 11.205, rs-using/not 9.977, SH0ES/rest 13.666
+PASS 8.243501123976674 <= 8.243501123976674: symbolic, constant
+FAIL 1.1617628825955553 <= 0.400000000000000: numeric, constant; counterexample value = 0.7617628826; value 0.7617628826
+PASS 8.243501123976674 >= 8.10000000000000: symbolic, constant
+PASS 8.243501123976674 <= 8.55000000000000: symbolic, constant
+  sigma_c=2.0: mu_L=72.043 mu_E=67.651 z=2.988 (lens 3.0); chi2 local/early=8.148; best=('SH0ES', 'SBF', 'TD', 'MASER', 'SIREN', 'RSFREE'); SH0ES-vs-rest chi2=12.719; SH0ES-vs-rest is worst named: True
+  z local vs early at sigma_c=2.0: computed 2.98767, lens 3
+PASS 2.9876697752976624 == 3.0: within 0.02; 2.98767 vs 3 (SI)
+    exhaustive best chi2 = 6.225 (('SH0ES', 'SBF', 'TD', 'MASER', 'SIREN', 'RSFREE')); local/early - best = 1.923; named: local/early 8.148, ladders/rest 11.205, rs-using/not 9.291, SH0ES/rest 12.719
+PASS 8.14776880190003 <= 8.14776880190003: symbolic, constant
+FAIL 1.9229611912092448 <= 0.400000000000000: numeric, constant; counterexample value = 1.522961191; value 1.522961191
+PASS 8.14776880190003 >= 8.10000000000000: symbolic, constant
+PASS 8.14776880190003 <= 8.55000000000000: symbolic, constant
+Convention B:
+  sigma_c=0.0: mu_L=72.755 mu_E=67.651 z=6.417 (lens 6.4); chi2 local/early=8.480; best=local/early; SH0ES-vs-rest chi2=16.942; SH0ES-vs-rest is worst named: True
+  sigma_c=0.5: mu_L=72.795 mu_E=67.651 z=6.125 (lens 5.6); chi2 local/early=8.764; best=('SH0ES', 'SBF', 'TD', 'MASER', 'SIREN'); SH0ES-vs-rest chi2=16.623; SH0ES-vs-rest is worst named: True
+  sigma_c=1.0: mu_L=73.203 mu_E=67.651 z=6.243 (lens 4.4); chi2 local/early=10.498; best=('SH0ES', 'SBF', 'TD', 'MASER', 'SIREN'); SH0ES-vs-rest chi2=15.882; SH0ES-vs-rest is worst named: True
+  sigma_c=1.5: covariance not positive definite
+  sigma_c=2.0: covariance not positive definite
+  sigma_c = 0 local mean equals inverse-variance mean: computed 72.7554, lens 72.7554
+PASS 72.75535261273409 == 72.7554: within 1.37447e-05; 72.7554 vs 72.7554 (SI)
+  1.5 km/s/Mpc as percent of 73.26: computed 2.0475, lens 2
+PASS 2.0475020475020473 == 2.0: within 0.03; 2.0475 vs 2 (SI)
+  1.5 km/s/Mpc in mag (lens 0.045): computed 0.0444609, lens 0.045
+PASS 0.04446094204578744 == 0.045: within 0.0133333; 0.0444609 vs 0.045 (SI)
+PASS (72.76 km/s/Mpc - 67.6 km/s/Mpc)/(1.5 km/s/Mpc) has the dimension of dimensionless: dimensional analysis
+SUMMARY: 26 pass, 3 fail, 0 undecided
+
+--- stderr ---
+

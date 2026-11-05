@@ -1,0 +1,22 @@
+# math_run log
+command:  python3 runs/2026-10-30-hubble-tension-h0-discrepancy/math/dialectician/M-DIALECTICIAN-04.py
+started:  2026-10-30T15:50:03Z
+duration: 0.5 s
+exit:     1
+versions: python 3.13.17, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   4 PASS, 1 FAIL, 0 UNDECIDED
+
+--- stdout ---
+total 4.68; selection (73.75-71.2) 2.55; selection (73.49-71.2) 2.29; residual (71.2-68.81) 2.39
+2.55 + 2.39 = 4.94 vs total 4.68; total - 2.55 = 2.13
+PASS 73.49 km/s/Mpc - 68.81 km/s/Mpc == 4.68 km/s/Mpc: within 0.001; 1.51668e-19 vs 1.51668e-19 (SI)
+FAIL 0.2600000000000064 <= 0.0500000000000000: numeric, constant; counterexample value = 0.21; value 0.21
+PASS 4.7184478546569153E-16 <= 1.00000000000000E-9: symbolic, constant
+residual 71.2/68.81 -> 0.0741 mag; residual if selection=2.55 -> 2.13 km/s/Mpc = 0.0662 mag
+PASS 0.0001421789523195945 <= 0.00100000000000000: symbolic, constant
+Hoyt 69.6/68.4 -> 0.0378 mag; 1.2/73.26 linear -> 0.0356 mag
+PASS 0.0017656894522290677 <= 0.00300000000000000: symbolic, constant
+SUMMARY: 4 pass, 1 fail, 0 undecided
+
+--- stderr ---
+

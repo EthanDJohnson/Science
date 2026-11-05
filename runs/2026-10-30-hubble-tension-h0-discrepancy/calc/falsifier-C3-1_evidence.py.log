@@ -1,0 +1,52 @@
+# math_run log
+command:  python3 runs/2026-10-30-hubble-tension-h0-discrepancy/calc/falsifier-C3-1_evidence.py
+started:  2026-10-30T16:24:16Z
+duration: 0.0 s
+exit:     0
+versions: python 3.13.17, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+
+=== gap 67.19 -> 73.49: gap = 6.30 km/s/Mpc, midpoint = 70.34
+fit                                          H0  closure  P(H0>mid) tens vs late (sigma)  source
+EDE CMB-SPA (Planck+ACT+SPT), no BAO      68.03     0.13      0.000                 5.10  Khalife+2025 Table II
+EDE SPT+ACT                               67.25     0.01      0.000                 5.99  Khalife+2025 Table II
+EDE CMB-SPA + DESI DR2                    69.81     0.42      0.288                 2.77  Khalife+2025 Table II
+EDE SPT + DESI DR2                        70.90     0.59      0.616                 1.62  Khalife+2025 Table II
+EDE Planck+BAO+eBOSS Lya                  67.90     0.11      0.000                 5.52  Goldstein+2023 abstract
+EDE P-ACT-LB (ACT DR6)                    69.90     0.43      0.291                 2.93  D-52
+EDE Poulin 2026 profile                   71.00     0.60      0.726                 1.73  D-53
+EDE eROSITA + external                    71.40     0.67      0.776                 1.24  D-94
+Mod. recombination P-ACT-LB               69.60     0.38      0.230                 2.85  D-52
+PMF P-ACT-LB                              69.10     0.30      0.007                 4.16  D-52
+r_d-free DESI: CMBlens x unWISE           69.20     0.32      0.190                 2.68  D-49 Zaborowski 2026
+r_d-free DESI: DES Y3 6x2pt               70.30     0.49      0.489                 1.90  D-49 Zaborowski 2026
+r_d-free DESI: lens + DES Y5 SN           69.60     0.38      0.285                 2.43  D-49 Zaborowski 2026
+
+=== gap 67.19 -> 73.17: gap = 5.98 km/s/Mpc, midpoint = 70.18
+fit                                          H0  closure  P(H0>mid) tens vs late (sigma)  source
+EDE CMB-SPA (Planck+ACT+SPT), no BAO      68.03     0.14      0.000                 5.09  Khalife+2025 Table II
+EDE SPT+ACT                               67.25     0.01      0.000                 6.04  Khalife+2025 Table II
+EDE CMB-SPA + DESI DR2                    69.81     0.44      0.348                 2.62  Khalife+2025 Table II
+EDE SPT + DESI DR2                        70.90     0.62      0.648                 1.46  Khalife+2025 Table II
+EDE Planck+BAO+eBOSS Lya                  67.90     0.12      0.000                 5.56  Goldstein+2023 abstract
+EDE P-ACT-LB (ACT DR6)                    69.90     0.45      0.363                 2.78  D-52
+EDE Poulin 2026 profile                   71.00     0.64      0.772                 1.55  D-53
+EDE eROSITA + external                    71.40     0.70      0.808                 1.08  D-94
+Mod. recombination P-ACT-LB               69.60     0.40      0.281                 2.71  D-52
+PMF P-ACT-LB                              69.10     0.32      0.015                 4.09  D-52
+r_d-free DESI: CMBlens x unWISE           69.20     0.34      0.225                 2.55  D-49 Zaborowski 2026
+r_d-free DESI: DES Y3 6x2pt               70.30     0.52      0.540                 1.75  D-49 Zaborowski 2026
+r_d-free DESI: lens + DES Y5 SN           69.60     0.40      0.328                 2.29  D-49 Zaborowski 2026
+
+Lya bound f_EDE < 0.03 (95%, Goldstein+2023) vs C3 needs:
+  f_EDE needed 0.060 = 2.0 x the Lya 95% upper limit
+  f_EDE needed 0.070 = 2.3 x the Lya 95% upper limit
+  f_EDE needed 0.090 = 3.0 x the Lya 95% upper limit
+  f_EDE needed 0.124 = 4.1 x the Lya 95% upper limit
+  f_EDE needed 0.137 = 4.6 x the Lya 95% upper limit
+  f_EDE needed 0.188 = 6.3 x the Lya 95% upper limit
+
+--- stderr ---
+

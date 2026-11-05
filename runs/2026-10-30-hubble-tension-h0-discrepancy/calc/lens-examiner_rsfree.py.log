@@ -1,0 +1,24 @@
+# math_run log
+command:  python3 runs/2026-10-30-hubble-tension-h0-discrepancy/calc/lens-examiner_rsfree.py
+started:  2026-10-30T15:17:04Z
+duration: 0.0 s
+exit:     0
+versions: python 3.13.17, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+r_s-free H0 vs SH0ES 73.49+-0.93 and vs CMB-SPA 67.19+-0.38 (km/s/Mpc)
+  Zaborowski CMBlens x unWISE         69.2  z_vs_SH0ES=2.68  z_vs_CMB=1.39
+  Zaborowski DES Y3 6x2pt             70.3  z_vs_SH0ES=1.90  z_vs_CMB=2.47
+  Zaborowski CMBlens + DESY5 SNe      69.6  z_vs_SH0ES=2.43  z_vs_CMB=1.31
+  2411.16677 DESY5                    66.7  z_vs_SH0ES=3.50  z_vs_CMB=0.28
+  2411.16677 Pantheon+                67.9  z_vs_SH0ES=2.64  z_vs_CMB=0.33
+  2411.16677 Union3                   67.8  z_vs_SH0ES=2.58  z_vs_CMB=0.27
+  Philcox equality (Pantheon Om)      65.1  z_vs_SH0ES=2.67  z_vs_CMB=0.69
+  Philcox equality (BAO-lensing)      70.6  z_vs_SH0ES=0.76  z_vs_CMB=0.68
+Reading: an early-time r_s reduction predicts these ~73 (they bypass r_s); late-universe or ladder
+explanations predict them ~67-68. A 1.5% r_s-free H0 (sigma ~1.0) would separate 73.3 from 67.5 at ~5.8 sigma.
+  separation for sigma_rsfree=1.0 (plus SH0ES/CMB not needed): z = 5.8
+
+--- stderr ---
+

@@ -1,0 +1,34 @@
+# math_run log
+command:  python3 runs/2026-10-30-hubble-tension-h0-discrepancy/math/empiricist/M-EMPIRICIST-10.py
+started:  2026-10-30T15:40:55Z
+duration: 0.6 s
+exit:     0
+versions: python 3.13.17, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   11 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+PASS 0.190582463780131496535446691177 == 0.190582463780131496535446691177: symbolic
+PASS 0.0835016235144617996520169519064 == 0.0835016235144617996520169519064: symbolic
+  ν = 1e8 tail at 3.24: 0.0011952974, Gaussian 0.001195297
+  large-ν limit equals Gaussian: computed 0.0011953, lens 0.0011952969958688316
+PASS 0.0011952973862667028 == 0.0011952969958688316: within 8.36612e-06; 0.0011953 vs 0.0011953 (SI)
+  Gaussian two-sided at 6.27: computed 3.61048e-10, lens 3.6e-10
+PASS 3.610481054626847e-10 == 3.6e-10: within 0.05; 3.61048e-10 vs 3.6e-10 (SI)
+  t ν=2 two-sided at 6.27: computed 0.0245058, lens 0.025
+PASS 0.024505781155329927 == 0.025: within 0.02; 0.0245058 vs 0.025 (SI)
+  t ν=3 two-sided at 6.27: computed 0.00818959, lens 0.008
+PASS 0.008189591118041552 == 0.008: within 0.0625; 0.00818959 vs 0.008 (SI)
+  t ν=4 two-sided at 6.27: computed 0.00330219, lens 0.003
+PASS 0.0033021891089860416 == 0.003: within 0.166667; 0.00330219 vs 0.003 (SI)
+  Gaussian two-sided at 3.24: computed 0.0011953, lens 0.0012
+PASS 0.0011952969958688305 == 0.0012: within 0.05; 0.0011953 vs 0.0012 (SI)
+  t ν=2 two-sided at 3.24: computed 0.0835016, lens 0.08
+PASS 0.08350162351446179 == 0.08: within 0.0625; 0.0835016 vs 0.08 (SI)
+  t ν=3 two-sided at 3.24: computed 0.0478509, lens 0.05
+PASS 0.04785094621443258 == 0.05: within 0.1; 0.0478509 vs 0.05 (SI)
+  t ν=4 two-sided at 3.24: computed 0.031674, lens 0.03
+PASS 0.031673961848008275 == 0.03: within 0.166667; 0.031674 vs 0.03 (SI)
+SUMMARY: 11 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

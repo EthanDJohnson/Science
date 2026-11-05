@@ -1,0 +1,54 @@
+# math_run log
+command:  python3 runs/2026-10-30-hubble-tension-h0-discrepancy/calc/falsifier-C2-0_magnitude.py
+started:  2026-10-30T16:13:15Z
+duration: 0.2 s
+exit:     0
+versions: python 3.13.17, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+midpoint (dominance boundary) = 70.227 km/s/Mpc; full gap = 6.074
+
+1. Shift each early class needs (to midpoint / to full local value), in km/s/Mpc and own sigma
+  Planck PR4                     H0= 67.64+-0.52: to mid + 2.59 ( 4.98 sig); to 73.264 + 5.62 (10.82 sig)
+  ACT DR6                        H0= 66.51+-0.64: to mid + 3.72 ( 5.81 sig); to 73.264 + 6.75 (10.55 sig)
+  SPT-3G D1                      H0= 66.66+-0.60: to mid + 3.57 ( 5.95 sig); to 73.264 + 6.60 (11.01 sig)
+  CMB-SPA                        H0= 67.19+-0.38: to mid + 3.04 ( 7.99 sig); to 73.264 + 6.07 (15.98 sig)
+  Planck TE only                 H0= 68.49+-0.76: to mid + 1.74 ( 2.29 sig); to 73.264 + 4.77 ( 6.28 sig)
+  BAO+BBN (DESI DR2)             H0= 68.50+-0.58: to mid + 1.73 ( 2.98 sig); to 73.264 + 4.76 ( 8.21 sig)
+  inverse ladder (cosmography)   H0= 67.19+-0.65: to mid + 3.04 ( 4.67 sig); to 73.264 + 6.07 ( 9.34 sig)
+  inverse ladder (flat LCDM)     H0= 67.67+-0.69: to mid + 2.56 ( 3.73 sig); to 73.264 + 5.59 ( 8.17 sig)
+
+2. Published analysis-choice spreads (dossier D-41) vs the needed CMB shift
+  Plik vs CamSpec-NPIPE in P-ACT       +0.24 km/s/Mpc; needed (PR4 to midpoint) 2.59 = x10.8
+  PR3 -> PR4 Planck                    +0.28 km/s/Mpc; needed (PR4 to midpoint) 2.59 = x9.2
+  Planck PR4 vs Planck-in-SPT-TableI   +0.23 km/s/Mpc; needed (PR4 to midpoint) 2.59 = x11.2
+
+3. Cross-class reach: a CMB-anisotropy systematic leaves BAO+BBN untouched (no shared data), and vice versa
+  (a) CMB-only systematic: BAO+BBN must still be a low fluctuation of 2.98 sig (p1=1.45e-03) at the midpoint, 8.21 sig (p1=1.1e-16) at 73.264
+  (b)/(c) BAO- or BBN-only systematic: CMB-SPA must be a low fluctuation of 7.99 sig (p1=6.6e-16) at the midpoint
+
+4. Sign check of the (a) omega_c route on the BAO-side classes (calibrated as in M-CONSTRAINTS-04)
+  omega_c needed 0.10458; r_d(Planck bf) = 147.09 Mpc (normalised); r_d(true under (a)) = 151.45 Mpc (+2.96%)
+  inverse ladder H0 propto 1/r_d: 67.67 -> 65.72 km/s/Mpc (moves AWAY from 73.26)
+  Omega_m implied = 0.2377; vs DESI 0.2975+-0.0086: 7.0 sig; vs SN 0.322+-0.012: 7.0 sig
+  predicted h*r_d = 110.96 Mpc vs DESI 101.54+-0.73: +12.9 sig
+
+5. theta_* route (omega_c fixed): Omega_m implied
+  Omega_m = 0.2664; vs DESI 3.6 sig; vs SN 4.6 sig
+
+6. Route that keeps late-time shape Omega_m (DESI 0.2975) at h = 0.73264: CMB must be wrong in omega_m AND theta_*
+  omega_m needed 0.1597 -> omega_c 0.1367 (+13.9 sig of 0.0012); 100theta_* predicted 1.07456 vs 1.0411+-0.0003: +112 sig
+  with SN Omega_m 0.322: omega_c 0.1498 (+24.9 sig); 100theta_* 1.08570 (+149 sig)
+
+7. (c) BBN route: omega_b x1.26 [M-MECHANIST-07] vs the CMB's own omega_b 0.02237+-0.00015 (independent, peak-height ratio)
+  omega_b needed ~0.0279; vs CMB 37 sig; D/H eta10 5.931+-0.051 -> omega_b needed ~ +26% = 30 sig of D/H
+
+8. Lensing-anomaly sign: experiments without Planck's A_L excess are LOWER
+  ACT+SPT naive mean 66.59+-0.44 (published SPT+ACT 66.59+-0.46) vs Planck PR4 67.64+-0.52: diff -1.05
+
+9. Shared-input route (recombination/drag code common to CMB and BAO r_d): z_d shift needed for r_d -6.5% [M-MECHANIST-07]
+  z_d 1020.7 -> 1131.2 (x1.1083, Delta z = +110); d ln r_d / d ln(1+z_d) ~ -0.65
+
+--- stderr ---
+

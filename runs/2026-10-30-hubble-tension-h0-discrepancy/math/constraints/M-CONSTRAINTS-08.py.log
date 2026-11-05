@@ -1,0 +1,28 @@
+# math_run log
+command:  python3 runs/2026-10-30-hubble-tension-h0-discrepancy/math/constraints/M-CONSTRAINTS-08.py
+started:  2026-10-30T15:55:58Z
+duration: 0.5 s
+exit:     0
+versions: python 3.13.17, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   6 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+  N_eff=3.044 limit, Om fixed, recovers h0: got 67.19, lens 67.19, tol 0.01
+PASS 1.16825106033502E-7 <= 0.0100000000000000: symbolic, constant
+z_eq fixed: N_eff = 4.336, 11.4 sigma
+  z_eq fixed: got 4.33629, lens 4.32, tol 0.08
+PASS 0.01628797531127868 <= 0.0800000000000000: symbolic, constant
+Omega_m fixed: N_eff = 4.402, 11.9 sigma
+  Omega_m fixed: got 4.40246, lens 4.41, tol 0.08
+PASS 0.007538471221924192 <= 0.0800000000000000: symbolic, constant
+omega_c fixed: N_eff = 3.566, 5.4 sigma
+  omega_c fixed: got 3.56585, lens 3.56, tol 0.08
+PASS 0.0058459663391112471 <= 0.0800000000000000: symbolic, constant
+  n sigma (z_eq): got 11.3561, lens 11.2, tol 0.8
+PASS 0.15606134854830471 <= 0.800000000000000: symbolic, constant
+  n sigma (omega_c fixed): got 5.42958, lens 5.4, tol 0.7
+PASS 0.02958435645470270 <= 0.700000000000000: symbolic, constant
+SUMMARY: 6 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

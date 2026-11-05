@@ -1,0 +1,25 @@
+# math_run log
+command:  python3 runs/2026-10-30-hubble-tension-h0-discrepancy/math/empiricist/M-EMPIRICIST-08.py
+started:  2026-10-30T15:39:57Z
+duration: 0.6 s
+exit:     0
+versions: python 3.13.17, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   5 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+PASS -E*p*log(p) <= 1: numeric at 50 points, p in [1e-09, 0.367879]; E read as Euler's number
+PASS lim p->0 of -p*log(p) == 0: symbolic limit 0
+  n = 6.27: p = 3.61e-10
+  max odds at 6.27 sigma: computed 4.68642e+07, lens 47000000.0
+PASS 46864151.4973635 == 47000000.0: within 0.012766; 4.68642e+07 vs 4.7e+07 (SI)
+  n = 3.24: p = 0.0012
+  max odds at 3.24 sigma: computed 45.7358, lens 45
+PASS 45.735758872591184 == 45.0: within 0.0222222; 45.7358 vs 45 (SI)
+  n = 2.07: p = 0.0385
+  max odds at 2.07 sigma: computed 2.93621, lens 2.9
+PASS 2.9362084159937294 == 2.9: within 0.0206897; 2.93621 vs 2.9 (SI)
+  sensitivity: at 3.23 sigma (M-EMPIRICIST-04 recomputation) max odds = 44.4
+SUMMARY: 5 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

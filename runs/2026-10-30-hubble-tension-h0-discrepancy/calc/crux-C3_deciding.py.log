@@ -1,0 +1,50 @@
+# math_run log
+command:  python3 runs/2026-10-30-hubble-tension-h0-discrepancy/calc/crux-C3_deciding.py
+started:  2026-10-30T17:04:41Z
+duration: 0.0 s
+exit:     0
+versions: python 3.13.17, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+gap = 6.074 km/s/Mpc, midpoint = 70.227, half-gap = 3.037
+
+[1] early shift vs ladder residual at each fit (s > r iff H > midpoint):
+  Khalife CMB-SPA EDE    H0= 68.03: shift= 0.84 residual= 5.23 share= 13.8%  s>r: False  (H>mid: False)
+  CMB-SPA+DESI EDE       H0= 69.81: shift= 2.62 residual= 3.45 share= 43.1%  s>r: False  (H>mid: False)
+  ACT P-ACT-LB EDE       H0= 69.90: shift= 2.71 residual= 3.36 share= 44.6%  s>r: False  (H>mid: False)
+  Poulin profile         H0= 71.00: shift= 3.81 residual= 2.26 share= 62.7%  s>r: True  (H>mid: True)
+  eROSITA+ext            H0= 71.40: shift= 4.21 residual= 1.86 share= 69.3%  s>r: True  (H>mid: True)
+
+[2] h*r_d CMB-SPA = 98.77 Mpc, DESI DR2 = 101.54 Mpc; ratio DESI/CMB = 1.0281 (2.81%)
+  H0= 70.23: r_d(CMB h r_d)= 140.6 Mpc (-4.32%), r_d(DESI h r_d)= 144.6 Mpc (-1.64%)
+  H0= 71.00: r_d(CMB h r_d)= 139.1 Mpc (-5.37%), r_d(DESI h r_d)= 143.0 Mpc (-2.71%)
+  H0= 73.26: r_d(CMB h r_d)= 134.8 Mpc (-8.29%), r_d(DESI h r_d)= 138.6 Mpc (-5.72%)
+
+[3] precision needed for a true-H0 (anchor-free, r_d-free) measurement:
+  C3 71.0 vs C1 upper edge 68.5  : diff=2.50; sigma for 2/3/5 sigma = 1.25 / 0.83 / 0.50 km/s/Mpc
+  C3 71.0 vs C1 central 67.75    : diff=3.25; sigma for 2/3/5 sigma = 1.62 / 1.08 / 0.65 km/s/Mpc
+  C3 71.0 vs C4(ii) 67.5         : diff=3.50; sigma for 2/3/5 sigma = 1.75 / 1.17 / 0.70 km/s/Mpc
+  C3 71.0 vs boundary 70.23 (C6) : diff=0.77; sigma for 2/3/5 sigma = 0.39 / 0.26 / 0.15 km/s/Mpc
+  C3 71.0 vs C6 central 70.0     : diff=1.00; sigma for 2/3/5 sigma = 0.50 / 0.33 / 0.20 km/s/Mpc
+  C3 lower edge 70.23 vs C1 upper edge 68.5: 3 sigma needs 0.58 km/s/Mpc
+  time delays: sigma 1.00 km/s/Mpc needs ~61 lenses (from 11 at 2.35, no floor)
+  time delays: sigma 0.83 km/s/Mpc needs ~88 lenses (from 11 at 2.35, no floor)
+  time delays: sigma 0.58 km/s/Mpc needs ~181 lenses (from 11 at 2.35, no floor)
+  time delays: sigma 0.39 km/s/Mpc needs ~399 lenses (from 11 at 2.35, no floor)
+
+[4] f_EDE precision needed (CMB without ladder prior):
+  separate f=0.09 from 0.068 at 2 sigma: sigma(f) <= 0.0110
+  separate f=0.09 from 0.068 at 3 sigma: sigma(f) <= 0.0073
+  separate f=0.07 from 0.0 at 3 sigma: sigma(f) <= 0.0233
+  separate f=0.09 from 0.0 at 3 sigma: sigma(f) <= 0.0300
+  separate f=0.09 from 0.03 at 3 sigma: sigma(f) <= 0.0200
+
+[5] P(H > midpoint) for r_d-free combination 69.73 at several sigma:
+  sigma=1.32: P(H>70.23) = 0.353; z(71.0) = 0.96
+  sigma=0.80: P(H>70.23) = 0.267; z(71.0) = 1.59
+  sigma=0.50: P(H>70.23) = 0.160; z(71.0) = 2.54
+  sigma=0.39: P(H>70.23) = 0.101; z(71.0) = 3.26
+
+--- stderr ---
+

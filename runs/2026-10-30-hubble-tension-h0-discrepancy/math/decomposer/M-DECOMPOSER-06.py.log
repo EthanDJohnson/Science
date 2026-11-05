@@ -1,0 +1,41 @@
+# math_run log
+command:  python3 runs/2026-10-30-hubble-tension-h0-discrepancy/math/decomposer/M-DECOMPOSER-06.py
+started:  2026-10-30T15:49:02Z
+duration: 0.5 s
+exit:     0
+versions: python 3.13.17, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   13 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+  sigma_L for 3 sigma: computed 1.98869, lens 1.99
+PASS 1.9886867805441633 == 1.99: within 0.00301508; 1.98869 vs 1.99 (SI)
+  inflation factor for 3 sigma: computed 2.46735, lens 2.5
+PASS 2.467353325737175 == 2.5: within 0.024; 2.46735 vs 2.5 (SI)
+  inflation factor for 2 sigma: computed 3.73838, lens 3.7
+PASS 3.7383781080940555 == 3.7: within 0.0162162; 3.73838 vs 3.7 (SI)
+  inflation for 3 sigma, 3 s.f. (Calculations: x2.47): computed 2.46735, lens 2.47
+PASS 2.467353325737175 == 2.47: within 0.00242915; 2.46735 vs 2.47 (SI)
+  ladders = SH0ES, CCHP, SBF x2.5: mean 67.865, chi2 16.261/9, p 0.0616
+  ladders = all six local x2.5: mean 67.794, chi2 13.586/9, p 0.1379
+  ladders = SH0ES, CCHP x2.5: mean 67.943, chi2 21.312/9, p 0.0113
+  ladder x2.5 chi2: computed 16.2609, lens 16.3
+PASS 16.260868238229914 == 16.3: within 0.00368098; 16.2609 vs 16.3 (SI)
+  ladder x2.5 p: computed 0.0616298, lens 0.06
+PASS 0.061629814526086124 == 0.06: within 0.1; 0.0616298 vs 0.06 (SI)
+  ladder x2.5 common H0: computed 67.8653, lens 67.9
+PASS 67.86532523147677 == 67.9: within 0.000883652; 67.8653 vs 67.9 (SI)
+  early x3 (all four early): mean 70.805, chi2 22.089/9, p 0.00860
+  early x3 [CMB, BAO+BBN]: mean 70.592, chi2 24.110/9, p 0.00413
+  early x3 [CMB, BAO+BBN, r_s-free]: mean 70.712, chi2 23.702/9, p 0.00480
+  early x3 [CMB only]: mean 69.683, chi2 30.648/9, p 0.00034
+  early x3 p, reading 'CMB and BAO+BBN' (Q3b wording): computed 0.00413031, lens 0.004
+PASS 0.004130308695962077 == 0.004: within 0.15; 0.00413031 vs 0.004 (SI)
+PASS 0.008601341914450084 < 0.0100000000000000: symbolic, constant
+PASS 0.004130308695962077 < 0.0100000000000000: symbolic, constant
+PASS lim s->0 of sqrt(D**2/k**2 - s**2) == D/k: symbolic limit D/k
+PASS k == k: symbolic
+PASS ((6.074 km/s/Mpc / 3)^2 - (0.38 km/s/Mpc)^2)^0.5 has the dimension of km/s/Mpc: dimensional analysis
+SUMMARY: 13 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

@@ -1,0 +1,127 @@
+# math_run log
+command:  python3 runs/2026-10-30-hubble-tension-h0-discrepancy/calc/lens-constraints_early.py
+started:  2026-10-30T15:31:29Z
+duration: 2.7 s
+exit:     0
+versions: python 3.13.17, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+LCDM baseline: H0 = 67.352, r_* = 144.432 Mpc, r_D/r_* = 0.09829 (n=400 vs 600 rel. diff -1.6e-04)
+
+=== yardstick: Delta N_eff = +0.13 (1 sigma ACT DR6), omega_c fixed ===
+  N_eff = 3.176, omega_c fixed                 H0 =  68.85  Omega_m = 0.3017  omega_c = 0.1200  r_* = 143.799 Mpc  d(theta_D/theta_*) = +0.30%
+  yardstick: 1 sigma(N_eff) <-> +0.299% in theta_D/theta_*
+
+=== EDE (n = 3, z_c = 3500), H0 from theta_* ===
+  f_EDE = 0.00, omega_c fixed                  H0 =  67.35  Omega_m = 0.3153  omega_c = 0.1200  r_* = 144.432 Mpc  d(theta_D/theta_*) = +0.00%
+  f_EDE = 0.00, Omega_m fixed                  H0 =  67.21  Omega_m = 0.3175  omega_c = 0.1204  r_* = 144.328 Mpc  d(theta_D/theta_*) = +0.02%
+  f_EDE = 0.05, omega_c fixed                  H0 =  73.04  Omega_m = 0.2681  omega_c = 0.1200  r_* = 142.112 Mpc  d(theta_D/theta_*) = +0.64%
+  f_EDE = 0.05, Omega_m fixed                  H0 =  69.48  Omega_m = 0.3175  omega_c = 0.1303  r_* = 139.609 Mpc  d(theta_D/theta_*) = +1.14%
+  f_EDE = 0.07, omega_c fixed                  H0 =  75.48  Omega_m = 0.2510  omega_c = 0.1200  r_* = 141.161 Mpc  d(theta_D/theta_*) = +0.90%
+  f_EDE = 0.07, Omega_m fixed                  H0 =  70.45  Omega_m = 0.3175  omega_c = 0.1346  r_* = 137.690 Mpc  d(theta_D/theta_*) = +1.61%
+  f_EDE = 0.10, omega_c fixed                  H0 =  79.33  Omega_m = 0.2273  omega_c = 0.1200  r_* = 139.709 Mpc  d(theta_D/theta_*) = +1.31%
+  f_EDE = 0.10, Omega_m fixed                  H0 =  71.98  Omega_m = 0.3175  omega_c = 0.1415  r_* = 134.773 Mpc  d(theta_D/theta_*) = +2.33%
+  f_EDE = 0.12, omega_c fixed                  H0 =  82.04  Omega_m = 0.2125  omega_c = 0.1200  r_* = 138.723 Mpc  d(theta_D/theta_*) = +1.58%
+  f_EDE = 0.12, Omega_m fixed                  H0 =  73.05  Omega_m = 0.3175  omega_c = 0.1464  r_* = 132.803 Mpc  d(theta_D/theta_*) = +2.83%
+  f_EDE = 0.15, omega_c fixed                  H0 =  86.33  Omega_m = 0.1919  omega_c = 0.1200  r_* = 137.215 Mpc  d(theta_D/theta_*) = +2.00%
+  f_EDE = 0.15, Omega_m fixed                  H0 =  74.74  Omega_m = 0.3175  omega_c = 0.1543  r_* = 129.804 Mpc  d(theta_D/theta_*) = +3.61%
+  f_EDE = 0.20, omega_c fixed                  H0 =  94.16  Omega_m = 0.1613  omega_c = 0.1200  r_* = 134.620 Mpc  d(theta_D/theta_*) = +2.74%
+  f_EDE = 0.20, Omega_m fixed                  H0 =  77.81  Omega_m = 0.3175  omega_c = 0.1692  r_* = 124.679 Mpc  d(theta_D/theta_*) = +4.98%
+  f_EDE needed for H0 = 73.264 (Omega_m fixed, z_c = 1500): 0.188
+  f_EDE needed (omega_c fixed, z_c = 1500): 0.081
+  f_EDE needed for H0 = 73.264 (Omega_m fixed, z_c = 3500): 0.124
+  f_EDE needed (omega_c fixed, z_c = 3500): 0.052
+  f_EDE needed for H0 = 73.264 (Omega_m fixed, z_c = 10000): 0.137
+  f_EDE needed (omega_c fixed, z_c = 10000): 0.057
+
+=== Delta N_eff ===
+  N_eff = 2.860, omega_c fixed                 H0 =  65.22  Omega_m = 0.3362  omega_c = 0.1200  r_* = 145.356 Mpc  d(theta_D/theta_*) = -0.43%
+  N_eff = 2.860, z_eq fixed                    H0 =  66.46  Omega_m = 0.3157  omega_c = 0.1164  r_* = 146.274 Mpc  d(theta_D/theta_*) = -0.63%
+  N_eff = 3.046, omega_c fixed                 H0 =  67.35  Omega_m = 0.3153  omega_c = 0.1200  r_* = 144.432 Mpc  d(theta_D/theta_*) = +0.00%
+  N_eff = 3.046, z_eq fixed                    H0 =  67.35  Omega_m = 0.3153  omega_c = 0.1200  r_* = 144.432 Mpc  d(theta_D/theta_*) = +0.00%
+  N_eff = 3.120, omega_c fixed                 H0 =  68.20  Omega_m = 0.3075  omega_c = 0.1200  r_* = 144.071 Mpc  d(theta_D/theta_*) = +0.17%
+  N_eff = 3.120, z_eq fixed                    H0 =  67.71  Omega_m = 0.3151  omega_c = 0.1214  r_* = 143.719 Mpc  d(theta_D/theta_*) = +0.25%
+  N_eff = 3.300, omega_c fixed                 H0 =  70.28  Omega_m = 0.2896  omega_c = 0.1200  r_* = 143.203 Mpc  d(theta_D/theta_*) = +0.58%
+  N_eff = 3.300, z_eq fixed                    H0 =  68.56  Omega_m = 0.3147  omega_c = 0.1249  r_* = 142.026 Mpc  d(theta_D/theta_*) = +0.84%
+  N_eff = 3.600, omega_c fixed                 H0 =  73.75  Omega_m = 0.2631  omega_c = 0.1200  r_* = 141.797 Mpc  d(theta_D/theta_*) = +1.25%
+  N_eff = 3.600, z_eq fixed                    H0 =  69.97  Omega_m = 0.3140  omega_c = 0.1306  r_* = 139.333 Mpc  d(theta_D/theta_*) = +1.81%
+  N_eff = 4.000, omega_c fixed                 H0 =  78.41  Omega_m = 0.2329  omega_c = 0.1200  r_* = 139.995 Mpc  d(theta_D/theta_*) = +2.13%
+  N_eff = 4.000, z_eq fixed                    H0 =  71.81  Omega_m = 0.3131  omega_c = 0.1383  r_* = 135.970 Mpc  d(theta_D/theta_*) = +3.06%
+  N_eff needed for H0 = 73.264 (omega_c fixed): 3.56  -> 5.4 sigma above ACT DR6 2.86 +- 0.13
+  N_eff needed for H0 = 73.264 (z_eq fixed): 4.32  -> 11.2 sigma above ACT DR6 2.86 +- 0.13
+  N_eff needed for H0 = 73.264 (Omega_m fixed): 4.41  -> 11.9 sigma above ACT DR6 2.86 +- 0.13
+
+=== varying m_e (z_*, z_drag ∝ m_e; sigma_T ∝ m_e^-2) ===
+  dm_e/m_e = +0.00, omega_c fixed              H0 =  67.35  Omega_m = 0.3153  omega_c = 0.1200  r_* = 144.432 Mpc  d(theta_D/theta_*) = +0.00%
+  dm_e/m_e = +0.00, Omega_m fixed              H0 =  67.21  Omega_m = 0.3175  omega_c = 0.1204  r_* = 144.328 Mpc  d(theta_D/theta_*) = +0.02%
+  dm_e/m_e = +0.01, omega_c fixed              H0 =  69.71  Omega_m = 0.2943  omega_c = 0.1200  r_* = 143.491 Mpc  d(theta_D/theta_*) = +0.38%
+  dm_e/m_e = +0.01, Omega_m fixed              H0 =  68.15  Omega_m = 0.3175  omega_c = 0.1245  r_* = 142.367 Mpc  d(theta_D/theta_*) = +0.60%
+  dm_e/m_e = +0.02, omega_c fixed              H0 =  72.09  Omega_m = 0.2752  omega_c = 0.1200  r_* = 142.563 Mpc  d(theta_D/theta_*) = +0.76%
+  dm_e/m_e = +0.02, Omega_m fixed              H0 =  69.11  Omega_m = 0.3175  omega_c = 0.1286  r_* = 140.441 Mpc  d(theta_D/theta_*) = +1.18%
+  dm_e/m_e = +0.04, omega_c fixed              H0 =  76.95  Omega_m = 0.2415  omega_c = 0.1200  r_* = 140.746 Mpc  d(theta_D/theta_*) = +1.51%
+  dm_e/m_e = +0.04, Omega_m fixed              H0 =  71.04  Omega_m = 0.3175  omega_c = 0.1372  r_* = 136.688 Mpc  d(theta_D/theta_*) = +2.35%
+  dm_e/m_e = +0.06, omega_c fixed              H0 =  81.94  Omega_m = 0.2130  omega_c = 0.1200  r_* = 138.978 Mpc  d(theta_D/theta_*) = +2.26%
+  dm_e/m_e = +0.06, Omega_m fixed              H0 =  73.02  Omega_m = 0.3175  omega_c = 0.1463  r_* = 133.061 Mpc  d(theta_D/theta_*) = +3.51%
+  dm_e/m_e = +0.08, omega_c fixed              H0 =  87.05  Omega_m = 0.1887  omega_c = 0.1200  r_* = 137.257 Mpc  d(theta_D/theta_*) = +3.01%
+  dm_e/m_e = +0.08, Omega_m fixed              H0 =  75.03  Omega_m = 0.3175  omega_c = 0.1557  r_* = 129.554 Mpc  d(theta_D/theta_*) = +4.69%
+  dm_e/m_e needed for H0 = 73.264 (omega_c fixed): 2.49%
+  dm_e/m_e needed for H0 = 73.264 (Omega_m fixed): 6.25%
+
+=== varying m_e along the scaling direction: omega_b, omega_c ∝ (1+dm)^2, z_* ∝ (1+dm) ===
+  dm_e/m_e = +0.02, omega_i ∝ m_e^2            H0 =  71.34  Omega_m = 0.2923  omega_c = 0.1248  r_* = 140.640 Mpc  d(theta_D/theta_*) = -0.75%
+  dm_e/m_e = +0.04, omega_i ∝ m_e^2            H0 =  75.46  Omega_m = 0.2716  omega_c = 0.1298  r_* = 137.010 Mpc  d(theta_D/theta_*) = -1.47%
+  dm_e/m_e = +0.06, omega_i ∝ m_e^2            H0 =  79.71  Omega_m = 0.2528  omega_c = 0.1348  r_* = 133.532 Mpc  d(theta_D/theta_*) = -2.17%
+  dm_e/m_e = +0.08, omega_i ∝ m_e^2            H0 =  84.09  Omega_m = 0.2357  omega_c = 0.1400  r_* = 130.199 Mpc  d(theta_D/theta_*) = -2.84%
+  dm_e/m_e needed for H0 = 73.264 (omega_i ∝ m_e^2): 2.94%; then omega_b = 0.02371 (BBN D/H omega_b ~0.0217-0.0222 [D-46]), Omega_m = 0.2823
+    -> that solution                           H0 =  73.26  Omega_m = 0.2823  omega_c = 0.1272  r_* = 138.908 Mpc  d(theta_D/theta_*) = -1.09%
+  damping shift = -3.6 yardsticks
+
+Summary rows (label, H0, Omega_m, omega_c, r_*, d theta_D/theta_* in units of the 1-sigma N_eff yardstick):
+  N_eff = 3.176, omega_c fixed                  68.85 0.3017 0.1200 143.799    +1.0 yardsticks
+  f_EDE = 0.00, omega_c fixed                   67.35 0.3153 0.1200 144.432    +0.0 yardsticks
+  f_EDE = 0.00, Omega_m fixed                   67.21 0.3175 0.1204 144.328    +0.1 yardsticks
+  f_EDE = 0.05, omega_c fixed                   73.04 0.2681 0.1200 142.112    +2.1 yardsticks
+  f_EDE = 0.05, Omega_m fixed                   69.48 0.3175 0.1303 139.609    +3.8 yardsticks
+  f_EDE = 0.07, omega_c fixed                   75.48 0.2510 0.1200 141.161    +3.0 yardsticks
+  f_EDE = 0.07, Omega_m fixed                   70.45 0.3175 0.1346 137.690    +5.4 yardsticks
+  f_EDE = 0.10, omega_c fixed                   79.33 0.2273 0.1200 139.709    +4.4 yardsticks
+  f_EDE = 0.10, Omega_m fixed                   71.98 0.3175 0.1415 134.773    +7.8 yardsticks
+  f_EDE = 0.12, omega_c fixed                   82.04 0.2125 0.1200 138.723    +5.3 yardsticks
+  f_EDE = 0.12, Omega_m fixed                   73.05 0.3175 0.1464 132.803    +9.5 yardsticks
+  f_EDE = 0.15, omega_c fixed                   86.33 0.1919 0.1200 137.215    +6.7 yardsticks
+  f_EDE = 0.15, Omega_m fixed                   74.74 0.3175 0.1543 129.804   +12.1 yardsticks
+  f_EDE = 0.20, omega_c fixed                   94.16 0.1613 0.1200 134.620    +9.2 yardsticks
+  f_EDE = 0.20, Omega_m fixed                   77.81 0.3175 0.1692 124.679   +16.7 yardsticks
+  N_eff = 2.860, omega_c fixed                  65.22 0.3362 0.1200 145.356    -1.4 yardsticks
+  N_eff = 2.860, z_eq fixed                     66.46 0.3157 0.1164 146.274    -2.1 yardsticks
+  N_eff = 3.046, omega_c fixed                  67.35 0.3153 0.1200 144.432    +0.0 yardsticks
+  N_eff = 3.046, z_eq fixed                     67.35 0.3153 0.1200 144.432    +0.0 yardsticks
+  N_eff = 3.120, omega_c fixed                  68.20 0.3075 0.1200 144.071    +0.6 yardsticks
+  N_eff = 3.120, z_eq fixed                     67.71 0.3151 0.1214 143.719    +0.8 yardsticks
+  N_eff = 3.300, omega_c fixed                  70.28 0.2896 0.1200 143.203    +1.9 yardsticks
+  N_eff = 3.300, z_eq fixed                     68.56 0.3147 0.1249 142.026    +2.8 yardsticks
+  N_eff = 3.600, omega_c fixed                  73.75 0.2631 0.1200 141.797    +4.2 yardsticks
+  N_eff = 3.600, z_eq fixed                     69.97 0.3140 0.1306 139.333    +6.1 yardsticks
+  N_eff = 4.000, omega_c fixed                  78.41 0.2329 0.1200 139.995    +7.1 yardsticks
+  N_eff = 4.000, z_eq fixed                     71.81 0.3131 0.1383 135.970   +10.2 yardsticks
+  dm_e/m_e = +0.00, omega_c fixed               67.35 0.3153 0.1200 144.432    +0.0 yardsticks
+  dm_e/m_e = +0.00, Omega_m fixed               67.21 0.3175 0.1204 144.328    +0.1 yardsticks
+  dm_e/m_e = +0.01, omega_c fixed               69.71 0.2943 0.1200 143.491    +1.3 yardsticks
+  dm_e/m_e = +0.01, Omega_m fixed               68.15 0.3175 0.1245 142.367    +2.0 yardsticks
+  dm_e/m_e = +0.02, omega_c fixed               72.09 0.2752 0.1200 142.563    +2.5 yardsticks
+  dm_e/m_e = +0.02, Omega_m fixed               69.11 0.3175 0.1286 140.441    +3.9 yardsticks
+  dm_e/m_e = +0.04, omega_c fixed               76.95 0.2415 0.1200 140.746    +5.1 yardsticks
+  dm_e/m_e = +0.04, Omega_m fixed               71.04 0.3175 0.1372 136.688    +7.8 yardsticks
+  dm_e/m_e = +0.06, omega_c fixed               81.94 0.2130 0.1200 138.978    +7.6 yardsticks
+  dm_e/m_e = +0.06, Omega_m fixed               73.02 0.3175 0.1463 133.061   +11.7 yardsticks
+  dm_e/m_e = +0.08, omega_c fixed               87.05 0.1887 0.1200 137.257   +10.1 yardsticks
+  dm_e/m_e = +0.08, Omega_m fixed               75.03 0.3175 0.1557 129.554   +15.7 yardsticks
+  dm_e/m_e = +0.02, omega_i ∝ m_e^2             71.34 0.2923 0.1248 140.640    -2.5 yardsticks
+  dm_e/m_e = +0.04, omega_i ∝ m_e^2             75.46 0.2716 0.1298 137.010    -4.9 yardsticks
+  dm_e/m_e = +0.06, omega_i ∝ m_e^2             79.71 0.2528 0.1348 133.532    -7.2 yardsticks
+  dm_e/m_e = +0.08, omega_i ∝ m_e^2             84.09 0.2357 0.1400 130.199    -9.5 yardsticks
+    -> that solution                            73.26 0.2823 0.1272 138.908    -3.6 yardsticks
+
+--- stderr ---
+

@@ -1,0 +1,35 @@
+# math_run log
+command:  python3 runs/2026-10-30-hubble-tension-h0-discrepancy/math/decomposer/M-DECOMPOSER-05.py
+started:  2026-10-30T15:47:56Z
+duration: 0.7 s
+exit:     0
+versions: python 3.13.17, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   12 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+  ACT DR6 EDE fraction %: computed 44.6164, lens 45
+PASS 44.61639776094845 == 45: within 0.0133333; 44.6164 vs 45 (SI)
+  PMF fraction %: computed 31.4455, lens 31
+PASS 31.445505432993038 == 31: within 0.0193548; 31.4455 vs 31 (SI)
+  modified recombination fraction %: computed 39.6773, lens 40
+PASS 39.67731313796505 == 40: within 0.015; 39.6773 vs 40 (SI)
+  NPIPE EDE upper fraction %: computed 38.031, lens 38
+PASS 38.030951596970745 == 38: within 0.0157895; 38.031 vs 38 (SI)
+  Poulin 2026 EDE fraction %: computed 62.7264, lens 63
+PASS 62.72637471188679 == 63: within 0.00952381; 62.7264 vs 63 (SI)
+  eROSITA+ EDE fraction %: computed 69.3118, lens 69
+PASS 69.3118208758645 == 69: within 0.00869565; 69.3118 vs 69 (SI)
+  DESI w0wa DESI+CMB fraction %: computed -59.1044, lens -59
+PASS -59.10437932169901 == -59: within 0.0101695; -59.1044 vs -59 (SI)
+  DESI w0wa + Pantheon+ fraction %: computed 5.26836, lens 5
+PASS 5.268356931182211 == 5: within 0.12; 5.26836 vs 5 (SI)
+  eROSITA residual km/s/Mpc: computed 1.864, lens 1.9
+PASS 1.86399999999999 == 1.9: within 0.0315789; 1.864 vs 1.9 (SI)
+  largest residual (PMF): computed 4.164, lens 4.2
+PASS 4.1640000000000015 == 4.2: within 0.0142857; 4.164 vs 4.2 (SI)
+PASS (-r/2 + t/2)/(-r + t) == 1/2: symbolic
+PASS (69.9 km/s/Mpc - 67.19 km/s/Mpc)/(73.264 km/s/Mpc - 67.19 km/s/Mpc) has the dimension of dimensionless: dimensional analysis
+SUMMARY: 12 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

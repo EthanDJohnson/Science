@@ -1,0 +1,70 @@
+# math_run log
+command:  python3 runs/2026-10-30-hubble-tension-h0-discrepancy/calc/lens-dialectician_syntheses.py
+started:  2026-10-30T15:26:15Z
+duration: 0.0 s
+exit:     0
+versions: python 3.13.17, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+=== Contradiction 1: SH0ES vs CCHP (calibrator sample variance) ===
+per-SN scatter (a) R22: 0.130 mag; (b) CCHP: 0.105 mag
+ s=0.105: sigma(diff, 24 vs 11 disjoint) = 0.038 mag = 1.25 km/s/Mpc
+   observed 74.1 - 70.39 = 3.71 km/s/Mpc -> 2.96 sigma
+   sigma(11-of-42 subset vs parent) = 0.027 mag = 0.89 km/s/Mpc
+   SH0ES-reported selection effect 2.55 km/s/Mpc -> 2.87 sigma of 11-of-42 subset noise
+ s=0.130: sigma(diff, 24 vs 11 disjoint) = 0.047 mag = 1.55 km/s/Mpc
+   observed 74.1 - 70.39 = 3.71 km/s/Mpc -> 2.40 sigma
+   sigma(11-of-42 subset vs parent) = 0.034 mag = 1.10 km/s/Mpc
+   SH0ES-reported selection effect 2.55 km/s/Mpc -> 2.32 sigma of 11-of-42 subset noise
+total SH0ES - CCHP-JWST = 4.68; selection part ~2.55; residual method/analysis part ~2.39 km/s/Mpc
+  residual as mag: 0.074 mag
+  SN-compilation spread on extension (Hoyt): 1.2 km/s/Mpc = 0.036 mag
+CCHP TRGB total error 1.94
+ CCHP TRGB 70.39: vs SH0ES z=1.44; vs CMB-SPA z=1.62
+ CCHP JWST-only 68.81: vs SH0ES z=2.31; vs CMB-SPA z=0.88
+
+=== Contradiction 2: inverse-ladder no-go (gap is in r_d / M_B) vs non-SN ladders at ~73 ===
+ H0=67.19: r_d = 151.1 +- 1.1 Mpc; vs CMB-SPA r_d 147.00 -> +2.8%
+ H0=68.50: r_d = 148.2 +- 1.1 Mpc; vs CMB-SPA r_d 147.00 -> +0.8%
+ H0=70.39: r_d = 144.3 +- 1.0 Mpc; vs CMB-SPA r_d 147.00 -> -1.9%
+ H0=71.24: r_d = 142.5 +- 1.0 Mpc; vs CMB-SPA r_d 147.00 -> -3.0%
+ H0=73.26: r_d = 138.6 +- 1.0 Mpc; vs CMB-SPA r_d 147.00 -> -5.7%
+ H0=73.49: r_d = 138.2 +- 1.0 Mpc; vs CMB-SPA r_d 147.00 -> -6.0%
+ M_B(ladder) - M_B(inverse, flat LCDM) = +0.141 mag -> H0 ratio 1.0671
+ M_B(ladder) - M_B(inverse, cosmography) = +0.122 mag -> H0 ratio 1.0578
+ SBF 73.8 +- 2.40; TF 73.3 +- 4.08
+ one-step (lenses+masers+sirens) mean = 71.27 +- 1.93; chi2=0.02/2
+   one-step vs CMB-SPA 67.19: diff=+4.08, z=2.07
+   one-step vs DESI BAO+BBN 68.5: diff=+2.77, z=1.37
+   one-step vs H0DN corrected 73.264: diff=-2.00, z=0.95
+   one-step vs SH0ES 2025 73.49: diff=-2.22, z=1.04
+ one-step mean sits 0.67 of the way from CMB-SPA to H0DN
+ precision to separate 6.07 at 3 sigma: 2.02 km/s/Mpc = 2.89%
+ precision to separate 6.07 at 5 sigma: 1.21 km/s/Mpc = 1.74%
+ midpoint 70.23: precision to exclude both poles at 3 sigma: 1.01 km/s/Mpc = 1.45%
+ r_d-free Zaborowski lensxunWISE 69.2: vs H0DN z=2.66; vs CMB-SPA z=1.39
+ r_d-free Zaborowski DES 6x2pt 70.3: vs H0DN z=1.83; vs CMB-SPA z=2.47
+ r_d-free Zaborowski lens+DESY5 69.6: vs H0DN z=2.40; vs CMB-SPA z=1.31
+ r_d-free 2411.16677 DESY5 66.7: vs H0DN z=3.49; vs CMB-SPA z=0.28
+ r_d-free 2411.16677 Pantheon+ 67.9: vs H0DN z=2.60; vs CMB-SPA z=0.33
+ ladder 73.264 -> 67.19: needs 0.188 mag common offset
+ ladder 73.264 -> 68.5: needs 0.146 mag common offset
+
+=== Contradiction 3: EDE closed (Bayesian, full CMB) vs open (profile / DESI / eROSITA) ===
+ ACT P-ACT-LB EDE: H0=69.9; fraction of gap closed vs LCDM 68.22: 0.33; residual vs H0DN z=2.96
+ ACT P-ACT EDE: H0=69.3; fraction of gap closed vs LCDM 68.22: 0.21; residual vs H0DN z=3.28
+ Poulin 2026 profile: H0=71.0; fraction of gap closed vs LCDM 68.22: 0.55; residual vs H0DN z=1.66
+ eROSITA+ext: H0=71.4; fraction of gap closed vs LCDM 68.22: 0.63; residual vs H0DN z=1.15
+ Reeves multiprobe (unchecked): H0=70.5; fraction of gap closed vs LCDM 68.22: 0.45; residual vs H0DN z=1.91
+ ACT mod. recomb.: H0=69.6; fraction of gap closed vs LCDM 68.22: 0.27; residual vs H0DN z=2.85
+ ACT PMF: H0=69.1; fraction of gap closed vs LCDM 68.22: 0.17; residual vs H0DN z=4.39
+ electron-density fluct. ACT+SPT: H0=69.3; fraction of gap closed vs LCDM 68.22: 0.21; residual vs H0DN z=4.18
+ NPIPE: 95% upper 69.5 is 4.7 H0DN-sigma below the ladder
+  profile f=0.09+-0.03 vs Bayesian 95% UL 0.061: (0.09-UL)/0.03 = +0.97
+  profile f=0.09+-0.03 vs Bayesian 95% UL 0.07: (0.09-UL)/0.03 = +0.67
+  profile f=0.09+-0.03 vs Bayesian 95% UL 0.088: (0.09-UL)/0.03 = +0.07
+  profile f=0.09+-0.03 vs Bayesian 95% UL 0.12: (0.09-UL)/0.03 = -1.00
+
+--- stderr ---
+

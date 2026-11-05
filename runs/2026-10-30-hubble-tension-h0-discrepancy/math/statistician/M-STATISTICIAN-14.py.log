@@ -1,0 +1,48 @@
+# math_run log
+command:  python3 runs/2026-10-30-hubble-tension-h0-discrepancy/math/statistician/M-STATISTICIAN-14.py
+started:  2026-10-30T15:34:45Z
+duration: 5.4 s
+exit:     0
+versions: python 3.13.17, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   8 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+all 7 classes   nu=None SBF+TF merged=False: -2lnL =   51.81, z = 7.20, mu_hat = 72.77
+all 7 classes   nu=None SBF+TF merged=True : -2lnL =   51.81, z = 7.20, mu_hat = 72.77
+all 7 classes   nu=2    SBF+TF merged=False: -2lnL =   18.17, z = 4.26, mu_hat = 72.92
+all 7 classes   nu=2    SBF+TF merged=True : -2lnL =   16.74, z = 4.09, mu_hat = 72.91
+all 7 classes   nu=3    SBF+TF merged=False: -2lnL =   19.99, z = 4.47, mu_hat = 72.87
+all 7 classes   nu=3    SBF+TF merged=True : -2lnL =   18.72, z = 4.33, mu_hat = 72.87
+without SH0ES   nu=None SBF+TF merged=False: -2lnL =   12.96, z = 3.60, mu_hat = 71.69
+without SH0ES   nu=None SBF+TF merged=True : -2lnL =   12.96, z = 3.60, mu_hat = 71.69
+without SH0ES   nu=2    SBF+TF merged=False: -2lnL =   10.69, z = 3.27, mu_hat = 71.61
+without SH0ES   nu=2    SBF+TF merged=True : -2lnL =    9.33, z = 3.06, mu_hat = 71.52
+without SH0ES   nu=3    SBF+TF merged=False: -2lnL =   10.93, z = 3.31, mu_hat = 71.64
+without SH0ES   nu=3    SBF+TF merged=True : -2lnL =    9.71, z = 3.12, mu_hat = 71.58
+no-SN           nu=None SBF+TF merged=False: -2lnL =   11.56, z = 3.40, mu_hat = 72.39
+no-SN           nu=None SBF+TF merged=True : -2lnL =   11.56, z = 3.40, mu_hat = 72.39
+no-SN           nu=2    SBF+TF merged=False: -2lnL =    9.39, z = 3.06, mu_hat = 72.37
+no-SN           nu=2    SBF+TF merged=True : -2lnL =    7.97, z = 2.82, mu_hat = 72.33
+no-SN           nu=3    SBF+TF merged=False: -2lnL =    9.61, z = 3.10, mu_hat = 72.37
+no-SN           nu=3    SBF+TF merged=True : -2lnL =    8.35, z = 2.89, mu_hat = 72.35
+one-step        nu=None SBF+TF merged=False: -2lnL =    3.64, z = 1.91, mu_hat = 71.27
+one-step        nu=2    SBF+TF merged=False: -2lnL =    3.96, z = 1.99, mu_hat = 71.27
+one-step        nu=3    SBF+TF merged=False: -2lnL =    3.84, z = 1.96, mu_hat = 71.27
+  all, Gaussian: -2lnL (lens 51.1): mine = 51.81, lens = 51.1, tol = 1.0
+PASS 0.7099863575697585 <= 1.00000000000000: symbolic, constant
+  all, nu=2: -2lnL (lens 18.2): mine = 18.1697, lens = 18.2, tol = 0.5
+PASS 0.030301044424046297 <= 0.500000000000000: symbolic, constant
+  all, nu=3: -2lnL (lens 20.0): mine = 19.9868, lens = 20.0, tol = 0.5
+PASS 0.013244906477013013 <= 0.500000000000000: symbolic, constant
+  without SH0ES, nu=2..3: z (lens 3.3): mine = 3.30556, lens = 3.3, tol = 0.15
+PASS 0.005556419352898190 <= 0.150000000000000: symbolic, constant
+  no-SN, nu=3: z (lens 3.1): mine = 3.09986, lens = 3.1, tol = 0.15
+PASS 0.00014431932859258756 <= 0.150000000000000: symbolic, constant
+  one-step, nu=3: z (lens 2.0): mine = 1.95938, lens = 2.0, tol = 0.15
+PASS 0.040623888071564401 <= 0.150000000000000: symbolic, constant
+PASS lim n->oo of (-n/2 - 1/2)*log(1 + r**2/n) == -r**2/2: symbolic limit -r**2/2
+PASS (73.49 km/s/Mpc - 67.58 km/s/Mpc) / (0.93 km/s/Mpc) has the dimension of dimensionless: dimensional analysis
+SUMMARY: 8 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

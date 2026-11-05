@@ -1,0 +1,21 @@
+# math_run log
+command:  python3 runs/2026-10-30-hubble-tension-h0-discrepancy/math/examiner/M-EXAMINER-10.py
+started:  2026-10-30T15:46:34Z
+duration: 0.7 s
+exit:     0
+versions: python 3.13.17, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   6 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+PASS 71.0 - 63.6 == 7.40: within 1e-09; 7.4 vs 7.4 (SI)
+PASS 7.40000000000000 > 6.30000000000000: symbolic, constant
+gap/CV: 18.064516129032256 20.32258064516129
+PASS 5.6/0.31 == 18: within 0.01; 18.0645 vs 18 (SI)
+PASS 6.30/0.31 == 20: within 0.02; 20.3226 vs 20 (SI)
+all-local 72.772 +- 0.721 (chi2 2.93/6); vs CMB-SPA 6.850; vs BAO+BBN 4.617
+PASS 6.850196873545931 == 6.85: within 0.005; 6.8502 vs 6.85 (SI)
+PASS 4.617494370348272 == 4.6: within 0.012; 4.61749 vs 4.6 (SI)
+SUMMARY: 6 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

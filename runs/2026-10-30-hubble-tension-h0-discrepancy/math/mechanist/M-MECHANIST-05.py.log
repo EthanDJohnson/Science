@@ -1,0 +1,28 @@
+# math_run log
+command:  python3 runs/2026-10-30-hubble-tension-h0-discrepancy/math/mechanist/M-MECHANIST-05.py
+started:  2026-10-30T15:42:23Z
+duration: 1.2 s
+exit:     0
+versions: python 3.13.17, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   7 PASS, 0 FAIL, 0 UNDECIDED
+
+--- stdout ---
+baseline h = 0.68284 (Planck 2018 with one massive nu quotes 0.6736 for 100θ_* = 1.04110)
+r_s(z_*) = 144.273 Mpc, z_* = 1091.85
+  dlnh/dlntheta: recomputed 5.13509, lens claims 5.12, tol 0.15
+PASS 0.01509336254694194 <= 0.150000000000000: symbolic, constant
+PASS 0.010606537850917261 > 0.010312525542656192: symbolic, constant
+  theta shift % (exact): recomputed 1.72892, lens claims 1.69, tol 0.05
+PASS 0.038920930984356754 <= 0.0500000000000000: symbolic, constant
+  theta shift % (linear): recomputed 1.68536, lens claims 1.69, tol 0.05
+PASS 0.0046376731161166460 <= 0.0500000000000000: symbolic, constant
+precision of θ_*: 0.0288%
+  sigma using 0.0288% (D-40 numbers): recomputed 59.9993, lens claims 59, tol 1.5
+PASS 0.99931937492712603 <= 1.50000000000000: symbolic, constant
+  sigma using rounded 0.03% (as the lens words it): recomputed 57.6307, lens claims 59, tol 1.5
+PASS 1.369302300521440 <= 1.50000000000000: symbolic, constant
+PASS 147.1 Mpc / (14130 Mpc) == 0.01041: within 0.002; 0.0104105 vs 0.01041 (SI)
+SUMMARY: 7 pass, 0 fail, 0 undecided
+
+--- stderr ---
+

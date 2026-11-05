@@ -1,0 +1,71 @@
+# math_run log
+command:  python3 runs/2026-10-30-hubble-tension-h0-discrepancy/calc/falsifier-C1-2_bounds.py
+started:  2026-10-30T16:11:46Z
+duration: 0.0 s
+exit:     0
+versions: python 3.13.17, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+=== 1. Required SN-step bias for C1's stated true-H0 range ===
+  true H0  67.00: required ladder bias 0.194 mag (9.3% in H0)
+  true H0  67.19: required ladder bias 0.188 mag (9.0% in H0)
+  true H0  68.00: required ladder bias 0.162 mag (7.7% in H0)
+  true H0  68.50: required ladder bias 0.146 mag (7.0% in H0)
+  true H0  70.20: required ladder bias 0.093 mag (4.4% in H0)
+
+=== 2. Direct bound on the SN-step contribution: H0DN with vs without SNe Ia ===
+  vs baseline 73.50 (same Pantheon+ version): SN-step contribution = +0.0020 mag; sigma 0.0474 (nested) / 0.0582 (indep.) mag
+     needed 0.146 mag -> deficit 3.04 sigma (nested), 2.47 sigma (indep.)
+     needed 0.188 mag -> deficit 3.93 sigma (nested), 3.19 sigma (indep.)
+     needed 0.194 mag -> deficit 4.05 sigma (nested), 3.30 sigma (indep.)
+  vs corrected 73.264: SN-step contribution = -0.0050 mag; sigma 0.0474 (nested) / 0.0582 (indep.) mag
+     needed 0.146 mag -> deficit 3.18 sigma (nested), 2.60 sigma (indep.)
+     needed 0.188 mag -> deficit 4.07 sigma (nested), 3.32 sigma (indep.)
+     needed 0.194 mag -> deficit 4.20 sigma (nested), 3.42 sigma (indep.)
+  H0DN no-SNe 73.434 +- 1.795 vs true 67.00: 3.58 sigma
+  H0DN no-SNe 73.434 +- 1.795 vs true 67.19: 3.48 sigma
+  H0DN no-SNe 73.434 +- 1.795 vs true 68.00: 3.03 sigma
+  H0DN no-SNe 73.434 +- 1.795 vs true 68.50: 2.75 sigma
+  H0DN no-SNe 73.434 +- 1.795 vs true 70.20: 1.80 sigma
+
+=== 3. SN-free probe set under an SN-step-only bias (they should read true H0) ===
+  Set B (SBF,TF,TD,masers,sirens): symmetrised mean 72.39 +- 1.41
+     true 67.00: (mean-true)/sigma = 3.81; chi2 = 15.50/5 dof, p = 8.43e-03 (2.63 sigma)
+     true 67.19: (mean-true)/sigma = 3.68; chi2 = 14.47/5 dof, p = 1.29e-02 (2.49 sigma)
+     true 68.00: (mean-true)/sigma = 3.10; chi2 = 10.51/5 dof, p = 6.19e-02 (1.87 sigma)
+     true 68.50: (mean-true)/sigma = 2.75; chi2 = 8.40/5 dof, p = 1.35e-01 (1.49 sigma)
+     true 70.20: (mean-true)/sigma = 1.55; chi2 = 3.16/5 dof, p = 6.76e-01 (0.42 sigma)
+  Set A (H0DN-noSN,TF,TD,sirens): symmetrised mean 72.63 +- 1.33
+     true 67.00: (mean-true)/sigma = 4.23; chi2 = 18.80/4 dof, p = 8.60e-04 (3.33 sigma)
+     true 67.19: (mean-true)/sigma = 4.09; chi2 = 17.59/4 dof, p = 1.48e-03 (3.18 sigma)
+     true 68.00: (mean-true)/sigma = 3.48; chi2 = 12.91/4 dof, p = 1.17e-02 (2.52 sigma)
+     true 68.50: (mean-true)/sigma = 3.11; chi2 = 10.40/4 dof, p = 3.42e-02 (2.12 sigma)
+     true 70.20: (mean-true)/sigma = 1.83; chi2 = 4.02/4 dof, p = 4.04e-01 (0.83 sigma)
+
+=== 3b. Same, Cepheid-free and SN-free only (SBF, TD, masers, sirens; drop TF, which uses Cepheid zero points) ===
+  mean 72.26 +- 1.51
+     true 67.00: 3.49 sigma
+     true 67.19: 3.37 sigma
+     true 68.00: 2.83 sigma
+     true 68.50: 2.50 sigma
+     true 70.20: 1.37 sigma
+
+=== 4. Anchor-free one-step probes (bound on ANY ladder systematic) ===
+  one-step mean 71.27 +- 1.93
+     vs 67.000: +2.21 sigma
+     vs 67.190: +2.11 sigma
+     vs 68.000: +1.69 sigma
+     vs 68.500: +1.43 sigma
+     vs 70.200: +0.55 sigma
+     vs 73.264: -1.03 sigma
+
+=== 5. Anchor-free AND r_d-free arbiters for the 'true global H0' clause ===
+  with Zaborowski CMBlens x unWISE 69.2: arbiter mean 69.57 +- 1.07; sigma from [67.0: +2.40, 68.5: +1.00, 70.2: -0.59, 73.264: -3.45]
+  with Zaborowski DES 6x2pt 70.3: arbiter mean 70.26 +- 1.04; sigma from [67.0: +3.12, 68.5: +1.69, 70.2: +0.06, 73.264: -2.87]
+  with Zaborowski CMBlens+DESY5 69.6: arbiter mean 69.86 +- 1.16; sigma from [67.0: +2.46, 68.5: +1.17, 70.2: -0.29, 73.264: -2.93]
+  with 2411.16677 DESY5 66.7: arbiter mean 68.49 +- 1.26; sigma from [67.0: +1.19, 68.5: -0.01, 70.2: -1.36, 73.264: -3.80]
+  with 2411.16677 Pantheon+ 67.9: arbiter mean 69.19 +- 1.32; sigma from [67.0: +1.66, 68.5: +0.53, 70.2: -0.76, 73.264: -3.09]
+
+--- stderr ---
+

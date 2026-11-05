@@ -1,0 +1,49 @@
+# math_run log
+command:  python3 runs/2026-10-30-hubble-tension-h0-discrepancy/calc/falsifier-C5-0_magnitude.py
+started:  2026-10-30T16:36:13Z
+duration: 17.3 s
+exit:     0
+versions: python 3.13.17, sympy 1.14.0, mpmath 1.3.0, numpy 2.5.3, scipy 1.18.1
+counts:   no PASS/FAIL lines
+
+--- stdout ---
+=== A: required contrast ===
+CMB-SPA: gap 6.074 km/s/Mpc; share 50%: dH/H = 4.52% -> delta_lin = -0.255, delta_Bern = -0.244
+CMB-SPA: gap 6.074 km/s/Mpc; share 100%: dH/H = 9.04% -> delta_lin = -0.510, delta_Bern = -0.464
+BAO+BBN: gap 4.764 km/s/Mpc; share 50%: dH/H = 3.48% -> delta_lin = -0.196, delta_Bern = -0.190
+BAO+BBN: gap 4.764 km/s/Mpc; share 100%: dH/H = 6.95% -> delta_lin = -0.392, delta_Bern = -0.365
+
+=== B: largest allowed share ===
+delta = -0.20 (lin): dH/H = 3.55%; dH = 2.38 (vs CMB-SPA, share 39%), 2.43 (vs BAO+BBN, share 51%); SN-diagram step 0.076 mag
+delta = -0.20 (Bern): dH/H = 3.68%; dH = 2.47 (vs CMB-SPA, share 41%), 2.52 (vs BAO+BBN, share 53%); SN-diagram step 0.078 mag
+delta = -0.27 (lin): dH/H = 4.79%; dH = 3.22 (vs CMB-SPA, share 53%), 3.28 (vs BAO+BBN, share 69%); SN-diagram step 0.102 mag
+delta = -0.27 (Bern): dH/H = 5.03%; dH = 3.38 (vs CMB-SPA, share 56%), 3.45 (vs BAO+BBN, share 72%); SN-diagram step 0.107 mag
+LCDM 2 sigma local fluctuation = 0.62 km/s/Mpc = 10% of CMB-SPA gap, 13% of BAO+BBN gap
+LCDM 3 sigma local fluctuation = 0.93 km/s/Mpc = 15% of CMB-SPA gap, 20% of BAO+BBN gap
+LCDM 5 sigma local fluctuation = 1.55 km/s/Mpc = 26% of CMB-SPA gap, 33% of BAO+BBN gap
+half-gap in LCDM-variance units: CMB-SPA 9.8 sigma, BAO+BBN 7.7 sigma
+
+=== C: bulk flow ===
+trial 0: V = 400 km/s: isotropic-sky bias -0.009%, one-hemisphere (worst) bias +0.87%
+trial 0: V = 1000 km/s: isotropic-sky bias -0.046%, one-hemisphere (worst) bias +2.16%
+trial 1: V = 400 km/s: isotropic-sky bias -0.007%, one-hemisphere (worst) bias +0.87%
+trial 1: V = 1000 km/s: isotropic-sky bias -0.042%, one-hemisphere (worst) bias +2.16%
+worst-case hemisphere needs V = 4116 km/s for the full 9.04%; 2058 km/s for half the gap
+n=4000: LCDM 3D rms bulk flow (km/s) R=50: 305, R=100: 216, R=150: 166, R=300: 97
+n=8000: LCDM 3D rms bulk flow (km/s) R=50: 305, R=100: 216, R=150: 166, R=300: 97
+
+=== D: z_min trend for a full-gap linear-theory void ===
+edge z=0.05: needs inner dH/H=28.6% (delta_lin=-1.61); H0 full 73.26, 0.03-0.10 76.35 (shift +3.09), z>0.06 70.43 (shift -2.84), z<0.06 84.56
+edge z=0.07: needs inner dH/H=16.4% (delta_lin=-0.93); H0 full 73.26, 0.03-0.10 75.98 (shift +2.72), z>0.06 71.95 (shift -1.31), z<0.06 78.23
+edge z=0.10: needs inner dH/H=11.0% (delta_lin=-0.62); H0 full 73.26, 0.03-0.10 74.57 (shift +1.31), z>0.06 72.91 (shift -0.36), z<0.06 74.57
+edge z=0.15: needs inner dH/H=9.0% (delta_lin=-0.51); H0 full 73.26, 0.03-0.10 73.26 (shift -0.00), z>0.06 73.26 (shift +0.00), z<0.06 73.26
+edge z=0.20: needs inner dH/H=9.0% (delta_lin=-0.51); H0 full 73.26, 0.03-0.10 73.26 (shift -0.00), z>0.06 73.26 (shift +0.00), z<0.06 73.26
+observed (D-23, original baseline 73.50): 0.03-0.10 shift -0.833; 'z>0.06' shift -0.310; nested-subsample sigma of the shift ~ sqrt(0.862^2-0.81^2) = 0.29
+
+=== E: can a smooth flat-LCDM shape absorb the void step? ===
+void edge z=0.15, step 0.188 mag: best smooth flat-LCDM Om = 0.160, residual chi2 = 89.6 for 1000 SNe (noise-free mock; = detection Delta-chi2), ~9.5 sigma
+void edge z=0.20, step 0.188 mag: best smooth flat-LCDM Om = 0.150, residual chi2 = 59.0 for 1000 SNe (noise-free mock; = detection Delta-chi2), ~7.7 sigma
+observed SN-only Om = 0.322 +- 0.012 (candidates.md matrix); CMB-SPA Om 0.3175
+
+--- stderr ---
+
